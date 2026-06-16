@@ -1,0 +1,102 @@
+% =====================================================================
+% 06 — Change-point detection — bibliografia FASE 2 (estado del arte)
+% Claves unicas con prefijo cp_autorANIO. No duplica hamilton1989,
+% angbekaert2002, guidolintimmermann2007, kritzman2012,
+% estrellamishkin1998, gulko2002, lopezdeprado2018 (ya en references.bib).
+% =====================================================================
+
+@article{cp_page1954,
+  author  = {Page, E. S.},
+  title   = {Continuous Inspection Schemes},
+  journal = {Biometrika},
+  year    = {1954},
+  volume  = {41},
+  number  = {1/2},
+  pages   = {100--115},
+  doi     = {10.1093/biomet/41.1-2.100},
+  note    = {Articulo seminal del CUSUM (deteccion secuencial online).}
+}
+
+@article{cp_inclantiao1994,
+  author  = {Incl{\'a}n, Carla and Tiao, George C.},
+  title   = {Use of Cumulative Sums of Squares for Retrospective Detection of Changes of Variance},
+  journal = {Journal of the American Statistical Association},
+  year    = {1994},
+  volume  = {89},
+  number  = {427},
+  pages   = {913--923},
+  doi     = {10.1080/01621459.1994.10476824},
+  note    = {Algoritmo ICSS: deteccion de cambios en la varianza incondicional.}
+}
+
+@article{cp_adamsmackay2007,
+  author  = {Adams, Ryan Prescott and MacKay, David J. C.},
+  title   = {Bayesian Online Changepoint Detection},
+  journal = {arXiv preprint arXiv:0710.3742},
+  year    = {2007},
+  eprint  = {0710.3742},
+  archivePrefix = {arXiv},
+  primaryClass  = {stat.ML},
+  url     = {https://arxiv.org/abs/0710.3742},
+  note    = {BOCPD: inferencia online exacta del run-length, causal.}
+}
+
+@article{cp_fearnheadliu2007,
+  author  = {Fearnhead, Paul and Liu, Zhen},
+  title   = {On-line Inference for Multiple Changepoint Problems},
+  journal = {Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
+  year    = {2007},
+  volume  = {69},
+  number  = {4},
+  pages   = {589--605},
+  doi     = {10.1111/j.1467-9868.2007.00601.x},
+  note    = {Filtrado online exacto de multiples change-points; coste reducible a lineal via particulas.}
+}
+
+@article{cp_killick2012,
+  author  = {Killick, Rebecca and Fearnhead, Paul and Eckley, Idris A.},
+  title   = {Optimal Detection of Changepoints with a Linear Computational Cost},
+  journal = {Journal of the American Statistical Association},
+  year    = {2012},
+  volume  = {107},
+  number  = {500},
+  pages   = {1590--1598},
+  doi     = {10.1080/01621459.2012.737745},
+  note    = {Algoritmo PELT: minimizacion exacta del coste penalizado, O(n) esperado.}
+}
+
+@incollection{cp_lavielleteyssiere2007,
+  author    = {Lavielle, Marc and Teyssi{\`e}re, Gilles},
+  title     = {Adaptive Detection of Multiple Change-Points in Asset Price Volatility},
+  booktitle = {Long Memory in Economics},
+  editor    = {Teyssi{\`e}re, Gilles and Kirman, Alan P.},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {2007},
+  pages     = {129--156},
+  doi       = {10.1007/978-3-540-34625-8_5},
+  note      = {Aplicacion financiera: change-points en la volatilidad de precios de activos.}
+}
+
+@article{cp_arlot2019,
+  author  = {Arlot, Sylvain and Celisse, Alain and Harchaoui, Za{\"i}d},
+  title   = {A Kernel Multiple Change-point Algorithm via Model Selection},
+  journal = {Journal of Machine Learning Research},
+  year    = {2019},
+  volume  = {20},
+  number  = {162},
+  pages   = {1--56},
+  url     = {https://jmlr.org/papers/v20/16-155.html},
+  note    = {Change-point no parametrico en RKHS (kernel), robusto a no-gaussianidad.}
+}
+
+@article{cp_truong2020,
+  author  = {Truong, Charles and Oudre, Laurent and Vayatis, Nicolas},
+  title   = {Selective Review of Offline Change Point Detection Methods},
+  journal = {Signal Processing},
+  year    = {2020},
+  volume  = {167},
+  pages   = {107299},
+  doi     = {10.1016/j.sigpro.2019.107299},
+  note    = {Survey de CPD offline (coste, busqueda, restriccion); base de la libreria ruptures.}
+}

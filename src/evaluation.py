@@ -43,12 +43,20 @@ FALSE_POSITIVE_WINDOWS: dict[str, tuple[str, str]] = {
 }
 
 # Picos (fondo) de drawdown del S&P 500 para medir lead/lag de la señal.
-# Fecha del mínimo de cada gran caída. Se recalculan en FASE 1 desde los datos.
+# CALCULADOS en FASE 1 desde la serie real del S&P 500 (no a mano):
+# fecha del mínimo del drawdown (precio/máx_expanding - 1) dentro de cada
+# episodio. Drawdown alcanzado entre paréntesis. Ver docs/memory/01_data_and_eda.md
+# y notebooks/00_eda.ipynb (celda de cálculo de troughs).
 DRAWDOWN_TROUGHS: dict[str, str] = {
-    "GFC_2008": "2009-03-09",
-    "COVID_2020": "2020-03-23",
-    "Inflation_2022": "2022-10-12",
+    "GFC_2008": "2009-03-09",       # -56.8%
+    "EuroDebt_2011": "2011-10-03",  # -29.8%
+    "COVID_2020": "2020-03-23",     # -33.9%
+    "Inflation_2022": "2022-10-12", # -25.4%
 }
+# Referencia fuera de la ventana común del set ampliado (datos completos desde
+# 2007-04-11, por inicio de HYG): el crash DotCom tocó suelo el 2002-10-09
+# (-49.1%). Solo evaluable por detectores que usen un subconjunto de features con
+# histórico más largo (p. ej. solo S&P 500 + VIX, disponibles desde 1990).
 
 
 # --------------------------------------------------------------------------- #

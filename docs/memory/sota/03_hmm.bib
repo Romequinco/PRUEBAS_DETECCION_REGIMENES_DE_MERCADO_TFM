@@ -1,0 +1,175 @@
+% =====================================================================
+% 03_hmm.bib — Hidden Markov Models (HMM) para deteccion de regimenes
+% Familia HMM (emisiones latentes estilo hmmlearn). FASE 2 — estado del arte.
+% Claves con prefijo hmm_autorAÑO. NO duplicar claves ya existentes en
+% docs/references.bib: hamilton1989, angbekaert2002, guidolintimmermann2007,
+% kritzman2012, estrellamishkin1998, gulko2002, lopezdeprado2018.
+% =====================================================================
+
+% ---- Fundamentos teoricos del HMM ----
+
+@article{hmm_rabiner1989,
+  author  = {Rabiner, Lawrence R.},
+  title   = {A Tutorial on Hidden Markov Models and Selected Applications in Speech Recognition},
+  journal = {Proceedings of the IEEE},
+  year    = {1989},
+  volume  = {77},
+  number  = {2},
+  pages   = {257--286},
+  doi     = {10.1109/5.18626}
+}
+
+@article{hmm_baumpetrie1966,
+  author  = {Baum, Leonard E. and Petrie, Ted},
+  title   = {Statistical Inference for Probabilistic Functions of Finite State Markov Chains},
+  journal = {The Annals of Mathematical Statistics},
+  year    = {1966},
+  volume  = {37},
+  number  = {6},
+  pages   = {1554--1563},
+  doi     = {10.1214/aoms/1177699147}
+}
+
+@article{hmm_baumwelch1970,
+  author  = {Baum, Leonard E. and Petrie, Ted and Soules, George and Weiss, Norman},
+  title   = {A Maximization Technique Occurring in the Statistical Analysis of Probabilistic Functions of Markov Chains},
+  journal = {The Annals of Mathematical Statistics},
+  year    = {1970},
+  volume  = {41},
+  number  = {1},
+  pages   = {164--171},
+  doi     = {10.1214/aoms/1177697196}
+}
+
+@article{hmm_viterbi1967,
+  author  = {Viterbi, Andrew J.},
+  title   = {Error Bounds for Convolutional Codes and an Asymptotically Optimum Decoding Algorithm},
+  journal = {IEEE Transactions on Information Theory},
+  year    = {1967},
+  volume  = {13},
+  number  = {2},
+  pages   = {260--269},
+  doi     = {10.1109/TIT.1967.1054010}
+}
+
+@book{hmm_zucchini2016,
+  author    = {Zucchini, Walter and MacDonald, Iain L. and Langrock, Roland},
+  title     = {Hidden Markov Models for Time Series: An Introduction Using R},
+  edition   = {2nd},
+  publisher = {Chapman and Hall/CRC},
+  series    = {Monographs on Statistics and Applied Probability},
+  number    = {150},
+  year      = {2016},
+  isbn      = {978-1-4822-5383-2}
+}
+
+% ---- Emisiones no gaussianas (t-Student) y hechos estilizados ----
+
+@article{hmm_bulla2011,
+  author  = {Bulla, Jan},
+  title   = {Hidden Markov Models with t Components. Increased Persistence and Other Aspects},
+  journal = {Quantitative Finance},
+  year    = {2011},
+  volume  = {11},
+  number  = {3},
+  pages   = {459--475},
+  doi     = {10.1080/14697681003685563}
+}
+
+@article{hmm_bullabulla2006,
+  author  = {Bulla, Jan and Bulla, Ingo},
+  title   = {Stylized Facts of Financial Time Series and Hidden Semi-Markov Models},
+  journal = {Computational Statistics and Data Analysis},
+  year    = {2006},
+  volume  = {51},
+  number  = {4},
+  pages   = {2192--2209},
+  doi     = {10.1016/j.csda.2006.07.021}
+}
+
+@article{hmm_hardy2001,
+  author  = {Hardy, Mary R.},
+  title   = {A Regime-Switching Model of Long-Term Stock Returns},
+  journal = {North American Actuarial Journal},
+  year    = {2001},
+  volume  = {5},
+  number  = {2},
+  pages   = {41--53},
+  doi     = {10.1080/10920277.2001.10595984}
+}
+
+% ---- HMM en regimenes de mercado, online / causal y series financieras ----
+
+@article{hmm_nystrup2015,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Stylised Facts of Financial Time Series and Hidden Markov Models in Continuous Time},
+  journal = {Quantitative Finance},
+  year    = {2015},
+  volume  = {15},
+  number  = {9},
+  pages   = {1531--1541},
+  doi     = {10.1080/14697688.2015.1004801}
+}
+
+@article{hmm_nystrup2017,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Long Memory of Financial Time Series and Hidden Markov Models with Time-Varying Parameters},
+  journal = {Journal of Forecasting},
+  year    = {2017},
+  volume  = {36},
+  number  = {8},
+  pages   = {989--1002},
+  doi     = {10.1002/for.2447}
+}
+
+@article{hmm_nystrup2020,
+  author  = {Nystrup, Peter and Lindstr{\"o}m, Erik and Madsen, Henrik},
+  title   = {Learning Hidden Markov Models with Persistent States by Penalizing Jumps},
+  journal = {Expert Systems with Applications},
+  year    = {2020},
+  volume  = {150},
+  pages   = {113307},
+  doi     = {10.1016/j.eswa.2020.113307}
+}
+
+@article{hmm_nystrup2018,
+  author  = {Nystrup, Peter and Hansen, Bo William and Larsen, Henrik Olejasz and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Dynamic Allocation or Diversification: A Regime-Based Approach to Multiple Assets},
+  journal = {The Journal of Portfolio Management},
+  year    = {2018},
+  volume  = {44},
+  number  = {2},
+  pages   = {62--73},
+  doi     = {10.3905/jpm.2018.44.2.062}
+}
+
+@article{hmm_angtimmermann2012,
+  author  = {Ang, Andrew and Timmermann, Allan},
+  title   = {Regime Changes and Financial Markets},
+  journal = {Annual Review of Financial Economics},
+  year    = {2012},
+  volume  = {4},
+  pages   = {313--337},
+  doi     = {10.1146/annurev-financial-110311-101808}
+}
+
+% ---- Librerias / software ----
+
+@article{hmm_schreiber2018,
+  author  = {Schreiber, Jacob},
+  title   = {pomegranate: Fast and Flexible Probabilistic Modeling in Python},
+  journal = {Journal of Machine Learning Research},
+  year    = {2018},
+  volume  = {18},
+  number  = {164},
+  pages   = {1--6},
+  url     = {https://jmlr.org/papers/v18/17-636.html}
+}
+
+@misc{hmm_hmmlearn,
+  author       = {{hmmlearn developers}},
+  title        = {hmmlearn: Hidden Markov Models in Python, with scikit-learn like API},
+  year         = {2024},
+  howpublished = {\url{https://hmmlearn.readthedocs.io}},
+  note         = {Version 0.3.x. Soporta GaussianHMM, GMMHMM, MultinomialHMM; AIC/BIC en versiones recientes}
+}

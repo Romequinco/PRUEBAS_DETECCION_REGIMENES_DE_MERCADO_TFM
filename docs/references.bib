@@ -84,3 +84,878 @@
   year      = {2018},
   isbn      = {9781119482086}
 }
+
+% ###########################################################################
+% FASE 2 — ESTADO DEL ARTE. Entradas fusionadas desde los 7 sidecars de
+% docs/memory/sota/*.bib (2026-06-16). Cada bloque conserva el prefijo de
+% familia de su sidecar; no colisiona con las 7 claves semilla de arriba.
+% NOTA DE FUSIÓN: algunos papers aparecen bajo DOS claves (distinto prefijo)
+% porque dos subagentes los citaron en familias distintas. No es colisión de
+% clave (BibTeX las trata como entradas independientes), pero se documenta
+% para que el redactor del TFM cite la versión coherente con la familia:
+%   - Ang & Timmermann (2012): hmm_angtimmermann2012 == ms_angtimmermann2012
+%   - Hardy (2001):            hmm_hardy2001        == ms_hardy2001
+%   - Nystrup et al. (2018):   hmm_nystrup2018 (asignación regímenes) y
+%                              nn_nystrup2018 (portfolio across hidden regimes,
+%                              paper DISTINTO, no confundir)
+%   - Bucci & Ciciretti:       clust_bucci2022realized (versión revista, DOI) y
+%                              nn_bucci2021 (preprint arXiv del mismo trabajo)
+% Recomendación: en la redacción final, preferir clust_bucci2022realized sobre
+% nn_bucci2021 y unificar Ang&Timmermann/Hardy por su clave hmm_*.
+% ###########################################################################
+
+% ===========================================================================
+% [F1] Reglas / Umbrales  (sidecar 01_reglas_umbrales.bib)
+% ===========================================================================
+@article{reglas_bloom2009,
+  author  = {Bloom, Nicholas},
+  title   = {The Impact of Uncertainty Shocks},
+  journal = {Econometrica},
+  year    = {2009},
+  volume  = {77},
+  number  = {3},
+  pages   = {623--685},
+  doi     = {10.3982/ECTA6248}
+}
+
+@article{reglas_moreiramuir2017,
+  author  = {Moreira, Alan and Muir, Tyler},
+  title   = {Volatility-Managed Portfolios},
+  journal = {The Journal of Finance},
+  year    = {2017},
+  volume  = {72},
+  number  = {4},
+  pages   = {1611--1644},
+  doi     = {10.1111/jofi.12513}
+}
+
+@article{reglas_faber2007,
+  author  = {Faber, Mebane T.},
+  title   = {A Quantitative Approach to Tactical Asset Allocation},
+  journal = {The Journal of Wealth Management},
+  year    = {2007},
+  volume  = {9},
+  number  = {4},
+  pages   = {69--79},
+  doi     = {10.3905/jwm.2007.674809}
+}
+
+@article{reglas_gilchristzakrajsek2012,
+  author  = {Gilchrist, Simon and Zakraj{\v{s}}ek, Egon},
+  title   = {Credit Spreads and Business Cycle Fluctuations},
+  journal = {American Economic Review},
+  year    = {2012},
+  volume  = {102},
+  number  = {4},
+  pages   = {1692--1720},
+  doi     = {10.1257/aer.102.4.1692}
+}
+
+@article{reglas_estrellahardouvelis1991,
+  author  = {Estrella, Arturo and Hardouvelis, Gikas A.},
+  title   = {The Term Structure as a Predictor of Real Economic Activity},
+  journal = {The Journal of Finance},
+  year    = {1991},
+  volume  = {46},
+  number  = {2},
+  pages   = {555--576},
+  doi     = {10.1111/j.1540-6261.1991.tb02674.x}
+}
+
+@article{reglas_pagansossounov2003,
+  author  = {Pagan, Adrian R. and Sossounov, Kirill A.},
+  title   = {A Simple Framework for Analysing Bull and Bear Markets},
+  journal = {Journal of Applied Econometrics},
+  year    = {2003},
+  volume  = {18},
+  number  = {1},
+  pages   = {23--46},
+  doi     = {10.1002/jae.664}
+}
+
+@incollection{reglas_sahm2019,
+  author    = {Sahm, Claudia},
+  title     = {Direct Stimulus Payments to Individuals},
+  booktitle = {Recession Ready: Fiscal Policies to Stabilize the American Economy},
+  editor    = {Boushey, Heather and Nunn, Ryan and Shambaugh, Jay},
+  publisher = {The Hamilton Project and Washington Center for Equitable Growth, Brookings Institution},
+  year      = {2019},
+  pages     = {67--92},
+  url       = {https://www.brookings.edu/articles/direct-stimulus-payments-to-individuals/}
+}
+
+@book{reglas_tong1990,
+  author    = {Tong, Howell},
+  title     = {Non-Linear Time Series: A Dynamical System Approach},
+  publisher = {Oxford University Press},
+  year      = {1990},
+  series    = {Oxford Statistical Science Series},
+  isbn      = {9780198522249}
+}
+
+% ===========================================================================
+% [F2] Clustering  (sidecar 02_clustering.bib)
+% ===========================================================================
+@article{clust_munnix2012,
+  author  = {M{\"u}nnix, Michael C. and Shimada, Takashi and Sch{\"a}fer, Rudi and Leyvraz, Francois and Seligman, Thomas H. and Guhr, Thomas and Stanley, H. Eugene},
+  title   = {Identifying States of a Financial Market},
+  journal = {Scientific Reports},
+  year    = {2012},
+  volume  = {2},
+  pages   = {644},
+  doi     = {10.1038/srep00644},
+  url     = {https://www.nature.com/articles/srep00644}
+}
+
+@article{clust_horvath2021wasserstein,
+  author  = {Horvath, Blanka and Issa, Zacharia and Muguruza, Aitor},
+  title   = {Clustering Market Regimes using the Wasserstein Distance},
+  journal = {Journal of Computational Finance},
+  year    = {2024},
+  volume  = {28},
+  number  = {1},
+  pages   = {1--39},
+  note    = {arXiv:2110.11848 (2021)},
+  url     = {https://arxiv.org/abs/2110.11848}
+}
+
+@misc{clust_luan2023swkmeans,
+  author = {Luan, Qinmeng and Hamp, James},
+  title  = {Automated regime detection in multidimensional time series data using sliced Wasserstein k-means clustering},
+  year   = {2023},
+  eprint = {2310.01285},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.ST},
+  url    = {https://arxiv.org/abs/2310.01285}
+}
+
+@article{clust_bucci2022realized,
+  author  = {Bucci, Andrea and Ciciretti, Vito},
+  title   = {Market regime detection via realized covariances: A comparison between unsupervised learning and nonlinear models},
+  journal = {Economic Modelling},
+  year    = {2022},
+  volume  = {111},
+  pages   = {105792},
+  doi     = {10.1016/j.econmod.2022.105792},
+  note    = {arXiv:2104.03667},
+  url     = {https://arxiv.org/abs/2104.03667}
+}
+
+@techreport{clust_twosigma2021regime,
+  author      = {{Two Sigma}},
+  title       = {A Machine Learning Approach to Regime Modeling},
+  institution = {Two Sigma Investments},
+  type        = {Whitepaper},
+  year        = {2021},
+  url         = {https://www.twosigma.com/articles/a-machine-learning-approach-to-regime-modeling/}
+}
+
+@book{clust_lopezdeprado2020,
+  author    = {L{\'o}pez de Prado, Marcos M.},
+  title     = {Machine Learning for Asset Managers},
+  series    = {Elements in Quantitative Finance},
+  publisher = {Cambridge University Press},
+  year      = {2020},
+  doi       = {10.1017/9781108883658},
+  note      = {Optimal Number of Clusters (ONC) algorithm}
+}
+
+@incollection{clust_marti2021review,
+  author    = {Marti, Gautier and Nielsen, Frank and Bi{\'n}kowski, Miko{\l}aj and Donnat, Philippe},
+  title     = {A review of two decades of correlations, hierarchies, networks and clustering in financial markets},
+  booktitle = {Progress in Information Geometry: Theory and Applications},
+  publisher = {Springer},
+  year      = {2021},
+  note      = {arXiv:1703.00485},
+  url       = {https://arxiv.org/abs/1703.00485}
+}
+
+@article{clust_tibshirani2001gap,
+  author  = {Tibshirani, Robert and Walther, Guenther and Hastie, Trevor},
+  title   = {Estimating the number of clusters in a data set via the gap statistic},
+  journal = {Journal of the Royal Statistical Society: Series B},
+  year    = {2001},
+  volume  = {63},
+  number  = {2},
+  pages   = {411--423},
+  doi     = {10.1111/1467-9868.00293}
+}
+
+@article{clust_rousseeuw1987silhouette,
+  author  = {Rousseeuw, Peter J.},
+  title   = {Silhouettes: A graphical aid to the interpretation and validation of cluster analysis},
+  journal = {Journal of Computational and Applied Mathematics},
+  year    = {1987},
+  volume  = {20},
+  pages   = {53--65},
+  doi     = {10.1016/0377-0427(87)90125-7}
+}
+
+@article{clust_schwarz1978bic,
+  author  = {Schwarz, Gideon},
+  title   = {Estimating the Dimension of a Model},
+  journal = {The Annals of Statistics},
+  year    = {1978},
+  volume  = {6},
+  number  = {2},
+  pages   = {461--464},
+  doi     = {10.1214/aos/1176344136}
+}
+
+@inproceedings{clust_campello2013hdbscan,
+  author    = {Campello, Ricardo J. G. B. and Moulavi, Davoud and Sander, J{\"o}rg},
+  title     = {Density-Based Clustering Based on Hierarchical Density Estimates},
+  booktitle = {Advances in Knowledge Discovery and Data Mining (PAKDD)},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {7819},
+  pages     = {160--172},
+  publisher = {Springer},
+  year      = {2013},
+  doi       = {10.1007/978-3-642-37456-2_14}
+}
+
+@article{clust_mcinnes2017hdbscan,
+  author  = {McInnes, Leland and Healy, John and Astels, Steve},
+  title   = {hdbscan: Hierarchical density based clustering},
+  journal = {Journal of Open Source Software},
+  year    = {2017},
+  volume  = {2},
+  number  = {11},
+  pages   = {205},
+  doi     = {10.21105/joss.00205}
+}
+
+@inproceedings{clust_ester1996dbscan,
+  author    = {Ester, Martin and Kriegel, Hans-Peter and Sander, J{\"o}rg and Xu, Xiaowei},
+  title     = {A Density-Based Algorithm for Discovering Clusters in Large Spatial Databases with Noise},
+  booktitle = {Proceedings of the 2nd International Conference on Knowledge Discovery and Data Mining (KDD-96)},
+  pages     = {226--231},
+  publisher = {AAAI Press},
+  year      = {1996}
+}
+
+@article{clust_lloyd1982kmeans,
+  author  = {Lloyd, Stuart P.},
+  title   = {Least squares quantization in PCM},
+  journal = {IEEE Transactions on Information Theory},
+  year    = {1982},
+  volume  = {28},
+  number  = {2},
+  pages   = {129--137},
+  doi     = {10.1109/TIT.1982.1056489}
+}
+
+@inproceedings{clust_macqueen1967,
+  author    = {MacQueen, James},
+  title     = {Some methods for classification and analysis of multivariate observations},
+  booktitle = {Proceedings of the 5th Berkeley Symposium on Mathematical Statistics and Probability},
+  volume    = {1},
+  pages     = {281--297},
+  publisher = {University of California Press},
+  year      = {1967}
+}
+
+@article{clust_pedregosa2011sklearn,
+  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and others},
+  title   = {Scikit-learn: Machine Learning in Python},
+  journal = {Journal of Machine Learning Research},
+  year    = {2011},
+  volume  = {12},
+  pages   = {2825--2830}
+}
+
+% ===========================================================================
+% [F3] HMM (emisiones latentes, hmmlearn/pomegranate)  (sidecar 03_hmm.bib)
+% ===========================================================================
+@article{hmm_rabiner1989,
+  author  = {Rabiner, Lawrence R.},
+  title   = {A Tutorial on Hidden Markov Models and Selected Applications in Speech Recognition},
+  journal = {Proceedings of the IEEE},
+  year    = {1989},
+  volume  = {77},
+  number  = {2},
+  pages   = {257--286},
+  doi     = {10.1109/5.18626}
+}
+
+@article{hmm_baumpetrie1966,
+  author  = {Baum, Leonard E. and Petrie, Ted},
+  title   = {Statistical Inference for Probabilistic Functions of Finite State Markov Chains},
+  journal = {The Annals of Mathematical Statistics},
+  year    = {1966},
+  volume  = {37},
+  number  = {6},
+  pages   = {1554--1563},
+  doi     = {10.1214/aoms/1177699147}
+}
+
+@article{hmm_baumwelch1970,
+  author  = {Baum, Leonard E. and Petrie, Ted and Soules, George and Weiss, Norman},
+  title   = {A Maximization Technique Occurring in the Statistical Analysis of Probabilistic Functions of Markov Chains},
+  journal = {The Annals of Mathematical Statistics},
+  year    = {1970},
+  volume  = {41},
+  number  = {1},
+  pages   = {164--171},
+  doi     = {10.1214/aoms/1177697196}
+}
+
+@article{hmm_viterbi1967,
+  author  = {Viterbi, Andrew J.},
+  title   = {Error Bounds for Convolutional Codes and an Asymptotically Optimum Decoding Algorithm},
+  journal = {IEEE Transactions on Information Theory},
+  year    = {1967},
+  volume  = {13},
+  number  = {2},
+  pages   = {260--269},
+  doi     = {10.1109/TIT.1967.1054010}
+}
+
+@book{hmm_zucchini2016,
+  author    = {Zucchini, Walter and MacDonald, Iain L. and Langrock, Roland},
+  title     = {Hidden Markov Models for Time Series: An Introduction Using R},
+  edition   = {2nd},
+  publisher = {Chapman and Hall/CRC},
+  series    = {Monographs on Statistics and Applied Probability},
+  number    = {150},
+  year      = {2016},
+  isbn      = {978-1-4822-5383-2}
+}
+
+@article{hmm_bulla2011,
+  author  = {Bulla, Jan},
+  title   = {Hidden Markov Models with t Components. Increased Persistence and Other Aspects},
+  journal = {Quantitative Finance},
+  year    = {2011},
+  volume  = {11},
+  number  = {3},
+  pages   = {459--475},
+  doi     = {10.1080/14697681003685563}
+}
+
+@article{hmm_bullabulla2006,
+  author  = {Bulla, Jan and Bulla, Ingo},
+  title   = {Stylized Facts of Financial Time Series and Hidden Semi-Markov Models},
+  journal = {Computational Statistics and Data Analysis},
+  year    = {2006},
+  volume  = {51},
+  number  = {4},
+  pages   = {2192--2209},
+  doi     = {10.1016/j.csda.2006.07.021}
+}
+
+@article{hmm_hardy2001,
+  author  = {Hardy, Mary R.},
+  title   = {A Regime-Switching Model of Long-Term Stock Returns},
+  journal = {North American Actuarial Journal},
+  year    = {2001},
+  volume  = {5},
+  number  = {2},
+  pages   = {41--53},
+  doi     = {10.1080/10920277.2001.10595984}
+}
+
+@article{hmm_nystrup2015,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Stylised Facts of Financial Time Series and Hidden Markov Models in Continuous Time},
+  journal = {Quantitative Finance},
+  year    = {2015},
+  volume  = {15},
+  number  = {9},
+  pages   = {1531--1541},
+  doi     = {10.1080/14697688.2015.1004801}
+}
+
+@article{hmm_nystrup2017,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Long Memory of Financial Time Series and Hidden Markov Models with Time-Varying Parameters},
+  journal = {Journal of Forecasting},
+  year    = {2017},
+  volume  = {36},
+  number  = {8},
+  pages   = {989--1002},
+  doi     = {10.1002/for.2447}
+}
+
+@article{hmm_nystrup2020,
+  author  = {Nystrup, Peter and Lindstr{\"o}m, Erik and Madsen, Henrik},
+  title   = {Learning Hidden Markov Models with Persistent States by Penalizing Jumps},
+  journal = {Expert Systems with Applications},
+  year    = {2020},
+  volume  = {150},
+  pages   = {113307},
+  doi     = {10.1016/j.eswa.2020.113307}
+}
+
+@article{hmm_nystrup2018,
+  author  = {Nystrup, Peter and Hansen, Bo William and Larsen, Henrik Olejasz and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Dynamic Allocation or Diversification: A Regime-Based Approach to Multiple Assets},
+  journal = {The Journal of Portfolio Management},
+  year    = {2018},
+  volume  = {44},
+  number  = {2},
+  pages   = {62--73},
+  doi     = {10.3905/jpm.2018.44.2.062}
+}
+
+@article{hmm_angtimmermann2012,
+  author  = {Ang, Andrew and Timmermann, Allan},
+  title   = {Regime Changes and Financial Markets},
+  journal = {Annual Review of Financial Economics},
+  year    = {2012},
+  volume  = {4},
+  pages   = {313--337},
+  doi     = {10.1146/annurev-financial-110311-101808}
+}
+
+@article{hmm_schreiber2018,
+  author  = {Schreiber, Jacob},
+  title   = {pomegranate: Fast and Flexible Probabilistic Modeling in Python},
+  journal = {Journal of Machine Learning Research},
+  year    = {2018},
+  volume  = {18},
+  number  = {164},
+  pages   = {1--6},
+  url     = {https://jmlr.org/papers/v18/17-636.html}
+}
+
+@misc{hmm_hmmlearn,
+  author       = {{hmmlearn developers}},
+  title        = {hmmlearn: Hidden Markov Models in Python, with scikit-learn like API},
+  year         = {2024},
+  howpublished = {\url{https://hmmlearn.readthedocs.io}},
+  note         = {Version 0.3.x. Soporta GaussianHMM, GMMHMM, MultinomialHMM; AIC/BIC en versiones recientes}
+}
+
+% ===========================================================================
+% [F4] Markov-Switching econométrico (Hamilton/Kim, statsmodels)
+%      (sidecar 04_markov_switching.bib) — hamilton1989 ya está arriba
+% ===========================================================================
+@article{ms_kim1994,
+  author  = {Kim, Chang-Jin},
+  title   = {Dynamic Linear Models with {Markov}-switching},
+  journal = {Journal of Econometrics},
+  year    = {1994},
+  volume  = {60},
+  number  = {1-2},
+  pages   = {1--22},
+  doi     = {10.1016/0304-4076(94)90036-1},
+  note    = {Filtro y suavizador de Kim; generaliza el MS al espacio de estados.}
+}
+
+@book{ms_kimnelson1999,
+  author    = {Kim, Chang-Jin and Nelson, Charles R.},
+  title     = {State-Space Models with Regime Switching: Classical and Gibbs-Sampling Approaches with Applications},
+  publisher = {MIT Press},
+  address   = {Cambridge, MA},
+  year      = {1999},
+  isbn      = {978-0-262-11238-2},
+  url       = {https://mitpress.mit.edu/9780262535502/state-space-models-with-regime-switching/}
+}
+
+@incollection{ms_guidolin2011,
+  author    = {Guidolin, Massimo},
+  title     = {Markov Switching Models in Empirical Finance},
+  booktitle = {Missing Data Methods: Time-Series Methods and Applications},
+  series    = {Advances in Econometrics},
+  volume    = {27 (Part B)},
+  editor    = {Drukker, David M.},
+  publisher = {Emerald Group Publishing Limited},
+  year      = {2011},
+  pages     = {1--86},
+  doi       = {10.1108/S0731-9053(2011)000027B004},
+  isbn      = {978-1-78052-526-6}
+}
+
+@article{ms_angtimmermann2012,
+  author  = {Ang, Andrew and Timmermann, Allan},
+  title   = {Regime Changes and Financial Markets},
+  journal = {Annual Review of Financial Economics},
+  year    = {2012},
+  volume  = {4},
+  pages   = {313--337},
+  doi     = {10.1146/annurev-financial-110311-101808}
+}
+
+@article{ms_hardy2001,
+  author  = {Hardy, Mary R.},
+  title   = {A Regime-Switching Model of Long-Term Stock Returns},
+  journal = {North American Actuarial Journal},
+  year    = {2001},
+  volume  = {5},
+  number  = {2},
+  pages   = {41--53},
+  doi     = {10.1080/10920277.2001.10595984}
+}
+
+@misc{ms_statsmodels,
+  author       = {{statsmodels developers}},
+  title        = {Markov Switching Dynamic Regression and Autoregression Models (statsmodels.tsa.regime\_switching)},
+  howpublished = {Documentaci\'on oficial de statsmodels},
+  year         = {2024},
+  url          = {https://www.statsmodels.org/stable/generated/statsmodels.tsa.regime_switching.markov_autoregression.MarkovAutoregression.html},
+  note         = {MarkovRegression y MarkovAutoregression; probabilidades filtradas y suavizadas.}
+}
+
+% ===========================================================================
+% [F5] Volatilidad / GARCH / RS-GARCH  (sidecar 05_volatilidad_garch.bib)
+% ===========================================================================
+@article{vol_engle1982,
+  author  = {Engle, Robert F.},
+  title   = {Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation},
+  journal = {Econometrica},
+  year    = {1982},
+  volume  = {50},
+  number  = {4},
+  pages   = {987--1008},
+  doi     = {10.2307/1912773}
+}
+
+@article{vol_bollerslev1986,
+  author  = {Bollerslev, Tim},
+  title   = {Generalized Autoregressive Conditional Heteroskedasticity},
+  journal = {Journal of Econometrics},
+  year    = {1986},
+  volume  = {31},
+  number  = {3},
+  pages   = {307--327},
+  doi     = {10.1016/0304-4076(86)90063-1}
+}
+
+@article{vol_bollerslev1987,
+  author  = {Bollerslev, Tim},
+  title   = {A Conditionally Heteroskedastic Time Series Model for Speculative Prices and Rates of Return},
+  journal = {The Review of Economics and Statistics},
+  year    = {1987},
+  volume  = {69},
+  number  = {3},
+  pages   = {542--547},
+  doi     = {10.2307/1925546}
+}
+
+@article{vol_nelson1991,
+  author  = {Nelson, Daniel B.},
+  title   = {Conditional Heteroskedasticity in Asset Returns: A New Approach},
+  journal = {Econometrica},
+  year    = {1991},
+  volume  = {59},
+  number  = {2},
+  pages   = {347--370},
+  doi     = {10.2307/2938260}
+}
+
+@article{vol_glosten1993,
+  author  = {Glosten, Lawrence R. and Jagannathan, Ravi and Runkle, David E.},
+  title   = {On the Relation between the Expected Value and the Volatility of the Nominal Excess Return on Stocks},
+  journal = {The Journal of Finance},
+  year    = {1993},
+  volume  = {48},
+  number  = {5},
+  pages   = {1779--1801},
+  doi     = {10.1111/j.1540-6261.1993.tb05128.x}
+}
+
+@article{vol_zakoian1994,
+  author  = {Zakoian, Jean-Michel},
+  title   = {Threshold Heteroskedastic Models},
+  journal = {Journal of Economic Dynamics and Control},
+  year    = {1994},
+  volume  = {18},
+  number  = {5},
+  pages   = {931--955},
+  doi     = {10.1016/0165-1889(94)90039-6}
+}
+
+@article{vol_hamiltonsusmel1994,
+  author  = {Hamilton, James D. and Susmel, Raul},
+  title   = {Autoregressive Conditional Heteroskedasticity and Changes in Regime},
+  journal = {Journal of Econometrics},
+  year    = {1994},
+  volume  = {64},
+  number  = {1--2},
+  pages   = {307--333},
+  doi     = {10.1016/0304-4076(94)90067-1}
+}
+
+@article{vol_gray1996,
+  author  = {Gray, Stephen F.},
+  title   = {Modeling the Conditional Distribution of Interest Rates as a Regime-Switching Process},
+  journal = {Journal of Financial Economics},
+  year    = {1996},
+  volume  = {42},
+  number  = {1},
+  pages   = {27--62},
+  doi     = {10.1016/0304-405X(96)00875-6}
+}
+
+@article{vol_klaassen2002,
+  author  = {Klaassen, Franc},
+  title   = {Improving GARCH Volatility Forecasts with Regime-Switching GARCH},
+  journal = {Empirical Economics},
+  year    = {2002},
+  volume  = {27},
+  number  = {2},
+  pages   = {363--394},
+  doi     = {10.1007/s001810100100}
+}
+
+@article{vol_haasmittnikpaolella2004,
+  author  = {Haas, Markus and Mittnik, Stefan and Paolella, Marc S.},
+  title   = {A New Approach to Markov-Switching GARCH Models},
+  journal = {Journal of Financial Econometrics},
+  year    = {2004},
+  volume  = {2},
+  number  = {4},
+  pages   = {493--530},
+  doi     = {10.1093/jjfinec/nbh020}
+}
+
+@article{vol_marcucci2005,
+  author  = {Marcucci, Juri},
+  title   = {Forecasting Stock Market Volatility with Regime-Switching GARCH Models},
+  journal = {Studies in Nonlinear Dynamics \& Econometrics},
+  year    = {2005},
+  volume  = {9},
+  number  = {4},
+  pages   = {Article 6},
+  doi     = {10.2202/1558-3708.1145}
+}
+
+@article{vol_ardia2019,
+  author  = {Ardia, David and Bluteau, Keven and Boudt, Kris and Catania, Leopoldo and Trottier, Denis-Alexandre},
+  title   = {Markov-Switching GARCH Models in R: The MSGARCH Package},
+  journal = {Journal of Statistical Software},
+  year    = {2019},
+  volume  = {91},
+  number  = {4},
+  pages   = {1--38},
+  doi     = {10.18637/jss.v091.i04}
+}
+
+@misc{vol_sheppard_arch,
+  author       = {Sheppard, Kevin},
+  title        = {arch: ARCH Models in Python},
+  howpublished = {Software, \url{https://github.com/bashtage/arch}},
+  note         = {Documentacion: https://bashtage.github.io/arch/}
+}
+
+% ===========================================================================
+% [F6] Change-point detection  (sidecar 06_change_point.bib)
+% ===========================================================================
+@article{cp_page1954,
+  author  = {Page, E. S.},
+  title   = {Continuous Inspection Schemes},
+  journal = {Biometrika},
+  year    = {1954},
+  volume  = {41},
+  number  = {1/2},
+  pages   = {100--115},
+  doi     = {10.1093/biomet/41.1-2.100},
+  note    = {Articulo seminal del CUSUM (deteccion secuencial online).}
+}
+
+@article{cp_inclantiao1994,
+  author  = {Incl{\'a}n, Carla and Tiao, George C.},
+  title   = {Use of Cumulative Sums of Squares for Retrospective Detection of Changes of Variance},
+  journal = {Journal of the American Statistical Association},
+  year    = {1994},
+  volume  = {89},
+  number  = {427},
+  pages   = {913--923},
+  doi     = {10.1080/01621459.1994.10476824},
+  note    = {Algoritmo ICSS: deteccion de cambios en la varianza incondicional.}
+}
+
+@article{cp_adamsmackay2007,
+  author  = {Adams, Ryan Prescott and MacKay, David J. C.},
+  title   = {Bayesian Online Changepoint Detection},
+  journal = {arXiv preprint arXiv:0710.3742},
+  year    = {2007},
+  eprint  = {0710.3742},
+  archivePrefix = {arXiv},
+  primaryClass  = {stat.ML},
+  url     = {https://arxiv.org/abs/0710.3742},
+  note    = {BOCPD: inferencia online exacta del run-length, causal.}
+}
+
+@article{cp_fearnheadliu2007,
+  author  = {Fearnhead, Paul and Liu, Zhen},
+  title   = {On-line Inference for Multiple Changepoint Problems},
+  journal = {Journal of the Royal Statistical Society: Series B (Statistical Methodology)},
+  year    = {2007},
+  volume  = {69},
+  number  = {4},
+  pages   = {589--605},
+  doi     = {10.1111/j.1467-9868.2007.00601.x},
+  note    = {Filtrado online exacto de multiples change-points; coste reducible a lineal via particulas.}
+}
+
+@article{cp_killick2012,
+  author  = {Killick, Rebecca and Fearnhead, Paul and Eckley, Idris A.},
+  title   = {Optimal Detection of Changepoints with a Linear Computational Cost},
+  journal = {Journal of the American Statistical Association},
+  year    = {2012},
+  volume  = {107},
+  number  = {500},
+  pages   = {1590--1598},
+  doi     = {10.1080/01621459.2012.737745},
+  note    = {Algoritmo PELT: minimizacion exacta del coste penalizado, O(n) esperado.}
+}
+
+@incollection{cp_lavielleteyssiere2007,
+  author    = {Lavielle, Marc and Teyssi{\`e}re, Gilles},
+  title     = {Adaptive Detection of Multiple Change-Points in Asset Price Volatility},
+  booktitle = {Long Memory in Economics},
+  editor    = {Teyssi{\`e}re, Gilles and Kirman, Alan P.},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {2007},
+  pages     = {129--156},
+  doi       = {10.1007/978-3-540-34625-8_5},
+  note      = {Aplicacion financiera: change-points en la volatilidad de precios de activos.}
+}
+
+@article{cp_arlot2019,
+  author  = {Arlot, Sylvain and Celisse, Alain and Harchaoui, Za{\"i}d},
+  title   = {A Kernel Multiple Change-point Algorithm via Model Selection},
+  journal = {Journal of Machine Learning Research},
+  year    = {2019},
+  volume  = {20},
+  number  = {162},
+  pages   = {1--56},
+  url     = {https://jmlr.org/papers/v20/16-155.html},
+  note    = {Change-point no parametrico en RKHS (kernel), robusto a no-gaussianidad.}
+}
+
+@article{cp_truong2020,
+  author  = {Truong, Charles and Oudre, Laurent and Vayatis, Nicolas},
+  title   = {Selective Review of Offline Change Point Detection Methods},
+  journal = {Signal Processing},
+  year    = {2020},
+  volume  = {167},
+  pages   = {107299},
+  doi     = {10.1016/j.sigpro.2019.107299},
+  note    = {Survey de CPD offline (coste, busqueda, restriccion); base de la libreria ruptures.}
+}
+
+% ===========================================================================
+% [F7] Redes neuronales / no supervisado moderno  (sidecar 07_redes_neuronales.bib)
+% ===========================================================================
+@article{nn_hochreiter1997,
+  author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  title   = {Long Short-Term Memory},
+  journal = {Neural Computation},
+  year    = {1997},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  doi     = {10.1162/neco.1997.9.8.1735}
+}
+
+@article{nn_hinton2006,
+  author  = {Hinton, Geoffrey E. and Salakhutdinov, Ruslan R.},
+  title   = {Reducing the Dimensionality of Data with Neural Networks},
+  journal = {Science},
+  year    = {2006},
+  volume  = {313},
+  number  = {5786},
+  pages   = {504--507},
+  doi     = {10.1126/science.1127647}
+}
+
+@inproceedings{nn_kingma2014,
+  author    = {Kingma, Diederik P. and Welling, Max},
+  title     = {Auto-Encoding Variational Bayes},
+  booktitle = {2nd International Conference on Learning Representations (ICLR)},
+  year      = {2014},
+  address   = {Banff, Canada},
+  note      = {arXiv:1312.6114},
+  eprint    = {1312.6114},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/1312.6114}
+}
+
+@inproceedings{nn_xie2016,
+  author    = {Xie, Junyuan and Girshick, Ross and Farhadi, Ali},
+  title     = {Unsupervised Deep Embedding for Clustering Analysis},
+  booktitle = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {48},
+  pages     = {478--487},
+  year      = {2016},
+  note      = {arXiv:1511.06335},
+  eprint    = {1511.06335},
+  archivePrefix = {arXiv},
+  url       = {https://proceedings.mlr.press/v48/xieb16.html}
+}
+
+@techreport{nn_ancho2015,
+  author      = {An, Jinwon and Cho, Sungzoon},
+  title       = {Variational Autoencoder based Anomaly Detection using Reconstruction Probability},
+  institution = {SNU Data Mining Center, Seoul National University},
+  type        = {Special Lecture on IE, Technical Report},
+  year        = {2015},
+  number      = {2015-2}
+}
+
+@article{nn_kohonen1990,
+  author  = {Kohonen, Teuvo},
+  title   = {The Self-Organizing Map},
+  journal = {Proceedings of the IEEE},
+  year    = {1990},
+  volume  = {78},
+  number  = {9},
+  pages   = {1464--1480},
+  doi     = {10.1109/5.58325}
+}
+
+@book{nn_goodfellow2016,
+  author    = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+  title     = {Deep Learning},
+  publisher = {MIT Press},
+  year      = {2016},
+  address   = {Cambridge, MA},
+  url       = {https://www.deeplearningbook.org}
+}
+
+@article{nn_bao2017,
+  author  = {Bao, Wei and Yue, Jun and Rao, Yulei},
+  title   = {A Deep Learning Framework for Financial Time Series Using Stacked Autoencoders and Long-Short Term Memory},
+  journal = {PLoS ONE},
+  year    = {2017},
+  volume  = {12},
+  number  = {7},
+  pages   = {e0180944},
+  doi     = {10.1371/journal.pone.0180944}
+}
+
+@misc{nn_akioyamen2021,
+  author = {Akioyamen, Peter and Tang, Yi Zhou and Hussien, Hussien},
+  title  = {A Hybrid Learning Approach to Detecting Regime Switches in Financial Markets},
+  year   = {2021},
+  eprint = {2108.05801},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.CP},
+  url    = {https://arxiv.org/abs/2108.05801}
+}
+
+@misc{nn_bucci2021,
+  author = {Bucci, Andrea and Ciciretti, Vito},
+  title  = {Market Regime Detection via Realized Covariances: A Comparison between Unsupervised Learning and Nonlinear Models},
+  year   = {2021},
+  eprint = {2104.03667},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.ST},
+  url    = {https://arxiv.org/abs/2104.03667}
+}
+
+@article{nn_nystrup2018,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Dynamic Portfolio Optimization across Hidden Market Regimes},
+  journal = {Quantitative Finance},
+  year    = {2018},
+  volume  = {18},
+  number  = {1},
+  pages   = {83--95},
+  doi     = {10.1080/14697688.2017.1342857}
+}

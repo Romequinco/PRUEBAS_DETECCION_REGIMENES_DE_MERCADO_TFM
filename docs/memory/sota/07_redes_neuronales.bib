@@ -1,0 +1,129 @@
+% =====================================================================
+% 07 — Redes neuronales / no supervisado moderno
+% Familia: autoencoder/VAE + clustering latente, LSTM/GRU, anomaly-AE,
+%          SOM, híbridos deep+HMM. Para regímenes de mercado.
+% Claves únicas, prefijo nn_autorAÑO. NO duplica: hamilton1989,
+% angbekaert2002, guidolintimmermann2007, kritzman2012,
+% estrellamishkin1998, gulko2002, lopezdeprado2018.
+% Todas las entradas verificadas vía búsqueda web (DOI/arXiv reales).
+% =====================================================================
+
+@article{nn_hochreiter1997,
+  author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  title   = {Long Short-Term Memory},
+  journal = {Neural Computation},
+  year    = {1997},
+  volume  = {9},
+  number  = {8},
+  pages   = {1735--1780},
+  doi     = {10.1162/neco.1997.9.8.1735}
+}
+
+@article{nn_hinton2006,
+  author  = {Hinton, Geoffrey E. and Salakhutdinov, Ruslan R.},
+  title   = {Reducing the Dimensionality of Data with Neural Networks},
+  journal = {Science},
+  year    = {2006},
+  volume  = {313},
+  number  = {5786},
+  pages   = {504--507},
+  doi     = {10.1126/science.1127647}
+}
+
+@inproceedings{nn_kingma2014,
+  author    = {Kingma, Diederik P. and Welling, Max},
+  title     = {Auto-Encoding Variational Bayes},
+  booktitle = {2nd International Conference on Learning Representations (ICLR)},
+  year      = {2014},
+  address   = {Banff, Canada},
+  note      = {arXiv:1312.6114},
+  eprint    = {1312.6114},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/1312.6114}
+}
+
+@inproceedings{nn_xie2016,
+  author    = {Xie, Junyuan and Girshick, Ross and Farhadi, Ali},
+  title     = {Unsupervised Deep Embedding for Clustering Analysis},
+  booktitle = {Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {48},
+  pages     = {478--487},
+  year      = {2016},
+  note      = {arXiv:1511.06335},
+  eprint    = {1511.06335},
+  archivePrefix = {arXiv},
+  url       = {https://proceedings.mlr.press/v48/xieb16.html}
+}
+
+@techreport{nn_ancho2015,
+  author      = {An, Jinwon and Cho, Sungzoon},
+  title       = {Variational Autoencoder based Anomaly Detection using Reconstruction Probability},
+  institution = {SNU Data Mining Center, Seoul National University},
+  type        = {Special Lecture on IE, Technical Report},
+  year        = {2015},
+  number      = {2015-2}
+}
+
+@article{nn_kohonen1990,
+  author  = {Kohonen, Teuvo},
+  title   = {The Self-Organizing Map},
+  journal = {Proceedings of the IEEE},
+  year    = {1990},
+  volume  = {78},
+  number  = {9},
+  pages   = {1464--1480},
+  doi     = {10.1109/5.58325}
+}
+
+@book{nn_goodfellow2016,
+  author    = {Goodfellow, Ian and Bengio, Yoshua and Courville, Aaron},
+  title     = {Deep Learning},
+  publisher = {MIT Press},
+  year      = {2016},
+  address   = {Cambridge, MA},
+  url       = {https://www.deeplearningbook.org}
+}
+
+@article{nn_bao2017,
+  author  = {Bao, Wei and Yue, Jun and Rao, Yulei},
+  title   = {A Deep Learning Framework for Financial Time Series Using Stacked Autoencoders and Long-Short Term Memory},
+  journal = {PLoS ONE},
+  year    = {2017},
+  volume  = {12},
+  number  = {7},
+  pages   = {e0180944},
+  doi     = {10.1371/journal.pone.0180944}
+}
+
+@misc{nn_akioyamen2021,
+  author = {Akioyamen, Peter and Tang, Yi Zhou and Hussien, Hussien},
+  title  = {A Hybrid Learning Approach to Detecting Regime Switches in Financial Markets},
+  year   = {2021},
+  eprint = {2108.05801},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.CP},
+  url    = {https://arxiv.org/abs/2108.05801}
+}
+
+@misc{nn_bucci2021,
+  author = {Bucci, Andrea and Ciciretti, Vito},
+  title  = {Market Regime Detection via Realized Covariances: A Comparison between Unsupervised Learning and Nonlinear Models},
+  year   = {2021},
+  eprint = {2104.03667},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.ST},
+  url    = {https://arxiv.org/abs/2104.03667}
+}
+
+% --- Candidata adicional (puente con familia HMM; NO es deep) ---
+@article{nn_nystrup2018,
+  author  = {Nystrup, Peter and Madsen, Henrik and Lindstr{\"o}m, Erik},
+  title   = {Dynamic Portfolio Optimization across Hidden Market Regimes},
+  journal = {Quantitative Finance},
+  year    = {2018},
+  volume  = {18},
+  number  = {1},
+  pages   = {83--95},
+  doi     = {10.1080/14697688.2017.1342857}
+}
