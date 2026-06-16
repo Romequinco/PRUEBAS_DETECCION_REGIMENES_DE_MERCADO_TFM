@@ -1,0 +1,24 @@
+# Núcleo de datos y cálculo
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+
+# Descarga de datos
+yfinance>=0.2.40
+# FRED se descarga vía CSV público (sin API key); fredapi opcional si se usa key
+# fredapi>=0.5
+
+# Detectores (se ampliará en FASE 3 según la lista aprobada)
+scikit-learn>=1.4        # k-means, GMM, preprocessing
+hmmlearn>=0.3            # HMM gaussiano / GMM-HMM
+statsmodels>=0.14        # Markov-Switching, ARIMA/GARCH base
+ruptures>=1.1            # change-point (PELT, binseg, CUSUM)
+
+# Visualización y notebooks
+matplotlib>=3.8
+seaborn>=0.13
+jupyter>=1.0
+ipykernel>=6.29
+
+# Utilidades
+pyarrow>=15.0            # parquet para data/raw y data/processed

@@ -216,3 +216,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Regime detection project ---
+# Datos crudos y procesados (se regeneran con src/data_loader.py y src/features.py)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Outputs grandes generados (mantener .gitkeep y .csv/.md de resultados versionables)
+results/*.png
+results/*.parquet
