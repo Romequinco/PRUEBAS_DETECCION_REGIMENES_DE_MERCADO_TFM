@@ -35,11 +35,26 @@ Salida de estado
 
 from __future__ import annotations
 
+import warnings
 from abc import ABC, abstractmethod
 from typing import Sequence
 
 import numpy as np
 import pandas as pd
+
+# Columnas de X que se aceptan como proxy de "retorno de mercado" cuando NO se
+# pasa market_returns explícito. El orden refleja preferencia. Si ninguna está,
+# el etiquetado económico cae a la primera columna y AVISA (puede invertir
+# crisis/calma para detectores que no operan sobre retornos: varianza, sigma,
+# distancia de Mahalanobis, etc.).
+_RETURN_COLS: tuple[str, ...] = ("SP500_ret_z", "SP500_ret", "ret", "SP500")
+
+# Dos estados se consideran de "volatilidad próxima" (y entonces el retorno medio
+# desempata) si sus desviaciones difieren menos de esta fracción de la vol media.
+# Si están claramente separados en vol, la VOLATILIDAD fija el orden y el retorno
+# NO puede invertirlo (Arreglo 4: robustez ante estados que solo separan en
+# varianza, p. ej. detectores de sigma/turbulencia con K=2 y medias ~iguales).
+VOL_CLOSE_FRAC: float = 0.15
 
 
 class RegimeDetector(ABC):
@@ -219,12 +234,64 @@ class RegimeDetector(ABC):
         ponderado con +volatilidad del mercado condicionada al estado. El estado
         más severo queda como crisis (índice n-1).
         """
-        # Implementación de referencia (esqueleto, se afina en FASE 1/3):
-        # 1. obtener retornos de mercado (param o columna estándar de X)
-        # 2. para cada etiqueta interna calcular media y std de los retornos
-        # 3. score_severidad = z(std) - z(media); ordenar ascendente
-        # 4. devolver el orden de etiquetas internas según ese score
-        raise NotImplementedError
+        raw = np.asarray(raw_labels)
+        # 1. retornos de mercado: PRIORIDAD al parámetro explícito (lo pasa
+        #    walk_forward/evaluate). Si no, fallback a una columna de X reconocida
+        #    como retorno; y si tampoco, a la primera columna AVISANDO del riesgo.
+        if market_returns is not None:
+            r = pd.Series(np.asarray(market_returns), index=X.index)
+        else:
+            recognized = next((c for c in _RETURN_COLS if c in X.columns), None)
+            if recognized is not None:
+                r = X[recognized]
+                warnings.warn(
+                    f"{self.name}: label_states_economically sin market_returns "
+                    f"explícito; uso la columna '{recognized}' de X como proxy de "
+                    f"retorno. Pásalo vía walk_forward/evaluate(market_returns=) "
+                    f"para mayor robustez.",
+                    stacklevel=2,
+                )
+            else:
+                col = X.columns[0]
+                warnings.warn(
+                    f"{self.name}: SIN market_returns y SIN columna de retorno "
+                    f"reconocida en X; ordeno los estados por '{col}', lo que PUEDE "
+                    f"INVERTIR crisis/calma. Pasa market_returns a "
+                    f"walk_forward/evaluate.",
+                    stacklevel=2,
+                )
+                r = X[col]
+        rv = r.values
+
+        # 2. media y desviación (nan-safe) de los retornos por etiqueta observada.
+        observed = np.unique(raw)
+        means = np.array([np.nanmean(rv[raw == lab]) for lab in observed])
+        stds = np.array([np.nanstd(rv[raw == lab]) for lab in observed])
+
+        # 3. severidad: VOLATILIDAD primaria, retorno medio solo como DESEMPATE
+        #    cuando las vols están próximas. Con K=2 el z-score de 2 elementos es
+        #    siempre {-1,+1}, así que el viejo `z(std)-z(media)` dejaba que el signo
+        #    (ruidoso) de una diferencia de medias casi nula INVIRTIERA crisis/calma
+        #    en detectores que separan solo en varianza (D6). Aquí la vol manda:
+        #    los estados se agrupan en bandas de volatilidad (ancho VOL_CLOSE_FRAC ×
+        #    vol media); el orden lo fija la banda y, SOLO dentro de una misma banda
+        #    (vols próximas), desempata el retorno medio (menor => más severo).
+        #    Coherente con la tarea previa: "crisis = mayor vol Y menor retorno, con
+        #    fallback a solo vol".
+        vol_scale = float(np.nanmean(stds))
+        tol = VOL_CLOSE_FRAC * vol_scale
+        if tol > 0 and np.isfinite(tol):
+            band = np.round(stds / tol)
+        else:  # vols degeneradas (todas ~0): solo desempata el retorno
+            band = np.zeros(len(stds))
+        # Orden ascendente calma->crisis: banda de vol asc (primario); dentro de la
+        # misma banda, retorno medio desc (menor retorno = más severo => más tarde).
+        sev_order = sorted(range(len(observed)), key=lambda j: (band[j], -means[j]))
+        ordered = list(observed[sev_order])
+
+        # 4. completar con estados nunca observados (al final) para cubrir n_states.
+        ordered += [s for s in range(self.n_states) if s not in ordered]
+        return np.asarray(ordered, dtype=int)
 
     @property
     def crisis_state(self) -> int:

@@ -45,7 +45,11 @@ Todo detector hereda `RegimeDetector` y expone:
 - `n_states`, `name`, `bibliography` (claves BibTeX), `crisis_state`,
   `crisis_probability(X)`.
 - `label_states_economically(...)` — fija el orden canónico de estados por
-  criterio económico (retorno/vol del mercado por estado).
+  criterio económico. Severidad **vol-primaria**: los estados se ordenan por su
+  volatilidad de retornos (banda de ancho `VOL_CLOSE_FRAC=15%` de la vol media); el
+  retorno medio solo desempata entre estados de vol PRÓXIMA. Así un detector que
+  separa solo en varianza (σ GARCH, turbulencia) nunca invierte crisis/calma aunque
+  las medias por estado sean casi iguales (Arreglo 4).
 - `score / aic / bic` — bondad de ajuste donde el modelo lo permita.
 
 **Causalidad**: en walk-forward la etiqueta de `t` solo puede depender de datos
@@ -53,17 +57,41 @@ Todo detector hereda `RegimeDetector` y expone:
 en evaluación online.
 
 ### 4. Evaluación (`src/evaluation.py`)
-`walk_forward(detector_factory, X, ...)` produce etiquetas/probabilidades
-out-of-sample; `evaluate(...)` calcula la tabla de métricas estandarizada:
+`walk_forward(detector_factory, X, *, market_returns=None, train_size, step,
+expanding, min_train)` produce etiquetas/probabilidades out-of-sample;
+`evaluate(detector, wf_panel, *, market_returns=None, X_full=None)` calcula la
+tabla de métricas estandarizada.
+
+**Etiquetado económico robusto (refinado en FASE 3)**: pasa `market_returns` (la
+serie de retornos del S&P 500) a `walk_forward`/`evaluate`. En cada fold se
+re-fija el orden de estados (0=calma…n-1=crisis) usando esos retornos, con
+severidad **vol-primaria** (volatilidad por estado como criterio principal; el
+retorno medio solo desempata entre vols próximas, `VOL_CLOSE_FRAC=15%`). Esto es
+necesario para detectores que NO operan sobre retornos crudos (varianza, σ GARCH,
+change-point, Mahalanobis): aunque sus dos estados tengan media casi igual, la vol
+fija el orden y crisis/calma no se invierte. Sin `market_returns` se conserva el
+fallback (ordenar por una columna de retorno de `X`) con *warning*.
+
+Métricas (todas causales, sobre las etiquetas walk-forward):
 
 - **Cobertura de crisis**: % días en "crisis" dentro de 2008/2011/2020/2022.
 - **Falsos positivos**: comprobación de NO disparo sostenido en 2013 (taper) y
   Q4 2018.
-- **Lead/lag** respecto al suelo del drawdown del S&P 500.
+- **Lead/lag** respecto al suelo del drawdown del S&P 500. Exige señal
+  **sostenida** (`p_crisis≥0.5` durante `persist=3` días consecutivos) para no
+  premiar el flickering de un cruce suelto.
 - **Tasa de falsas alarmas** global.
 - **Persistencia / frecuencia de conmutación** (penaliza *flickering*).
 - **Log-likelihood / AIC / BIC** donde aplique.
-- **Estabilidad de etiquetas** bajo walk-forward.
+- **Estabilidad de etiquetas** bajo walk-forward. Se mide con un
+  `stability_panel` AISLADO (en `wf_panel.attrs`, diagnóstico NO causal): ninguna
+  otra métrica lo lee; cobertura/falsas alarmas/lead-lag solo usan las etiquetas
+  causales OOS (una por fecha, del fold que la predijo por primera vez).
+
+**Causalidad de los HMM (D4, D8)**: `predict_online`/`predict_proba` usan
+**filtrado forward** causal (`detectors/_hmm_utils.py`), NO el Viterbi/forward-
+backward suavizado de hmmlearn (que mira días futuros del bloque). El Viterbi
+global queda solo para la versión in-sample explícitamente marcada NO causal.
 
 Resultados comparables en `results/` (tabla maestra, una fila por detector).
 
