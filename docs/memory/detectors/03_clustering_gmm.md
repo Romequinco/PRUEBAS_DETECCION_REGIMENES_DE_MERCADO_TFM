@@ -65,8 +65,9 @@ Falsos positivos en trampas:
   fuera de las ventanas conocidas — coherente con el flickering (marca crisis
   sueltas dispersas), no con falsas alarmas sostenidas.
 
-Lead/lag (días vs suelo de drawdown): COVID **−160 d**, Inflación **−229 d** (la
-señal P(crisis)≥0.5 cruza muy por delante del suelo; ambos suelos sí caen en OOS).
+Lead/lag (días vs suelo de drawdown): COVID **−20 d**, Inflación **−219 d** (en
+COVID la señal P(crisis)≥0.5 sostenida llega poco antes del suelo; en Inflación
+cruza muy por delante; ambos suelos sí caen en OOS).
 
 ### Flickering medido (talón de Aquiles)
 - **switching_rate = 0.126** (k=3) / 0.112 (k=2): conmuta de estado en ~1 de cada 8

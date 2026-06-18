@@ -11,14 +11,14 @@ filas, OOS hasta 4665 -> ~127 folds, fit medio ~5s -> ~11-13 min de walk-forward
 debajo del guardarrail de 15 min (timeout nbconvert = 2400s, amplio margen). No se sube
 el step para no perder resolucion OOS frente al rival D3 (que usa el protocolo estandar).
 
-Uso:  python notebooks/_build_09.py
+Uso:  python scripts/builders/_build_09.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "09_jump_model.ipynb"
 
 cells = []

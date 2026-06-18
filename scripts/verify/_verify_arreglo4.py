@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 BK = ROOT / "_t12_backup"
 
 

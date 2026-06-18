@@ -1,4 +1,4 @@
-2# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
@@ -223,6 +223,9 @@ data/raw/*
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+# Metadatos de procedencia versionados para reproducibilidad del TFM (no son datos crudos pesados)
+!data/raw/provenance.json
+!data/raw/coverage_report.csv
 
 # Outputs grandes generados (mantener .gitkeep y .csv/.md de resultados versionables)
 results/*.png

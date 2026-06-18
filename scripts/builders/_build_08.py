@@ -5,14 +5,14 @@ Crea el notebook celda a celda (patrón de la Tanda 1/2), lo ejecuta con
 ExecutePreprocessor (kernel python3, timeout generoso) y lo escribe ya ejecutado.
 Reporta el nº de errores (debe ser 0) y vuelca figuras a results/. Desde la raíz:
 
-    python notebooks/_build_08.py
+    python scripts/builders/_build_08.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "08_hmm_tstudent.ipynb"
 
 md = nbf.v4.new_markdown_cell

@@ -10,7 +10,7 @@ import nbformat as nbf
 from nbformat.v4 import new_code_cell, new_markdown_cell, new_notebook
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "02_rule_composite_riskoff.ipynb"
 
 cells = []

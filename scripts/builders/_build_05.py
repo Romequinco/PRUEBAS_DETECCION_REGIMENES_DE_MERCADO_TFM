@@ -5,14 +5,14 @@ Crea el notebook celda a celda (patrón de la Tanda 1), lo ejecuta con
 ExecutePreprocessor y lo escribe ya ejecutado. Reporta el nº de errores (debe ser 0)
 y vuelca las figuras a results/. Ejecutar desde la raíz del repo:
 
-    python notebooks/_build_05.py
+    python scripts/builders/_build_05.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "05_markov_switching_var.ipynb"
 
 md = nbf.v4.new_markdown_cell

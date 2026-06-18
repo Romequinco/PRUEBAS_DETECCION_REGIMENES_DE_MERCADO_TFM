@@ -180,7 +180,7 @@ extender la evaluación a DotCom 2002, fuera de la ventana común.
 
 - **VIX como termómetro de régimen / incertidumbre:** Bloom (2009)
   [`reglas_bloom2009`] usa picos de VIX para fechar shocks de incertidumbre con
-  caída-rebote de actividad real; base teórica del umbral VI> nivel.
+  caída-rebote de actividad real; base teórica del umbral VIX > nivel.
 - **Timing por volatilidad:** Moreira & Muir (2017) [`reglas_moreiramuir2017`]
   reducen exposición cuando sube la varianza realizada en múltiples factores
   (market, value, momentum, carry) con ganancias de Sharpe — evidencia de que

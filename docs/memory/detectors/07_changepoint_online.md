@@ -6,7 +6,7 @@
 > 1=crisis). El umbral `h` da persistencia. 2 estados.
 >
 > Código: `detectors/changepoint_online.py` · Notebook: `notebooks/07_changepoint_online.ipynb`
-> (constructor `notebooks/_build_07.py`) · Métricas:
+> (constructor `scripts/builders/_build_07.py`) · Métricas:
 > `results/metrics_07_changepoint_online.csv` · Figuras: `results/d07_*.png`.
 
 ## Implementado

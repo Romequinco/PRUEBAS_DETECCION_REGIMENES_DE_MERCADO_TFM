@@ -5,14 +5,14 @@ Crea las celdas, ejecuta con nbconvert (0 errores esperados) y guarda el .ipynb 
 las figuras inline. Vuelca figuras a results/ y la fila de métricas (23 columnas) a
 results/metrics_10_turbulence_mahalanobis.csv, y refresca results/metrics_master.csv.
 
-Uso:  python notebooks/_build_10.py
+Uso:  python scripts/builders/_build_10.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "10_turbulence_mahalanobis.ipynb"
 
 cells = []

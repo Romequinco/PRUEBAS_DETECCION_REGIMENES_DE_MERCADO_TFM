@@ -1,0 +1,14 @@
+{
+  "SP500": "yfinance:^GSPC",
+  "VIX": "yfinance:^VIX",
+  "MOVE": "yfinance:^MOVE",
+  "TLT": "yfinance:TLT",
+  "IEF": "yfinance:IEF",
+  "HYG": "yfinance:HYG",
+  "GOLD": "yfinance:GLD",
+  "DXY": "yfinance:DX-Y.NYB",
+  "TNX": "yfinance:^TNX",
+  "IRX": "yfinance:^IRX",
+  "YIELD_10Y_3M": "proxy:yfinance(^TNX - ^IRX) [FRED inaccesible]",
+  "HY_OAS": "OMITIDO [FRED inaccesible]; crédito cubierto por HYG y spread HYG-IEF"
+}

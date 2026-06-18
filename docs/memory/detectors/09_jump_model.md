@@ -44,7 +44,7 @@ persistente que **pierde cobertura de las crisis más lentas/menos extremas**: C
 72% (vs 96% de D3) e **Inflación 2022 solo 17%** (vs 87% de D3). El bear market lento
 de 2022 no genera un salto suficientemente nítido como para vencer la penalización, así
 que D9 se queda en "calma" gran parte de él. fa_2018 = 0% (no se dispara en la trampa),
-false_alarm_rate 0.62, label_stability ~1.0.
+false_alarm_rate 0.62, label_stability ≈0.98.
 
 **Lectura honesta del trade-off.** D9 NO domina a D3: cambia muchísimo flickering por
 cobertura. Es el extremo "ultra-persistente" del eje clustering. Su λ es un mando

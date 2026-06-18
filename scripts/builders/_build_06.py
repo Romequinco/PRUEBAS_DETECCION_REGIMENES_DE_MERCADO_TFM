@@ -5,14 +5,14 @@ Crea las celdas, ejecuta con nbconvert (0 errores esperados) y guarda el .ipynb 
 las figuras inline. Vuelca figuras a results/ y la fila de métricas (23 columnas) a
 results/metrics_06_garch_t_vol.csv, y refresca results/metrics_master.csv.
 
-Uso:  python notebooks/_build_06.py
+Uso:  python scripts/builders/_build_06.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "06_garch_t_vol.ipynb"
 
 cells = []

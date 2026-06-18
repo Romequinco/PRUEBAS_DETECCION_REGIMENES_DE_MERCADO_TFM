@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NBS = ["01_rule_vix_threshold.ipynb", "03_clustering_gmm.ipynb", "04_hmm_gaussian_2s.ipynb"]
 BACKUP = Path("/tmp/t1_backup")
 

@@ -5,7 +5,7 @@
 > **umbralizando** esa sigma (percentil del train + histéresis + dwell). 2 estados.
 >
 > Código: `detectors/garch_t_vol.py` · Notebook: `notebooks/06_garch_t_vol.ipynb`
-> (constructor `notebooks/_build_06.py`) · Métricas:
+> (constructor `scripts/builders/_build_06.py`) · Métricas:
 > `results/metrics_06_garch_t_vol.csv` · Figuras: `results/d06_*.png`.
 
 ## Implementado
@@ -94,7 +94,7 @@ dotcom 2000–02, flash-crash 2010, 2015–16 (China/Brexit), SVB 2023… Son ep
 "falsa alarma" contra ese ground-truth laxo. No es ruido día-a-día (ver flickering).
 
 **Flickering / persistencia (muy buena).** `switching_rate = 0.0141`,
-**duración media ≈ 70 días**, `label_stability = 0.982`. La histéresis+dwell sobre la
+**duración media ≈ 70 días**, `label_stability = 0.999`. La histéresis+dwell sobre la
 sigma, más la propia **persistencia de la varianza GARCH** (`beta≈0.89`), dan
 episodios largos y estables — mucho menos flicker que el HMM gaussiano causal de D4
 (switching 0.100, dur 9.9 d) y que el GMM estático de D3.

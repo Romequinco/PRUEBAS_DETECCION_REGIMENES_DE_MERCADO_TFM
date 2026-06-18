@@ -11,14 +11,14 @@ de 6 años y `step` semestral (126 d), con `n_init=1`, `maxiter=100`. Dentro de 
 bloque la predicción es el posterior FILTRADO día a día (resolución diaria, causal);
 solo la RE-ESTIMACIÓN de parámetros es semestral (los parámetros GARCH son estables).
 
-Uso:  python notebooks/_build_11.py
+Uso:  python scripts/builders/_build_11.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "11_msgarch_regime.ipynb"
 
 cells = []

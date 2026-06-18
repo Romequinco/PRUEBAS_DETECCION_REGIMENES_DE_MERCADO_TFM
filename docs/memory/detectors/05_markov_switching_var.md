@@ -3,7 +3,7 @@
 > Baseline econométrico **interpretable**. Markov-Switching de varianza sobre el
 > retorno del S&P 500 (Hamilton 1989), con probabilidades **filtradas causales**.
 > Código: `detectors/markov_switching_var.py` · Notebook:
-> `notebooks/05_markov_switching_var.ipynb` (constructor `notebooks/_build_05.py`)
+> `notebooks/05_markov_switching_var.ipynb` (constructor `scripts/builders/_build_05.py`)
 > · Métricas: `results/metrics_05_markov_switching_var.csv`.
 
 ## Implementado

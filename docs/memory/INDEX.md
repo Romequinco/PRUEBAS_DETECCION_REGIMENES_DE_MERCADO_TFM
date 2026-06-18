@@ -11,7 +11,8 @@
 | 1 | Datos + EDA (causal, sin imputar) | ✅ Hecha — pendiente CHECKPOINT 1 |
 | 2 | Estado del arte + lista de detectores | ✅ Aprobada (CHECKPOINT 2) |
 | 3 | Implementación de detectores | ✅ Tandas 1-4 hechas (**12 detectores**) — **pendiente CHECKPOINT 3D** |
-| 4 | Síntesis comparativa | ⬜ Pendiente |
+| 4 | Síntesis comparativa | ✅ Cerrada (CHECKPOINT 4) |
+| 5 | Pulido final (docs + estructura) | ✅ Cerrada — hito `capa1-exploracion` |
 
 ## FASE 3 — progreso por tandas
 - **Núcleo completado por el orquestador** (fricción de FASE 3): `evaluation.py`
@@ -125,6 +126,71 @@
   MS-GARCH (exploratorios) no aportan sobre los baselines → valida la parsimonia.
 - FASE 3 COMPLETA (12 detectores). Siguiente: FASE 4 (síntesis comparativa).
 
+## FASE 4 — síntesis comparativa (cerrada)
+- **Entregables (CHECKPOINT 4)**:
+  - `results/metrics_master_final.csv` — tabla maestra FINAL (12 filas, 34 cols):
+    crisis estricta + **estrés agregado** (`cov_estres_*`, `fa_estres_*`,
+    `false_alarm_rate_estres`) + equidad de ventana (`vio_2008_oos`) + `clase` y
+    `coste`. La estrés de los 3 multi-estado (D3, D8, D12) se recomputa con su
+    config exacta; los 8 binarios tienen estrés = crisis (copia directa).
+  - `notebooks/13_comparison.ipynb` — **ejecutado, 0 errores**. SANITY CHECK pasa:
+    la crisis estricta recomputada coincide (±0.01) con el master → el estrés sale
+    del mismo panel walk-forward.
+  - `results/fase4_*.png` — 6 figuras de cruce de ejes: `sensibilidad_especificidad`,
+    `persistencia_sensibilidad`, `bic`, `leadlag`, `rank_heatmap`, `estres_vs_estricta`.
+  - `docs/memory/99_conclusions.md` — conclusiones redactadas (qué gana en qué eje,
+    6 hallazgos metodológicos, tensión del estrés agregado, recomendación atada a la
+    propuesta TFM, bibliografía).
+- **Veredictos centrales (honestidad comparativa total)**:
+  1. **NO hay mejor detector único; hay "mejor-para-qué"**. Cuatro familias se
+     reparten 6 ejes. Cobertura SIEMPRE separada por ventana (los de ventana corta
+     2012+/2015+ NO vieron 2008 OOS; nunca se mezclan ni se penalizan por ello).
+  2. **D8 hmm_tstudent_4s RESPALDADO** como núcleo (no "confirmado": el respaldo es
+     BIC **in-sample** + estrés agregado **favorable-por-construcción** a K≥3, no
+     cobertura OOS estricta). Gana BIC (24416 vs D4 35379, ΔBIC +10963 con mismas
+     features) y, por **estrés agregado**, su cobertura iguala a los binarios (COVID
+     0.66→0.96, Infl 0.33→0.90); su "baja sensibilidad" era reclasificación a
+     corrección, no fallo — PERO el estrés sube también fa_2018 0.034→0.81 y far
+     0.52→0.79 (trade-off). Cobertura OOS estricta modesta (cov_COVID 0.66) y nunca
+     vio 2008 OOS.
+  3. **D7 changepoint_online DOMINA 4 ejes**: especificidad 1.00, persistencia 436 d,
+     lead/lag **anticipa de forma sostenida** (días topados por el `lookback`, no cifra
+     precisa) y coste bajo. Mejor candidato a "segunda velocidad" / alerta temprana.
+  4. **Cobertura sistémica (ventana larga): D5 msvar 0.98 ≈ D6 garch 0.97 ≈ D1 vix
+     0.92** — la vol manda; la sofisticación apenas bate a la regla VIX (+6 pp).
+  5. **Negativos validan parsimonia**: D11 msgarch degenera (cov_GFC 0%, far 0.95);
+     D12 deep_ae empeora a su PCA (switching 0.287) sin ganar cobertura. Con ~4
+     crisis, la complejidad no se paga.
+  6. **2013 (taper) = punto ciego universal** (6+ detectores independientes 0–12%):
+     NO es ruido, es que **la taxonomía de régimen importa** — ninguna definición de
+     crisis basada en vol/correlación equity captura un shock de tipos. Se mantiene
+     como ventana-trampa.
+- **Recomendación TFM**: núcleo HMM t-Student multi-estado (confirmado por BIC +
+  lógica corrección↔crisis = "dos velocidades") + change-point rápido tipo D7 como
+  alerta temprana + D1/D5/D6 como control. 2013 = límite de taxonomía, no objetivo.
+- **CHECKPOINT 4 alcanzado. FASE 4 cerrada. FASE 3 completa, capa de exploración
+  terminada.**
+
+## FASE 5 — pulido final (cerrada · hito `capa1-exploracion`)
+Pulido de documentación y estructura SIN cambiar resultados ni re-ejecutar nada.
+Tres subagentes auditaron en paralelo (informe de MDs, propuesta de limpieza, dictamen
+académico); sus informes se conservan como traza en `docs/memory/_pulido_mds.md`,
+`_propuesta_limpieza.md`, `_revision_academica.md`.
+- **Cifras stale corregidas** (verificadas contra el master): D3 lead/lag COVID −160→−20
+  e Inflación −229→−219; D6 `label_stability` 0.982→0.999; D9 "~1.0"→"≈0.98". Erratas:
+  `VIX`, `cusum`.
+- **99_conclusions afinado** (A1–A5 + M1, sin tocar números): lead/lag separado por
+  ventana y **censura del `lookback` (−252) declarada**; salvedad del `rank_heatmap`
+  (su col. de cobertura mezcla ventanas); 2013 como **N/A fuera de OOS** en D3 (los 6
+  detectores reales se mantienen); "confirma"→"consistente con"; **logL/AIC/BIC marcados
+  in-sample**; nueva §4.1 de **limitación de significancia (n≈4 crisis)** con bootstrap
+  por bloques (B1) y sensibilidad de hiperparámetros (B2) como trabajo futuro declarado.
+- **Estructura**: `scripts/{builders,verify}/` con los `_build_*.py` y `_verify/_rerun`
+  (ROOT `parents[1]→[2]`, referencias actualizadas); `notebooks/` queda solo con `.ipynb`.
+  `.gitignore` corregido (typo `2#`) y **whitelist de `data/raw/{provenance.json,
+  coverage_report.csv}`** (metadatos de procedencia, sin rutas absolutas — verificado).
+- **Hito**: tag `capa1-exploracion` marca el estado entregable de la primera capa del TFM.
+
 ## Detectores aprobados (CHECKPOINT 2) — 12, por tandas
 T1: D1 rule_vix_threshold, D3 clustering_gmm, D4 hmm_gaussian_2s.
 T2: D2 rule_composite_riskoff, D5 markov_switching_var, D6 garch_t_vol.
@@ -169,7 +235,9 @@ T4: D9 jump_model, D11 msgarch_regime, D12 deep_ae_regime (exploratorios).
   - `sota/07_redes_neuronales.md` — Redes neuronales / no supervisado (F7).
 - `01_data_and_eda.md` — datos descargados, decisiones y hallazgos del EDA (FASE 1).
 - `<NN>_<detector>.md` — uno por detector (FASE 3): "Implementado" + "Descubierto".
-- `99_conclusions.md` — síntesis y recomendación final (FASE 4).
+- `99_conclusions.md` — síntesis y recomendación final FASE 4 (✅ redactado): qué
+  familia gana en qué eje, 6 hallazgos metodológicos, tensión del estrés agregado,
+  recomendación atada a la propuesta TFM y bibliografía con claves reales.
 
 ## Contexto de partida (de docs/context/)
 - **Tarea previa**: HMM gaussiano 2 estados, in-sample. Acertaba crisis grandes

@@ -13,14 +13,14 @@ mismo K y misma dimensión latente. Con ~4 crisis reales un resultado NEGATIVO
 
 Coste acotado: walk-forward AE ~65s + PCA ~40s ≈ <2 min (muy por debajo de 15 min).
 
-Uso:  python notebooks/_build_12.py
+Uso:  python scripts/builders/_build_12.py
 """
 from pathlib import Path
 
 import nbformat as nbf
 from nbconvert.preprocessors import ExecutePreprocessor
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 NB_PATH = ROOT / "notebooks" / "12_deep_ae_regime.ipynb"
 
 cells = []
