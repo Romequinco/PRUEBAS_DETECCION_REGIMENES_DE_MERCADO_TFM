@@ -1,0 +1,668 @@
+\documentclass[11pt,a4paper]{article}
+
+% ====================================================================
+% Informe ejecutivo cientifico - Capa 1 del TFM
+% Banco de pruebas comparativo de detectores de regimen de mercado
+% Compilar con: tectonic report/informe_capa1.tex  (auto-ejecuta bibtex)
+% ====================================================================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\graphicspath{{../results/}}
+\captionsetup{font=small,labelfont=bf}
+\hypersetup{colorlinks=true,linkcolor=black!70,citecolor=black!70,urlcolor=blue!50!black}
+
+% Colores de la paleta usada en las figuras
+\definecolor{ventlarga}{HTML}{2B5D8A}
+\definecolor{ventcorta}{HTML}{C98A2B}
+\definecolor{negcolor}{HTML}{7A7A7A}
+
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Dt}[1]{\textbf{#1}}
+
+\title{\textbf{Detecci\'on de reg\'imenes de mercado:\\ un marco de evaluaci\'on causal y comparativo}\\[2mm]
+\large Primera capa del TFM --- banco de pruebas de 12 detectores}
+\author{Oscar \\ \small M\'aster en Inteligencia Artificial aplicada a los Mercados Financieros (MIAX)}
+\date{Junio de 2026}
+
+\begin{document}
+\maketitle
+
+% ====================================================================
+\begin{abstract}
+\noindent Este informe sintetiza la primera capa de un TFM mayor sobre detecci\'on de
+reg\'imenes de mercado. Su objeto \textbf{no} es proponer un detector concreto, sino
+construir un \textbf{marco de evaluaci\'on causal, comparable y honesto} con el que juzgar
+a muchos detectores bajo el mismo protocolo. Se implementan y eval\'uan \textbf{12
+detectores} de \textbf{7 familias} (reglas, clustering, HMM, Markov-Switching,
+GARCH/RS-GARCH, change-point y redes) con un protocolo \emph{walk-forward}
+out-of-sample sin \emph{look-ahead}, sobre el S\&P~500 y un universo multiactivo
+(1985--2026). El resultado central es que \textbf{no existe un detector dominante}: cuatro
+familias se reparten seis ejes de calidad. La cobertura de crisis sist\'emicas grandes la
+lideran el Markov-Switching de varianza (D5), el GARCH-t (D6) y una simple regla sobre el
+VIX (D1); la especificidad, la persistencia, la anticipaci\'on y el coste los domina el
+\emph{change-point} CUSUM (D7); y el ajuste estad\'istico (BIC) lo gana el HMM t-Student de
+cuatro estados (D8). Adem\'as se documentan seis hallazgos metodol\'ogicos transversales
+---el coraz\'on del trabajo--- y se recomienda, de forma \emph{consistente con} (no
+``confirmando'') la propuesta del TFM mayor, un n\'ucleo HMM t-Student multi-estado
+complementado con un change-point r\'apido. El informe es autocontenido y declara con
+transparencia sus limitaciones: $n\approx4$ crisis sin contraste de significancia, BIC
+in-sample, y lead/lag censurado por la ventana de b\'usqueda.
+\end{abstract}
+
+% ====================================================================
+\section{Resumen ejecutivo}
+
+\textbf{Qu\'e se hizo.} Se dise\~n\'o un marco \'unico de evaluaci\'on
+(\code{src/evaluation.py}) y una interfaz com\'un de detector
+(\code{src/detector_base.py}) con etiquetas can\'onicas ($0=$ calma $\dots$ $n{-}1=$
+crisis). Cada uno de los 12 detectores se reentrena y predice en ventanas
+\emph{walk-forward} expandidas, produciendo etiquetas \emph{out-of-sample} (OOS) sin ver el
+futuro. Sobre esas etiquetas se calculan las mismas m\'etricas para todos: cobertura de
+crisis, especificidad en ventanas-trampa, lead/lag, frecuencia de conmutaci\'on,
+persistencia y ---donde el modelo lo permite--- bondad de ajuste (logL/AIC/BIC).
+
+\textbf{Qu\'e se hall\'o.} (i)~Ninguna familia gana en todo: hay un \emph{mejor-para-qu\'e},
+no un mejor absoluto. (ii)~Para cubrir crisis grandes y lentas basta con reaccionar a la
+volatilidad con suficiente hist\'orico: el MS de varianza (D5, $0.98$), el GARCH-t (D6,
+$0.97$) y la regla VIX (D1, $0.92$) empatan pr\'acticamente en cobertura de
+GFC$+$COVID ---primer aviso de parsimonia. (iii)~El change-point CUSUM (D7) es el \'unico
+con especificidad $1.00$ en las dos trampas, la mayor persistencia ($\approx436$ d\'ias) y
+el menor coste. (iv)~El HMM t-Student de 4 estados (D8) ajusta mucho mejor que su gemelo
+gaussiano ($\Delta\mathrm{BIC}\approx{+}10\,963$). (v)~Los dos modelos m\'as complejos
+(MS-GARCH y autoencoder) \emph{no} superan a los baselines: la parsimonia queda validada.
+(vi)~El \emph{taper tantrum} de 2013 es un punto ciego universal: ning\'un detector basado
+en volatilidad lo ve, porque fue un shock de tipos sin estr\'es sist\'emico de renta
+variable.
+
+\textbf{Qu\'e se recomienda.} Llevar a la siguiente capa un \textbf{n\'ucleo HMM t-Student
+multi-estado} (D8), \emph{consistente con} la propuesta original del TFM, emparejado con un
+\textbf{change-point r\'apido} tipo D7 como sistema de alerta temprana / ``segunda
+velocidad'', y conservar D1/D5/D6 como controles \emph{baseline}. Se descartan como
+detectores operativos los exploratorios negativos D11 y D12.
+
+% ====================================================================
+\section{Introducci\'on y objetivo de la capa}
+
+\subsection{De d\'onde viene este trabajo}
+Esta capa nace del detector de reg\'imenes de una pr\'actica previa: un \textbf{HMM
+gaussiano de 2 estados, ajustado in-sample y con \emph{look-ahead}}. Aquel modelo acertaba
+las crisis sist\'emicas grandes (Lehman 2008: $98.6\%$ de d\'ias en crisis; COVID 2020:
+$92.3\%$) pero se perd\'ia las correcciones r\'apidas (Taper Tantrum 2013: $10.9\%$;
+sell-off del Q4 2018: $20.6\%$). De su an\'alisis cr\'itico salieron ocho limitaciones que
+motivan este banco de pruebas: usar s\'olo 2 estados; ser ciego a crisis r\'apidas;
+etiquetar por umbral \emph{post-hoc}; entrenar in-sample sin validaci\'on
+\emph{walk-forward}; asumir emisiones gaussianas (que subestiman las colas); estandarizar
+con estad\'isticos de toda la muestra (otra fuga de futuro sutil); una inicializaci\'on
+degenerada; y no reportar incertidumbre (Viterbi ``duro'' en vez de probabilidades
+suaves).
+
+\subsection{Qu\'e propone el TFM mayor}
+El TFM mayor define el sistema objetivo: un \textbf{HMM t-Student de 4 estados}, con
+selecci\'on de $K$ por BIC y una l\'ogica de \textbf{``dos velocidades''} que distingue la
+correcci\'on r\'apida de la crisis sist\'emica lenta. La pregunta que esta capa debe
+responder con evidencia es: \emph{\textquestiondown la exploraci\'on de detectores respalda esa elecci\'on,
+o sugiere ajustarla?}
+
+\subsection{Qu\'e es ---y qu\'e no es--- esta capa}
+Esta capa \textbf{no es un detector concreto}. Es un \textbf{marco de evaluaci\'on causal,
+comparativo y honesto} que enfrenta 12 detectores de 7 familias bajo una sola interfaz y un
+protocolo OOS com\'un. Su tesis central no es ``cu\'al es el mejor detector'' sino
+\textbf{``cu\'al es el mejor para qu\'e''}: cada familia domina un eje distinto, y la
+comparaci\'on s\'olo es leg\'itima si se hace \textbf{causal} y \textbf{con equidad de
+ventana}.
+
+% ====================================================================
+\section{Datos y marco causal de evaluaci\'on}
+
+\subsection{Datos}
+Se descarga un universo multiactivo sin imputar (cada serie arranca en su fecha real):
+S\&P~500, VIX, MOVE, treasuries (TLT, IEF), cr\'edito \emph{high yield} (HYG), oro (GLD),
+d\'olar (DXY) y la pendiente de la curva ($\code{^TNX}-\code{^IRX}$). La ventana com\'un
+sin huecos es \textbf{2007-04-11 $\to$ 2026-06-12} (gobernada por el inicio de HYG), de la
+que se derivan \textbf{15 \emph{features} causales}. Varios detectores que s\'olo necesitan
+S\&P~500 y/o VIX usan hist\'oricos m\'as largos (desde 1985/1990/1993), lo que les permite
+evaluar la GFC de 2008 \emph{out-of-sample}.
+
+Dos hechos estilizados del an\'alisis exploratorio gobiernan el dise\~no: las
+\textbf{colas pesadas} (curtosis en exceso de $25.6$ en el S\&P~500 y $39.6$ en HYG;
+Figura~\ref{fig:fattails}), que motivan emisiones t-Student y GARCH; y la \textbf{subida de
+correlaciones en crisis} (Figura~\ref{fig:corr}), que motiva los detectores multivariantes
+de turbulencia. La verdad-terreno de eventos (ventanas de crisis y trampas, y los suelos de
+\emph{drawdown}) se fija sobre la serie real del S\&P~500 (Figura~\ref{fig:drawdown}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{eda_sp500_drawdown.png}
+  \caption{S\&P~500 (escala log) y su \emph{drawdown} desde 1985, con las ventanas de
+  \textbf{crisis} (rojo) y de \textbf{trampa / falso positivo} (naranja) que definen el
+  protocolo de evaluaci\'on. Estas ventanas son la verdad-terreno frente a la que se mide
+  cobertura, especificidad y lead/lag.}
+  \label{fig:drawdown}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{eda_fat_tails.png}
+    \caption{Distribuci\'on de retornos diarios frente a la Normal (eje log). El exceso de
+    curtosis ($25.6$ en el S\&P~500, $39.6$ en HYG) justifica colas pesadas y modelos
+    t-Student/GARCH.}
+    \label{fig:fattails}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{eda_corr.png}
+    \caption{Matriz de correlaci\'on de retornos diarios. La estructura
+    renta-fija/renta-variable justifica el universo multiactivo de los detectores de
+    turbulencia y clustering.}
+    \label{fig:corr}
+  \end{minipage}
+\end{figure}
+
+\subsection{El contrato de comparabilidad}
+Tres principios, en la l\'inea metodol\'ogica del \emph{machine learning} financiero
+causal~\cite{lopezdeprado2018}, hacen que la comparaci\'on sea leg\'itima:
+\begin{description}[leftmargin=1.2em,style=nextline]
+  \item[\emph{Features} causales.] Toda estandarizaci\'on es un \emph{z-score} expandido
+  (en $t$ s\'olo se usan estad\'isticos de datos $\le t$). Nunca media/desviaci\'on de toda
+  la muestra: \emph{eso} era el \emph{look-ahead} detectado en la tarea previa.
+  \item[\emph{Walk-forward} OOS.] Nada se juzga in-sample. El detector se reentrena en
+  ventanas expandidas y predice el bloque siguiente con par\'ametros congelados; cada fecha
+  recibe la predicci\'on causal del fold que la cubri\'o por primera vez.
+  \item[Misma interfaz, mismas m\'etricas.] Cada detector implementa \code{RegimeDetector}
+  y se punt\'ua con \code{evaluation.py}. Las etiquetas se canonicalizan por criterio
+  econ\'omico \textbf{vol-primario} (los estados se ordenan por su volatilidad; el retorno
+  medio s\'olo desempata entre vol\'umenes pr\'oximos), y el orden se re-fija con los
+  retornos del S\&P~500 \textbf{en cada fold}.
+\end{description}
+
+\noindent Este \'ultimo punto (la canonicalizaci\'on econ\'omica robusta por fold) es lo
+que hace \emph{comparables} entre s\'i a familias que ni siquiera operan sobre retornos
+(varianza, $\sigma$ GARCH, change-point, distancia de Mahalanobis). Sin \'el, la mitad de
+los detectores habr\'ian sido incomparables o se habr\'ian invertido aleatoriamente.
+
+\paragraph{M\'etricas.} (a)~\emph{Cobertura de crisis}: \% de d\'ias en ``crisis'' dentro
+de 2008/2011/2020/2022 (alto = sensible). (b)~\emph{Especificidad}: no disparar de forma
+sostenida en las trampas 2013/2018 (bajo = espec\'ifico). (c)~\emph{Lead/lag}: d\'ias entre
+la se\~nal sostenida y el suelo del \emph{drawdown} (negativo = anticipa). (d)~\emph{Tasa de
+falsas alarmas} global. (e)~\emph{Conmutaci\'on / persistencia} (penaliza el
+\emph{flickering}). (f)~\emph{logL/AIC/BIC} donde el modelo lo permite.
+
+% ====================================================================
+\section{Los 12 detectores}
+
+Se cubren las 7 familias, de \emph{baseline} a avanzado, m\'as dos exploratorios cuyo
+resultado negativo es informativo (Tabla~\ref{tab:mapa}).
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Mapa de los 12 detectores: familia, clase y ventana de evaluaci\'on OOS. La
+  columna \emph{vio 2008 OOS} es decisiva: s\'olo los seis de hist\'orico largo evaluaron
+  la GFC fuera de muestra.}
+  \label{tab:mapa}
+  \begin{tabular}{llll c}
+    \toprule
+    ID & Detector & Familia & Clase & Vio 2008 OOS \\
+    \midrule
+    D1 & \code{rule_vix_threshold} & F1 reglas & baseline & s\'i \\
+    D2 & \code{rule_composite_riskoff} & F1 reglas & baseline & no \\
+    D3 & \code{clustering_gmm_k3} & F2 clustering & baseline & no \\
+    D4 & \code{hmm_gaussian_2s} & F3 HMM & baseline (puente) & no \\
+    D5 & \code{markov_switching_var_2s} & F4 Markov-Switching & avanzado & s\'i \\
+    D6 & \code{garch_t_vol} & F5 GARCH & avanzado & s\'i \\
+    D7 & \code{changepoint_online} & F6 change-point & avanzado & s\'i \\
+    D8 & \code{hmm_tstudent_4s} & F3 HMM (avanzado) & avanzado & no \\
+    D9 & \code{jump_model} & F2$\leftrightarrow$F3 jump model & avanzado & no \\
+    D10 & \code{turbulence_mahalanobis} & F1 multivariante & avanzado & s\'i \\
+    D11 & \code{msgarch_regime} & F5 MS-GARCH & \textit{explor.-negativo} & s\'i \\
+    D12 & \code{deep_ae_regime} & F7 redes & \textit{explor.-negativo} & no \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{description}[leftmargin=0pt,labelsep=0.5em,itemsep=2pt]
+  \item[D1 -- regla VIX.] \cite{reglas_bloom2009} Aut\'omata de 2 estados sobre el nivel del VIX con hist\'eresis y
+  \emph{dwell}. Baseline de ``miedo'' limpio y persistente; entre los mejores en cobertura
+  sist\'emica de ventana larga.
+  \item[D2 -- regla compuesta.] Voto VIX + cr\'edito + curva + \emph{drawdown}. Mejora a D1
+  en 2022 pero a costa de m\'as ruido; complementa, no sustituye.
+  \item[D3 -- GMM clustering.] \cite{clust_pedregosa2011sklearn,clust_schwarz1978bic} Mezcla gaussiana $K{=}3$ sin din\'amica temporal. Buena
+  cobertura pero \emph{flickering} severo: aisla cu\'anto aporta la din\'amica temporal.
+  \item[D4 -- HMM gaussiano (puente).] \cite{hmm_rabiner1989,hmm_viterbi1967} R\'eplica causal del detector previo. Sirve para
+  medir el efecto del \emph{look-ahead}; su supuesto gaussiano subestima las colas y motiva
+  a D8.
+  \item[D5 -- Markov-Switching de varianza.] \cite{hamilton1989,ms_kim1994} Probabilidades filtradas causales. Ganador de
+  cobertura sist\'emica en ventana larga; control interpretable, pero caro.
+  \item[D6 -- GARCH-t.] \cite{vol_bollerslev1986,vol_glosten1993} GJR-GARCH(1,1)-t con umbral causal sobre $\sigma$. Capta 2018 que
+  D4 no; sensor de volatilidad fuerte y barato.
+  \item[D7 -- change-point CUSUM.] \cite{cp_page1954,cp_truong2020} CUSUM de Page online robusto sobre la volatilidad.
+  Domina cuatro ejes (especificidad, persistencia, lead/lag, coste); mejor candidato a
+  ``segunda velocidad''.
+  \item[D8 -- HMM t-Student 4 estados.] Colas pesadas con $\nu$ por estado. Gana el eje
+  BIC; n\'ucleo recomendado, con matices (Secci\'on~\ref{sec:reco}).
+  \item[D9 -- jump model.] \cite{hmm_nystrup2020} Modelo de saltos penalizados ($\lambda{=}50$). Anti-flickering
+  rotundo, pero pierde cobertura de crisis lentas.
+  \item[D10 -- turbulencia de Mahalanobis.] \cite{kritzman2012} Distancia multivariante con covarianza
+  expandida. Capta sist\'emicas pero no 2013 (no fue turbulencia conjunta).
+  \item[D11 -- MS-GARCH \textit{(negativo)}.] \cite{vol_haasmittnikpaolella2004} MS-GARCH-t de Haas-Mittnik-Paolella. Degenera
+  en \emph{walk-forward}: el fold de la GFC colapsa a un r\'egimen
+  ($\mathrm{cov\_GFC}=0\%$).
+  \item[D12 -- autoencoder \textit{(negativo)}.] \cite{nn_hinton2006} AE $\to$ GMM frente a baseline PCA $\to$
+  GMM. El autoencoder empeora al PCA sin ganar cobertura: la no linealidad no aporta con
+  pocos datos.
+\end{description}
+
+% ====================================================================
+\section{Resultados comparativos}
+\label{sec:resultados}
+
+\subsection{Tabla maestra}
+La Tabla~\ref{tab:maestra} resume el comportamiento global. La separaci\'on por ventana es
+obligatoria: las dos mitades no son directamente comparables en cobertura.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Tabla maestra resumida (valores \emph{verbatim} de
+  \code{results/metrics_master_final.csv}). \emph{switching}: conmutaciones por d\'ia
+  (bajo = persistente); \emph{dur.}: duraci\'on media de r\'egimen en d\'ias; \emph{FA
+  global}: tasa global de falsa alarma; BIC s\'olo en modelos generativos.}
+  \label{tab:maestra}
+  \begin{tabular}{ll c r r r r}
+    \toprule
+    ID & Detector & Vent. & switching & dur.\,(d) & FA global & BIC \\
+    \midrule
+    \multicolumn{7}{l}{\textit{\color{ventlarga}Ventana larga (vio 2008 OOS)}}\\
+    D6 & \code{garch_t_vol} & 1993--2026 & 0.0141 & 70.15 & 0.845 & 26\,627 \\
+    D5 & \code{markov_switching_var_2s} & 1993--2026 & 0.0557 & 17.92 & 0.774 & 28\,024 \\
+    D7 & \code{changepoint_online} & 1993--2026 & 0.0022 & 435.68 & 0.867 & --- \\
+    D1 & \code{rule_vix_threshold} & 1998--2026 & 0.0132 & 75.20 & 0.697 & --- \\
+    D10 & \code{turbulence_mahalanobis} & 1998--2026 & 0.0873 & 11.44 & 0.815 & --- \\
+    D11 & \code{msgarch_regime} \textit{(neg.)} & 1991--2026 & 0.0312 & 31.93 & 0.949 & 26\,823 \\
+    \midrule
+    \multicolumn{7}{l}{\textit{\color{ventcorta}Ventana corta (no vio 2008 OOS)}}\\
+    D3 & \code{clustering_gmm_k3} & 2015--2026 & 0.1261 & 7.91 & 0.494 & 63\,016 \\
+    D4 & \code{hmm_gaussian_2s} & 2012--2026 & 0.1004 & 9.93 & 0.731 & 35\,379 \\
+    D2 & \code{rule_composite_riskoff} & 2015--2026 & 0.0385 & 25.72 & 0.725 & --- \\
+    D8 & \code{hmm_tstudent_4s} & 2012--2026 & 0.0520 & 19.13 & 0.519 & 24\,416 \\
+    D9 & \code{jump_model} & 2015--2026 & 0.0053 & 176.60 & 0.624 & --- \\
+    D12 & \code{deep_ae_regime} \textit{(neg.)} & 2015--2026 & 0.2873 & 3.48 & 0.603 & --- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Cobertura de crisis: estricta y estr\'es agregado}
+La cobertura ``estricta'' cuenta los d\'ias en el estado de crisis ($\code{state}=n{-}1$).
+Para comparar con justicia los detectores multi-estado con los binarios se define adem\'as
+el \textbf{estr\'es agregado}: en binarios coincide con la crisis; en multi-estado
+($n\ge3$) es la uni\'on de los dos estados m\'as severos (correcci\'on $+$ crisis). Las
+Tablas~\ref{tab:cobestricta} y~\ref{tab:estres} reportan ambas.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Cobertura de crisis con definici\'on \textbf{estricta} (proporci\'on de d\'ias
+  en crisis por ventana). \emph{NaN} = ventana fuera del rango OOS del detector (no se
+  penaliza lo que no se pudo ver).}
+  \label{tab:cobestricta}
+  \begin{tabular}{ll cccc}
+    \toprule
+    ID & Detector & GFC 2008 & EuroDeuda 2011 & COVID 2020 & Inflaci\'on 2022 \\
+    \midrule
+    \multicolumn{6}{l}{\textit{\color{ventlarga}Ventana larga}}\\
+    D6 & \code{garch_t_vol} & 1.000 & 0.741 & 0.940 & 0.804 \\
+    D5 & \code{markov_switching_var_2s} & 0.993 & 0.741 & 0.960 & 0.737 \\
+    D7 & \code{changepoint_online} & 1.000 & 0.671 & 0.840 & 0.766 \\
+    D1 & \code{rule_vix_threshold} & 0.938 & 0.635 & 0.900 & 0.349 \\
+    D10 & \code{turbulence_mahalanobis} & 0.822 & 0.482 & 0.760 & 0.431 \\
+    D11 & \code{msgarch_regime} \textit{(neg.)} & 0.000 & 0.118 & 0.200 & 0.359 \\
+    \midrule
+    \multicolumn{6}{l}{\textit{\color{ventcorta}Ventana corta} (GFC y EuroDeuda fuera de OOS)}\\
+    D3 & \code{clustering_gmm_k3} & NaN & NaN & 0.960 & 0.865 \\
+    D4 & \code{hmm_gaussian_2s} & NaN & NaN & 0.960 & 0.861 \\
+    D2 & \code{rule_composite_riskoff} & NaN & NaN & 0.840 & 0.538 \\
+    D8 & \code{hmm_tstudent_4s} & NaN & NaN & 0.660 & 0.332 \\
+    D9 & \code{jump_model} & NaN & NaN & 0.720 & 0.168 \\
+    D12 & \code{deep_ae_regime} \textit{(neg.)} & NaN & NaN & 0.540 & 0.101 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Cobertura con \textbf{estr\'es agregado} (correcci\'on $+$ crisis) para los tres
+  multi-estado; en los binarios coincide con la estricta. El criterio relajado eleva mucho
+  la cobertura de crisis lentas de D8 y D12.}
+  \label{tab:estres}
+  \begin{tabular}{ll cc cc}
+    \toprule
+    & & \multicolumn{2}{c}{COVID 2020} & \multicolumn{2}{c}{Inflaci\'on 2022} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+    ID & Detector ($K$) & estricta & estr\'es & estricta & estr\'es \\
+    \midrule
+    D3 & \code{clustering_gmm_k3} ($K{=}3$) & 0.960 & 0.960 & 0.865 & 0.865 \\
+    D8 & \code{hmm_tstudent_4s} ($K{=}4$) & 0.660 & \textbf{0.960} & 0.332 & \textbf{0.904} \\
+    D12 & \code{deep_ae_regime} ($K{=}3$) & 0.540 & \textbf{0.960} & 0.101 & \textbf{0.788} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent El estr\'es agregado tiene \textbf{dos caras}, y mostrar ambas es la lectura
+honesta (Figura~\ref{fig:estres}): elevar a ``correcci\'on $+$ crisis'' sube la cobertura
+de crisis lentas, \emph{pero tambi\'en} la activaci\'on en las trampas. En D8 el sell-off
+de 2018 pasa de $0.034$ a $0.814$ y la tasa global de falsa alarma de $0.52$ a $0.79$; en
+D3, la trampa de 2018 salta de $0.000$ a $0.729$ (Tabla~\ref{tab:especificidad}). No es una
+mejora gratuita, es un \emph{trade-off}.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Especificidad en las ventanas-trampa (proporci\'on de d\'ias ``encendido'';
+  bajo = mejor). Se muestran la versi\'on estricta y la de estr\'es agregado. \emph{NaN} =
+  trampa fuera del OOS del detector.}
+  \label{tab:especificidad}
+  \begin{tabular}{ll cc cc}
+    \toprule
+    & & \multicolumn{2}{c}{Taper 2013} & \multicolumn{2}{c}{Sell-off 2018} \\
+    \cmidrule(lr){3-4}\cmidrule(lr){5-6}
+    ID & Detector & estricta & estr\'es & estricta & estr\'es \\
+    \midrule
+    D7 & \code{changepoint_online} & 0.000 & 0.000 & 0.000 & 0.000 \\
+    D1 & \code{rule_vix_threshold} & 0.000 & 0.000 & 0.063 & 0.063 \\
+    D5 & \code{markov_switching_var_2s} & 0.038 & 0.038 & 0.810 & 0.810 \\
+    D6 & \code{garch_t_vol} & 0.113 & 0.113 & 0.873 & 0.873 \\
+    D10 & \code{turbulence_mahalanobis} & 0.123 & 0.123 & 0.302 & 0.302 \\
+    D9 & \code{jump_model} & NaN & NaN & 0.000 & 0.000 \\
+    D3 & \code{clustering_gmm_k3} & NaN & NaN & 0.000 & \textbf{0.729} \\
+    D8 & \code{hmm_tstudent_4s} & 0.000 & 0.000 & 0.034 & \textbf{0.814} \\
+    D12 & \code{deep_ae_regime} \textit{(neg.)} & NaN & NaN & 0.153 & 0.186 \\
+    D11 & \code{msgarch_regime} \textit{(neg.)} & 0.000 & 0.000 & 0.937 & 0.937 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Los planos de \emph{trade-off}}
+Las Figuras~\ref{fig:sensesp} y~\ref{fig:persens} cruzan los ejes en lugar de apilar tablas.
+Para que la comparaci\'on sea justa entre ventanas largas y cortas, la \textbf{sensibilidad
+se mide en la ventana OOS com\'un a los doce (COVID 2020)}; la cobertura de la GFC se
+ranquea s\'olo dentro del bloque de ventana larga.
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pdf_sensibilidad_especificidad.png}
+    \caption{Plano sensibilidad $\leftrightarrow$ especificidad. Eje X: especificidad
+    $=1-$ media de falsa alarma en 2013/2018. El color/forma codifica el grupo de ventana;
+    D11/D12 son exploratorio-negativos.}
+    \label{fig:sensesp}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pdf_persistencia_sensibilidad.png}
+    \caption{Plano persistencia (duraci\'on media, eje log) $\leftrightarrow$ sensibilidad.
+    D3/D12 \emph{flickean}; D7 y las reglas son muy persistentes.}
+    \label{fig:persens}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pdf_bic.png}
+    \caption{BIC de los modelos generativos (menor = mejor). \textbf{Aviso}: s\'olo es
+    estrictamente comparable sobre las mismas \emph{features} (D4 frente a D8). Gris =
+    negativo.}
+    \label{fig:bic}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{pdf_estres_vs_estricta.png}
+    \caption{Multi-estado: cobertura estricta frente a estr\'es agregado en COVID 2020 e
+    Inflaci\'on 2022. Lectura honesta de los dos lados del \emph{trade-off}.}
+    \label{fig:estres}
+  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.86\textwidth]{pdf_rank_heatmap.png}
+  \caption{Ranking por eje (1 = mejor; m\'as oscuro = mejor rango). \textbf{Corrige el
+  defecto} de la versi\'on previa: la cobertura se separa por ventana ---la GFC 2008
+  s\'olo ranquea entre los seis detectores de ventana larga, COVID 2020 entre los doce--- y
+  las filas se agrupan por grupo de ventana. El lead/lag medio est\'a censurado (ver
+  Secci\'on~\ref{sec:limitaciones}).}
+  \label{fig:rank}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{pdf_leadlag.png}
+  \caption{Lead/lag por evento (d\'ias de \emph{trading}; negativo = la se\~nal sostenida
+  anticipa el suelo del \emph{drawdown}). El asterisco y el borde discontinuo marcan los
+  valores \textbf{censurados} en $\pm252$ d\'ias: la se\~nal ya estaba activa al inicio de
+  la ventana de b\'usqueda, de modo que no es anticipaci\'on genuina sino sesgo
+  \emph{always-on}. Filas separadas por grupo de ventana.}
+  \label{fig:leadlag}
+\end{figure}
+
+\subsection{Reparto del podio}
+La Tabla~\ref{tab:podio} resume qu\'e familia gana en qu\'e eje. \textbf{Cuatro familias se
+reparten seis ejes; no existe detector dominante.}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Reparto del podio por eje. La cobertura sist\'emica se da separada por grupo de
+  ventana (nunca mezclada).}
+  \label{tab:podio}
+  \begin{tabular}{lll}
+    \toprule
+    Eje & Familia ganadora & Detalle \\
+    \midrule
+    Cobertura sist\'emica (ventana larga) & F4 Markov-Switching & D5 0.98 $>$ D6 0.97 $\approx$ D1/D7 0.92 \\
+    Cobertura sist\'emica (ventana corta) & F2/F3 baseline & D3 0.96 $=$ D4 0.96 $>$ D2 0.84 \\
+    Especificidad (trampas) & F6 change-point & D7 $1.00$ en ambas trampas \\
+    Persistencia / anti-flicker & F6 change-point & D7 436 d; switching 0.002 \\
+    Lead/lag (sostenido) & F6 change-point & D7 anticipa temprano en todos los eventos \\
+    Ajuste BIC (in-sample) & F3 HMM t-Student & D8 24\,416; $\Delta$BIC $+10\,963$ vs D4 \\
+    Coste computacional & F6 / F1 & D7 / D1 (bajo) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ====================================================================
+\section{Hallazgos metodol\'ogicos transversales}
+
+Son el verdadero producto de esta capa: lecciones sobre \emph{c\'omo} evaluar reg\'imenes
+de forma honesta, transferibles m\'as all\'a de cualquier detector concreto.
+
+\paragraph{(a) El \emph{look-ahead} compraba suavidad, no acierto.} Al reimplementar el HMM
+gaussiano de la tarea previa de forma causal (D4), la conmutaci\'on sube de $0.047$
+(in-sample) a $0.100$ (causal) y el modelo sigue fallando 2013 ($25\%$) y 2018 ($46\%$). El
+acierto en crisis grandes nunca depende del \emph{look-ahead}; lo que \'este aportaba era
+\textbf{cosm\'etica temporal} (persistencia falsa ``prestada del futuro''), no capacidad de
+clasificaci\'on.
+
+\paragraph{(b) El Viterbi por bloque era menos causal y menos estable que el filtrado
+forward.} Al sustituir el Viterbi intra-bloque por \textbf{filtrado forward} en D4/D8, la
+conmutaci\'on baj\'o de $0.124$ a $0.100$ y la duraci\'on media subi\'o de $8.1$ a $9.9$
+d\'ias. Contra la intuici\'on, el cambio mejor\'o la estabilidad: el Viterbi reiniciaba la
+decodificaci\'on en cada frontera de bloque (21 d\'ias), inyectando conmutaci\'on
+artificial; el filtro forward con \emph{burn-in} es continuo ---m\'as causal \emph{y} m\'as
+persistente. El ``\'optimo'' offline introduce un artefacto de frontera que el filtrado
+causal evita.
+
+\paragraph{(c) La t-Student est\'a bien especificada; el gaussiano no.} Con las mismas 7
+\emph{features}, el HMM t-Student de 4 estados (D8) bate al gaussiano de 2 estados (D4) por
+$\Delta\mathrm{BIC}\approx{+}10\,963$ (Tabla~\ref{tab:bic}). M\'as a\'un, D8 estima los
+grados de libertad $\nu$ \textbf{decrecientes por estado} $[10.2,\,7.6,\,4.2,\,2.4]$: la
+calma es casi gaussiana y la crisis tiene las colas m\'as pesadas, exactamente la
+estructura que predice la teor\'ia de los hechos estilizados~\cite{hmm_bulla2011,
+hmm_nystrup2015}. La t-Student no es un adorno: es la correcci\'on distribucional que la
+curtosis 25--40 de los datos exige.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Bondad de ajuste de los modelos generativos. El BIC s\'olo es comparable sobre
+  las mismas \emph{features}: el contraste limpio es D4 frente a D8 (ambos HMM, mismo
+  conjunto de 7 \emph{features} puente).}
+  \label{tab:bic}
+  \begin{tabular}{ll r r r}
+    \toprule
+    ID & Detector & logL & AIC & BIC \\
+    \midrule
+    D8 & \code{hmm_tstudent_4s} & $-11\,536.3$ & 23\,390.7 & \textbf{24\,415.9} \\
+    D6 & \code{garch_t_vol} & $-13\,285.6$ & 26\,583.1 & 26\,626.6 \\
+    D11 & \code{msgarch_regime} \textit{(neg.)} & $-13\,365.5$ & 26\,750.9 & 26\,823.3 \\
+    D5 & \code{markov_switching_var_2s} & $-13\,984.2$ & 27\,980.3 & 28\,023.8 \\
+    D4 & \code{hmm_gaussian_2s} & $-17\,381.4$ & 34\,908.7 & \textbf{35\,379.4} \\
+    D3 & \code{clustering_gmm_k3} & $-29\,789.0$ & 60\,392.0 & 63\,016.2 \\
+    \midrule
+    \multicolumn{5}{l}{$\Delta\mathrm{BIC}$ (D4 $-$ D8) $= 35\,379.4 - 24\,415.9 = \mathbf{10\,963.5}$ (evidencia ``muy fuerte'')}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{(d) El \emph{taper tantrum} de 2013 es un punto ciego universal.} Seis
+detectores independientes de familias distintas que s\'i tuvieron 2013 en su OOS coinciden
+en \emph{no} verlo (activaci\'on entre $0$ y $\sim12\%$): D1 reglas ($0.00$), D5 MS-VAR
+($0.038$), D6 GARCH ($0.113$), D7 change-point ($0.00$), D8 HMM-t ($0.00$) y D10 turbulencia
+($0.123$). El hallazgo \textbf{no} es ``2013 es ruido reclasificable''; es que \textbf{ninguna
+definici\'on de crisis basada en volatilidad o correlaci\'on de renta variable captura
+2013}, porque el \emph{taper} fue un shock de \emph{tipos} sin estr\'es sist\'emico de
+renta variable. Que seis detectores converjan es \emph{evidencia robusta}, no un fallo
+com\'un: \textbf{la taxonom\'ia de r\'egimen importa}. Capturar 2013 exigir\'ia ampliar la
+taxonom\'ia de \emph{features} (curva de tipos, MOVE) o de reg\'imenes, no afinar un umbral;
+por eso 2013 se mantiene como ventana-trampa para medir especificidad.
+
+\paragraph{(e) La complejidad no se paga: parsimonia validada.} Los dos modelos m\'as
+complejos son resultados negativos expl\'icitos. El MS-GARCH-t (D11) \emph{degenera} en
+\emph{walk-forward}: el fold de la GFC colapsa a un \'unico r\'egimen, con cobertura de
+2008 del $0\%$ y tasa de falsa alarma del $0.95$. El autoencoder (D12) \emph{empeora} a su
+baseline lineal PCA $\to$ GMM (conmutaci\'on $0.287$ frente a $0.091$, falsa alarma $0.60$
+frente a $0.14$) sin ganar cobertura. Con $\sim4$ crisis en la muestra, la riqueza
+param\'etrica no se identifica: a veces es neutra (D12), a veces destructiva (D11). Los
+baselines cubren los huecos que los complejos dejan.
+
+\paragraph{(f) Dos arreglos imprescindibles del marco de evaluaci\'on.} (i)~\textbf{Severidad
+vol-primaria}: con $K{=}2$, ordenar los estados por $z(\text{std})-z(\text{media})$ dejaba
+que el signo ruidoso de una diferencia de medias casi nula invirtiera crisis$\leftrightarrow$calma
+en detectores que separan s\'olo en varianza ($\sigma$ GARCH, turbulencia). La soluci\'on
+fue ordenar por banda de volatilidad (ancho $15\%$ de la vol media) y desempatar por retorno
+s\'olo entre vol\'umenes pr\'oximos. (ii)~\textbf{Etiquetado econ\'omico por fold}: re-fijar
+el orden $0=$ calma $\dots$ $n{-}1=$ crisis con los retornos de \emph{cada} fold. Sin estos
+dos arreglos, la mitad de los detectores habr\'ian sido incomparables.
+
+% ====================================================================
+\section{Recomendaci\'on para la siguiente capa}
+\label{sec:reco}
+
+La propuesta del TFM mayor es un HMM t-Student de 4 estados con l\'ogica de ``dos
+velocidades''. \textbf{La evidencia de esta capa es \emph{consistente con} ese n\'ucleo y no
+lo contradice; sugiere complementarlo.} Se evita deliberadamente el verbo ``confirma'': el
+respaldo a D8 descansa en un eje \textbf{in-sample} (BIC) y en una m\'etrica
+\textbf{favorable por construcci\'on} a $K\ge3$ (el estr\'es agregado), \emph{no} en
+cobertura OOS estricta, donde D8 es modesto.
+
+\begin{enumerate}[leftmargin=1.4em]
+  \item \textbf{N\'ucleo HMM t-Student multi-estado (D8), reforzado por dos v\'ias ---cada
+  una con su asterisco.}
+    \begin{itemize}
+      \item \emph{Por BIC (in-sample)}: gana el eje de ajuste con holgura
+      ($\Delta\mathrm{BIC}\approx{+}10\,963$ sobre D4 con las mismas \emph{features}).
+      \emph{Pero} el BIC es bondad de ajuste in-sample, no capacidad predictiva OOS.
+      \item \emph{Por la l\'ogica correcci\'on$\leftrightarrow$crisis}: con estr\'es
+      agregado, D8 iguala a los binarios (COVID $0.66\to0.96$; Inflaci\'on $0.33\to0.90$),
+      lo que da sentido al cuarto estado y a la ``segunda velocidad''. \emph{Pero} el
+      estr\'es agregado favorece por construcci\'on a los multi-estado, la cobertura OOS
+      estricta es modesta (COVID $0.66$) y D8 nunca evalu\'o 2008 OOS. Es un argumento de
+      \emph{plausibilidad estructural}, no de superioridad OOS demostrada.
+    \end{itemize}
+  \item \textbf{Complementar con un change-point r\'apido (D7)} como segunda velocidad /
+  alerta temprana: domina especificidad, persistencia, lead/lag y coste. Donde el HMM-t da
+  la \emph{taxonom\'ia} (qu\'e tipo de r\'egimen), el change-point da la \emph{reactividad}
+  (cu\'ando cambia el nivel).
+  \item \textbf{Conservar baselines de control}: D1 (regla VIX) y D5/D6 (MS-VAR / GARCH-t),
+  con la mejor cobertura sist\'emica en ventana larga. Si un modelo complejo no bate a D1 en
+  cobertura de GFC$+$COVID, no se justifica su coste.
+  \item \textbf{Descartar D11 y D12} como detectores operativos: validan la parsimonia, no
+  la aportan.
+\end{enumerate}
+
+\noindent En s\'intesis: la exploraci\'on \emph{no obliga} a cambiar la propuesta, pero la
+matiza. El cuarto estado tiene sentido (es la ``correcci\'on'' que separa de la ``crisis'')
+y la t-Student es necesaria, pero la validaci\'on definitiva del n\'ucleo deber\'a hacerse
+con cobertura OOS estricta sobre m\'as crisis y, a ser posible, con la GFC dentro de la
+muestra de prueba.
+
+% ====================================================================
+\section{Limitaciones y trabajo futuro}
+\label{sec:limitaciones}
+
+La honestidad de este marco exige declarar sus l\'imites:
+
+\begin{description}[leftmargin=1.2em,style=nextline]
+  \item[Significancia con $n\approx4$ crisis.] Toda la comparaci\'on descansa en cuatro
+  crisis sist\'emicas (2008, 2011, 2020, 2022) y dos ventanas-trampa (2013, 2018). \textbf{No
+  hay tests de significancia ni intervalos de confianza}; diferencias de pocos puntos entre
+  detectores \emph{no} son estad\'isticamente distinguibles. El podio es evidencia
+  cualitativa direccional, no una ordenaci\'on con respaldo inferencial. Es una limitaci\'on
+  asumida del dise\~no (las crisis son raras por definici\'on), no un descuido.
+  \item[BIC in-sample.] Las m\'etricas de comportamiento (cobertura, falsa alarma, lead/lag,
+  persistencia) son OOS sin \emph{look-ahead}; pero logL/AIC/BIC son \textbf{in-sample por
+  definici\'on}. El eje de BIC mide especificaci\'on, no capacidad predictiva fuera de
+  muestra, y as\'i se interpreta.
+  \item[Lead/lag censurado.] El lead/lag se busca en los 252 d\'ias previos al suelo; un
+  valor de $-252$ \textbf{no} significa ``252 d\'ias exactos de anticipaci\'on'', sino que
+  la se\~nal ya estaba activa al inicio de la ventana ---el lead real es $\ge252$ y queda
+  sin medir (censura por la derecha). D7 toca ese tope en 3 de sus 4 eventos, as\'i que su
+  anticipaci\'on es un l\'imite inferior (Figura~\ref{fig:leadlag}); su virtud es \emph{cualitativa} (cruza pronto y se
+  mantiene), no una cifra precisa de d\'ias.
+  \item[Equidad de ventana.] La GFC 2008 cae cerca del inicio de datos para las ventanas
+  cortas: D8 nunca la evalu\'o OOS y su validaci\'on sist\'emica se apoya en COVID 2020. Por
+  el mismo motivo, 2013 es N/A (fuera de OOS) para los detectores de ventana corta y no
+  cuenta ni a favor ni en contra.
+\end{description}
+
+\paragraph{Trabajo futuro declarado.} (B1)~\textbf{Bootstrap por bloques}
+(\emph{stationary/circular block bootstrap}) sobre las series OOS, para obtener bandas de
+confianza de cobertura, falsa alarma y conmutaci\'on, y contrastar pares de detectores
+respetando la autocorrelaci\'on. (B2)~\textbf{An\'alisis de sensibilidad de
+hiperpar\'ametros} del protocolo \emph{walk-forward} (\code{train_size}, \code{step}) y del
+etiquetado econ\'omico (\code{VOL_CLOSE_FRAC}), para comprobar que el reparto del podio es
+robusto y no un artefacto de la configuraci\'on elegida.
+
+% ====================================================================
+\section*{Nota de reproducibilidad}
+\addcontentsline{toc}{section}{Nota de reproducibilidad}
+Todos los n\'umeros de este informe provienen \emph{verbatim} de
+\code{results/metrics_master_final.csv} (con el BIC de D4 corroborado en
+\code{results/metrics_04_hmm_gaussian_2s.csv}). Las figuras \code{pdf_*.png} se regeneran de
+forma determinista desde ese CSV con \code{python scripts/figs_pdf/build_pdf_figs.py}; las
+figuras \code{eda_*.png} provienen del an\'alisis exploratorio. No se ha re-ejecutado
+ning\'un detector ni recalculado ninguna m\'etrica para producir este documento.
+
+% ====================================================================
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

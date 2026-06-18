@@ -165,8 +165,9 @@
      NO es ruido, es que **la taxonomía de régimen importa** — ninguna definición de
      crisis basada en vol/correlación equity captura un shock de tipos. Se mantiene
      como ventana-trampa.
-- **Recomendación TFM**: núcleo HMM t-Student multi-estado (confirmado por BIC +
-  lógica corrección↔crisis = "dos velocidades") + change-point rápido tipo D7 como
+- **Recomendación TFM**: núcleo HMM t-Student multi-estado (respaldo *consistente con*
+  la propuesta —BIC in-sample + lógica corrección↔crisis = "dos velocidades"—, no
+  superioridad OOS estricta) + change-point rápido tipo D7 como
   alerta temprana + D1/D5/D6 como control. 2013 = límite de taxonomía, no objetivo.
 - **CHECKPOINT 4 alcanzado. FASE 4 cerrada. FASE 3 completa, capa de exploración
   terminada.**
