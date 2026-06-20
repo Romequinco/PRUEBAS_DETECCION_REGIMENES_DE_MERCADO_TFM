@@ -1,6 +1,11 @@
 """Re-ejecuta los notebooks de la Tanda 1 con el núcleo corregido (Arreglos 1-3) y
-compara las métricas con el backup en /tmp/t1_backup. Reporta qué columnas cambian.
+compara las métricas con el backup. Reporta qué columnas cambian.
+
+Ruta de backup portable: usa $T1_BACKUP si está definida; si no, <tempdir>/t1_backup
+(antes era /tmp/t1_backup, no portable a Windows).
 """
+import os
+import tempfile
 from pathlib import Path
 
 import nbformat as nbf
@@ -10,7 +15,7 @@ from nbconvert.preprocessors import ExecutePreprocessor
 
 ROOT = Path(__file__).resolve().parents[2]
 NBS = ["01_rule_vix_threshold.ipynb", "03_clustering_gmm.ipynb", "04_hmm_gaussian_2s.ipynb"]
-BACKUP = Path("/tmp/t1_backup")
+BACKUP = Path(os.environ.get("T1_BACKUP", Path(tempfile.gettempdir()) / "t1_backup"))
 
 
 def run_nb(name: str) -> int:
