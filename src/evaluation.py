@@ -81,12 +81,14 @@ class EvaluationResult:
 
     detector_name: str
     crisis_coverage: dict[str, float] = field(default_factory=dict)   # % días crisis por ventana
+    crisis_coverage_ci: dict[str, tuple[float, float]] = field(default_factory=dict)  # IC bootstrap por ventana
     false_alarm_in_fp: dict[str, float] = field(default_factory=dict) # % días crisis en ventanas FP
     lead_lag_days: dict[str, float] = field(default_factory=dict)     # señal vs trough (días, - = anticipa)
     false_alarm_rate: float = float("nan")                            # global, fuera de crisis
     switching_rate: float = float("nan")                              # conmutaciones / nº días
     mean_regime_duration: float = float("nan")                        # persistencia (días)
     label_stability: float = float("nan")                             # estabilidad walk-forward [0,1]
+    silhouette: float = float("nan")                                  # separación de regímenes en feature-space
     log_likelihood: float = float("nan")
     aic: float = float("nan")
     bic: float = float("nan")
@@ -113,13 +115,19 @@ class EvaluationResult:
             "switching_rate": self.switching_rate,
             "mean_regime_duration": self.mean_regime_duration,
             "label_stability": self.label_stability,
+            "silhouette": self.silhouette,
             "log_likelihood": self.log_likelihood,
             "aic": self.aic,
             "bic": self.bic,
         }
-        # Métricas por ventana (claves constantes -> esquema estable).
+        # Métricas por ventana (claves constantes -> esquema estable). Junto a cada
+        # cobertura puntual se añade su IC bootstrap por bloques [lo, hi] (NaN si la
+        # ventana cae fuera del rango OOS o si el detector nunca marca crisis ahí).
         for k in CRISIS_WINDOWS:
             row[f"cov_{k}"] = self.crisis_coverage.get(k, float("nan"))
+            lo, hi = self.crisis_coverage_ci.get(k, (float("nan"), float("nan")))
+            row[f"cov_{k}_lo"] = lo
+            row[f"cov_{k}_hi"] = hi
         for k in FALSE_POSITIVE_WINDOWS:
             row[f"fa_{k}"] = self.false_alarm_in_fp.get(k, float("nan"))
         for k in DRAWDOWN_TROUGHS:
@@ -416,6 +424,82 @@ def label_stability(
     return float(np.mean(agreements)) if agreements else float("nan")
 
 
+def silhouette_states(X: pd.DataFrame, states: pd.Series, *, max_n: int = 4000,
+                      random_state: int = 42) -> float:
+    """Coeficiente de silueta medio de las etiquetas de régimen en el espacio de features.
+
+    Interpreta los regímenes como un "clustering" sobre las features causales y mide
+    cuán separados/compactos quedan (en [-1, 1]; >0 = regímenes bien separados). Es
+    una métrica de calidad de partición ÚTIL sobre todo para los detectores de
+    clustering (D3 GMM, D9 jump, D12 AE/PCA), pero se computa para cualquiera que
+    exponga features alineadas. Submuestrea a `max_n` filas por coste (la silueta es
+    O(n²)). Devuelve NaN si hay <2 estados observados o <3 muestras por estado.
+    """
+    from sklearn.metrics import silhouette_score
+
+    idx = X.index.intersection(states.index)
+    if len(idx) < 10:
+        return float("nan")
+    Xa = X.loc[idx]
+    s = states.loc[idx].astype(int)
+    # quitar filas con NaN en features (la silueta no las admite)
+    ok = ~Xa.isna().any(axis=1)
+    Xa, s = Xa[ok], s[ok]
+    labels, counts = np.unique(s.values, return_counts=True)
+    if len(labels) < 2 or counts.min() < 3:
+        return float("nan")
+    if len(Xa) > max_n:
+        rng = np.random.default_rng(random_state)
+        sel = rng.choice(len(Xa), size=max_n, replace=False)
+        Xa, s = Xa.iloc[sel], s.iloc[sel]
+        if len(np.unique(s.values)) < 2:
+            return float("nan")
+    try:
+        return float(silhouette_score(Xa.values, s.values))
+    except Exception:  # noqa: BLE001
+        return float("nan")
+
+
+def block_bootstrap_coverage_ci(
+    states: pd.Series, crisis_state: int,
+    windows: dict[str, tuple[str, str]] = None, *,
+    n_boot: int = 500, block: int = 5, alpha: float = 0.05, random_state: int = 42,
+) -> dict[str, tuple[float, float]]:
+    """Intervalo de confianza (bootstrap por bloques) de la cobertura de crisis por ventana.
+
+    Para cada ventana de crisis remuestrea el indicador diario (estado==crisis) en
+    BLOQUES de `block` días —preservando la autocorrelación de los episodios— y toma
+    el percentil [alpha/2, 1-alpha/2] de la cobertura remuestreada. Responde de forma
+    directa al trabajo futuro "B1: bootstrap por bloques" declarado en el informe.
+
+    IMPORTANTE (honestidad): el IC cuantifica la incertidumbre DENTRO de la ventana
+    (muestreo de días autocorrelados), NO entre eventos. Con n≈4 crisis no sustituye
+    a un test de significancia entre eventos; es una banda de precisión intra-evento.
+    Devuelve {ventana: (lo, hi)}; (NaN, NaN) si la ventana cae fuera del rango OOS.
+    """
+    windows = windows or CRISIS_WINDOWS
+    rng = np.random.default_rng(random_state)
+    out: dict[str, tuple[float, float]] = {}
+    for name, (a, b) in windows.items():
+        seg = states.loc[(states.index >= pd.Timestamp(a)) & (states.index <= pd.Timestamp(b))]
+        ind = (seg == crisis_state).astype(int).values
+        n = len(ind)
+        if n == 0:
+            out[name] = (float("nan"), float("nan"))
+            continue
+        n_blocks = int(np.ceil(n / block))
+        max_start = max(1, n - block + 1)
+        boots = np.empty(n_boot)
+        for it in range(n_boot):
+            starts = rng.integers(0, max_start, size=n_blocks)
+            sample = np.concatenate([ind[s:s + block] for s in starts])[:n]
+            boots[it] = sample.mean()
+        lo = float(np.quantile(boots, alpha / 2))
+        hi = float(np.quantile(boots, 1 - alpha / 2))
+        out[name] = (lo, hi)
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Orquestador: una llamada -> EvaluationResult completo
 # --------------------------------------------------------------------------- #
@@ -455,6 +539,7 @@ def evaluate(
     res = EvaluationResult(
         detector_name=detector.name,
         crisis_coverage=crisis_coverage(states, cs),
+        crisis_coverage_ci=block_bootstrap_coverage_ci(states, cs),
         false_alarm_in_fp=false_alarm_in_windows(states, cs),
         lead_lag_days=lead_lag(p_crisis),
         false_alarm_rate=false_alarm_rate(states, cs),
@@ -463,6 +548,14 @@ def evaluate(
         label_stability=label_stability(wf_panel.attrs.get("stability_panel")),
         n_states=detector.n_states,
     )
+
+    # Silueta de los regímenes en el espacio de features (calidad de partición; útil
+    # sobre todo para clustering). Se computa sobre las etiquetas causales OOS.
+    if X_full is not None:
+        try:
+            res.silhouette = silhouette_states(X_full, states)
+        except Exception:  # noqa: BLE001
+            pass
 
     # Bondad de ajuste (donde el modelo la exponga; NaN si no).
     if X_full is not None:
