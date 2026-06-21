@@ -31,6 +31,7 @@
 
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\Dt}[1]{\textbf{#1}}
+\setlength{\emergencystretch}{3em}  % evita overfull hbox por rutas \code no divisibles
 
 \title{\textbf{Detecci\'on de reg\'imenes de mercado:\\ un marco de evaluaci\'on causal y comparativo}\\[2mm]
 \large Primera capa del TFM --- banco de pruebas de 12 detectores}
@@ -257,7 +258,7 @@ resultado negativo es informativo (Tabla~\ref{tab:mapa}).
   BIC; n\'ucleo recomendado, con matices (Secci\'on~\ref{sec:reco}).
   \item[D9 -- jump model.] \cite{hmm_nystrup2020} Modelo de saltos penalizados ($\lambda{=}50$). Anti-flickering
   rotundo, pero pierde cobertura de crisis lentas.
-  \item[D10 -- turbulencia de Mahalanobis.] \cite{kritzman2012} Distancia multivariante con covarianza
+  \item[D10 -- turbulencia de Mahalanobis.] \cite{kritzman2010,kritzman2012} Distancia multivariante con covarianza
   expandida. Capta sist\'emicas pero no 2013 (no fue turbulencia conjunta).
   \item[D11 -- MS-GARCH \textit{(negativo)}.] \cite{vol_haasmittnikpaolella2004} MS-GARCH-t de Haas-Mittnik-Paolella. Degenera
   en \emph{walk-forward}: el fold de la GFC colapsa a un r\'egimen
@@ -279,7 +280,7 @@ obligatoria: las dos mitades no son directamente comparables en cobertura.
   \centering
   \small
   \caption{Tabla maestra resumida (valores \emph{verbatim} de
-  \code{results/metrics_master_final.csv}). \emph{switching}: conmutaciones por d\'ia
+  \code{results/metrics_master.csv}). \emph{switching}: conmutaciones por d\'ia
   (bajo = persistente); \emph{dur.}: duraci\'on media de r\'egimen en d\'ias; \emph{FA
   global}: tasa global de falsa alarma; BIC s\'olo en modelos generativos.}
   \label{tab:maestra}
@@ -688,16 +689,15 @@ robusto y no un artefacto de la configuraci\'on elegida.
 % ====================================================================
 \section*{Nota de reproducibilidad}
 \addcontentsline{toc}{section}{Nota de reproducibilidad}
-Todos los n\'umeros de este informe provienen \emph{verbatim} de
-\code{results/metrics_master_final.csv} (con el BIC de D4 corroborado en
-\code{results/metrics_04_hmm_gaussian_2s.csv}). Las figuras \code{pdf_*.png} se regeneran de
-forma determinista desde ese CSV con \code{python scripts/figs_pdf/build_pdf_figs.py}; las
-figuras \code{synth_*.png} (scorecard e IC de cobertura) desde \code{results/metrics_master.csv}
-con \code{python scripts/figs_pdf/build_synthesis_figs.py}; las \code{eda_*.png} provienen del
-an\'alisis exploratorio. Las m\'etricas de comportamiento y de ajuste son id\'enticas a la
-versi\'on previa: esta revisi\'on solo \textbf{a\~nade} dos m\'etricas ---silueta de reg\'imenes
-e intervalos de cobertura por \emph{bootstrap}--- sin re-tunear ning\'un detector ni alterar
-ninguna cifra anterior.
+Todos los n\'umeros de este informe provienen \emph{verbatim} de un \'unico master
+can\'onico, \code{results/metrics_master.csv} (43 columnas: comportamiento, ajuste, silueta
+e intervalos de cobertura), reconstruible con \code{_rebuild_master.py}. Las figuras
+\code{pdf_*.png} y \code{synth_*.png} (scorecard e IC de cobertura) se regeneran de forma
+determinista desde ese mismo CSV con los scripts de \code{scripts/figs_pdf/}; las
+\code{eda_*.png} provienen del an\'alisis exploratorio. Las m\'etricas de comportamiento y de
+ajuste son id\'enticas a la versi\'on previa: esta revisi\'on solo \textbf{a\~nade} dos
+m\'etricas ---silueta de reg\'imenes e intervalos de cobertura por \emph{bootstrap}--- sin
+re-tunear ning\'un detector ni alterar ninguna cifra anterior.
 
 % ====================================================================
 \bibliographystyle{plain}
