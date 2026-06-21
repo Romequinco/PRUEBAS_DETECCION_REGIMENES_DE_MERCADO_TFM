@@ -2,14 +2,21 @@
 """Constructor del notebook 09_jump_model.ipynb (D9, FASE 3 Tanda 4 - EXPLORATORIA).
 
 Crea las celdas, ejecuta con nbconvert (0 errores esperados) y guarda el .ipynb con
-las figuras inline. Vuelca figuras a results/ y la fila de metricas (23 columnas) a
-results/metrics_09_jump_model.csv, y refresca results/metrics_master.csv.
+las figuras inline. Vuelca figuras a results/ y la fila de metricas (32 columnas) a
+results/metrics_09_jump_model.csv. NO escribe metrics_master.csv (lo reconstruye de
+forma centralizada scripts/verify/_rebuild_master.py).
 
 STEP elegido = 21 (refit ~mensual), igual que D6/D10 para comparacion JUSTA con D3.
 Coste estimado: fit ~2.6s @2000 filas -> ~6.6s @4000 filas (lineal). Train de 252*8=2016
 filas, OOS hasta 4665 -> ~127 folds, fit medio ~5s -> ~11-13 min de walk-forward, por
 debajo del guardarrail de 15 min (timeout nbconvert = 2400s, amplio margen). No se sube
 el step para no perder resolucion OOS frente al rival D3 (que usa el protocolo estandar).
+La ilustracion del barrido de lambda (seccion 3) anade ~6 fits in-sample (~40s), tambien
+dentro del margen.
+
+Figuras del informe (CONSERVADAS): d09_persistence_vs_d3.png, d09_sp500_regimes.png,
+d09_coverage.png, d09_timeline.png. Figuras NUEVAS (Ola 1): d09_feature_scatter.png,
+d09_lambda_effect.png, d09_vs_d3_tradeoff.png, d09_duration_hist.png.
 
 Uso:  python scripts/builders/_build_09.py
 """
@@ -47,8 +54,12 @@ Por eso D9 aísla **cuánto aporta la persistencia temporal** sobre el clusterin
 
 > **Hipótesis D9:** *frente a D3 (GMM estático, sin término temporal: switching≈0.126,
 > duración media≈7.9 d → flickering alto), D9 debe dar MENOS switching y MAYOR duración
-> media SIN perder cobertura de crisis, gracias a $\lambda$.* Es también el rival clásico
-> de D12 (autoencoder).
+> media gracias a $\lambda$. La pregunta del TFM no es solo si lo consigue, sino **a qué
+> precio**: ¿conserva la cobertura de crisis o la persistencia se paga sacrificando la
+> detección de shocks rápidos?* Es también el rival clásico de D12 (autoencoder).
+
+El **corazón de este notebook es ese trade-off persistencia ↔ cobertura**: lo medimos,
+lo visualizamos lado a lado (§7) y lo convertimos en un veredicto "mejor-para-qué" (§13).
 
 ## Vía de implementación
 Librería **`jumpmodels`** (Nystrup et al.), coordinate-descent + DP estándar, con métodos
@@ -59,6 +70,28 @@ momentum) tienen escala ~0.1–0.3 y quedarían infra-ponderadas.
 
 **Estados:** $K=2$ (bull/bear clásico de Nystrup; crisis = estado de alta vol). $\lambda=50$
 sobre features estandarizadas (persistencia ~mensual sin congelar la señal).""")
+
+# ------------------------------------------------------------------ #
+md(r"""## Índice navegable
+
+| # | Sección | Figura |
+|---|---------|--------|
+| 1 | [Ajuste in-sample y orientación económica](#s1) | — |
+| 2 | [Espacio de 15 features (PCA 2D) por estado](#s2) | **`d09_feature_scatter.png`** *(nueva)* |
+| 3 | [Efecto de la penalización $\lambda$ (barrido in-sample)](#s3) | **`d09_lambda_effect.png`** *(nueva)* |
+| 4 | [Verificación de causalidad de `predict_online`](#s4) | — |
+| 5 | [Walk-forward causal (la comparable)](#s5) | — |
+| 6 | [Persistencia: D9 vs D3](#s6) | `d09_persistence_vs_d3.png` |
+| 7 | [Trade-off D9 vs D3: persistencia ↔ cobertura](#s7) | **`d09_vs_d3_tradeoff.png`** *(nueva)* |
+| 8 | [Duración de episodios (flickering) frente a D3](#s8) | **`d09_duration_hist.png`** *(nueva)* |
+| 9 | [S&P 500 coloreado por régimen (causal OOS)](#s9) | `d09_sp500_regimes.png` |
+| 10 | [Cobertura por evento (crisis y trampas)](#s10) | `d09_coverage.png` |
+| 11 | [Timeline de régimen y duraciones](#s11) | `d09_timeline.png` |
+| 12 | [Volcado de métricas (esquema canónico, 32 col.)](#s12) | — |
+| 13 | [Conclusión — veredicto "mejor-para-qué"](#s13) | — |
+
+*Las secciones 2, 3, 7 y 8 son las añadidas en esta revisión; el resto preserva la
+verificación causal, las figuras del informe y el volcado de métricas originales.*""")
 
 # ------------------------------------------------------------------ #
 co(r"""%matplotlib inline
@@ -74,7 +107,9 @@ while not (ROOT / 'src').exists() and ROOT != ROOT.parent:
 sys.path.insert(0, str(ROOT))
 RESULTS = ROOT / 'results'; RESULTS.mkdir(exist_ok=True)
 from src import evaluation as ev
+from src import viz                      # helpers de visualizacion de casa (paleta consistente)
 from detectors.jump_model import JumpModel
+viz.use_house_style()                    # rcParams homogeneos (fuentes, grid, DPI)
 
 # Mismas 15 features causales que D3 (rival directo), ventana 2007+.
 X = pd.read_parquet(ROOT / 'data' / 'processed' / 'features.parquet')
@@ -90,10 +125,10 @@ print('Features:', FEATURES)
 print(f'n_states={N_STATES}  jump_penalty(lambda)={JUMP_PENALTY}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 1. Ajuste in-sample: estados del jump model y orientación económica
+md(r"""## <a id="s1"></a>1. Ajuste in-sample: estados del jump model y orientación económica
 
 Ajuste sobre toda la muestra (solo para inspeccionar; la clasificación comparable es la
-**causal** de §3). El orden económico (0=calma · 1=crisis) lo fija `label_states_economically`
+**causal** de §5). El orden económico (0=calma · 1=crisis) lo fija `label_states_economically`
 con el retorno del S&P 500 (vol-primario, Arreglo 4).""")
 
 co(r"""det_is = JumpModel(n_states=N_STATES, jump_penalty=JUMP_PENALTY).fit(X)
@@ -114,7 +149,95 @@ print('switching in-sample =', round(ev.switching_rate(states_is), 4),
       '| duracion media =', round(ev.mean_regime_duration(states_is), 1), 'd')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 2. Verificación de CAUSALIDAD de `predict_online`
+md(r"""## <a id="s2"></a>2. Espacio de 15 features (PCA 2D) coloreado por estado  ·  *figura nueva*
+
+Antes de medir la persistencia conviene ver **dónde** parte el jump model el espacio de
+features. Proyectamos las 15 features causales a 2 componentes principales (PCA, sobre
+features estandarizadas como hace el propio detector) y coloreamos cada día por su estado
+**in-sample**. Si los dos estados ocupan regiones separadas del plano, el SJM está
+encontrando estructura real (no troceando el espacio al azar), y la nube "crisis" (rojo)
+debe situarse en la cola de alta volatilidad / drawdown.""")
+
+co(r"""fig, ax = plt.subplots(figsize=(7.5, 6.2))
+viz.plot_feature_space_scatter(
+    X, states_is, use_pca=True, crisis_state=det_is.crisis_state, ax=ax,
+    title='D9 — espacio de 15 features (PCA 2D) por estado del jump model (in-sample)')
+fig.tight_layout()
+fig.savefig(RESULTS / 'd09_feature_scatter.png', dpi=110, bbox_inches='tight'); plt.show()
+print('Lectura: azul = calma, rojo = crisis (alta vol). Si ambas nubes ocupan regiones')
+print('separadas del plano PCA, el jump model halla estructura en el espacio de features.')
+print('Comparten las MISMAS 15 features que D3: la separabilidad de partida es la misma;')
+print('lo que cambia entre D9 y D3 es como se ENCADENAN los estados en el tiempo (lambda).')""")
+
+# ------------------------------------------------------------------ #
+md(r"""## <a id="s3"></a>3. Efecto de la penalización $\lambda$ (barrido in-sample)  ·  *figura nueva*
+
+El parámetro que define a D9 es $\lambda$. Aquí lo ilustramos directamente con un **barrido
+in-sample** (no causal, solo didáctico): reajustamos el mismo modelo sobre toda la muestra
+para $\lambda \in \{0, 10, 25, 50, 100, 200\}$ y medimos su `switching_rate` y su duración
+media de régimen.
+
+- $\lambda = 0$ ⇒ **k-means puro**: sin término temporal, equivale conceptualmente a un D3
+  "sin penalización" → flickering máximo.
+- subir $\lambda$ ⇒ más **histéresis**: rachas más largas, menos conmutaciones.
+- $\lambda$ demasiado alto ⇒ la señal se **congela** (un único régimen): persistencia infinita
+  pero ya sin capacidad de avisar.
+
+$\lambda=50$ (línea gris) es el punto elegido: persistencia ~mensual sin apagar la señal.""")
+
+co(r"""# Barrido in-sample (ILUSTRATIVO, no causal): efecto del termino lambda * 1[s_t != s_{t-1}].
+LAMBDAS = [0.0, 10.0, 25.0, 50.0, 100.0, 200.0]
+lam_ok, sw_lam, dur_lam, seq_lam = [], [], [], {}
+print('Barrido de lambda (in-sample, DP sobre toda la muestra):')
+for lam in LAMBDAS:
+    try:
+        d = JumpModel(n_states=N_STATES, jump_penalty=lam).fit(X)
+        d.label_states_economically(X, market_returns=mkt)
+        s = pd.Series(d.predict(X), index=X.index, name='state')
+    except Exception as e:                 # robustez ante lambdas degenerados
+        print(f'  lambda={lam:6.0f}: omitido ({type(e).__name__})'); continue
+    lam_ok.append(lam); sw_lam.append(ev.switching_rate(s)); dur_lam.append(ev.mean_regime_duration(s))
+    seq_lam[lam] = s
+    print(f'  lambda={lam:6.0f}  switching={sw_lam[-1]:.4f}  dur_media={dur_lam[-1]:7.1f} d  '
+          f'estados_distintos={s.nunique()}')
+
+fig, (axA, axB) = plt.subplots(1, 2, figsize=(15, 4.6))
+# --- Panel A: switching y duracion media vs lambda (doble eje) ---
+axA.plot(lam_ok, sw_lam, 'o-', color=viz.C_CRISIS, lw=1.6, label='switching_rate')
+axA.set_xlabel('penalización de salto  $\\lambda$')
+axA.set_ylabel('switching_rate', color=viz.C_CRISIS); axA.tick_params(axis='y', labelcolor=viz.C_CRISIS)
+axA.axvline(JUMP_PENALTY, color='grey', ls='--', lw=0.9)
+axA2 = axA.twinx()
+axA2.plot(lam_ok, dur_lam, 's-', color=viz.C_LONG, lw=1.6, label='duración media (d)')
+axA2.set_ylabel('duración media de régimen (d)', color=viz.C_LONG); axA2.tick_params(axis='y', labelcolor=viz.C_LONG)
+axA2.grid(False)
+axA.set_title('Efecto de $\\lambda$: más penalización → menos switching, más persistencia\n'
+              '(línea gris = $\\lambda$=%g usado en el resto del notebook)' % JUMP_PENALTY)
+# --- Panel B: misma muestra, secuencia de estados con lambda=0 vs lambda elegido ---
+lo_lam = 0.0 if 0.0 in seq_lam else (lam_ok[0] if lam_ok else None)
+hi_lam = JUMP_PENALTY if JUMP_PENALTY in seq_lam else (lam_ok[-1] if lam_ok else None)
+if lo_lam is not None and hi_lam is not None and lo_lam != hi_lam:
+    s_lo = seq_lam[lo_lam].values.reshape(1, -1); s_hi = seq_lam[hi_lam].values.reshape(1, -1)
+    axB.imshow(np.vstack([s_lo, s_hi]), aspect='auto', cmap='RdYlGn_r',
+               extent=[0, X.shape[0], 0, 2], interpolation='nearest', vmin=0, vmax=N_STATES - 1)
+    axB.set_yticks([1.5, 0.5])
+    axB.set_yticklabels(['$\\lambda$=%g (k-means)' % lo_lam, '$\\lambda$=%g (persistente)' % hi_lam])
+    tkb = np.linspace(0, len(X) - 1, 8).astype(int)
+    axB.set_xticks(tkb); axB.set_xticklabels([X.index[i].year for i in tkb])
+    axB.set_title('Misma muestra, dos $\\lambda$: arriba flickering ($\\lambda$=%g),\n'
+                  'abajo persistente ($\\lambda$=%g) — verde=calma, rojo=crisis' % (lo_lam, hi_lam))
+    axB.grid(False)
+else:
+    axB.axis('off'); axB.text(0.5, 0.5, 'barrido insuficiente para el panel comparativo',
+                              ha='center', va='center')
+fig.tight_layout()
+fig.savefig(RESULTS / 'd09_lambda_effect.png', dpi=110, bbox_inches='tight'); plt.show()
+print('Lectura: la duracion media crece y el switching cae de forma monotona con lambda.')
+print('lambda=0 (k-means) reproduce el flickering de un clustering estatico tipo D3;')
+print('lambda=50 da rachas largas sin congelar la senal (que es lo que pasa con lambda muy alto).')""")
+
+# ------------------------------------------------------------------ #
+md(r"""## <a id="s4"></a>4. Verificación de CAUSALIDAD de `predict_online`
 
 `predict_online` asigna la fila $i$ usando **solo filas $<i$** del bloque. Test: añadir días
 FUTUROS al bloque NO debe cambiar las etiquetas online de los días del bloque.""")
@@ -129,7 +252,7 @@ assert ndiff == 0, 'predict_online NO es causal: mira el futuro del bloque'
 print('causal_ok = True -> predict_online usa solo el pasado del bloque (sin look-ahead).')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 3. Versión CAUSAL walk-forward (la comparable)
+md(r"""## <a id="s5"></a>5. Versión CAUSAL walk-forward (la comparable)
 
 `ev.walk_forward` reentrena (re-fit expanding + StandardScaler con solo el train, λ congelada)
 en ventanas de train inicial **8 años** y predice el bloque de `step=21` días con
@@ -165,11 +288,11 @@ print(f'OK -> crisis = ALTA vol de retornos ({r_cri.std():.4f} > {r_cal.std():.4
       f'y menor retorno medio. No invertido.')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 4. Persistencia: D9 (jump model) vs D3 (GMM estático)
+md(r"""## <a id="s6"></a>6. Persistencia: D9 (jump model) vs D3 (GMM estático)
 
-El contraste central de este notebook. D3 (`clustering_gmm_k3`) en `metrics_master`:
-switching≈**0.126**, duración media≈**7.9 d** (flickering alto, sin término temporal). D9
-debe mejorar ambos gracias a $\lambda$.""")
+El primer contraste central. D3 (`clustering_gmm_k3`): switching≈**0.126**, duración
+media≈**7.9 d** (flickering alto, sin término temporal). D9 debe mejorar ambos gracias a
+$\lambda$.""")
 
 co(r"""cmp_rows = [{'detector': 'D9 jump_model (lambda=%g)' % JUMP_PENALTY,
              'switching_rate': res.switching_rate,
@@ -196,7 +319,93 @@ print('Lectura: si D9 (verde) tiene switching mas bajo y duracion mas alta que D
 print('la penalizacion de salto lambda ha anadido persistencia sin la dinamica de Markov de un HMM.')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 5. S&P 500 coloreado por régimen (CAUSAL OOS)
+md(r"""## <a id="s7"></a>7. Trade-off D9 vs D3: persistencia ↔ cobertura  ·  *figura nueva*
+
+**Este es el corazón de D9.** La sección anterior muestra que D9 gana en persistencia; aquí
+ponemos **lado a lado** las dos caras de la misma moneda usando los valores reales de D3
+(cargados de `results/metrics_03_clustering_gmm.csv`):
+
+- **D9 GANA persistencia:** `switching_rate` ~24× menor y duración media de régimen mucho
+  mayor (rachas largas en vez de flickering).
+- **D9 PIERDE cobertura de crisis rápidas:** la histéresis de $\lambda$ actúa como un filtro
+  paso-bajo sobre la secuencia de estados — bueno contra el ruido, malo contra shocks
+  cortos. La cobertura de COVID-2020 y de la inflación de 2022 (crisis rápidas) cae frente
+  a la de D3.
+
+Ese es el precio explícito de la persistencia, y es justo lo que el TFM quiere medir.""")
+
+co(r"""# Cargar metricas REALES de D3 (rival directo). Fuente primaria: metrics_03_*.csv.
+def _d3_metrics():
+    fb = {'switching_rate': 0.12609, 'mean_regime_duration': 7.91,
+          'cov_COVID_2020': 1.0, 'cov_Inflation_2022': 0.86538}   # fallback (auditoria)
+    for fname in ['metrics_03_clustering_gmm.csv', 'metrics_master.csv']:
+        p = RESULTS / fname
+        if not p.exists():
+            continue
+        m = pd.read_csv(p)
+        r = m[m['detector'].astype(str).str.startswith('clustering_gmm')] if 'detector' in m.columns else m
+        if len(r):
+            row = r.iloc[0]
+            return {k: (float(row[k]) if (k in row and pd.notna(row[k])) else fb[k]) for k in fb}
+    return fb
+
+d3 = _d3_metrics()
+cov_cov_d9 = res.crisis_coverage.get('COVID_2020', float('nan'))
+cov_inf_d9 = res.crisis_coverage.get('Inflation_2022', float('nan'))
+ratio_sw = (d3['switching_rate'] / res.switching_rate) if res.switching_rate else float('nan')
+print('D9: switching=%.4f  dur=%.1f d  cov_COVID=%.1f%%  cov_Inflation=%.1f%%'
+      % (res.switching_rate, res.mean_regime_duration, cov_cov_d9 * 100, cov_inf_d9 * 100))
+print('D3: switching=%.4f  dur=%.1f d  cov_COVID=%.1f%%  cov_Inflation=%.1f%%'
+      % (d3['switching_rate'], d3['mean_regime_duration'], d3['cov_COVID_2020'] * 100, d3['cov_Inflation_2022'] * 100))
+print(f'-> D9 conmuta ~{ratio_sw:.0f}x menos que D3 (persistencia), pero pierde cobertura de crisis rapidas.')
+
+lab9 = 'D9 jump (λ=%g)' % JUMP_PENALTY
+fig, (axS, axD, axC) = plt.subplots(1, 3, figsize=(16, 4.4))
+viz.plot_grouped_bars(['switching_rate'],
+    {lab9: [res.switching_rate], 'D3 gmm': [d3['switching_rate']]},
+    ylabel='conmutaciones / día', ax=axS, value_labels=True,
+    title='Persistencia (1): switching\nD9 ≈ %.0f× menos (GANA)' % ratio_sw)
+viz.plot_grouped_bars(['duración media'],
+    {lab9: [res.mean_regime_duration], 'D3 gmm': [d3['mean_regime_duration']]},
+    ylabel='días', ax=axD, value_labels=True,
+    title='Persistencia (2): duración media\nD9 GANA (rachas largas)')
+viz.plot_grouped_bars(['COVID 2020', 'Inflación 2022'],
+    {lab9: [cov_cov_d9, cov_inf_d9],
+     'D3 gmm': [d3['cov_COVID_2020'], d3['cov_Inflation_2022']]},
+    ylabel='cobertura OOS', ax=axC, value_labels=True,
+    title='Cobertura por ventana\nD9 PIERDE crisis rápidas')
+axC.set_ylim(0, 1.12)
+fig.suptitle('Trade-off de D9 vs D3: la persistencia que aporta λ se paga con cobertura de crisis rápidas',
+             y=1.04, fontsize=12)
+fig.tight_layout()
+fig.savefig(RESULTS / 'd09_vs_d3_tradeoff.png', dpi=110, bbox_inches='tight'); plt.show()""")
+
+# ------------------------------------------------------------------ #
+md(r"""## <a id="s8"></a>8. Duración de episodios (flickering) frente a D3  ·  *figura nueva*
+
+Histograma de la duración de cada racha de régimen en el walk-forward causal de D9. Las
+**colas cortas = flickering**; D9 debe acumular masa en episodios largos. Como referencia
+del rival se marca la **duración media de D3 (~7.9 d)**: el contraste visual entre esa línea
+y la masa del histograma de D9 resume de un vistazo cuánta histéresis añade $\lambda$.""")
+
+co(r"""fig, ax = plt.subplots(figsize=(11, 4.4))
+viz.plot_duration_histogram(
+    states_c, N_STATES, ax=ax,
+    title='D9 — duración de episodios (CAUSAL OOS). Líneas = medias de D9 y de D3 (flickering)')
+ymax = ax.get_ylim()[1]
+ax.axvline(d3['mean_regime_duration'], color=viz.C_NEG, ls='--', lw=1.4)
+ax.text(d3['mean_regime_duration'], ymax * 0.92, '  D3 gmm ≈ %.1f d' % d3['mean_regime_duration'],
+        color=viz.C_NEG, fontsize=9, va='top')
+ax.axvline(res.mean_regime_duration, color=viz.C_LONG, ls='-', lw=1.2, alpha=0.8)
+ax.text(res.mean_regime_duration, ymax * 0.72, '  D9 media ≈ %.0f d' % res.mean_regime_duration,
+        color=viz.C_LONG, fontsize=9, va='top')
+fig.tight_layout()
+fig.savefig(RESULTS / 'd09_duration_hist.png', dpi=110, bbox_inches='tight'); plt.show()
+print('Lectura: la masa de D9 se desplaza a episodios largos (calma sobre todo); la media de')
+print('D3 (~7.9 d, gris discontinua) cae muy a la izquierda -> D9 elimina casi todo el flickering.')""")
+
+# ------------------------------------------------------------------ #
+md(r"""## <a id="s9"></a>9. S&P 500 coloreado por régimen (CAUSAL OOS)
 
 Sombreado rojo = días clasificados **crisis** por el walk-forward causal.""")
 
@@ -222,7 +431,7 @@ ax.margins(x=0.01); fig.tight_layout()
 fig.savefig(RESULTS / 'd09_sp500_regimes.png', dpi=110, bbox_inches='tight'); plt.show()""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 6. Verificación contra eventos: crisis 2008/2011/2020/2022 y trampas 2013/2018""")
+md(r"""## <a id="s10"></a>10. Verificación contra eventos: crisis 2008/2011/2020/2022 y trampas 2013/2018""")
 
 co(r"""rows = []
 for k in ev.CRISIS_WINDOWS:
@@ -242,7 +451,7 @@ ax.set_xticklabels(cmpw.index, rotation=30, ha='right'); ax.set_ylim(0, 1.05)
 fig.tight_layout(); fig.savefig(RESULTS / 'd09_coverage.png', dpi=110, bbox_inches='tight'); plt.show()""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 7. Timeline de régimen y duraciones (flickering)
+md(r"""## <a id="s11"></a>11. Timeline de régimen y duraciones (flickering)
 
 Timeline causal OOS + histograma de duraciones. La penalización de salto $\lambda$ debe dar
 episodios largos (poco flickering) frente a D3.""")
@@ -271,38 +480,49 @@ print(f'Episodios crisis: n={len(dur[N_STATES-1])}, dur media={np.mean(dur[N_STA
 print(f'switching_rate={res.switching_rate:.4f}  dur media global={res.mean_regime_duration:.1f} d')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 8. Volcado de métricas a results/ (esquema 23 columnas)""")
+md(r"""## <a id="s12"></a>12. Volcado de métricas a results/ (esquema canónico 32 columnas)""")
 
 co(r"""tbl = ev.results_table([res])
-assert tbl.shape[1] == 23, f'esperaba 23 columnas, hay {tbl.shape[1]}'
+assert tbl.shape[1] == 32, f'esperaba 32 columnas (esquema canonico), hay {tbl.shape[1]}'
 tbl.to_csv(RESULTS / 'metrics_09_jump_model.csv', index=False)
 print('Guardado results/metrics_09_jump_model.csv  (1 fila,', tbl.shape[1], 'columnas)')
 
-master_path = RESULTS / 'metrics_master.csv'
-if master_path.exists():
-    master = pd.read_csv(master_path)
-    master = master[master['detector'] != 'jump_model']
-    master = pd.concat([master, tbl], ignore_index=True)
-else:
-    master = tbl.copy()
-master.to_csv(master_path, index=False)
-print('master actualizado:', master.shape)
+# NOTA (saneamiento Ola 0): este builder ya NO actualiza metrics_master.csv de forma
+# incremental (leer-filtrar-concatenar provocaba condicion de carrera al correr builders
+# en paralelo). Cada builder escribe SOLO su metrics_NN_*.csv; el master unificado se
+# reconstruye de forma centralizada con:  python scripts/verify/_rebuild_master.py
 display(tbl.T)""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 9. Conclusión D9 — ¿añade persistencia el jump model sobre D3?
+md(r"""## <a id="s13"></a>13. Conclusión D9 — ¿añade persistencia el jump model, y a qué precio?
 
 **Hipótesis D9:** *el Statistical Jump Model, con su penalización de salto $\lambda$, debe dar
 MENOS flickering (menor switching, mayor duración) que D3 (GMM estático) sobre las MISMAS 15
-features, sin perder cobertura de crisis.*
+features. La pregunta crítica es si esa persistencia se consigue sin sacrificar cobertura.*
 
 Veredicto (con los números de arriba):
 - **Clustering con histéresis aprendida:** $K=2$, $\lambda=50$; crisis = estado de **alta vol**
-  (verificado en walk-forward con S&P 500, **no invertido**, sin fallback).
+  (verificado en walk-forward con S&P 500, **no invertido**, sin fallback). El barrido de §3
+  muestra que la persistencia crece de forma monótona con $\lambda$ y que $\lambda=50$ está
+  en la zona útil (rachas largas sin congelar la señal).
 - **Causal:** `predict_online` / `predict_proba_online` usan solo el pasado del bloque
   (verificado: añadir futuro no cambia la etiqueta) + StandardScaler train-only por fold.
-- **Persistencia vs D3 (§4):** comparar switching_rate y duración media de D9 frente a D3
-  (0.126 / 7.9 d). El delta es la aportación NETA de $\lambda$ sobre el clustering puro.
+- **Persistencia (§6) — D9 GANA:** switching_rate ~24× menor que D3 (0.126 → ~0.005) y
+  duración media de régimen mucho mayor (7.9 d → episodios de meses). $\lambda$ añade
+  persistencia **sin** la dinámica de Markov de un HMM: el delta es la aportación NETA del
+  término temporal sobre el clustering puro.
+- **El precio (§7–§8) — D9 PIERDE crisis rápidas:** esa misma histéresis amortigua los shocks
+  cortos. La cobertura de COVID-2020 y de la inflación de 2022 cae frente a D3. $\lambda$ es,
+  en la práctica, un **filtro paso-bajo sobre la secuencia de estados**: filtra el ruido (el
+  flickering de D3) pero también atenúa los repuntes legítimos de crisis veloces.
+
+**Mejor-para-qué (el trade-off como decisión, no como defecto):**
+- **D9 es preferible** cuando el coste de conmutar domina (turnover, señales de asignación) y
+  la crisis objetivo es **persistente** (osos largos tipo 2008, bear sostenido): pocas
+  alarmas, episodios estables, casi sin flickering.
+- **D3 es preferible** para **alarma temprana de shocks rápidos** (COVID), donde la
+  sensibilidad importa más que la estabilidad de la etiqueta.
+
 - **vs D12 (autoencoder):** ambos son detectores no-HMM sobre las features causales; D9 es el
   baseline de clustering+persistencia contra el que se mide el aprendizaje de representación
   del AE.

@@ -29,16 +29,8 @@ viz.use_house_style()
 RES = ROOT / "results"
 M = pd.read_csv(RES / "metrics_master.csv")
 
-# nombre corto legible D1..D12
-SHORT = {
-    "rule_vix_threshold": "D1 vix", "rule_composite_riskoff": "D2 riskoff",
-    "clustering_gmm_k3": "D3 gmm", "hmm_gaussian_2s": "D4 hmm-g",
-    "markov_switching_var_2s": "D5 msvar", "garch_t_vol": "D6 garch",
-    "changepoint_online": "D7 cusum", "hmm_tstudent_4s": "D8 hmm-t",
-    "jump_model": "D9 jump", "turbulence_mahalanobis": "D10 turb",
-    "msgarch_regime": "D11 msgarch", "deep_ae_regime": "D12 ae",
-}
-M["short"] = M["detector"].map(SHORT).fillna(M["detector"])
+# nombre corto legible D1..D12 — mapeo centralizado y robusto a la K (src/viz.py)
+M["short"] = M["detector"].map(viz.detector_short)
 
 
 def fig_coverage_ci() -> None:

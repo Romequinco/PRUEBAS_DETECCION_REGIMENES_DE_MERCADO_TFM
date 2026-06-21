@@ -3,7 +3,7 @@
 """
 Curaduría de figuras para el PDF ejecutivo del TFM (detección de regímenes).
 
-TODAS las figuras se generan VERBATIM desde `results/metrics_master_final.csv`.
+TODAS las figuras se generan VERBATIM desde `results/metrics_master.csv` (master canónico).
 NO re-ejecuta detectores ni walk-forward; NO toca CSVs ni las figuras `fase4_*`.
 Las figuras nuevas se escriben con prefijo NUEVO `results/pdf_*.png` (DPI>=200).
 
@@ -21,6 +21,7 @@ Decisiones de equidad (revisión académica):
     ventana) y se marca como tal; no es anticipación genuina.
 """
 from __future__ import annotations
+import sys
 import warnings
 from pathlib import Path
 
@@ -31,10 +32,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from src import viz  # noqa: E402  (mapeo de nombres cortos centralizado y robusto a la K)
+
 warnings.filterwarnings("ignore")
 
 ROOT = Path(__file__).resolve().parents[2]
-MASTER = ROOT / "results" / "metrics_master_final.csv"
+# Master canónico ÚNICO (superset unificado en Ola 0). Antes leía metrics_master_final.csv,
+# ya archivado en results/_archive/; ahora todas las columnas (silhouette, IC bootstrap,
+# clase, coste, vio_2008_oos, *_estres, nota) viven en metrics_master.csv.
+MASTER = ROOT / "results" / "metrics_master.csv"
 OUT = ROOT / "results"
 
 DPI = 200
@@ -57,14 +64,23 @@ plt.rcParams.update({
     "grid.alpha": 0.25,
 })
 
-SHORT = {
+# Labels cortos VARIANTE INFORME (marcan los negativos D11/D12 con "(-)" y usan
+# abreviaturas propias del PDF). Keyed por PREFIJO canónico (sin la K) para no
+# romperse si cambia el K elegido por BIC; la normalización del sufijo de K vive en
+# src/viz.canonical_detector (fuente de verdad única; ver viz.SHORT para el D-N base).
+SHORT_PDF = {
     "rule_vix_threshold": "D1 vix", "rule_composite_riskoff": "D2 comp",
-    "clustering_gmm_k3": "D3 gmm", "hmm_gaussian_2s": "D4 hmm",
-    "markov_switching_var_2s": "D5 msvar", "garch_t_vol": "D6 garch",
-    "changepoint_online": "D7 cusum", "hmm_tstudent_4s": "D8 hmm-t",
+    "clustering_gmm": "D3 gmm", "hmm_gaussian": "D4 hmm",
+    "markov_switching_var": "D5 msvar", "garch_t_vol": "D6 garch",
+    "changepoint_online": "D7 cusum", "hmm_tstudent": "D8 hmm-t",
     "jump_model": "D9 jump", "turbulence_mahalanobis": "D10 turb",
     "msgarch_regime": "D11 msg(-)", "deep_ae_regime": "D12 ae(-)",
 }
+
+
+def SHORT(name: str) -> str:
+    """Label corto (variante informe) resuelto por prefijo canónico."""
+    return SHORT_PDF.get(viz.canonical_detector(name), str(name))
 TROUGH = ["GFC_2008", "EuroDebt_2011", "COVID_2020", "Inflation_2022"]
 TROUGH_ES = ["GFC 2008", "EuroDeuda 2011", "COVID 2020", "Inflación 2022"]
 
@@ -164,7 +180,7 @@ def fig_rank_heatmap(df: pd.DataFrame):
     ax.set_xticks(range(n_cols))
     ax.set_xticklabels([c[0] for c in cols], fontsize=8.5)
     ax.set_yticks(range(n_rows))
-    ylabels = [SHORT[idx] for idx in d.index]
+    ylabels = [SHORT(idx) for idx in d.index]
     ax.set_yticklabels(ylabels, fontsize=9.5)
     # colorear etiquetas Y por grupo de ventana
     for tick, idx in zip(ax.get_yticklabels(), d.index):
@@ -322,7 +338,7 @@ def fig_leadlag(df: pd.DataFrame):
     ax.set_xticks(range(len(TROUGH)))
     ax.set_xticklabels(TROUGH_ES, rotation=15, ha="right")
     ax.set_yticks(range(len(order)))
-    ax.set_yticklabels([SHORT[n] for n in order.index])
+    ax.set_yticklabels([SHORT(n) for n in order.index])
     for tick, n in zip(ax.get_yticklabels(), order.index):
         if order.loc[n, "is_neg"]:
             tick.set_color(C_NEG)
@@ -361,7 +377,7 @@ def fig_estres(df: pd.DataFrame):
         b2 = axx.bar(xx + w / 2, estres, w, label="Estrés agregado (corrección+crisis)", color=C_ESTRES)
         axx.set_xticks(xx); axx.set_xticklabels(wins_es)
         neg = "  (NEGATIVO)" if r["is_neg"] else ""
-        axx.set_title(SHORT[name] + neg)
+        axx.set_title(SHORT(name) + neg)
         axx.set_ylim(0, 1.08); axx.grid(alpha=0.25, axis="y"); axx.grid(axis="x", alpha=0)
         style_axes(axx)
         for b in list(b1) + list(b2):

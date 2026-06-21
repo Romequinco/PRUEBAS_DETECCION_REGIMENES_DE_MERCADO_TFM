@@ -1,92 +1,44 @@
-% Bibliografia curada para el informe ejecutivo de la Capa 1 (banco de pruebas
-% comparativo de detectores de regimen). Subconjunto de docs/references.bib:
-% solo las entradas realmente citadas, una clave por trabajo (sin duplicados).
+% references.bib del informe — DERIVADO automáticamente de docs/references.bib
+% (fuente única de verdad). Contiene SOLO las entradas citadas en
+% informe_capa1.tex. No editar a mano: regenerar desde docs/references.bib.
 
-@article{hamilton1989,
-  author  = {Hamilton, James D.},
-  title   = {A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle},
+@book{lopezdeprado2018,
+  author    = {L{\'o}pez de Prado, Marcos},
+  title     = {Advances in Financial Machine Learning},
+  publisher = {Wiley},
+  year      = {2018},
+  isbn      = {9781119482086}
+}
+
+@article{reglas_bloom2009,
+  author  = {Bloom, Nicholas},
+  title   = {The Impact of Uncertainty Shocks},
   journal = {Econometrica},
-  year    = {1989},
-  volume  = {57},
+  year    = {2009},
+  volume  = {77},
+  number  = {3},
+  pages   = {623--685},
+  doi     = {10.3982/ECTA6248}
+}
+
+@article{clust_pedregosa2011sklearn,
+  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and others},
+  title   = {Scikit-learn: Machine Learning in Python},
+  journal = {Journal of Machine Learning Research},
+  year    = {2011},
+  volume  = {12},
+  pages   = {2825--2830}
+}
+
+@article{clust_schwarz1978bic,
+  author  = {Schwarz, Gideon},
+  title   = {Estimating the Dimension of a Model},
+  journal = {The Annals of Statistics},
+  year    = {1978},
+  volume  = {6},
   number  = {2},
-  pages   = {357--384},
-  doi     = {10.2307/1912559}
-}
-
-@article{ms_kim1994,
-  author  = {Kim, Chang-Jin},
-  title   = {Dynamic Linear Models with {Markov}-switching},
-  journal = {Journal of Econometrics},
-  year    = {1994},
-  volume  = {60},
-  number  = {1-2},
-  pages   = {1--22},
-  doi     = {10.1016/0304-4076(94)90036-1}
-}
-
-@article{vol_bollerslev1986,
-  author  = {Bollerslev, Tim},
-  title   = {Generalized Autoregressive Conditional Heteroskedasticity},
-  journal = {Journal of Econometrics},
-  year    = {1986},
-  volume  = {31},
-  number  = {3},
-  pages   = {307--327},
-  doi     = {10.1016/0304-4076(86)90063-1}
-}
-
-@article{vol_glosten1993,
-  author  = {Glosten, Lawrence R. and Jagannathan, Ravi and Runkle, David E.},
-  title   = {On the Relation between the Expected Value and the Volatility of the Nominal Excess Return on Stocks},
-  journal = {The Journal of Finance},
-  year    = {1993},
-  volume  = {48},
-  number  = {5},
-  pages   = {1779--1801},
-  doi     = {10.1111/j.1540-6261.1993.tb05128.x}
-}
-
-@article{vol_haasmittnikpaolella2004,
-  author  = {Haas, Markus and Mittnik, Stefan and Paolella, Marc S.},
-  title   = {A New Approach to Markov-Switching GARCH Models},
-  journal = {Journal of Financial Econometrics},
-  year    = {2004},
-  volume  = {2},
-  number  = {4},
-  pages   = {493--530},
-  doi     = {10.1093/jjfinec/nbh020}
-}
-
-@article{cp_page1954,
-  author  = {Page, E. S.},
-  title   = {Continuous Inspection Schemes},
-  journal = {Biometrika},
-  year    = {1954},
-  volume  = {41},
-  number  = {1/2},
-  pages   = {100--115},
-  doi     = {10.1093/biomet/41.1-2.100}
-}
-
-@article{cp_truong2020,
-  author  = {Truong, Charles and Oudre, Laurent and Vayatis, Nicolas},
-  title   = {Selective Review of Offline Change Point Detection Methods},
-  journal = {Signal Processing},
-  year    = {2020},
-  volume  = {167},
-  pages   = {107299},
-  doi     = {10.1016/j.sigpro.2019.107299}
-}
-
-@article{kritzman2012,
-  author  = {Kritzman, Mark and Page, Sebastien and Turkington, David},
-  title   = {Regime Shifts: Implications for Dynamic Strategies},
-  journal = {Financial Analysts Journal},
-  year    = {2012},
-  volume  = {68},
-  number  = {3},
-  pages   = {22--39},
-  doi     = {10.2469/faj.v68.n3.3}
+  pages   = {461--464},
+  doi     = {10.1214/aos/1176344136}
 }
 
 @article{hmm_rabiner1989,
@@ -111,6 +63,117 @@
   doi     = {10.1109/TIT.1967.1054010}
 }
 
+@article{hamilton1989,
+  author  = {Hamilton, James D.},
+  title   = {A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle},
+  journal = {Econometrica},
+  year    = {1989},
+  volume  = {57},
+  number  = {2},
+  pages   = {357--384},
+  doi     = {10.2307/1912559}
+}
+
+@article{ms_kim1994,
+  author  = {Kim, Chang-Jin},
+  title   = {Dynamic Linear Models with {Markov}-switching},
+  journal = {Journal of Econometrics},
+  year    = {1994},
+  volume  = {60},
+  number  = {1-2},
+  pages   = {1--22},
+  doi     = {10.1016/0304-4076(94)90036-1},
+  note    = {Filtro y suavizador de Kim; generaliza el MS al espacio de estados.}
+}
+
+@article{vol_bollerslev1986,
+  author  = {Bollerslev, Tim},
+  title   = {Generalized Autoregressive Conditional Heteroskedasticity},
+  journal = {Journal of Econometrics},
+  year    = {1986},
+  volume  = {31},
+  number  = {3},
+  pages   = {307--327},
+  doi     = {10.1016/0304-4076(86)90063-1}
+}
+
+@article{vol_glosten1993,
+  author  = {Glosten, Lawrence R. and Jagannathan, Ravi and Runkle, David E.},
+  title   = {On the Relation between the Expected Value and the Volatility of the Nominal Excess Return on Stocks},
+  journal = {The Journal of Finance},
+  year    = {1993},
+  volume  = {48},
+  number  = {5},
+  pages   = {1779--1801},
+  doi     = {10.1111/j.1540-6261.1993.tb05128.x}
+}
+
+@article{cp_page1954,
+  author  = {Page, E. S.},
+  title   = {Continuous Inspection Schemes},
+  journal = {Biometrika},
+  year    = {1954},
+  volume  = {41},
+  number  = {1/2},
+  pages   = {100--115},
+  doi     = {10.1093/biomet/41.1-2.100},
+  note    = {Articulo seminal del CUSUM (deteccion secuencial online).}
+}
+
+@article{cp_truong2020,
+  author  = {Truong, Charles and Oudre, Laurent and Vayatis, Nicolas},
+  title   = {Selective Review of Offline Change Point Detection Methods},
+  journal = {Signal Processing},
+  year    = {2020},
+  volume  = {167},
+  pages   = {107299},
+  doi     = {10.1016/j.sigpro.2019.107299},
+  note    = {Survey de CPD offline (coste, busqueda, restriccion); base de la libreria ruptures.}
+}
+
+@article{hmm_nystrup2020,
+  author  = {Nystrup, Peter and Lindstr{\"o}m, Erik and Madsen, Henrik},
+  title   = {Learning Hidden Markov Models with Persistent States by Penalizing Jumps},
+  journal = {Expert Systems with Applications},
+  year    = {2020},
+  volume  = {150},
+  pages   = {113307},
+  doi     = {10.1016/j.eswa.2020.113307}
+}
+
+@article{kritzman2012,
+  author  = {Kritzman, Mark and Page, Sebastien and Turkington, David},
+  title   = {Regime Shifts: Implications for Dynamic Strategies},
+  journal = {Financial Analysts Journal},
+  year    = {2012},
+  volume  = {68},
+  number  = {3},
+  pages   = {22--39},
+  doi     = {10.2469/faj.v68.n3.3}
+}
+
+@article{vol_haasmittnikpaolella2004,
+  author  = {Haas, Markus and Mittnik, Stefan and Paolella, Marc S.},
+  title   = {A New Approach to Markov-Switching GARCH Models},
+  journal = {Journal of Financial Econometrics},
+  year    = {2004},
+  volume  = {2},
+  number  = {4},
+  pages   = {493--530},
+  doi     = {10.1093/jjfinec/nbh020}
+}
+
+@article{nn_hinton2006,
+  author  = {Hinton, Geoffrey E. and Salakhutdinov, Ruslan R.},
+  title   = {Reducing the Dimensionality of Data with Neural Networks},
+  journal = {Science},
+  year    = {2006},
+  volume  = {313},
+  number  = {5786},
+  pages   = {504--507},
+  doi     = {10.1126/science.1127647}
+}
+
 @article{hmm_bulla2011,
   author  = {Bulla, Jan},
   title   = {Hidden Markov Models with t Components. Increased Persistence and Other Aspects},
@@ -131,64 +194,4 @@
   number  = {9},
   pages   = {1531--1541},
   doi     = {10.1080/14697688.2015.1004801}
-}
-
-@article{hmm_nystrup2020,
-  author  = {Nystrup, Peter and Lindstr{\"o}m, Erik and Madsen, Henrik},
-  title   = {Learning Hidden Markov Models with Persistent States by Penalizing Jumps},
-  journal = {Expert Systems with Applications},
-  year    = {2020},
-  volume  = {150},
-  pages   = {113307},
-  doi     = {10.1016/j.eswa.2020.113307}
-}
-
-@article{reglas_bloom2009,
-  author  = {Bloom, Nicholas},
-  title   = {The Impact of Uncertainty Shocks},
-  journal = {Econometrica},
-  year    = {2009},
-  volume  = {77},
-  number  = {3},
-  pages   = {623--685},
-  doi     = {10.3982/ECTA6248}
-}
-
-@article{clust_schwarz1978bic,
-  author  = {Schwarz, Gideon},
-  title   = {Estimating the Dimension of a Model},
-  journal = {The Annals of Statistics},
-  year    = {1978},
-  volume  = {6},
-  number  = {2},
-  pages   = {461--464},
-  doi     = {10.1214/aos/1176344136}
-}
-
-@article{clust_pedregosa2011sklearn,
-  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier},
-  title   = {Scikit-learn: Machine Learning in Python},
-  journal = {Journal of Machine Learning Research},
-  year    = {2011},
-  volume  = {12},
-  pages   = {2825--2830}
-}
-
-@article{nn_hinton2006,
-  author  = {Hinton, Geoffrey E. and Salakhutdinov, Ruslan R.},
-  title   = {Reducing the Dimensionality of Data with Neural Networks},
-  journal = {Science},
-  year    = {2006},
-  volume  = {313},
-  number  = {5786},
-  pages   = {504--507},
-  doi     = {10.1126/science.1127647}
-}
-
-@book{lopezdeprado2018,
-  author    = {L{\'o}pez de Prado, Marcos},
-  title     = {Advances in Financial Machine Learning},
-  publisher = {Wiley},
-  year      = {2018},
-  isbn      = {9781119482086}
 }
