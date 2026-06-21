@@ -231,3 +231,12 @@ data/processed/*
 results/*.png
 results/_archive/*.png
 results/*.parquet
+
+# Artefactos intermedios de LaTeX (el .pdf y .tex SI se versionan; tectonic los regenera)
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.out
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
