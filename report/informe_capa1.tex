@@ -31,6 +31,7 @@
 
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \newcommand{\Dt}[1]{\textbf{#1}}
+\setlength{\emergencystretch}{3em}  % evita overfull hbox por rutas \code no divisibles
 
 \title{\textbf{Detecci\'on de reg\'imenes de mercado:\\ un marco de evaluaci\'on causal y comparativo}\\[2mm]
 \large Primera capa del TFM --- banco de pruebas de 12 detectores}
@@ -257,7 +258,7 @@ resultado negativo es informativo (Tabla~\ref{tab:mapa}).
   BIC; n\'ucleo recomendado, con matices (Secci\'on~\ref{sec:reco}).
   \item[D9 -- jump model.] \cite{hmm_nystrup2020} Modelo de saltos penalizados ($\lambda{=}50$). Anti-flickering
   rotundo, pero pierde cobertura de crisis lentas.
-  \item[D10 -- turbulencia de Mahalanobis.] \cite{kritzman2012} Distancia multivariante con covarianza
+  \item[D10 -- turbulencia de Mahalanobis.] \cite{kritzman2010,kritzman2012} Distancia multivariante con covarianza
   expandida. Capta sist\'emicas pero no 2013 (no fue turbulencia conjunta).
   \item[D11 -- MS-GARCH \textit{(negativo)}.] \cite{vol_haasmittnikpaolella2004} MS-GARCH-t de Haas-Mittnik-Paolella. Degenera
   en \emph{walk-forward}: el fold de la GFC colapsa a un r\'egimen
@@ -279,7 +280,7 @@ obligatoria: las dos mitades no son directamente comparables en cobertura.
   \centering
   \small
   \caption{Tabla maestra resumida (valores \emph{verbatim} de
-  \code{results/metrics_master_final.csv}). \emph{switching}: conmutaciones por d\'ia
+  \code{results/metrics_master.csv}). \emph{switching}: conmutaciones por d\'ia
   (bajo = persistente); \emph{dur.}: duraci\'on media de r\'egimen en d\'ias; \emph{FA
   global}: tasa global de falsa alarma; BIC s\'olo en modelos generativos.}
   \label{tab:maestra}
@@ -473,6 +474,7 @@ reparten seis ejes; no existe detector dominante.}
   \caption{Reparto del podio por eje. La cobertura sist\'emica se da separada por grupo de
   ventana (nunca mezclada).}
   \label{tab:podio}
+  \setlength{\tabcolsep}{3.5pt}
   \begin{tabular}{lll}
     \toprule
     Eje & Familia ganadora & Detalle \\
@@ -487,6 +489,37 @@ reparten seis ejes; no existe detector dominante.}
     \bottomrule
   \end{tabular}
 \end{table}
+
+\subsection{Scorecard e incertidumbre de cobertura}
+La Figura~\ref{fig:scorecard} condensa el reparto del podio en un \emph{scorecard}: seis
+ejes normalizados a $[0,1]$ por columna para los doce detectores. La lectura es inmediata
+---ning\'un detector es verde en todas las columnas: ``mejor-para-qu\'e'' hecho imagen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.84\textwidth]{synth_scorecard.png}
+  \caption{Scorecard ``mejor-para-qu\'e'': seis ejes normalizados por columna (verde = mejor
+  en ese eje). Ning\'un detector domina todas las columnas; cada familia brilla en su eje.}
+  \label{fig:scorecard}
+\end{figure}
+
+Como respuesta directa al trabajo futuro B1 (Secci\'on~\ref{sec:limitaciones}), se a\~nade una
+cuantificaci\'on de incertidumbre \emph{intra-evento}: para cada ventana de crisis se calcula
+un intervalo de confianza al 95\,\% de la cobertura mediante \emph{bootstrap por bloques}
+(bloques de 5 d\'ias, que preservan la autocorrelaci\'on de los episodios). La
+Figura~\ref{fig:covci} lo muestra para COVID-2020, la \'unica ventana OOS com\'un a los doce
+detectores. Las bandas son anchas ---coherente con $n\approx4$ crisis--- y dejan ver que
+diferencias de pocos puntos de cobertura \emph{no} son distinguibles, en l\'inea con la
+cautela declarada en las limitaciones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.80\textwidth]{synth_coverage_ci.png}
+  \caption{Cobertura de COVID-2020 con intervalo de confianza al 95\,\% por \emph{bootstrap}
+  de bloques. El intervalo es \emph{intra-evento} (muestreo de d\'ias autocorrelados), no
+  entre eventos: no sustituye a un contraste de significancia con $n\approx4$ crisis.}
+  \label{fig:covci}
+\end{figure}
 
 % ====================================================================
 \section{Hallazgos metodol\'ogicos transversales}
@@ -622,9 +655,11 @@ La honestidad de este marco exige declarar sus l\'imites:
 
 \begin{description}[leftmargin=1.2em,style=nextline]
   \item[Significancia con $n\approx4$ crisis.] Toda la comparaci\'on descansa en cuatro
-  crisis sist\'emicas (2008, 2011, 2020, 2022) y dos ventanas-trampa (2013, 2018). \textbf{No
-  hay tests de significancia ni intervalos de confianza}; diferencias de pocos puntos entre
-  detectores \emph{no} son estad\'isticamente distinguibles. El podio es evidencia
+  crisis sist\'emicas (2008, 2011, 2020, 2022) y dos ventanas-trampa (2013, 2018). Se a\~naden
+  \textbf{intervalos de confianza intra-evento} de la cobertura por \emph{bootstrap} de bloques
+  (Figura~\ref{fig:covci}), pero \textbf{sigue sin haber contraste de significancia entre
+  eventos}; diferencias de pocos puntos entre detectores \emph{no} son estad\'isticamente
+  distinguibles. El podio es evidencia
   cualitativa direccional, no una ordenaci\'on con respaldo inferencial. Es una limitaci\'on
   asumida del dise\~no (las crisis son raras por definici\'on), no un descuido.
   \item[BIC in-sample.] Las m\'etricas de comportamiento (cobertura, falsa alarma, lead/lag,
@@ -644,9 +679,10 @@ La honestidad de este marco exige declarar sus l\'imites:
 \end{description}
 
 \paragraph{Trabajo futuro declarado.} (B1)~\textbf{Bootstrap por bloques}
-(\emph{stationary/circular block bootstrap}) sobre las series OOS, para obtener bandas de
-confianza de cobertura, falsa alarma y conmutaci\'on, y contrastar pares de detectores
-respetando la autocorrelaci\'on. (B2)~\textbf{An\'alisis de sensibilidad de
+(\emph{stationary/circular block bootstrap}) sobre las series OOS ---\emph{parcialmente
+abordado}: ya se proveen bandas de confianza de la cobertura por bloques
+(Figura~\ref{fig:covci}); queda extenderlo a falsa alarma y conmutaci\'on, y a contrastes
+pareados entre detectores respetando la autocorrelaci\'on. (B2)~\textbf{An\'alisis de sensibilidad de
 hiperpar\'ametros} del protocolo \emph{walk-forward} (\code{train_size}, \code{step}) y del
 etiquetado econ\'omico (\code{VOL_CLOSE_FRAC}), para comprobar que el reparto del podio es
 robusto y no un artefacto de la configuraci\'on elegida.
@@ -654,12 +690,15 @@ robusto y no un artefacto de la configuraci\'on elegida.
 % ====================================================================
 \section*{Nota de reproducibilidad}
 \addcontentsline{toc}{section}{Nota de reproducibilidad}
-Todos los n\'umeros de este informe provienen \emph{verbatim} de
-\code{results/metrics_master_final.csv} (con el BIC de D4 corroborado en
-\code{results/metrics_04_hmm_gaussian_2s.csv}). Las figuras \code{pdf_*.png} se regeneran de
-forma determinista desde ese CSV con \code{python scripts/figs_pdf/build_pdf_figs.py}; las
-figuras \code{eda_*.png} provienen del an\'alisis exploratorio. No se ha re-ejecutado
-ning\'un detector ni recalculado ninguna m\'etrica para producir este documento.
+Todos los n\'umeros de este informe provienen \emph{verbatim} de un \'unico master
+can\'onico, \code{results/metrics_master.csv} (43 columnas: comportamiento, ajuste, silueta
+e intervalos de cobertura), reconstruible con \code{_rebuild_master.py}. Las figuras
+\code{pdf_*.png} y \code{synth_*.png} (scorecard e IC de cobertura) se regeneran de forma
+determinista desde ese mismo CSV con los scripts de \code{scripts/figs_pdf/}; las
+\code{eda_*.png} provienen del an\'alisis exploratorio. Las m\'etricas de comportamiento y de
+ajuste son id\'enticas a la versi\'on previa: esta revisi\'on solo \textbf{a\~nade} dos
+m\'etricas ---silueta de reg\'imenes e intervalos de cobertura por \emph{bootstrap}--- sin
+re-tunear ning\'un detector ni alterar ninguna cifra anterior.
 
 % ====================================================================
 \bibliographystyle{plain}

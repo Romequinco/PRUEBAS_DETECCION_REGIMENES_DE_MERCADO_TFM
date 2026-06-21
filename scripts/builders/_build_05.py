@@ -49,6 +49,36 @@ look-ahead intra-bloque. Las smoothed se usan solo IN-SAMPLE, marcadas como NO c
 punto ciego en crisis rápidas; univariante no ve correlación cross-asset; gaussiano
 insuficiente para colas.* Verificamos al final."""))
 
+cells.append(md(r"""## Índice
+
+D5 es uno de los notebooks más largos de la capa (12 secciones). Mapa navegable:
+
+1. [Endog: retorno log del S&P 500 (histórico largo desde 1985)](#sec1)
+2. [Ajuste in-sample, parámetros por régimen y verificación crisis = ALTA varianza](#sec2)
+3. [Selección de k por AIC/BIC (k=2 vs k=3)](#sec3)
+4. [Walk-forward CAUSAL (cubre 2008 y 2011 OOS)](#sec4)
+5. [Evaluación estandarizada y fila de métricas](#sec5)
+6. [S&P 500 coloreado por régimen (out-of-sample)](#sec6)
+7. [Distribución del retorno del S&P 500 por régimen (mecanismo de Hamilton)](#sec7)
+8. [Probabilidad FILTRADA de crisis (causal, OOS)](#sec8)
+9. [Filtrada vs smoothed in-sample (el sesgo de look-ahead, en limpio)](#sec9)
+10. [Matriz de transición y duraciones esperadas (persistencia)](#sec10)
+11. [Verificación explícita contra crisis y trampas](#sec11)
+12. [Conclusión y contraste con la hipótesis del CHECKPOINT 2](#sec12)
+
+**Hilo conductor visual.** Tres preguntas guían las figuras: *(i)* ¿el régimen de
+crisis es de verdad el de **alta varianza y media baja** (mecanismo de Hamilton)? →
+§2 (parámetros), §7 (distribución del retorno por régimen). *(ii)* ¿la lectura es
+**causal**, sin mirar el futuro? → §8 (filtrada OOS) vs §9 (filtrada vs smoothed
+in-sample). *(iii)* ¿los regímenes son **persistentes** (poco flickering)? → §10
+(matriz de transición + duraciones esperadas).
+
+**Figuras.** Existentes: `d5_msvar_sp500_regimes`, `d5_msvar_crisis_proba`,
+`d5_msvar_filtered_vs_smoothed`, `d5_msvar_transition`. Nuevas (ampliación Ola 2):
+`d5_regime_params` (tabla μ/σ por régimen), `d5_return_dist_by_regime` (violines del
+retorno por régimen), `d5_filtered_vs_smoothed` (filtrada vs smoothed con banda de
+diferencia) y `d5_transition` (transición + duraciones, estilo de casa)."""))
+
 cells.append(code(r"""%matplotlib inline
 import sys, warnings
 from pathlib import Path
@@ -62,13 +92,15 @@ while not (ROOT / 'src').exists() and ROOT != ROOT.parent:
 sys.path.insert(0, str(ROOT))
 RESULTS = ROOT / 'results'; RESULTS.mkdir(exist_ok=True)
 from src import evaluation as ev
+from src import viz
 from detectors.markov_switching_var import MarkovSwitchingVar
 
 raw = pd.read_parquet(ROOT / 'data' / 'raw' / 'raw_panel.parquet')
 print('Panel crudo:', raw.shape, '|', raw.index.min().date(), '->', raw.index.max().date())
 print('S&P 500 primer dato válido:', raw['SP500'].first_valid_index().date())"""))
 
-cells.append(md(r"""## 1. Endog: retorno log del S&P 500 (histórico largo desde 1985)
+cells.append(md(r"""<a id="sec1"></a>
+## 1. Endog: retorno log del S&P 500 (histórico largo desde 1985)
 
 `SP500_ret` = retorno log del S&P 500. Es a la vez (a) el **endog** del Markov-Switching,
 (b) el `market_returns` para el **etiquetado económico** robusto (0=calma..1=crisis) y
@@ -85,7 +117,8 @@ print('X (histórico largo):', X.shape, '|', X.index.min().date(), '->', X.index
 print('retorno diario: media=%.4f  std=%.4f  kurtosis=%.1f' % (mr.mean(), mr.std(), mr.kurtosis()))
 X.head(3)"""))
 
-cells.append(md(r"""## 2. Ajuste in-sample, parámetros por régimen y verificación crisis = ALTA varianza
+cells.append(md(r"""<a id="sec2"></a>
+## 2. Ajuste in-sample, parámetros por régimen y verificación crisis = ALTA varianza
 
 Ajuste sobre TODO el histórico solo para inspeccionar los parámetros (la evaluación
 honesta es el walk-forward de la sección 4). Imprimimos media y **varianza por estado en
@@ -110,7 +143,44 @@ assert crisis_is_high_var, 'FALLO: el estado crisis NO es el de mayor varianza (
 diff = np.max(np.abs(det.predict_proba(X) - det.insample_proba('filtered')))
 print('max|forward-filter propio - statsmodels filtered| =', f'{diff:.2e}', '(≈0 ⇒ OK)')"""))
 
-cells.append(md(r"""## 3. Selección de k por AIC/BIC (k=2 vs k=3)
+cells.append(md(r"""### 2.1 Tabla de parámetros estimados por régimen (μ, σ, persistencia)
+
+Los parámetros del Markov-Switching son **directamente interpretables** — esa es la
+ventaja del baseline econométrico frente a las cajas negras. Renderizamos μ y σ por
+régimen (en escala % diario y anualizada), la persistencia `p_ii` y la duración media
+implícita `1/(1-p_ii)`. La lectura clave: la **crisis** tiene μ menor (típicamente
+negativa) y σ varias veces mayor que la calma — exactamente la conmutación
+medias+varianzas de Hamilton. `det.means_canonical()`/`variances_canonical()` ya están
+en escala interna (retorno × 100 = punto porcentual diario), así que la tabla está en
+%."""))
+
+cells.append(code(r"""mu_c = det.means_canonical()            # % diario (retorno × scale=100)
+sd_c = np.sqrt(det.variances_canonical())  # desv. típica en % diario
+A_ins = det.transition_canonical()
+_lab = (['calma', 'crisis'] if det.n_states == 2
+        else ['calma'] + [f'estado {i}' for i in range(1, det.n_states - 1)] + ['crisis'])
+param_tab = pd.DataFrame({
+    'régimen': _lab,
+    'μ (% diario)': mu_c,
+    'μ (% anual.)': mu_c * 252,
+    'σ (% diario)': sd_c,
+    'σ (% anual.)': sd_c * np.sqrt(252),
+    'persist. p_ii': [A_ins[i, i] for i in range(det.n_states)],
+    'duración (días)': [1.0 / (1.0 - A_ins[i, i]) for i in range(det.n_states)],
+}).set_index('régimen')
+fig = viz.render_table_figure(
+    param_tab, title='D5 — parámetros estimados por régimen (in-sample · Hamilton 1989)',
+    highlight_cols=['σ (% diario)', 'σ (% anual.)'],
+    fmt={'μ (% diario)': '{:+.3f}', 'μ (% anual.)': '{:+.1f}', 'σ (% diario)': '{:.3f}',
+         'σ (% anual.)': '{:.1f}', 'persist. p_ii': '{:.4f}', 'duración (días)': '{:.0f}'})
+fig.savefig(RESULTS / 'd5_regime_params.png', dpi=110, bbox_inches='tight')
+plt.show()
+ratio = sd_c[det.crisis_state] / sd_c[:det.crisis_state].min() if det.crisis_state > 0 else float('nan')
+print('σ_crisis / σ_calma =', round(float(ratio), 2), '(>1 ⇒ crisis es el régimen volátil)')
+print(param_tab.round(4))"""))
+
+cells.append(md(r"""<a id="sec3"></a>
+## 3. Selección de k por AIC/BIC (k=2 vs k=3)
 
 Ajustamos también k=3 y comparamos AIC/BIC. Reportamos qué k prefiere cada criterio. El
 detector evaluado es k=2 (baseline interpretable); k=3 se reporta como referencia."""))
@@ -131,7 +201,8 @@ print('\nVarianzas por estado (canónico) para cada k:')
 for k in (2, 3):
     print(f'  k={k}:', np.round(fits[k].variances_canonical(), 4))"""))
 
-cells.append(md(r"""## 4. Walk-forward CAUSAL (cubre 2008 y 2011 OOS)
+cells.append(md(r"""<a id="sec4"></a>
+## 4. Walk-forward CAUSAL (cubre 2008 y 2011 OOS)
 
 `ev.walk_forward` reentrena el MS en ventanas crecientes y predice el siguiente bloque de
 21 días usando solo el pasado. La predicción del bloque usa el **forward filter
@@ -149,7 +220,8 @@ panel = ev.walk_forward(factory, X, market_returns=mr,
 print('Panel OOS:', panel.shape, '|', panel.index.min().date(), '->', panel.index.max().date())
 panel.head(3)"""))
 
-cells.append(md(r"""## 5. Evaluación estandarizada y fila de métricas (23 columnas)
+cells.append(md(r"""<a id="sec5"></a>
+## 5. Evaluación estandarizada y fila de métricas (32 columnas)
 
 `ev.evaluate` con `market_returns` (validación económica: retorno medio por estado) y
 `X_full` (logL/AIC/BIC). Guardamos la fila en `results/metrics_05_markov_switching_var.csv`."""))
@@ -163,7 +235,8 @@ print('retorno medio por estado canónico:', {k: round(v, 5) for k, v in res.ext
 print('Guardado:', out_csv, '| columnas =', row.shape[1])
 row.T"""))
 
-cells.append(md(r"""## 6. S&P 500 coloreado por régimen (out-of-sample)
+cells.append(md(r"""<a id="sec6"></a>
+## 6. S&P 500 coloreado por régimen (out-of-sample)
 
 Días OOS clasificados como **crisis** sombreados en rojo; bandas de crisis conocidas
 (rojo claro) y trampas 2013/2018 (naranja)."""))
@@ -189,7 +262,36 @@ ax.set_title('D5 markov_switching_var — S&P 500 coloreado por régimen (out-of
 fig.tight_layout(); fig.savefig(RESULTS / 'd5_msvar_sp500_regimes.png', dpi=110, bbox_inches='tight')
 plt.show()"""))
 
-cells.append(md(r"""## 7. Probabilidad FILTRADA de crisis (causal, OOS)
+cells.append(md(r"""<a id="sec7"></a>
+## 7. Distribución del retorno del S&P 500 por régimen (el mecanismo de Hamilton, visto)
+
+La sección 6 muestra *cuándo* el detector marca crisis; esta muestra *por qué*. Separamos
+el **retorno diario OOS del S&P 500** según el régimen que el filtro causal asignó cada
+día (calma vs crisis) y comparamos sus distribuciones con violines. La predicción de
+Hamilton es nítida: el régimen de crisis debe tener **media menor (desplazada hacia
+retornos negativos)** y **dispersión mucho mayor** (colas anchas) — es la conmutación
+simultánea de media y varianza que da nombre a `switching_variance=True`. Si los dos
+violines se solaparan, el modelo no estaría separando nada útil; que estén claramente
+desplazados valida el mecanismo sobre datos *fuera de muestra*, no solo en el ajuste."""))
+
+cells.append(code(r"""ret_oos = (mr.reindex(panel.index) * 100.0)   # retorno diario OOS en %
+ax = viz.plot_distribution_by_regime(
+    ret_oos, panel['state'], crisis_state=det.crisis_state,
+    labels={0: 'calma', det.crisis_state: 'crisis'}, kind='violin',
+    xlabel='retorno diario S&P 500 (%)',
+    title='D5 — distribución del retorno del S&P 500 por régimen (causal, OOS)')
+ax.axhline(0.0, color='grey', ls='--', lw=0.8, zorder=0)
+ax.figure.savefig(RESULTS / 'd5_return_dist_by_regime.png', dpi=110, bbox_inches='tight')
+plt.show()
+print('--- Retorno diario OOS por régimen (media menor + varianza mayor en crisis) ---')
+for k in sorted(int(s) for s in panel['state'].unique()):
+    d = ret_oos[panel['state'] == k].dropna()
+    tag = 'CRISIS' if k == det.crisis_state else 'calma '
+    print(f'  régimen {k} [{tag}]: media={d.mean():+.3f}%  std={d.std():.3f}%  '
+          f'mín={d.min():+.2f}%  n={len(d)}')"""))
+
+cells.append(md(r"""<a id="sec8"></a>
+## 8. Probabilidad FILTRADA de crisis (causal, OOS)
 
 `p_crisis` out-of-sample = P(régimen de alta varianza | y≤t), filtrada (causal). Banda
 inferior = timeline de régimen (rojo = crisis)."""))
@@ -210,12 +312,19 @@ ax2.set_yticks([]); ax2.set_ylabel('régimen'); ax2.set_title('Timeline (rojo = 
 fig.tight_layout(); fig.savefig(RESULTS / 'd5_msvar_crisis_proba.png', dpi=110, bbox_inches='tight')
 plt.show()"""))
 
-cells.append(md(r"""## 8. Filtrada vs smoothed IN-SAMPLE (efecto del look-ahead)
+cells.append(md(r"""<a id="sec9"></a>
+## 9. Filtrada vs smoothed IN-SAMPLE (el sesgo de look-ahead, en limpio)
 
 Comparación, sobre el ajuste de toda la muestra, de la probabilidad de crisis
 **FILTRADA** (causal, P(S_t|y≤t)) vs **SMOOTHED** (NO causal, P(S_t|y₁..T), usa todo el
 futuro). La smoothed es más nítida/anticipada porque mira el futuro: ilustra el sesgo de
-look-ahead que la evaluación causal evita. **No comparable** con la versión walk-forward."""))
+look-ahead que la evaluación causal evita. **No comparable** con la versión walk-forward.
+
+Esta es, posiblemente, la distinción más importante de D5 para un TFM honesto: la
+*tentación* de reportar smoothed (curvas limpias que "aciertan" las crisis) es justo lo
+que infla artificialmente cualquier backtest. Por eso la evaluación de las secciones 4–5
+usa SIEMPRE la filtrada. Conservamos la figura clásica (`d5_msvar_filtered_vs_smoothed`)
+y añadimos abajo una versión en limpio con **banda de diferencia** (§9.1)."""))
 
 cells.append(code(r"""cs = det.crisis_state
 p_filt = det.insample_proba('filtered')[:, cs]
@@ -234,7 +343,52 @@ plt.show()
 print('correlación filtered/smoothed:', round(float(np.corrcoef(p_filt, p_smooth)[0, 1]), 3))
 print('media |smoothed - filtered|:', round(float(np.abs(p_smooth - p_filt).mean()), 4))"""))
 
-cells.append(md(r"""## 9. Matriz de transición (persistencia de regímenes)
+cells.append(md(r"""### 9.1 Versión en limpio: curvas + banda de diferencia (smoothed − filtered)
+
+Misma comparación, presentada para lectura directa: panel superior con ambas curvas;
+panel inferior con la **diferencia** `smoothed − filtered`. Donde la banda es **azul y
+positiva** (típicamente *justo antes* de una crisis), el suavizado ya "sabe" lo que viene
+y adelanta la señal — el look-ahead que un sistema online NO puede usar. Donde es **roja
+y negativa**, el suavizado relaja la alarma antes que el filtro causal (salidas de
+crisis). El área total de la banda cuantifica cuánto regalo de información supondría
+reportar smoothed."""))
+
+cells.append(code(r"""cs = det.crisis_state
+p_filt = det.insample_proba('filtered')[:, cs]
+p_smooth = det.insample_proba('smoothed')[:, cs]
+idx = X.index
+d_sf = p_smooth - p_filt
+fig, (axA, axB) = plt.subplots(2, 1, figsize=(15, 6.2), sharex=True,
+                               gridspec_kw={'height_ratios': [3, 1]})
+axA.plot(idx, p_smooth, color=viz.C_LONG, lw=0.8,
+         label='smoothed P(crisis) — NO causal (mira y₁..T)')
+axA.plot(idx, p_filt, color=viz.C_CRISIS, lw=0.8, alpha=0.85,
+         label='filtered P(crisis) — causal (y≤t), la honesta')
+axA.axhline(0.5, color='grey', ls='--', lw=0.8)
+axA.set_ylabel('P(crisis) in-sample'); axA.set_ylim(0, 1)
+for a, b in ev.CRISIS_WINDOWS.values():
+    axA.axvspan(pd.Timestamp(a), pd.Timestamp(b), color='red', alpha=0.07)
+axA.legend(loc='upper left', fontsize=9, framealpha=0.9)
+axA.set_title('D5 — P(crisis) FILTRADA (causal) vs SMOOTHED (look-ahead), in-sample')
+axB.fill_between(idx, 0, d_sf, where=(d_sf >= 0), color=viz.C_LONG, alpha=0.55, step='mid',
+                 label='smoothed adelanta (look-ahead)')
+axB.fill_between(idx, 0, d_sf, where=(d_sf < 0), color=viz.C_CRISIS, alpha=0.55, step='mid',
+                 label='smoothed relaja antes')
+axB.axhline(0.0, color='black', lw=0.6)
+axB.set_ylabel('smoothed − filtered'); axB.set_xlabel('fecha')
+axB.legend(loc='upper left', fontsize=8, framealpha=0.9, ncol=2)
+for a, b in ev.CRISIS_WINDOWS.values():
+    axB.axvspan(pd.Timestamp(a), pd.Timestamp(b), color='red', alpha=0.07)
+fig.tight_layout()
+fig.savefig(RESULTS / 'd5_filtered_vs_smoothed.png', dpi=110, bbox_inches='tight')
+plt.show()
+print('correlación filtered/smoothed:', round(float(np.corrcoef(p_filt, p_smooth)[0, 1]), 3))
+print('media |smoothed - filtered|:', round(float(np.abs(d_sf).mean()), 4))
+print('días con |Δ|>0.25 (donde el look-ahead cambia de verdad la lectura):',
+      int((np.abs(d_sf) > 0.25).sum()))"""))
+
+cells.append(md(r"""<a id="sec10"></a>
+## 10. Matriz de transición y duraciones esperadas (persistencia de regímenes)
 
 Matriz fila-estocástica P(S_t=j | S_{t-1}=i) en orden canónico. La diagonal alta da
 persistencia (calma y crisis se "pegan"); fuera de diagonal = probabilidad de
@@ -257,7 +411,29 @@ plt.show()
 dur_calma = 1.0 / (1.0 - A[0, 0]); dur_crisis = 1.0 / (1.0 - A[1, 1])
 print(f'Persistencia esperada: calma ≈ {dur_calma:.0f} días | crisis ≈ {dur_crisis:.0f} días')"""))
 
-cells.append(md(r"""## 10. Verificación explícita contra crisis y trampas
+cells.append(md(r"""### 10.1 Transición en estilo de casa + duraciones esperadas por régimen
+
+Misma matriz, pintada con el helper común `viz.plot_transition_matrix` (colores y tipografía
+idénticos al resto de detectores, para comparación honesta entre notebooks), acompañada de
+la **duración esperada** de cada régimen, `E[duración] = 1/(1-p_ii)` días. Diagonal cercana
+a 1 ⇒ regímenes pegajosos (poco flickering); es lo que hace al MS-VAR un baseline estable
+frente a detectores que parpadean. La asimetría calma/crisis (la calma suele durar mucho
+más) es la firma habitual de los mercados: largas expansiones, estrés breve pero intenso."""))
+
+cells.append(code(r"""A_tr = det.transition_canonical()
+lab_tr = ['calma', 'crisis'] if det.n_states == 2 else None
+ax = viz.plot_transition_matrix(
+    A_tr, labels=lab_tr,
+    title='D5 — matriz de transición (canónica) · estilo de casa')
+ax.figure.savefig(RESULTS / 'd5_transition.png', dpi=110, bbox_inches='tight')
+plt.show()
+print('Duración esperada por régimen = 1/(1 - p_ii):')
+for i in range(det.n_states):
+    tag = 'crisis' if i == det.crisis_state else ('calma' if i == 0 else f'estado {i}')
+    print(f'  {tag:8s}: p_ii={A_tr[i, i]:.4f}  ->  {1.0/(1.0 - A_tr[i, i]):6.0f} días')"""))
+
+cells.append(md(r"""<a id="sec11"></a>
+## 11. Verificación explícita contra crisis y trampas
 
 Cobertura (% días crisis) en cada ventana de crisis (alto = bueno) y en cada trampa
 2013/2018 (bajo = bueno). Con histórico largo, **2008 y 2011 son OOS**."""))
@@ -277,7 +453,8 @@ print(f'switching_rate: {res.switching_rate:.4f} | duración media: {res.mean_re
       f' | label_stability: {res.label_stability:.3f}')
 print(f'logL={res.log_likelihood:.1f}  AIC={res.aic:.1f}  BIC={res.bic:.1f}')"""))
 
-cells.append(md(r"""## 11. Conclusión y contraste con la hipótesis del CHECKPOINT 2
+cells.append(md(r"""<a id="sec12"></a>
+## 12. Conclusión y contraste con la hipótesis del CHECKPOINT 2
 
 Hipótesis CP2 (D5): *baseline econométrico interpretable; capta calma/estrés; punto ciego
 en crisis rápidas; univariante no ve correlación cross-asset; gaussiano insuficiente para

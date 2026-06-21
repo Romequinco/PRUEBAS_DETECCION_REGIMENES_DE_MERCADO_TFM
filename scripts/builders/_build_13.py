@@ -6,15 +6,19 @@ Replica el patrón de _build_08.py: crea el notebook celda a celda con nbformat,
 ejecuta con ExecutePreprocessor(timeout=3600, kernel python3) desde notebooks/, escribe
 el .ipynb ya ejecutado, cuenta errores (debe dar 0) e imprime `celdas=… errores=N`.
 
-La FASE 4 sintetiza los 12 detectores (D1–D12) ya evaluados walk-forward causal:
-  · construye la tabla maestra FINAL `results/metrics_master_final.csv` (crisis estricta
-    + estrés agregado + vio_2008_oos + clase);
-  · recomputa el panel walk-forward de los 3 multi-estado (D3 k=3, D8 k=4, D12 k=3) para
-    derivar la máscara de ESTRÉS AGREGADO (severidad alta = unión de los 2 estados más
-    severos); los 8 binarios tienen estrés=crisis por definición (copia directa);
-  · produce el ranking POR EJE y las figuras de cruce de ejes `results/fase4_*.png`.
+La FASE 4 sintetiza los 12 detectores (D1–D12) ya evaluados walk-forward causal. Tras la
+unificación de Ola 0 el ÚNICO master canónico es `results/metrics_master.csv` (superset de 43
+columnas: identidad + equidad de ventana + crisis estricta + IC bootstrap + ESTRÉS AGREGADO +
+silhouette + dinámica + ajuste + lead/lag). Este notebook por tanto:
+  · LEE `results/metrics_master.csv` (NO escribe ningún master; `metrics_master_final.csv` quedó
+    archivado en results/_archive/ y se reconstruye, si hace falta, con scripts/verify/_rebuild_master.py);
+  · recomputa el panel walk-forward de los 3 multi-estado (D3 k=3, D8 k=4, D12 k=3) SOLO como
+    SANITY CHECK: verifica que la crisis estricta (state==n-1) Y el estrés agregado (state>=n-2)
+    recomputados coinciden (±0.01) con las columnas `cov_*`/`cov_estres_*` del master;
+  · produce el ranking POR EJE y un bloque AMPLIADO de figuras de síntesis `results/synth_*.png`
+    (radar por detector, scorecard consolidado, podio por eje y los planos de cruce de ejes).
 
-NO modifica results/metrics_master.csv (crea el _final.csv aparte). No toca data/.
+NO modifica results/metrics_master.csv ni ningún CSV de results/. No toca data/.
 
 Uso:  python scripts/builders/_build_13.py
 """
@@ -36,16 +40,26 @@ md(r"""# 13 — FASE 4: síntesis comparativa de los 12 detectores de régimen
 Esta es la **síntesis honesta** del banco de pruebas. No buscamos "el mejor detector": cada
 familia gana en un **eje** distinto y la comparación debe ser **justa** (controlando por la
 ventana de evaluación) y **causal** (todo viene del walk-forward de la FASE 3, sin look-ahead).
+El veredicto de la FASE 4 no es un campeón único sino un mapa de **"mejor-para-qué"**.
+
+## Tesis de la síntesis
+- **No hay detector dominante.** Las **4 familias** (reglas/umbral, modelos de volatilidad,
+  modelos de estados latentes, change-point/geometría) se **reparten los 6 ejes** de mérito:
+  ninguna gana en todos a la vez. Esto es un *resultado*, no un fracaso del experimento.
+- **La elección depende del uso.** Quien quiera **anticipar** el suelo de un drawdown no elige
+  lo mismo que quien quiera **no disparar** en una falsa alarma (2013/2018) o quien priorice
+  **parsimonia** operativa.
 
 ## Qué hace este notebook
-1. **Tabla maestra FINAL** `results/metrics_master_final.csv`: añade a la tabla de crisis
-   estricta dos bloques nuevos — **estrés agregado** y los metadatos de **equidad de ventana**
-   (`vio_2008_oos`) y **clase** ({baseline, avanzado, exploratorio-negativo}).
-2. **Estrés agregado** para los 3 multi-estado (D3, D8, D12): recomputamos su panel
-   walk-forward con su config EXACTA y medimos la severidad alta = unión de los 2 estados más
-   severos. Los 8 binarios tienen estrés=crisis (copia directa, sin recomputar; D5 tarda ~33
-   min).
-3. **Ranking por eje** (no un único número) + **figuras de cruce de ejes** `results/fase4_*.png`.
+1. **Lee el master unificado** `results/metrics_master.csv` (superset de Ola 0). NO lo reescribe:
+   ya trae identidad, equidad de ventana (`vio_2008_oos`), crisis estricta con IC, **estrés
+   agregado** (`cov_estres_*`, `fa_estres_*`), dinámica, ajuste (BIC) y lead/lag.
+2. **Sanity check causal**: recomputa el panel walk-forward de los 3 multi-estado (D3, D8, D12)
+   con su config EXACTA y verifica que crisis estricta **y** estrés agregado coinciden (±0.01)
+   con el master. Si no, se investiga antes de leer nada.
+3. **Ranking por eje** (no un único número) + un bloque AMPLIADO de figuras de síntesis
+   `results/synth_*.png`: **radar** por detector, **scorecard** consolidado, **podio por eje** y
+   los **planos de cruce de ejes**.
 
 ## Principios no negociables
 - **Causalidad**: todo sale de las etiquetas walk-forward de la FASE 3.
@@ -56,6 +70,23 @@ ventana de evaluación) y **causal** (todo viene del walk-forward de la FASE 3, 
   (validan la parsimonia), no se esconden ni se maquillan.
 - **2013 (taper) se mantiene como TRAMPA** (false-positive window). El hallazgo es que la
   *taxonomía* de crisis importa, no que 2013 sea ruido reclasificable.""")
+
+# ------------------------------------------------------------------ #
+md(r"""## Índice navegable
+
+1. [La métrica de **estrés agregado**](#sec1) — por qué y cómo se define.
+2. [**Recompute** de los multi-estado + **sanity check**](#sec2) — D3/D8/D12 vs master (±0.01).
+3. [La **tabla maestra unificada**](#sec3) — lectura del superset (sin reescritura).
+4. [**Ranking por eje**](#sec4) — 6 ejes, ganador por eje, equidad de ventana.
+5. [**Scorecard consolidado**](#sec5) — 12 detectores × ejes (figura) · `synth_scorecard_table.png`.
+6. [**Radar por detector**](#sec6) — perfil sobre los 6 ejes · `synth_radar.png`.
+7. [**Podio por eje**](#sec7) — top-3 en cada criterio · `synth_podium_by_axis.png`.
+8. [**Planos de cruce de ejes**](#sec8) — trade-offs · `synth_*.png`.
+9. [**Resumen estructurado**](#sec9) — insumo de las conclusiones.
+
+> Las figuras de este notebook se guardan con prefijo `synth_*` (las `fase4_*` quedaron
+> archivadas). Las figuras `synth_coverage_ci.png` / `synth_scorecard.png` y las `pdf_*.png`
+> que usa el informe se generan en `scripts/figs_pdf/` y NO se sobreescriben aquí.""")
 
 # ------------------------------------------------------------------ #
 co(r"""%matplotlib inline
@@ -73,11 +104,15 @@ while not (ROOT / 'src').exists() and ROOT != ROOT.parent:
 sys.path.insert(0, str(ROOT))
 RESULTS = ROOT / 'results'; RESULTS.mkdir(exist_ok=True)
 from src import evaluation as ev
+from src import viz                     # helpers y paleta de casa (nombres cortos robustos al K)
+viz.use_house_style()
 
+# Master canónico ÚNICO (superset unificado en Ola 0). Solo se LEE; nunca se reescribe aquí.
 master = pd.read_csv(ROOT / 'results' / 'metrics_master.csv')
-print('master cargado:', master.shape, '| detectores:', master.shape[0])
+print('master cargado:', master.shape, '| detectores:', master.shape[0],
+      '| columnas:', master.shape[1])
 
-# Features y retornos de mercado (S&P 500) para recomputar los multi-estado.
+# Features y retornos de mercado (S&P 500) para recomputar los multi-estado en el sanity check.
 feats = pd.read_parquet(ROOT / 'data' / 'processed' / 'features.parquet')
 feats.index = pd.to_datetime(feats.index); feats = feats.sort_index()
 raw = pd.read_parquet(ROOT / 'data' / 'raw' / 'raw_panel.parquet')
@@ -85,10 +120,11 @@ mkt_full = np.log(raw['SP500'] / raw['SP500'].shift(1))
 print('features:', feats.shape, '| ventana', feats.index.min().date(), '->', feats.index.max().date())
 
 CRISIS = ev.CRISIS_WINDOWS; FP = ev.FALSE_POSITIVE_WINDOWS; TROUGH = ev.DRAWDOWN_TROUGHS
-print('crisis windows:', list(CRISIS)); print('trampas (FP):', list(FP))""")
+print('crisis windows:', list(CRISIS)); print('trampas (FP):', list(FP)); print('troughs:', list(TROUGH))""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 1. La métrica de ESTRÉS AGREGADO (decisión del proyecto)
+md(r"""<a id="sec1"></a>
+## 1. La métrica de ESTRÉS AGREGADO (decisión del proyecto)
 
 La tabla de la FASE 3 mide **crisis estricta** = día con `state == n_states-1` (el estado más
 severo). Para los detectores **multi-estado** esto solo cuenta la **cola extrema** y los compara
@@ -102,11 +138,11 @@ Para una comparación **justa** definimos además la máscara de **estrés agreg
 
 Corte explícito por detector:
 - **Binarios** (D1, D2, D4, D5, D6, D7, D10, D11): estrés = crisis → copia directa de `cov_*`,
-  `fa_*` y `false_alarm_rate` (NO se recomputan; D5 tarda ~33 min).
+  `fa_*` y `false_alarm_rate` (ya consolidado en el master; D5 tarda ~33 min y NO se recomputa).
 - **D8** (k=4): estrés = {corrección(estado 2), crisis(estado 3)}.
 - **D3** y **D12** (k=3): estrés = {corrección(estado 1), crisis(estado 2)}.
 
-Bajo la máscara de estrés calculamos `cov_estres_*` (cobertura por ventana de crisis),
+Bajo la máscara de estrés el master guarda `cov_estres_*` (cobertura por ventana de crisis),
 `fa_estres_*` (activación en las trampas 2013/2018) y `false_alarm_rate_estres` (tasa global).
 
 **Lectura honesta (los dos lados):** ampliar a "corrección" **sube la cobertura** de las
@@ -144,25 +180,27 @@ def metrics_from_states(states: pd.Series, which: str, n_states: int):
 print('helpers listos')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 2. Recompute walk-forward de los 3 MULTI-ESTADO (D3, D8, D12) — config EXACTA
+md(r"""<a id="sec2"></a>
+## 2. Recompute walk-forward de los 3 MULTI-ESTADO (D3, D8, D12) — config EXACTA
 
-Recomputamos SOLO los multi-estado para derivar la máscara de estrés sobre `panel['state']`.
-Config idéntica a sus builds de la FASE 3:
+Recomputamos SOLO los multi-estado para derivar la máscara de estrés sobre `panel['state']` y
+**auditar** que el master no ha driftado. Config idéntica a sus builds de la FASE 3:
 - **D3 `clustering_gmm_k3`**: 15 features, `train_size=252*8`, `step=21`, expanding. Rápido (~30 s).
 - **D8 `hmm_tstudent_4s`**: 7 features puente, `n_init=3`, `t_n_iter=25`, `train_size=252*5`,
   `step=126`, expanding. EM-t caro (~5 min, paciencia).
 - **D12 `deep_ae_regime`**: 15 features, AE(hidden=8, latent=2, epochs=40), `train_size=252*8`,
   `step=21`. Torch (~1–2 min).
 
-**SANITY CHECK**: la crisis ESTRICTA recomputada (`state==n-1`) debe coincidir (±0.01) con los
-`cov_*`/`fa_*` del master. Si no, se investiga antes de seguir.""")
+**SANITY CHECK**: la crisis ESTRICTA recomputada (`state==n-1`) y el ESTRÉS recomputado
+(`state>=n-2`) deben coincidir (±0.01) con `cov_*`/`cov_estres_*` y `fa_*`/`fa_estres_*` del
+master. Si no, se investiga antes de seguir (semilla/config; D12 puede driftar ~poco por torch).""")
 
 co(r"""from detectors.clustering_gmm import ClusteringGMM
 from detectors.hmm_tstudent import HMMTStudent
 from detectors.hmm_gaussian_2s import BRIDGE_FEATURES
 from detectors.deep_ae_regime import DeepAERegime
 
-multi = {}   # nombre_master -> dict(n_states, cov_estricta, fa_estricta, far_estricta, cov_estres, ...)
+multi = {}   # nombre_master -> dict(n_states, cov_c/fa_c/far_c [estricta], cov_s/fa_s/far_s [estres])
 
 def recompute(name, factory, X, n_states, train_size, step):
     t0 = time.time()
@@ -194,9 +232,11 @@ multi['deep_ae_regime'] = recompute(
 print('\nRecompute de los 3 multi-estado COMPLETO.')""")
 
 # ------------------------------------------------------------------ #
-md(r"""### 2b. SANITY CHECK — crisis estricta recomputada vs master (±0.01)""")
+md(r"""### 2b. SANITY CHECK — crisis estricta Y estrés recomputados vs master (±0.01)""")
 
 co(r"""def get_master(name, col):
+    if col not in master.columns:
+        return float('nan')
     v = master.loc[master['detector'] == name, col]
     return float(v.iloc[0]) if len(v) and pd.notna(v.iloc[0]) else float('nan')
 
@@ -207,136 +247,92 @@ def approx(a, b, tol=0.01):
         return False
     return abs(a - b) <= tol
 
-print('=== SANITY: crisis estricta recomputada (state==n-1) vs metrics_master.csv ===')
+print('=== SANITY: recompute D3/D8/D12 vs metrics_master.csv (ESTRICTA y ESTRÉS, ±0.01) ===')
 all_ok = True
 for name, d in multi.items():
     print(f'\n{name} (k={d["n_states"]})')
     for w in CRISIS:
         rc, mc = d['cov_c'][w], get_master(name, f'cov_{w}')
-        ok = approx(rc, mc); all_ok &= ok
-        print(f'  cov_{w:16s}: recomputado={rc:7.4f}  master={mc:7.4f}  {"OK" if ok else "<<< DESVIA"}')
+        rs, ms = d['cov_s'][w], get_master(name, f'cov_estres_{w}')
+        ok = approx(rc, mc) and approx(rs, ms); all_ok &= ok
+        print(f'  cov_{w:16s}: estricta rec={rc:7.4f}/mst={mc:7.4f} | estres rec={rs:7.4f}/mst={ms:7.4f}  {"OK" if ok else "<<< DESVIA"}')
     for w in FP:
         rf, mf = d['fa_c'][w], get_master(name, f'fa_{w}')
-        ok = approx(rf, mf); all_ok &= ok
-        print(f'  fa_{w:17s}: recomputado={rf:7.4f}  master={mf:7.4f}  {"OK" if ok else "<<< DESVIA"}')
-print('\nSANITY GLOBAL:', 'TODO COINCIDE (±0.01) -> estrés derivado del mismo panel' if all_ok
+        rsf, msf = d['fa_s'][w], get_master(name, f'fa_estres_{w}')
+        ok = approx(rf, mf) and approx(rsf, msf); all_ok &= ok
+        print(f'  fa_{w:17s}: estricta rec={rf:7.4f}/mst={mf:7.4f} | estres rec={rsf:7.4f}/mst={msf:7.4f}  {"OK" if ok else "<<< DESVIA"}')
+print('\nSANITY GLOBAL:', 'TODO COINCIDE (±0.01) -> el master refleja el panel walk-forward' if all_ok
       else 'HAY DESVIACIONES -> revisar (semilla/config); D12 puede driftar ~poco por torch')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 3. Tabla maestra FINAL `results/metrics_master_final.csv`
+md(r"""<a id="sec3"></a>
+## 3. La tabla maestra unificada `results/metrics_master.csv` (lectura)
 
-Una fila por detector (los 12). Bloques de columnas:
-- **Identidad / equidad**: `detector, n_states, clase, ventana_eval, oos_start, oos_end, n_oos`,
-  y `vio_2008_oos` (True si `oos_start` < 2008-09 → evaluó la GFC out-of-sample). La comparación
-  agrupa por esta bandera: los de ventana corta (2012+/2015+) NO vieron 2008 OOS.
-- **Crisis estricta** (del master): `cov_*`, `fa_*`, `false_alarm_rate`.
-- **Estrés agregado** (nuevo): `cov_estres_*`, `fa_estres_*`, `false_alarm_rate_estres`.
-- **Dinámica**: `switching_rate, mean_regime_duration, label_stability`.
+Tras Ola 0 **no construimos** ninguna tabla "final" aquí: el master ya es el superset canónico
+(una fila por detector, los 12) con todos los bloques que esta síntesis necesita. Solo lo
+**leemos** y lo ordenamos para que la lectura **agrupe por ventana**. Bloques de columnas:
+
+- **Identidad / equidad**: `detector, n_states, clase, coste, vio_2008_oos, ventana_eval,
+  oos_start, oos_end, n_oos`. `vio_2008_oos` = True si `oos_start` < 2008-09 → evaluó la GFC OOS.
+- **Crisis estricta** (+ IC bootstrap): `cov_*`, `cov_*_lo`, `cov_*_hi`, `fa_*`, `false_alarm_rate`.
+- **Estrés agregado**: `cov_estres_*`, `fa_estres_*`, `false_alarm_rate_estres`.
+- **Dinámica**: `switching_rate, mean_regime_duration, label_stability`, `silhouette`.
 - **Ajuste**: `log_likelihood, aic, bic` (solo modelos generativos).
 - **Lead/lag**: `leadlag_*` (negativo = anticipa el suelo del drawdown).
-- `clase` ∈ {baseline, avanzado, **exploratorio-negativo**}: D11 y D12 son negativos
-  explícitos. `nota` documenta el corte de estrés del detector.
+- `clase` ∈ {baseline, avanzado, **exploratorio-negativo**}: D11 y D12 son negativos explícitos.
+  `coste` ∈ {bajo, medio, alto} (documentado desde las notas de build). `nota` documenta el corte
+  de estrés del detector.
 
-Filas ordenadas por `vio_2008_oos` (primero ventana larga que vio 2008 OOS) y, dentro, por
-cobertura media disponible — para que la lectura **agrupe por ventana**.""")
+> **Esta celda NO escribe nada en `results/`.** La reconstrucción del master, si hiciera falta,
+> es responsabilidad de `scripts/verify/_rebuild_master.py`.""")
 
-co(r"""CLASE = {
-    'rule_vix_threshold': 'baseline', 'rule_composite_riskoff': 'baseline',
-    'clustering_gmm_k3': 'baseline', 'hmm_gaussian_2s': 'baseline',
-    'markov_switching_var_2s': 'avanzado', 'garch_t_vol': 'avanzado',
-    'changepoint_online': 'avanzado', 'hmm_tstudent_4s': 'avanzado',
-    'turbulence_mahalanobis': 'avanzado', 'jump_model': 'avanzado',
-    'msgarch_regime': 'exploratorio-negativo', 'deep_ae_regime': 'exploratorio-negativo',
-}
-# Coste computacional cualitativo, DOCUMENTADO desde las notas de build (INDEX.md):
-#   alto  = refit caro (D5 MS-VAR ~33 min; D8 HMM-t ~5 min; D11 MS-GARCH desde cero)
-#   medio = HMM/GMM/AE/jump con refit por fold moderado
-#   bajo  = reglas, CUSUM, turbulencia (cálculo cerrado por día)
-COSTE = {
-    'rule_vix_threshold': 'bajo', 'rule_composite_riskoff': 'bajo',
-    'clustering_gmm_k3': 'medio', 'hmm_gaussian_2s': 'medio',
-    'markov_switching_var_2s': 'alto', 'garch_t_vol': 'medio',
-    'changepoint_online': 'bajo', 'hmm_tstudent_4s': 'alto',
-    'turbulence_mahalanobis': 'bajo', 'jump_model': 'medio',
-    'msgarch_regime': 'alto', 'deep_ae_regime': 'medio',
-}
-def nota_estres(name, n_states):
-    if n_states == 2:
-        return 'binario: estres = crisis (state==1)'
-    if name == 'hmm_tstudent_4s':
-        return 'k=4: estres = {correccion(2), crisis(3)}'
-    return 'k=3: estres = {correccion(1), crisis(2)}'
+co(r"""# Trabajamos sobre una copia del master; lo ordenamos para AGRUPAR POR VENTANA (no se reescribe).
+final = master.copy()
 
-rows = []
-for _, r in master.iterrows():
-    name = r['detector']; n = int(r['n_states'])
-    row = dict(r)   # arranca con TODAS las columnas del master (crisis estricta + dinamica + fit + leadlag)
-    row['clase'] = CLASE.get(name, '?')
-    row['coste'] = COSTE.get(name, '?')
-    row['vio_2008_oos'] = pd.Timestamp(r['oos_start']) < pd.Timestamp('2008-09-01')
-    row['nota'] = nota_estres(name, n)
-    if n == 2:   # binario: estres = crisis (copia directa, NO recomputar)
-        for w in CRISIS: row[f'cov_estres_{w}'] = r[f'cov_{w}']
-        for w in FP:     row[f'fa_estres_{w}']  = r[f'fa_{w}']
-        row['false_alarm_rate_estres'] = r['false_alarm_rate']
-    else:        # multi-estado: estres recomputado
-        d = multi[name]
-        for w in CRISIS: row[f'cov_estres_{w}'] = d['cov_s'][w]
-        for w in FP:     row[f'fa_estres_{w}']  = d['fa_s'][w]
-        row['false_alarm_rate_estres'] = d['far_s']
-    rows.append(row)
-
-final = pd.DataFrame(rows)
-
-# Orden de columnas (bien visible: ventana e identidad primero).
-id_cols   = ['detector', 'n_states', 'clase', 'coste', 'vio_2008_oos',
-             'ventana_eval', 'oos_start', 'oos_end', 'n_oos']
-cov_cols  = [f'cov_{w}' for w in CRISIS]
-fa_cols   = [f'fa_{w}' for w in FP]
-cove_cols = [f'cov_estres_{w}' for w in CRISIS]
-fae_cols  = [f'fa_estres_{w}' for w in FP]
-dyn_cols  = ['switching_rate', 'mean_regime_duration', 'label_stability',
-             'false_alarm_rate', 'false_alarm_rate_estres']
-fit_cols  = ['log_likelihood', 'aic', 'bic']
-ll_cols   = [f'leadlag_{w}' for w in TROUGH]
-order = id_cols + cov_cols + fa_cols + cove_cols + fae_cols + dyn_cols + fit_cols + ll_cols + ['nota']
-final = final[order]
+cov_cols  = [f'cov_{w}' for w in CRISIS if f'cov_{w}' in final.columns]
+id_cols   = [c for c in ['detector', 'n_states', 'clase', 'coste', 'vio_2008_oos',
+                         'ventana_eval', 'oos_start', 'oos_end', 'n_oos'] if c in final.columns]
 
 # cobertura media disponible (crisis estricta) para ordenar dentro de cada grupo de ventana.
 final['_cov_mean'] = final[cov_cols].mean(axis=1, skipna=True)
-final = final.sort_values(['vio_2008_oos', '_cov_mean'], ascending=[False, False]).drop(columns='_cov_mean').reset_index(drop=True)
+final = (final.sort_values(['vio_2008_oos', '_cov_mean'], ascending=[False, False])
+              .drop(columns='_cov_mean').reset_index(drop=True))
 
-out = RESULTS / 'metrics_master_final.csv'
-final.to_csv(out, index=False)
-print('Guardado:', out, '| shape =', final.shape)
+print('master (solo lectura):', final.shape, '| NO se escribe ningún CSV en results/')
 final[id_cols]""")
 
-co(r"""# Vista compacta de la tabla final (estricta vs estres) para inspeccion
-view = final[['detector', 'n_states', 'vio_2008_oos', 'clase',
-              'cov_GFC_2008', 'cov_COVID_2020', 'cov_Inflation_2022',
-              'cov_estres_COVID_2020', 'cov_estres_Inflation_2022',
-              'fa_Selloff_Q4_2018', 'fa_estres_Selloff_Q4_2018',
-              'switching_rate', 'mean_regime_duration', 'bic']].copy()
+co(r"""# Vista compacta de la tabla (estricta vs estres) para inspeccion
+show = ['detector', 'n_states', 'vio_2008_oos', 'clase',
+        'cov_GFC_2008', 'cov_COVID_2020', 'cov_Inflation_2022',
+        'cov_estres_COVID_2020', 'cov_estres_Inflation_2022',
+        'fa_Selloff_Q4_2018', 'fa_estres_Selloff_Q4_2018',
+        'switching_rate', 'mean_regime_duration', 'bic']
+view = final[[c for c in show if c in final.columns]].copy()
 display(view.round(3))""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 4. Ranking POR EJE (no un único número)
+md(r"""<a id="sec4"></a>
+## 4. Ranking POR EJE (no un único número)
 
 Seis ejes, cada uno con su lógica. **Clave de equidad**: la cobertura de sistémicas grandes
 separa los que vieron 2008 OOS de los que no (NaN donde no estaba en su ventana, **sin
 penalizar**). Construimos una tabla de rango por detector y eje (1 = mejor).
 
 1. **Cobertura de sistémicas grandes** = media(GFC 2008, COVID 2020) donde el detector las vio
-   OOS. Alto = mejor.
+   OOS. Alto = mejor. *(Familias que suelen ganar: reglas F1, volatilidad F4/F5.)*
 2. **Especificidad / no disparar en trampas** = 1 − media(fa_2013, fa_2018). En versión crisis
-   estricta Y estrés. Alto = mejor.
+   estricta Y estrés. Alto = mejor. *(CUSUM F6 y reglas F1.)*
 3. **Flickering**: `switching_rate` (bajo = mejor) y `mean_regime_duration` (alto = mejor).
+   *(Change-point F6 y reglas son persistentes; GMM/AE flickean.)*
 4. **Lead/lag sostenido**: media de `leadlag_*` (negativo = anticipa). Más negativo = mejor.
+   *(Change-point F6 anticipa el suelo.)*
 5. **Ajuste estadístico**: `BIC` SOLO en modelos generativos (HMM/GMM/MS/GARCH). Reglas, CUSUM y
    turbulencia **no tienen BIC comparable** → NaN. Menor = mejor. (Aviso: el BIC solo es
    estrictamente comparable entre modelos sobre las MISMAS features/ventana, p. ej. D4 vs D8.)
 6. **Coste computacional**: escala cualitativa {bajo, medio, alto} documentada desde las notas
-   de build del INDEX (no inventada con falsa precisión). bajo = mejor.""")
+   de build del INDEX (no inventada con falsa precisión). bajo = mejor.
+
+Estos **6 ejes** son los que alimentan el radar (§6), el scorecard (§5) y el podio (§7).""")
 
 co(r"""ax = final.set_index('detector').copy()
 # Ejes numericos (mayor=mejor salvo donde se indique)
@@ -364,6 +360,20 @@ rank_spec = {
 ranks = pd.DataFrame(index=ax.index)
 for label, (col, asc) in rank_spec.items():
     ranks[label] = ax[col].rank(ascending=asc, method='min')
+
+# rank6: los 6 ejes "conceptuales" que alimentan radar/scorecard/podio (1 = mejor).
+rank6_spec = {
+    'Sensib.':  ('eje1_cob_sistemica', False),
+    'Especif.': ('eje2_especif_estricta', False),
+    'Persist.': ('eje3_persistencia', False),
+    'Lead/lag': ('eje4_leadlag', True),
+    'BIC':      ('eje5_bic', True),
+    'Coste':    ('eje6_coste_num', True),
+}
+rank6 = pd.DataFrame(index=ax.index)
+for label, (col, asc) in rank6_spec.items():
+    rank6[label] = ax[col].rank(ascending=asc, method='min')
+
 print('=== VALORES POR EJE ===')
 display(ax[['eje1_cob_sistemica','eje2_especif_estricta','eje2_especif_estres','eje3_persistencia',
             'eje3_switching','eje4_leadlag','eje5_bic','coste']].round(3))
@@ -371,6 +381,7 @@ print('\n=== RANKS POR EJE (1 = mejor; NaN = no aplica / fuera de ventana) ===')
 display(ranks.round(0))""")
 
 co(r"""# Ganador por eje (mejor rank) — con la salvedad de equidad de ventana en cobertura.
+sh = viz.detector_short
 print('=== GANADOR POR EJE ===')
 for label in rank_spec:
     col = rank_spec[label][0]; asc = rank_spec[label][1]
@@ -378,7 +389,7 @@ for label in rank_spec:
     if not len(s):
         continue
     best = s.idxmin() if asc else s.idxmax()
-    print(f'  {label:18s}: {best:24s} ({s.loc[best]:.3f})')
+    print(f'  {label:18s}: {sh(best):14s} ({s.loc[best]:.3f})')
 
 # Cobertura: separar por grupo de ventana (justo)
 print('\n=== Cobertura sistemica POR GRUPO DE VENTANA (equidad) ===')
@@ -387,33 +398,156 @@ for grp, sub in ax.groupby('vio_2008_oos'):
     tag = 'VIO 2008 OOS (ventana larga)' if grp else 'NO vio 2008 (ventana corta 2012+/2015+)'
     print(f'\n  [{tag}]')
     for d, v in s.items():
-        print(f'    {d:24s}: {v:.3f}')""")
+        print(f'    {sh(d):14s}: {v:.3f}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 5. Figuras de cruce de ejes (`results/fase4_*.png`)
+md(r"""<a id="sec5"></a>
+## 5. Scorecard consolidado (`synth_scorecard_table.png`)
+
+El **"mejor-para-qué" de un vistazo**: los 12 detectores × 6 ejes, con el **rank** (1 = mejor)
+en cada eje y una columna **"Mejor en"** que lista los ejes donde el detector queda primero. La
+casilla vacía = el eje no aplica (p. ej. sin BIC comparable). Se ve de inmediato cómo el mérito
+se **reparte**: no hay una fila que sea 1 en todas las columnas.""")
+
+co(r"""# Scorecard: 12 detectores x 6 ejes (rank) + clase + "Mejor en".
+sc = pd.DataFrame(index=[viz.detector_short(n) for n in ax.index])
+sc['clase'] = ax['clase'].values
+for label in rank6_spec:
+    sc[label] = rank6[label].values
+def _mejor_en(name):
+    wins = [label for label in rank6_spec if rank6.loc[name, label] == 1]
+    return ', '.join(wins) if wins else '—'
+sc['Mejor en'] = [_mejor_en(n) for n in ax.index]
+
+fig = viz.render_table_figure(
+    sc, title='FASE 4 — Scorecard consolidado: rank por eje (1 = mejor) y "mejor-para-qué"',
+    fmt={label: '{:.0f}' for label in rank6_spec}, highlight_cols=['Mejor en'])
+fig.savefig(RESULTS / 'synth_scorecard_table.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Guardado: results/synth_scorecard_table.png')""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec6"></a>
+## 6. Radar / spider por detector (`synth_radar.png`)
+
+Cada detector tiene un **perfil** sobre los 6 ejes. Para verlo de un vistazo normalizamos cada
+eje a **[0,1]** (min-max sobre los 12; *fuera = mejor* en todos: cobertura alta, especificidad
+alta, persistencia alta, anticipación alta = lead/lag más negativo, coste bajo, BIC bajo) y
+superponemos **4 detectores destacados** de familias distintas:
+
+- **D1 `rule_vix`** (regla, F1): barata y específica, no anticipa.
+- **D5 `msvar`** (Markov-switching VAR, F4): sensible a sistémicas, cara.
+- **D7 `cusum`** (change-point, F6): anticipa y persiste; sin BIC comparable → 0 en "Ajuste".
+- **D8 `hmm-t`** (HMM t-Student, F3): buen ajuste/estructura, ventana corta.
+
+El **área** de cada polígono no mide "calidad total" (los ejes no son conmensurables); el valor
+del radar es la **forma**: dónde es fuerte y dónde flojea cada familia.""")
+
+co(r"""# === FIGURA NUEVA: radar/spider por detector sobre los 6 ejes (perfil de un vistazo) ===
+def _norm01(s, higher_better=True):
+    s = s.astype(float)
+    lo, hi = np.nanmin(s.values), np.nanmax(s.values)
+    if not np.isfinite(lo) or not np.isfinite(hi) or hi == lo:
+        return pd.Series(0.5, index=s.index)
+    z = (s - lo) / (hi - lo)
+    return z if higher_better else (1 - z)
+
+radar = pd.DataFrame(index=ax.index)
+radar['Sensibilidad']  = _norm01(ax['eje1_cob_sistemica'], True)
+radar['Especificidad'] = _norm01(ax['eje2_especif_estricta'], True)
+radar['Persistencia']  = _norm01(ax['eje3_persistencia'], True)
+radar['Anticipacion']  = _norm01(-ax['eje4_leadlag'], True)   # lead/lag mas negativo -> mas anticipacion
+radar['Parsimonia']    = _norm01(ax['eje6_coste_num'], False) # coste bajo mejor
+radar['Ajuste (BIC)']  = _norm01(ax['eje5_bic'], False)       # BIC bajo mejor
+radar = radar.fillna(0.0)                                     # sin BIC comparable -> 0 en "Ajuste"
+
+WANT = {'rule_vix_threshold', 'markov_switching_var', 'changepoint_online', 'hmm_tstudent'}
+pick = sorted((n for n in ax.index if viz.canonical_detector(n) in WANT),
+              key=lambda n: viz.detector_short(n))
+labels = list(radar.columns)
+ang = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist(); ang += ang[:1]
+palette = [viz.C_LONG, viz.C_SHORT, viz.C_CRISIS, '#5b8fb0']
+
+fig = plt.figure(figsize=(9.5, 9.5))
+axp = plt.subplot(111, polar=True)
+for i, n in enumerate(pick):
+    v = radar.loc[n].tolist(); v += v[:1]
+    c = palette[i % len(palette)]
+    axp.plot(ang, v, color=c, lw=2.3, label=viz.detector_short(n))
+    axp.fill(ang, v, color=c, alpha=0.10)
+axp.set_xticks(ang[:-1]); axp.set_xticklabels(labels, fontsize=11)
+axp.set_ylim(0, 1); axp.set_yticks([0.25, 0.5, 0.75, 1.0])
+axp.set_yticklabels(['.25', '.50', '.75', '1.0'], fontsize=8)
+axp.set_title('FASE 4 — Perfil radar sobre los 6 ejes (cada eje min-max a [0,1]; fuera = mejor)\n'
+              'sin BIC comparable -> 0 en «Ajuste» (D7 CUSUM y reglas no son generativos)', y=1.08)
+axp.legend(loc='upper right', bbox_to_anchor=(1.28, 1.10), framealpha=0.9)
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_radar.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Guardado: results/synth_radar.png')""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec7"></a>
+## 7. Podio por eje (`synth_podium_by_axis.png`)
+
+Para cada uno de los **6 ejes**, el **top-3** de detectores (oro / plata / bronce). Es la lectura
+más directa de la tesis: **ningún detector aparece en oro en todos los podios** — las 4 familias
+se reparten los primeros puestos. Donde un eje tiene la salvedad de equidad de ventana
+(cobertura), el podio se construye sobre los valores disponibles (NaN excluido, sin penalizar).""")
+
+co(r"""# === FIGURA NUEVA: podio (top-3) por cada uno de los 6 ejes ===
+podium_axes = [
+    ('Sensibilidad\n(cob. GFC+COVID, alto=mejor)', 'eje1_cob_sistemica', False, '{:.2f}'),
+    ('Especificidad\n(1 - fa trampas, alto=mejor)', 'eje2_especif_estricta', False, '{:.2f}'),
+    ('Persistencia\n(duracion media dias, alto=mejor)', 'eje3_persistencia', False, '{:.0f}'),
+    ('Anticipacion\n(lead/lag dias, mas negativo=mejor)', 'eje4_leadlag', True, '{:.0f}'),
+    ('Parsimonia\n(coste 1=bajo, bajo=mejor)', 'eje6_coste_num', True, '{:.0f}'),
+    ('Ajuste\n(BIC, menor=mejor)', 'eje5_bic', True, '{:.0f}'),
+]
+medals = ['#d4af37', '#a8a9ad', '#cd7f32']   # oro, plata, bronce
+fig, axes = plt.subplots(2, 3, figsize=(16, 9))
+for axx, (ttl, col, asc, vf) in zip(axes.ravel(), podium_axes):
+    s = ax[col].dropna().sort_values(ascending=asc).head(3)
+    order = list(s.items())               # [(name, val), ...] mejor primero
+    ypos = list(range(len(order)))[::-1]   # mejor arriba
+    names = [viz.detector_short(n) for n, _ in order]
+    vals = [v for _, v in order]
+    cols = medals[:len(order)]
+    axx.barh(ypos, vals, color=cols, edgecolor='black', linewidth=0.6)
+    axx.set_yticks(ypos); axx.set_yticklabels(names, fontsize=10)
+    axx.set_title(ttl, fontsize=11)
+    axx.grid(alpha=0.25, axis='x')
+    for y, (n, v) in zip(ypos, order):
+        axx.text(v, y, '  ' + vf.format(v), va='center',
+                 ha='left' if v >= 0 else 'right', fontsize=9)
+    axx.margins(x=0.22)
+fig.suptitle('FASE 4 — Podio por eje: top-3 detectores en cada criterio (oro/plata/bronce)\n'
+             'ningun detector gana en todo: 4 familias se reparten los 6 ejes', y=1.02, fontsize=13)
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_podium_by_axis.png', dpi=150, bbox_inches='tight')
+plt.show()
+print('Guardado: results/synth_podium_by_axis.png')""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec8"></a>
+## 8. Planos de cruce de ejes (`results/synth_*.png`)
 
 No tablas planas: **planos** que cruzan ejes para ver los trade-offs. Color por grupo de
-ventana (vio 2008 o no); D11 y D12 marcados como **negativos**.""")
+ventana (vio 2008 o no); D11 y D12 marcados como **negativos**. Estas figuras conservan la
+lógica de la síntesis previa pero se guardan con prefijo `synth_*` (las `fase4_*` se archivaron).""")
 
-co(r"""# Estilo comun
-def is_neg(name): return CLASE.get(name) == 'exploratorio-negativo'
+co(r"""# Estilo comun de los planos
+NEG = set(final.loc[final['clase'] == 'exploratorio-negativo', 'detector'])
+def is_neg(name): return name in NEG
 def color_for(row):
-    if is_neg(row.name): return '#7f7f7f'        # negativos en gris
-    return '#1f77b4' if row['vio_2008_oos'] else '#ff7f0e'
-SHORT = {  # nombres cortos para etiquetar
-    'rule_vix_threshold':'D1 vix','rule_composite_riskoff':'D2 comp','clustering_gmm_k3':'D3 gmm',
-    'hmm_gaussian_2s':'D4 hmm','markov_switching_var_2s':'D5 msvar','garch_t_vol':'D6 garch',
-    'changepoint_online':'D7 cusum','hmm_tstudent_4s':'D8 hmm-t','turbulence_mahalanobis':'D10 turb',
-    'jump_model':'D9 jump','msgarch_regime':'D11 msg(-)','deep_ae_regime':'D12 ae(-)'}
-af = ax.reset_index()
-print('paleta lista')""")
+    if is_neg(row.name): return viz.C_NEG               # negativos en gris
+    return viz.C_LONG if row['vio_2008_oos'] else viz.C_SHORT
+SHORT = {n: viz.detector_short(n) for n in ax.index}    # nombres cortos robustos al K
+print('paleta lista | negativos:', sorted(SHORT[n] for n in NEG))""")
 
 co(r"""# FIG 1: plano SENSIBILIDAD (cobertura sistemica) vs ESPECIFICIDAD-trampas
 fig, ax1 = plt.subplots(figsize=(10.5, 7))
 for _, row in ax.iterrows():
-    x = 1 - (1 - row['eje2_especif_estricta'])   # = especificidad estricta
     y = row['eje1_cob_sistemica']
-    if y != y:   # sin cobertura sistemica evaluable -> lo situamos en el borde inferior anotado
+    if y != y:   # sin cobertura sistemica evaluable -> se omite (equidad de ventana)
         continue
     c = color_for(row); mk = 'X' if is_neg(row.name) else 'o'
     ax1.scatter(row['eje2_especif_estricta'], y, s=170, c=c, marker=mk,
@@ -423,12 +557,12 @@ for _, row in ax.iterrows():
 ax1.set_xlabel('Especificidad = 1 - media(fa_2013, fa_2018)  (alto = no dispara en trampas)')
 ax1.set_ylabel('Cobertura sistemica = media(GFC 2008, COVID 2020)  (alto = sensible)')
 ax1.set_title('FASE 4 - Plano sensibilidad <-> especificidad (crisis estricta)\n'
-              'azul = vio 2008 OOS | naranja = ventana corta | gris X = negativo (D11, D12)')
+              'azul = vio 2008 OOS | ambar = ventana corta | gris X = negativo (D11, D12)')
 ax1.grid(alpha=0.3)
-ax1.legend(handles=[Patch(color='#1f77b4', label='vio 2008 OOS'),
-                    Patch(color='#ff7f0e', label='ventana corta (no vio 2008)'),
-                    Patch(color='#7f7f7f', label='negativo (D11/D12)')], loc='lower left')
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_sensibilidad_especificidad.png', dpi=120, bbox_inches='tight')
+ax1.legend(handles=[Patch(color=viz.C_LONG, label='vio 2008 OOS'),
+                    Patch(color=viz.C_SHORT, label='ventana corta (no vio 2008)'),
+                    Patch(color=viz.C_NEG, label='negativo (D11/D12)')], loc='lower left')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_sensibilidad_especificidad.png', dpi=150, bbox_inches='tight')
 plt.show()""")
 
 co(r"""# FIG 2: plano PERSISTENCIA (anti-flickering) vs SENSIBILIDAD (cobertura)
@@ -447,13 +581,13 @@ ax2.set_ylabel('Sensibilidad (cobertura sistemica; COVID si no vio 2008)')
 ax2.set_title('FASE 4 - Plano flickering <-> sensibilidad\n'
               'D3/D12 (gmm/ae) flickean; D7 cusum y reglas son persistentes')
 ax2.grid(alpha=0.3, which='both')
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_persistencia_sensibilidad.png', dpi=120, bbox_inches='tight')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_persistencia_sensibilidad.png', dpi=150, bbox_inches='tight')
 plt.show()""")
 
 co(r"""# FIG 3: BIC (solo modelos generativos). Menor = mejor.
 bic_s = ax['bic'].dropna().sort_values()
 fig, ax3 = plt.subplots(figsize=(10, 5))
-cols = ['#7f7f7f' if is_neg(n) else '#4c72b0' for n in bic_s.index]
+cols = [viz.C_NEG if is_neg(n) else viz.C_LONG for n in bic_s.index]
 ax3.bar([SHORT[n] for n in bic_s.index], bic_s.values, color=cols, edgecolor='black', linewidth=0.6)
 ax3.set_ylabel('BIC (menor = mejor ajuste)')
 ax3.set_title('FASE 4 - BIC de modelos generativos (gris = negativo)\n'
@@ -461,7 +595,7 @@ ax3.set_title('FASE 4 - BIC de modelos generativos (gris = negativo)\n'
 for i, (n, v) in enumerate(bic_s.items()):
     ax3.text(i, v, f'{v:.0f}', ha='center', va='bottom', fontsize=8, rotation=0)
 plt.xticks(rotation=30, ha='right')
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_bic.png', dpi=120, bbox_inches='tight')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_bic.png', dpi=150, bbox_inches='tight')
 plt.show()""")
 
 co(r"""# FIG 4: lead/lag por evento (negativo = anticipa el suelo del drawdown)
@@ -480,7 +614,7 @@ for i in range(len(det_order)):
                      color='white' if abs(v) > 150 else 'black')
 ax4.set_title('FASE 4 - Lead/lag por evento (dias; AZUL negativo = ANTICIPA el suelo, ROJO = retrasa)')
 fig.colorbar(im, ax=ax4, fraction=0.025, pad=0.02, label='dias (- anticipa)')
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_leadlag.png', dpi=120, bbox_inches='tight')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_leadlag.png', dpi=150, bbox_inches='tight')
 plt.show()""")
 
 co(r"""# FIG 5: heatmap de RANKS por eje (detectores x ejes; 1 = mejor)
@@ -497,7 +631,7 @@ for i in range(R.shape[0]):
                      color='white' if (v <= 3 or v >= 10) else 'black')
 ax5.set_title('FASE 4 - Heatmap de RANKS por eje (verde=1=mejor, rojo=peor; blanco=no aplica)')
 fig.colorbar(im, ax=ax5, fraction=0.025, pad=0.02, label='rank (1 = mejor)')
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_rank_heatmap.png', dpi=120, bbox_inches='tight')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_rank_heatmap.png', dpi=150, bbox_inches='tight')
 plt.show()""")
 
 co(r"""# FIG 6: crisis ESTRICTA vs ESTRES para los 3 multi-estado (corazon del ajuste de equidad)
@@ -509,8 +643,8 @@ for axx, name in zip(axes, multi_names):
     estr = [r[w] for w in wins]
     estres = [r[w.replace('cov_', 'cov_estres_')] for w in wins]
     xx = np.arange(len(wins)); w = 0.38
-    b1 = axx.bar(xx - w/2, estr, w, label='crisis estricta (cola extrema)', color='#c44e52')
-    b2 = axx.bar(xx + w/2, estres, w, label='estres agregado (correccion+crisis)', color='#dd8452')
+    b1 = axx.bar(xx - w/2, estr, w, label='crisis estricta (cola extrema)', color=viz.C_CRISIS)
+    b2 = axx.bar(xx + w/2, estres, w, label='estres agregado (correccion+crisis)', color=viz.C_SHORT)
     axx.set_xticks(xx); axx.set_xticklabels(['COVID 2020', 'Inflation 2022'])
     neg = ' (NEGATIVO)' if is_neg(name) else ''
     axx.set_title(SHORT[name] + neg); axx.set_ylim(0, 1.05); axx.grid(alpha=0.3, axis='y')
@@ -519,7 +653,7 @@ for axx, name in zip(axes, multi_names):
                  ha='center', va='bottom', fontsize=8)
 axes[0].set_ylabel('cobertura'); axes[0].legend(loc='upper left', fontsize=8)
 fig.suptitle('FASE 4 - Multi-estado: crisis ESTRICTA vs ESTRES AGREGADO (ajuste de equidad con los binarios)', y=1.02)
-fig.tight_layout(); fig.savefig(RESULTS / 'fase4_estres_vs_estricta.png', dpi=120, bbox_inches='tight')
+fig.tight_layout(); fig.savefig(RESULTS / 'synth_estres_vs_estricta.png', dpi=150, bbox_inches='tight')
 plt.show()
 
 # fa en trampas: el otro lado (ampliar a correccion puede subir la activacion en 2013/2018)
@@ -531,10 +665,11 @@ for name in multi_names:
         print(f'  {w:16s}: estricta={r[f"fa_{w}"]:.3f}  ->  estres={r[f"fa_estres_{w}"]:.3f}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 6. RESUMEN ESTRUCTURADO (para redactar las conclusiones)
+md(r"""<a id="sec9"></a>
+## 9. RESUMEN ESTRUCTURADO (para redactar las conclusiones)
 
 Ranking por eje, números estrés vs crisis estricta de los multi-estado, y qué familia gana en
-qué eje. Es el insumo de las conclusiones de la FASE 4.""")
+qué eje. Es el insumo de las conclusiones de la FASE 4: el veredicto **"mejor-para-qué"**.""")
 
 co(r"""print('='*78)
 print('RESUMEN ESTRUCTURADO - FASE 4')
@@ -543,14 +678,14 @@ print('='*78)
 def top(col, asc, k=3):
     s = ax[col].dropna()
     s = s.sort_values(ascending=asc)
-    return [(SHORT[n], round(float(v), 3)) for n, v in list(s.items())[:k]]
+    return [(viz.detector_short(n), round(float(v), 3)) for n, v in list(s.items())[:k]]
 
 print('\n--- RANKING POR EJE (top-3; 1 = mejor) ---')
 print('1. Cobertura sistemica (GFC+COVID, solo quien la vio OOS):')
 for grp, sub in ax.groupby('vio_2008_oos'):
     tag = 'VIO 2008 OOS' if grp else 'ventana corta (no vio 2008)'
     s = sub['eje1_cob_sistemica'].dropna().sort_values(ascending=False)
-    print(f'     [{tag}] ' + ', '.join(f'{SHORT[n]}={v:.2f}' for n, v in s.items()))
+    print(f'     [{tag}] ' + ', '.join(f'{viz.detector_short(n)}={v:.2f}' for n, v in s.items()))
 print('2. Especificidad estricta (1-fa trampas):', top('eje2_especif_estricta', False))
 print('   Especificidad estres                 :', top('eje2_especif_estres', False))
 print('3. Persistencia (dur media, dias)        :', top('eje3_persistencia', False))
@@ -562,7 +697,7 @@ print('6. Coste (bajo = mejor)                  :', top('eje6_coste_num', True))
 print('\n--- ESTRES AGREGADO vs CRISIS ESTRICTA (multi-estado D3, D8, D12) ---')
 for name in ['clustering_gmm_k3', 'hmm_tstudent_4s', 'deep_ae_regime']:
     r = final[final['detector'] == name].iloc[0]
-    print(f'\n {SHORT[name]} (k={int(r["n_states"])})  {r["nota"]}')
+    print(f'\n {viz.detector_short(name)} (k={int(r["n_states"])})  {r["nota"]}')
     for w in ['COVID_2020', 'Inflation_2022']:
         print(f'   cov_{w:14s}: estricta={r[f"cov_{w}"]:.3f}  ->  estres={r[f"cov_estres_{w}"]:.3f}'
               f'   (delta={r[f"cov_estres_{w}"]-r[f"cov_{w}"]:+.3f})')
@@ -573,7 +708,7 @@ for name in ['clustering_gmm_k3', 'hmm_tstudent_4s', 'deep_ae_regime']:
 
 print('\n--- QUE FAMILIA GANA EN QUE EJE ---')
 def winner(col, asc):
-    s = ax[col].dropna(); return SHORT[s.idxmin() if asc else s.idxmax()]
+    s = ax[col].dropna(); return viz.detector_short(s.idxmin() if asc else s.idxmax())
 print(f'  Cobertura sistemica (ventana larga) : {winner("eje1_cob_sistemica", False)}  '
       '(reglas/vol/MS-VAR: familias F1/F4/F5)')
 print(f'  Especificidad (no trampas)          : {winner("eje2_especif_estricta", False)}  (CUSUM F6 / reglas F1)')
@@ -585,9 +720,13 @@ print(f'  Coste (mas barato)                  : {winner("eje6_coste_num", True)}
 print('\n--- RESULTADOS NEGATIVOS (validan parsimonia) ---')
 for name in ['msgarch_regime', 'deep_ae_regime']:
     r = final[final['detector'] == name].iloc[0]
-    print(f'  {SHORT[name]:10s}: clase={r["clase"]}, cov_GFC={r["cov_GFC_2008"]}, '
+    print(f'  {viz.detector_short(name):12s}: clase={r["clase"]}, cov_GFC={r["cov_GFC_2008"]}, '
           f'switching={r["switching_rate"]:.3f}, far={r["false_alarm_rate"]:.3f}')
-print('\nEntregables: results/metrics_master_final.csv + results/fase4_*.png')
+print('\nVeredicto: NO hay detector dominante; 4 familias se reparten los 6 ejes -> "mejor-para-que".')
+print('Entregables (figuras): results/synth_radar.png, synth_scorecard_table.png, synth_podium_by_axis.png,')
+print('  synth_sensibilidad_especificidad.png, synth_persistencia_sensibilidad.png, synth_bic.png,')
+print('  synth_leadlag.png, synth_rank_heatmap.png, synth_estres_vs_estricta.png')
+print('NOTA: este notebook NO escribe ningun CSV en results/ (solo LEE metrics_master.csv).')
 print('='*78)""")
 
 # ------------------------------------------------------------------ #

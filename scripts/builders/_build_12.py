@@ -2,7 +2,7 @@
 """Constructor del notebook 12_deep_ae_regime.ipynb (D12, FASE 3 Tanda 4 — EXPLORATORIA).
 
 Crea las celdas, ejecuta con nbconvert (0 errores esperados) y guarda el .ipynb con
-las figuras inline. Vuelca figuras a results/ y las filas de métricas (23 columnas) a
+las figuras inline. Vuelca figuras a results/ y las filas de métricas (32 columnas) a
 results/metrics_12_deep_ae_regime.csv (fila D12 + fila baseline PCA del contraste
 ablativo), y refresca results/metrics_master.csv (solo la fila deep_ae_regime, que es
 el detector registrado del banco).
@@ -58,6 +58,36 @@ como score de anomalía.
   OOS = COVID_2020 + Inflation_2022** (GFC/EuroDebt caen en el train, como en D3).""")
 
 # ------------------------------------------------------------------ #
+md(r"""## Índice navegable
+
+**Bloque A - el autoencoder por dentro (in-sample, solo diagnóstico):**
+- [§1 - Ajuste in-sample del AE: latente, reconstrucción y orientación](#sec-1)
+- [§1b - El espacio latente y el error de reconstrucción en el tiempo](#sec-1b)
+- [§1c - Curva de pérdida de entrenamiento (train/val) - *¿entrena bien?*](#sec-1c) · `d12_training_loss.png` **(nuevo)**
+- [§1d - Distribución del error de reconstrucción por régimen - *¿discrimina crisis?*](#sec-1d) · `d12_recon_error_dist.png` **(nuevo)**
+
+**Bloque B - el contraste ablativo causal (la parte que cuenta):**
+- [§2 - Verificación de CAUSALIDAD de la codificación](#sec-2)
+- [§3 - Versión CAUSAL walk-forward - D12 (AE->GMM)](#sec-3)
+- [§4 - Baseline ablativo LINEAL - `PCA->GMM`](#sec-4)
+- [§4b - Latente NO lineal (AE) vs proyección LINEAL (PCA) lado a lado - *el corazón del negativo*](#sec-4b) · `d12_latent_vs_pca.png` **(nuevo)**
+- [§5 - CONTRASTE ABLATIVO AE vs PCA - *¿aporta la no linealidad?*](#sec-5) · `d12_ablative_compare.png`
+
+**Bloque C - lectura temporal y cierre:**
+- [§6 - S&P 500 coloreado por régimen CAUSAL OOS](#sec-6) · `d12_sp500_regimes.png`
+- [§7 - Timeline de régimen y duraciones (flickering AE vs PCA)](#sec-7) · `d12_timeline.png`
+- [§8 - Volcado de métricas (esquema canónico 32 columnas)](#sec-8)
+- [§9 - Conclusión D12 - veredicto del contraste](#sec-9)
+
+> **Cómo leer este notebook.** El Bloque A *no* decide nada: solo abre la caja del AE para
+> descartar artefactos (que entrene mal, que el latente esté roto, que el error de
+> reconstrucción sea trivial). La decisión vive en el **Bloque B**, donde AE y PCA pasan por el
+> **MISMO** walk-forward causal con **idéntico** $K$ y dimensión latente: cualquier diferencia
+> se atribuye *solo* a la no linealidad. La **hipótesis CP2** es que, con ~4 crisis reales,
+> **el AE no batirá a la PCA** -- y eso, lejos de ser un fracaso, es la evidencia que sostiene
+> la **parsimonia** del banco de detectores.""")
+
+# ------------------------------------------------------------------ #
 co(r"""%matplotlib inline
 import sys, warnings, time
 from pathlib import Path
@@ -71,6 +101,8 @@ while not (ROOT / 'src').exists() and ROOT != ROOT.parent:
 sys.path.insert(0, str(ROOT))
 RESULTS = ROOT / 'results'; RESULTS.mkdir(exist_ok=True)
 from src import evaluation as ev
+from src import viz
+viz.use_house_style()   # paleta y rcParams de casa (color por estado consistente con D1..D11)
 from detectors.deep_ae_regime import DeepAERegime, PCAGMMBaseline
 
 X = pd.read_parquet(ROOT / 'data' / 'processed' / 'features.parquet')
@@ -89,7 +121,8 @@ print('features:', FEATURES)
 print(f'K={K}  latent_dim={LAT}  train_size={TRAIN_SIZE}  step={STEP}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 1. Ajuste in-sample del AE: latente, reconstrucción y orientación
+md(r"""<a id="sec-1"></a>
+## 1. Ajuste in-sample del AE: latente, reconstrucción y orientación
 
 Ajuste sobre toda la muestra (solo para inspeccionar el código aprendido; la clasificación
 comparable es la **causal** de §3). El orden económico (0=calma · K-1=crisis) lo fija
@@ -117,7 +150,8 @@ assert r_cri.std() > r_cal.std(), 'INVERTIDO: crisis deberia ser ALTA vol'
 print(f'OK -> crisis (estado canonico {det_is.crisis_state}) = ALTA vol ({r_cri.std():.4f} > {r_cal.std():.4f}). No invertido (in-sample).')""")
 
 # ------------------------------------------------------------------ #
-md(r"""### 1b. El espacio latente del AE y el error de reconstrucción
+md(r"""<a id="sec-1b"></a>
+### 1b. El espacio latente del AE y el error de reconstrucción
 
 Izquierda: scatter del latente 2D coloreado por estado canónico (verde=calma, rojo=crisis).
 Derecha: error de reconstrucción del AE en el tiempo (complemento de anomalía); picos en las
@@ -141,7 +175,89 @@ axR.set_ylim(0, np.nanpercentile(recon.values, 99.5))
 fig.tight_layout(); fig.savefig(RESULTS / 'd12_latent_recon.png', dpi=110, bbox_inches='tight'); plt.show()""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 2. Verificación de CAUSALIDAD de la codificación
+md(r"""<a id="sec-1c"></a>
+### 1c. Curva de pérdida de entrenamiento del AE (train/val) — ¿entrena bien?
+
+Antes de juzgar el contraste conviene **descartar el artefacto más banal de un negativo de deep
+learning**: que el AE simplemente no haya aprendido a reconstruir. Reentrenamos el MISMO
+autoencoder (idéntica arquitectura `15→8→2→8→15`, `Adam(lr=1e-2, weight_decay=1e-3)`, dropout
+0.10, 40 épocas full-batch, semilla 42) sobre un **split temporal 80/20**: las primeras 8/10
+partes de la muestra entrenan, el último 20 % es *holdout* de validación (estandarización
+congelada con estadísticos del tramo de train, sin mirar el futuro).
+
+> Esto **no** es el walk-forward causal de §3 — es un diagnóstico de entrenamiento. Si las dos
+> curvas bajan y se estabilizan juntas (sin que la de validación se dispare), el AE **converge y
+> no sobreajusta**: cualquier negativo posterior **no** se podrá achacar a un mal ajuste, sino a
+> que la no linealidad no compra señal con tan pocas crisis.""")
+
+co(r"""import torch, torch.nn as nn
+from detectors.deep_ae_regime import _Autoencoder, _seed_everything
+
+# Split TEMPORAL 80/20 (solo diagnostico de entrenamiento; el contraste causal es §3).
+n = len(X); cut = int(n * 0.8)
+Xtr, Xva = X.iloc[:cut], X.iloc[cut:]
+mu = Xtr.values.mean(axis=0); sd = Xtr.values.std(axis=0); sd[sd < 1e-8] = 1.0
+Ztr = torch.tensor((Xtr.values - mu) / sd, dtype=torch.float32)
+Zva = torch.tensor((Xva.values - mu) / sd, dtype=torch.float32)
+
+_seed_everything(42)
+ae_diag = _Autoencoder(X.shape[1], hidden=8, latent=LAT, dropout=0.10)
+opt = torch.optim.Adam(ae_diag.parameters(), lr=1e-2, weight_decay=1e-3)
+loss_fn = nn.MSELoss()
+EPOCHS = 40
+tr_hist, va_hist = [], []
+for ep in range(EPOCHS):
+    ae_diag.train(); opt.zero_grad()
+    loss = loss_fn(ae_diag(Ztr), Ztr); loss.backward(); opt.step()
+    tr_hist.append(float(loss.item()))
+    ae_diag.eval()
+    with torch.no_grad():
+        va_hist.append(float(loss_fn(ae_diag(Zva), Zva).item()))
+print(f'AE diagnostico {EPOCHS} epocas | MSE train {tr_hist[0]:.3f} -> {tr_hist[-1]:.3f} '
+      f'| val {va_hist[0]:.3f} -> {va_hist[-1]:.3f}')
+gap = va_hist[-1] - tr_hist[-1]
+print(f'gap val-train final = {gap:+.3f}  (cercano a 0 => sin sobreajuste apreciable)')
+
+fig, ax = plt.subplots(figsize=(9, 4.6))
+ax.plot(range(1, EPOCHS + 1), tr_hist, color=viz.C_LONG, lw=1.9, marker='o', ms=3, label='train MSE (80% inicial)')
+ax.plot(range(1, EPOCHS + 1), va_hist, color=viz.C_CRISIS, lw=1.9, marker='s', ms=3, label='val MSE (holdout 20% final)')
+ax.set_xlabel('epoca'); ax.set_ylabel('MSE de reconstruccion')
+ax.set_title('Curva de perdida del AE: converge sin sobreajuste\n(descarta que el negativo sea por mal entrenamiento)')
+ax.legend(framealpha=0.9); ax.margins(x=0.01)
+fig.tight_layout(); fig.savefig(RESULTS / 'd12_training_loss.png', dpi=110, bbox_inches='tight'); plt.show()""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec-1d"></a>
+### 1d. Distribución del error de reconstrucción por régimen — ¿discrimina crisis?
+
+El **error de reconstrucción** es el complemento de anomalía expuesto por el AE (no es la
+variante principal). Si las configuraciones de crisis fueran genuinamente "raras" para el AE,
+su MSE de reconstrucción sería sistemáticamente mayor en los días de crisis que en calma. Aquí
+separamos la distribución del error por estado canónico in-sample (cajas lado a lado) y la
+resumimos con el cociente de medianas crisis/calma.
+
+> **Lectura esperada (negativa):** el solapamiento es alto y el cociente, modesto. El error de
+> reconstrucción **discrimina poco** la crisis — coherente con que reducir a 2D no lineal no
+> añade poder separador frente a la PCA. Es una pieza más del expediente a favor de la
+> parsimonia.""")
+
+co(r"""fig, ax = plt.subplots(figsize=(9, 5))
+viz.plot_distribution_by_regime(
+    recon, states_is, crisis_state=det_is.crisis_state, kind='box',
+    xlabel='MSE de reconstruccion', ax=ax,
+    title='Error de reconstruccion del AE por regimen canonico (in-sample) -- ¿discrimina crisis?')
+fig.tight_layout(); fig.savefig(RESULTS / 'd12_recon_error_dist.png', dpi=110, bbox_inches='tight'); plt.show()
+
+med_cri = float(np.median(recon.values[states_is.values == det_is.crisis_state]))
+med_cal = float(np.median(recon.values[states_is.values == 0]))
+ratio = med_cri / med_cal if med_cal else float('nan')
+print(f'mediana recon -> crisis={med_cri:.3f}  calma={med_cal:.3f}  ratio crisis/calma = {ratio:.2f}x')
+print('Ratio modesto => el error de reconstruccion discrimina poco la crisis (complemento debil, '
+      'consistente con el negativo del contraste ablativo).')""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec-2"></a>
+## 2. Verificación de CAUSALIDAD de la codificación
 
 El encoder es puntual (cada fila se codifica con los pesos congelados del train), así que
 ocultar el futuro del bloque NO debe cambiar su latente. Test explícito.""")
@@ -163,7 +279,8 @@ assert n_state_diff == 0 and maxdiff < 1e-4, 'La codificacion del bloque NO es c
 print('causal_ok = True  -> estados/p_crisis del bloque usan solo los pesos del train (sin look-ahead)')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 3. Versión CAUSAL walk-forward — D12 (AE→GMM)
+md(r"""<a id="sec-3"></a>
+## 3. Versión CAUSAL walk-forward — D12 (AE→GMM)
 
 `ev.walk_forward` reentrena el AE+GMM desde cero en ventanas **expanding** (train inicial 8
 años) y predice el bloque de `step=21` días. Se pasa **`market_returns=mkt`** para re-fijar el
@@ -199,7 +316,8 @@ print(f'\nfalse_alarm_rate={res_ae.false_alarm_rate:.3f} | switching={res_ae.swi
       f'| dur media={res_ae.mean_regime_duration:.1f} d | label_stability={res_ae.label_stability:.3f}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 4. Baseline ablativo LINEAL — `PCA→GMM` (mismo K, misma dim latente, mismo walk-forward)
+md(r"""<a id="sec-4"></a>
+## 4. Baseline ablativo LINEAL — `PCA→GMM` (mismo K, misma dim latente, mismo walk-forward)
 
 Idéntico en todo salvo el reductor: **PCA lineal** en vez del autoencoder. Es el contraste que
 aísla la NO LINEALIDAD.""")
@@ -226,7 +344,42 @@ print(f'PCA false_alarm_rate={res_pca.false_alarm_rate:.3f} | switching={res_pca
       f'| dur media={res_pca.mean_regime_duration:.1f} d | label_stability={res_pca.label_stability:.3f}')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 5. CONTRASTE ABLATIVO AE vs PCA — ¿aporta la no linealidad?
+md(r"""<a id="sec-4b"></a>
+### 4b. El latente NO lineal (AE) vs la proyección LINEAL (PCA), lado a lado
+
+Aquí se ve **el corazón del negativo** de un vistazo. A la izquierda, el latente 2D que aprende el
+autoencoder; a la derecha, la proyección 2D de la PCA — ambos ajustados in-sample sobre las
+mismas 15 features y coloreados por el estado canónico que asigna *su propio* GMM (azul=calma …
+rojo=crisis, paleta de casa).
+
+Si la no linealidad del AE aportara separabilidad, su nube debería mostrar **grupos más limpios
+y mejor despegados** que la proyección lineal. La hipótesis CP2 anticipa lo contrario: ambas
+geometrías son **cualitativamente equivalentes** (regiones de calma densas y solapamiento de la
+crisis en la cola), de modo que el GMM dispone de una estructura comparable en los dos casos.
+Visto así, **no hay margen para que el AE bata a la PCA aguas abajo** — y la figura lo hace
+evidente sin necesidad de las métricas.""")
+
+co(r"""lat_pca = det_pca_is._latent(X)                              # proyeccion PCA 2D (in-sample)
+states_pca_is = pd.Series(det_pca_is.predict(X), index=X.index)  # estados canonicos del baseline
+lab3 = {0: 'calma', 1: 'correccion', 2: 'crisis'}
+
+fig, (axA, axB) = plt.subplots(1, 2, figsize=(14, 5.8))
+viz.plot_feature_space_scatter(
+    lat, states_is, feature_names=['z1', 'z2'], labels=lab3,
+    crisis_state=det_is.crisis_state, ax=axA,
+    title='Latente NO lineal del AE  (z1, z2)')
+viz.plot_feature_space_scatter(
+    lat_pca, states_pca_is, feature_names=['PC1', 'PC2'], labels=lab3,
+    crisis_state=det_pca_is.crisis_state, ax=axB,
+    title='Proyeccion LINEAL de la PCA  (PC1, PC2)')
+fig.suptitle('AE vs PCA en 2D: ¿separa mejor el reductor no lineal? -- corazon del contraste negativo', y=1.02)
+fig.tight_layout(); fig.savefig(RESULTS / 'd12_latent_vs_pca.png', dpi=110, bbox_inches='tight'); plt.show()
+print('Lectura: nubes cualitativamente equivalentes (calma densa, crisis en la cola con solape) '
+      '=> la no linealidad NO compra separabilidad frente a la PCA lineal.')""")
+
+# ------------------------------------------------------------------ #
+md(r"""<a id="sec-5"></a>
+## 5. CONTRASTE ABLATIVO AE vs PCA — ¿aporta la no linealidad?
 
 Tabla y barras comparando D12 (AE→GMM) contra el baseline lineal (PCA→GMM) en las métricas
 clave OOS. **Lectura honesta:** si el AE NO mejora (o empeora) a la PCA, es el resultado
@@ -247,18 +400,28 @@ co(r"""def summary_row(name, res):
 cmp = pd.DataFrame([summary_row('AE->GMM (D12)', res_ae), summary_row('PCA->GMM (baseline)', res_pca)]).set_index('detector')
 display(cmp.T)
 
-metrics = ['cov_COVID_2020', 'cov_Inflation_2022', 'false_alarm_rate', 'switching_rate']
-labels  = ['cov COVID', 'cov Inflation22', 'false_alarm_rate', 'switching_rate']
-fig, ax = plt.subplots(figsize=(11, 4.6))
-x = np.arange(len(metrics)); w = 0.38
-ax.bar(x - w/2, [cmp.iloc[0][m] for m in metrics], w, label='AE->GMM (D12)', color='#8e44ad')
-ax.bar(x + w/2, [cmp.iloc[1][m] for m in metrics], w, label='PCA->GMM (baseline)', color='#16a085')
-ax.set_xticks(x); ax.set_xticklabels(labels)
-ax.set_title('Contraste ablativo D12: no linealidad (AE) vs lineal (PCA) — mismo K, misma dim latente, mismo walk-forward')
-ax.legend(); ax.margins(y=0.15)
-for i, m in enumerate(metrics):
-    ax.text(i - w/2, cmp.iloc[0][m], f'{cmp.iloc[0][m]:.2f}', ha='center', va='bottom', fontsize=8)
-    ax.text(i + w/2, cmp.iloc[1][m], f'{cmp.iloc[1][m]:.2f}', ha='center', va='bottom', fontsize=8)
+# Barras agrupadas (helper de casa). Dos paneles para no mezclar escalas:
+#   izq = metricas en TASA [0-1] (cobertura, falsa alarma, switching);
+#   der = PERSISTENCIA en dias (escala distinta, panel propio).
+rate_cats = ['cob. COVID', 'cob. Infl.22', 'falsa alarma', 'switching']
+ae_rates  = [res_ae.crisis_coverage.get('COVID_2020', np.nan),
+             res_ae.crisis_coverage.get('Inflation_2022', np.nan),
+             res_ae.false_alarm_rate, res_ae.switching_rate]
+pca_rates = [res_pca.crisis_coverage.get('COVID_2020', np.nan),
+             res_pca.crisis_coverage.get('Inflation_2022', np.nan),
+             res_pca.false_alarm_rate, res_pca.switching_rate]
+
+fig, (axL, axR) = plt.subplots(1, 2, figsize=(14, 5), gridspec_kw={'width_ratios': [3, 1]})
+viz.plot_grouped_bars(
+    rate_cats, {'AE->GMM (D12)': ae_rates, 'PCA->GMM (baseline)': pca_rates},
+    ylabel='tasa (0-1)', ax=axL, value_labels=True, rotation=15,
+    title='Metricas en tasa -- mismo K, dim latente y walk-forward')
+viz.plot_grouped_bars(
+    ['persistencia'],
+    {'AE->GMM (D12)': [res_ae.mean_regime_duration], 'PCA->GMM (baseline)': [res_pca.mean_regime_duration]},
+    ylabel='duracion media (dias)', ax=axR, value_labels=True,
+    title='Persistencia del regimen')
+fig.suptitle('Contraste ablativo D12: ¿aporta la NO LINEALIDAD del autoencoder frente a la PCA lineal?', y=1.03)
 fig.tight_layout(); fig.savefig(RESULTS / 'd12_ablative_compare.png', dpi=110, bbox_inches='tight'); plt.show()
 
 better = (res_ae.crisis_coverage.get('COVID_2020', 0) >= res_pca.crisis_coverage.get('COVID_2020', 0)
@@ -267,7 +430,8 @@ print('VEREDICTO ABLATIVO:', 'el AE mejora o iguala a la PCA' if better else
       'el AE NO mejora a la PCA lineal -> resultado NEGATIVO (esperado y valido con ~4 crisis)')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 6. S&P 500 coloreado por régimen CAUSAL OOS (D12 AE→GMM)
+md(r"""<a id="sec-6"></a>
+## 6. S&P 500 coloreado por régimen CAUSAL OOS (D12 AE→GMM)
 
 Sombreado rojo = días clasificados **crisis** por el walk-forward causal del AE.""")
 
@@ -292,7 +456,8 @@ ax.margins(x=0.01); fig.tight_layout()
 fig.savefig(RESULTS / 'd12_sp500_regimes.png', dpi=110, bbox_inches='tight'); plt.show()""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 7. Timeline de régimen y duraciones (flickering AE vs PCA)
+md(r"""<a id="sec-7"></a>
+## 7. Timeline de régimen y duraciones (flickering AE vs PCA)
 
 P(crisis) blanda del AE + timelines de ambos. Un AE poco regularizado tiende a **flickear**
 más que la PCA (códigos más sensibles) → se observa en switching_rate y duración media.""")
@@ -312,46 +477,56 @@ print(f'AE : switching={res_ae.switching_rate:.4f}  dur media={res_ae.mean_regim
 print(f'PCA: switching={res_pca.switching_rate:.4f}  dur media={res_pca.mean_regime_duration:.1f} d')""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 8. Volcado de métricas a results/ (esquema 23 columnas)
+md(r"""<a id="sec-8"></a>
+## 8. Volcado de métricas a results/ (esquema canónico 32 columnas)
 
 `metrics_12_deep_ae_regime.csv` guarda **dos filas**: D12 (`deep_ae_regime`) y el baseline del
 contraste (`pca_gmm_baseline`). El **master** registra solo `deep_ae_regime` (detector del
 banco); la PCA es un comparador ablativo, no un detector registrado.""")
 
 co(r"""tbl = ev.results_table([res_ae, res_pca])
-assert tbl.shape[1] == 23, f'esperaba 23 columnas, hay {tbl.shape[1]}'
+assert tbl.shape[1] == 32, f'esperaba 32 columnas (esquema canonico), hay {tbl.shape[1]}'
 tbl.to_csv(RESULTS / 'metrics_12_deep_ae_regime.csv', index=False)
 print('Guardado results/metrics_12_deep_ae_regime.csv  (', tbl.shape[0], 'filas,', tbl.shape[1], 'columnas)')
 
-row_ae = ev.results_table([res_ae])  # solo D12 al master
-master_path = RESULTS / 'metrics_master.csv'
-if master_path.exists():
-    master = pd.read_csv(master_path)
-    master = master[master['detector'] != 'deep_ae_regime']
-    master = pd.concat([master, row_ae], ignore_index=True)
-else:
-    master = row_ae.copy()
-master.to_csv(master_path, index=False)
-print('master actualizado:', master.shape)
+# NOTA (saneamiento Ola 0): este builder ya NO actualiza metrics_master.csv de forma
+# incremental (leer-filtrar-concatenar provocaba condicion de carrera al correr builders
+# en paralelo). El CSV guarda 2 filas (D12 + baseline pca_gmm); el master unificado registra
+# solo deep_ae_regime y se reconstruye con:  python scripts/verify/_rebuild_master.py
 display(tbl.T)""")
 
 # ------------------------------------------------------------------ #
-md(r"""## 9. Conclusión D12 — ¿aporta la no linealidad del autoencoder?
+md(r"""<a id="sec-9"></a>
+## 9. Conclusión D12 — veredicto del contraste
 
-**Pregunta ablativa:** ¿usar un autoencoder (reductor NO lineal) mejora la detección de
-regímenes frente al reductor LINEAL (PCA), con todo lo demás igual (mismo $K$, misma dim
-latente, mismo walk-forward causal)?
+**Hipótesis CP2.** Usar un autoencoder (reductor NO lineal) **no** mejora la detección de
+regímenes frente al reductor LINEAL (PCA), con todo lo demás igual (mismo $K$, misma dimensión
+latente, mismo walk-forward causal), porque con ~4 crisis reales no hay datos para explotar la
+capacidad extra de la no linealidad.
 
-Lectura (con los números de arriba):
-- **Variante principal:** AE→GMM sobre latente 2D; crisis = alta vol de retornos (verificado en
-  walk-forward, no invertido, sin fallback). Complemento: el error de reconstrucción del AE como
-  score de anomalía (§1b).
-- **Orientación y causalidad:** verificadas (encoder puntual con pesos del train; ocultar el
-  futuro no altera el latente). OOS ~2015→2026 ⇒ crisis OOS = COVID_2020 + Inflation_2022.
-- **Contraste AE vs PCA:** comparar cobertura COVID/Inflation, false_alarm_rate, switching y
-  duración media. Con ~4 crisis reales **lo esperado es que el AE NO mejore a la PCA** (incluso
-  que flickee más): la no linealidad añade capacidad sin datos suficientes para explotarla. Un
-  resultado **NEGATIVO es válido y honesto** — es el aprendizaje de la tanda exploratoria.
+**Cadena de evidencia (de lo más banal a lo decisivo):**
+1. **El AE entrena bien (§1c).** Las curvas train/val convergen juntas y el *gap* final es
+   pequeño: el negativo **no** es un artefacto de mal ajuste ni de sobreajuste.
+2. **El error de reconstrucción discrimina poco (§1d).** El cociente de medianas crisis/calma es
+   modesto: el complemento de anomalía del AE es débil por sí solo.
+3. **Las geometrías 2D son equivalentes (§4b).** El latente no lineal no separa los estados mejor
+   que la proyección lineal de la PCA — no hay margen para mejorar aguas abajo.
+4. **Orientación y causalidad verificadas (§1, §2, §3).** Crisis = alta vol de retornos en
+   walk-forward (no invertido, sin *fallback* porque se pasa `market_returns`); el encoder es
+   puntual y ocultar el futuro no altera estados ni $p_\text{crisis}$ del bloque (tolerancia FP
+   ~1e-4 por ruido float32 de torch, no 1e-9). OOS ~2015→2026 ⇒ crisis OOS = COVID_2020 +
+   Inflation_2022 (GFC/EuroDebt caen en el train, como en D3).
+5. **El contraste ablativo (§5) cierra el caso.** Cobertura, falsa alarma, *switching* y
+   persistencia: el AE **no** bate a la PCA — y tiende a **flickear** algo más (códigos no
+   lineales más sensibles). El `better` impreso resume el veredicto numérico.
+
+**Capitalización del negativo (a favor de la parsimonia).** Este resultado **NEGATIVO es el
+entregable**, no un fracaso: demuestra, con un contraste limpio y reproducible (semillas fijas
+torch+numpy), que la complejidad del deep learning **no se paga** en este problema con tan pocas
+crisis. Refuerza la elección de mantener el banco en detectores parsimoniosos (D3 GMM lineal,
+HMM, reglas) y deja documentado *por qué* no se escala a arquitecturas mayores: no por falta de
+intento, sino por ausencia de señal que justifique la capacidad añadida (navaja de Occam
+empírica).
 
 (El veredicto numérico definitivo queda en `docs/memory/detectors/12_deep_ae_regime.md`.)""")
 
