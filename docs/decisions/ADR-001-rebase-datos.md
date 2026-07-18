@@ -88,8 +88,24 @@ antes de volver a comparar. En concreto:
 
 | Fase | Qué | Estado |
 |---|---|---|
-| 1 | Reorganización + narrativa | **esta entrega** |
-| 2 | Datos: estado del arte + descarga máxima | pendiente |
-| 3 | EDA + análisis profundo (con ola de re-verificación) | pendiente |
-| 4 | Preprocesado listo-para-ejecutar (sin ejecutar) | pendiente |
-| 5 | Documentación final | pendiente |
+| 1 | Reorganización + narrativa | ✅ |
+| 2 | Datos: estado del arte + descarga máxima (166/174 series) | ✅ |
+| 3 | EDA + análisis profundo (con ola de re-verificación) + benchmark congelado | ✅ |
+| — | Limpieza intensa + documentación | ✅ |
+| D | Re-evaluar los 12 sobre `benchmark_spec.yaml` + diseñar el detector | 🔜 |
+
+*(La Fase 4 "preprocesado" se pospone y se hará junto con la Fase D, ya con el benchmark congelado.)*
+
+## 7. Nota de limpieza (2026-07-18)
+
+Tras la Fase 3 se hizo una **limpieza intensa** del repo para dejar solo lo relevante:
+- **Notebooks planos y ordenados**: `notebooks/00_descarga.ipynb`, `notebooks/01_eda.ipynb`
+  (sin subcarpetas, sin scripts `_build_*.py` — el notebook ejecutado y autónomo es el entregable;
+  la *lógica* vive en `src/`).
+- **Retirada la maquinaria de builders**: de v2 y de `capa1_exploracion/scripts/` (Capa 1 está
+  congelada; sus notebooks ya están ejecutados). El histórico íntegro sigue en la rama
+  `backup-main-pre-datos-v2` y el tag `capa1-exploracion`.
+- **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/SOTA_datos.md`).
+- **`docs/` = hogar único del conocimiento** (ver `docs/README.md`): decisiones, datos, EDA, teoría.
+  Ningún hallazgo, decisión ni teoría se perdió: se preservó en `docs/` antes de borrar.
+- **Capa 1 se mantiene intacta** (decisión del usuario) salvo la retirada de `scripts/`.

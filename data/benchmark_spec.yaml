@@ -5,12 +5,9 @@
 # los suelos de drawdown. A partir de aqui NINGUN detector puede cambiar estas ventanas ni
 # estas etiquetas: son la variable controlada que hace comparables los experimentos de Fase D.
 #
-# Derivado del EDA profundo (Fase 3):
-#   notebooks/eda_v2/reports/cobertura_calidad.md      (ventanas efectivas por bloque de features)
-#   notebooks/eda_v2/reports/crisis_espina_profunda.md (salto de potencia 22 vs 10 crisis)
-#   notebooks/eda_v2/reports/candidatas_features.md    (ranking causal de features)
-#   notebooks/eda_v2/reports/credito_curva_2013.md     (punto ciego 2013 = falso positivo)
-#   notebooks/eda_v2/reports/correlaciones_dinamicas.md (corr accion-bono cambia de signo ~2000)
+# Derivado del EDA profundo (Fase 3): informe completo en docs/EDA_v2.md (ventanas por bloque
+# de features, salto de potencia 22 vs 10 crisis, ranking causal de features, punto ciego 2013
+# = falso positivo, corr accion-bono cambia de signo ~2000). Recomputo en notebooks/01_eda.ipynb.
 #
 # Coherente con data/raw/<fuente>/<nombre>.parquet (status OK/CACHE en coverage_report.csv,
 # fechas verificadas leyendo los parquet 2026-07-18) y con data/catalog.yaml (crisis_catalog).

@@ -46,20 +46,18 @@ El detalle y la decisión de re-basar los datos están en
 capa1_exploracion/
 ├── src/          marco que usó (data_loader, features, detector_base, evaluation, viz)
 ├── detectors/    los 12 detectores
-├── notebooks/    00_eda + 01..12 (un detector c/u) + 13_comparison
-├── scripts/      builders (regeneran+ejecutan cada notebook), figs, verify
+├── notebooks/    00_eda + 01..12 (un detector c/u) + 13_comparison (ejecutados, autónomos)
 ├── results/      métricas por detector + tabla maestra + figuras
 ├── report/       informe_capa1 (LaTeX + PDF)
 ├── data/         metadatos de procedencia de los datos v1 (raw gitignored)
 └── memory/       memoria viva: INDEX.md (estado), sota/, detectors/, 99_conclusions.md
 ```
 
-**Reproducibilidad**: las rutas son relativas a esta carpeta (los builders usan
-`parents[2]` → `capa1_exploracion`), así que sigue siendo auto-contenida tras el re-base.
-Para reconstruir un notebook: `python capa1_exploracion/scripts/builders/_build_NN.py`
-(lento: la tanda completa son 2-3 h; **no es necesario** para el trabajo v2).
+**Reproducibilidad**: los notebooks están **ejecutados y son autónomos** (código + outputs
+embebidos) — son el entregable congelado de la Capa 1. La maquinaria de *builders* (`scripts/`)
+que los regeneraba se **retiró en la limpieza** (no es necesaria para un archivo congelado); el
+histórico íntegro sigue en la rama `backup-main-pre-datos-v2` y el tag `capa1-exploracion`.
 
-> ⚠️ **Re-ejecutar SOLO vía los builders**, nunca lanzando la notebook a mano desde la raíz
-> del repo. Las notebooks descubren su ROOT subiendo hasta encontrar `src/`; como ahora existe
-> un `src/` v2 en la raíz, ejecutarlas ad-hoc con `cwd=raíz` resolvería al `src/` equivocado.
-> Los builders fijan el `cwd` a `capa1_exploracion/notebooks/`, por eso resuelven bien.
+> ⚠️ Si re-ejecutas un notebook, hazlo **desde dentro de `capa1_exploracion/notebooks/`** (no desde
+> la raíz del repo): descubren su ROOT subiendo hasta encontrar `src/`, y como ahora hay un `src/`
+> v2 en la raíz, ejecutarlos con `cwd=raíz` resolvería al `src/` equivocado.

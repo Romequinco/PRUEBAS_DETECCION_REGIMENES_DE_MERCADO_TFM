@@ -4,7 +4,7 @@
 (22 eventos peak→trough, 1929–2025) · todas las transformaciones de *feature* son **causales**
 (en `t`, solo estadísticos ≤ `t`; `src/features.py`).
 
-Este documento sintetiza los **7 slices** del EDA (`notebooks/eda_v2/reports/`) en un solo informe
+Este documento sintetiza los **7 temas** del EDA en un solo informe
 echado a tierra: cada afirmación lleva su número concreto y la serie/fecha de la que sale, cada tema
 enlaza su figura clave, y cada tema cierra con **qué implica para el detector**. Incorpora el veredicto
 de tres auditorías independientes (cifras, causalidad/look-ahead, completitud) — ver §0 y §11.
@@ -78,7 +78,7 @@ convención canónica que reconcilia las discrepancias entre slices (ver Apéndi
 
 *(slice `cobertura_calidad`)*
 
-![Ventanas efectivas recomendadas por pista](../notebooks/eda_v2/figs/cobertura_calidad/ventanas_recomendadas.png)
+![Ventanas efectivas recomendadas por pista](figs_eda/cobertura_calidad__ventanas_recomendadas.png)
 
 **La intersección "ingenua" de una pista es inservible.** Exigir todas las series a la vez:
 - **Pista A diaria** (39 series) → intersección **1991-01-02 → 2016-10-07** (la gobiernan `BCOM` al inicio
@@ -126,7 +126,7 @@ Por eso la ventana se define **por bloque de features**, no por intersección to
 
 *(slice `hechos_estilizados` — 17 series, retornos log diarios)*
 
-![Distribución del S&P 500: empírica vs Normal vs t-Student](../notebooks/eda_v2/figs/hechos_estilizados/01_sp500_dist_normal_vs_t.png)
+![Distribución del S&P 500: empírica vs Normal vs t-Student](figs_eda/hechos_estilizados__01_sp500_dist_normal_vs_t.png)
 
 **El S&P 500 no es gaussiano, y no por poco** (1928–2026, n=24.751):
 - **Exceso de curtosis = 18,7**, **skew = −0,47**, **Jarque-Bera = 3,63·10⁵** (p < 1·10⁻³⁰⁰). JB rechaza
@@ -144,7 +144,7 @@ en lag 1 y sigue en 0,22 a lag 21** (un mes). Ljung-Box(r², 21) rechaza indepen
 las 17 series. **Hay leverage effect:** corr(rₜ, \|rₜ₊₁\|) = **−0,106** (S&P 500), fuerte en equity
 (XLU −0,134), tenue en commodities (−0,05) y **nulo en FX** (DXY −0,006).
 
-![Volatilidad realizada 21d con las 22 crisis](../notebooks/eda_v2/figs/hechos_estilizados/08_realized_vol_timeline.png)
+![Volatilidad realizada 21d con las 22 crisis](figs_eda/hechos_estilizados__08_realized_vol_timeline.png)
 
 La vol realizada alterna **largas mesetas de calma (~10% anualizado)** con **estallidos** que coinciden
 con las 22 crisis: **1929 (105%)**, **oct-1987 (101%)**, **2008 (85%)**, **COVID abr-2020 (98%)**. Vivir
@@ -163,7 +163,7 @@ en dos "modos" (calma persistente vs estrés persistente) **es la señal de rég
 
 *(slice `correlaciones_dinamicas` — rolling 60d causal, `min_periods=30`)*
 
-![Correlación rolling 60d acción-bono, cambio de signo](../notebooks/eda_v2/figs/correlaciones_dinamicas/01_rolling_stock_bond_corr.png)
+![Correlación rolling 60d acción-bono, cambio de signo](figs_eda/correlaciones_dinamicas__01_rolling_stock_bond_corr.png)
 
 **La correlación acción-bono cambió de signo (Gulko 2002), medido en los datos:**
 - **1962-1999: media +0,27** (85,7% de los días > 0); **2000-2026: media −0,26** (77,2% de los días < 0).
@@ -174,7 +174,7 @@ en dos "modos" (calma persistente vs estrés persistente) **es la señal de rég
 - **La matriz incondicional esconde el régimen:** Equity-Bono estática 1990-2026 = **−0,16**, media
   engañosa de dos regímenes opuestos. Usar una covarianza fija como feature es tirar la mitad de la señal.
 
-![El hedge del bono por crisis: cuándo el refugio falla](../notebooks/eda_v2/figs/correlaciones_dinamicas/07_bond_hedge_per_crisis.png)
+![El hedge del bono por crisis: cuándo el refugio falla](figs_eda/correlaciones_dinamicas__07_bond_hedge_per_crisis.png)
 
 **El bono cubre… salvo en las crisis de inflación.** Correlación S&P500-UST10Y *dentro* de cada ventana:
 - **Cubre (negativa)** en las de crecimiento post-1998: 2010 Euro **−0,74**, 2011 −0,58, COVID −0,49, GFC
@@ -204,7 +204,7 @@ casi todo microestructura. A nivel mensual el spread se abre cuando el equity ca
 
 *(slice `complejo_volatilidad`)*
 
-![Niveles de cada proxy en las 22 crisis](../notebooks/eda_v2/figs/complejo_volatilidad/08_crisis_levels_heatmap.png)
+![Niveles de cada proxy en las 22 crisis](figs_eda/complejo_volatilidad__08_crisis_levels_heatmap.png)
 
 **No hay un único "mejor" proxy: hay una jerarquía por horizonte histórico y por dimensión de riesgo.**
 
@@ -217,7 +217,7 @@ casi todo microestructura. A nivel mensual el spread se abre cuando el equity ca
 - **La implícita cotiza cara salvo en el crash:** VIX > RV21 el **88% de los días** (prima de varianza media
   +4,0 pts), pero en cada capitulación la realizada la sobrepasa (COVID RV 97,6 > VIX 82,7).
 
-![MOVE vs VIX: la dimensión de tipos](../notebooks/eda_v2/figs/complejo_volatilidad/06_move_vs_vix.png)
+![MOVE vs VIX: la dimensión de tipos](figs_eda/complejo_volatilidad__06_move_vs_vix.png)
 
 **MOVE es la dimensión que la vol de equity NO ve.** En 2022-23 el MOVE se disparó mientras el VIX quedó
 contenido: **2022 MOVE 160,7 vs VIX 36,5**; **SVB-2023 MOVE 182,6 vs VIX 26,5**. El MOVE fue el **único**
@@ -246,7 +246,7 @@ hunde en el crash real. **VVIX como nivel ≈ azar** (0,54-0,56); su valor es co
 
 *(slice `credito_curva_2013`)*
 
-![El punto ciego 2013 en 4 paneles](../notebooks/eda_v2/figs/credito_curva_2013/01_puntociego_4paneles.png)
+![El punto ciego 2013 en 4 paneles](figs_eda/credito_curva_2013__01_puntociego_4paneles.png)
 
 **La curva marca 2013 con fuerza; el crédito no lo marca en absoluto.** El taper tantrum fue un **shock de
 tipos puro** sin estrés de crédito ni de equity (2013-05-01 → 2013-09-13):
@@ -262,14 +262,14 @@ bp**, mientras el breakeven (`T10YIE`) **cae −20 bp**. La curva hizo **bear st
 1,46 → **2,52** el 2013-08-19, +106 bp), no inversión → el **nivel** de la pendiente es una feature engañosa
 (leería "risk-on"); lo informativo es la **velocidad** del empino.
 
-![Firma crédito vs curva: 2013 en el cuadrante opuesto](../notebooks/eda_v2/figs/credito_curva_2013/06_firma_credito_vs_curva.png)
+![Firma crédito vs curva: 2013 en el cuadrante opuesto](figs_eda/credito_curva_2013__06_firma_credito_vs_curva.png)
 
 **2013 vs crisis sistémicas — cuadrantes opuestos.** En GFC/COVID/euro/dotcom los Treasuries *rallyan*
 (Δ10Y **negativo**, flight-to-quality) y el crédito se dispara (GFC Baa-Aaa **+2,71 pp**, Δ10Y −1,78). 2013
 está solo en "yields↑ / crédito plano" (Δ10Y **+1,24**, crédito +0,25). En la memoria larga, el Baa-Aaa
 mensual (1919+) promedió **0,87 pp en 2013**, *por debajo* de su media histórica de **1,16 pp**: invisible.
 
-![Z-scores causales: solo dispara la velocidad de tipos](../notebooks/eda_v2/figs/credito_curva_2013/07_zscores_causales.png)
+![Z-scores causales: solo dispara la velocidad de tipos](figs_eda/credito_curva_2013__07_zscores_causales.png)
 
 **¿Dispararía un detector causal en 2013? Solo si mira la VELOCIDAD de los tipos** (z causal expanding,
 pico en el taper):
@@ -296,7 +296,7 @@ pico en el taper):
 
 *(slice `crisis_espina_profunda` — `^GSPC` 1927-12-30 → 2026-07-17)*
 
-![S&P 500, drawdowns y las 22 crisis con NBER](../notebooks/eda_v2/figs/crisis_espina_profunda/01_sp500_drawdowns_nber.png)
+![S&P 500, drawdowns y las 22 crisis con NBER](figs_eda/crisis_espina_profunda__01_sp500_drawdowns_nber.png)
 
 **Las 22 profundidades del catálogo cuadran con el precio diario:** recalculando el drawdown pico→valle
 directamente de `^GSPC`, el **error máximo es 0,048 pp** (peor caso `svb_banking_2023`: catálogo −7,8% vs
@@ -304,7 +304,7 @@ recálculo −7,75%). El catálogo es fiel al dato, no un pegado a mano. Depth m
 extremos **1929 (−86,2%)** y **1937 (−54,5%)** dominan cualquier estadístico de cola; sin ellas la peor es
 **GFC (−56,8%)**. **~2/3 de los episodios ocurren antes de 1990.**
 
-![El salto de potencia: crisis por ventana de arranque](../notebooks/eda_v2/figs/crisis_espina_profunda/03_salto_potencia_ventanas.png)
+![El salto de potencia: crisis por ventana de arranque](figs_eda/crisis_espina_profunda__03_salto_potencia_ventanas.png)
 
 **El salto de potencia es real y grande** (crisis con año del pico ≥ inicio de ventana):
 
@@ -341,7 +341,7 @@ mueve un índice multi-mercado.
 
 *(slice `candidatas_features` — 17 features causales, AUC vs label de 22 crisis)*
 
-![Ranking de poder discriminante (AUC)](../notebooks/eda_v2/figs/candidatas_features/01_ranking_auc.png)
+![Ranking de poder discriminante (AUC)](figs_eda/candidatas_features__01_ranking_auc.png)
 
 **Ganan los NIVELES de estrés EXÓGENOS al label:** `VIX_level_z` (**AUC 0,810**), `MOVE_level_z` (**0,800**,
 el **mayor Cohen's d, +1,33**), `credit_BAA10Y_z` (**0,792**), `credit_BaaAaa_z` (**0,745**). La mejor de la
@@ -376,7 +376,7 @@ post-2000 (crecimiento). Tipifica el régimen, no es marcador monótono (por eso
 ≈ azar. Contraste directo con §5 (donde la velocidad SÍ capturaba el shock puntual de 2013): **para un label
 coincidente de ventana larga mandan los NIVELES; los cambios solo brillan en el punto de giro.**
 
-![Trade-off AUC vs cobertura de crisis](../notebooks/eda_v2/figs/candidatas_features/04_auc_vs_cobertura.png)
+![Trade-off AUC vs cobertura de crisis](figs_eda/candidatas_features__04_auc_vs_cobertura.png)
 
 > **Qué implica para el detector:** **B para separar, A para tener potencia.** Discriminadores primarios
 > (Pista B, por nivel): `VIX_level_z`, `MOVE_level_z`, `credit_BAA10Y_z`, `credit_BaaAaa_z`. Espina profunda
@@ -392,7 +392,7 @@ coincidente de ventana larga mandan los NIVELES; los cambios solo brillan en el 
 
 *(veredicto del auditor de look-ahead — APROBADO en causalidad de construcción)*
 
-![Spot-check causal: max|full−truncado| = 0.0](../notebooks/eda_v2/figs/candidatas_features/06_spotcheck_causal.png)
+![Spot-check causal: max|full−truncado| = 0.0](figs_eda/candidatas_features__06_spotcheck_causal.png)
 
 **Las features SON causales**, verificado de forma independiente reejecutando el spot-check sobre los parquet
 crudos. Recomputando cada z-score sobre la muestra completa (→2026) y sobre una truncada en `cut=2015-01-01`
@@ -427,7 +427,7 @@ causal (`merge_asof`/ffill, nunca interpolar hacia atrás).
 ## §9 · (a) Tabla de features rankeadas por pista
 
 AUC orientada contra el label de 22 crisis; dir. = signo del efecto en crisis (↑ sube / ↓ baja / ? ambiguo /
-· ruido). Fuente: `figs/candidatas_features/_ranking.csv`.
+· ruido). Recomputable en `notebooks/01_eda.ipynb`.
 
 ### Pista B — panel rico, exógeno (mejor discriminación, menos cobertura)
 
@@ -581,10 +581,8 @@ el máximo). Fijarla evita las discrepancias de arriba.
 
 ### Fuentes y reproducibilidad
 
-Reports fuente: `notebooks/eda_v2/reports/{cobertura_calidad, hechos_estilizados, correlaciones_dinamicas,
-complejo_volatilidad, credito_curva_2013, crisis_espina_profunda, candidatas_features}.md`. Figuras:
-`notebooks/eda_v2/figs/<slice>/*.png` (dpi=110). CSV recomputables: `_ranking.csv`, `_per_crisis_meanz.csv`,
-`_spotcheck.csv`, `_crisis_levels.csv`, `_comparativa.csv`. Datos: `data/raw/<fuente>/<nombre>.parquet`
+Recomputo en vivo de los hallazgos-cabecera y figuras clave en **`notebooks/01_eda.ipynb`**;
+figuras de este informe en `docs/figs_eda/`. Datos: `data/raw/<fuente>/<nombre>.parquet`
 (solo lectura), inventario `data/raw/coverage_report.csv`, label `data/catalog.yaml → crisis_catalog`.
 Todas las features causales vía `src/features.py`. Auditorías incorporadas: verificación de cifras (>60
 recomputadas, cuadran ±5%), causalidad/look-ahead (APROBADO en construcción; único look-ahead = el label),

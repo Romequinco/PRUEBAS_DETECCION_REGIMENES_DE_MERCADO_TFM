@@ -1,6 +1,6 @@
 # catalog.yaml — universo de datos declarado (FUENTE DE VERDAD de la capa de datos v2)
 #
-# ESTADO: POBLADO (FASE 2). Consolidado desde data/_catalog_research/*.md (12 categorias),
+# ESTADO: POBLADO (FASE 2). Informe de fuentes en docs/SOTA_datos.md (12 categorias),
 # verificadas de verdad el 2026-07-18 (FRED API con FRED_API_KEY, yfinance period='max',
 # CSV de OFR y repos GitHub datahub/PDDL). Cada serie declara: nombre interno, fuente,
 # ticker/id, fallback, histórico verificado, granularidad, rol y a qué pista pertenece.
