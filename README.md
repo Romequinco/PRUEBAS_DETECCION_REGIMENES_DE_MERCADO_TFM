@@ -85,7 +85,7 @@ pip install -r requirements.txt
 | Fase | Qué | Estado |
 |---|---|---|
 | 1 | Reorganización + narrativa | ✅ |
-| 2 | Datos: estado del arte + descarga máxima | ⏳ |
+| 2 | Datos: estado del arte + descarga máxima | ✅ (145/161 series; ver `data/SOTA_datos.md` y `data/catalog.yaml`) |
 | 3 | EDA + análisis profundo | ⏳ |
 | 4 | Preprocesado listo-para-ejecutar | ⏳ |
 | 5 | Documentación final | ⏳ |

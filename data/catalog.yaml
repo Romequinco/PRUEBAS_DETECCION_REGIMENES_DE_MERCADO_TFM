@@ -1,48 +1,2349 @@
 # catalog.yaml — universo de datos declarado (FUENTE DE VERDAD de la capa de datos v2)
 #
-# ESTADO: esqueleto (FASE 1). Se RELLENA en la FASE 2 tras el estado del arte de datos.
-# Cada serie declara: nombre interno, fuente, ticker/id, fallback, histórico esperado,
-# rol (spine|core|enricher|fallback|validation) y a qué pista pertenece.
+# ESTADO: POBLADO (FASE 2). Consolidado desde data/_catalog_research/*.md (12 categorias),
+# verificadas de verdad el 2026-07-18 (FRED API con FRED_API_KEY, yfinance period='max',
+# CSV de OFR y repos GitHub datahub/PDDL). Cada serie declara: nombre interno, fuente,
+# ticker/id, fallback, histórico verificado, granularidad, rol y a qué pista pertenece.
 #
 # Las dos pistas (decisión ADR-001):
-#   A = espina histórica profunda (pocas features, ~1950+, muchas crisis)
+#   A = espina histórica profunda (pocas features, ~1871/1950+, muchas crisis)
 #   B = panel rico multi-activo   (crédito/curva/vol/FX/macro, ~1990/2007+, ataca 2013)
+#
+# Convención de placement: cada serie aparece UNA sola vez (deduplicada). Las series
+# marcadas pista: ambas se usan en las DOS pistas; se listan físicamente bajo pista_A
+# (su hogar histórico profundo) y el campo `pista: ambas` señala el doble uso en el panel B.
+# `rol`: spine | core | enricher | fallback | validation.
+# `fallback`: fuente/ticker redundante verificado para la misma serie.
+# Series verificado: false se marcan `estado: candidata` (no verificadas o fuente bloqueada/retirada).
 
 meta:
-  version: 0
-  estado: esqueleto_fase1
+  version: 1
+  estado: poblado_fase2
   actualizado: 2026-07-18
   politica:
     imputacion: "NUNCA — cada serie arranca en su fecha real; huecos quedan NaN"
     causalidad: "toda feature derivada será z-score expanding/rolling; se verifica con assert_causal"
-    reproducibilidad: "raw con checksum + provenance; descargas versionadas"
+    reproducibilidad: "raw con checksum + provenance; descargas versionadas; verificado end-to-end 2026-07-18"
+    dedup: "una serie que aparece en varias categorias va una vez, con la mejor fuente como primaria y la otra como `fallback`"
+    validacion: "los índices de estrés/recesión son ground-truth (rol=validation); NUNCA usarlos a la vez como feature y como label (fuga)"
+  resumen:
+    pista_A:
+      total: 77
+      solo_A: 42
+      ambas_dual_uso: 35
+      candidatas: 2
+    pista_B:
+      total: 82
+      candidatas: 10
+    validacion_externa:
+      total: 23
+      candidatas: 1
+    total_series_verificadas: 182
+    total_candidatas: 13
+  notas_globales:
+    - "Stooq BLOQUEADO en este entorno (challenge JS / proof-of-work): todos los fallbacks stooq quedan como candidatas."
+    - "ICE Data Indices rompió dos históricos en FRED: OAS BofA (BAML*) capadas a ventana rodante de 3 años (desde abril-2026) y el fixing diario del oro LBMA (GOLDPMGBD228NLBM) retirado. Sustitutos verificados: spread Moody's Baa-Aaa y HYG/IEF (crédito); GC=F/GLD (oro)."
+    - "LIBOR diario retirado de FRED (fin de LIBOR): TED clásico descontinuado 2022; sucesores vivos = PAPER_BILL_SPREAD, CP_FFR_SPREAD, SOFR_EFFR_SPREAD."
+    - "ISM/PMI no está gratis en FRED: proxy = encuestas Fed regionales (Philly 1968+, Empire, Dallas)."
+    - "Punto ciego 2013 (taper tantrum) cubierto: curva FRED y FX diarios densos (250 obs/2013), útiles como ancla para rellenar otros paneles."
 
-fuentes:  # se completan en FASE 2 (disponibilidad verificada, no marketing)
-  fred:      { tipo: api, auth: FRED_API_KEY, base: "https://api.stlouisfed.org/fred" }
-  yfinance:  { tipo: lib, auth: none }
-  stooq:     { tipo: csv, auth: none }
-  kaggle:    { tipo: dataset, auth: opcional }
-  github:    { tipo: repo, auth: none }
-  academico: { tipo: csv, auth: none, notas: "Shiller, Ken French, OFR" }
+fuentes:  # disponibilidad verificada 2026-07-18 (no marketing)
+  fred:      { tipo: api,     auth: FRED_API_KEY, base: "https://api.stlouisfed.org/fred", estado: ok }
+  yfinance:  { tipo: lib,     auth: none,         estado: ok }
+  ofr:       { tipo: csv,     auth: none,         base: "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv", notas: "requiere User-Agent de navegador; NO está en FRED (OFRFSI->400)" }
+  github:    { tipo: repo,    auth: none,         notas: "datahub.io (licencia ODC-PDDL-1.0) + fja05680/sp500; raw.githubusercontent.com" }
+  academico: { tipo: csv,     auth: none,         notas: "Shiller (Yale), Ken French (Dartmouth), Goyal-Welch (Google Sheet), Jordà-Schularick-Taylor macrohistory.net" }
+  stooq:     { tipo: csv,     auth: none,         estado: bloqueado, notas: "challenge JS / PoW SHA-256; no scriptable sin navegador (2026-07-18)" }
+  kaggle:    { tipo: dataset, auth: opcional,     notas: "SPA sin metadatos a máquina; descarga requiere kaggle.json; casi todo re-export congelado de ^GSPC/SPY" }
 
-# ---------------------------------------------------------------------------
-# PISTA A — Espina histórica profunda   (se puebla en FASE 2)
-# ---------------------------------------------------------------------------
+# ===========================================================================
+# PISTA A — Espina histórica profunda (incluye series pista:ambas de doble uso)
+# ===========================================================================
 pista_A:
-  descripcion: "S&P 500 + volatilidad, máxima historia, para maximizar nº de crisis"
-  ventana_objetivo: "~1950 -> hoy"
-  series: []   # <- FASE 2
+  descripcion: "S&P500 + factores + volatilidad + spines profundos de curva/crédito/FX/commodities/macro, máxima historia, para maximizar nº de crisis"
+  ventana_objetivo: "~1871 -> hoy"
+  series:
 
-# ---------------------------------------------------------------------------
-# PISTA B — Panel rico multi-activo   (se puebla en FASE 2)
-# ---------------------------------------------------------------------------
+  # ---- Equity / factores / valoración (espina diaria y mensual profunda) ----
+  - nombre_interno: SP500
+    descripcion: "S&P 500 índice de precio, la espina diaria más profunda gratis."
+    fuente: yfinance
+    id: "^GSPC"
+    auth: none
+    inicio_verificado: "1927-12-30"
+    granularidad: diaria
+    pista: A
+    rol: spine
+    relevancia_regimen: "Nivel/retorno del mercado US; base de drawdowns, vol realizada y estados bull/bear. También fuente para derivar CRISIS_WINDOWS."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EGSPC"
+
+  - nombre_interno: SP500_TR
+    descripcion: "S&P 500 Total Return (dividendos reinvertidos)."
+    fuente: yfinance
+    id: "^SP500TR"
+    auth: none
+    inicio_verificado: "1988-01-04"
+    granularidad: diaria
+    pista: A
+    rol: core
+    relevancia_regimen: "Retorno total real del inversor; mejor que precio para regímenes de rendimiento."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ESP500TR"
+
+  - nombre_interno: SHILLER_SP500_CAPE
+    descripcion: "S&P500 mensual + CAPE (PE10) + Dividend/Earnings/CPI/Long-rate desde 1871. Mirror GitHub datahub (vivo) de la serie de Shiller."
+    fuente: github
+    fallback: "academico:ie_data.xls (Yale, canónico, ÚNICO con TR CAPE, pero va con retraso ~2023-09)"
+    id: "datasets/s-and-p-500:data/data.csv"
+    auth: none
+    inicio_verificado: "1871-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Ancla secular 150+ años; CAPE = régimen de valoración caro/barato y ciclos largos. CSV plano vivo hasta 2026-06 (ODC-PDDL-1.0)."
+    verificado: true
+    url: "https://github.com/datasets/s-and-p-500"
+
+  - nombre_interno: FF_FACTORS_3_DAILY
+    descripcion: "Fama-French 3 factores DIARIOS (Mkt-RF, SMB, HML) + RF, mercado US (CRSP value-weighted)."
+    fuente: academico
+    id: "F-F_Research_Data_Factors_daily"
+    auth: none
+    inicio_verificado: "1926-07-01"
+    granularidad: diaria
+    pista: A
+    rol: spine
+    relevancia_regimen: "Espina diaria de máxima profundidad (1926): exceso de retorno del mercado + factores size (SMB) y value (HML); drawdowns/vol de todas las crisis. Compuesto Mkt-RF+RF = índice TR diario más limpio que ^GSPC."
+    verificado: true
+    url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+
+  - nombre_interno: FF_FACTORS_3_MONTHLY
+    descripcion: "Fama-French 3 factores MENSUALES (Mkt-RF, SMB, HML) + RF."
+    fuente: academico
+    id: "F-F_Research_Data_Factors"
+    auth: none
+    inicio_verificado: "1926-07"
+    granularidad: mensual
+    pista: A
+    rol: fallback
+    relevancia_regimen: "Remuestreo/fallback mensual del spine factorial; alinea con Shiller/Goyal-Welch."
+    verificado: true
+    url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+
+  - nombre_interno: FF_MOM_DAILY
+    descripcion: "Fama-French momentum factor (WML/UMD) DIARIO, mercado US."
+    fuente: academico
+    id: "F-F_Momentum_Factor_daily"
+    auth: none
+    inicio_verificado: "1926-11-03"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Momentum crashes (UMD muy negativo) = marcadores clásicos de giro de régimen (2009-03, 2020-03)."
+    verificado: true
+    url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+
+  - nombre_interno: FF_FACTORS_5_DAILY
+    descripcion: "Fama-French 5 factores DIARIOS (Mkt-RF, SMB, HML, RMW, CMA) + RF."
+    fuente: academico
+    id: "F-F_Research_Data_5_Factors_2x3_daily"
+    auth: none
+    inicio_verificado: "1963-07-01"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Rotación de estilos (quality RMW, investment CMA) informa flight-to-quality; menos profundo (1963)."
+    verificado: true
+    url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+
+  - nombre_interno: FF_5_INDUSTRY
+    descripcion: "Ken French 5 Industry Portfolios diarios (Cnsmr,Manuf,HiTec,Hlth,Other) desde 1926."
+    fuente: academico
+    id: "5_Industry_Portfolios_daily"
+    auth: none
+    inicio_verificado: "1926-07-01"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Rotación sectorial con 100 años; sectores en crisis pre-1998 donde no hay SPDR. También versiones 10/12/49 industrias."
+    verificado: true
+    url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+
+  # ---- Volatilidad (espina profunda; VIX/SKEW dual-uso) ----
+  - nombre_interno: REALIZED_VOL_SP500
+    descripcion: "Volatilidad realizada del S&P500 (rolling std de log-returns anualizada), calculada de ^GSPC."
+    fuente: yfinance
+    id: "^GSPC"
+    auth: none
+    inicio_verificado: "1928-01-31"
+    granularidad: diaria
+    pista: A
+    rol: spine
+    relevancia_regimen: "Única vol disponible pre-1986; captura ~10+ crisis (1929,1937,1987,2000,2008...). Base del variance risk premium vs VIX."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EGSPC"
+
+  - nombre_interno: VXO
+    descripcion: "CBOE S&P100 Volatility Index (metodología VIX vieja). Implícita más antigua; extiende el VIX pre-1990."
+    fuente: fred
+    fallback: "yfinance:^VXO"
+    id: "VXOCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1986-01-02"
+    granularidad: diaria
+    pista: A
+    rol: core
+    relevancia_regimen: "Cubre el crash de 1987 (Black Monday) que el VIX no alcanza; empalme casi limpio con VIX (media VXO-VIX=+0.27). DESCONTINUADO 2021-09-23."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXOCLS"
+
+  - nombre_interno: VIX
+    descripcion: "CBOE Volatility Index (implícita S&P500 30d). Termómetro de miedo, feature de vol núcleo."
+    fuente: fred
+    fallback: "yfinance:^VIX; github:datasets/finance-vix (OHLC, PDDL)"
+    id: "VIXCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1990-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Discriminador primario risk-on/risk-off; niveles y saltos definen crisis. También sirve de validación laxa (VIX>20 estrés, >30 crisis) — no usar a la vez como feature y label."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VIXCLS"
+
+  - nombre_interno: SKEW
+    descripcion: "CBOE SKEW Index: precio del riesgo de cola izquierda (tail risk) del S&P500."
+    fuente: yfinance
+    id: "^SKEW"
+    auth: none
+    inicio_verificado: "1990-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: enricher
+    relevancia_regimen: "Complementa al VIX: mide asimetría/miedo a crash incluso con vol baja; historia larga (1990)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ESKEW"
+
+  # ---- Índices amplios profundos ----
+  - nombre_interno: NASDAQ_COMP
+    descripcion: "Nasdaq Composite."
+    fuente: yfinance
+    fallback: "fred:NASDAQCOM"
+    id: "^IXIC"
+    auth: none
+    inicio_verificado: "1971-02-05"
+    granularidad: diaria
+    pista: A
+    rol: core
+    relevancia_regimen: "Sesgo tech/growth; su divergencia con S&P marca regímenes de rotación."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EIXIC"
+
+  - nombre_interno: NASDAQ100
+    descripcion: "Nasdaq 100 (100 mayores no financieras)."
+    fuente: fred
+    fallback: "yfinance:^NDX (desde 1985-10-01)"
+    id: "NASDAQ100"
+    auth: FRED_API_KEY
+    inicio_verificado: "1986-01-02"
+    granularidad: diaria
+    pista: A
+    rol: core
+    relevancia_regimen: "Mega-cap tech; concentración y liderazgo growth por régimen."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/NASDAQ100"
+
+  - nombre_interno: NYSE_COMP
+    descripcion: "NYSE Composite (todas las acciones del NYSE)."
+    fuente: yfinance
+    id: "^NYA"
+    auth: none
+    inicio_verificado: "1965-12-31"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Mercado amplio (no solo mega-caps); proxy de amplitud a nivel índice desde 1965."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ENYA"
+
+  - nombre_interno: SP100
+    descripcion: "S&P 100 (mayores blue-chips del S&P 500)."
+    fuente: yfinance
+    id: "^OEX"
+    auth: none
+    inicio_verificado: "1982-08-02"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Mega-cap vs S&P amplio: concentración/liderazgo desde 1982."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EOEX"
+
+  - nombre_interno: RUSSELL2000
+    descripcion: "Russell 2000 small-cap."
+    fuente: yfinance
+    id: "^RUT"
+    auth: none
+    inicio_verificado: "1987-09-10"
+    granularidad: diaria
+    pista: A
+    rol: core
+    relevancia_regimen: "Small-caps lideran en risk-on y caen primero en risk-off; clave para régimen de riesgo."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ERUT"
+
+  - nombre_interno: SP_MIDCAP400
+    descripcion: "S&P MidCap 400."
+    fuente: yfinance
+    id: "^SP400"
+    auth: none
+    inicio_verificado: "1981-01-02"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Mid-caps con historia profunda (1981); eslabón entre small y large por régimen."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ESP400"
+
+  # ---- Curva de tipos: espina diaria/mensual profunda ----
+  - nombre_interno: DGS10
+    descripcion: "US Treasury 10y constant maturity (diaria). Nivel largo de referencia; espina de la curva."
+    fuente: fred
+    fallback: "yfinance:^TNX (mismo inicio 1962)"
+    id: "DGS10"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Nivel de tipos largos; motor de valoraciones, duración y ciclo. Densa a través de 2013 (ancla para tapar huecos)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS10"
+
+  - nombre_interno: DGS5
+    descripcion: "US Treasury 5y constant maturity (diaria). Belly de la curva."
+    fuente: fred
+    fallback: "yfinance:^FVX"
+    id: "DGS5"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Belly; clave para curvatura (butterfly) y sensibilidad al ciclo de política."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS5"
+
+  - nombre_interno: DGS2
+    descripcion: "US Treasury 2y constant maturity (diaria). Pata corta de la pendiente 10y-2y."
+    fuente: fred
+    id: "DGS2"
+    auth: FRED_API_KEY
+    inicio_verificado: "1976-06-01"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Expectativas de política a 2 años; T10Y2Y = predictor de recesión clásico."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS2"
+
+  - nombre_interno: DGS30
+    descripcion: "US Treasury 30y constant maturity (diaria)."
+    fuente: fred
+    fallback: "yfinance:^TYX (mismo inicio 1977)"
+    id: "DGS30"
+    auth: FRED_API_KEY
+    inicio_verificado: "1977-02-15"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Long bond; pendiente 30y-5y y term premium. OJO hueco 2002-02->2006-02 (bono 30y descontinuado)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS30"
+
+  - nombre_interno: DGS3MO
+    descripcion: "US Treasury 3-month constant maturity (diaria). Pata corta de la pendiente 10y-3m."
+    fuente: fred
+    id: "DGS3MO"
+    auth: FRED_API_KEY
+    inicio_verificado: "1981-09-01"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "T10Y3M (10y-3m) es el mejor predictor de recesión. Para pre-1981 usar DTB3 (1954)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS3MO"
+
+  - nombre_interno: T10Y2Y
+    descripcion: "Pendiente 10y-2y (10-Year minus 2-Year CMT)."
+    fuente: fred
+    id: "T10Y2Y"
+    auth: FRED_API_KEY
+    inicio_verificado: "1976-06-01"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Inversión (<0) precede recesiones; empino en taper tantrum 2013 (1.46->2.46)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T10Y2Y"
+
+  - nombre_interno: T10Y3M
+    descripcion: "Pendiente 10y-3m (10-Year minus 3-Month CMT). Predictor de recesión canónico (Estrella-Mishkin)."
+    fuente: fred
+    id: "T10Y3M"
+    auth: FRED_API_KEY
+    inicio_verificado: "1982-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Mejor señal de recesión a 12m; su inversión marca cambio de régimen."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T10Y3M"
+
+  - nombre_interno: T10YFF
+    descripcion: "10-Year CMT menos Federal Funds Rate. Curva vs política (largo)."
+    fuente: fred
+    id: "T10YFF"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Postura de política relativa al largo; negativo = política restrictiva vs mercado. Historia diaria 1962."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T10YFF"
+
+  - nombre_interno: DFF
+    descripcion: "Federal Funds Effective Rate (diaria). Tasa de política overnight; espina corta continua (proxy OIS profundo)."
+    fuente: fred
+    id: "DFF"
+    auth: FRED_API_KEY
+    inicio_verificado: "1954-07-01"
+    granularidad: ambas
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Nivel de política monetaria; ciclos de subida/bajada definen regímenes macro. Diaria desde 1954. Pata OIS de los spreads de funding."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DFF"
+
+  - nombre_interno: DTB3
+    descripcion: "3-Month Treasury Bill secondary market (discount basis, diaria). Spine corto profundo."
+    fuente: fred
+    id: "DTB3"
+    auth: FRED_API_KEY
+    inicio_verificado: "1954-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Tramo corto diario desde 1954 (mucho antes que DGS3MO); base de pendiente profunda GS10-TB3. Marca el estrés del techo de deuda oct-2013 (0.02->0.14)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DTB3"
+
+  - nombre_interno: FEDFUNDS
+    descripcion: "Federal Funds Effective Rate (mensual). Política mensual para la espina profunda."
+    fuente: fred
+    id: "FEDFUNDS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1954-07-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Serie de política mensual limpia para modelos de baja frecuencia (Pista A)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/FEDFUNDS"
+
+  - nombre_interno: TB3MS
+    descripcion: "3-Month Treasury Bill secondary market (mensual, discount basis). La serie de tipos más profunda de FRED."
+    fuente: fred
+    id: "TB3MS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1934-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Tramo corto mensual desde 1934: Depresión, guerra, todos los ciclos. Base de pendiente profunda GS10-TB3MS."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/TB3MS"
+
+  - nombre_interno: GS10
+    descripcion: "10y Treasury constant maturity (mensual). Curva larga mensual profunda para Pista A."
+    fuente: fred
+    id: "GS10"
+    auth: FRED_API_KEY
+    inicio_verificado: "1953-04-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Nivel largo mensual desde 1953; extiende DGS10 ~9 años atrás para baja frecuencia."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GS10"
+
+  - nombre_interno: GS5
+    descripcion: "5y Treasury constant maturity (mensual)."
+    fuente: fred
+    id: "GS5"
+    auth: FRED_API_KEY
+    inicio_verificado: "1953-04-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Belly mensual profundo; curvatura histórica desde 1953."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GS5"
+
+  - nombre_interno: GS1
+    descripcion: "1y Treasury constant maturity (mensual)."
+    fuente: fred
+    id: "GS1"
+    auth: FRED_API_KEY
+    inicio_verificado: "1953-04-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Front-end mensual profundo; pata corta de pendientes históricas (GS10-GS1)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GS1"
+
+  - nombre_interno: IRLTLT01USM156N
+    descripcion: "OECD Long-Term Government Bond Yield 10y US (mensual). Espejo de GS10, homogéneo cross-country."
+    fuente: fred
+    id: "IRLTLT01USM156N"
+    auth: FRED_API_KEY
+    inicio_verificado: "1953-04-01"
+    granularidad: mensual
+    pista: A
+    rol: fallback
+    relevancia_regimen: "Redundancia de GS10 con definición OECD (comparación cross-country)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/IRLTLT01USM156N"
+
+  - nombre_interno: TNX_YF
+    descripcion: "CBOE 10y Treasury yield (Yahoo). Fallback diario de DGS10, misma historia (1962)."
+    fuente: yfinance
+    id: "^TNX"
+    auth: none
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: fallback
+    relevancia_regimen: "Redundancia de fuente para el 10y si cae FRED; hoy cotiza rendimiento directo (no x10)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ETNX"
+
+  # ---- Crédito: spine profundo (sustituto honesto de las OAS históricas) ----
+  - nombre_interno: MOODYS_BAA_AAA_SPREAD
+    descripcion: "Spread Baa-Aaa de Moody's (calc. DBAA-DAAA). Núcleo honesto de riesgo de crédito con memoria larga."
+    fuente: fred
+    id: "DBAA,DAAA"
+    auth: FRED_API_KEY
+    inicio_verificado: "1986-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Spread IG con +40 años diarios; se ensancha en risk-off persistente. Pico 3.50 en 2008-12, 1.99 en 2020-04. Sustituto de las OAS para historia profunda."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DBAA"
+
+  - nombre_interno: BAA10Y
+    descripcion: "Moody's Baa Corporate Bond menos Treasury 10y. Spread de crédito vs tipo libre de riesgo."
+    fuente: fred
+    id: "BAA10Y"
+    auth: FRED_API_KEY
+    inicio_verificado: "1986-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Riesgo de crédito ajustado por nivel de tipos; pico 6.16 en 2008, 4.31 en 2020. Predictor clásico de recesión."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/BAA10Y"
+
+  - nombre_interno: MOODYS_BAA
+    descripcion: "Moody's Seasoned Baa Corporate Bond Yield (mensual). Yield IG-bajo desde 1919."
+    fuente: fred
+    id: "BAA"
+    auth: FRED_API_KEY
+    inicio_verificado: "1919-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "+100 años; con AAA da el spread Baa-Aaa mensual que cubre la Gran Depresión y todas las crisis."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/BAA"
+
+  - nombre_interno: MOODYS_AAA
+    descripcion: "Moody's Seasoned Aaa Corporate Bond Yield (mensual). Pata alta calidad del spread profundo."
+    fuente: fred
+    id: "AAA"
+    auth: FRED_API_KEY
+    inicio_verificado: "1919-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Referencia IG-alto; Baa-Aaa mensual desde 1919 es el spread de crédito con historia más larga."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/AAA"
+
+  - nombre_interno: BAAFFM
+    descripcion: "Moody's Baa menos Fed Funds Rate (mensual). Spread crédito vs política monetaria."
+    fuente: fred
+    id: "BAAFFM"
+    auth: FRED_API_KEY
+    inicio_verificado: "1954-07-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Estrés de crédito relativo al coste de financiación a un día; útil en régimen tardío de ciclo."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/BAAFFM"
+
+  # ---- FX / dólar: spine profundo ----
+  - nombre_interno: DXY
+    descripcion: "ICE US Dollar Index (DXY): cesta fija de 6 divisas (EUR 57.6%, JPY, GBP, CAD, SEK, CHF)."
+    fuente: yfinance
+    id: "DX-Y.NYB"
+    auth: none
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Nivel del dólar = eje risk-off global; USD sube en crisis (flight-to-dollar). Serie única diaria, 55 años, sin hueco 2013. OJO: 1971-73 es backfill (DXY nace 1973)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/DX-Y.NYB"
+
+  - nombre_interno: DTWEXM
+    descripcion: "Nominal Major Currencies US Dollar Index (trade-weighted, diaria). DISCONTINUADA 2019."
+    fuente: fred
+    fallback: "fred:DTWEXAFEGS (2006->vivo, empalmar solape 2006-2019)"
+    id: "DTWEXM"
+    auth: FRED_API_KEY
+    inicio_verificado: "1973-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Dólar broad-major diario desde 1973 (Bretton Woods post-Nixon). Cubre todas las crisis. Empalmar con DTWEXAFEGS para tramo vivo."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DTWEXM"
+
+  - nombre_interno: RNUSBIS
+    descripcion: "Real Narrow Effective Exchange Rate for United States (BIS, mensual). El dólar efectivo real más profundo de FRED."
+    fuente: fred
+    id: "RNUSBIS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1964-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Dólar real desde 1964: Bretton Woods, Nixon shock 1971, años 70. Espina FX de baja frecuencia (60 años)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/RNUSBIS"
+
+  - nombre_interno: NNUSBIS
+    descripcion: "Nominal Narrow Effective Exchange Rate for United States (BIS, mensual). Nominal desde 1964."
+    fuente: fred
+    id: "NNUSBIS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1964-01-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Par nominal/real (RNUSBIS) separa componente de inflación relativa. 1964+."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/NNUSBIS"
+
+  - nombre_interno: TWEXMMTH
+    descripcion: "Trade Weighted US Dollar Index: Major Currencies (mensual). DISCONTINUADA 2019."
+    fuente: fred
+    fallback: "fred:TWEXAFEGSMTH (2006->vivo)"
+    id: "TWEXMMTH"
+    auth: FRED_API_KEY
+    inicio_verificado: "1973-01-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Dólar broad-major mensual desde 1973 para baja frecuencia (Pista A)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/TWEXMMTH"
+
+  - nombre_interno: TWEXAFEGSMTH
+    descripcion: "Nominal Advanced Foreign Economies US Dollar Index (mensual). Continuación viva mensual."
+    fuente: fred
+    id: "TWEXAFEGSMTH"
+    auth: FRED_API_KEY
+    inicio_verificado: "2006-01-01"
+    granularidad: mensual
+    pista: A
+    rol: fallback
+    relevancia_regimen: "Dólar advanced mensual vivo; empalma con TWEXMMTH para la espina mensual larga."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/TWEXAFEGSMTH"
+
+  - nombre_interno: DEXJPUS
+    descripcion: "Japanese Yen per US Dollar (USDJPY, diaria). Divisa refugio."
+    fuente: fred
+    fallback: "yfinance:JPY=X (desde 1996)"
+    id: "DEXJPUS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "El yen es REFUGIO: USDJPY cae (yen se aprecia) en risk-off / unwind de carry. Señal de primer orden desde 1971."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DEXJPUS"
+
+  - nombre_interno: DEXSZUS
+    descripcion: "Swiss Francs per US Dollar (USDCHF, diaria). Divisa refugio."
+    fuente: fred
+    id: "DEXSZUS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Franco suizo REFUGIO clásico: se aprecia en estrés europeo/global. Complementa al yen."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DEXSZUS"
+
+  - nombre_interno: DEXUSAL
+    descripcion: "US Dollars per Australian Dollar (AUDUSD, diaria). FX de riesgo/commodities."
+    fuente: fred
+    id: "DEXUSAL"
+    auth: FRED_API_KEY
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: core
+    relevancia_regimen: "AUD divisa PROCÍCLICA de riesgo (commodities, carry, China). AUDJPY = termómetro carry clásico. Diaria 1971."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DEXUSAL"
+
+  # ---- Commodities: spine profundo (índices amplios diarios + PPI mensual) ----
+  - nombre_interno: SPGSCI
+    descripcion: "S&P GSCI (energy-heavy), ponderado por producción. Ticker de índice de Yahoo, diario desde 1984."
+    fuente: yfinance
+    fallback: "yfinance:GSG (ETF, 2006, si Yahoo retira el índice)"
+    id: "^SPGSCI"
+    auth: none
+    inicio_verificado: "1984-01-03"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Índice amplio de commodities con más historia diaria gratis. Procíclico: 489(2007)->349(dic-2008)->255(COVID). Discriminador de recesión/risk-off."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ESPGSCI"
+
+  - nombre_interno: BCOM
+    descripcion: "Bloomberg Commodity Index (diversificado). Ticker de índice de Yahoo, diario desde 1991."
+    fuente: yfinance
+    fallback: "yfinance:DJP (ETN, 2006)"
+    id: "^BCOM"
+    auth: none
+    inicio_verificado: "1991-01-02"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Índice amplio menos sesgado a energía que GSCI. 170(2007)->117(dic-2008)->61(COVID). Complemento diversificado."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EBCOM"
+
+  - nombre_interno: PPI_ALL_COMMODITIES
+    descripcion: "Producer Price Index by Commodity: All Commodities (mensual). Precios de materias primas más profundo gratis (1913)."
+    fuente: fred
+    id: "PPIACO"
+    auth: FRED_API_KEY
+    inicio_verificado: "1913-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "+110 años; Gran Depresión, estanflación 70s, todas las crisis. Deflación/inflación de materias primas por régimen."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/PPIACO"
+
+  - nombre_interno: WTI_SPOT_MONTHLY
+    descripcion: "Spot Crude Oil Price WTI (mensual, serie construida por la Fed de St. Louis)."
+    fuente: fred
+    id: "WTISPLC"
+    auth: FRED_API_KEY
+    inicio_verificado: "1946-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Petróleo con memoria de 80 años; shocks (1973,1979,1990,2008,2020) marcan regímenes inflación/recesión."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/WTISPLC"
+
+  - nombre_interno: PPI_FUELS
+    descripcion: "PPI by Commodity: Fuels and Related Products (mensual, 1947)."
+    fuente: fred
+    id: "WPU0561"
+    auth: FRED_API_KEY
+    inicio_verificado: "1947-01-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Componente energético del PPI con historia larga; regímenes de shock de oferta energética."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/WPU0561"
+
+  - nombre_interno: PPI_METALS
+    descripcion: "PPI by Commodity: Metals and Metal Products (mensual, 1957)."
+    fuente: fred
+    id: "WPU102301"
+    auth: FRED_API_KEY
+    inicio_verificado: "1957-01-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Metales industriales con historia larga; proxy profundo del ciclo (Dr. Copper) donde no llega HG=F."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/WPU102301"
+
+  # ---- Macro: espina profunda de ciclo real (contexto de régimen) ----
+  - nombre_interno: INDPRO
+    descripcion: "Índice de Producción Industrial (mensual). La serie de actividad real con más historia en FRED."
+    fuente: fred
+    id: "INDPRO"
+    auth: FRED_API_KEY
+    inicio_verificado: "1919-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "Termómetro macro NÚCLEO +100 años. YoY: -15%(2009), -17%(2020), -9%(1975). Cubre todas las recesiones incl. Gran Depresión."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/INDPRO"
+
+  - nombre_interno: UNRATE
+    descripcion: "Tasa de paro civil de EE.UU. (U-3), ajustada estacionalmente."
+    fuente: fred
+    id: "UNRATE"
+    auth: FRED_API_KEY
+    inicio_verificado: "1948-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Sube de forma persistente en recesión; base de la regla de Sahm. Ciclo laboral +75 años."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/UNRATE"
+
+  - nombre_interno: PAYEMS
+    descripcion: "Nóminas no agrícolas (Total Nonfarm Payrolls, mensual)."
+    fuente: fred
+    id: "PAYEMS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1939-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "El dato laboral más seguido; delta<0 sostenido = recesión. +85 años."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/PAYEMS"
+
+  - nombre_interno: MANEMP
+    descripcion: "Empleo en manufacturas (mensual, 1939). Rama cíclica del empleo."
+    fuente: fred
+    id: "MANEMP"
+    auth: FRED_API_KEY
+    inicio_verificado: "1939-01-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Empleo del sector más cíclico; gira antes que el empleo total en los puntos de inflexión."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/MANEMP"
+
+  - nombre_interno: ICSA
+    descripcion: "Initial Claims (peticiones iniciales de paro), SA. SEMANAL."
+    fuente: fred
+    id: "ICSA"
+    auth: FRED_API_KEY
+    inicio_verificado: "1967-01-07"
+    granularidad: semanal
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Indicador laboral de ALTA FRECUENCIA; se dispara antes que el paro. Pico 6.14M el 2020-04-04."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/ICSA"
+
+  - nombre_interno: CFNAI
+    descripcion: "Chicago Fed National Activity Index (mensual). 85 indicadores; 0 = crecimiento tendencial."
+    fuente: fred
+    id: "CFNAI"
+    auth: FRED_API_KEY
+    inicio_verificado: "1967-03-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Resumen macro de una cifra; <0 = por debajo de tendencia."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/CFNAI"
+
+  - nombre_interno: CFNAIMA3
+    descripcion: "CFNAI media móvil de 3 meses. Versión con el umbral oficial de recesión."
+    fuente: fred
+    id: "CFNAIMA3"
+    auth: FRED_API_KEY
+    inicio_verificado: "1967-05-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Umbral oficial Chicago Fed: CFNAIMA3 < -0.70 = recesión en curso. Regla de régimen directa."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/CFNAIMA3"
+
+  - nombre_interno: CPIAUCSL
+    descripcion: "CPI todos los ítems, SA (mensual). Nivel de precios headline."
+    fuente: fred
+    id: "CPIAUCSL"
+    auth: FRED_API_KEY
+    inicio_verificado: "1947-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Régimen inflacionario (YoY): determina correlación acción-bono y tipo de risk-off. Cubre la gran inflación 70-80."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/CPIAUCSL"
+
+  - nombre_interno: CPILFESL
+    descripcion: "CPI core (sin alimentos ni energía), SA (mensual)."
+    fuente: fred
+    id: "CPILFESL"
+    auth: FRED_API_KEY
+    inicio_verificado: "1957-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Inflación subyacente/persistente; núcleo del régimen inflacionario para la reacción de la Fed."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/CPILFESL"
+
+  - nombre_interno: PMI_PROXY_PHILLY
+    descripcion: "Philadelphia Fed Manufacturing — Current General Activity (difusión). Mejor proxy libre del PMI por profundidad."
+    fuente: fred
+    id: "GACDFSA066MSFRBPHI"
+    auth: FRED_API_KEY
+    inicio_verificado: "1968-05-01"
+    granularidad: mensual
+    pista: ambas
+    rol: core
+    relevancia_regimen: "Difusión manufacturera >0 expansión / <0 contracción (análogo al 50 del PMI). +55 años. Sustituto del ISM PMI (no está en FRED)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GACDFSA066MSFRBPHI"
+
+  - nombre_interno: UMCSENT
+    descripcion: "Índice de Sentimiento del Consumidor de la Universidad de Michigan (mensual)."
+    fuente: fred
+    id: "UMCSENT"
+    auth: FRED_API_KEY
+    inicio_verificado: "1952-11-01"
+    granularidad: mensual
+    pista: ambas
+    rol: enricher
+    relevancia_regimen: "Confianza del consumidor; se hunde en recesiones y crisis. Componente blando líder."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/UMCSENT"
+
+  - nombre_interno: HOUST
+    descripcion: "Housing Starts (viviendas iniciadas), tasa anual SA (mensual)."
+    fuente: fred
+    id: "HOUST"
+    auth: FRED_API_KEY
+    inicio_verificado: "1959-01-01"
+    granularidad: mensual
+    pista: ambas
+    rol: enricher
+    relevancia_regimen: "Sector más sensible a tipos; gira antes en el ciclo. Cae con fuerza antes de recesiones (líder)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/HOUST"
+
+  - nombre_interno: GDPC1
+    descripcion: "PIB real (encadenado 2017), trimestral, SA."
+    fuente: fred
+    id: "GDPC1"
+    auth: FRED_API_KEY
+    inicio_verificado: "1947-01-01"
+    granularidad: trimestral
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Medida definitiva de recesión (dos trimestres de caída). Baja frecuencia, contexto de fondo."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GDPC1"
+
+  - nombre_interno: GDP_GROWTH_QOQ
+    descripcion: "Crecimiento del PIB real, % trimestral anualizado."
+    fuente: fred
+    id: "A191RL1Q225SBEA"
+    auth: FRED_API_KEY
+    inicio_verificado: "1947-04-01"
+    granularidad: trimestral
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Tasa de crecimiento del ciclo; negativa en recesiones. Ancla trimestral del régimen macro."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/A191RL1Q225SBEA"
+
+  # ---- Funding: spine profundo de estrés de financiación ----
+  - nombre_interno: NBER_NY_COMMERCIAL_PAPER
+    descripcion: "Tipo de papel comercial de Nueva York (NBER Macrohistory, mensual). Coste de fondeo privado +160 años."
+    fuente: fred
+    id: "M13002US35620M156NNBR"
+    auth: FRED_API_KEY
+    inicio_verificado: "1857-01-01"
+    granularidad: mensual
+    pista: A
+    rol: spine
+    relevancia_regimen: "Nivel de coste de fondeo mercantil desde 1857; picos en pánicos (1857, 1873, 1907, 1929-33). Textura de estrés pre-moderno."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/M13002US35620M156NNBR"
+
+  - nombre_interno: EURODOLLAR_TBILL_SPREAD
+    descripcion: "Spread Eurodólar 3M (London) menos T-bill 3M = el TED spread ORIGINAL (pre-LIBOR)."
+    fuente: fred
+    fallback: "fred:TEDRATE (1986-2022, solape 1986-2016); fred:PAPER_BILL_SPREAD (1997->vivo)"
+    id: "DED3,DTB3"
+    auth: FRED_API_KEY
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: ambas
+    rol: spine
+    relevancia_regimen: "TED original diario 1971-2016; picos 1974=6.85, 1987=2.83, 1998=1.53(LTCM), 2008=5.76. Empalmable con TEDRATE para spine de funding 1971->hoy."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DED3"
+
+  - nombre_interno: EURODOLLAR_3M
+    descripcion: "Tasa de depósito Eurodólar 3M (London). Pata privada del TED original."
+    fuente: fred
+    id: "DED3"
+    auth: FRED_API_KEY
+    inicio_verificado: "1971-01-04"
+    granularidad: diaria
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Nivel de fondeo interbancario 1971-2016 (descontinuado 2016). Con DTB3 da el TED original."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DED3"
+
+  - nombre_interno: TBILL3M_MINUS_FEDFUNDS
+    descripcion: "T-bill 3M menos Fed Funds Rate (mensual). Escasez de bills / flight-to-quality."
+    fuente: fred
+    id: "TB3SMFFM"
+    auth: FRED_API_KEY
+    inicio_verificado: "1954-07-01"
+    granularidad: mensual
+    pista: A
+    rol: enricher
+    relevancia_regimen: "Proxy de demanda de seguridad/liquidez +70 años; muy negativo en pánicos (bills escasos vs fondeo)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/TB3SMFFM"
+
+  - nombre_interno: LIBOR_3M_QUARTERLY
+    descripcion: "3-month USD LIBOR (trimestral, serie superviviente en FRED tras la retirada de las diarias)."
+    fuente: fred
+    id: "LIOR3M"
+    auth: FRED_API_KEY
+    inicio_verificado: "1970-01-01"
+    granularidad: mensual
+    pista: A
+    rol: fallback
+    relevancia_regimen: "LIBOR 3M 1970-2016; baja frecuencia y muerta en 2016. Solo referencia histórica (las diarias devuelven HTTP 400)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/LIOR3M"
+
+  # ---- Históricos académicos profundos ----
+  - nombre_interno: GW_PREDICTORS_MONTHLY
+    descripcion: "Goyal-Welch predictores del equity premium MENSUALES: Index, D12, E12, b/m, tbl, AAA, BAA, lty, ntis, Rfree, infl, ltr, corpr, svar."
+    fuente: academico
+    id: "GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly)"
+    auth: none
+    inicio_verificado: "1871-01"
+    granularidad: mensual
+    pista: A
+    rol: core
+    relevancia_regimen: "Desde 1871 y mensuales: term spread (lty-tbl), default spread (BAA-AAA), dividend/earnings yield y svar (varianza realizada). Features de régimen de primer orden."
+    verificado: true
+    url: "https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx"
+
+  - nombre_interno: GW_PREDICTORS_QUARTERLY
+    descripcion: "Goyal-Welch predictores TRIMESTRALES; añade cay (consumption-wealth ratio)."
+    fuente: academico
+    id: "GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Quarterly)"
+    auth: none
+    inicio_verificado: "1871Q1"
+    granularidad: trimestral
+    pista: A
+    rol: enricher
+    relevancia_regimen: "cay (desviación consumo-riqueza) es predictor macro-financiero de régimen; solo trimestral."
+    verificado: true
+    url: "https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx"
+
+  - nombre_interno: JST_MACROHISTORY_R6
+    descripcion: "Jordà-Schularick-Taylor Macrohistory R6: panel anual 18 países, 59 vars (equity/bond/housing TR, crédito, tipos, deuda/PIB, CPI, FX)."
+    fuente: academico
+    id: "JSTdatasetR6.xlsx"
+    auth: none
+    inicio_verificado: "1870"
+    granularidad: anual
+    pista: ambas
+    rol: enricher
+    relevancia_regimen: "Contexto macro de máximo histórico multi-país; retornos totales, crédito bancario (tloans), tipos, deuda/PIB. Anual -> etiquetado secular, no feature diaria."
+    verificado: true
+    url: "https://www.macrohistory.net/database/"
+
+  # ---- Candidatas Pista A (no verificadas / fuente bloqueada) ----
+  - nombre_interno: SHILLER_LONGRATE
+    descripcion: "Long-term interest rate (10y gov bond) mensual desde 1871, dataset de Shiller (empalma con GS10/DGS10)."
+    fuente: academico
+    id: "ie_data.xls (col Long Interest Rate)"
+    auth: none
+    inicio_verificado: null
+    granularidad: mensual
+    pista: A
+    rol: fallback
+    relevancia_regimen: "Extiende el 10y a 1871 para la espina histórica; NO descargado en esta pasada (fichero Excel pesado)."
+    verificado: false
+    estado: candidata
+    url: "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+
+  - nombre_interno: DOW_STOOQ_DEEP
+    descripcion: "Dow Jones histórico largo (pre-1992) que Stooq suele ofrecer."
+    fuente: stooq
+    id: "^dji"
+    auth: none
+    inicio_verificado: null
+    granularidad: diaria
+    pista: A
+    rol: fallback
+    relevancia_regimen: "Extendería el Dow antes de 1992; Yahoo ya da S&P500 desde 1927. Stooq BLOQUEADO (challenge JS); no confirmable."
+    verificado: false
+    estado: candidata
+    url: "https://stooq.com/q/d/l/?s=%5Edji&i=d"
+
+# ===========================================================================
+# PISTA B — Panel rico multi-activo (~1990/2007+; ataca el punto ciego 2013)
+# ===========================================================================
 pista_B:
-  descripcion: "equity, vol, crédito, curva de tipos, FX, commodities, liquidez, macro"
+  descripcion: "equity/sectores/breadth, vol cross-asset, crédito (OAS+ETFs), curva completa, funding moderno, FX pares+broad, commodities"
   ventana_objetivo: "~1990/2007 -> hoy"
-  series: []   # <- FASE 2
+  series:
+
+  # ---- Volatilidad cross-asset ----
+  - nombre_interno: MOVE
+    descripcion: "ICE BofA MOVE Index: vol implícita de opciones sobre Treasuries. El 'VIX de los bonos'."
+    fuente: yfinance
+    id: "^MOVE"
+    auth: none
+    inicio_verificado: "2002-11-12"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Estrés de tipos/duración, complementa al VIX; picos 2008, 2020, 2022-23 (SVB/gilts). No está en FRED; actualiza ~1 semana tarde."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EMOVE"
+
+  - nombre_interno: VVIX
+    descripcion: "CBOE VVIX: volatilidad de la volatilidad (implícita de opciones sobre VIX)."
+    fuente: yfinance
+    id: "^VVIX"
+    auth: none
+    inicio_verificado: "2007-01-03"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Convexidad/tail risk; VVIX/VIX marca estados de miedo al miedo. No está en FRED."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EVVIX"
+
+  - nombre_interno: VIX9D
+    descripcion: "CBOE VIX de 9 días (implícita ultra-corto plazo)."
+    fuente: yfinance
+    id: "^VIX9D"
+    auth: none
+    inicio_verificado: "2011-01-03"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Extremo corto de la term structure; VIX9D/VIX detecta event risk inminente."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EVIX9D"
+
+  - nombre_interno: VIX3M
+    descripcion: "CBOE VIX de 3 meses (antes VXV). Nodo medio de la estructura temporal del VIX."
+    fuente: yfinance
+    fallback: "fred:VXVCLS (desde 2007-12)"
+    id: "^VIX3M"
+    auth: none
+    inicio_verificado: "2006-07-17"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "VIX/VIX3M (pendiente) es señal de régimen fuerte: >1 backwardation = estrés agudo."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EVIX3M"
+
+  - nombre_interno: VIX6M
+    descripcion: "CBOE VIX de 6 meses. Extremo largo de la term structure del VIX."
+    fuente: yfinance
+    id: "^VIX6M"
+    auth: none
+    inicio_verificado: "2008-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Ancla el nivel base de vol esperada; forma completa VIX9D->VIX->VIX3M->VIX6M."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EVIX6M"
+
+  - nombre_interno: VXN
+    descripcion: "CBOE NASDAQ-100 Volatility Index. Vol implícita tech/growth."
+    fuente: fred
+    fallback: "yfinance:^VXN"
+    id: "VXNCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2001-02-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Dispersión de vol sectorial; VXN-VIX marca estrés growth-específico."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXNCLS"
+
+  - nombre_interno: VXD
+    descripcion: "CBOE DJIA Volatility Index. Vol implícita large-cap value/industrial."
+    fuente: fred
+    id: "VXDCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "1997-10-07"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Historia más larga que VXN (FRED 1997 vs yfinance 2005); cubre dotcom y 1998."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXDCLS"
+
+  - nombre_interno: RVX
+    descripcion: "CBOE Russell 2000 Volatility Index. Vol implícita small-caps (SOLO en FRED)."
+    fuente: fred
+    id: "RVXCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2004-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Estrés small-cap; RVX-VIX = prima de riesgo tamaño. yfinance ^RVX devuelve vacío."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/RVXCLS"
+
+  - nombre_interno: OVX
+    descripcion: "CBOE Crude Oil ETF Volatility Index (implícita sobre USO)."
+    fuente: fred
+    fallback: "yfinance:^OVX"
+    id: "OVXCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2007-05-10"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Vol de commodities/energía; shock 2020 (petróleo negativo) y geopolíticos."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/OVXCLS"
+
+  - nombre_interno: GVZ
+    descripcion: "CBOE Gold ETF Volatility Index (implícita sobre GLD). El 'VIX del oro'."
+    fuente: fred
+    fallback: "yfinance:^GVZ"
+    id: "GVZCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2008-06-03"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Vol del activo refugio; sube en flight-to-safety desordenado. También sirve de validación laxa de estrés del oro."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/GVZCLS"
+
+  - nombre_interno: EVZ
+    descripcion: "CBOE EuroCurrency ETF Volatility Index (FX EUR/USD sobre FXE)."
+    fuente: fred
+    id: "EVZCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2007-11-01"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Vol de FX; estrés de divisas (crisis euro 2011-12). DESCONTINUADO 2025-03-11."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/EVZCLS"
+
+  - nombre_interno: VXEEM
+    descripcion: "CBOE Emerging Markets ETF Volatility Index (sobre EEM)."
+    fuente: fred
+    id: "VXEEMCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2011-03-16"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Estrés EM; VXEEM-VIX = prima de riesgo EM (taper tantrum 2013)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXEEMCLS"
+
+  - nombre_interno: VXEWZ
+    descripcion: "CBOE Brazil ETF Volatility Index (sobre EWZ)."
+    fuente: fred
+    id: "VXEWZCLS"
+    auth: FRED_API_KEY
+    inicio_verificado: "2011-03-16"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Proxy de estrés EM/LatAm y commodities; complementa VXEEM."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXEWZCLS"
+
+  - nombre_interno: VXTYN
+    descripcion: "CBOE/CBOT 10-Year Treasury Note Volatility Index. Alternativa a MOVE basada en futuros."
+    fuente: fred
+    id: "VXTYN"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Vol de tipos 10y; peor que MOVE (más corta, descontinuada 2020-05-15) pero libre en FRED."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/VXTYN"
+
+  # ---- Equity: amplios, small/large/estilo, sectores, breadth-proxies ----
+  - nombre_interno: WILSHIRE5000
+    descripcion: "Wilshire 5000 Total Market (Yahoo lo sirve; FRED lo retiró)."
+    fuente: yfinance
+    id: "^W5000"
+    auth: none
+    inicio_verificado: "1989-01-03"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Mercado total US all-cap; su ratio vs S&P mide participación/amplitud."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EW5000"
+
+  - nombre_interno: DJIA
+    descripcion: "Dow Jones Industrial Average (Yahoo solo desde 1992)."
+    fuente: yfinance
+    id: "^DJI"
+    auth: none
+    inicio_verificado: "1992-01-02"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Blue-chips; poca aportación extra sobre S&P. Stooq tendría más historia (bloqueado)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EDJI"
+
+  - nombre_interno: RUSSELL3000
+    descripcion: "Russell 3000 (98% del mercado investable US)."
+    fuente: yfinance
+    id: "^RUA"
+    auth: none
+    inicio_verificado: "1987-09-10"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Mercado amplio all-cap; base para ratio small/large con ^RUT."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ERUA"
+
+  - nombre_interno: RUSSELL1000
+    descripcion: "Russell 1000 large-cap."
+    fuente: yfinance
+    id: "^RUI"
+    auth: none
+    inicio_verificado: "1992-12-10"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Large-cap; numerador del spread small/large (^RUT/^RUI)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ERUI"
+
+  - nombre_interno: SP_SMALLCAP600
+    descripcion: "S&P SmallCap 600 (small-cap con filtro de calidad)."
+    fuente: yfinance
+    id: "^SP600"
+    auth: none
+    inicio_verificado: "1989-01-03"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Alternativa al Russell 2000 con filtro de rentabilidad; small-cap risk gauge."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ESP600"
+
+  - nombre_interno: IWM_SMALL
+    descripcion: "iShares Russell 2000 ETF (small-cap tradeable)."
+    fuente: yfinance
+    id: "IWM"
+    auth: none
+    inicio_verificado: "2000-05-26"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Proxy tradeable de small-caps; IWM/SPY = amplitud/risk-appetite."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/IWM"
+
+  - nombre_interno: IWD_VALUE
+    descripcion: "iShares Russell 1000 Value ETF."
+    fuente: yfinance
+    id: "IWD"
+    auth: none
+    inicio_verificado: "2000-05-26"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Value large-cap; par con IWF para rotación value/growth."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/IWD"
+
+  - nombre_interno: IWF_GROWTH
+    descripcion: "iShares Russell 1000 Growth ETF."
+    fuente: yfinance
+    id: "IWF"
+    auth: none
+    inicio_verificado: "2000-05-26"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Growth large-cap; IWF/IWD = ratio de estilo por régimen."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/IWF"
+
+  - nombre_interno: SPDR_SECTORS_9
+    descripcion: "9 SPDR Select Sector originales: XLK,XLF,XLE,XLV,XLI,XLY,XLP,XLU,XLB."
+    fuente: yfinance
+    id: "XLK,XLF,XLE,XLV,XLI,XLY,XLP,XLU,XLB"
+    auth: none
+    inicio_verificado: "1998-12-22"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Rotación sectorial (cíclicos vs defensivos, XLY/XLP) = firma directa de régimen."
+    verificado: true
+    url: "https://www.sectorspdrs.com/"
+
+  - nombre_interno: XLRE_REALESTATE
+    descripcion: "SPDR Real Estate Select Sector (11º GICS, spin-off 2015)."
+    fuente: yfinance
+    id: "XLRE"
+    auth: none
+    inicio_verificado: "2015-10-08"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Sensible a tipos; régimen inmobiliario/tipos."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/XLRE"
+
+  - nombre_interno: XLC_COMMSERVICES
+    descripcion: "SPDR Communication Services Select Sector (reclasificación GICS 2018)."
+    fuente: yfinance
+    id: "XLC"
+    auth: none
+    inicio_verificado: "2018-06-19"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Agrupa mega-cap internet/media; liderazgo growth moderno."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/XLC"
+
+  - nombre_interno: SP500_EW
+    descripcion: "Invesco S&P 500 Equal Weight (RSP): proxy de amplitud/concentración."
+    fuente: yfinance
+    id: "RSP"
+    auth: none
+    inicio_verificado: "2003-05-01"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "RSP/SPY (equal vs cap-weight) mide si el rally es amplio o concentrado: mejor proxy de breadth gratis."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/RSP"
+
+  - nombre_interno: SP500_CAPWEIGHT_ETF
+    descripcion: "SPDR S&P 500 ETF (SPY), denominador del ratio de amplitud RSP/SPY."
+    fuente: yfinance
+    id: "SPY"
+    auth: none
+    inicio_verificado: "1993-01-29"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Cap-weight tradeable; par de RSP (concentración) y de IWM (small/large)."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/SPY"
+
+  - nombre_interno: SPHB_HIGHBETA
+    descripcion: "Invesco S&P 500 High Beta ETF."
+    fuente: yfinance
+    id: "SPHB"
+    auth: none
+    inicio_verificado: "2011-05-05"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "SPHB/SPLV (high-beta vs low-vol) = proxy directo de risk-on/risk-off."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/SPHB"
+
+  - nombre_interno: SPLV_LOWVOL
+    descripcion: "Invesco S&P 500 Low Volatility ETF."
+    fuente: yfinance
+    id: "SPLV"
+    auth: none
+    inicio_verificado: "2011-05-05"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Par defensivo de SPHB; liderazgo low-vol = régimen de aversión al riesgo."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/SPLV"
+
+  - nombre_interno: MTUM_MOMENTUM
+    descripcion: "iShares MSCI USA Momentum Factor ETF."
+    fuente: yfinance
+    id: "MTUM"
+    auth: none
+    inicio_verificado: "2013-04-18"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "El factor momentum sufre 'crashes' en giros de régimen; señal de transición."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/MTUM"
+
+  - nombre_interno: GH_SP500_CONSTITUENTS_PIT
+    descripcion: "Composición point-in-time del S&P500 (por fecha, lista de miembros). Universo sin survivorship bias."
+    fuente: github
+    id: "fja05680/sp500:S&P 500 Historical Components & Changes"
+    auth: none
+    inicio_verificado: "1996-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Universo históricamente correcto para calcular breadth/dispersión propia sin sesgo de supervivencia."
+    verificado: true
+    url: "https://github.com/fja05680/sp500"
+
+  - nombre_interno: GH_SP500_CONSTITUENTS_NOW
+    descripcion: "Snapshot de los 503 constituyentes actuales del S&P500 con sector GICS, sub-industria, CIK."
+    fuente: github
+    id: "datasets/s-and-p-500-companies:data/constituents.csv"
+    auth: none
+    inicio_verificado: null
+    granularidad: mensual
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Metadata de sector para agrupar features por GICS o breadth sectorial (snapshot, no serie)."
+    verificado: true
+    url: "https://github.com/datasets/s-and-p-500-companies"
+
+  # ---- Curva de tipos: nodos, funding moderno, reales/breakevens ----
+  - nombre_interno: DGS3
+    descripcion: "US Treasury 3y constant maturity (diaria)."
+    fuente: fred
+    id: "DGS3"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Nodo intermedio corto; forma fina del front-end."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS3"
+
+  - nombre_interno: DGS1
+    descripcion: "US Treasury 1y constant maturity (diaria)."
+    fuente: fred
+    id: "DGS1"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Tramo 1y; sensible a expectativas de tipos a 12 meses."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS1"
+
+  - nombre_interno: DGS7
+    descripcion: "US Treasury 7y constant maturity (diaria)."
+    fuente: fred
+    id: "DGS7"
+    auth: FRED_API_KEY
+    inicio_verificado: "1969-07-01"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Nodo intermedio largo; completa la forma de la curva."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS7"
+
+  - nombre_interno: DGS20
+    descripcion: "US Treasury 20y constant maturity (diaria). OJO hueco 1987-1993."
+    fuente: fred
+    id: "DGS20"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Extremo largo de la curva; imputar/omitir en el hueco 1987-1993."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS20"
+
+  - nombre_interno: DGS6MO
+    descripcion: "US Treasury 6-month constant maturity (diaria)."
+    fuente: fred
+    id: "DGS6MO"
+    auth: FRED_API_KEY
+    inicio_verificado: "1981-09-01"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Tramo muy corto CMT; expectativas de política inmediatas. Pre-1981 usar DTB6."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS6MO"
+
+  - nombre_interno: DGS1MO
+    descripcion: "US Treasury 1-month constant maturity (diaria). Extremo ultra-corto CMT."
+    fuente: fred
+    id: "DGS1MO"
+    auth: FRED_API_KEY
+    inicio_verificado: "2001-07-31"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Sensible a estrés de bills / techo de deuda (spikes 2011, 2013, 2023)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DGS1MO"
+
+  - nombre_interno: T5YFF
+    descripcion: "5-Year CMT menos Federal Funds Rate. Curva vs política (medio)."
+    fuente: fred
+    id: "T5YFF"
+    auth: FRED_API_KEY
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Complementa T10YFF; forma del front-end frente a la tasa de política. Diaria 1962."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T5YFF"
+
+  - nombre_interno: DTB6
+    descripcion: "6-Month Treasury Bill secondary market (discount basis, diaria)."
+    fuente: fred
+    id: "DTB6"
+    auth: FRED_API_KEY
+    inicio_verificado: "1958-12-09"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Tramo 6m diario profundo (pre-1981); completa el front-end histórico."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DTB6"
+
+  - nombre_interno: DTB1YR
+    descripcion: "1-Year Treasury Bill secondary market (discount basis, diaria)."
+    fuente: fred
+    id: "DTB1YR"
+    auth: FRED_API_KEY
+    inicio_verificado: "1959-07-15"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Tramo 1y diario profundo; alternativa a DGS1 con historia comparable."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DTB1YR"
+
+  - nombre_interno: EFFR
+    descripcion: "Effective Federal Funds Rate (NY Fed, diaria). Pata OIS moderna de los spreads de funding."
+    fuente: fred
+    id: "EFFR"
+    auth: FRED_API_KEY
+    inicio_verificado: "2000-07-03"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Base para spreads de funding (SOFR-EFFR). Para historia más larga usar DFF (1954+)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/EFFR"
+
+  - nombre_interno: SOFR
+    descripcion: "Secured Overnight Financing Rate. Tasa de repo overnight, sustituto de LIBOR."
+    fuente: fred
+    id: "SOFR"
+    auth: FRED_API_KEY
+    inicio_verificado: "2018-04-03"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Estrés de repo/liquidez colateralizada; salto a 5.25% el 2019-09-17. Solo desde 2018."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/SOFR"
+
+  - nombre_interno: OBFR
+    descripcion: "Overnight Bank Funding Rate (fed funds + eurodollar). Funding no colateralizado."
+    fuente: fred
+    id: "OBFR"
+    auth: FRED_API_KEY
+    inicio_verificado: "2016-03-01"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Estrés de funding bancario unsecured; OBFR-SOFR = prima garantía. Solo desde 2016."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/OBFR"
+
+  - nombre_interno: IORB
+    descripcion: "Interest Rate on Reserve Balances. Techo administrado del corridor de política."
+    fuente: fred
+    id: "IORB"
+    auth: FRED_API_KEY
+    inicio_verificado: "2021-07-29"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "SOFR-IORB / EFFR-IORB miden presión de liquidez. Reemplaza IOER (pre-2021)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/IORB"
+
+  - nombre_interno: DPCREDIT
+    descripcion: "Discount Window Primary Credit Rate (diaria). Techo penalizador de la Fed."
+    fuente: fred
+    id: "DPCREDIT"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-09"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Ancla superior del corridor; cambios señalan estrés (recortes de emergencia 2008, 2020)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DPCREDIT"
+
+  - nombre_interno: DFII10
+    descripcion: "10y TIPS real yield (constant maturity, diaria). Tipo real largo."
+    fuente: fred
+    id: "DFII10"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Coste real del dinero; separa shocks de crecimiento (real) de inflación (breakeven)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DFII10"
+
+  - nombre_interno: DFII5
+    descripcion: "5y TIPS real yield (constant maturity, diaria)."
+    fuente: fred
+    id: "DFII5"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Tipo real medio; pendiente real DFII10-DFII5."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DFII5"
+
+  - nombre_interno: DFII30
+    descripcion: "30y TIPS real yield (constant maturity, diaria)."
+    fuente: fred
+    id: "DFII30"
+    auth: FRED_API_KEY
+    inicio_verificado: "2010-02-22"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Extremo largo real; term premium real. Solo desde 2010."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/DFII30"
+
+  - nombre_interno: T10YIE
+    descripcion: "10-Year Breakeven Inflation Rate (nominal DGS10 - real DFII10, diaria)."
+    fuente: fred
+    id: "T10YIE"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: core
+    relevancia_regimen: "Inflación esperada de mercado; su colapso marca deflación/deleveraging (2008, 2020)."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T10YIE"
+
+  - nombre_interno: T5YIE
+    descripcion: "5-Year Breakeven Inflation Rate (diaria)."
+    fuente: fred
+    id: "T5YIE"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Inflación esperada corta; más sensible a shocks de energía/ciclo."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T5YIE"
+
+  - nombre_interno: T5YIFR
+    descripcion: "5-Year, 5-Year Forward Inflation Expectation Rate (diaria)."
+    fuente: fred
+    id: "T5YIFR"
+    auth: FRED_API_KEY
+    inicio_verificado: "2003-01-02"
+    granularidad: diaria
+    pista: B
+    rol: enricher
+    relevancia_regimen: "Expectativas de inflación desancladas (subida) o deflación (caída) = cambio de régimen macro."
+    verificado: true
+    url: "https://fred.stlouisfed.org/series/T5YIFR"
+
+  - nombre_interno: IRX_YF
+    descripcion: "CBOE 13-week T-bill yield (Yahoo). Fallback corto con más historia que DGS3MO."
+    fuente: yfinance
+    id: "^IRX"
+    auth: none
+    inicio_verificado: "1960-01-04"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Tramo corto diario desde 1960 (2 años antes que DGS3MO); proxy de DTB3."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EIRX"
+
+  - nombre_interno: TYX_YF
+    descripcion: "CBOE 30y Treasury yield (Yahoo). Fallback de DGS30."
+    fuente: yfinance
+    id: "^TYX"
+    auth: none
+    inicio_verificado: "1977-02-15"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Redundancia del long bond; mismo inicio que DGS30."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5ETYX"
+
+  - nombre_interno: FVX_YF
+    descripcion: "CBOE 5y Treasury yield (Yahoo). Fallback de DGS5."
+    fuente: yfinance
+    id: "^FVX"
+    auth: none
+    inicio_verificado: "1962-01-02"
+    granularidad: diaria
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Redundancia del belly; mismo inicio que DGS5."
+    verificado: true
+    url: "https://finance.yahoo.com/quote/%5EFVX"
+
+  - nombre_interno: GH_US10Y_MONTHLY
+    descripcion: "Rendimiento del bono del Tesoro US a 10y, mensual, datahub.io (sin auth)."
+    fuente: github
+    id: "datasets/bond-yields-us-10y:data/monthly.csv"
+    auth: none
+    inicio_verificado: "1953-04-01"
+    granularidad: mensual
+    pista: B
+    rol: fallback
+    relevancia_regimen: "Nivel de tipos largos sin auth; solapa con DGS10/GS10 de FRED. Mensual (ODC-PDDL-1.0)."
+    verificado: true
+    url: "https://github.com/datasets/bond-yields-us-10y"
 
 # ---------------------------------------------------------------------------
-# Validación externa (índices de estrés ya hechos, como 'ground truth' laxo)
+# Validacion externa: indices de estres ya hechos + labels de recesion/crisis
+# (ground truth laxo de regimen; rol=validation). Poblado en FASE 2.
 # ---------------------------------------------------------------------------
 validacion_externa:
-  series: []   # <- FASE 2  (OFR FSI, NFCI, STLFSI, ...)
+  descripcion: "Indices de estres (OFR FSI + subindices, NFCI...) y labels NBER como ground truth laxo para juzgar regimenes"
+  series:
+    - nombre_interno: OFR_FSI
+      descripcion: OFR Financial Stress Index (headline). Índice de estrés global construido de 33 variables de mercado, media 0. Diario, con descomposición por categoría (Credit/Equity/Safe assets/Funding/Volatility) y región (US/Other advanced/EM) en el mismo CSV.
+      fuente: ofr
+      id: fsi.csv:OFR FSI
+      auth: none
+      inicio_verificado: '2000-01-03'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Ground truth de estrés más granular y de mayor frecuencia libre; positivo=estrés. Etiqueta risk-off/crisis 2000+ (dotcom, GFC, 2011, 2015, 2018, 2020, 2022, SVB).
+      verificado: true
+      evidencia: 'GET financialresearch.gov/.../data/fsi.csv (UA navegador) -> 6715 filas validas, first 2000-01-03 OFR_FSI=2.14, last 2026-07-15 OFR_FSI=-2.615. Cols: Date,OFR FSI,Credit,Equity valuation,Safe assets,Funding,Volatility,United States,Other advanced economies,Emerging markets. No esta en FRED (OFRFSI -> HTTP 400).'
+      url: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv
+    - nombre_interno: OFR_FSI_CREDIT
+      descripcion: Subíndice de contribución de CRÉDITO al OFR FSI (columna 'Credit' del mismo CSV).
+      fuente: ofr
+      id: fsi.csv:Credit
+      auth: none
+      inicio_verificado: '2000-01-03'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Descompone cuánto del estrés viene de crédito (spreads, CDS). Valida regímenes de estrés crediticio.
+      verificado: true
+      evidencia: Misma descarga OFR fsi.csv, columna 'Credit'. first 2000-01-03=0.54, last 2026-07-15=-1.169. 6715 filas.
+      url: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv
+    - nombre_interno: OFR_FSI_FUNDING
+      descripcion: Subíndice de contribución de FUNDING/liquidez al OFR FSI (columna 'Funding').
+      fuente: ofr
+      id: fsi.csv:Funding
+      auth: none
+      inicio_verificado: '2000-01-03'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Estrés de financiación (repo, TED, FX swaps). Discrimina crisis de liquidez (2008, mar-2020) de otras.
+      verificado: true
+      evidencia: Misma descarga OFR fsi.csv, columna 'Funding'. first 2000-01-03=0.472, last 2026-07-15=-0.082. 6715 filas.
+      url: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv
+    - nombre_interno: OFR_FSI_VOLATILITY
+      descripcion: Subíndice de contribución de VOLATILIDAD al OFR FSI (columna 'Volatility').
+      fuente: ofr
+      id: fsi.csv:Volatility
+      auth: none
+      inicio_verificado: '2000-01-03'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Parte del estrés atribuible a vol de mercado; cruza con VIX/MOVE del catálogo de volatilidad.
+      verificado: true
+      evidencia: Misma descarga OFR fsi.csv, columna 'Volatility'. first 2000-01-03=0.509, last 2026-07-15=-0.454. 6715 filas.
+      url: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv
+    - nombre_interno: OFR_FSI_US
+      descripcion: Contribución regional de ESTADOS UNIDOS al OFR FSI (columna 'United States').
+      fuente: ofr
+      id: fsi.csv:United States
+      auth: none
+      inicio_verificado: '2000-01-03'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Aísla el estrés doméstico US del global; útil si el modelo se centra en S&P500.
+      verificado: true
+      evidencia: Misma descarga OFR fsi.csv, columna 'United States'. first 2000-01-03=1.769, last 2026-07-15=-1.327. 6715 filas.
+      url: https://www.financialresearch.gov/financial-stress-index/data/fsi.csv
+    - nombre_interno: NFCI
+      descripcion: Chicago Fed National Financial Conditions Index. 105 indicadores de dinero, deuda y equity. Media 0, positivo=condiciones apretadas/estrés.
+      fuente: fred
+      id: NFCI
+      auth: FRED_API_KEY
+      inicio_verificado: '1971-01-08'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Ground truth de estrés de mayor historia (1971+); cubre casi toda la Pista B y solapa con crisis de Pista A (1973, 1980, 1987, 1990).
+      verificado: true
+      evidencia: FRED NFCI -> 2897 obs semanales, first 1971-01-08=0.598, last 2026-07-10=-0.538 (upd 2026-07-15).
+      url: https://fred.stlouisfed.org/series/NFCI
+    - nombre_interno: ANFCI
+      descripcion: 'Chicago Fed Adjusted NFCI: NFCI ortogonalizado respecto a las condiciones económicas (aísla estrés financiero ''puro'' del ciclo).'
+      fuente: fred
+      id: ANFCI
+      auth: FRED_API_KEY
+      inicio_verificado: '1971-01-08'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Etiqueta estrés financiero descontando el estado macro; mejor para separar régimen financiero de recesión.
+      verificado: true
+      evidencia: FRED ANFCI -> 2897 obs, first 1971-01-08=0.587, last 2026-07-10=-0.535 (upd 2026-07-15).
+      url: https://fred.stlouisfed.org/series/ANFCI
+    - nombre_interno: NFCI_RISK
+      descripcion: Subíndice de RIESGO del NFCI (volatilidad y funding risk).
+      fuente: fred
+      id: NFCIRISK
+      auth: FRED_API_KEY
+      inicio_verificado: '1971-01-08'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Componente de riesgo/vol del estrés; el más correlacionado con VIX.
+      verificado: true
+      evidencia: FRED NFCIRISK -> 2897 obs, first 1971-01-08=0.626, last 2026-07-10=-0.619 (upd 2026-07-15).
+      url: https://fred.stlouisfed.org/series/NFCIRISK
+    - nombre_interno: NFCI_CREDIT
+      descripcion: Subíndice de CRÉDITO del NFCI (condiciones de crédito).
+      fuente: fred
+      id: NFCICREDIT
+      auth: FRED_API_KEY
+      inicio_verificado: '1971-01-08'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Estrés crediticio de historia larga (1971+); valida regímenes de crédito.
+      verificado: true
+      evidencia: FRED NFCICREDIT -> 2897 obs, first 1971-01-08=-1.105, last 2026-07-10=-0.044 (upd 2026-07-15).
+      url: https://fred.stlouisfed.org/series/NFCICREDIT
+    - nombre_interno: NFCI_LEVERAGE
+      descripcion: Subíndice de APALANCAMIENTO del NFCI (leverage de deuda y equity).
+      fuente: fred
+      id: NFCILEVERAGE
+      auth: FRED_API_KEY
+      inicio_verificado: '1971-01-08'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Leverage como pre-condición de fragilidad; sube antes de crisis (2007).
+      verificado: true
+      evidencia: FRED NFCILEVERAGE -> 2897 obs, first 1971-01-08=-1.019, last 2026-07-10=0.327 (upd 2026-07-15).
+      url: https://fred.stlouisfed.org/series/NFCILEVERAGE
+    - nombre_interno: STLFSI4
+      descripcion: St. Louis Fed Financial Stress Index, versión 4 (actual). 18 series de mercado, media 0, positivo=estrés.
+      fuente: fred
+      id: STLFSI4
+      auth: FRED_API_KEY
+      inicio_verificado: '1993-12-31'
+      granularidad: semanal
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Ground truth de estrés semanal 1993+; captura LTCM 1998, GFC 2008, 2011, 2020, 2022. Usar v4 (no v1/v2/v3, descontinuadas y con cesta distinta).
+      verificado: true
+      evidencia: 'FRED STLFSI4 -> 1698 obs, first 1993-12-31=-0.291, last 2026-07-10=-0.882 (upd 2026-07-15). Versiones viejas verificadas descontinuadas: STLFSI(v1) fin 2020-03-13, STLFSI2 fin 2022-01-07, STLFSI3 fin 2022-10-28.'
+      url: https://fred.stlouisfed.org/series/STLFSI4
+    - nombre_interno: KCFSI
+      descripcion: Kansas City Financial Stress Index. 11 variables (spreads, correlaciones, vol). Mensual, media 0, positivo=estrés.
+      fuente: fred
+      id: KCFSI
+      auth: FRED_API_KEY
+      inicio_verificado: '1990-02-01'
+      granularidad: mensual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Ground truth clásico de la literatura de estrés; mensual desde 1990. Baja frecuencia -> forward-fill causal para alinear con features diarias.
+      verificado: true
+      evidencia: FRED KCFSI -> 437 obs mensuales, first 1990-02-01=0.372, last 2026-06-01=-0.763 (upd 2026-07-05).
+      url: https://fred.stlouisfed.org/series/KCFSI
+    - nombre_interno: CFSI
+      descripcion: Cleveland Financial Stress Index. Índice diario de estrés (mercados de crédito, equity, FX, funding, interbancario). DESCONTINUADO en 2016.
+      fuente: fred
+      id: CFSI
+      auth: FRED_API_KEY
+      inicio_verificado: '1991-09-25'
+      granularidad: diaria
+      pista: validacion
+      rol: fallback
+      relevancia_regimen: Único FSI DIARIO con historia larga (1991-2016); ground truth diario para validar el periodo pre-OFR (que arranca en 2000). No sirve en tiempo real (congelado).
+      verificado: true
+      evidencia: FRED CFSI -> 8990 obs diarias, first 1991-09-25=-1.05, last 2016-05-05=1.47 (DESCONTINUADO, upd 2016-05-06).
+      url: https://fred.stlouisfed.org/series/CFSI
+    - nombre_interno: NBER_RECESSION_DAILY
+      descripcion: Indicador de recesión NBER, versión diaria (1=recesión pico-valle, 0=expansión). Ground truth canónico de fechas de crisis económica.
+      fuente: fred
+      id: USRECD
+      auth: FRED_API_KEY
+      inicio_verificado: '1854-12-01'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Etiqueta binaria de recesión más usada; 11 recesiones desde 1950 (1953,57,60,70,73,80,81,90,2001,2008,2020) -> cubre 10+ crisis de Pista A. Diario, alineable con S&P500.
+      verificado: true
+      evidencia: FRED USRECD -> 62674 obs, first 1854-12-01=1, last 2026-07-05=0 (upd 2026-07-06). Transiciones 0->1 desde 1950 = 11 recesiones.
+      url: https://fred.stlouisfed.org/series/USRECD
+    - nombre_interno: NBER_RECESSION_MONTHLY
+      descripcion: Indicador de recesión NBER mensual (mid-month, 1/0).
+      fuente: fred
+      id: USREC
+      auth: FRED_API_KEY
+      inicio_verificado: '1854-12-01'
+      granularidad: mensual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Versión mensual del ground truth NBER; conveniente para features mensuales/macro.
+      verificado: true
+      evidencia: FRED USREC -> 2059 obs, first 1854-12-01=1, last 2026-06-01=0 (upd 2026-07-01).
+      url: https://fred.stlouisfed.org/series/USREC
+    - nombre_interno: RECESSION_PROB_SMOOTHED
+      descripcion: Smoothed U.S. Recession Probabilities (modelo dinámico-factor Markov-switching de Chauvet-Piger). Probabilidad [0,1] mensual.
+      fuente: fred
+      id: RECPROUSM156N
+      auth: FRED_API_KEY
+      inicio_verificado: '1967-06-01'
+      granularidad: mensual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Ground truth PROBABILÍSTICO (no binario) de régimen recesivo; ideal para comparar con salidas de un HMM/Markov-switching propio.
+      verificado: true
+      evidencia: FRED RECPROUSM156N -> 708 obs, first 1967-06-01=0.92, last 2026-05-01=0.54 (upd 2026-07-01).
+      url: https://fred.stlouisfed.org/series/RECPROUSM156N
+    - nombre_interno: SAHM_RULE_REALTIME
+      descripcion: Real-time Sahm Rule Recession Indicator (basado en desempleo). Dispara cuando la media 3m del paro sube >=0.5pp sobre su mínimo de 12m.
+      fuente: fred
+      id: SAHMREALTIME
+      auth: FRED_API_KEY
+      inicio_verificado: '1959-12-01'
+      granularidad: mensual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Indicador de inicio de recesión de baja latencia; ground truth complementario a NBER (que se publica con retraso).
+      verificado: true
+      evidencia: FRED SAHMREALTIME -> 798 obs, first 1959-12-01=0.77, last 2026-06-01=0.07 (upd 2026-07-02). Variante SAHMCURRENT (revisada) verificada 1949-03-01+.
+      url: https://fred.stlouisfed.org/series/SAHMREALTIME
+    - nombre_interno: VIX_VALIDATION_REF
+      descripcion: 'CBOE VIX (FRED VIXCLS) usado aquí SÓLO como ground truth laxo: umbral/percentil de VIX ~ etiqueta risk-off. Su ficha completa como feature está en el catálogo de volatilidad.'
+      fuente: fred
+      id: VIXCLS
+      auth: FRED_API_KEY
+      inicio_verificado: '1990-01-02'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Etiqueta binaria simple (VIX>20 estrés, >30 crisis); referencia diaria 1990+ para sanity-check de los FSI. No usar simultáneamente como feature Y como label (fuga).
+      verificado: true
+      evidencia: FRED VIXCLS -> 9231 obs, first 1990-01-02=17.24, last 2026-07-16=16.73 (upd 2026-07-17). Coincide con catálogo volatilidad.
+      url: https://fred.stlouisfed.org/series/VIXCLS
+    - nombre_interno: PHILLY_ANXIOUS_INDEX
+      descripcion: 'Anxious Index del Philadelphia Fed: probabilidad media de que el PIB caiga el próximo trimestre (Survey of Professional Forecasters). Trimestral desde 1968-Q4.'
+      fuente: academico
+      id: spf-anxious-index
+      auth: none
+      inicio_verificado: null
+      granularidad: mensual
+      pista: validacion
+      rol: fallback
+      relevancia_regimen: Ground truth de sentimiento de recesión (expectativas de forecasters); complementaria a NBER. Trimestral (baja frecuencia).
+      verificado: false
+      evidencia: NO verificado en esta pasada. Descargable como Excel desde philadelphiafed.org/surveys-and-data/real-time-data-research/anxious-index (no probado end-to-end aqui).
+      url: https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/anxious-index
+    - nombre_interno: SAHM_RULE_CURRENT
+      descripcion: Sahm Rule Recession Indicator (versión revisada con datos actuales, no vintage). Mismo umbral 0.5pp.
+      fuente: fred
+      id: SAHMCURRENT
+      auth: FRED_API_KEY
+      inicio_verificado: '1949-03-01'
+      granularidad: mensual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Versión con historia más larga (1949+) del indicador Sahm; útil para backtest histórico del ground truth de recesión. Usa datos revisados (no simula tiempo real).
+      verificado: true
+      evidencia: FRED SAHMCURRENT -> 928 obs, first 1949-03-01=1.10, last 2026-06-01=0.07 (upd 2026-07-02).
+      url: https://fred.stlouisfed.org/series/SAHMCURRENT
+    - nombre_interno: GDP_RECESSION_HAMILTON
+      descripcion: Dates of U.S. recessions inferidas por el indicador de recesión basado en PIB de James Hamilton. Probabilidad trimestral [0,1].
+      fuente: fred
+      id: JHDUSRGDPBR
+      auth: FRED_API_KEY
+      inicio_verificado: '1967-10-01'
+      granularidad: trimestral
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Segundo/tercer voto de recesión basado en PIB (no en la datación por comité NBER); triangula el ground truth macro. Trimestral -> baja frecuencia.
+      verificado: true
+      evidencia: FRED JHDUSRGDPBR -> 233 obs trimestrales, first 1967-10-01=0.00, last 2025-10-01=0.00 (upd 2026-04-30).
+      url: https://fred.stlouisfed.org/series/JHDUSRGDPBR
+    - nombre_interno: CRISIS_WINDOWS_SP500
+      descripcion: Lista curada de ventanas peak->trough del S&P500 (crisis de mercado), derivada por mí del cierre diario de ^GSPC. ~20 eventos desde 1950, incluye crisis financieras SIN recesión (1987, 1998, 2010, 2011, 2015-16, 2018, 2022, 2025). Es el ground truth de EVENTOS de mercado.
+      fuente: yfinance
+      id: ^GSPC -> drawdown windows (peak-to-recovery + zigzag)
+      auth: none
+      inicio_verificado: '1927-12-30'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: 'Ground truth de crisis de MERCADO (drawdown), complementario a NBER (crisis MACRO). Maximiza n de eventos: 26 episodios peak-to-recovery >=10% o 103 swings zigzag >=10% (57 desde 1950). Ver tablas de este documento para fechas exactas.'
+      verificado: true
+      evidencia: 'yf.download(''^GSPC'',''max'') -> 24752 filas 1927-12-30..2026-07-17. Drawdowns computados: 26 episodios peak-to-recovery >=10%; zigzag 10% -> 103 down-legs (57 desde 1950). Spot-checks OK: 1987-10-19=-20.5% 1dia; COVID 2020-03-16=-12.0%; SVB pico-valle solo -7.8%; 1937-38 -54.5%; GFC -56.8%.'
+      url: https://finance.yahoo.com/quote/%5EGSPC
+    - nombre_interno: SP500_DAILY_DRAWDOWN_SRC
+      descripcion: S&P500 cierre diario (yfinance ^GSPC), fuente primaria para derivar las CRISIS_WINDOWS de drawdown. (Serie de precio también cubierta por catálogos historico_profundo/volatilidad; aquí es el insumo del ground truth de eventos).
+      fuente: yfinance
+      id: ^GSPC
+      auth: none
+      inicio_verificado: '1927-12-30'
+      granularidad: diaria
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Precio diario más profundo y fiable gratis (1927+) para datar picos/valles de crisis con resolución de día. Stooq (^spx) hoy bloqueado por gate JS; yfinance es el primario robusto.
+      verificado: true
+      evidencia: yf.download('^GSPC','max') -> 24752 filas, first 1927-12-30=17.66, last 2026-07-17=7457.69.
+      url: https://finance.yahoo.com/quote/%5EGSPC
+    - nombre_interno: SP500_MONTHLY_DEEP_SRC
+      descripcion: S&P500 mensual desde 1871 (mirror GitHub datasets/s-and-p-500, derivado de Shiller). Fuente para datar crisis PRE-1927 (1873, 1893, 1907, 1920-21) que ^GSPC no alcanza.
+      fuente: github
+      id: datasets/s-and-p-500 -> data/data.csv (col SP500)
+      auth: none
+      inicio_verificado: '1871-01-01'
+      granularidad: mensual
+      pista: validacion
+      rol: fallback
+      relevancia_regimen: Extiende el ground truth de drawdowns a los pánicos del s.XIX/principios s.XX (mensual). Complementa ^GSPC para profundidad histórica máxima.
+      verificado: true
+      evidencia: 'pd.read_csv raw.githubusercontent -> 1866 filas, 1871-01-01=4.44 .. 2026-06-01=7450.03. Drawdowns >=20%: 13 episodios (1873 -47.3%, 1893 -42.1%, 1907 -37.7%, 1929 -84.8%...).'
+      url: https://raw.githubusercontent.com/datasets/s-and-p-500/main/data/data.csv
+    - nombre_interno: JST_CRISIS_GROUNDTRUTH
+      descripcion: 'Columna crisisJST del dataset Jordà-Schularick-Taylor R6: dummy experto de crisis bancaria sistémica país-año (18 países, 1870-2020). Ground truth internacional de crisis financieras.'
+      fuente: academico
+      id: JSTdatasetR6.xlsx -> columna crisisJST
+      auth: none
+      inicio_verificado: '1870'
+      granularidad: anual
+      pista: validacion
+      rol: validation
+      relevancia_regimen: Lista experta más citada de crisis financieras sistémicas; ground truth laxo internacional para validar detección de regímenes de crisis a largo plazo. Anual -> mapear años-crisis a fechas.
+      verificado: true
+      evidencia: 'CROSS-REF historico_profundo.md (agente hermano): JSTdatasetR6.xlsx 2718 filas, 1870-2020, 18 paises, col crisisJST verificada al parsear el xlsx. NO re-descargado aqui; confirmado leyendo su evidencia.'
+      url: https://www.macrohistory.net/database/
+    - nombre_interno: SP500_STOOQ_FALLBACK
+      descripcion: S&P500 diario vía Stooq (^spx) como fuente de precio alternativa para derivar drawdowns.
+      fuente: stooq
+      id: ^spx
+      auth: none
+      inicio_verificado: null
+      granularidad: diaria
+      pista: validacion
+      rol: fallback
+      relevancia_regimen: Alternativa a yfinance si este falla; pero HOY el endpoint CSV de Stooq devuelve una pagina HTML con gate JS (anti-bot), no CSV. No usable programáticamente en esta pasada.
+      verificado: false
+      evidencia: GET stooq.com/q/d/l/?s=^spx&i=d (UA navegador) -> HTTP 200 pero body es '<!DOCTYPE html>...<noscript>' (gate JS), NO el CSV Date,Open,High,Low,Close. Fallo confirmado para ^spx/^gspc/spx.
+      url: https://stooq.com/q/d/l/?s=%5Espx&i=d
+
+# ---------------------------------------------------------------------------
+# Catalogo de crisis del S&P500 (cronologia verificada) -> base para definir
+# CRISIS_WINDOWS y maximizar el n de eventos (ataca el n~4 de la Capa 1).
+# ---------------------------------------------------------------------------
+crisis_catalog:
+  descripcion: "Cronologia de crisis/drawdowns del S&P500 (peak->trough, depth, tipo, nber) desde 1929, para event-study y benchmark"
+  eventos:
+    - name: recesion_1957_58
+      peak: '1956-08-02'
+      trough: '1957-10-22'
+      depth: -0.215
+      nber: true
+      tipo: bear
+    - name: kennedy_slide_1962
+      peak: '1961-12-12'
+      trough: '1962-06-26'
+      depth: -0.28
+      nber: false
+      tipo: bear
+    - name: credit_crunch_1966
+      peak: '1966-02-09'
+      trough: '1966-10-07'
+      depth: -0.222
+      nber: false
+      tipo: bear
+    - name: bear_1969_70
+      peak: '1968-11-29'
+      trough: '1970-05-26'
+      depth: -0.361
+      nber: true
+      tipo: bear
+    - name: oil_stagflation_1973
+      peak: '1973-01-11'
+      trough: '1974-10-03'
+      depth: -0.482
+      nber: true
+      tipo: bear
+    - name: volcker_1980_82
+      peak: '1980-11-28'
+      trough: '1982-08-12'
+      depth: -0.271
+      nber: true
+      tipo: bear
+    - name: black_monday_1987
+      peak: '1987-08-25'
+      trough: '1987-12-04'
+      depth: -0.335
+      nber: false
+      tipo: crash
+    - name: gulf_war_sl_1990
+      peak: '1990-07-16'
+      trough: '1990-10-11'
+      depth: -0.199
+      nber: true
+      tipo: correction
+    - name: ltcm_russia_1998
+      peak: '1998-07-17'
+      trough: '1998-08-31'
+      depth: -0.193
+      nber: false
+      tipo: correction
+    - name: dotcom_2000_02
+      peak: '2000-03-24'
+      trough: '2002-10-09'
+      depth: -0.491
+      nber: true
+      tipo: bear
+    - name: gfc_2007_09
+      peak: '2007-10-09'
+      trough: '2009-03-09'
+      depth: -0.568
+      nber: true
+      tipo: bear
+    - name: flash_crash_euro1_2010
+      peak: '2010-04-23'
+      trough: '2010-07-02'
+      depth: -0.16
+      nber: false
+      tipo: correction
+    - name: us_downgrade_euro2_2011
+      peak: '2011-04-29'
+      trough: '2011-10-03'
+      depth: -0.194
+      nber: false
+      tipo: correction
+    - name: china_oil_2015_16
+      peak: '2015-05-21'
+      trough: '2016-02-11'
+      depth: -0.142
+      nber: false
+      tipo: correction
+    - name: volmageddon_2018q1
+      peak: '2018-01-26'
+      trough: '2018-02-08'
+      depth: -0.102
+      nber: false
+      tipo: vol_spike
+    - name: fed_tightening_2018q4
+      peak: '2018-09-20'
+      trough: '2018-12-24'
+      depth: -0.198
+      nber: false
+      tipo: correction
+    - name: covid_2020
+      peak: '2020-02-19'
+      trough: '2020-03-23'
+      depth: -0.339
+      nber: true
+      tipo: crash
+    - name: inflation_bear_2022
+      peak: '2022-01-03'
+      trough: '2022-10-12'
+      depth: -0.254
+      nber: false
+      tipo: bear
+    - name: svb_banking_2023
+      peak: '2023-02-02'
+      trough: '2023-03-13'
+      depth: -0.078
+      nber: false
+      tipo: credit_event
+      flag: sub_threshold_index
+    - name: tariff_selloff_2025
+      peak: '2025-02-19'
+      trough: '2025-04-08'
+      depth: -0.189
+      nber: false
+      tipo: correction
+    - name: great_crash_depresion_1929
+      peak: '1929-09-16'
+      trough: '1932-06-01'
+      depth: -0.862
+      nber: true
+      tipo: crash
+    - name: recesion_1937_38
+      peak: '1937-03-10'
+      trough: '1938-03-31'
+      depth: -0.545
+      nber: true
+      tipo: bear
