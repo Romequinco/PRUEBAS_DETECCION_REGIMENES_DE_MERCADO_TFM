@@ -4,6 +4,13 @@
 > proyecto en otra sesión, este fichero + los `.md` de esta carpeta deben bastar
 > para reconstruir el estado. Se actualiza A MEDIDA que se avanza, no al final.
 
+> ⚠️ **Nota post-reorganización (2026-07-18).** Esta memoria es de la **Capa 1 (v1),
+> ahora CONGELADA**. Su numeración de fases (0–5, abajo) es **interna a la Capa 1** y es
+> **independiente** de la hoja de ruta v2 del repo (ver `../../README.md` y
+> `../../docs/decisions/ADR-001-rebase-datos.md`). Las rutas históricas `docs/memory/...`
+> de este documento apuntan a lo que hoy vive en `capa1_exploracion/memory/...` (la carpeta
+> se movió; el contenido no cambió).
+
 ## Estado por fase
 | Fase | Descripción | Estado |
 |---|---|---|

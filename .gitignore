@@ -240,3 +240,22 @@ report/*.out
 report/*.fls
 report/*.fdb_latexmk
 report/*.synctex.gz
+
+# --- Capa 1 congelada (mismos patrones, prefijados tras la mudanza a capa1_exploracion/) ---
+# Sin esto, ~130 PNG + 3 .parquet generados se colarian al versionar la mudanza.
+capa1_exploracion/data/raw/*
+capa1_exploracion/data/processed/*
+!capa1_exploracion/data/raw/.gitkeep
+!capa1_exploracion/data/processed/.gitkeep
+!capa1_exploracion/data/raw/provenance.json
+!capa1_exploracion/data/raw/coverage_report.csv
+capa1_exploracion/results/*.png
+capa1_exploracion/results/_archive/*.png
+capa1_exploracion/results/*.parquet
+capa1_exploracion/report/*.aux
+capa1_exploracion/report/*.bbl
+capa1_exploracion/report/*.blg
+capa1_exploracion/report/*.out
+capa1_exploracion/report/*.fls
+capa1_exploracion/report/*.fdb_latexmk
+capa1_exploracion/report/*.synctex.gz

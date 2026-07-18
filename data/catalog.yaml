@@ -1,0 +1,48 @@
+# catalog.yaml — universo de datos declarado (FUENTE DE VERDAD de la capa de datos v2)
+#
+# ESTADO: esqueleto (FASE 1). Se RELLENA en la FASE 2 tras el estado del arte de datos.
+# Cada serie declara: nombre interno, fuente, ticker/id, fallback, histórico esperado,
+# rol (spine|core|enricher|fallback|validation) y a qué pista pertenece.
+#
+# Las dos pistas (decisión ADR-001):
+#   A = espina histórica profunda (pocas features, ~1950+, muchas crisis)
+#   B = panel rico multi-activo   (crédito/curva/vol/FX/macro, ~1990/2007+, ataca 2013)
+
+meta:
+  version: 0
+  estado: esqueleto_fase1
+  actualizado: 2026-07-18
+  politica:
+    imputacion: "NUNCA — cada serie arranca en su fecha real; huecos quedan NaN"
+    causalidad: "toda feature derivada será z-score expanding/rolling; se verifica con assert_causal"
+    reproducibilidad: "raw con checksum + provenance; descargas versionadas"
+
+fuentes:  # se completan en FASE 2 (disponibilidad verificada, no marketing)
+  fred:      { tipo: api, auth: FRED_API_KEY, base: "https://api.stlouisfed.org/fred" }
+  yfinance:  { tipo: lib, auth: none }
+  stooq:     { tipo: csv, auth: none }
+  kaggle:    { tipo: dataset, auth: opcional }
+  github:    { tipo: repo, auth: none }
+  academico: { tipo: csv, auth: none, notas: "Shiller, Ken French, OFR" }
+
+# ---------------------------------------------------------------------------
+# PISTA A — Espina histórica profunda   (se puebla en FASE 2)
+# ---------------------------------------------------------------------------
+pista_A:
+  descripcion: "S&P 500 + volatilidad, máxima historia, para maximizar nº de crisis"
+  ventana_objetivo: "~1950 -> hoy"
+  series: []   # <- FASE 2
+
+# ---------------------------------------------------------------------------
+# PISTA B — Panel rico multi-activo   (se puebla en FASE 2)
+# ---------------------------------------------------------------------------
+pista_B:
+  descripcion: "equity, vol, crédito, curva de tipos, FX, commodities, liquidez, macro"
+  ventana_objetivo: "~1990/2007 -> hoy"
+  series: []   # <- FASE 2
+
+# ---------------------------------------------------------------------------
+# Validación externa (índices de estrés ya hechos, como 'ground truth' laxo)
+# ---------------------------------------------------------------------------
+validacion_externa:
+  series: []   # <- FASE 2  (OFR FSI, NFCI, STLFSI, ...)
