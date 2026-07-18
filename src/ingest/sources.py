@@ -148,48 +148,168 @@ def fetch_github_csv(spec: str) -> pd.Series:
 
 
 # --------------------------------------------------------------------------- #
-# Academico: Ken French (pandas_datareader) y Shiller (xls)
+# FRED derivado: spread A - B  (id = "A,B")
 # --------------------------------------------------------------------------- #
-def fetch_academico(spec: str) -> pd.Series:
-    """Ken French: spec = nombre del dataset famafrench (p.ej. 'F-F_Research_Data_Factors_daily').
-    Shiller: spec que empiece por 'shiller'."""
-    if spec.lower().startswith("shiller"):
-        # Shiller ie_data.xls, hoja 'Data'; devuelve el indice S&P (columna 'P') mensual.
-        url = "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
-        raw = _get(url, timeout=60)
-        xl = pd.read_excel(io.BytesIO(raw), sheet_name="Data", skiprows=7)
-        xl = xl.rename(columns={xl.columns[0]: "Date"})
-        # La col Date de Shiller es YYYY.MM (float). Reconstruir fecha mensual.
-        d = xl["Date"].astype(str).str.replace(".", "-", regex=False)
-        idx = pd.to_datetime(d, format="%Y-%m", errors="coerce")
-        s = pd.Series(pd.to_numeric(xl["P"], errors="coerce").values, index=idx, name="SHILLER_P")
-        return s.dropna()
-    # Ken French via pandas_datareader
-    from pandas_datareader import data as pdr
+def fetch_fred_spread(spec: str) -> pd.Series:
+    a, b = [x.strip() for x in spec.split(",")[:2]]
+    sa, sb = fetch_fred(a), fetch_fred(b)
+    common = sa.index.intersection(sb.index)
+    if len(common) == 0:
+        raise RuntimeError(f"fred_spread {spec}: sin fechas comunes")
+    return (sa.loc[common] - sb.loc[common]).dropna().rename(f"{a}-{b}")
 
-    d = pdr.DataReader(spec, "famafrench", start="1926-01-01")
-    df = d[0]  # primera tabla
-    if hasattr(df.index, "to_timestamp"):
-        df.index = df.index.to_timestamp()
-    return df.iloc[:, 0].dropna().rename(f"{spec}::{df.columns[0]}")
+
+# --------------------------------------------------------------------------- #
+# Academico: enruta por id/url. Devuelve Series o DataFrame (paneles multi-columna).
+# --------------------------------------------------------------------------- #
+def _shiller_xls() -> pd.DataFrame:
+    for url in (
+        "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls",
+        "http://www.econ.yale.edu/~shiller/data/ie_data.xls",
+    ):
+        try:
+            raw = _get(url, timeout=60)
+            xl = pd.read_excel(io.BytesIO(raw), sheet_name="Data", skiprows=7)
+            d = xl.iloc[:, 0].astype(str).str.replace(".", "-", regex=False)
+            xl.index = pd.to_datetime(d, format="%Y-%m", errors="coerce")
+            return xl[xl.index.notna()]
+        except Exception:  # noqa: BLE001
+            continue
+    raise RuntimeError("Shiller ie_data.xls no accesible")
+
+
+def _french_zip(name: str) -> pd.Series:
+    import re
+    import zipfile
+
+    url = f"https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/{name}_CSV.zip"
+    raw = _get(url, timeout=60)
+    z = zipfile.ZipFile(io.BytesIO(raw))
+    txt = z.read(z.namelist()[0]).decode("latin-1")
+    rows = []
+    for ln in txt.splitlines():
+        m = re.match(r"^\s*(\d{8})\s*,", ln)
+        if m:
+            parts = [p.strip() for p in ln.split(",")]
+            try:
+                rows.append((pd.Timestamp(m.group(1)), float(parts[1])))
+            except ValueError:
+                pass
+        elif rows:
+            break  # fin del bloque diario
+    if not rows:
+        raise RuntimeError(f"Ken French {name}: bloque diario vacio")
+    idx, val = zip(*rows)
+    return pd.Series(val, index=pd.DatetimeIndex(idx), name=name)
+
+
+def fetch_academico(spec: str, url: str | None = None):
+    s = spec.lower()
+    # -- Shiller (ie_data.xls): columna por hint del id --
+    if "ie_data" in s or "shiller" in s:
+        xl = _shiller_xls()
+        if "long interest rate" in s or "gs10" in s or "rate" in s:
+            col = next((c for c in xl.columns if "GS10" in str(c) or "Long" in str(c)
+                        or "Rate" in str(c)), xl.columns[6])
+        else:
+            col = "P" if "P" in xl.columns else xl.columns[1]
+        return pd.to_numeric(xl[col], errors="coerce").dropna().rename(f"SHILLER::{col}")
+    # -- Goyal-Welch (Google Sheet xlsx, hoja Monthly/Quarterly): panel completo --
+    if "googlesheet" in s or (url and "docs.google.com" in url):
+        gurl = "https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx"
+        sheet = "Quarterly" if "quarter" in s else "Monthly"
+        df = pd.read_excel(io.BytesIO(_get(gurl, timeout=60)), sheet_name=sheet)
+        dc = df.columns[0]  # yyyymm (Monthly) o yyyyQ (Quarterly)
+        raw = df[dc].astype(str).str.replace(r"\.0$", "", regex=True)
+        if sheet == "Monthly":
+            df.index = pd.to_datetime(raw, format="%Y%m", errors="coerce")
+        else:
+            df.index = pd.PeriodIndex(raw.str.replace("Q", "Q"), freq="Q").to_timestamp()
+        return df.drop(columns=[dc])[df.index.notna()]
+    # -- JST macrohistory (xlsx panel; filtra USA) --
+    if "jst" in s:
+        for jurl in (
+            "https://www.macrohistory.net/app/download/9834512569/JSTdatasetR6.xlsx",
+            "https://www.macrohistory.net/app/download/9834512569/JSTdatasetR5.xlsx",
+        ):
+            try:
+                df = pd.read_excel(io.BytesIO(_get(jurl, timeout=90)), sheet_name="Data")
+                break
+            except Exception:  # noqa: BLE001
+                df = None
+        if df is None:
+            raise RuntimeError("JST macrohistory xlsx no accesible")
+        ccol = next((c for c in df.columns if str(c).lower() in ("iso", "country")), None)
+        if ccol is not None:
+            df = df[df[ccol].astype(str).str.upper().isin(["USA", "UNITED STATES"])]
+        ycol = next((c for c in df.columns if str(c).lower() == "year"), df.columns[0])
+        df.index = pd.to_datetime(df[ycol].astype(int).astype(str) + "-12-31", errors="coerce")
+        if "crisis" in s:  # solo la columna crisisJST
+            cc = next((c for c in df.columns if "crisis" in str(c).lower()), None)
+            if cc is None:
+                raise RuntimeError("JST: sin columna crisisJST")
+            return pd.to_numeric(df[cc], errors="coerce").dropna().rename("crisisJST_USA")
+        return df.select_dtypes("number")
+    # -- Philadelphia Fed anxious index (xlsx) --
+    if "anxious" in s or "spf-anxious" in s:
+        purl = "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data/survey-of-professional-forecasters/data-files/files/anxious_index_chart.xlsx"
+        df = pd.read_excel(io.BytesIO(_get(purl, timeout=60)), skiprows=3)
+        df = df.dropna(subset=[df.columns[0]])
+        df.index = pd.PeriodIndex(df.iloc[:, 0].astype(int).astype(str) + "Q"
+                                  + df.iloc[:, 1].astype(int).astype(str), freq="Q").to_timestamp()
+        col = next((c for c in df.columns if "anxious" in str(c).lower()), df.columns[2])
+        return pd.to_numeric(df[col], errors="coerce").dropna().rename("ANXIOUS_INDEX")
+    # -- Ken French (zip directo; fallback pandas_datareader) --
+    try:
+        return _french_zip(spec)
+    except Exception:  # noqa: BLE001
+        from pandas_datareader import data as pdr
+
+        d = pdr.DataReader(spec, "famafrench", start="1926-01-01")
+        df = d[0]
+        if hasattr(df.index, "to_timestamp"):
+            df.index = df.index.to_timestamp()
+        return df.iloc[:, 0].dropna().rename(f"{spec}::{df.columns[0]}")
+
+
+# --------------------------------------------------------------------------- #
+# stooq (bloqueado por challenge JS; se intenta el mirror y si no, se declara)
+# --------------------------------------------------------------------------- #
+def fetch_stooq(ticker: str) -> pd.Series:
+    tk = ticker.lstrip("^").lower()
+    for url in (
+        f"https://stooq.com/q/d/l/?s={ticker}&i=d",
+        f"https://stooq.pl/q/d/l/?s={ticker}&i=d",
+    ):
+        try:
+            raw = _get(url, timeout=30)
+            if raw[:15].lstrip().lower().startswith(b"<!doctype") or b"<html" in raw[:200].lower():
+                continue  # gate JS
+            df = pd.read_csv(io.BytesIO(raw))
+            if "Date" in df and "Close" in df:
+                df["Date"] = pd.to_datetime(df["Date"])
+                return df.set_index("Date")["Close"].dropna().rename(tk)
+        except Exception:  # noqa: BLE001
+            continue
+    raise RuntimeError("stooq bloqueado por challenge JS (proof-of-work); no descargable")
 
 
 # --------------------------------------------------------------------------- #
 # Dispatcher
 # --------------------------------------------------------------------------- #
-FETCHERS = {
-    "fred": fetch_fred,
-    "yfinance": fetch_yahoo,
-    "ofr": fetch_ofr,
-    "github": fetch_github_csv,
-    "academico": fetch_academico,
-}
-
-
-def fetch(fuente: str, series_id: str) -> pd.Series:
+def fetch(fuente: str, series_id: str, url: str | None = None):
+    if fuente == "fred":
+        return fetch_fred_spread(series_id) if "," in series_id else fetch_fred(series_id)
+    if fuente == "fred_spread":
+        return fetch_fred_spread(series_id)
+    if fuente == "yfinance":
+        return fetch_yahoo(series_id)
+    if fuente == "ofr":
+        return fetch_ofr(series_id)
+    if fuente == "github":
+        return fetch_github_csv(series_id)
+    if fuente == "academico":
+        return fetch_academico(series_id, url=url)
     if fuente == "stooq":
-        raise RuntimeError("stooq bloqueado por challenge JS (proof-of-work); no descargable")
-    fn = FETCHERS.get(fuente)
-    if fn is None:
-        raise RuntimeError(f"fuente desconocida: {fuente}")
-    return fn(series_id)
+        return fetch_stooq(series_id)
+    raise RuntimeError(f"fuente desconocida: {fuente}")

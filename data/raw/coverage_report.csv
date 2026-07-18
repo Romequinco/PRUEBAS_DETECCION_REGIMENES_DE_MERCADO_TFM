@@ -4,7 +4,7 @@ SP500_TR,yfinance,^SP500TR,A,core,CACHE,diaria,1988-01-04,2026-07-17,9707,
 SHILLER_SP500_CAPE,github,datasets/s-and-p-500:data/data.csv,A,spine,CACHE,mensual,1871-01-01,2026-06-01,1866,
 FF_FACTORS_3_DAILY,academico,F-F_Research_Data_Factors_daily,A,spine,CACHE,diaria,1926-07-01,2026-05-29,26253,
 FF_FACTORS_3_MONTHLY,academico,F-F_Research_Data_Factors,A,fallback,CACHE,mensual,1926-07-01,2026-05-01,1199,
-FF_MOM_DAILY,academico,F-F_Momentum_Factor_daily,A,enricher,ERROR,,,,0,"DateParseError: Unknown datetime string format, unable to parse: Missing data are indicated by -99.99 or -999., at position 0"
+FF_MOM_DAILY,academico,F-F_Momentum_Factor_daily,A,enricher,CACHE,diaria,1926-11-03,2026-05-29,26152,
 FF_FACTORS_5_DAILY,academico,F-F_Research_Data_5_Factors_2x3_daily,A,enricher,CACHE,diaria,1963-07-01,2026-05-29,15833,
 FF_5_INDUSTRY,academico,5_Industry_Portfolios_daily,A,enricher,CACHE,diaria,1926-07-01,2026-05-29,26253,
 REALIZED_VOL_SP500,yfinance,^GSPC,A,spine,CACHE,diaria,1927-12-30,2026-07-17,24752,
@@ -34,7 +34,7 @@ GS5,fred,GS5,A,enricher,CACHE,mensual,1953-04-01,2026-06-01,879,
 GS1,fred,GS1,A,enricher,CACHE,mensual,1953-04-01,2026-06-01,879,
 IRLTLT01USM156N,fred,IRLTLT01USM156N,A,fallback,CACHE,mensual,1953-04-01,2026-06-01,879,
 TNX_YF,yfinance,^TNX,ambas,fallback,CACHE,diaria,1962-01-02,2026-07-17,16122,
-MOODYS_BAA_AAA_SPREAD,fred,"DBAA,DAAA",ambas,spine,ERROR,,,,0,HTTPError: HTTP Error 400: Bad Request
+MOODYS_BAA_AAA_SPREAD,fred,"DBAA,DAAA",ambas,spine,CACHE,diaria,1986-01-02,2026-07-16,10170,
 BAA10Y,fred,BAA10Y,ambas,spine,CACHE,diaria,1986-01-02,2026-07-16,10134,
 MOODYS_BAA,fred,BAA,A,spine,CACHE,mensual,1919-01-01,2026-06-01,1290,
 MOODYS_AAA,fred,AAA,A,spine,CACHE,mensual,1919-01-01,2026-06-01,1290,
@@ -65,26 +65,18 @@ CPIAUCSL,fred,CPIAUCSL,ambas,core,CACHE,mensual,1947-01-01,2026-06-01,953,
 CPILFESL,fred,CPILFESL,ambas,core,CACHE,mensual,1957-01-01,2026-06-01,833,
 PMI_PROXY_PHILLY,fred,GACDFSA066MSFRBPHI,ambas,core,CACHE,mensual,1968-05-01,2026-07-01,699,
 UMCSENT,fred,UMCSENT,ambas,enricher,CACHE,mensual,1952-11-01,2026-05-01,673,
-HOUST,fred,HOUST,ambas,enricher,OK,mensual,1959-01-01,2026-06-01,810,
-GDPC1,fred,GDPC1,A,enricher,OK,mensual,1947-01-01,2026-01-01,317,
-GDP_GROWTH_QOQ,fred,A191RL1Q225SBEA,A,enricher,OK,mensual,1947-04-01,2026-01-01,316,
-NBER_NY_COMMERCIAL_PAPER,fred,M13002US35620M156NNBR,A,spine,OK,mensual,1857-01-01,1971-12-01,1380,
-EURODOLLAR_TBILL_SPREAD,fred,"DED3,DTB3",ambas,spine,ERROR,,,,0,HTTPError: HTTP Error 400: Bad Request
-EURODOLLAR_3M,fred,DED3,A,enricher,OK,diaria,1971-01-04,2016-10-07,11652,
+HOUST,fred,HOUST,ambas,enricher,CACHE,mensual,1959-01-01,2026-06-01,810,
+GDPC1,fred,GDPC1,A,enricher,CACHE,mensual,1947-01-01,2026-01-01,317,
+GDP_GROWTH_QOQ,fred,A191RL1Q225SBEA,A,enricher,CACHE,mensual,1947-04-01,2026-01-01,316,
+NBER_NY_COMMERCIAL_PAPER,fred,M13002US35620M156NNBR,A,spine,CACHE,mensual,1857-01-01,1971-12-01,1380,
+EURODOLLAR_TBILL_SPREAD,fred,"DED3,DTB3",ambas,spine,CACHE,diaria,1971-01-04,2016-10-07,11370,
+EURODOLLAR_3M,fred,DED3,A,enricher,CACHE,diaria,1971-01-04,2016-10-07,11652,
 TBILL3M_MINUS_FEDFUNDS,fred,TB3SMFFM,A,enricher,CACHE,mensual,1954-07-01,2026-06-01,864,
 LIBOR_3M_QUARTERLY,fred,LIOR3M,A,fallback,CACHE,mensual,1970-01-01,2016-10-01,188,
-GW_PREDICTORS_MONTHLY,academico,GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly),A,core,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly)_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
-GW_PREDICTORS_QUARTERLY,academico,GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Quarterly),A,enricher,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Quarterly)_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
-JST_MACROHISTORY_R6,academico,JSTdatasetR6.xlsx,ambas,enricher,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/JSTdatasetR6.xlsx_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
-SHILLER_LONGRATE,academico,ie_data.xls (col Long Interest Rate),A,fallback,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/ie_data.xls (col Long Interest Rate)_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
+GW_PREDICTORS_MONTHLY,academico,GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly),A,core,CACHE,mensual,1871-01-01,2025-12-01,1860,
+GW_PREDICTORS_QUARTERLY,academico,GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Quarterly),A,enricher,ERROR,,,,0,DateParseError: year 18711 is out of range: 18711
+JST_MACROHISTORY_R6,academico,JSTdatasetR6.xlsx,ambas,enricher,ERROR,,,,0,RuntimeError: JST macrohistory xlsx no accesible
+SHILLER_LONGRATE,academico,ie_data.xls (col Long Interest Rate),A,fallback,CACHE,mensual,1871-01-01,2024-09-01,1845,
 DOW_STOOQ_DEEP,stooq,^dji,A,fallback,ERROR,,,,0,RuntimeError: stooq bloqueado por challenge JS (proof-of-work); no descargable
 MOVE,yfinance,^MOVE,B,core,CACHE,diaria,2002-11-12,2026-07-10,5849,
 VVIX,yfinance,^VVIX,B,enricher,CACHE,diaria,2007-01-03,2026-07-17,4906,
@@ -108,7 +100,15 @@ SP_SMALLCAP600,yfinance,^SP600,B,enricher,CACHE,diaria,1989-01-03,2026-07-17,945
 IWM_SMALL,yfinance,IWM,B,fallback,CACHE,diaria,2000-05-26,2026-07-17,6573,
 IWD_VALUE,yfinance,IWD,B,enricher,CACHE,diaria,2000-05-26,2026-07-17,6573,
 IWF_GROWTH,yfinance,IWF,B,enricher,CACHE,diaria,2000-05-26,2026-07-17,6573,
-SPDR_SECTORS_9,yfinance,"XLK,XLF,XLE,XLV,XLI,XLY,XLP,XLU,XLB",B,core,ERROR,,,,0,"ValueError: If using all scalar values, you must pass an index"
+SPDR_XLK,yfinance,XLK,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLF,yfinance,XLF,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLE,yfinance,XLE,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLV,yfinance,XLV,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLI,yfinance,XLI,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLY,yfinance,XLY,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLP,yfinance,XLP,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLU,yfinance,XLU,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
+SPDR_XLB,yfinance,XLB,B,core,CACHE,diaria,1998-12-22,2026-07-17,6933,
 XLRE_REALESTATE,yfinance,XLRE,B,enricher,CACHE,diaria,2015-10-08,2026-07-17,2708,
 XLC_COMMSERVICES,yfinance,XLC,B,enricher,CACHE,diaria,2018-06-19,2026-07-17,2030,
 SP500_EW,yfinance,RSP,B,core,CACHE,diaria,2003-05-01,2026-07-17,5840,
@@ -160,15 +160,10 @@ NBER_RECESSION_MONTHLY,fred,USREC,validacion,validation,CACHE,mensual,1854-12-01
 RECESSION_PROB_SMOOTHED,fred,RECPROUSM156N,validacion,validation,CACHE,mensual,1967-06-01,2026-05-01,708,
 SAHM_RULE_REALTIME,fred,SAHMREALTIME,validacion,validation,CACHE,mensual,1959-12-01,2026-06-01,798,
 VIX_VALIDATION_REF,fred,VIXCLS,validacion,validation,CACHE,diaria,1990-01-02,2026-07-16,9231,
-PHILLY_ANXIOUS_INDEX,academico,spf-anxious-index,validacion,fallback,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/spf-anxious-index_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
+PHILLY_ANXIOUS_INDEX,academico,spf-anxious-index,validacion,fallback,ERROR,,,,0,"ValueError: Excel file format cannot be determined, you must specify an engine manually."
 SAHM_RULE_CURRENT,fred,SAHMCURRENT,validacion,validation,CACHE,mensual,1949-03-01,2026-06-01,928,
 GDP_RECESSION_HAMILTON,fred,JHDUSRGDPBR,validacion,validation,CACHE,mensual,1967-10-01,2025-10-01,233,
-CRISIS_WINDOWS_SP500,yfinance,^GSPC -> drawdown windows (peak-to-recovery + zigzag),validacion,validation,ERROR,,,,0,"ValueError: If using all scalar values, you must pass an index"
 SP500_DAILY_DRAWDOWN_SRC,yfinance,^GSPC,validacion,validation,CACHE,diaria,1927-12-30,2026-07-17,24752,
-SP500_MONTHLY_DEEP_SRC,github,datasets/s-and-p-500 -> data/data.csv (col SP500),validacion,fallback,ERROR,,,,0,RuntimeError: github spec sin ':': datasets/s-and-p-500 -> data/data.csv (col SP500)
-JST_CRISIS_GROUNDTRUTH,academico,JSTdatasetR6.xlsx -> columna crisisJST,validacion,validation,ERROR,,,,0,"RemoteDataError: Unable to read URL: http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/JSTdatasetR6.xlsx -> columna crisisJST_CSV.zip
-Response Text:
-b'<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">\r\n<html xmlns=""http://www.w3.org/1999/xhtml"">\r\n<head>\r\n<meta http-equiv=""Content-Type"" content=""text/html; charset=iso-8859-1""/>\r\n<title>404 - File or directory not found.</title>\r\n<style type=""text/css"">\r\n<!--\r\nbody{margin:0;font-size:.7em;font-family:Verdana, Arial, Helvetica, sans-serif;background:#EEEEEE;}\r\nfieldset{padding:0 15px 10px 15px;} \r\nh1{font-size:2.4em;margin:0;color:#FFF;}\r\nh2{font-size:1.7em;margin:0;color:#CC0000;} \r\nh3{font-size:1.2em;margin:10px 0 0 0;color:#000000;} \r\n#header{width:96%;margin:0 0 0 0;padding:6px 2% 6px 2%;font-family:""trebuchet MS"", Verdana, sans-serif;color:#FFF;\r\nbackground-color:#555555;}\r\n#content{margin:0 0 0 2%;position:relative;}\r\n.content-container{background:#FFF;width:96%;margin-top:8px;padding:10px;position:relative;}\r\n-->\r\n</style>\r\n</head>\r\n<body>\r\n<div id=""header""><h1>Server Error</h1></div>\r\n<div id=""content"">\r\n <div class=""content-container""><fieldset>\r\n  <h2>404 - File or directory not found.</h2>\r\n  <h3>The resource you are looking for might have been removed, had its name changed, or is temporarily unavailable.</h3>\r\n </fieldset></div>\r\n</div>\r\n</body>\r\n</html>\r\n'"
+SP500_MONTHLY_DEEP_SRC,github,datasets/s-and-p-500:data/data.csv,validacion,fallback,CACHE,mensual,1871-01-01,2026-06-01,1866,
+JST_CRISIS_GROUNDTRUTH,academico,JSTdatasetR6.xlsx -> columna crisisJST,validacion,validation,ERROR,,,,0,RuntimeError: JST macrohistory xlsx no accesible
 SP500_STOOQ_FALLBACK,stooq,^spx,validacion,fallback,ERROR,,,,0,RuntimeError: stooq bloqueado por challenge JS (proof-of-work); no descargable

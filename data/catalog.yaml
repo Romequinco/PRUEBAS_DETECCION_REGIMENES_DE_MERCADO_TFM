@@ -1418,18 +1418,16 @@ pista_B:
     verificado: true
     url: "https://finance.yahoo.com/quote/IWF"
 
-  - nombre_interno: SPDR_SECTORS_9
-    descripcion: "9 SPDR Select Sector originales: XLK,XLF,XLE,XLV,XLI,XLY,XLP,XLU,XLB."
-    fuente: yfinance
-    id: "XLK,XLF,XLE,XLV,XLI,XLY,XLP,XLU,XLB"
-    auth: none
-    inicio_verificado: "1998-12-22"
-    granularidad: diaria
-    pista: B
-    rol: core
-    relevancia_regimen: "Rotación sectorial (cíclicos vs defensivos, XLY/XLP) = firma directa de régimen."
-    verificado: true
-    url: "https://www.sectorspdrs.com/"
+  # 9 SPDR Select Sector originales (expandidos a una serie por ETF; desde 1998-12-22)
+  - {nombre_interno: SPDR_XLK, descripcion: "SPDR Technology", fuente: yfinance, id: "XLK", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Ciclico tech", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLF, descripcion: "SPDR Financials", fuente: yfinance, id: "XLF", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Financieras = estres crediticio", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLE, descripcion: "SPDR Energy", fuente: yfinance, id: "XLE", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Energia = shock materias primas", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLV, descripcion: "SPDR Health Care", fuente: yfinance, id: "XLV", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Defensivo", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLI, descripcion: "SPDR Industrials", fuente: yfinance, id: "XLI", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Ciclico industrial", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLY, descripcion: "SPDR Consumer Discretionary", fuente: yfinance, id: "XLY", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Ciclico (XLY/XLP = risk-on/off)", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLP, descripcion: "SPDR Consumer Staples", fuente: yfinance, id: "XLP", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Defensivo (XLY/XLP = risk-on/off)", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLU, descripcion: "SPDR Utilities", fuente: yfinance, id: "XLU", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Defensivo bond-proxy", verificado: true, url: "https://www.sectorspdrs.com/"}
+  - {nombre_interno: SPDR_XLB, descripcion: "SPDR Materials", fuente: yfinance, id: "XLB", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Ciclico materiales", verificado: true, url: "https://www.sectorspdrs.com/"}
 
   - nombre_interno: XLRE_REALESTATE
     descripcion: "SPDR Real Estate Select Sector (11º GICS, spin-off 2015)."
@@ -2141,19 +2139,8 @@ validacion_externa:
       verificado: true
       evidencia: FRED JHDUSRGDPBR -> 233 obs trimestrales, first 1967-10-01=0.00, last 2025-10-01=0.00 (upd 2026-04-30).
       url: https://fred.stlouisfed.org/series/JHDUSRGDPBR
-    - nombre_interno: CRISIS_WINDOWS_SP500
-      descripcion: Lista curada de ventanas peak->trough del S&P500 (crisis de mercado), derivada por mí del cierre diario de ^GSPC. ~20 eventos desde 1950, incluye crisis financieras SIN recesión (1987, 1998, 2010, 2011, 2015-16, 2018, 2022, 2025). Es el ground truth de EVENTOS de mercado.
-      fuente: yfinance
-      id: ^GSPC -> drawdown windows (peak-to-recovery + zigzag)
-      auth: none
-      inicio_verificado: '1927-12-30'
-      granularidad: diaria
-      pista: validacion
-      rol: validation
-      relevancia_regimen: 'Ground truth de crisis de MERCADO (drawdown), complementario a NBER (crisis MACRO). Maximiza n de eventos: 26 episodios peak-to-recovery >=10% o 103 swings zigzag >=10% (57 desde 1950). Ver tablas de este documento para fechas exactas.'
-      verificado: true
-      evidencia: 'yf.download(''^GSPC'',''max'') -> 24752 filas 1927-12-30..2026-07-17. Drawdowns computados: 26 episodios peak-to-recovery >=10%; zigzag 10% -> 103 down-legs (57 desde 1950). Spot-checks OK: 1987-10-19=-20.5% 1dia; COVID 2020-03-16=-12.0%; SVB pico-valle solo -7.8%; 1937-38 -54.5%; GFC -56.8%.'
-      url: https://finance.yahoo.com/quote/%5EGSPC
+    # (CRISIS_WINDOWS_SP500 eliminado: no es una serie descargable sino un DERIVADO de
+    #  ^GSPC — se computa en preprocesado; los eventos ya estan en crisis_catalog.)
     - nombre_interno: SP500_DAILY_DRAWDOWN_SRC
       descripcion: S&P500 cierre diario (yfinance ^GSPC), fuente primaria para derivar las CRISIS_WINDOWS de drawdown. (Serie de precio también cubierta por catálogos historico_profundo/volatilidad; aquí es el insumo del ground truth de eventos).
       fuente: yfinance
@@ -2170,7 +2157,7 @@ validacion_externa:
     - nombre_interno: SP500_MONTHLY_DEEP_SRC
       descripcion: S&P500 mensual desde 1871 (mirror GitHub datasets/s-and-p-500, derivado de Shiller). Fuente para datar crisis PRE-1927 (1873, 1893, 1907, 1920-21) que ^GSPC no alcanza.
       fuente: github
-      id: datasets/s-and-p-500 -> data/data.csv (col SP500)
+      id: "datasets/s-and-p-500:data/data.csv"
       auth: none
       inicio_verificado: '1871-01-01'
       granularidad: mensual

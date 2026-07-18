@@ -80,12 +80,19 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
             except Exception:  # noqa: BLE001  (cache corrupto -> re-descarga)
                 pass
         try:
-            s = sources.fetch(fuente, sid)
-            s = s.sort_index()
-            s.name = nombre
-            pd.DataFrame({nombre: s}).to_parquet(out)
-            rec.update(_meta_from_series(s, cached=False))
-            provenance[nombre] = {**rec, "status": "OK", "checksum": _checksum(s), "url": entry.get("url")}
+            obj = sources.fetch(fuente, sid, url=entry.get("url"))
+            obj = obj.sort_index()
+            if isinstance(obj, pd.DataFrame):
+                df_out = obj                          # panel multi-columna (GW, JST)
+                rep = obj.iloc[:, 0]
+                rec["n_cols"] = obj.shape[1]
+            else:
+                obj.name = nombre
+                df_out = pd.DataFrame({nombre: obj})  # serie simple
+                rep = obj
+            df_out.to_parquet(out)
+            rec.update(_meta_from_series(rep, cached=False))
+            provenance[nombre] = {**rec, "status": "OK", "checksum": _checksum(rep), "url": entry.get("url")}
             rows.append(rec | {"status": "OK"})
             print(f"[{i}/{total}] OK     {nombre:28} ({fuente}) {rec['inicio']}->{rec['fin']} n={rec['n_obs']}")
         except Exception as e:  # noqa: BLE001
