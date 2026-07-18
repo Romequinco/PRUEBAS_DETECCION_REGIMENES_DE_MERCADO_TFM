@@ -25,8 +25,8 @@ import pandas as pd
 # --------------------------------------------------------------------------- #
 # Nombres cortos de detector (D1..D12) — FUENTE DE VERDAD ÚNICA
 # --------------------------------------------------------------------------- #
-# Varios scripts (build_synthesis_figs.py, build_pdf_figs.py, _build_13.py)
-# necesitan un nombre corto legible por detector. El nombre canónico incluye la K
+# Las figuras/notebooks de detectores necesitan un nombre corto legible por detector
+# (se reutilizará en la Fase D). El nombre canónico incluye la K
 # elegida por BIC (p. ej. `hmm_tstudent_4s`, `clustering_gmm_k3`); si esa K cambia
 # en una re-ejecución, un dict keyed por el nombre completo se rompería (devolvería
 # NaN). Para robustez, el mapeo se resuelve por PREFIJO: `canonical_detector()`

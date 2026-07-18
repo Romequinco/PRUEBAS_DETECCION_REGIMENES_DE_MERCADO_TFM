@@ -30,7 +30,7 @@ la **base de datos sólida** sobre la que hacerlo.
 │   └── processed/
 │
 ├── notebooks/                    ← planos, ordenados, ejecutados y autónomos
-│   ├── 00_descarga.ipynb         ← descarga de datos (llama a src/ingest/)
+│   ├── 00_descarga.ipynb         ← panorámica de datos: tabla completa + visualizaciones + descarga
 │   └── 01_eda.ipynb              ← EDA maestro (recomputa los hallazgos clave)
 │
 ├── docs/                         ← TODO el conocimiento del proyecto (empieza por docs/README.md)

@@ -16,6 +16,9 @@ código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exp
   series + `crisis_catalog` (22 crisis 1929–2025). `../data/raw/coverage_report.csv` = qué hay en disco.
 - **[`../data/benchmark_spec.yaml`](../data/benchmark_spec.yaml)** — **el banco congelado** por pista
   (ventana + features + crisis_windows + false_positives + troughs). Variable controlada de la Fase D.
+- **[`../notebooks/00_descarga.ipynb`](../notebooks/00_descarga.ipynb)** — panorámica visual de los
+  datos: reparto, cobertura temporal, **tabla completa de las 166 series**, vistazo por categoría y
+  el catálogo de crisis.
 
 ## 3. Hallazgos (lo que dicen los datos)
 - **[`EDA_v2.md`](EDA_v2.md)** — informe EDA completo (7 temas, figuras en [`figs_eda/`](figs_eda/)):
