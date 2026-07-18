@@ -1,0 +1,320 @@
+# benchmark_spec.yaml — BANCO DE PRUEBAS CONGELADO (variable controlada de la FASE D)
+#
+# Congela, POR PISTA, la ventana temporal, las series-feature de entrada, las etiquetas de
+# crisis (crisis_catalog) que caen dentro de cada ventana, las trampas de falso positivo y
+# los suelos de drawdown. A partir de aqui NINGUN detector puede cambiar estas ventanas ni
+# estas etiquetas: son la variable controlada que hace comparables los experimentos de Fase D.
+#
+# Derivado del EDA profundo (Fase 3):
+#   notebooks/eda_v2/reports/cobertura_calidad.md      (ventanas efectivas por bloque de features)
+#   notebooks/eda_v2/reports/crisis_espina_profunda.md (salto de potencia 22 vs 10 crisis)
+#   notebooks/eda_v2/reports/candidatas_features.md    (ranking causal de features)
+#   notebooks/eda_v2/reports/credito_curva_2013.md     (punto ciego 2013 = falso positivo)
+#   notebooks/eda_v2/reports/correlaciones_dinamicas.md (corr accion-bono cambia de signo ~2000)
+#
+# Coherente con data/raw/<fuente>/<nombre>.parquet (status OK/CACHE en coverage_report.csv,
+# fechas verificadas leyendo los parquet 2026-07-18) y con data/catalog.yaml (crisis_catalog).
+
+meta:
+  version: 1
+  estado: congelado_fase3
+  generado: '2026-07-18'
+  proposito: >
+    Fijar el banco de pruebas de las DOS pistas (ADR-001) como variable controlada de la Fase D
+    (benchmark de detectores de regimen). Todo experimento de Fase D usa exactamente estas
+    ventanas, estas series y estas etiquetas; lo unico que varia entre experimentos es el detector.
+  criterio: >
+    (1) CAUSALIDAD DE VENTANA: cada ventana_inicio/ventana_fin se fija SOLO por disponibilidad de
+    datos (fecha real de arranque de la serie que gobierna el inicio; ragged-edge de la que gobierna
+    el fin), NUNCA por el resultado de las crisis — no se mira el futuro para elegir los cortes.
+    (2) CAUSALIDAD DE FEATURE: toda transformacion es causal (z-score expanding/rolling con
+    estadisticos <= t; primitivas de src/features.py); prohibida cualquier media/std de muestra
+    completa (fue el error de la tarea previa). Verificado en candidatas_features:
+    max|full - truncado| = 0.0 exacto.
+    (3) LABELS != FEATURES: crisis_catalog (peak->trough del S&P500) se usa SOLO como etiqueta de
+    evaluacion, jamas como feature. Es fiel al dato: recalculo del drawdown sobre ^GSPC cuadra con
+    catalog.yaml con error maximo 0.048 pp (crisis_espina_profunda).
+  regla_de_oro: "toda feature causal; NUNCA estadisticos de muestra completa"
+  politica_datos: "sin-imputar; huecos = fechas ausentes del indice, no NaN (cobertura_calidad)"
+  calendario_panel: "NYSE como rejilla base; series FRED alineadas por merge_asof / ffill causal (<= t)"
+  n_crisis_catalogo: 22
+  carga_series: "pd.read_parquet('data/raw/{fuente}/{nombre}.parquet')[nombre]"
+
+# ===========================================================================
+# PISTA A — espina historica profunda. Objetivo: POTENCIA (maximo nº de crisis).
+# ===========================================================================
+pista_A:
+  descripcion: "S&P500 + vol realizada + factores + credito/macro profundos; pocas features, maxima historia"
+  objetivo: potencia
+  ventana_inicio: '1927-12-30'   # gobierna SP500 (^GSPC) — primera fecha real del precio diario
+  ventana_fin: '2026-05-29'      # gobierna FF_FACTORS_3_DAILY / FF_MOM_DAILY (lag academico)
+  gobierna_inicio: SP500
+  gobierna_fin: FF_FACTORS_3_DAILY
+  granularidad: "diaria (spines de credito/macro mensuales, alineados por ffill causal)"
+  n_crisis_en_ventana: 22        # las 22 del catalogo (todos los picos >= 1927-12-30)
+  series_features:
+    # -- espina diaria de equity/vol (la que da las 22 crisis) --
+    - SP500                 # ^GSPC 1927-12-30->2026-07-17; base de ret, drawdown, momentum
+    - REALIZED_VOL_SP500    # 1927-12-30->2026-07-17; workhorse causal (AUC 0.739, unica con 22 crisis)
+    - FF_FACTORS_3_DAILY    # 1926-07-01->2026-05-29; Mkt-RF/SMB/HML, TR diario mas limpio que ^GSPC
+    - FF_MOM_DAILY          # 1926-11-03->2026-05-29; momentum crashes (giros de regimen)
+    # -- credito profundo mensual (spread Baa-Aaa, 1919; ffill causal) --
+    - MOODYS_BAA            # 1919-01-01->2026-06-01
+    - MOODYS_AAA            # 1919-01-01->2026-06-01
+    # -- macro profundo mensual (ciclo real; ffill causal) --
+    - INDPRO               # 1919-01-01->2026-06-01; produccion industrial YoY
+    - PPI_ALL_COMMODITIES  # 1913-01-01->2026-06-01; inflacion/deflacion de materias primas YoY
+  features_causales_derivadas:
+    - SP500_vol_z          # AUC 0.739; +2.74 covid / +2.50 black_monday, pero NEGATIVO en bear lentos
+    - SP500_momentum       # AUC 0.724; cubre el bear lento que la vol NO ve (1957/1966/1969)
+    - SP500_ret_z          # endogeno al label; debil (0.565) — solo contexto
+    - SP500_drawdown       # endogeno; debil (0.598) — confunde 'en crisis' con 'recuperandose'
+    - credit_BaaAaa_z      # (MOODYS_BAA - MOODYS_AAA) mensual, ffill causal; unico credito vivo en 1929
+    - INDPRO_yoy_z
+    - PPI_yoy_z
+  justificacion: >
+    cobertura_calidad §8.2 recomienda esta ventana como el bloque diario de maxima potencia:
+    equity + vol realizada + factores FF => 22/22 crisis. crisis_espina_profunda cuantifica el
+    salto de potencia: la espina 1927 ve 22 crisis (10 recesiones NBER) frente a 10 (2 NBER) del
+    panel B de 2007 — ir profundo son 2.2x eventos. El coste es un set de features pobre pre-1990:
+    en 1929/1937 solo hay 14-15/76 series vivas, asi que las crisis profundas SOLO se caracterizan
+    con equity(ret+vol) + spread Baa-Aaa mensual (1919) + macro mensual (INDPRO 1919 / PPI 1913).
+    El fin 2026-05-29 lo impone el lag academico de Fama-French; si se prescinde de FF y el retorno
+    de mercado se deriva de SP500, el panel se extiende a 2026-07-17 (documentado, no usado por
+    defecto para mantener el spine factorial 1926).
+
+# ===========================================================================
+# PISTA B — panel rico multi-activo. Objetivo: RIQUEZA (separar; atacar 2013).
+# ===========================================================================
+pista_B:
+  descripcion: "credito/curva/vol/breakevens/sectores/FX densos; muchas features, ~2003+, pocas crisis"
+  objetivo: riqueza
+  ventana_inicio: '2003-01-02'   # gobiernan los breakevens TIPS DFII10 / T10YIE / DFII5
+  ventana_fin: '2026-07-10'      # gobierna MOVE (yfinance)
+  gobierna_inicio: [DFII10, T10YIE, DFII5]
+  gobierna_fin: MOVE
+  granularidad: diaria
+  n_crisis_en_ventana: 10        # picos >= 2003-01-02 (pierde dotcom, cuyo pico es 2000-03-24)
+  series_features:
+    # -- discriminadores primarios de NIVEL (top del ranking causal) --
+    - VIX                  # 1990-01-02; VIX_level_z AUC 0.810
+    - MOVE                 # 2002-11-12; MOVE_level_z AUC 0.800, mayor Cohen's d (+1.33)
+    - BAA10Y               # 1986-01-02; credit_BAA10Y_z AUC 0.792
+    - MOODYS_BAA_AAA_SPREAD # 1986-01-02; credit_BaaAaa_z AUC 0.745
+    # -- VELOCIDAD de tipos: ataca el punto ciego 2013 (taper) --
+    - DFII10               # 2003-01-02; real 10Y, DFII10_change_z z=3.83 en el taper
+    - DGS10                # 1962-01-02; DGS10_change_z z=3.11 en el taper
+    # -- curva / breakevens (nivel de pendiente = contexto; real vs breakeven) --
+    - DGS2                 # 1976-06-01
+    - T10Y2Y               # 1976-06-01; empino 1.46->2.52 en 2013 (bear steepening)
+    - T10Y3M               # 1982-01-04
+    - T10YIE               # 2003-01-02; breakeven inflacion 10Y
+    - DFII5                # 2003-01-02
+    # -- tipificacion de regimen (corr accion-bono, cambia de signo ~2000) --
+    - SP500                # referencia equity (compartida con Pista A) para corr_spx_bond
+    # -- dispersion sectorial (9 SPDR, densos desde 1998-12-22) --
+    - SPDR_XLB
+    - SPDR_XLE
+    - SPDR_XLF
+    - SPDR_XLI
+    - SPDR_XLK
+    - SPDR_XLP
+    - SPDR_XLU
+    - SPDR_XLV
+    - SPDR_XLY
+    # -- FX refugio / commodities procíclicas (confirmadores de risk-off) --
+    - DXY                  # 1971-01-04; dolar = eje risk-off
+    - DEXJPUS              # 1971-01-04; yen refugio
+    - SPGSCI               # 1984-01-03; commodities procíclicas
+  features_causales_derivadas:
+    - VIX_level_z
+    - MOVE_level_z
+    - credit_BAA10Y_z
+    - credit_BaaAaa_z
+    - DFII10_change_z      # velocidad tipo real; z=3.83 en taper 2013
+    - MOVE_change_z        # aceleracion vol de tipos; z=3.34 en taper 2013
+    - DGS10_change_z       # velocidad nominal; z=3.11 en taper 2013
+    - corr_spx_bond        # tipificadora: +0.3/+0.5 crisis inflacion (pre-2000) / -0.5/-0.6 crecimiento (post-2000)
+    - yield_slope_z        # AMBIGUA (nivel): engaña en 2013 (muy positiva, empinandose)
+    - sector_dispersion    # de los 9 SPDR
+  ventana_alt_volofvol:    # sub-banco opcional que AÑADE vol-of-vol / term-structure sin perder GFC
+    ventana_inicio: '2007-05-10'  # gobierna OVX
+    ventana_fin: '2026-07-10'
+    gobierna_inicio: OVX
+    n_crisis_en_ventana: 10       # pico GFC 2007-10-09 >= 2007-05-10 => se conservan las 10
+    series_extra: [OVX, VVIX, VIX3M, RVX]
+    nota: >
+      Mantiene el pico de la GFC. NO exigir GVZ (2008-06-03) ni VIX6M (2008-01-02) como ancla:
+      empujan el inicio a 2008-06 y sacrifican la GFC (cobertura_calidad §3).
+  justificacion: >
+    cobertura_calidad §8.3 fija el panel core denso en 2003-01-02 (breakevens TIPS) -> 2026-07-10
+    (MOVE): sectores + credito + curva + breakevens + MOVE + VIX = 10 crisis, panel totalmente
+    poblado en 2013 (91/96 series de B con dato el 2013-07-01). candidatas_features muestra que en
+    esta era ganan los NIVELES exogenos al label (VIX/MOVE/credito, AUC 0.75-0.81), con mucho filo
+    pero poca potencia (cada uno ve 10-14 crisis). El valor añadido de B es atacar 2013: no como
+    crisis a detectar (no lo es) sino con features de VELOCIDAD de tipos (DFII10/MOVE/DGS10 change,
+    z=3.1-3.8) que credito_curva_2013 identifica como lo unico que dispara ese shock puro de tipos.
+
+# ===========================================================================
+# CRISIS WINDOWS — etiquetas [peak, trough] de crisis_catalog que caen en cada ventana.
+# (crisis 'vista' = pico dentro de [ventana_inicio, ventana_fin]. Uso: event-study / scoring.)
+# ===========================================================================
+crisis_windows:
+  pista_A:   # las 22 (cronologico)
+    great_crash_depresion_1929: ['1929-09-16', '1932-06-01']   # depth -0.862 crash NBER
+    recesion_1937_38:           ['1937-03-10', '1938-03-31']   # -0.545 bear NBER
+    recesion_1957_58:           ['1956-08-02', '1957-10-22']   # -0.215 bear NBER
+    kennedy_slide_1962:         ['1961-12-12', '1962-06-26']   # -0.28  bear
+    credit_crunch_1966:         ['1966-02-09', '1966-10-07']   # -0.222 bear
+    bear_1969_70:               ['1968-11-29', '1970-05-26']   # -0.361 bear NBER
+    oil_stagflation_1973:       ['1973-01-11', '1974-10-03']   # -0.482 bear NBER
+    volcker_1980_82:            ['1980-11-28', '1982-08-12']   # -0.271 bear NBER
+    black_monday_1987:          ['1987-08-25', '1987-12-04']   # -0.335 crash
+    gulf_war_sl_1990:           ['1990-07-16', '1990-10-11']   # -0.199 correction NBER
+    ltcm_russia_1998:           ['1998-07-17', '1998-08-31']   # -0.193 correction
+    dotcom_2000_02:             ['2000-03-24', '2002-10-09']   # -0.491 bear NBER
+    gfc_2007_09:                ['2007-10-09', '2009-03-09']   # -0.568 bear NBER
+    flash_crash_euro1_2010:     ['2010-04-23', '2010-07-02']   # -0.16  correction
+    us_downgrade_euro2_2011:    ['2011-04-29', '2011-10-03']   # -0.194 correction
+    china_oil_2015_16:          ['2015-05-21', '2016-02-11']   # -0.142 correction
+    volmageddon_2018q1:         ['2018-01-26', '2018-02-08']   # -0.102 vol_spike (FSI-ciego)
+    fed_tightening_2018q4:      ['2018-09-20', '2018-12-24']   # -0.198 correction (FSI casi mudo)
+    covid_2020:                 ['2020-02-19', '2020-03-23']   # -0.339 crash NBER
+    inflation_bear_2022:        ['2022-01-03', '2022-10-12']   # -0.254 bear
+    svb_banking_2023:           ['2023-02-02', '2023-03-13']   # -0.078 credit_event (sub_threshold)
+    tariff_selloff_2025:        ['2025-02-19', '2025-04-08']   # -0.189 correction
+  pista_B:   # 10 (pico >= 2003-01-02; NO incluye dotcom, pico 2000-03-24 < inicio)
+    gfc_2007_09:                ['2007-10-09', '2009-03-09']
+    flash_crash_euro1_2010:     ['2010-04-23', '2010-07-02']
+    us_downgrade_euro2_2011:    ['2011-04-29', '2011-10-03']
+    china_oil_2015_16:          ['2015-05-21', '2016-02-11']
+    volmageddon_2018q1:         ['2018-01-26', '2018-02-08']
+    fed_tightening_2018q4:      ['2018-09-20', '2018-12-24']
+    covid_2020:                 ['2020-02-19', '2020-03-23']
+    inflation_bear_2022:        ['2022-01-03', '2022-10-12']
+    svb_banking_2023:           ['2023-02-02', '2023-03-13']
+    tariff_selloff_2025:        ['2025-02-19', '2025-04-08']
+
+# ===========================================================================
+# FALSE POSITIVE WINDOWS — trampas: periodos de aspecto estresado que NO son crisis del
+# catalogo (deben puntuar NEGATIVO). Sirven para medir la disciplina del detector en Fase D.
+# ===========================================================================
+false_positive_windows:
+  taper_2013:                   # LA trampa canonica de la Pista B
+    ventana: ['2013-05-01', '2013-09-13']
+    en_catalogo: false
+    drawdown_sp500: -0.058      # por debajo de cualquier umbral equity => no es crisis
+    hito: 'testimonio Bernanke 2013-05-22'
+    firma: >
+      shock de tipos REALES puro: DFII10 +144bp, breakeven T10YIE -20bp (¡cae!), 10Y +132bp
+      (1.66->2.98), MOVE x2.4 (49->118); bear steepening T10Y2Y 1.46->2.52. Credito Baa-Aaa
+      PLANO (rango 0.27pp, media anual 0.87 < media historica 1.16), BAA10Y incluso cae; VIX
+      supera 20 solo 3 de 252 dias. OFR FSI_US negativo todo el año (min -1.68, max -0.46).
+    trampa: >
+      Un detector de VELOCIDAD de tipos (DFII10_change_z=3.83, MOVE_change_z=3.34, DGS10 z=3.11)
+      dispara aqui aunque NO hay crisis de mercado. Debe puntuar NEGATIVO. Un detector de
+      credito+equity/VIX estilo Capa 1 esta estructuralmente ciego (z~0): correcto que no dispare.
+  debtceiling_2013:             # coletazo de octubre 2013
+    ventana: ['2013-09-26', '2013-10-16']
+    en_catalogo: false
+    drawdown_sp500: -0.041
+    firma: >
+      estres localizado en T-bills por el techo de deuda: DTB3 0.00% (2013-09-26) -> 0.14%
+      (2013-10-15); credito corporativo Baa-Aaa impasible (~0.00pp), Delta10Y -0.27. Micro-evento
+      de funding/soberano tecnico, resuelto 2013-10-16.
+    trampa: >
+      Una feature de bills/funding puede disparar; no es regimen de crisis corporativa/equity.
+  selloff_2018:                 # PETICION EXPLICITA — trampa INVERSA (falso negativo), ver nota
+    en_catalogo: true
+    naturaleza: trampa_de_falso_negativo
+    sub_eventos:
+      volmageddon_2018q1:    ['2018-01-26', '2018-02-08']   # depth -0.102, tipo vol_spike, 13 dias
+      fed_tightening_2018q4: ['2018-09-20', '2018-12-24']   # depth -0.198, tipo correction
+    firma: >
+      OFR FSI CIEGO a estos eventos: volmageddon FSImax=-1.74 (por DEBAJO de la media),
+      fed_tightening FSImax=0.47 (apenas roza la media). Vol-spike de equity puro y brevisimo que
+      un indice de estres multi-mercado (33 vars) ni registra.
+    nota_coherencia: >
+      OJO: NO son falsos positivos — SI estan en crisis_catalog (aparecen tambien en crisis_windows
+      de ambas pistas) y deben puntuar POSITIVO. Se listan aqui, como pidio la Fase D, porque son la
+      trampa OPUESTA a taper_2013: un detector de Pista B basado en credito/FSI los trata como CALMA
+      (falso NEGATIVO); solo la vol de equity (VIX / vol realizada de Pista A) los captura. Son la
+      prueba discriminante que separa un sensor de vol de un indice de estres de credito/liquidez.
+  otras_trampas_no_caracterizadas: >
+    candidatas no medidas en esta ola de EDA (dejar como trabajo de Fase D si se necesitan mas
+    negativos duros): bond massacre 1994 (shock de tipos sin crisis equity; solo relevante para la
+    ventana larga de Pista A), bund tantrum abril-2015 (solapa parcialmente con china_oil_2015_16 del
+    catalogo) y repo spike sep-2019 (estres de funding sin drawdown). No se congelan aqui por falta
+    de numeros verificados en los reports.
+
+# ===========================================================================
+# DRAWDOWN TROUGHS — suelo (peak->trough) de cada crisis del catalogo. Etiqueta puntual de
+# evaluacion. Verificado sobre ^GSPC con error max 0.048pp (crisis_espina_profunda).
+# ===========================================================================
+drawdown_troughs:
+  great_crash_depresion_1929: '1932-06-01'
+  recesion_1937_38:           '1938-03-31'
+  recesion_1957_58:           '1957-10-22'
+  kennedy_slide_1962:         '1962-06-26'
+  credit_crunch_1966:         '1966-10-07'
+  bear_1969_70:               '1970-05-26'
+  oil_stagflation_1973:       '1974-10-03'
+  volcker_1980_82:            '1982-08-12'
+  black_monday_1987:          '1987-12-04'
+  gulf_war_sl_1990:           '1990-10-11'
+  ltcm_russia_1998:           '1998-08-31'
+  dotcom_2000_02:             '2002-10-09'
+  gfc_2007_09:                '2009-03-09'
+  flash_crash_euro1_2010:     '2010-07-02'
+  us_downgrade_euro2_2011:    '2011-10-03'
+  china_oil_2015_16:          '2016-02-11'
+  volmageddon_2018q1:         '2018-02-08'
+  fed_tightening_2018q4:      '2018-12-24'
+  covid_2020:                 '2020-03-23'
+  inflation_bear_2022:        '2022-10-12'
+  svb_banking_2023:           '2023-03-13'
+  tariff_selloff_2025:        '2025-04-08'
+
+# ===========================================================================
+# NOTAS — que ve cada pista fuera de muestra (OOS) y por que estas ventanas.
+# ===========================================================================
+notas:
+  cobertura_crisis:
+    pista_A: >
+      Ve las 22/22 crisis (1929 -> 2025), 10 de ellas recesiones NBER. Es la unica pista con
+      potencia estadistica secular: 4659 dias-crisis desde 1928 solo con SP500_vol_z. Permite una
+      validacion OOS con muchos eventos (p.ej. entrenar pre-1990 y testear post-1990, o k-fold por
+      evento). Punto debil: la vol realizada solo 've' los crashes/pánicos (z +2.5/+2.7) y es
+      NEGATIVA en los bear lentos (1957 -0.63, 1966 -0.46, 1969 -0.52); por eso el spine A lleva
+      SP500_momentum, que si marca el bear lento de forma persistente.
+    pista_B: >
+      Ve 10/22 crisis (GFC 2007 -> tariff 2025), todas en la era del panel rico. NO ve dotcom
+      (pico 2000-03-24, anterior al inicio 2003-01-02) ni nada pre-2000. A cambio discrimina mejor
+      por evento (VIX/MOVE/credito AUC 0.75-0.81). Su aportacion unica es el punto ciego 2013: no
+      como crisis (no lo es) sino como falso positivo que solo la VELOCIDAD de tipos distingue del
+      ruido. OOS: pocos eventos => validar por evento (leave-one-crisis-out), no por i.i.d.
+  por_que_estas_ventanas:
+    - >
+      Ventanas fijadas por DISPONIBILIDAD de datos, no por resultados (causal): A empieza en
+      1927-12-30 porque es la primera fecha de SP500 (^GSPC) y termina en 2026-05-29 por el lag de
+      publicacion de Fama-French; B empieza en 2003-01-02 porque es cuando arrancan los breakevens
+      TIPS (DFII10/T10YIE) y termina en 2026-07-10 por el ragged-edge de MOVE.
+    - >
+      NO se usa la interseccion 'ingenua' de cada pista: la de A diaria colapsa a 1991-2016 (gobiernan
+      BCOM y EURODOLLAR_TBILL_SPREAD, descontinuada) y la de B diaria es CONJUNTO VACIO (IORB arranca
+      2021-07-29, despues de que EURODOLLAR muera 2016-10-07). La ventana se define por BLOQUE de
+      features, no por interseccion total (cobertura_calidad §0, §8.1).
+    - >
+      El fin de A (2026-05-29) lo impone incluir los factores FF (spine diario 1926). Si Fase D
+      prescinde de FF y deriva el retorno de mercado de SP500, el panel A se extiende a 2026-07-17;
+      se documenta pero no es el defecto congelado.
+  reglas_de_uso_fase_D:
+    - "crisis_windows y drawdown_troughs son LABELS de evaluacion; jamas entran como feature (fuga)."
+    - "false_positive_windows se puntuan como NEGATIVO salvo selloff_2018 (es crisis de catalogo: POSITIVO)."
+    - "Toda feature se construye causal (expanding/rolling <= t); prohibido cualquier estadistico full-sample."
+    - "Panel sobre calendario NYSE; series FRED alineadas por ffill/merge_asof causal (<= t), sin imputar."
+    - "Estas ventanas/series/labels son la VARIABLE CONTROLADA: un experimento de Fase D no las altera."
+  validacion_externa_disponible:
+    - "OFR FSI (2000+) puede juzgar 11/22 crisis; ciego a volmageddon (FSImax=-1.74) — usar laxo, no como label."
+    - "NBER (USRECD) etiqueta 10/22 pero LLEGA TARDE (solape <30% en recesion_1957_58, dotcom, bear_1969_70)."
+    - "Usar OFR/NBER como validacion laxa complementaria; el label primario es crisis_catalog (drawdown)."

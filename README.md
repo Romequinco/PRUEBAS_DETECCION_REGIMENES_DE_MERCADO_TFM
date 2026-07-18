@@ -86,7 +86,7 @@ pip install -r requirements.txt
 |---|---|---|
 | 1 | Reorganización + narrativa | ✅ |
 | 2 | Datos: estado del arte + descarga máxima | ✅ (145/161 series; ver `data/SOTA_datos.md` y `data/catalog.yaml`) |
-| 3 | EDA + análisis profundo | ⏳ |
+| 3 | EDA + análisis profundo | ✅ (7 slices, 62 figs, `docs/EDA_v2.md` + benchmark congelado `data/benchmark_spec.yaml`) |
 | 4 | Preprocesado listo-para-ejecutar | ⏳ |
 | 5 | Documentación final | ⏳ |
 | D | Re-evaluar los 12 sobre el dataset congelado + diseñar el detector | 🔜 (siguiente macro-sesión) |

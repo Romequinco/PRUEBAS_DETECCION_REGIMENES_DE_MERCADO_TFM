@@ -1859,6 +1859,15 @@ pista_B:
     verificado: true
     url: "https://github.com/datasets/bond-yields-us-10y"
 
+  # -- Oro-precio y credito/treasury COTIZADOS (añadidos post-EDA; core para regimenes:
+  #    refugio + spread de credito HYG-IEF + duracion. Los usa src/features.py v2) --
+  - {nombre_interno: GOLD_GLD, descripcion: "Oro (SPDR Gold Shares GLD)", fuente: yfinance, id: "GLD", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Refugio; sube en risk-off/estres", verificado: true, url: "https://finance.yahoo.com/quote/GLD"}
+  - {nombre_interno: GOLD_FUT, descripcion: "Oro futuros continuos (GC=F)", fuente: yfinance, id: "GC=F", auth: none, granularidad: diaria, pista: B, rol: fallback, relevancia_regimen: "Refugio, historico mas profundo que GLD", verificado: true, url: "https://finance.yahoo.com/quote/GC=F"}
+  - {nombre_interno: HYG_CREDIT, descripcion: "High Yield corp bond ETF (HYG)", fuente: yfinance, id: "HYG", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Credito de riesgo cotizado; co-mueve con equity, sensor de estres crediticio", verificado: true, url: "https://finance.yahoo.com/quote/HYG"}
+  - {nombre_interno: IEF_TREASURY, descripcion: "7-10Y Treasury ETF (IEF)", fuente: yfinance, id: "IEF", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Duracion media; base del spread de credito HYG-IEF", verificado: true, url: "https://finance.yahoo.com/quote/IEF"}
+  - {nombre_interno: LQD_IGCREDIT, descripcion: "Investment Grade corp bond ETF (LQD)", fuente: yfinance, id: "LQD", auth: none, granularidad: diaria, pista: B, rol: enricher, relevancia_regimen: "Credito IG cotizado; spread LQD-IEF = estres IG", verificado: true, url: "https://finance.yahoo.com/quote/LQD"}
+  - {nombre_interno: TLT_TREASURY, descripcion: "20Y+ Treasury ETF (TLT)", fuente: yfinance, id: "TLT", auth: none, granularidad: diaria, pista: B, rol: core, relevancia_regimen: "Duracion larga; refugio de tipos, corr con equity cambia de signo", verificado: true, url: "https://finance.yahoo.com/quote/TLT"}
+
 # ---------------------------------------------------------------------------
 # Validacion externa: indices de estres ya hechos + labels de recesion/crisis
 # (ground truth laxo de regimen; rol=validation). Poblado en FASE 2.

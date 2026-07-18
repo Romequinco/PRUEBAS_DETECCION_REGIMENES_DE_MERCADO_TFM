@@ -62,14 +62,15 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
         sid = entry.get("id", "")
         pista = entry.get("pista", "?")
         rol = entry.get("rol", "?")
-        if only and nombre not in only:
-            continue
         outdir = RAW / fuente
         outdir.mkdir(parents=True, exist_ok=True)
         out = outdir / f"{nombre}.parquet"
 
         rec = {"nombre": nombre, "fuente": fuente, "id": sid, "pista": pista, "rol": rol}
-        if out.exists() and not force:
+        # `only` acota QUE se (re)descarga, pero las demas series ya en disco SIGUEN
+        # registrandose como CACHE -> `only` nunca vacia el coverage_report.
+        targeted = (not only) or (nombre in only)
+        if out.exists() and (not force or not targeted):
             try:
                 s = pd.read_parquet(out).iloc[:, 0]
                 rec.update(_meta_from_series(s, cached=True))
@@ -79,6 +80,8 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
                 continue
             except Exception:  # noqa: BLE001  (cache corrupto -> re-descarga)
                 pass
+        if not targeted:
+            continue  # no esta en disco y no se ha pedido -> no se registra
         try:
             obj = sources.fetch(fuente, sid, url=entry.get("url"))
             obj = obj.sort_index()
