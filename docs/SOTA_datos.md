@@ -15,7 +15,7 @@ Este documento es el estado del arte **de los datos** (no de los detectores). Ex
 | Pista | Nombre | Ventana objetivo | Filosofía |
 |---|---|---|---|
 | **A** | Espina histórica **profunda** | ~1871/1926/1950 → hoy | **Pocas** features, máxima historia, **maximizar el nº de crisis** (Gran Depresión, 1937, estanflación 70s, 1987, dotcom, GFC, COVID…). Series espina mensuales/diarias muy largas. |
-| **B** | Panel **rico** multi-activo | ~1990/2007 → hoy | **Muchas** features cross-asset (vol, crédito, curva, FX, commodities, liquidez, macro). Granularidad y diversidad para atacar regímenes modernos (incluido el punto ciego de 2013). |
+| **B** | Panel **rico** multi-activo | banco 2003+ (vol-of-vol 2007) → hoy | **Muchas** features cross-asset (vol, crédito, curva, FX, commodities, liquidez, macro). Granularidad y diversidad para atacar regímenes modernos (incluido el punto ciego de 2013). |
 
 Muchas series sirven a **ambas** (p.ej. VIX desde 1990, DGS10 desde 1962): son profundas y a la vez parte del panel rico.
 
@@ -398,7 +398,7 @@ Series elegidas por categoría, con rol y pista. Fuente: `FRED` (auth FRED_API_K
 | CRISIS_WINDOWS_SP500 | yf `^GSPC` (derivada) | 1927-12 | validación | validation |
 | crisisJST | acad JST R6 | 1870 (anual) | validación | validation |
 
-**Reparto por pista (aproximado, series elegidas):** Pista A ≈ 35-40 series (espina profunda), Pista B ≈ 90-100 series (panel rico), ~15 sirven a ambas, ~14 de validación. La Pista A prioriza profundidad (muchas series arrancan en 1913-1971); la Pista B prioriza granularidad cross-asset (mayoría 1990/2007+).
+**Reparto por pista (aproximado, series elegidas):** Pista A ≈ 35-40 series (espina profunda), Pista B ≈ 90-100 series (panel rico), ~15 sirven a ambas, ~14 de validación. La Pista A prioriza profundidad (muchas series arrancan en 1913-1971); la Pista B prioriza granularidad cross-asset (banco 2003+).
 
 ---
 

@@ -4,6 +4,11 @@ Todo lo **relevante y durable** del TFM vive aquí o se enlaza desde aquí: las 
 tomadas, lo **encontrado** en los datos, y la **teoría**. Si algo no está en este índice, o es
 código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exploracion/`).
 
+## 0. Conceptos (empieza aquí)
+- **[`GLOSARIO.md`](GLOSARIO.md)** — definiciones canónicas: las dos **pistas** (A/B/`ambas`/`validacion`),
+  los cinco **roles** (`spine/core/enricher/fallback/validation`), la **causalidad** (no look-ahead) y la
+  **regla anti-fuga** (`validation` = ground truth, nunca feature). Lo que los notebooks dan por sabido.
+
 ## 1. Decisiones (por qué se hizo cada cosa)
 - **[`decisions/ADR-001-rebase-datos.md`](decisions/ADR-001-rebase-datos.md)** — la decisión madre:
   por qué se congelaron los 12 detectores y se re-basó la capa de datos (con las cifras que lo
@@ -25,8 +30,12 @@ código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exp
   fat tails, clustering de vol, correlación acción-bono que cambia de signo, el complejo de
   volatilidad, crédito/curva y **el punto ciego 2013** (trampa de tipos, no crisis), profundidad =
   potencia, ranking causal de features.
-- **[`../notebooks/01_eda.ipynb`](../notebooks/01_eda.ipynb)** — recomputo en vivo de los
-  hallazgos-cabecera (ejecutable, autónomo).
+- **[`../notebooks/01_eda.ipynb`](../notebooks/01_eda.ipynb)** — EDA maestro (12 secciones, 48 figuras):
+  nulos, distribuciones/outliers, correlación, dependencia no lineal, clustering, PCA, estacionariedad,
+  cross-asset, dinámica temporal.
+- **[`../notebooks/02_diseno_preprocesado.ipynb`](../notebooks/02_diseno_preprocesado.ipynb)** —
+  decisiones del preprocesado demostradas (features, frecuencias, alineación causal); antecesor de
+  `03_preprocesado` (pendiente).
 
 ## 4. Teoría y contexto
 - **[`context/`](context/)** — propuesta original del TFM + resumen de la tarea previa (HMM gaussiano).

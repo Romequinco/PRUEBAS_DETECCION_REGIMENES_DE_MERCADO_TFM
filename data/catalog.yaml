@@ -5,14 +5,18 @@
 # CSV de OFR y repos GitHub datahub/PDDL). Cada serie declara: nombre interno, fuente,
 # ticker/id, fallback, histórico verificado, granularidad, rol y a qué pista pertenece.
 #
-# Las dos pistas (decisión ADR-001):
-#   A = espina histórica profunda (pocas features, ~1871/1950+, muchas crisis)
-#   B = panel rico multi-activo   (crédito/curva/vol/FX/macro, ~1990/2007+, ataca 2013)
+# Las dos pistas (decisión ADR-001; definiciones canónicas en docs/GLOSARIO.md):
+#   A = espina histórica profunda: banco desde 1927 (S&P500 diario ^GSPC lo gobierna;
+#       crédito/macro mensual desde 1913-1919). Pocas features, 22 crisis -> potencia.
+#   B = panel rico multi-activo: banco desde 2003 (breakevens TIPS; sub-banco vol-of-vol 2007).
+#       Crédito/curva/vol/FX/macro, muchas features, 10 crisis -> riqueza, ataca 2013.
 #
 # Convención de placement: cada serie aparece UNA sola vez (deduplicada). Las series
 # marcadas pista: ambas se usan en las DOS pistas; se listan físicamente bajo pista_A
 # (su hogar histórico profundo) y el campo `pista: ambas` señala el doble uso en el panel B.
-# `rol`: spine | core | enricher | fallback | validation.
+# `rol`: spine | core | enricher | fallback | validation (definiciones en docs/GLOSARIO.md).
+#   spine=columna vertebral | core=feature principal | enricher=enriquecedor opcional |
+#   fallback=sustituto redundante | validation=ground truth, NUNCA feature (anti-fuga).
 # `fallback`: fuente/ticker redundante verificado para la misma serie.
 # Series verificado: false se marcan `estado: candidata` (no verificadas o fuente bloqueada/retirada).
 
@@ -27,19 +31,12 @@ meta:
     dedup: "una serie que aparece en varias categorias va una vez, con la mejor fuente como primaria y la otra como `fallback`"
     validacion: "los índices de estrés/recesión son ground-truth (rol=validation); NUNCA usarlos a la vez como feature y como label (fuga)"
   resumen:
-    pista_A:
-      total: 77
-      solo_A: 42
-      ambas_dual_uso: 35
-      candidatas: 2
-    pista_B:
-      total: 82
-      candidatas: 10
-    validacion_externa:
-      total: 23
-      candidatas: 1
-    total_series_verificadas: 182
-    total_candidatas: 13
+    # Recuento REAL (reconciliado con data/raw/coverage_report.csv):
+    total_series_declaradas: 174        # bloques: pista_A 79 + pista_B 70 + validacion_externa 25
+    descargadas_ok: 166
+    no_descargables_declaradas: 8       # stooq bloqueado, listas no-serie, JST/Philly URL, etc.
+    por_campo_pista: { A: 44, ambas: 35, B: 70, validacion: 25 }   # 'ambas' viven bajo pista_A
+    por_rol: { spine: 23, core: 44, enricher: 62, fallback: 24, validation: 21 }
   notas_globales:
     - "Stooq BLOQUEADO en este entorno (challenge JS / proof-of-work): todos los fallbacks stooq quedan como candidatas."
     - "ICE Data Indices rompió dos históricos en FRED: OAS BofA (BAML*) capadas a ventana rodante de 3 años (desde abril-2026) y el fixing diario del oro LBMA (GOLDPMGBD228NLBM) retirado. Sustitutos verificados: spread Moody's Baa-Aaa y HYG/IEF (crédito); GC=F/GLD (oro)."
@@ -61,7 +58,7 @@ fuentes:  # disponibilidad verificada 2026-07-18 (no marketing)
 # ===========================================================================
 pista_A:
   descripcion: "S&P500 + factores + volatilidad + spines profundos de curva/crédito/FX/commodities/macro, máxima historia, para maximizar nº de crisis"
-  ventana_objetivo: "~1871 -> hoy"
+  ventana_objetivo: "banco desde 1927 (S&P500 diario); datos profundos hasta 1854/1871"
   series:
 
   # ---- Equity / factores / valoración (espina diaria y mensual profunda) ----
@@ -1119,11 +1116,11 @@ pista_A:
     url: "https://stooq.com/q/d/l/?s=%5Edji&i=d"
 
 # ===========================================================================
-# PISTA B — Panel rico multi-activo (~1990/2007+; ataca el punto ciego 2013)
+# PISTA B — Panel rico multi-activo (banco desde 2003; sub-banco vol-of-vol 2007; ataca 2013)
 # ===========================================================================
 pista_B:
   descripcion: "equity/sectores/breadth, vol cross-asset, crédito (OAS+ETFs), curva completa, funding moderno, FX pares+broad, commodities"
-  ventana_objetivo: "~1990/2007 -> hoy"
+  ventana_objetivo: "banco desde 2003 (breakevens TIPS); sub-banco vol-of-vol desde 2007"
   series:
 
   # ---- Volatilidad cross-asset ----

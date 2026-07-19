@@ -58,11 +58,13 @@ antes de volver a comparar. En concreto:
 2. **Adquisición de datos máxima y reproducible**, todo gratis: FRED (con API key), yfinance,
    Stooq, datasets de Kaggle y repos de GitHub, históricos académicos (Shiller, Ken French) e
    **índices de estrés ya hechos** (OFR FSI, NFCI, STLFSI) como validación externa.
-3. **Dos pistas de datos en paralelo** (no se puede todo a la vez):
-   - **Pista A — Espina histórica profunda**: pocas features (S&P 500 + vol) desde ~1950 →
-     **muchas crisis (10+)**, ataca el n≈4.
-   - **Pista B — Panel rico multi-activo**: crédito, curva, vol, FX, macro desde ~1990/2007 →
-     ataca el punto ciego de 2013 (taxonomía).
+3. **Dos pistas de datos en paralelo** (no se puede todo a la vez; definiciones canónicas en
+   [`docs/GLOSARIO.md`](../GLOSARIO.md), cifras finales congeladas en `data/benchmark_spec.yaml`):
+   - **Pista A — Espina histórica profunda**: pocas features (S&P 500 + vol + factores + crédito/macro
+     profundos); banco **desde 1927** (lo gobierna el S&P 500 diario; crédito/macro mensual desde
+     1913-1919) → **22 crisis**, ataca el n≈4.
+   - **Pista B — Panel rico multi-activo**: crédito, curva, breakevens, vol, sectores, FX; banco
+     **desde 2003** (breakevens TIPS; sub-banco vol-of-vol 2007) → 10 crisis, ataca el punto ciego de 2013.
 4. **Benchmark fijo por pista**: cada pista tiene su ventana + pool de features **congelado** →
    *un leaderboard justo 1:1 dentro de cada pista*; entre pistas, comparación cualitativa declarada.
    Así desaparece el "3,3× datos".

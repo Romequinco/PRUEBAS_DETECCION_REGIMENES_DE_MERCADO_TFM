@@ -31,10 +31,12 @@ la **base de datos sólida** sobre la que hacerlo.
 │
 ├── notebooks/                    ← planos, ordenados, ejecutados y autónomos
 │   ├── 00_descarga.ipynb         ← panorámica de datos: tabla completa + visualizaciones + descarga
-│   └── 01_eda.ipynb              ← EDA maestro (recomputa los hallazgos clave)
+│   ├── 01_eda.ipynb              ← EDA maestro (12 secciones, recomputa los hallazgos)
+│   └── 02_diseno_preprocesado.ipynb ← decisiones del preprocesado (03_preprocesado pendiente)
 │
 ├── docs/                         ← TODO el conocimiento del proyecto (empieza por docs/README.md)
 │   ├── README.md                 ← índice: decisiones, datos, EDA, teoría
+│   ├── GLOSARIO.md               ← conceptos canónicos (pistas A/B, roles, causalidad, anti-fuga)
 │   ├── decisions/                ← ADRs (por qué se tomó cada decisión)
 │   ├── EDA_v2.md                 ← informe EDA completo   · figs_eda/  figuras del informe
 │   ├── SOTA_datos.md             ← estado del arte de datos (fuentes, historia, procedencia)
@@ -43,8 +45,8 @@ la **base de datos sólida** sobre la que hacerlo.
 └── capa1_exploracion/            ← ❄️ Capa 1 CONGELADA: los 12 detectores + su marco (archivo)
 ```
 
-**Si acabas de llegar, lee:** `docs/README.md` → `docs/decisions/ADR-001-rebase-datos.md` →
-`capa1_exploracion/README.md`.
+**Si acabas de llegar, lee:** `docs/README.md` → **`docs/GLOSARIO.md`** (conceptos: pistas A/B, roles,
+anti-fuga) → `docs/decisions/ADR-001-rebase-datos.md` → `capa1_exploracion/README.md`.
 
 ## Principio rector (no negociable)
 
