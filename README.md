@@ -56,15 +56,16 @@ anti-fuga) → `docs/decisions/ADR-001-rebase-datos.md` → `capa1_exploracion/R
 - **Evaluación walk-forward / out-of-sample**: nada se juzga in-sample.
 - **Misma interfaz, mismas métricas**: cada detector implementa `RegimeDetector` (`evaluation.py`).
 
-## Las dos pistas de datos (decisión ADR-001)
+## Las dos pistas de datos (decisión ADR-001, ventanas reajustadas por ADR-002)
 
-| Pista | Qué | Ventana | Crisis | Ataca |
-|---|---|---|:---:|---|
-| **A — Espina profunda** | S&P 500 + vol + factores + crédito/macro profundos | 1927 → 2026 | **22** | el n≈4 (potencia) |
-| **B — Panel rico** | crédito, curva, vol, breakevens, sectores, FX | 2003 → 2026 | 10 | el punto ciego de 2013 |
+| Pista | Qué | Ventana | Features | Crisis | Ataca |
+|---|---|---|:---:|:---:|---|
+| **A — Espina profunda + curva** | S&P 500 + vol + factores + crédito/macro profundos + curva de tipos completa | 1962-01-02 → 2026-05-29 | **41** | **18** | el n≈4 (potencia); sacrifica conscientemente 4 crisis pre-1962 (incluida la Gran Depresión) a cambio de la curva de tipos |
+| **B — Panel rico** | espina de A + crédito HY/IG, curva/breakevens, vol complex, 9 sectores, 11 índices de amplitud, FX | 2007-04-11 → 2026-05-29 | **106** | 10 | el punto ciego de 2013; mismo fin que A a propósito, cero coste en crisis frente a 2003 |
 
-Cada pista congela su ventana + features en `data/benchmark_spec.yaml` → *un leaderboard justo
-1:1 dentro de cada pista*.
+`A ⊆ B` por construcción (nesting por fecha: toda serie viva en 1962 también lo está en 2007). Cada
+pista congela su ventana + features en `data/benchmark_spec.yaml` → *un leaderboard justo 1:1 dentro
+de cada pista*. Detalle del reajuste: [`docs/decisions/ADR-002-ajuste-ventanas.md`](docs/decisions/ADR-002-ajuste-ventanas.md).
 
 ### Configuración local
 ```bash

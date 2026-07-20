@@ -9,6 +9,13 @@ echado a tierra: cada afirmación lleva su número concreto y la serie/fecha de 
 enlaza su figura clave, y cada tema cierra con **qué implica para el detector**. Incorpora el veredicto
 de tres auditorías independientes (cifras, causalidad/look-ahead, completitud) — ver §0 y §11.
 
+> ⚠️ **Ventanas reajustadas por [`ADR-002`](decisions/ADR-002-ajuste-ventanas.md) (2026-07-20).** Este
+> informe (§1-§11 y la tabla "10 números") documenta el EDA **tal como se hizo** (Pista A analizada
+> desde 1927 con 22 crisis, Pista B desde 2003/2007 con 10) — es la evidencia que motivó la elección.
+> El banco **operativo** hoy en `data/benchmark_spec.yaml` es distinto: **Pista A = 1962-01-02→2026-05-29
+> (41 features, 18/22 crisis)**, **Pista B = 2007-04-11→2026-05-29 (106 features, 10/22 crisis)**, mismo
+> fin en las dos. Detalle completo en la **Adenda post-EDA (2026-07-20)** al final de este documento.
+
 ---
 
 ## Índice
@@ -609,3 +616,33 @@ Habilitan las features clásicas de la Capa 1 que `src/features.py` referencia (
 `TLT_ret_z`, `credit_spread_z = HYG−IEF`, `GOLD_ret_z`, `corr_spx_bond`). **No se han incorporado
 al `benchmark_spec.yaml` congelado** (que se fija con la evidencia del EDA); su análisis y posible
 entrada al banco quedan para una revisión del benchmark en la siguiente iteración.
+
+---
+
+## Adenda post-EDA (2026-07-20) — reajuste de ventanas y ampliación del pool (ADR-002)
+
+La revisión de esta iteración detectó que el fin de ventana de §1 (`cobertura_calidad`) se había
+calculado dejando que una serie **mensual** (`GW_PREDICTORS_MONTHLY`) lo gobernara — inconsistente con
+la regla, ya vigente en `02_diseno_preprocesado.ipynb` §3.1, de que las mensuales se tratan con
+**lag de publicación + ffill** y nunca truncan el fin. Corregido: el fin lo gobierna siempre la serie
+**diaria** más fresca. De paso se decidió ampliar deliberadamente el pool de features de 35 a 106
+series únicas (64% de las 166), aprovechando que la mayoría de las descargadas están sanas pero no se
+usaban. Detalle completo, criterio y verificación:
+[`docs/decisions/ADR-002-ajuste-ventanas.md`](decisions/ADR-002-ajuste-ventanas.md).
+
+**La tabla de §1 queda ampliada así** (nuevas filas elegidas en **negrita**; el resto de la escalera de
+opciones consideradas —desde 1927 con 11 features hasta 2007 con 106— se detalla en la ADR):
+
+| Pista | Ventana elegida | Features | Nº crisis |
+|---|---|---:|:---:|
+| **A — equity/vol/factores/crédito/macro/curva de tipos** | **1962-01-02 → 2026-05-29** | **41** | **18/22** |
+| **B — + crédito HY/curva/vol-complex/sectores/breadth/FX** | **2007-04-11 → 2026-05-29** | **106** | **10/22** |
+
+Cambios respecto a la Fase 3 original: (1) A se mueve de 1927 a 1962 — pierde conscientemente 4 crisis
+pre-1962 (incluida la Gran Depresión, la más severa del catálogo) a cambio de incorporar la curva de
+tipos completa como bloque nuevo; (2) B se mueve de 2003 a 2007 **sin perder ninguna crisis** (mismas
+10 que ya veían los cortes de 2002 y 2003); (3) A y B se fijan **al mismo fin** (2026-05-29) a
+propósito, incluyendo los 4 factores Fama-French también en B (aunque eso cueste 6 semanas de
+ragged-edge reciente) para que ambas pistas sean directamente comparables en el tiempo; (4) por
+construcción (nesting por fecha de corte sobre el mismo pool unificado), `A ⊆ B` — ya no son dos
+listas curadas por separado que puedan divergir.

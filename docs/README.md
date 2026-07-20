@@ -13,6 +13,11 @@ código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exp
 - **[`decisions/ADR-001-rebase-datos.md`](decisions/ADR-001-rebase-datos.md)** — la decisión madre:
   por qué se congelaron los 12 detectores y se re-basó la capa de datos (con las cifras que lo
   motivaron: incomparabilidad 1:1, ~4 crisis, FRED capado).
+- **[`decisions/ADR-002-ajuste-ventanas.md`](decisions/ADR-002-ajuste-ventanas.md)** — reajuste de
+  `benchmark_spec.yaml`: el fin de ventana pasa a estar gobernado por la serie diaria más fresca (no
+  una mensual), el pool de features crece de 35 a 106 series únicas (64% de las 166), Pista A se mueve
+  a 1962 (41 features, 18/22 crisis) y Pista B a 2007 (106 features, 10/22 crisis) con el **mismo fin**
+  que A a propósito.
 
 ## 2. Datos (qué se recopiló y por qué)
 - **[`SOTA_datos.md`](SOTA_datos.md)** — estado del arte de datos: qué series existen para detección
@@ -50,4 +55,4 @@ código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exp
 
 ---
 
-*Orden de lectura sugerido:* ADR-001 → SOTA_datos → EDA_v2 → benchmark_spec → capa1_exploracion.
+*Orden de lectura sugerido:* ADR-001 → SOTA_datos → EDA_v2 → ADR-002 → benchmark_spec → capa1_exploracion.
