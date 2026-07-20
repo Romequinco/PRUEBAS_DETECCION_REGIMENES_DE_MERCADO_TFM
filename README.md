@@ -27,12 +27,13 @@ la **base de datos sólida** sobre la que hacerlo.
 │   ├── catalog.yaml              ← universo de datos declarado (las 2 pistas + crisis_catalog)
 │   ├── benchmark_spec.yaml       ← BANCO CONGELADO por pista (variable controlada de la Fase D)
 │   ├── raw/                      ← 166 series .parquet (gitignored) + provenance + coverage
-│   └── processed/
+│   └── processed/                ← pista{A,B}_{diaria,mensual}.parquet + labels.parquet + _meta.json
 │
 ├── notebooks/                    ← planos, ordenados, ejecutados y autónomos
 │   ├── 00_descarga.ipynb         ← panorámica de datos: tabla completa + visualizaciones + descarga
 │   ├── 01_eda.ipynb              ← EDA maestro (12 secciones, recomputa los hallazgos)
-│   └── 02_diseno_preprocesado.ipynb ← decisiones del preprocesado (03_preprocesado pendiente)
+│   ├── 02_diseno_preprocesado.ipynb ← decisiones del preprocesado (qué features, transforms, alineación)
+│   └── 03_preprocesado.ipynb     ← implementa 02: paneles causales pista{A,B}_{diaria,mensual} + labels
 │
 ├── docs/                         ← TODO el conocimiento del proyecto (empieza por docs/README.md)
 │   ├── README.md                 ← índice: decisiones, datos, EDA, teoría
