@@ -231,6 +231,7 @@ data/processed/*
 results/*.png
 results/_archive/*.png
 results/*.parquet
+results/benchmark_v2/panels/*.parquet
 
 # Artefactos intermedios de LaTeX (el .pdf y .tex SI se versionan; tectonic los regenera)
 report/*.aux
@@ -250,6 +251,7 @@ capa1_exploracion/data/processed/*
 !capa1_exploracion/data/raw/provenance.json
 !capa1_exploracion/data/raw/coverage_report.csv
 capa1_exploracion/results/*.png
+capa1_exploracion/results/ablation_hsmm/*.png
 capa1_exploracion/results/_archive/*.png
 capa1_exploracion/results/*.parquet
 capa1_exploracion/report/*.aux

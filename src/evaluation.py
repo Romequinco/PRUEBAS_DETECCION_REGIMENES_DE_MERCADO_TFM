@@ -60,6 +60,55 @@ DRAWDOWN_TROUGHS: dict[str, str] = {
 # histórico más largo (p. ej. solo S&P 500 + VIX, disponibles desde 1990).
 
 
+def configure_event_windows(
+    crisis_windows: dict[str, tuple[str, str]],
+    false_positive_windows: dict[str, tuple[str, str]],
+    drawdown_troughs: dict[str, str],
+) -> None:
+    """Configura las etiquetas de evaluación para un benchmark concreto.
+
+    La Capa 1 usaba cuatro episodios fijos. La Fase D v2 tiene dos pistas con
+    catálogos diferentes, congelados en ``data/benchmark_spec.yaml``. Esta función
+    permite cambiar únicamente las *labels* del juez antes de ejecutar cada pista;
+    no altera features, ventanas de entrenamiento ni parámetros del detector.
+    """
+    if not crisis_windows:
+        raise ValueError("crisis_windows no puede estar vacío.")
+    if not false_positive_windows:
+        raise ValueError("false_positive_windows no puede estar vacío.")
+    missing = set(crisis_windows) - set(drawdown_troughs)
+    if missing:
+        raise ValueError(f"Faltan troughs para estas crisis: {sorted(missing)}")
+
+    def _windows(values: dict[str, tuple[str, str]]) -> dict[str, tuple[str, str]]:
+        out: dict[str, tuple[str, str]] = {}
+        for name, bounds in values.items():
+            if len(bounds) != 2:
+                raise ValueError(f"Ventana inválida para {name!r}: {bounds!r}")
+            start, end = map(str, bounds)
+            if pd.Timestamp(start) > pd.Timestamp(end):
+                raise ValueError(f"Ventana invertida para {name!r}: {bounds!r}")
+            out[str(name)] = (start, end)
+        return out
+
+    new_crisis_windows = _windows(crisis_windows)
+    new_false_positive_windows = _windows(false_positive_windows)
+    new_drawdown_troughs = {
+        str(name): str(drawdown_troughs[name]) for name in new_crisis_windows
+    }
+
+    # Se mutan los diccionarios en lugar de reasignarlos. ``src.viz`` y otros
+    # consumidores históricos importan estas constantes por referencia; una
+    # reasignación dejaría esos módulos apuntando silenciosamente a las ventanas
+    # antiguas.
+    CRISIS_WINDOWS.clear()
+    CRISIS_WINDOWS.update(new_crisis_windows)
+    FALSE_POSITIVE_WINDOWS.clear()
+    FALSE_POSITIVE_WINDOWS.update(new_false_positive_windows)
+    DRAWDOWN_TROUGHS.clear()
+    DRAWDOWN_TROUGHS.update(new_drawdown_troughs)
+
+
 def _in_any_window(dates: pd.DatetimeIndex, windows: dict[str, tuple[str, str]]) -> np.ndarray:
     """Máscara booleana: True si la fecha cae dentro de alguna ventana [a, b]."""
     mask = np.zeros(len(dates), dtype=bool)

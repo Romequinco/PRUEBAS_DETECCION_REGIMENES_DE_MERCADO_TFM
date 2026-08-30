@@ -7,11 +7,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1927-12-30",
-    "fin": "2026-07-20",
-    "n_obs": 24753,
-    "status": "OK",
-    "checksum": "034bf1df390be331",
-    "url": "https://finance.yahoo.com/quote/%5EGSPC"
+    "fin": "2026-08-28",
+    "n_obs": 24782,
+    "status": "CACHE",
+    "checksum": "c25b0e56910e3ade"
   },
   "SP500_TR": {
     "nombre": "SP500_TR",
@@ -21,11 +20,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1988-01-04",
-    "fin": "2026-07-20",
-    "n_obs": 9708,
-    "status": "OK",
-    "checksum": "f06f893337d8c2f1",
-    "url": "https://finance.yahoo.com/quote/%5ESP500TR"
+    "fin": "2026-08-28",
+    "n_obs": 9737,
+    "status": "CACHE",
+    "checksum": "c0d949fba72be7f3"
   },
   "SHILLER_SP500_CAPE": {
     "nombre": "SHILLER_SP500_CAPE",
@@ -35,11 +33,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1871-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1866,
-    "status": "OK",
-    "checksum": "cd29c37e49603644",
-    "url": "https://github.com/datasets/s-and-p-500"
+    "fin": "2026-07-01",
+    "n_obs": 1867,
+    "status": "CACHE",
+    "checksum": "ae693794ae190f08"
   },
   "FF_FACTORS_3_DAILY": {
     "nombre": "FF_FACTORS_3_DAILY",
@@ -49,11 +46,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1926-07-01",
-    "fin": "2026-05-29",
-    "n_obs": 26253,
-    "status": "OK",
-    "checksum": "9dd41b14ee84fa96",
-    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    "fin": "2026-06-30",
+    "n_obs": 26274,
+    "status": "CACHE",
+    "checksum": "e818ff1c99e2e24e"
   },
   "FF_FACTORS_3_MONTHLY": {
     "nombre": "FF_FACTORS_3_MONTHLY",
@@ -63,11 +59,10 @@
     "rol": "fallback",
     "granularidad": "mensual",
     "inicio": "1926-07-01",
-    "fin": "2026-05-01",
-    "n_obs": 1199,
-    "status": "OK",
-    "checksum": "b896d634edbd4e5e",
-    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    "fin": "2026-06-01",
+    "n_obs": 1200,
+    "status": "CACHE",
+    "checksum": "38421c6b775243a1"
   },
   "FF_MOM_DAILY": {
     "nombre": "FF_MOM_DAILY",
@@ -77,11 +72,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1926-11-03",
-    "fin": "2026-05-29",
-    "n_obs": 26152,
-    "status": "OK",
-    "checksum": "52278f6410b04042",
-    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    "fin": "2026-06-30",
+    "n_obs": 26173,
+    "status": "CACHE",
+    "checksum": "a4445e4d7278ec25"
   },
   "FF_FACTORS_5_DAILY": {
     "nombre": "FF_FACTORS_5_DAILY",
@@ -91,11 +85,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1963-07-01",
-    "fin": "2026-05-29",
-    "n_obs": 15833,
-    "status": "OK",
-    "checksum": "5f01bfbc9d421529",
-    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    "fin": "2026-06-30",
+    "n_obs": 15854,
+    "status": "CACHE",
+    "checksum": "0dd7f07b9a9332e9"
   },
   "FF_5_INDUSTRY": {
     "nombre": "FF_5_INDUSTRY",
@@ -105,11 +98,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1926-07-01",
-    "fin": "2026-05-29",
-    "n_obs": 26253,
-    "status": "OK",
-    "checksum": "d83c0208cfd15741",
-    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
+    "fin": "2026-06-30",
+    "n_obs": 26274,
+    "status": "CACHE",
+    "checksum": "1f8dac4b301a99b7"
   },
   "REALIZED_VOL_SP500": {
     "nombre": "REALIZED_VOL_SP500",
@@ -119,11 +111,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1927-12-30",
-    "fin": "2026-07-20",
-    "n_obs": 24753,
-    "status": "OK",
-    "checksum": "abd110a959c93cc0",
-    "url": "https://finance.yahoo.com/quote/%5EGSPC"
+    "fin": "2026-08-28",
+    "n_obs": 24782,
+    "status": "CACHE",
+    "checksum": "ce3daff62a99ddbb"
   },
   "VXO": {
     "nombre": "VXO",
@@ -135,9 +126,8 @@
     "inicio": "1986-01-02",
     "fin": "2021-09-23",
     "n_obs": 9002,
-    "status": "OK",
-    "checksum": "a46dd84a5935a93a",
-    "url": "https://fred.stlouisfed.org/series/VXOCLS"
+    "status": "CACHE",
+    "checksum": "a46dd84a5935a93a"
   },
   "VIX": {
     "nombre": "VIX",
@@ -147,11 +137,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1990-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 9232,
-    "status": "OK",
-    "checksum": "0458d375f7d559e5",
-    "url": "https://fred.stlouisfed.org/series/VIXCLS"
+    "fin": "2026-08-27",
+    "n_obs": 9261,
+    "status": "CACHE",
+    "checksum": "9b42e81d0354a8ed"
   },
   "SKEW": {
     "nombre": "SKEW",
@@ -161,11 +150,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1990-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 9128,
-    "status": "OK",
-    "checksum": "1c578d57c70f136b",
-    "url": "https://finance.yahoo.com/quote/%5ESKEW"
+    "fin": "2026-08-27",
+    "n_obs": 9157,
+    "status": "CACHE",
+    "checksum": "6aa7b87f167eef3b"
   },
   "NASDAQ_COMP": {
     "nombre": "NASDAQ_COMP",
@@ -175,11 +163,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1971-02-05",
-    "fin": "2026-07-20",
-    "n_obs": 13979,
-    "status": "OK",
-    "checksum": "4b3df8ca1d25702e",
-    "url": "https://finance.yahoo.com/quote/%5EIXIC"
+    "fin": "2026-08-28",
+    "n_obs": 14008,
+    "status": "CACHE",
+    "checksum": "aa62a12e2d86eedf"
   },
   "NASDAQ100": {
     "nombre": "NASDAQ100",
@@ -189,11 +176,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1986-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 10215,
-    "status": "OK",
-    "checksum": "9af07f2af934b8fd",
-    "url": "https://fred.stlouisfed.org/series/NASDAQ100"
+    "fin": "2026-08-27",
+    "n_obs": 10244,
+    "status": "CACHE",
+    "checksum": "cba474885b364d7b"
   },
   "NYSE_COMP": {
     "nombre": "NYSE_COMP",
@@ -203,11 +189,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1965-12-31",
-    "fin": "2026-07-20",
-    "n_obs": 15236,
-    "status": "OK",
-    "checksum": "f3aad5f7089502b5",
-    "url": "https://finance.yahoo.com/quote/%5ENYA"
+    "fin": "2026-08-28",
+    "n_obs": 15265,
+    "status": "CACHE",
+    "checksum": "f805d06268ea5c46"
   },
   "SP100": {
     "nombre": "SP100",
@@ -217,11 +202,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1982-08-02",
-    "fin": "2026-07-20",
-    "n_obs": 11079,
-    "status": "OK",
-    "checksum": "4c8f94a500ffe814",
-    "url": "https://finance.yahoo.com/quote/%5EOEX"
+    "fin": "2026-08-28",
+    "n_obs": 11108,
+    "status": "CACHE",
+    "checksum": "069cf4541e05169f"
   },
   "RUSSELL2000": {
     "nombre": "RUSSELL2000",
@@ -231,11 +215,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1987-09-10",
-    "fin": "2026-07-20",
-    "n_obs": 9787,
-    "status": "OK",
-    "checksum": "6818088194810b6e",
-    "url": "https://finance.yahoo.com/quote/%5ERUT"
+    "fin": "2026-08-28",
+    "n_obs": 9816,
+    "status": "CACHE",
+    "checksum": "94eba38030af5f16"
   },
   "SP_MIDCAP400": {
     "nombre": "SP_MIDCAP400",
@@ -245,11 +228,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1981-01-02",
-    "fin": "2026-07-20",
-    "n_obs": 11478,
-    "status": "OK",
-    "checksum": "5dd352f43c573832",
-    "url": "https://finance.yahoo.com/quote/%5ESP400"
+    "fin": "2026-08-28",
+    "n_obs": 11507,
+    "status": "CACHE",
+    "checksum": "f80f9212f9efabab"
   },
   "DGS10": {
     "nombre": "DGS10",
@@ -259,11 +241,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16119,
-    "status": "OK",
-    "checksum": "3fb39b611b4e93d4",
-    "url": "https://fred.stlouisfed.org/series/DGS10"
+    "fin": "2026-08-26",
+    "n_obs": 16148,
+    "status": "CACHE",
+    "checksum": "5d73a81310abb1cc"
   },
   "DGS5": {
     "nombre": "DGS5",
@@ -273,11 +254,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16119,
-    "status": "OK",
-    "checksum": "545df810081bf757",
-    "url": "https://fred.stlouisfed.org/series/DGS5"
+    "fin": "2026-08-26",
+    "n_obs": 16148,
+    "status": "CACHE",
+    "checksum": "a90dd5eccda27266"
   },
   "DGS2": {
     "nombre": "DGS2",
@@ -287,11 +267,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1976-06-01",
-    "fin": "2026-07-16",
-    "n_obs": 12527,
-    "status": "OK",
-    "checksum": "a232bfdc1e18d973",
-    "url": "https://fred.stlouisfed.org/series/DGS2"
+    "fin": "2026-08-26",
+    "n_obs": 12556,
+    "status": "CACHE",
+    "checksum": "cfe85dd87215f1f3"
   },
   "DGS30": {
     "nombre": "DGS30",
@@ -301,11 +280,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1977-02-15",
-    "fin": "2026-07-16",
-    "n_obs": 12349,
-    "status": "OK",
-    "checksum": "49e3f476477432ec",
-    "url": "https://fred.stlouisfed.org/series/DGS30"
+    "fin": "2026-08-26",
+    "n_obs": 12378,
+    "status": "CACHE",
+    "checksum": "e57afbf7cc1e3369"
   },
   "DGS3MO": {
     "nombre": "DGS3MO",
@@ -315,11 +293,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1981-09-01",
-    "fin": "2026-07-16",
-    "n_obs": 11217,
-    "status": "OK",
-    "checksum": "d79dfb3cce61d77f",
-    "url": "https://fred.stlouisfed.org/series/DGS3MO"
+    "fin": "2026-08-26",
+    "n_obs": 11246,
+    "status": "CACHE",
+    "checksum": "fde2e9b40c06c5da"
   },
   "T10Y2Y": {
     "nombre": "T10Y2Y",
@@ -329,11 +306,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1976-06-01",
-    "fin": "2026-07-17",
-    "n_obs": 12528,
-    "status": "OK",
-    "checksum": "e3aff571723f36e1",
-    "url": "https://fred.stlouisfed.org/series/T10Y2Y"
+    "fin": "2026-08-27",
+    "n_obs": 12557,
+    "status": "CACHE",
+    "checksum": "30f170d19a584af1"
   },
   "T10Y3M": {
     "nombre": "T10Y3M",
@@ -343,11 +319,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1982-01-04",
-    "fin": "2026-07-17",
-    "n_obs": 11137,
-    "status": "OK",
-    "checksum": "aa0027da08316ad2",
-    "url": "https://fred.stlouisfed.org/series/T10Y3M"
+    "fin": "2026-08-27",
+    "n_obs": 11166,
+    "status": "CACHE",
+    "checksum": "bf428300cdccbaa1"
   },
   "T10YFF": {
     "nombre": "T10YFF",
@@ -357,11 +332,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16117,
-    "status": "OK",
-    "checksum": "6ef58ceca63a1fbc",
-    "url": "https://fred.stlouisfed.org/series/T10YFF"
+    "fin": "2026-08-26",
+    "n_obs": 16146,
+    "status": "CACHE",
+    "checksum": "98bad92084d073e2"
   },
   "DFF": {
     "nombre": "DFF",
@@ -371,11 +345,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1954-07-01",
-    "fin": "2026-07-16",
-    "n_obs": 26314,
-    "status": "OK",
-    "checksum": "76e5f69e16dfde18",
-    "url": "https://fred.stlouisfed.org/series/DFF"
+    "fin": "2026-08-26",
+    "n_obs": 26355,
+    "status": "CACHE",
+    "checksum": "bfe360c82c7810f3"
   },
   "DTB3": {
     "nombre": "DTB3",
@@ -385,11 +358,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1954-01-04",
-    "fin": "2026-07-16",
-    "n_obs": 18125,
-    "status": "OK",
-    "checksum": "dac32d47fafc34a6",
-    "url": "https://fred.stlouisfed.org/series/DTB3"
+    "fin": "2026-08-26",
+    "n_obs": 18154,
+    "status": "CACHE",
+    "checksum": "7c51f6b069b04767"
   },
   "FEDFUNDS": {
     "nombre": "FEDFUNDS",
@@ -399,11 +371,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1954-07-01",
-    "fin": "2026-06-01",
-    "n_obs": 864,
-    "status": "OK",
-    "checksum": "2c5150cd59917e74",
-    "url": "https://fred.stlouisfed.org/series/FEDFUNDS"
+    "fin": "2026-07-01",
+    "n_obs": 865,
+    "status": "CACHE",
+    "checksum": "ebee424d796b7770"
   },
   "TB3MS": {
     "nombre": "TB3MS",
@@ -413,11 +384,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1934-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1110,
-    "status": "OK",
-    "checksum": "a51504fdb42d30b9",
-    "url": "https://fred.stlouisfed.org/series/TB3MS"
+    "fin": "2026-07-01",
+    "n_obs": 1111,
+    "status": "CACHE",
+    "checksum": "e331a89892cc4d08"
   },
   "GS10": {
     "nombre": "GS10",
@@ -427,11 +397,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1953-04-01",
-    "fin": "2026-06-01",
-    "n_obs": 879,
-    "status": "OK",
-    "checksum": "a788092daed1afa7",
-    "url": "https://fred.stlouisfed.org/series/GS10"
+    "fin": "2026-07-01",
+    "n_obs": 880,
+    "status": "CACHE",
+    "checksum": "5ac0bc6f7b04de55"
   },
   "GS5": {
     "nombre": "GS5",
@@ -441,11 +410,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1953-04-01",
-    "fin": "2026-06-01",
-    "n_obs": 879,
-    "status": "OK",
-    "checksum": "5d1f7767837d34d4",
-    "url": "https://fred.stlouisfed.org/series/GS5"
+    "fin": "2026-07-01",
+    "n_obs": 880,
+    "status": "CACHE",
+    "checksum": "54e3885d9efb6086"
   },
   "GS1": {
     "nombre": "GS1",
@@ -455,11 +423,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1953-04-01",
-    "fin": "2026-06-01",
-    "n_obs": 879,
-    "status": "OK",
-    "checksum": "ec67652973a62536",
-    "url": "https://fred.stlouisfed.org/series/GS1"
+    "fin": "2026-07-01",
+    "n_obs": 880,
+    "status": "CACHE",
+    "checksum": "07689aa544933b77"
   },
   "IRLTLT01USM156N": {
     "nombre": "IRLTLT01USM156N",
@@ -471,9 +438,8 @@
     "inicio": "1953-04-01",
     "fin": "2026-06-01",
     "n_obs": 879,
-    "status": "OK",
-    "checksum": "a788092daed1afa7",
-    "url": "https://fred.stlouisfed.org/series/IRLTLT01USM156N"
+    "status": "CACHE",
+    "checksum": "a788092daed1afa7"
   },
   "TNX_YF": {
     "nombre": "TNX_YF",
@@ -483,11 +449,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-20",
-    "n_obs": 16123,
-    "status": "OK",
-    "checksum": "8e9353939d9db27f",
-    "url": "https://finance.yahoo.com/quote/%5ETNX"
+    "fin": "2026-08-28",
+    "n_obs": 16152,
+    "status": "CACHE",
+    "checksum": "ffc7f48690c46ca1"
   },
   "MOODYS_BAA_AAA_SPREAD": {
     "nombre": "MOODYS_BAA_AAA_SPREAD",
@@ -497,11 +462,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1986-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 10171,
-    "status": "OK",
-    "checksum": "f71bbd19b96b772f",
-    "url": "https://fred.stlouisfed.org/series/DBAA"
+    "fin": "2026-08-27",
+    "n_obs": 10200,
+    "status": "CACHE",
+    "checksum": "d8a8be6bc2b42a0b"
   },
   "BAA10Y": {
     "nombre": "BAA10Y",
@@ -511,11 +475,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1986-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 10134,
-    "status": "OK",
-    "checksum": "7cb7b870a7437a76",
-    "url": "https://fred.stlouisfed.org/series/BAA10Y"
+    "fin": "2026-08-26",
+    "n_obs": 10163,
+    "status": "CACHE",
+    "checksum": "e4fe55bd25fd3ebd"
   },
   "MOODYS_BAA": {
     "nombre": "MOODYS_BAA",
@@ -525,11 +488,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1919-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1290,
-    "status": "OK",
-    "checksum": "b8cfc99f13f23044",
-    "url": "https://fred.stlouisfed.org/series/BAA"
+    "fin": "2026-07-01",
+    "n_obs": 1291,
+    "status": "CACHE",
+    "checksum": "8a58c5e83e7ae040"
   },
   "MOODYS_AAA": {
     "nombre": "MOODYS_AAA",
@@ -539,11 +501,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1919-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1290,
-    "status": "OK",
-    "checksum": "79ef2ca17fba7664",
-    "url": "https://fred.stlouisfed.org/series/AAA"
+    "fin": "2026-07-01",
+    "n_obs": 1291,
+    "status": "CACHE",
+    "checksum": "45e018eb7ece3d3b"
   },
   "BAAFFM": {
     "nombre": "BAAFFM",
@@ -553,11 +514,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1954-07-01",
-    "fin": "2026-06-01",
-    "n_obs": 864,
-    "status": "OK",
-    "checksum": "896acdcf248282a3",
-    "url": "https://fred.stlouisfed.org/series/BAAFFM"
+    "fin": "2026-07-01",
+    "n_obs": 865,
+    "status": "CACHE",
+    "checksum": "df398bc0b6475678"
   },
   "DXY": {
     "nombre": "DXY",
@@ -567,11 +527,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1971-01-04",
-    "fin": "2026-07-20",
-    "n_obs": 14103,
-    "status": "OK",
-    "checksum": "ea0a6846de5eb4ac",
-    "url": "https://finance.yahoo.com/quote/DX-Y.NYB"
+    "fin": "2026-08-28",
+    "n_obs": 14132,
+    "status": "CACHE",
+    "checksum": "cb47bcbad742f473"
   },
   "DTWEXM": {
     "nombre": "DTWEXM",
@@ -583,9 +542,8 @@
     "inicio": "1973-01-02",
     "fin": "2019-12-31",
     "n_obs": 11834,
-    "status": "OK",
-    "checksum": "52bcfc9a8c387487",
-    "url": "https://fred.stlouisfed.org/series/DTWEXM"
+    "status": "CACHE",
+    "checksum": "52bcfc9a8c387487"
   },
   "RNUSBIS": {
     "nombre": "RNUSBIS",
@@ -595,11 +553,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1964-01-01",
-    "fin": "2026-05-01",
-    "n_obs": 749,
-    "status": "OK",
-    "checksum": "dd843cc92849f696",
-    "url": "https://fred.stlouisfed.org/series/RNUSBIS"
+    "fin": "2026-07-01",
+    "n_obs": 751,
+    "status": "CACHE",
+    "checksum": "da8ad2ecf892b907"
   },
   "NNUSBIS": {
     "nombre": "NNUSBIS",
@@ -609,11 +566,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1964-01-01",
-    "fin": "2026-05-01",
-    "n_obs": 749,
-    "status": "OK",
-    "checksum": "c6aa35a5fd06a2f5",
-    "url": "https://fred.stlouisfed.org/series/NNUSBIS"
+    "fin": "2026-07-01",
+    "n_obs": 751,
+    "status": "CACHE",
+    "checksum": "55de82c3c283aae3"
   },
   "TWEXMMTH": {
     "nombre": "TWEXMMTH",
@@ -625,9 +581,8 @@
     "inicio": "1973-01-01",
     "fin": "2019-12-01",
     "n_obs": 564,
-    "status": "OK",
-    "checksum": "e94707992667d9e8",
-    "url": "https://fred.stlouisfed.org/series/TWEXMMTH"
+    "status": "CACHE",
+    "checksum": "e94707992667d9e8"
   },
   "TWEXAFEGSMTH": {
     "nombre": "TWEXAFEGSMTH",
@@ -637,11 +592,10 @@
     "rol": "fallback",
     "granularidad": "mensual",
     "inicio": "2006-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 246,
-    "status": "OK",
-    "checksum": "e76dd77e33bd11df",
-    "url": "https://fred.stlouisfed.org/series/TWEXAFEGSMTH"
+    "fin": "2026-07-01",
+    "n_obs": 247,
+    "status": "CACHE",
+    "checksum": "d826d7d12697c4d7"
   },
   "DEXJPUS": {
     "nombre": "DEXJPUS",
@@ -651,11 +605,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1971-01-04",
-    "fin": "2026-07-10",
-    "n_obs": 13916,
-    "status": "OK",
-    "checksum": "aab350fb06124976",
-    "url": "https://fred.stlouisfed.org/series/DEXJPUS"
+    "fin": "2026-08-21",
+    "n_obs": 13946,
+    "status": "CACHE",
+    "checksum": "57990deef76bf386"
   },
   "DEXSZUS": {
     "nombre": "DEXSZUS",
@@ -665,11 +618,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1971-01-04",
-    "fin": "2026-07-10",
-    "n_obs": 13922,
-    "status": "OK",
-    "checksum": "c0650323dd8f4363",
-    "url": "https://fred.stlouisfed.org/series/DEXSZUS"
+    "fin": "2026-08-21",
+    "n_obs": 13952,
+    "status": "CACHE",
+    "checksum": "33d3b6de36625fb8"
   },
   "DEXUSAL": {
     "nombre": "DEXUSAL",
@@ -679,11 +631,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1971-01-04",
-    "fin": "2026-07-10",
-    "n_obs": 13915,
-    "status": "OK",
-    "checksum": "231e0a13d2f89408",
-    "url": "https://fred.stlouisfed.org/series/DEXUSAL"
+    "fin": "2026-08-21",
+    "n_obs": 13945,
+    "status": "CACHE",
+    "checksum": "da940d8aa291c783"
   },
   "SPGSCI": {
     "nombre": "SPGSCI",
@@ -693,11 +644,10 @@
     "rol": "spine",
     "granularidad": "diaria",
     "inicio": "1984-01-03",
-    "fin": "2026-07-20",
-    "n_obs": 10718,
-    "status": "OK",
-    "checksum": "72b88fa4e5c1866f",
-    "url": "https://finance.yahoo.com/quote/%5ESPGSCI"
+    "fin": "2026-08-28",
+    "n_obs": 10747,
+    "status": "CACHE",
+    "checksum": "773f227645041efe"
   },
   "BCOM": {
     "nombre": "BCOM",
@@ -706,12 +656,11 @@
     "pista": "ambas",
     "rol": "spine",
     "granularidad": "diaria",
-    "inicio": "1991-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 8923,
-    "status": "OK",
-    "checksum": "17b1d879eda1f760",
-    "url": "https://finance.yahoo.com/quote/%5EBCOM"
+    "inicio": "2020-05-28",
+    "fin": "2020-05-28",
+    "n_obs": 1,
+    "status": "CACHE",
+    "checksum": "3be9124ff91ebad0"
   },
   "PPI_ALL_COMMODITIES": {
     "nombre": "PPI_ALL_COMMODITIES",
@@ -721,11 +670,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1913-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1362,
-    "status": "OK",
-    "checksum": "86354bd9616abfbc",
-    "url": "https://fred.stlouisfed.org/series/PPIACO"
+    "fin": "2026-07-01",
+    "n_obs": 1363,
+    "status": "CACHE",
+    "checksum": "8902478c4fc3b9db"
   },
   "WTI_SPOT_MONTHLY": {
     "nombre": "WTI_SPOT_MONTHLY",
@@ -735,11 +683,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1946-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 966,
-    "status": "OK",
-    "checksum": "a0fc4eba469e1748",
-    "url": "https://fred.stlouisfed.org/series/WTISPLC"
+    "fin": "2026-07-01",
+    "n_obs": 967,
+    "status": "CACHE",
+    "checksum": "bc9f4d4060732307"
   },
   "PPI_FUELS": {
     "nombre": "PPI_FUELS",
@@ -749,11 +696,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1947-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 954,
-    "status": "OK",
-    "checksum": "4b271058a11417e1",
-    "url": "https://fred.stlouisfed.org/series/WPU0561"
+    "fin": "2026-07-01",
+    "n_obs": 955,
+    "status": "CACHE",
+    "checksum": "6e9b2454c0035406"
   },
   "PPI_METALS": {
     "nombre": "PPI_METALS",
@@ -763,11 +709,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1957-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 834,
-    "status": "OK",
-    "checksum": "372bd0c587919d46",
-    "url": "https://fred.stlouisfed.org/series/WPU102301"
+    "fin": "2026-07-01",
+    "n_obs": 835,
+    "status": "CACHE",
+    "checksum": "7694e4edcde2bd0c"
   },
   "INDPRO": {
     "nombre": "INDPRO",
@@ -777,11 +722,10 @@
     "rol": "spine",
     "granularidad": "mensual",
     "inicio": "1919-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1290,
-    "status": "OK",
-    "checksum": "e845fb916a51ba6b",
-    "url": "https://fred.stlouisfed.org/series/INDPRO"
+    "fin": "2026-07-01",
+    "n_obs": 1291,
+    "status": "CACHE",
+    "checksum": "c33a24b493bffbcd"
   },
   "UNRATE": {
     "nombre": "UNRATE",
@@ -791,11 +735,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1948-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 941,
-    "status": "OK",
-    "checksum": "1f5b0a524b16431d",
-    "url": "https://fred.stlouisfed.org/series/UNRATE"
+    "fin": "2026-07-01",
+    "n_obs": 942,
+    "status": "CACHE",
+    "checksum": "629ff8815e2d7400"
   },
   "PAYEMS": {
     "nombre": "PAYEMS",
@@ -805,11 +748,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1939-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1050,
-    "status": "OK",
-    "checksum": "db3ada6354eac266",
-    "url": "https://fred.stlouisfed.org/series/PAYEMS"
+    "fin": "2026-07-01",
+    "n_obs": 1051,
+    "status": "CACHE",
+    "checksum": "f0edfc868a42796a"
   },
   "MANEMP": {
     "nombre": "MANEMP",
@@ -819,11 +761,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1939-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1050,
-    "status": "OK",
-    "checksum": "c2d2fdc0f5a5b7f0",
-    "url": "https://fred.stlouisfed.org/series/MANEMP"
+    "fin": "2026-07-01",
+    "n_obs": 1051,
+    "status": "CACHE",
+    "checksum": "80613b607cac3e30"
   },
   "ICSA": {
     "nombre": "ICSA",
@@ -833,11 +774,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1967-01-07",
-    "fin": "2026-07-11",
-    "n_obs": 3106,
-    "status": "OK",
-    "checksum": "be5356be55153dd9",
-    "url": "https://fred.stlouisfed.org/series/ICSA"
+    "fin": "2026-08-22",
+    "n_obs": 3112,
+    "status": "CACHE",
+    "checksum": "a633c16c39ec7bfa"
   },
   "CFNAI": {
     "nombre": "CFNAI",
@@ -847,11 +787,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1967-03-01",
-    "fin": "2026-05-01",
-    "n_obs": 711,
-    "status": "OK",
-    "checksum": "64273b336fe357c0",
-    "url": "https://fred.stlouisfed.org/series/CFNAI"
+    "fin": "2026-07-01",
+    "n_obs": 713,
+    "status": "CACHE",
+    "checksum": "0558f5521c165d5c"
   },
   "CFNAIMA3": {
     "nombre": "CFNAIMA3",
@@ -861,11 +800,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1967-05-01",
-    "fin": "2026-05-01",
-    "n_obs": 709,
-    "status": "OK",
-    "checksum": "2903b947f4492172",
-    "url": "https://fred.stlouisfed.org/series/CFNAIMA3"
+    "fin": "2026-07-01",
+    "n_obs": 711,
+    "status": "CACHE",
+    "checksum": "ecaf8aa5840070b2"
   },
   "CPIAUCSL": {
     "nombre": "CPIAUCSL",
@@ -875,11 +813,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1947-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 953,
-    "status": "OK",
-    "checksum": "464e3abbf8abf730",
-    "url": "https://fred.stlouisfed.org/series/CPIAUCSL"
+    "fin": "2026-07-01",
+    "n_obs": 954,
+    "status": "CACHE",
+    "checksum": "c60113378d5eed57"
   },
   "CPILFESL": {
     "nombre": "CPILFESL",
@@ -889,11 +826,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1957-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 833,
-    "status": "OK",
-    "checksum": "fd173a9718fdfb58",
-    "url": "https://fred.stlouisfed.org/series/CPILFESL"
+    "fin": "2026-07-01",
+    "n_obs": 834,
+    "status": "CACHE",
+    "checksum": "3576a2f35299fe10"
   },
   "PMI_PROXY_PHILLY": {
     "nombre": "PMI_PROXY_PHILLY",
@@ -903,11 +839,10 @@
     "rol": "core",
     "granularidad": "mensual",
     "inicio": "1968-05-01",
-    "fin": "2026-07-01",
-    "n_obs": 699,
-    "status": "OK",
-    "checksum": "a77bdafb2d3a78bb",
-    "url": "https://fred.stlouisfed.org/series/GACDFSA066MSFRBPHI"
+    "fin": "2026-08-01",
+    "n_obs": 700,
+    "status": "CACHE",
+    "checksum": "8eb97d8a740d1583"
   },
   "UMCSENT": {
     "nombre": "UMCSENT",
@@ -917,11 +852,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1952-11-01",
-    "fin": "2026-05-01",
-    "n_obs": 673,
-    "status": "OK",
-    "checksum": "e15b9fbf78c30fda",
-    "url": "https://fred.stlouisfed.org/series/UMCSENT"
+    "fin": "2026-07-01",
+    "n_obs": 675,
+    "status": "CACHE",
+    "checksum": "1cefd9d5c144a506"
   },
   "HOUST": {
     "nombre": "HOUST",
@@ -931,11 +865,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1959-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 810,
-    "status": "OK",
-    "checksum": "440ef90b4af7aae3",
-    "url": "https://fred.stlouisfed.org/series/HOUST"
+    "fin": "2026-07-01",
+    "n_obs": 811,
+    "status": "CACHE",
+    "checksum": "c22a54e7244357eb"
   },
   "GDPC1": {
     "nombre": "GDPC1",
@@ -945,11 +878,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1947-01-01",
-    "fin": "2026-01-01",
-    "n_obs": 317,
-    "status": "OK",
-    "checksum": "afb99284dddde997",
-    "url": "https://fred.stlouisfed.org/series/GDPC1"
+    "fin": "2026-04-01",
+    "n_obs": 318,
+    "status": "CACHE",
+    "checksum": "89be2a3befc5f612"
   },
   "GDP_GROWTH_QOQ": {
     "nombre": "GDP_GROWTH_QOQ",
@@ -959,11 +891,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1947-04-01",
-    "fin": "2026-01-01",
-    "n_obs": 316,
-    "status": "OK",
-    "checksum": "44ea2cc4c4cde153",
-    "url": "https://fred.stlouisfed.org/series/A191RL1Q225SBEA"
+    "fin": "2026-04-01",
+    "n_obs": 317,
+    "status": "CACHE",
+    "checksum": "23f1363e676c0c70"
   },
   "NBER_NY_COMMERCIAL_PAPER": {
     "nombre": "NBER_NY_COMMERCIAL_PAPER",
@@ -975,9 +906,8 @@
     "inicio": "1857-01-01",
     "fin": "1971-12-01",
     "n_obs": 1380,
-    "status": "OK",
-    "checksum": "22085dfcf25813cd",
-    "url": "https://fred.stlouisfed.org/series/M13002US35620M156NNBR"
+    "status": "CACHE",
+    "checksum": "22085dfcf25813cd"
   },
   "EURODOLLAR_TBILL_SPREAD": {
     "nombre": "EURODOLLAR_TBILL_SPREAD",
@@ -989,9 +919,8 @@
     "inicio": "1971-01-04",
     "fin": "2016-10-07",
     "n_obs": 11370,
-    "status": "OK",
-    "checksum": "1ad7a525f7de919e",
-    "url": "https://fred.stlouisfed.org/series/DED3"
+    "status": "CACHE",
+    "checksum": "1ad7a525f7de919e"
   },
   "EURODOLLAR_3M": {
     "nombre": "EURODOLLAR_3M",
@@ -1003,9 +932,8 @@
     "inicio": "1971-01-04",
     "fin": "2016-10-07",
     "n_obs": 11652,
-    "status": "OK",
-    "checksum": "cd4cd3de9ea7caa5",
-    "url": "https://fred.stlouisfed.org/series/DED3"
+    "status": "CACHE",
+    "checksum": "cd4cd3de9ea7caa5"
   },
   "TBILL3M_MINUS_FEDFUNDS": {
     "nombre": "TBILL3M_MINUS_FEDFUNDS",
@@ -1015,11 +943,10 @@
     "rol": "enricher",
     "granularidad": "mensual",
     "inicio": "1954-07-01",
-    "fin": "2026-06-01",
-    "n_obs": 864,
-    "status": "OK",
-    "checksum": "ed7f78d2a798b319",
-    "url": "https://fred.stlouisfed.org/series/TB3SMFFM"
+    "fin": "2026-07-01",
+    "n_obs": 865,
+    "status": "CACHE",
+    "checksum": "ac8160f223ae2f18"
   },
   "LIBOR_3M_QUARTERLY": {
     "nombre": "LIBOR_3M_QUARTERLY",
@@ -1031,9 +958,8 @@
     "inicio": "1970-01-01",
     "fin": "2016-10-01",
     "n_obs": 188,
-    "status": "OK",
-    "checksum": "c2e4ef7f43b848db",
-    "url": "https://fred.stlouisfed.org/series/LIOR3M"
+    "status": "CACHE",
+    "checksum": "c2e4ef7f43b848db"
   },
   "GW_PREDICTORS_MONTHLY": {
     "nombre": "GW_PREDICTORS_MONTHLY",
@@ -1041,14 +967,12 @@
     "id": "GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly)",
     "pista": "A",
     "rol": "core",
-    "n_cols": 17,
     "granularidad": "mensual",
     "inicio": "1871-01-01",
     "fin": "2025-12-01",
     "n_obs": 1860,
-    "status": "OK",
-    "checksum": "f6386132554ed35f",
-    "url": "https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx"
+    "status": "CACHE",
+    "checksum": "f6386132554ed35f"
   },
   "GW_PREDICTORS_QUARTERLY": {
     "nombre": "GW_PREDICTORS_QUARTERLY",
@@ -1080,9 +1004,8 @@
     "inicio": "1871-01-01",
     "fin": "2024-09-01",
     "n_obs": 1845,
-    "status": "OK",
-    "checksum": "3201f74b728bd8aa",
-    "url": "http://www.econ.yale.edu/~shiller/data/ie_data.xls"
+    "status": "CACHE",
+    "checksum": "3201f74b728bd8aa"
   },
   "DOW_STOOQ_DEEP": {
     "nombre": "DOW_STOOQ_DEEP",
@@ -1102,11 +1025,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2002-11-12",
-    "fin": "2026-07-17",
-    "n_obs": 5854,
-    "status": "OK",
-    "checksum": "fc768eb145a14cce",
-    "url": "https://finance.yahoo.com/quote/%5EMOVE"
+    "fin": "2026-08-27",
+    "n_obs": 5883,
+    "status": "CACHE",
+    "checksum": "47b04054ffb17b83"
   },
   "VVIX": {
     "nombre": "VVIX",
@@ -1116,11 +1038,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2007-01-03",
-    "fin": "2026-07-20",
-    "n_obs": 4907,
-    "status": "OK",
-    "checksum": "f5aec477c96acaf6",
-    "url": "https://finance.yahoo.com/quote/%5EVVIX"
+    "fin": "2026-08-28",
+    "n_obs": 4936,
+    "status": "CACHE",
+    "checksum": "babbbe9f02514f3e"
   },
   "VIX9D": {
     "nombre": "VIX9D",
@@ -1129,12 +1050,11 @@
     "pista": "B",
     "rol": "enricher",
     "granularidad": "diaria",
-    "inicio": "2011-01-03",
-    "fin": "2026-07-20",
-    "n_obs": 3908,
-    "status": "OK",
-    "checksum": "f63dddb0adca0996",
-    "url": "https://finance.yahoo.com/quote/%5EVIX9D"
+    "inicio": "2026-08-28",
+    "fin": "2026-08-28",
+    "n_obs": 1,
+    "status": "CACHE",
+    "checksum": "4199b6a94fc74856"
   },
   "VIX3M": {
     "nombre": "VIX3M",
@@ -1143,12 +1063,11 @@
     "pista": "B",
     "rol": "enricher",
     "granularidad": "diaria",
-    "inicio": "2006-07-17",
-    "fin": "2026-07-20",
-    "n_obs": 5033,
-    "status": "OK",
-    "checksum": "63e7ffe8f9598a5d",
-    "url": "https://finance.yahoo.com/quote/%5EVIX3M"
+    "inicio": "2026-08-28",
+    "fin": "2026-08-28",
+    "n_obs": 1,
+    "status": "CACHE",
+    "checksum": "0bb02c3e2390a24d"
   },
   "VIX6M": {
     "nombre": "VIX6M",
@@ -1157,12 +1076,11 @@
     "pista": "B",
     "rol": "enricher",
     "granularidad": "diaria",
-    "inicio": "2008-01-02",
-    "fin": "2026-07-20",
-    "n_obs": 4665,
-    "status": "OK",
-    "checksum": "0df7dae338667201",
-    "url": "https://finance.yahoo.com/quote/%5EVIX6M"
+    "inicio": "2026-08-28",
+    "fin": "2026-08-28",
+    "n_obs": 1,
+    "status": "CACHE",
+    "checksum": "cab686846b13e4fb"
   },
   "VXN": {
     "nombre": "VXN",
@@ -1172,11 +1090,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2001-02-02",
-    "fin": "2026-07-17",
-    "n_obs": 6401,
-    "status": "OK",
-    "checksum": "2ab86629fde6d644",
-    "url": "https://fred.stlouisfed.org/series/VXNCLS"
+    "fin": "2026-08-27",
+    "n_obs": 6430,
+    "status": "CACHE",
+    "checksum": "4e869e956dcd9a7f"
   },
   "VXD": {
     "nombre": "VXD",
@@ -1186,11 +1103,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1997-10-07",
-    "fin": "2026-07-17",
-    "n_obs": 7240,
-    "status": "OK",
-    "checksum": "7d81e787d295c8ea",
-    "url": "https://fred.stlouisfed.org/series/VXDCLS"
+    "fin": "2026-08-27",
+    "n_obs": 7269,
+    "status": "CACHE",
+    "checksum": "a34ba2ccc5a7e460"
   },
   "RVX": {
     "nombre": "RVX",
@@ -1200,11 +1116,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2004-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 5668,
-    "status": "OK",
-    "checksum": "a37c62ec8f82d153",
-    "url": "https://fred.stlouisfed.org/series/RVXCLS"
+    "fin": "2026-08-27",
+    "n_obs": 5697,
+    "status": "CACHE",
+    "checksum": "7ca49f960744748b"
   },
   "OVX": {
     "nombre": "OVX",
@@ -1214,11 +1129,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2007-05-10",
-    "fin": "2026-07-17",
-    "n_obs": 4829,
-    "status": "OK",
-    "checksum": "bbd143bad62ee3ea",
-    "url": "https://fred.stlouisfed.org/series/OVXCLS"
+    "fin": "2026-08-27",
+    "n_obs": 4858,
+    "status": "CACHE",
+    "checksum": "6a7847e42ccf1052"
   },
   "GVZ": {
     "nombre": "GVZ",
@@ -1228,11 +1142,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2008-06-03",
-    "fin": "2026-07-17",
-    "n_obs": 4561,
-    "status": "OK",
-    "checksum": "798a0ef8d0bf2031",
-    "url": "https://fred.stlouisfed.org/series/GVZCLS"
+    "fin": "2026-08-27",
+    "n_obs": 4590,
+    "status": "CACHE",
+    "checksum": "7b53bebb191f5b65"
   },
   "EVZ": {
     "nombre": "EVZ",
@@ -1244,9 +1157,8 @@
     "inicio": "2007-11-01",
     "fin": "2025-03-11",
     "n_obs": 4360,
-    "status": "OK",
-    "checksum": "3c1ef3004ee8bcc3",
-    "url": "https://fred.stlouisfed.org/series/EVZCLS"
+    "status": "CACHE",
+    "checksum": "3c1ef3004ee8bcc3"
   },
   "VXEEM": {
     "nombre": "VXEEM",
@@ -1256,11 +1168,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2011-03-16",
-    "fin": "2026-07-17",
-    "n_obs": 3857,
-    "status": "OK",
-    "checksum": "8a80f240a1989a13",
-    "url": "https://fred.stlouisfed.org/series/VXEEMCLS"
+    "fin": "2026-08-27",
+    "n_obs": 3886,
+    "status": "CACHE",
+    "checksum": "bc38da3e615ff476"
   },
   "VXEWZ": {
     "nombre": "VXEWZ",
@@ -1270,11 +1181,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2011-03-16",
-    "fin": "2026-07-17",
-    "n_obs": 3857,
-    "status": "OK",
-    "checksum": "ba03392e658b7f86",
-    "url": "https://fred.stlouisfed.org/series/VXEWZCLS"
+    "fin": "2026-08-27",
+    "n_obs": 3886,
+    "status": "CACHE",
+    "checksum": "3c84ebf1dbd1dd8c"
   },
   "VXTYN": {
     "nombre": "VXTYN",
@@ -1286,9 +1196,8 @@
     "inicio": "2003-01-02",
     "fin": "2020-05-15",
     "n_obs": 4363,
-    "status": "OK",
-    "checksum": "a53374fdedd79329",
-    "url": "https://fred.stlouisfed.org/series/VXTYN"
+    "status": "CACHE",
+    "checksum": "a53374fdedd79329"
   },
   "WILSHIRE5000": {
     "nombre": "WILSHIRE5000",
@@ -1298,11 +1207,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1989-01-03",
-    "fin": "2026-07-17",
-    "n_obs": 9442,
-    "status": "OK",
-    "checksum": "dec1f9d89018641b",
-    "url": "https://finance.yahoo.com/quote/%5EW5000"
+    "fin": "2026-08-27",
+    "n_obs": 9385,
+    "status": "CACHE",
+    "checksum": "1fd0f644fc939a15"
   },
   "DJIA": {
     "nombre": "DJIA",
@@ -1312,11 +1220,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1992-01-02",
-    "fin": "2026-07-20",
-    "n_obs": 8697,
-    "status": "OK",
-    "checksum": "9c1c6c2218a84a38",
-    "url": "https://finance.yahoo.com/quote/%5EDJI"
+    "fin": "2026-08-28",
+    "n_obs": 8726,
+    "status": "CACHE",
+    "checksum": "f58bd8dda35306ac"
   },
   "RUSSELL3000": {
     "nombre": "RUSSELL3000",
@@ -1326,11 +1233,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1987-09-10",
-    "fin": "2026-07-20",
-    "n_obs": 9758,
-    "status": "OK",
-    "checksum": "a271ec45d3b477dd",
-    "url": "https://finance.yahoo.com/quote/%5ERUA"
+    "fin": "2026-08-28",
+    "n_obs": 9787,
+    "status": "CACHE",
+    "checksum": "7243add599463139"
   },
   "RUSSELL1000": {
     "nombre": "RUSSELL1000",
@@ -1340,11 +1246,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1992-12-10",
-    "fin": "2026-07-20",
-    "n_obs": 8457,
-    "status": "OK",
-    "checksum": "dee5540ebe8a3558",
-    "url": "https://finance.yahoo.com/quote/%5ERUI"
+    "fin": "2026-08-28",
+    "n_obs": 8486,
+    "status": "CACHE",
+    "checksum": "716b89de6c9a4174"
   },
   "SP_SMALLCAP600": {
     "nombre": "SP_SMALLCAP600",
@@ -1354,11 +1259,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1989-01-03",
-    "fin": "2026-07-20",
-    "n_obs": 9455,
-    "status": "OK",
-    "checksum": "6f9dc6e096aa1ada",
-    "url": "https://finance.yahoo.com/quote/%5ESP600"
+    "fin": "2026-08-28",
+    "n_obs": 9484,
+    "status": "CACHE",
+    "checksum": "65b5b9c9fce38911"
   },
   "IWM_SMALL": {
     "nombre": "IWM_SMALL",
@@ -1368,11 +1272,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2000-05-26",
-    "fin": "2026-07-20",
-    "n_obs": 6574,
-    "status": "OK",
-    "checksum": "7d8336e3b91ab753",
-    "url": "https://finance.yahoo.com/quote/IWM"
+    "fin": "2026-08-28",
+    "n_obs": 6603,
+    "status": "CACHE",
+    "checksum": "79adf92807f1f1a1"
   },
   "IWD_VALUE": {
     "nombre": "IWD_VALUE",
@@ -1382,11 +1285,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2000-05-26",
-    "fin": "2026-07-20",
-    "n_obs": 6574,
-    "status": "OK",
-    "checksum": "35c631e31303b4e9",
-    "url": "https://finance.yahoo.com/quote/IWD"
+    "fin": "2026-08-28",
+    "n_obs": 6603,
+    "status": "CACHE",
+    "checksum": "1b4b29b16139ffea"
   },
   "IWF_GROWTH": {
     "nombre": "IWF_GROWTH",
@@ -1396,11 +1298,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2000-05-26",
-    "fin": "2026-07-20",
-    "n_obs": 6574,
-    "status": "OK",
-    "checksum": "9117cd4ec1b2e50d",
-    "url": "https://finance.yahoo.com/quote/IWF"
+    "fin": "2026-08-28",
+    "n_obs": 6603,
+    "status": "CACHE",
+    "checksum": "e9534c06eeb3ddf9"
   },
   "SPDR_XLK": {
     "nombre": "SPDR_XLK",
@@ -1410,11 +1311,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "99163bced0a35c4d",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "5553441d968d6eca"
   },
   "SPDR_XLF": {
     "nombre": "SPDR_XLF",
@@ -1424,11 +1324,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "fa107ad70825ba73",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "3296457e53f28094"
   },
   "SPDR_XLE": {
     "nombre": "SPDR_XLE",
@@ -1438,11 +1337,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "dd9cbcbd934ccee6",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "4158db464ee3e353"
   },
   "SPDR_XLV": {
     "nombre": "SPDR_XLV",
@@ -1452,11 +1350,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "4e46abcb524496f3",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "89a893f22a8eaed4"
   },
   "SPDR_XLI": {
     "nombre": "SPDR_XLI",
@@ -1466,11 +1363,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "fd1e54fd6637e4fa",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "9cd8eac627a1734c"
   },
   "SPDR_XLY": {
     "nombre": "SPDR_XLY",
@@ -1480,11 +1376,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "26afa22a65b1842d",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "bf10fbfb5c6ab0e0"
   },
   "SPDR_XLP": {
     "nombre": "SPDR_XLP",
@@ -1494,11 +1389,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "9451baf1db77bc49",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "62950ba8801a7cff"
   },
   "SPDR_XLU": {
     "nombre": "SPDR_XLU",
@@ -1508,11 +1402,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "84a7cb5a697be0f1",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "27728ca95820065e"
   },
   "SPDR_XLB": {
     "nombre": "SPDR_XLB",
@@ -1522,11 +1415,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "1998-12-22",
-    "fin": "2026-07-20",
-    "n_obs": 6934,
-    "status": "OK",
-    "checksum": "c83159737fb028c6",
-    "url": "https://www.sectorspdrs.com/"
+    "fin": "2026-08-28",
+    "n_obs": 6963,
+    "status": "CACHE",
+    "checksum": "291c41e05cf49248"
   },
   "XLRE_REALESTATE": {
     "nombre": "XLRE_REALESTATE",
@@ -1536,11 +1428,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2015-10-08",
-    "fin": "2026-07-20",
-    "n_obs": 2709,
-    "status": "OK",
-    "checksum": "de0a72a2de0f583c",
-    "url": "https://finance.yahoo.com/quote/XLRE"
+    "fin": "2026-08-28",
+    "n_obs": 2738,
+    "status": "CACHE",
+    "checksum": "463621b93fffbb4b"
   },
   "XLC_COMMSERVICES": {
     "nombre": "XLC_COMMSERVICES",
@@ -1550,11 +1441,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2018-06-19",
-    "fin": "2026-07-20",
-    "n_obs": 2031,
-    "status": "OK",
-    "checksum": "098b6165125ebdb2",
-    "url": "https://finance.yahoo.com/quote/XLC"
+    "fin": "2026-08-28",
+    "n_obs": 2060,
+    "status": "CACHE",
+    "checksum": "69d08be46bc07ccb"
   },
   "SP500_EW": {
     "nombre": "SP500_EW",
@@ -1564,11 +1454,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2003-05-01",
-    "fin": "2026-07-20",
-    "n_obs": 5841,
-    "status": "OK",
-    "checksum": "76e55a1de60b1122",
-    "url": "https://finance.yahoo.com/quote/RSP"
+    "fin": "2026-08-28",
+    "n_obs": 5870,
+    "status": "CACHE",
+    "checksum": "1749c90040aefaa4"
   },
   "SP500_CAPWEIGHT_ETF": {
     "nombre": "SP500_CAPWEIGHT_ETF",
@@ -1578,11 +1467,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1993-01-29",
-    "fin": "2026-07-20",
-    "n_obs": 8424,
-    "status": "OK",
-    "checksum": "34db5882b4e2f65b",
-    "url": "https://finance.yahoo.com/quote/SPY"
+    "fin": "2026-08-28",
+    "n_obs": 8453,
+    "status": "CACHE",
+    "checksum": "ea34faf9a756a765"
   },
   "SPHB_HIGHBETA": {
     "nombre": "SPHB_HIGHBETA",
@@ -1592,11 +1480,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2011-05-05",
-    "fin": "2026-07-20",
-    "n_obs": 3823,
-    "status": "OK",
-    "checksum": "17eb115205cb2582",
-    "url": "https://finance.yahoo.com/quote/SPHB"
+    "fin": "2026-08-28",
+    "n_obs": 3852,
+    "status": "CACHE",
+    "checksum": "0652840f3ee36421"
   },
   "SPLV_LOWVOL": {
     "nombre": "SPLV_LOWVOL",
@@ -1606,11 +1493,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2011-05-05",
-    "fin": "2026-07-20",
-    "n_obs": 3823,
-    "status": "OK",
-    "checksum": "b30aa7e18f1753c7",
-    "url": "https://finance.yahoo.com/quote/SPLV"
+    "fin": "2026-08-28",
+    "n_obs": 3852,
+    "status": "CACHE",
+    "checksum": "81a0198d4f4bc964"
   },
   "MTUM_MOMENTUM": {
     "nombre": "MTUM_MOMENTUM",
@@ -1620,11 +1506,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2013-04-18",
-    "fin": "2026-07-20",
-    "n_obs": 3333,
-    "status": "OK",
-    "checksum": "045eff20f8ba3119",
-    "url": "https://finance.yahoo.com/quote/MTUM"
+    "fin": "2026-08-28",
+    "n_obs": 3362,
+    "status": "CACHE",
+    "checksum": "b56b72066adb23e0"
   },
   "GH_SP500_CONSTITUENTS_PIT": {
     "nombre": "GH_SP500_CONSTITUENTS_PIT",
@@ -1654,11 +1539,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16119,
-    "status": "OK",
-    "checksum": "ae1c8c5e65839837",
-    "url": "https://fred.stlouisfed.org/series/DGS3"
+    "fin": "2026-08-26",
+    "n_obs": 16148,
+    "status": "CACHE",
+    "checksum": "3ea106060564d83e"
   },
   "DGS1": {
     "nombre": "DGS1",
@@ -1668,11 +1552,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16119,
-    "status": "OK",
-    "checksum": "9eddc895690162e1",
-    "url": "https://fred.stlouisfed.org/series/DGS1"
+    "fin": "2026-08-26",
+    "n_obs": 16148,
+    "status": "CACHE",
+    "checksum": "d17cfd4b6f38ba32"
   },
   "DGS7": {
     "nombre": "DGS7",
@@ -1682,11 +1565,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1969-07-01",
-    "fin": "2026-07-16",
-    "n_obs": 14249,
-    "status": "OK",
-    "checksum": "fb191004fbc0b318",
-    "url": "https://fred.stlouisfed.org/series/DGS7"
+    "fin": "2026-08-26",
+    "n_obs": 14278,
+    "status": "CACHE",
+    "checksum": "5766af7062db5c97"
   },
   "DGS20": {
     "nombre": "DGS20",
@@ -1696,11 +1578,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 14430,
-    "status": "OK",
-    "checksum": "b03116042e0a62b9",
-    "url": "https://fred.stlouisfed.org/series/DGS20"
+    "fin": "2026-08-26",
+    "n_obs": 14459,
+    "status": "CACHE",
+    "checksum": "304e8e172fcb7fb4"
   },
   "DGS6MO": {
     "nombre": "DGS6MO",
@@ -1710,11 +1591,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1981-09-01",
-    "fin": "2026-07-16",
-    "n_obs": 11217,
-    "status": "OK",
-    "checksum": "dd372adfde83f54f",
-    "url": "https://fred.stlouisfed.org/series/DGS6MO"
+    "fin": "2026-08-26",
+    "n_obs": 11246,
+    "status": "CACHE",
+    "checksum": "9ce90337cfdbef7a"
   },
   "DGS1MO": {
     "nombre": "DGS1MO",
@@ -1724,11 +1604,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2001-07-31",
-    "fin": "2026-07-16",
-    "n_obs": 6241,
-    "status": "OK",
-    "checksum": "ae74c5502b67732b",
-    "url": "https://fred.stlouisfed.org/series/DGS1MO"
+    "fin": "2026-08-26",
+    "n_obs": 6270,
+    "status": "CACHE",
+    "checksum": "bd5e4e398079f0c5"
   },
   "T5YFF": {
     "nombre": "T5YFF",
@@ -1738,11 +1617,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 16117,
-    "status": "OK",
-    "checksum": "a662c02b9f3a82c5",
-    "url": "https://fred.stlouisfed.org/series/T5YFF"
+    "fin": "2026-08-26",
+    "n_obs": 16146,
+    "status": "CACHE",
+    "checksum": "5e52bc1f67c610de"
   },
   "DTB6": {
     "nombre": "DTB6",
@@ -1752,11 +1630,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1958-12-09",
-    "fin": "2026-07-16",
-    "n_obs": 16885,
-    "status": "OK",
-    "checksum": "74f2de78057f0354",
-    "url": "https://fred.stlouisfed.org/series/DTB6"
+    "fin": "2026-08-26",
+    "n_obs": 16914,
+    "status": "CACHE",
+    "checksum": "f04f320c51de2292"
   },
   "DTB1YR": {
     "nombre": "DTB1YR",
@@ -1766,11 +1643,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "1959-07-15",
-    "fin": "2026-07-16",
-    "n_obs": 15049,
-    "status": "OK",
-    "checksum": "567033f068a744a5",
-    "url": "https://fred.stlouisfed.org/series/DTB1YR"
+    "fin": "2026-08-26",
+    "n_obs": 15078,
+    "status": "CACHE",
+    "checksum": "add10c1721ff2475"
   },
   "EFFR": {
     "nombre": "EFFR",
@@ -1780,11 +1656,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2000-07-03",
-    "fin": "2026-07-17",
-    "n_obs": 6538,
-    "status": "OK",
-    "checksum": "0541167a90848e34",
-    "url": "https://fred.stlouisfed.org/series/EFFR"
+    "fin": "2026-08-27",
+    "n_obs": 6567,
+    "status": "CACHE",
+    "checksum": "b66dc55bffd1e56f"
   },
   "SOFR": {
     "nombre": "SOFR",
@@ -1794,11 +1669,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2018-04-03",
-    "fin": "2026-07-17",
-    "n_obs": 2070,
-    "status": "OK",
-    "checksum": "88eb527ef8ec22ce",
-    "url": "https://fred.stlouisfed.org/series/SOFR"
+    "fin": "2026-08-27",
+    "n_obs": 2099,
+    "status": "CACHE",
+    "checksum": "375d0065be0a3bdf"
   },
   "OBFR": {
     "nombre": "OBFR",
@@ -1808,11 +1682,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2016-03-01",
-    "fin": "2026-07-17",
-    "n_obs": 2608,
-    "status": "OK",
-    "checksum": "86d4c6a14256d55e",
-    "url": "https://fred.stlouisfed.org/series/OBFR"
+    "fin": "2026-08-27",
+    "n_obs": 2637,
+    "status": "CACHE",
+    "checksum": "47bb63185870896a"
   },
   "IORB": {
     "nombre": "IORB",
@@ -1822,11 +1695,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2021-07-29",
-    "fin": "2026-07-20",
-    "n_obs": 1818,
-    "status": "OK",
-    "checksum": "def0c3b85aee6314",
-    "url": "https://fred.stlouisfed.org/series/IORB"
+    "fin": "2026-08-28",
+    "n_obs": 1857,
+    "status": "CACHE",
+    "checksum": "3aa45f8b84da9c72"
   },
   "DPCREDIT": {
     "nombre": "DPCREDIT",
@@ -1836,11 +1708,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2003-01-09",
-    "fin": "2026-07-16",
-    "n_obs": 6136,
-    "status": "OK",
-    "checksum": "1ca8473dba0682ce",
-    "url": "https://fred.stlouisfed.org/series/DPCREDIT"
+    "fin": "2026-08-26",
+    "n_obs": 6165,
+    "status": "CACHE",
+    "checksum": "f9ab847324c1c00c"
   },
   "DFII10": {
     "nombre": "DFII10",
@@ -1850,11 +1721,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2003-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 5888,
-    "status": "OK",
-    "checksum": "0e9c924a3c4fc538",
-    "url": "https://fred.stlouisfed.org/series/DFII10"
+    "fin": "2026-08-26",
+    "n_obs": 5917,
+    "status": "CACHE",
+    "checksum": "8c0e4c86ada5189b"
   },
   "DFII5": {
     "nombre": "DFII5",
@@ -1864,11 +1734,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2003-01-02",
-    "fin": "2026-07-16",
-    "n_obs": 5888,
-    "status": "OK",
-    "checksum": "2598a69f4eff9e09",
-    "url": "https://fred.stlouisfed.org/series/DFII5"
+    "fin": "2026-08-26",
+    "n_obs": 5917,
+    "status": "CACHE",
+    "checksum": "aa44ba266d1688ec"
   },
   "DFII30": {
     "nombre": "DFII30",
@@ -1878,11 +1747,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2010-02-22",
-    "fin": "2026-07-16",
-    "n_obs": 4103,
-    "status": "OK",
-    "checksum": "3ef77cd73d2f5622",
-    "url": "https://fred.stlouisfed.org/series/DFII30"
+    "fin": "2026-08-26",
+    "n_obs": 4132,
+    "status": "CACHE",
+    "checksum": "cf9edc98e968603e"
   },
   "T10YIE": {
     "nombre": "T10YIE",
@@ -1892,11 +1760,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2003-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 5889,
-    "status": "OK",
-    "checksum": "928f1ccce9654678",
-    "url": "https://fred.stlouisfed.org/series/T10YIE"
+    "fin": "2026-08-27",
+    "n_obs": 5918,
+    "status": "CACHE",
+    "checksum": "8a71c1ac308166dd"
   },
   "T5YIE": {
     "nombre": "T5YIE",
@@ -1906,11 +1773,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2003-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 5889,
-    "status": "OK",
-    "checksum": "1eea5809d6fb20c0",
-    "url": "https://fred.stlouisfed.org/series/T5YIE"
+    "fin": "2026-08-27",
+    "n_obs": 5918,
+    "status": "CACHE",
+    "checksum": "46375f988f28750a"
   },
   "T5YIFR": {
     "nombre": "T5YIFR",
@@ -1920,11 +1786,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2003-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 5889,
-    "status": "OK",
-    "checksum": "38b35d319ba77c9b",
-    "url": "https://fred.stlouisfed.org/series/T5YIFR"
+    "fin": "2026-08-27",
+    "n_obs": 5918,
+    "status": "CACHE",
+    "checksum": "9b0096f8f9c32758"
   },
   "IRX_YF": {
     "nombre": "IRX_YF",
@@ -1934,11 +1799,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1960-01-04",
-    "fin": "2026-07-20",
-    "n_obs": 16620,
-    "status": "OK",
-    "checksum": "91923dfa457866c0",
-    "url": "https://finance.yahoo.com/quote/%5EIRX"
+    "fin": "2026-08-28",
+    "n_obs": 16649,
+    "status": "CACHE",
+    "checksum": "d63fe934fddf3cbc"
   },
   "TYX_YF": {
     "nombre": "TYX_YF",
@@ -1948,11 +1812,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1977-02-15",
-    "fin": "2026-07-20",
-    "n_obs": 12381,
-    "status": "OK",
-    "checksum": "ec7036890f9acf6d",
-    "url": "https://finance.yahoo.com/quote/%5ETYX"
+    "fin": "2026-08-28",
+    "n_obs": 12410,
+    "status": "CACHE",
+    "checksum": "21d31913ca8ed886"
   },
   "FVX_YF": {
     "nombre": "FVX_YF",
@@ -1962,11 +1825,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "1962-01-02",
-    "fin": "2026-07-20",
-    "n_obs": 16123,
-    "status": "OK",
-    "checksum": "276fe9077dc31868",
-    "url": "https://finance.yahoo.com/quote/%5EFVX"
+    "fin": "2026-08-28",
+    "n_obs": 16152,
+    "status": "CACHE",
+    "checksum": "bcd97cf25866d997"
   },
   "GH_US10Y_MONTHLY": {
     "nombre": "GH_US10Y_MONTHLY",
@@ -1976,11 +1838,10 @@
     "rol": "fallback",
     "granularidad": "mensual",
     "inicio": "1953-04-01",
-    "fin": "2026-05-01",
-    "n_obs": 878,
-    "status": "OK",
-    "checksum": "ec1c579b039c6224",
-    "url": "https://github.com/datasets/bond-yields-us-10y"
+    "fin": "2026-06-01",
+    "n_obs": 879,
+    "status": "CACHE",
+    "checksum": "a788092daed1afa7"
   },
   "GOLD_GLD": {
     "nombre": "GOLD_GLD",
@@ -1990,11 +1851,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2004-11-18",
-    "fin": "2026-07-20",
-    "n_obs": 5449,
-    "status": "OK",
-    "checksum": "9a63659233f5abde",
-    "url": "https://finance.yahoo.com/quote/GLD"
+    "fin": "2026-08-28",
+    "n_obs": 5478,
+    "status": "CACHE",
+    "checksum": "198d84bf708babae"
   },
   "GOLD_FUT": {
     "nombre": "GOLD_FUT",
@@ -2004,11 +1864,10 @@
     "rol": "fallback",
     "granularidad": "diaria",
     "inicio": "2000-08-30",
-    "fin": "2026-07-20",
-    "n_obs": 6494,
-    "status": "OK",
-    "checksum": "617824d225182131",
-    "url": "https://finance.yahoo.com/quote/GC=F"
+    "fin": "2026-08-28",
+    "n_obs": 6523,
+    "status": "CACHE",
+    "checksum": "5228ae0b2f981c79"
   },
   "HYG_CREDIT": {
     "nombre": "HYG_CREDIT",
@@ -2018,11 +1877,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2007-04-11",
-    "fin": "2026-07-20",
-    "n_obs": 4849,
-    "status": "OK",
-    "checksum": "619063fdb618d178",
-    "url": "https://finance.yahoo.com/quote/HYG"
+    "fin": "2026-08-28",
+    "n_obs": 4878,
+    "status": "CACHE",
+    "checksum": "49febdf5e7e08a8c"
   },
   "IEF_TREASURY": {
     "nombre": "IEF_TREASURY",
@@ -2032,11 +1890,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2002-07-30",
-    "fin": "2026-07-20",
-    "n_obs": 6031,
-    "status": "OK",
-    "checksum": "8f057daa0aa4fe4b",
-    "url": "https://finance.yahoo.com/quote/IEF"
+    "fin": "2026-08-28",
+    "n_obs": 6060,
+    "status": "CACHE",
+    "checksum": "c2544551fd952bcf"
   },
   "LQD_IGCREDIT": {
     "nombre": "LQD_IGCREDIT",
@@ -2046,11 +1903,10 @@
     "rol": "enricher",
     "granularidad": "diaria",
     "inicio": "2002-07-30",
-    "fin": "2026-07-20",
-    "n_obs": 6031,
-    "status": "OK",
-    "checksum": "f08ba929b54a47cd",
-    "url": "https://finance.yahoo.com/quote/LQD"
+    "fin": "2026-08-28",
+    "n_obs": 6060,
+    "status": "CACHE",
+    "checksum": "728d09934442272e"
   },
   "TLT_TREASURY": {
     "nombre": "TLT_TREASURY",
@@ -2060,11 +1916,10 @@
     "rol": "core",
     "granularidad": "diaria",
     "inicio": "2002-07-30",
-    "fin": "2026-07-20",
-    "n_obs": 6031,
-    "status": "OK",
-    "checksum": "089408a0b62a33ee",
-    "url": "https://finance.yahoo.com/quote/TLT"
+    "fin": "2026-08-28",
+    "n_obs": 6060,
+    "status": "CACHE",
+    "checksum": "df7fd2870a4fe371"
   },
   "OFR_FSI": {
     "nombre": "OFR_FSI",
@@ -2074,11 +1929,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "2000-01-03",
-    "fin": "2026-07-16",
-    "n_obs": 6716,
-    "status": "OK",
-    "checksum": "56de3f24254e70a6",
-    "url": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv"
+    "fin": "2026-08-26",
+    "n_obs": 6745,
+    "status": "CACHE",
+    "checksum": "d0cb58a40e599fa4"
   },
   "OFR_FSI_CREDIT": {
     "nombre": "OFR_FSI_CREDIT",
@@ -2088,11 +1942,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "2000-01-03",
-    "fin": "2026-07-16",
-    "n_obs": 6716,
-    "status": "OK",
-    "checksum": "90f81923a275abd3",
-    "url": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv"
+    "fin": "2026-08-26",
+    "n_obs": 6745,
+    "status": "CACHE",
+    "checksum": "466fd9534558d15c"
   },
   "OFR_FSI_FUNDING": {
     "nombre": "OFR_FSI_FUNDING",
@@ -2102,11 +1955,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "2000-01-03",
-    "fin": "2026-07-16",
-    "n_obs": 6716,
-    "status": "OK",
-    "checksum": "3f45973d7e2408d7",
-    "url": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv"
+    "fin": "2026-08-26",
+    "n_obs": 6745,
+    "status": "CACHE",
+    "checksum": "2069903640eb988f"
   },
   "OFR_FSI_VOLATILITY": {
     "nombre": "OFR_FSI_VOLATILITY",
@@ -2116,11 +1968,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "2000-01-03",
-    "fin": "2026-07-16",
-    "n_obs": 6716,
-    "status": "OK",
-    "checksum": "42c839a7b485ed24",
-    "url": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv"
+    "fin": "2026-08-26",
+    "n_obs": 6745,
+    "status": "CACHE",
+    "checksum": "0703733c68187b97"
   },
   "OFR_FSI_US": {
     "nombre": "OFR_FSI_US",
@@ -2130,11 +1981,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "2000-01-03",
-    "fin": "2026-07-16",
-    "n_obs": 6716,
-    "status": "OK",
-    "checksum": "6dca06f09dab3cee",
-    "url": "https://www.financialresearch.gov/financial-stress-index/data/fsi.csv"
+    "fin": "2026-08-26",
+    "n_obs": 6745,
+    "status": "CACHE",
+    "checksum": "ba92ba194bfb3217"
   },
   "NFCI": {
     "nombre": "NFCI",
@@ -2144,11 +1994,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1971-01-08",
-    "fin": "2026-07-10",
-    "n_obs": 2897,
-    "status": "OK",
-    "checksum": "601562013fa5f405",
-    "url": "https://fred.stlouisfed.org/series/NFCI"
+    "fin": "2026-08-21",
+    "n_obs": 2903,
+    "status": "CACHE",
+    "checksum": "83e18bbc921f7268"
   },
   "ANFCI": {
     "nombre": "ANFCI",
@@ -2158,11 +2007,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1971-01-08",
-    "fin": "2026-07-10",
-    "n_obs": 2897,
-    "status": "OK",
-    "checksum": "2f4843c2d385a36c",
-    "url": "https://fred.stlouisfed.org/series/ANFCI"
+    "fin": "2026-08-21",
+    "n_obs": 2903,
+    "status": "CACHE",
+    "checksum": "d33e7fc05afdc18f"
   },
   "NFCI_RISK": {
     "nombre": "NFCI_RISK",
@@ -2172,11 +2020,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1971-01-08",
-    "fin": "2026-07-10",
-    "n_obs": 2897,
-    "status": "OK",
-    "checksum": "3cba78f44a6e70a7",
-    "url": "https://fred.stlouisfed.org/series/NFCIRISK"
+    "fin": "2026-08-21",
+    "n_obs": 2903,
+    "status": "CACHE",
+    "checksum": "c4cad33a0e7faaf0"
   },
   "NFCI_CREDIT": {
     "nombre": "NFCI_CREDIT",
@@ -2186,11 +2033,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1971-01-08",
-    "fin": "2026-07-10",
-    "n_obs": 2897,
-    "status": "OK",
-    "checksum": "6d2e2ff3a859657e",
-    "url": "https://fred.stlouisfed.org/series/NFCICREDIT"
+    "fin": "2026-08-21",
+    "n_obs": 2903,
+    "status": "CACHE",
+    "checksum": "05b4380666beb4c9"
   },
   "NFCI_LEVERAGE": {
     "nombre": "NFCI_LEVERAGE",
@@ -2200,11 +2046,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1971-01-08",
-    "fin": "2026-07-10",
-    "n_obs": 2897,
-    "status": "OK",
-    "checksum": "3115f502cad0bfd8",
-    "url": "https://fred.stlouisfed.org/series/NFCILEVERAGE"
+    "fin": "2026-08-21",
+    "n_obs": 2903,
+    "status": "CACHE",
+    "checksum": "41ce497be5257091"
   },
   "STLFSI4": {
     "nombre": "STLFSI4",
@@ -2214,11 +2059,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1993-12-31",
-    "fin": "2026-07-10",
-    "n_obs": 1698,
-    "status": "OK",
-    "checksum": "0c78404e2347dfd1",
-    "url": "https://fred.stlouisfed.org/series/STLFSI4"
+    "fin": "2026-08-21",
+    "n_obs": 1704,
+    "status": "CACHE",
+    "checksum": "99d0f43b25e3f471"
   },
   "KCFSI": {
     "nombre": "KCFSI",
@@ -2228,11 +2072,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1990-02-01",
-    "fin": "2026-06-01",
-    "n_obs": 437,
-    "status": "OK",
-    "checksum": "38edcbc6dc7951a0",
-    "url": "https://fred.stlouisfed.org/series/KCFSI"
+    "fin": "2026-07-01",
+    "n_obs": 438,
+    "status": "CACHE",
+    "checksum": "be9ed8158600637d"
   },
   "CFSI": {
     "nombre": "CFSI",
@@ -2244,9 +2087,8 @@
     "inicio": "1991-09-25",
     "fin": "2016-05-05",
     "n_obs": 8990,
-    "status": "OK",
-    "checksum": "8cc02ad5ccec5286",
-    "url": "https://fred.stlouisfed.org/series/CFSI"
+    "status": "CACHE",
+    "checksum": "8cc02ad5ccec5286"
   },
   "NBER_RECESSION_DAILY": {
     "nombre": "NBER_RECESSION_DAILY",
@@ -2256,11 +2098,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1854-12-01",
-    "fin": "2026-07-05",
-    "n_obs": 62674,
-    "status": "OK",
-    "checksum": "61fd18e65b7fddea",
-    "url": "https://fred.stlouisfed.org/series/USRECD"
+    "fin": "2026-08-26",
+    "n_obs": 62726,
+    "status": "CACHE",
+    "checksum": "3ca55e1401d92bac"
   },
   "NBER_RECESSION_MONTHLY": {
     "nombre": "NBER_RECESSION_MONTHLY",
@@ -2270,11 +2111,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1854-12-01",
-    "fin": "2026-06-01",
-    "n_obs": 2059,
-    "status": "OK",
-    "checksum": "4c6fcd0303e3d9a5",
-    "url": "https://fred.stlouisfed.org/series/USREC"
+    "fin": "2026-07-01",
+    "n_obs": 2060,
+    "status": "CACHE",
+    "checksum": "9f9f98917123553c"
   },
   "RECESSION_PROB_SMOOTHED": {
     "nombre": "RECESSION_PROB_SMOOTHED",
@@ -2284,11 +2124,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1967-06-01",
-    "fin": "2026-05-01",
-    "n_obs": 708,
-    "status": "OK",
-    "checksum": "e6531b2a5b374022",
-    "url": "https://fred.stlouisfed.org/series/RECPROUSM156N"
+    "fin": "2026-06-01",
+    "n_obs": 709,
+    "status": "CACHE",
+    "checksum": "5c68484e035ec9f0"
   },
   "SAHM_RULE_REALTIME": {
     "nombre": "SAHM_RULE_REALTIME",
@@ -2298,11 +2137,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1959-12-01",
-    "fin": "2026-06-01",
-    "n_obs": 798,
-    "status": "OK",
-    "checksum": "f7ec1c9d36a39bb8",
-    "url": "https://fred.stlouisfed.org/series/SAHMREALTIME"
+    "fin": "2026-07-01",
+    "n_obs": 799,
+    "status": "CACHE",
+    "checksum": "00d4da7681dccd35"
   },
   "VIX_VALIDATION_REF": {
     "nombre": "VIX_VALIDATION_REF",
@@ -2312,11 +2150,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1990-01-02",
-    "fin": "2026-07-17",
-    "n_obs": 9232,
-    "status": "OK",
-    "checksum": "0458d375f7d559e5",
-    "url": "https://fred.stlouisfed.org/series/VIXCLS"
+    "fin": "2026-08-27",
+    "n_obs": 9261,
+    "status": "CACHE",
+    "checksum": "9b42e81d0354a8ed"
   },
   "PHILLY_ANXIOUS_INDEX": {
     "nombre": "PHILLY_ANXIOUS_INDEX",
@@ -2336,11 +2173,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1949-03-01",
-    "fin": "2026-06-01",
-    "n_obs": 928,
-    "status": "OK",
-    "checksum": "abe5b1b291df27a3",
-    "url": "https://fred.stlouisfed.org/series/SAHMCURRENT"
+    "fin": "2026-07-01",
+    "n_obs": 929,
+    "status": "CACHE",
+    "checksum": "e7aca9b0f5a4559b"
   },
   "GDP_RECESSION_HAMILTON": {
     "nombre": "GDP_RECESSION_HAMILTON",
@@ -2350,11 +2186,10 @@
     "rol": "validation",
     "granularidad": "mensual",
     "inicio": "1967-10-01",
-    "fin": "2025-10-01",
-    "n_obs": 233,
-    "status": "OK",
-    "checksum": "e340391a5b71a5fa",
-    "url": "https://fred.stlouisfed.org/series/JHDUSRGDPBR"
+    "fin": "2026-01-01",
+    "n_obs": 234,
+    "status": "CACHE",
+    "checksum": "3882a15f7462c6f7"
   },
   "SP500_DAILY_DRAWDOWN_SRC": {
     "nombre": "SP500_DAILY_DRAWDOWN_SRC",
@@ -2364,11 +2199,10 @@
     "rol": "validation",
     "granularidad": "diaria",
     "inicio": "1927-12-30",
-    "fin": "2026-07-20",
-    "n_obs": 24753,
-    "status": "OK",
-    "checksum": "3d6af277f1ae9cba",
-    "url": "https://finance.yahoo.com/quote/%5EGSPC"
+    "fin": "2026-08-28",
+    "n_obs": 24782,
+    "status": "CACHE",
+    "checksum": "57f223e1ae1010e6"
   },
   "SP500_MONTHLY_DEEP_SRC": {
     "nombre": "SP500_MONTHLY_DEEP_SRC",
@@ -2378,11 +2212,10 @@
     "rol": "fallback",
     "granularidad": "mensual",
     "inicio": "1871-01-01",
-    "fin": "2026-06-01",
-    "n_obs": 1866,
-    "status": "OK",
-    "checksum": "cd29c37e49603644",
-    "url": "https://raw.githubusercontent.com/datasets/s-and-p-500/main/data/data.csv"
+    "fin": "2026-07-01",
+    "n_obs": 1867,
+    "status": "CACHE",
+    "checksum": "ae693794ae190f08"
   },
   "JST_CRISIS_GROUNDTRUTH": {
     "nombre": "JST_CRISIS_GROUNDTRUTH",

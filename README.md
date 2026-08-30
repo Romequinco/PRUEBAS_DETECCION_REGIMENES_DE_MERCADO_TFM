@@ -21,6 +21,7 @@ la **base de datos sólida** sobre la que hacerlo.
 │   ├── evaluation.py             ← EL JUEZ (walk-forward + métricas) — reutilizado de Capa 1
 │   ├── detector_base.py          ← interfaz RegimeDetector — reutilizada
 │   ├── features.py · viz.py      ← primitivas causales · estilo de figuras
+│   ├── benchmark.py · fusion.py   ← ejecución reproducible · fusión alerta/confirmación
 │   └── ingest/                   ← descarga dirigida por catálogo (fred/yfinance/ofr/github/académico)
 │
 ├── data/
@@ -33,7 +34,11 @@ la **base de datos sólida** sobre la que hacerlo.
 │   ├── 00_descarga.ipynb         ← panorámica de datos: tabla completa + visualizaciones + descarga
 │   ├── 01_eda.ipynb              ← EDA maestro (12 secciones, recomputa los hallazgos)
 │   ├── 02_diseno_preprocesado.ipynb ← decisiones del preprocesado (qué features, transforms, alineación)
-│   └── 03_preprocesado.ipynb     ← implementa 02: paneles causales pista{A,B}_{diaria,mensual} + labels
+│   ├── 03_preprocesado.ipynb     ← implementa 02: paneles causales pista{A,B}_{diaria,mensual} + labels
+│   ├── 04_benchmark_detectores.ipynb ← ejecuta D1–D12 con walk-forward y caché validada por huella
+│   ├── 05_comparacion_detectores.ipynb ← scorecards, gráficos y ranking por pista
+│   ├── 06_fusion_d07_d08.ipynb   ← D7 alerta + D8 confirma; utilidad, causalidad y sensibilidad
+│   └── 07_fusion_d02_d06.ipynb   ← selección auditable: D2 alerta + D6 confirma
 │
 ├── docs/                         ← TODO el conocimiento del proyecto (empieza por docs/README.md)
 │   ├── README.md                 ← índice: decisiones, datos, EDA, teoría
@@ -82,7 +87,6 @@ python -m src.ingest.download    # descarga el catálogo -> data/raw/  (o abre n
 | 1 | Reorganización + narrativa | ✅ |
 | 2 | Datos: estado del arte + descarga (166/174 series) | ✅ |
 | 3 | EDA profundo + benchmark congelado | ✅ |
-| — | Limpieza + documentación | ✅ |
-| D | Re-evaluar los 12 sobre `benchmark_spec.yaml` + diseñar el detector | 🔜 (siguiente) |
-
-*(La Fase 4 "preprocesado" se pospone: se hará junto con la Fase D, ya con el benchmark congelado.)*
+| 4 | Diseño + preprocesado causal v2 | ✅ (notebooks 02–03) |
+| D | Re-evaluar D1–D12 sobre `benchmark_spec.yaml` | ✅ benchmark y comparación ejecutados (notebooks 04–05) |
+| E | Fusionar alerta + confirmación y prueba pseudolive final | 🟡 D2+D6 seleccionado; pseudolive independiente pendiente (notebooks 06–07) |

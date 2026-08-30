@@ -1,0 +1,25 @@
+pista,id,estado,segundos,detalle
+A,D01,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D01.csv
+A,D02,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D02.csv
+A,D03,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D03.csv
+A,D04,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D04.csv
+A,D05,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D05.csv
+A,D06,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D06.csv
+A,D07,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D07.csv
+A,D08,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D08.csv
+A,D09,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D09.csv
+A,D10,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D10.csv
+A,D11,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D11.csv
+A,D12,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D12.csv
+B,D01,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D01.csv
+B,D02,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D02.csv
+B,D03,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D03.csv
+B,D04,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D04.csv
+B,D05,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D05.csv
+B,D06,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D06.csv
+B,D07,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D07.csv
+B,D08,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D08.csv
+B,D09,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D09.csv
+B,D10,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D10.csv
+B,D11,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D11.csv
+B,D12,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D12.csv

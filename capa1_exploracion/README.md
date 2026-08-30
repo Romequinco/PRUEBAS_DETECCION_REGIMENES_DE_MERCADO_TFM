@@ -25,6 +25,16 @@ walk-forward causal, mismas métricas para los 12 detectores.
 | D11 | `msgarch_regime` | F5 MS-GARCH (exploratorio-negativo) |
 | D12 | `deep_ae_regime` | F7 redes (exploratorio-negativo) |
 
+### Extensión posterior: ablación HSMM
+
+Después de cerrar el banco oficial D1–D12 se implementó `A1_hsmm_ablation.ipynb`,
+una comparación controlada entre D8 y una extensión HSMM con duraciones explícitas.
+No forma parte del ranking histórico ni de `metrics_master.csv`. Sus dos ejecuciones
+comparables se conservan en `results/ablation_hsmm/`.
+
+La ablación no respalda la complejidad adicional: D13 no reduce el *switching* ni
+aumenta la duración media, por lo que se mantiene D8 por parsimonia.
+
 ## Qué se aprendió (hallazgos que sobreviven al re-base)
 
 1. El *look-ahead* de los z-scores in-sample compraba **suavidad, no acierto**.
@@ -45,9 +55,9 @@ El detalle y la decisión de re-basar los datos están en
 ```
 capa1_exploracion/
 ├── src/          marco que usó (data_loader, features, detector_base, evaluation, viz)
-├── detectors/    los 12 detectores
-├── notebooks/    00_eda + 01..12 (un detector c/u) + 13_comparison (ejecutados, autónomos)
-├── results/      métricas por detector + tabla maestra + figuras
+├── detectors/    los 12 detectores oficiales + HSMM de la ablación posterior
+├── notebooks/    00_eda + 01..12 + 13_comparison; A1_hsmm_ablation queda fuera del ranking
+├── results/      métricas oficiales + master; ablation_hsmm/ separa D8–D13
 ├── report/       informe_capa1 (LaTeX + PDF)
 ├── data/         metadatos de procedencia de los datos v1 (raw gitignored)
 └── memory/       memoria viva: INDEX.md (estado), sota/, detectors/, 99_conclusions.md
