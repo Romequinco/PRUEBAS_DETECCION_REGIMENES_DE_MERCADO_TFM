@@ -162,6 +162,25 @@ def fetch_fred_spread(spec: str) -> pd.Series:
 # --------------------------------------------------------------------------- #
 # Academico: enruta por id/url. Devuelve Series o DataFrame (paneles multi-columna).
 # --------------------------------------------------------------------------- #
+def _shiller_dates(col: pd.Series) -> pd.DatetimeIndex:
+    """Convierte la columna Date de Shiller (float ``AAAA.MM``) en fechas de inicio de mes.
+
+    Ojo: Shiller codifica octubre como ``1871.1`` (float). Un parseo por texto
+    (``'1871.1' -> '1871-1'``) lo convierte en ENERO y duplica eneros / pierde octubres
+    (bug de la v1: SHILLER_LONGRATE quedo con 153 fechas duplicadas). Aqui se parsea
+    numericamente: mes = round((v - floor(v)) * 100).
+    """
+    v = pd.to_numeric(col, errors="coerce")
+    year = v.floordiv(1)
+    month = ((v - year) * 100).round()
+    ok = v.notna() & month.between(1, 12)
+    out = pd.Series(pd.NaT, index=col.index, dtype="datetime64[ns]")
+    out[ok] = pd.to_datetime(
+        {"year": year[ok].astype(int), "month": month[ok].astype(int), "day": 1}
+    )
+    return pd.DatetimeIndex(out)
+
+
 def _shiller_xls() -> pd.DataFrame:
     for url in (
         "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls",
@@ -170,15 +189,41 @@ def _shiller_xls() -> pd.DataFrame:
         try:
             raw = _get(url, timeout=60)
             xl = pd.read_excel(io.BytesIO(raw), sheet_name="Data", skiprows=7)
-            d = xl.iloc[:, 0].astype(str).str.replace(".", "-", regex=False)
-            xl.index = pd.to_datetime(d, format="%Y-%m", errors="coerce")
-            return xl[xl.index.notna()]
+            xl.index = _shiller_dates(xl.iloc[:, 0])
+            xl = xl[xl.index.notna()]
+            return xl[~xl.index.duplicated(keep="first")]
         except Exception:  # noqa: BLE001
             continue
     raise RuntimeError("Shiller ie_data.xls no accesible")
 
 
+def _gw_quarter_index(raw: pd.Series) -> pd.DatetimeIndex:
+    """Goyal-Welch trimestral codifica el trimestre como ``AAAAQ`` (p. ej. ``18711``).
+
+    ``PeriodIndex('18711')`` lo lee como el ano 18711 (bug v1: GW_PREDICTORS_QUARTERLY
+    en ERROR con 'year 18711 is out of range'). Se separa ano (4 digitos) y trimestre.
+    """
+    s = raw.astype(str).str.strip()
+    ok = s.str.fullmatch(r"\d{4}[1-4]")
+    per = pd.PeriodIndex(s[ok].str[:4] + "Q" + s[ok].str[4], freq="Q")
+    out = pd.Series(pd.NaT, index=raw.index, dtype="datetime64[ns]")
+    out[ok] = per.to_timestamp()
+    return pd.DatetimeIndex(out)
+
+
 def _french_zip(name: str) -> pd.Series:
+    """Primer bloque diario de un CSV de Ken French, **solo la PRIMERA columna de datos**.
+
+    Limitacion conocida (documentada, no silenciosa): para ficheros multi-columna se
+    conserva unicamente la primera columna, p. ej.
+      - F-F_Research_Data_Factors_daily      -> solo ``Mkt-RF`` (no SMB/HML/RF)
+      - F-F_Research_Data_5_Factors_2x3_daily -> solo ``Mkt-RF``
+      - 5_Industry_Portfolios_daily           -> solo ``Cnsmr`` (value-weighted)
+    Se mantiene asi porque el contrato de carga del repo es
+    ``pd.read_parquet(...)[nombre_interno]`` (una columna por serie). Si se quisiera el
+    panel completo habria que declararlo como serie multi-columna en catalog.yaml y
+    adaptar los consumidores (03_preprocesado).
+    """
     import re
     import zipfile
 
@@ -224,7 +269,7 @@ def fetch_academico(spec: str, url: str | None = None):
         if sheet == "Monthly":
             df.index = pd.to_datetime(raw, format="%Y%m", errors="coerce")
         else:
-            df.index = pd.PeriodIndex(raw.str.replace("Q", "Q"), freq="Q").to_timestamp()
+            df.index = _gw_quarter_index(raw)
         return df.drop(columns=[dc])[df.index.notna()]
     # -- JST macrohistory (xlsx panel; filtra USA) --
     if "jst" in s:

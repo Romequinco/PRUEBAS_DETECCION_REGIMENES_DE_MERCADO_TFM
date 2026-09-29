@@ -9,6 +9,11 @@ data/raw/<fuente>/<nombre_interno>.parquet, y escribe:
 
 Resiliente: un fallo por serie se registra (status=ERROR) y NO aborta el resto.
 Cacheo: si el parquet ya existe y force=False, se salta (usa el cache).
+Guarda anti-degradacion: con force=True, una descarga que devuelve MUCHA menos historia
+que el cache en disco (p. ej. yfinance devolviendo 1 sola fila para ^VIX9D) NO lo
+sobrescribe: se conserva el cache y se registra un aviso (status=CACHE, campo `aviso`).
+`only`: acota que se (re)descarga; las series no pedidas y ausentes de disco conservan
+su fila del coverage_report anterior (asi un `only` nunca borra los ERROR declarados).
 """
 from __future__ import annotations
 
@@ -25,6 +30,11 @@ from . import sources
 ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"
 CATALOG = ROOT / "data" / "catalog.yaml"
+
+# Una re-descarga con menos de esta fraccion de las observaciones del cache se
+# considera degradada (fallo silencioso de la fuente) y no sobrescribe el cache.
+MIN_FRAC_VS_CACHE = 0.5
+MIN_OBS = 2
 
 
 def load_catalog() -> dict:
@@ -57,6 +67,8 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
 
     series_list = list(_iter_series(cat))
     total = len(series_list)
+    prev_rows = _previous_report()
+    prev_prov = _previous_provenance()
     for i, (nombre, entry) in enumerate(series_list, 1):
         fuente = entry.get("fuente", "?")
         sid = entry.get("id", "")
@@ -70,21 +82,36 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
         # `only` acota QUE se (re)descarga, pero las demas series ya en disco SIGUEN
         # registrandose como CACHE -> `only` nunca vacia el coverage_report.
         targeted = (not only) or (nombre in only)
-        if out.exists() and (not force or not targeted):
+        cached = None
+        if out.exists():
             try:
-                s = pd.read_parquet(out).iloc[:, 0]
-                rec.update(_meta_from_series(s, cached=True))
-                provenance[nombre] = {**rec, "status": "CACHE", "checksum": _checksum(s)}
-                rows.append(rec | {"status": "CACHE"})
-                print(f"[{i}/{total}] CACHE  {nombre:28} ({fuente})")
-                continue
+                cached = pd.read_parquet(out).iloc[:, 0]
             except Exception:  # noqa: BLE001  (cache corrupto -> re-descarga)
-                pass
+                cached = None
+        if cached is not None and (not force or not targeted):
+            _register_cache(rec, cached, provenance, rows, entry)
+            print(f"[{i}/{total}] CACHE  {nombre:28} ({fuente})")
+            continue
         if not targeted:
-            continue  # no esta en disco y no se ha pedido -> no se registra
+            # no esta en disco y no se ha pedido -> conserva su fila previa (si la habia)
+            if nombre in prev_rows:
+                rows.append(prev_rows[nombre])
+            if nombre in prev_prov:
+                provenance[nombre] = prev_prov[nombre]
+            continue
         try:
             obj = sources.fetch(fuente, sid, url=entry.get("url"))
             obj = obj.sort_index()
+            rep_new = obj.iloc[:, 0] if isinstance(obj, pd.DataFrame) else obj
+            n_new = int(rep_new.dropna().shape[0])
+            if n_new < MIN_OBS:
+                raise RuntimeError(f"descarga degenerada: {n_new} observaciones")
+            if cached is not None and n_new < MIN_FRAC_VS_CACHE * len(cached):
+                aviso = (f"re-descarga degradada ({n_new} obs vs {len(cached)} en cache): "
+                         "se conserva el cache")
+                _register_cache(rec, cached, provenance, rows, entry, aviso=aviso)
+                print(f"[{i}/{total}] AVISO  {nombre:28} ({fuente}) -> {aviso}")
+                continue
             if isinstance(obj, pd.DataFrame):
                 df_out = obj                          # panel multi-columna (GW, JST)
                 rep = obj.iloc[:, 0]
@@ -100,6 +127,11 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
             print(f"[{i}/{total}] OK     {nombre:28} ({fuente}) {rec['inicio']}->{rec['fin']} n={rec['n_obs']}")
         except Exception as e:  # noqa: BLE001
             msg = f"{type(e).__name__}: {e}"
+            if cached is not None:  # fallo al refrescar, pero hay cache valido -> se usa
+                _register_cache(rec, cached, provenance, rows, entry,
+                                aviso=f"re-descarga fallida ({msg[:80]}): se conserva el cache")
+                print(f"[{i}/{total}] AVISO  {nombre:28} ({fuente}) -> {msg[:70]} (se usa cache)")
+                continue
             provenance[nombre] = {**rec, "status": "ERROR", "error": msg, "url": entry.get("url")}
             rows.append(rec | {"status": "ERROR", "n_obs": 0, "inicio": None, "fin": None, "error": msg})
             print(f"[{i}/{total}] ERROR  {nombre:28} ({fuente}) -> {msg[:70]}")
@@ -115,7 +147,46 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
     return report
 
 
+def _register_cache(rec: dict, s: pd.Series, provenance: dict, rows: list,
+                    entry: dict, aviso: str | None = None) -> None:
+    """Registra una serie servida desde el parquet en disco (status=CACHE)."""
+    rec.update(_meta_from_series(s, cached=True))
+    extra = {"aviso": aviso} if aviso else {}
+    provenance[rec["nombre"]] = {**rec, "status": "CACHE", "checksum": _checksum(s),
+                                 "url": entry.get("url"), **extra}
+    rows.append(rec | {"status": "CACHE", **extra})
+
+
+def _previous_report() -> dict[str, dict]:
+    """Filas del coverage_report.csv anterior (para no perderlas en un `only`)."""
+    f = RAW / "coverage_report.csv"
+    if not f.exists():
+        return {}
+    try:
+        prev = pd.read_csv(f)
+    except Exception:  # noqa: BLE001
+        return {}
+    prev = prev.astype(object).where(prev.notna(), None)
+    return {r["nombre"]: {k: v for k, v in r.items() if v is not None}
+            for r in prev.to_dict("records")}
+
+
+def _previous_provenance() -> dict[str, dict]:
+    f = RAW / "provenance.json"
+    if not f.exists():
+        return {}
+    try:
+        return json.loads(f.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
 def _meta_from_series(s: pd.Series, cached: bool) -> dict:
+    # Heuristica binaria diaria/mensual (espaciado mediano > 20 dias -> mensual).
+    # Limitacion conocida: las series SEMANALES (NFCI y subindices, STLFSI4, ICSA) quedan
+    # etiquetadas 'diaria'; 01_eda §1 las detecta y 02_diseno_preprocesado las trata
+    # aparte filtrando granularidad=='diaria' -> no se cambia aqui para no romper ese
+    # contrato aguas abajo.
     freq = "mensual" if len(s) > 1 and s.index.to_series().diff().median() > pd.Timedelta(days=20) else "diaria"
     return {
         "granularidad": freq,
