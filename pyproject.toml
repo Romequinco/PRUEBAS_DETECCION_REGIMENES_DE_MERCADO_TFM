@@ -20,8 +20,13 @@ dependencies = [
     # Nucleo de datos y calculo
     # Cotas superiores: el benchmark versionado se valido con numpy 2.3 / pandas 2.3.
     # pandas 3 cambia la resolucion por defecto de los indices (us) y el orden de
-    # pd.concat; el codigo ya es robusto a ambos, pero se fija <3 para que una
-    # instalacion limpia (CI) reproduzca el entorno de desarrollo.
+    # pd.concat. El codigo NO es robusto a lo primero: resolve_context('auto')
+    # (evaluacion/walk_forward.py) asume indices datetime64[ns] al calcular el
+    # hueco mediano (index.asi8 / 86_400e9); con un indice mensual en 'us' o 's'
+    # devuelve 252 en vez de 12 (un indice diario da 252 en cualquier unidad).
+    # Sin efecto hoy: data/processed y los paneles son datetime64[ns]. No se corrige
+    # alli porque walk_forward.py entra en la huella de la cache del benchmark.
+    # Se fija <3 para que una instalacion limpia (CI) reproduzca el entorno.
     "numpy>=1.26,<3",
     "pandas>=2.1,<3",
     "scipy>=1.11",
@@ -77,7 +82,7 @@ markers = [
 target-version = "py311"
 line-length = 110
 src = ["src", "tests"]
-extend-exclude = ["capa1_exploracion", "notebooks", "*.ipynb"]
+extend-exclude = ["notebooks", "*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E9", "F"]

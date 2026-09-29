@@ -8,7 +8,7 @@
 > BIC**. La mejora directa sobre el baseline gaussiano D4: ataca de frente las fat
 > tails del EDA (kurtosis 25-40). Código: `src/regimenes/detectores/f3_hmm/hmm_tstudent.py` (+
 > `src/regimenes/detectores/f3_hmm/_hmm_t_utils.py`, filtrado forward t) · Notebook:
-> `capa1_exploracion/notebooks/08_hmm_tstudent.ipynb` (v1) · Métricas: `docs/historia/capa1/resultados/metrics_08_hmm_tstudent.csv`.
+> `capa1_exploracion/notebooks/08_hmm_tstudent.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_08_hmm_tstudent.csv`.
 
 ## Implementado
 
@@ -70,6 +70,8 @@ D4 (2 estados, crisis ancha): **no es que D8 detecte peor, es que su "crisis" es
 cola extrema**. Hay que leer su fila del master con esta lente (la comparación justa de
 "estrés" sería corrección+crisis).
 
+*(Lectura v1. En v2 este matiz depende de la pista: en la pista A el estado de crisis OOS de D8 es el más poblado y no una cola estrecha; en la B sí es estrecho. Ver `notebooks/07_familia_F3_hmm.ipynb` §1.3 y §4.6. El taper de 2013 es en v2 una trampa: no activarse en él es correcto, no un punto ciego.)*
+
 **¿Captó 2013/2018?** Activación del estado crisis: 2013 = **0%**, 2018 = 3.4%
 (corrección+crisis: 2013 = 0%, 2018 = 81%). Es decir, capta 2018 como corrección pero
 **NO 2013**. La t-Student y los 4 estados mejoran el ajuste y separan corrección de
@@ -110,7 +112,7 @@ al comparar contra detectores de 2 estados conviene mirar también "corrección+
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb) (F3 — HMM) · **Teoría:** [`docs/teoria/F3_hmm.md`](../teoria/F3_hmm.md).
 

@@ -108,7 +108,7 @@ def _ranking_sintetico(metricas: pd.DataFrame) -> pd.DataFrame:
     filas = []
     for (t, d), m in metricas.iterrows():
         filas.append({"pista": t.lower(), "id": d, "puesto_deteccion": 0, "nivel_etiqueta": "elegible",
-                      "score_deteccion": 0.0, **{c: m[c] for c in inf.COLUMNAS_COHERENCIA}})
+                      "score_deteccion": 0.0, **{c: m[c] for c in inf.COLUMNAS_COHERENCIA if c in m.index}})
     rk = pd.DataFrame(filas)
     rk["score_deteccion"] = 2 * rk.det_precision * rk.det_event_recall / (rk.det_precision + rk.det_event_recall)
     rk["puesto_deteccion"] = rk.groupby("pista")["score_deteccion"].rank(ascending=False, method="min").astype(int)
@@ -144,6 +144,29 @@ def test_claves_incoherentes_y_resumen_ranking():
     assert list(res.index) == [("A", "D02"), ("A", "D01")]
     assert res.columns[1] == "de" and set(res["de"]) == {3}
     assert res.loc[("A", "D02"), "puesto_deteccion"] == 1
+
+
+def test_clasificar_lead_lag_distingue_saturacion_alarma_previa_y_reaccion():
+    idx = pd.bdate_range("2020-01-01", periods=400)
+    pico, suelo = idx[300], idx[320]          # 20 sesiones entre pico y suelo
+    tabla = pd.DataFrame(
+        {"pico": [str(pico.date())] * 4, "suelo": [str(suelo.date())] * 4,
+         "lead_lag_dias": [-252.0, -100.0, -5.0, np.nan]},
+        index=pd.Index(["sat", "previa", "reaccion", "nada"], name="crisis"))
+    out = inf.clasificar_lead_lag(tabla, idx, lookback=252)
+    assert list(out["lectura_lead_lag"]) == ["saturado", "antes del pico", "entre pico y suelo", "sin señal"]
+    assert set(out["sesiones_pico_suelo"]) == {20}
+    assert inf.lookback_lead_lag() == 252
+
+
+def test_claves_incoherentes_detecta_ranking_de_otra_ejecucion():
+    metricas = pd.DataFrame(
+        [_fila_metricas().rename(None).to_dict() | {"pista": "A", "id": "D01", "elapsed_seconds": 10.0}]
+    ).set_index(["pista", "id"])
+    ranking = metricas.reset_index()
+    assert inf.claves_incoherentes(ranking, metricas, [("A", "D01")]) == []
+    ranking.loc[0, "elapsed_seconds"] = 12.0
+    assert inf.claves_incoherentes(ranking, metricas, [("A", "D01")]) == ["A/D01 (difiere)"]
 
 
 # --------------------------------------------------------------------------- #

@@ -8,7 +8,7 @@
 > **GJR-GARCH(1,1)-t**, obtiene la **sigma condicional** y define el régimen
 > **umbralizando** esa sigma (percentil del train + histéresis + dwell). 2 estados.
 >
-> Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` · Notebook: `capa1_exploracion/notebooks/06_garch_t_vol.ipynb` (v1)
+> Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` · Notebook: `capa1_exploracion/notebooks/06_garch_t_vol.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_06.py` (retirado en el commit `6016f42`)) · Métricas:
 > `docs/historia/capa1/resultados/metrics_06_garch_t_vol.csv` · Figuras: `d06_*.png` (figura v1, no versionada).
 
@@ -150,7 +150,7 @@ causalidad ni la reactividad.
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb) (F5 — GARCH) · **Teoría:** [`docs/teoria/F5_volatilidad_garch.md`](../teoria/F5_volatilidad_garch.md).
 

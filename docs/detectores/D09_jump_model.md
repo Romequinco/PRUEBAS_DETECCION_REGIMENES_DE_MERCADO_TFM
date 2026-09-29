@@ -7,7 +7,7 @@
 > Statistical Jump Model (Nystrup et al.): clustering de estados con **penalización
 > de salto** λ → histéresis "aprendida", persistencia, online. Rival honesto de D3
 > (GMM sin persistencia) y de D12 (AE). Código: `src/regimenes/detectores/f2_clustering/jump_model.py` · Notebook:
-> `capa1_exploracion/notebooks/09_jump_model.ipynb` (v1) · Métricas: `docs/historia/capa1/resultados/metrics_09_jump_model.csv`.
+> `capa1_exploracion/notebooks/09_jump_model.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_09_jump_model.csv`.
 
 ## Implementado
 
@@ -78,7 +78,7 @@ pequeños — irrelevante aquí (train=252×8).
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/06_familia_F2_clustering.ipynb`](../../notebooks/06_familia_F2_clustering.ipynb) (F2 — Clustering) · **Teoría:** [`docs/teoria/F2_clustering.md`](../teoria/F2_clustering.md).
 

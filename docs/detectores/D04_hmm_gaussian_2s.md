@@ -8,7 +8,7 @@
 > honestamente el GaussianHMM 2 estados y MIDE el efecto del look-ahead comparando
 > una versión in-sample (no causal) con una causal walk-forward.
 >
-> Código: `src/regimenes/detectores/f3_hmm/hmm_gaussian_2s.py` · Notebook: `capa1_exploracion/notebooks/04_hmm_gaussian_2s.ipynb` (v1)
+> Código: `src/regimenes/detectores/f3_hmm/hmm_gaussian_2s.py` · Notebook: `capa1_exploracion/notebooks/04_hmm_gaussian_2s.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_04.py` (retirado en el commit `6016f42`)) · Métricas: `docs/historia/capa1/resultados/metrics_04_hmm_gaussian_2s.csv`
 > (causal) y `docs/historia/capa1/resultados/metrics_04_hmm_gaussian_2s_insample.csv` (in-sample, no causal).
 
@@ -155,7 +155,7 @@ docstring de `walk_forward` contempla. Observación:
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb) (F3 — HMM) · **Teoría:** [`docs/teoria/F3_hmm.md`](../teoria/F3_hmm.md).
 

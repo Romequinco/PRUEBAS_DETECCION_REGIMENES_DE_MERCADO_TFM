@@ -15,7 +15,8 @@ todos carguen resultados, dibujen y tabulen de la misma forma:
 - **Contexto de las pistas** (``data/processed`` y ``data/raw``, no dependen de
   ``results/``): :func:`cargar_contexto_pistas`, :func:`precio_sp500`.
 - **Tablas**: :func:`tabla_cobertura`, :func:`tabla_trampas`,
-  :func:`tabla_resumen_ranking`, :func:`matriz_jaccard`, :func:`retardo_confirmacion`.
+  :func:`tabla_resumen_ranking`, :func:`matriz_jaccard`, :func:`retardo_confirmacion`,
+  :func:`clasificar_lead_lag`.
 - **Figuras** (estilo de casa de :mod:`regimenes.viz`): :func:`franjas_eventos`,
   :func:`dibujar_estados_sp500`, :func:`figura_estados_oos`, :func:`dibujar_cobertura`,
   :func:`figura_cobertura`, :func:`dibujar_heatmap`, :func:`dibujar_plano_ranking`,
@@ -60,6 +61,10 @@ COLUMNAS_RANKING = [
 #: Columnas con las que se comprueba que el ranking corresponde a la caché cargada.
 COLUMNAS_COHERENCIA = [
     "det_n_detectados", "det_n_eventos", "det_event_recall", "det_precision", "det_marked_rate",
+    # Columnas no ``det_*``: detectan un ranking generado con una ejecución anterior de las
+    # mismas métricas (p. ej. ``elapsed_seconds`` cambia en cada re-ejecución del benchmark).
+    "false_alarm_rate", "switching_rate", "mean_regime_duration", "label_stability",
+    "elapsed_seconds",
 ]
 
 #: Columnas de la tabla de cobertura por crisis (:func:`tabla_cobertura`).
@@ -582,6 +587,56 @@ def retardo_confirmacion(flags: pd.Series, crisis: Mapping[str, tuple]) -> pd.Se
     return pd.Series(out, name="retardo_confirmacion", dtype=float)
 
 
+def lookback_lead_lag() -> int:
+    """Ventana de búsqueda (sesiones antes del suelo) de :func:`regimenes.evaluacion.metricas.lead_lag`."""
+    import inspect
+
+    from regimenes.evaluacion import metricas
+
+    return int(inspect.signature(metricas.lead_lag).parameters["lookback"].default)
+
+
+def clasificar_lead_lag(tabla: pd.DataFrame, indice: pd.Index, lookback: int | None = None) -> pd.DataFrame:
+    """Lectura de ``lead_lag_dias`` por crisis (tabla de :func:`tabla_cobertura`).
+
+    ``metricas.lead_lag`` devuelve la posición del **primer** cruce sostenido de
+    ``p_crisis`` dentro de las ``lookback`` sesiones previas al suelo, menos la del suelo.
+    Un valor negativo no implica anticipación:
+
+    - ``saturado``: ``lead_lag <= -lookback``; la señal ya estaba activa al empezar la
+      ventana de búsqueda (el valor es el tope de la ventana, no un adelanto medido).
+    - ``antes del pico``: la señal sostenida empieza antes del pico de ``[pico, suelo]``;
+      alarma previa (estado ya encendido o activación anterior), no atribuible a la crisis.
+    - ``entre pico y suelo``: la señal llega durante la caída, antes del suelo (reacción).
+    - ``sin señal``: NaN (no hay cruce sostenido en la ventana).
+
+    Añade ``sesiones_pico_suelo`` (posiciones de ``indice`` entre pico y suelo, mismo
+    criterio de posiciones que ``lead_lag``) y ``lectura_lead_lag``.
+    """
+    lookback = lookback_lead_lag() if lookback is None else int(lookback)
+    idx = pd.DatetimeIndex(indice)
+    out = tabla.copy()
+    distancias, lecturas = [], []
+    for _, fila in out.iterrows():
+        pos_suelo = idx.searchsorted(pd.Timestamp(fila["suelo"]), side="right") - 1
+        pos_pico = idx.searchsorted(pd.Timestamp(fila["pico"]), side="left")
+        dist = max(int(pos_suelo - pos_pico), 0)
+        ll = fila["lead_lag_dias"]
+        if pd.isna(ll):
+            lectura = "sin señal"
+        elif ll <= -min(lookback, pos_suelo):
+            lectura = "saturado"
+        elif ll < -dist:
+            lectura = "antes del pico"
+        else:
+            lectura = "entre pico y suelo"
+        distancias.append(dist)
+        lecturas.append(lectura)
+    out["sesiones_pico_suelo"] = distancias
+    out["lectura_lead_lag"] = lecturas
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Figuras
 # --------------------------------------------------------------------------- #
@@ -856,6 +911,7 @@ __all__ = [
     "leer_panel", "ResultadosFamilia", "verificar_estado_cache", "ejecutar_familia",
     "cargar_resultados_familia", "precio_sp500", "ContextoPistas", "cargar_contexto_pistas",
     "tabla_cobertura", "tabla_trampas", "matriz_jaccard", "retardo_confirmacion",
+    "lookback_lead_lag", "clasificar_lead_lag",
     "guardar_figura", "franjas_eventos", "dibujar_estados_sp500", "figura_estados_oos",
     "dibujar_cobertura", "figura_cobertura", "dibujar_heatmap", "dibujar_plano_ranking",
 ]

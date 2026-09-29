@@ -1,7 +1,7 @@
 # src/regimenes/ — paquete único (ADR-004)
 
 Paquete instalable `regimenes` (`pip install -e .`) que unifica la Capa 1 congelada
-(`capa1_exploracion/`, detectores) y el código v2 (datos, features, juez, benchmark,
+(antes `capa1_exploracion/`, retirada al cerrar la unificación; tag `capa1-final`; detectores) y el código v2 (datos, features, juez, benchmark,
 fusión). Imports internos absolutos (`from regimenes.x import y`), sin tocar `sys.path`.
 Todas las rutas de disco salen de `regimenes.rutas`.
 

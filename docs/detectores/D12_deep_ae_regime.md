@@ -7,7 +7,7 @@
 > Autoencoder ligero → GMM sobre el latente, como **contraste ablativo honesto** frente
 > al baseline lineal PCA→GMM. Objetivo: ¿aporta la no linealidad del AE algo con ~4
 > crisis? Código: `src/regimenes/detectores/f7_deep/deep_ae_regime.py` (`DeepAERegime` + `PCAGMMBaseline`) ·
-> Notebook: `capa1_exploracion/notebooks/12_deep_ae_regime.ipynb` (v1) · Métricas:
+> Notebook: `capa1_exploracion/notebooks/12_deep_ae_regime.ipynb` (v1, tag `capa1-final`) · Métricas:
 > `docs/historia/capa1/resultados/metrics_12_deep_ae_regime.csv` (2 filas: AE y baseline PCA).
 
 ## Implementado
@@ -78,7 +78,7 @@ en float** (el FP de torch da ~1e-7 inocuo).
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/11_familia_F7_deep.ipynb`](../../notebooks/11_familia_F7_deep.ipynb) (F7 — Deep learning) · **Teoría:** [`docs/teoria/F7_redes_neuronales.md`](../teoria/F7_redes_neuronales.md).
 

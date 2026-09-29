@@ -8,7 +8,7 @@ Regla COMPUESTA causal de 2 estados (FASE 3, Tanda 2). Agrega 4 señales de estr
 ya causales de `features.parquet` en un **score de risk-off** y lo umbraliza con
 histéresis + dwell-time (mismo autómata que D1, pero sobre un VOTO multivariante en
 vez de un único nivel de VIX). Entregables: `src/regimenes/detectores/f1_reglas/rule_composite_riskoff.py`,
-`capa1_exploracion/notebooks/02_rule_composite_riskoff.ipynb` (v1) (ejecutado, 0 errores, 2 figuras
+`capa1_exploracion/notebooks/02_rule_composite_riskoff.ipynb` (v1, tag `capa1-final`) (ejecutado, 0 errores, 2 figuras
 inline), `docs/historia/capa1/resultados/metrics_02_rule_composite_riskoff.csv`, figuras
 `d2_regime_sp500.png` (figura v1, no versionada) y `d2_score_timeline.png` (figura v1, no versionada).
 
@@ -151,7 +151,7 @@ en el núcleo:
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/05_familia_F1_reglas.ipynb`](../../notebooks/05_familia_F1_reglas.ipynb) (F1 — Reglas / umbrales) · **Teoría:** [`docs/teoria/F1_reglas_umbrales.md`](../teoria/F1_reglas_umbrales.md).
 

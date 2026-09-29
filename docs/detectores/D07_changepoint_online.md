@@ -9,7 +9,7 @@
 > volatilidad; un autómata de 2 CUSUM de una cara lo mapea a 2 estados (0=calma,
 > 1=crisis). El umbral `h` da persistencia. 2 estados.
 >
-> Código: `src/regimenes/detectores/f6_changepoint/changepoint_online.py` · Notebook: `capa1_exploracion/notebooks/07_changepoint_online.ipynb` (v1)
+> Código: `src/regimenes/detectores/f6_changepoint/changepoint_online.py` · Notebook: `capa1_exploracion/notebooks/07_changepoint_online.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_07.py` (retirado en el commit `6016f42`)) · Métricas:
 > `docs/historia/capa1/resultados/metrics_07_changepoint_online.csv` · Figuras: `d07_*.png` (figura v1, no versionada).
 
@@ -154,7 +154,7 @@ recomendación de CP2.
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb) (F6 — Change-point) · **Teoría:** [`docs/teoria/F6_change_point.md`](../teoria/F6_change_point.md).
 

@@ -146,10 +146,7 @@ def resolve_context(context: int | str | None, index: pd.Index) -> int | None:
             raise ValueError(f"context debe ser 'auto', None o int >= 0; recibido {context!r}")
         obs_per_year = 252
         if isinstance(index, pd.DatetimeIndex) and len(index) > 2:
-            # Días naturales entre observaciones, independiente de la resolución
-            # interna del índice (pandas 3 crea índices en 'us', no en 'ns': usar
-            # ``index.asi8`` directamente daría huecos ~1000 veces menores).
-            gaps = index.to_series().diff().dropna().dt.total_seconds().to_numpy() / 86_400.0
+            gaps = np.diff(index.asi8) / 86_400e9  # días naturales
             median_gap = float(np.median(gaps))
             obs_per_year = next(
                 (n for limit, n in _OBS_PER_YEAR if median_gap <= limit), 1

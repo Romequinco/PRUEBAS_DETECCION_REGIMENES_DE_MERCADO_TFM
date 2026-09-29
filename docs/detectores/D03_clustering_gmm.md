@@ -33,7 +33,7 @@
 - **Causalidad**: el detector solo mira `X_train`; el wrapper causal lo da
   `ev.walk_forward` (re-fit expanding, train inicial 8 años, step 21d). El alineado
   de etiquetas entre folds lo resuelve la canonicalización económica en cada `fit`.
-- **Notebook** `capa1_exploracion/notebooks/03_clustering_gmm.ipynb` (v1) (construido y ejecutado con
+- **Notebook** `capa1_exploracion/notebooks/03_clustering_gmm.ipynb` (v1, tag `capa1-final`) (construido y ejecutado con
   `_build_03.py` (retirado en el commit `6016f42`), 0 errores, 3 figuras inline): selección de k por BIC,
   sanidad del orden canónico, walk-forward k=2 y k=3, tabla de métricas, histograma
   de duraciones (flickering), S&P 500 coloreado por régimen, timeline + P(crisis), y
@@ -107,7 +107,7 @@ cubrieron el caso probabilístico sin necesidad de cambios. No se modificó
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` en el commit `1f95a9b` (benchmark completo 24/24, ADR-003). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/06_familia_F2_clustering.ipynb`](../../notebooks/06_familia_F2_clustering.ipynb) (F2 — Clustering) · **Teoría:** [`docs/teoria/F2_clustering.md`](../teoria/F2_clustering.md).
 

@@ -68,7 +68,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 [`memoria/99_conclusions.md`](memoria/99_conclusions.md) §2 y en el
 [informe](informe/informe_capa1.pdf).)
 
-## 3. Resumen del EDA v1 (`capa1_exploracion/notebooks/00_eda.ipynb`)
+## 3. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/00_eda.ipynb`)
 
 - **Datos:** 9 series descargadas **sin imputar** (S&P 500, VIX, MOVE, TLT, IEF, HYG, GLD, DXY y la
   pendiente 10Y−3M). FRED era inaccesible en aquel entorno → fallbacks documentados: DXY por
@@ -90,7 +90,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 Memoria completa: [`memoria/01_data_and_eda.md`](memoria/01_data_and_eda.md). El EDA v2 que lo
 sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos/EDA_v2.md).
 
-## 4. Resumen de la comparativa v1 (`capa1_exploracion/notebooks/13_comparison.ipynb`)
+## 4. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/13_comparison.ipynb`)
 
 - **Tesis:** no hay detector dominante; 4 familias se reparten 6 ejes (cobertura sistémica,
   especificidad, persistencia, lead/lag, BIC, coste). Es un resultado, no un fracaso.
@@ -126,7 +126,7 @@ Figuras y tablas del informe: [`memoria/pdf_src/`](memoria/pdf_src/01_hallazgos.
 |---|---|
 | `capa1_exploracion/detectors/*.py` (12 + `hsmm_tstudent` + utilidades HMM) | `src/regimenes/detectores/f1_reglas/` … `f7_deep/` |
 | `capa1_exploracion/src/detector_base.py` | `src/regimenes/detectores/base.py` (era idéntica a la de v2) |
-| `capa1_exploracion/src/{data_loader,evaluation,features,viz}.py` (marco v1) | se retiran al cerrar la unificación; recuperables con el tag `capa1-final` (§7). El juez vigente es `regimenes.evaluacion` |
+| `capa1_exploracion/src/{data_loader,evaluation,features,viz}.py` (marco v1) | retirados al cerrar la unificación (`git rm -r capa1_exploracion`); recuperables con el tag `capa1-final` (§7). El juez vigente es `regimenes.evaluacion` |
 | `capa1_exploracion/memory/00_state_of_the_art.md` | [`docs/teoria/00_estado_del_arte.md`](../../teoria/00_estado_del_arte.md) |
 | `capa1_exploracion/memory/sota/0k_*.md` y `.bib` | `docs/teoria/Fk_*.md` y `.bib` (p. ej. [`F3_hmm.md`](../../teoria/F3_hmm.md)) |
 | `capa1_exploracion/memory/detectors/NN_*.md` | `docs/detectores/DNN_*.md` (p. ej. [`D08_hmm_tstudent.md`](../../detectores/D08_hmm_tstudent.md)) |
@@ -154,7 +154,7 @@ git show capa1-final:capa1_exploracion/notebooks/13_comparison.ipynb > /tmp/13_c
 git worktree add ../capa1-v1 capa1-final                         # árbol completo, sin tocar tu rama
 ```
 
-Código v1 que solo vive en el tag cuando se retire `capa1_exploracion/`: `data_loader.py`,
+Código v1 que solo vive en el tag desde que se retiró `capa1_exploracion/`: `data_loader.py`,
 `evaluation.py`, `features.py`, `viz.py` (marco v1) y los 15 notebooks v1. El código v2 previo a la
 unificación está en el tag `v2-pre-unificacion`; la historia anterior al re-base, en la rama remota
 `backup-main-pre-datos-v2`.

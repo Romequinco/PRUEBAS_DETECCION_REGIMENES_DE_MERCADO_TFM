@@ -8,8 +8,9 @@
 > ahora CONGELADA**. Su numeración de fases (0–5, abajo) es **interna a la Capa 1** y es
 > **independiente** de la hoja de ruta v2 del repo (ver `../../README.md` y
 > `../../docs/decisions/ADR-001-rebase-datos.md`). Las rutas históricas `docs/memory/...`
-> de este documento apuntan a lo que hoy vive en `capa1_exploracion/memory/...` (la carpeta
-> se movió; el contenido no cambió).
+> de este documento apuntan a la antigua `capa1_exploracion/memory/...` (íntegra en el tag
+> `capa1-final`); hoy su contenido está en `docs/detectores/`, `docs/teoria/` y esta carpeta
+> (tabla de `../README.md` §6). El contenido no cambió.
 
 ## Estado por fase
 | Fase | Descripción | Estado |
