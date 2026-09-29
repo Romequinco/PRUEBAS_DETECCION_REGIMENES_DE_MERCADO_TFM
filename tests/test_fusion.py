@@ -38,6 +38,7 @@ class FusionTests(unittest.TestCase):
             [0.1, 0.1, 0.2, 0.3, 0.8, 0.9, 0.9, 0.8, 0.2, 0.1],
         )
         self.config = FusionConfig(
+            alert_crisis_state=1,
             confirmation_persistence=2,
             warning_horizon=6,
         )
@@ -55,7 +56,7 @@ class FusionTests(unittest.TestCase):
 
     def test_warning_expires_without_using_future_information(self) -> None:
         no_confirmation = self.confirmation.assign(state=0, p_crisis=0.0)
-        config = FusionConfig(confirmation_persistence=2, warning_horizon=2)
+        config = FusionConfig(alert_crisis_state=1, confirmation_persistence=2, warning_horizon=2)
         fused = fuse_early_warning(self.alert, no_confirmation, config)
 
         self.assertEqual(fused["decision_code"].tolist(), [0, 0, 1, 1, 1, 0, 0, 0, 0, 0])
@@ -82,7 +83,7 @@ class FusionTests(unittest.TestCase):
             [0, 1, 1, 0, 1, 1],
             [0.1, 0.9, 0.9, 0.1, 0.9, 0.9],
         )
-        config = FusionConfig(confirmation_persistence=1, warning_horizon=4)
+        config = FusionConfig(alert_crisis_state=1, confirmation_persistence=1, warning_horizon=4)
         fused = fuse_early_warning(alert, confirmation, config)
         episodes = confirmation_episode_table(fused, config.warning_horizon)
 
@@ -94,14 +95,14 @@ class FusionTests(unittest.TestCase):
     def test_one_warning_cannot_explain_two_confirmations(self) -> None:
         alert = _panel([0, 1, 1, 1, 1, 1, 1], [0.1, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9])
         confirmation = _panel([0, 0, 1, 0, 0, 1, 1], [0.1, 0.1, 0.9, 0.1, 0.1, 0.9, 0.9])
-        config = FusionConfig(confirmation_persistence=1, warning_horizon=6)
+        config = FusionConfig(alert_crisis_state=1, confirmation_persistence=1, warning_horizon=6)
         fused = fuse_early_warning(alert, confirmation, config)
 
         confirmations = confirmation_episode_table(fused, config.warning_horizon)
         self.assertEqual(confirmations["preceded_by_alert"].sum(), 1)
 
     def test_ground_truth_distinguishes_anticipation_and_reaction(self) -> None:
-        config = FusionConfig(confirmation_persistence=1, warning_horizon=3)
+        config = FusionConfig(alert_crisis_state=1, confirmation_persistence=1, warning_horizon=3)
         confirmation = _panel([0] * 10, [0.0] * 10)
         windows = {"evento": ("2020-01-08", "2020-01-10")}
 
