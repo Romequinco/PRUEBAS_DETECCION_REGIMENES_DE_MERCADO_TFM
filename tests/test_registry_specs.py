@@ -44,6 +44,18 @@ class RegistryContractTests(unittest.TestCase):
                     used.update(params["signs"])
                 self.assertTrue(used <= set(spec.features), (track, spec.detector_id, used))
 
+    def test_stochastic_detectors_declare_their_seed(self) -> None:
+        from src.detectors.registry import SEED
+
+        stochastic = {"D03", "D04", "D08", "D09", "D12"}
+        for track in ("A", "B"):
+            for spec in detector_specs(track):
+                if spec.detector_id in stochastic:
+                    self.assertEqual(spec.params.get("random_state"), SEED,
+                                     (track, spec.detector_id))
+                    if spec.detector_id in {"D03", "D04", "D08"}:
+                        self.assertEqual(spec.factory().random_state, SEED)
+
     def test_factories_return_fresh_instances(self) -> None:
         spec = detector_specs("A")[0]
         self.assertIsNot(spec.factory(), spec.factory())

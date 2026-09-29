@@ -66,11 +66,16 @@ class WalkForwardCausalityTests(unittest.TestCase):
             train_size=100, min_train=100, step=20,
         )
         # Solo las llamadas del bloque propio (las re-predicciones del bloque
-        # previo, para label_stability, son diagnóstico y no causales).
-        own = [row for row in _RecordingDetector.log if row["test_start"] > row["train_end"]]
+        # previo, para label_stability, son diagnóstico y no causales). Desde
+        # ADR-003 la entrada es [cola del train (contexto)] + bloque: el tramo
+        # posterior al train es exactamente el bloque (<= step filas) y el
+        # contexto nunca sale del train del fold.
+        own = [row for row in _RecordingDetector.log if row["test_end"] > row["train_end"]]
         self.assertGreater(len(own), 5)
         for row in own:
-            self.assertLess(row["train_end"], row["test_start"])
+            after_train = X.loc[row["train_end"]:row["test_end"]].iloc[1:]
+            self.assertLessEqual(len(after_train), 20)
+            self.assertGreaterEqual(row["test_start"], row["train_start"])
         # Cada fecha OOS aparece exactamente una vez y empieza tras el train inicial.
         self.assertTrue(panel.index.is_unique)
         self.assertEqual(panel.index[0], X.index[100])
@@ -82,7 +87,8 @@ class WalkForwardCausalityTests(unittest.TestCase):
             _RecordingDetector, X, market_returns=returns,
             train_size=100, min_train=100, step=20, expanding=False,
         )
-        own = [row for row in _RecordingDetector.log if row["test_start"] > row["train_end"]]
+        own = [row for row in _RecordingDetector.log if row["test_end"] > row["train_end"]]
+        self.assertGreater(len(own), 5)
         for row in own:
             n_train = len(X.loc[row["train_start"]:row["train_end"]])
             self.assertEqual(n_train, 100)

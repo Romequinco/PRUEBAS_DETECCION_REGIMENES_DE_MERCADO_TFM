@@ -187,6 +187,71 @@ class EvaluationResult:
 # --------------------------------------------------------------------------- #
 # Protocolo walk-forward (causal)
 # --------------------------------------------------------------------------- #
+# Contexto causal por defecto (ADR-003): UN AÑO de observaciones previas al bloque.
+# Se expresa en años y se traduce a filas según la frecuencia del índice de X
+# (252 sesiones si es diario, 52 semanal, 12 mensual, 4 trimestral).
+CONTEXT_YEARS: float = 1.0
+_OBS_PER_YEAR: tuple[tuple[float, int], ...] = (
+    # (mediana máxima de días naturales entre observaciones, observaciones/año)
+    (4.0, 252),   # diario hábil (mediana 1 día; fines de semana no la mueven)
+    (10.0, 52),   # semanal
+    (45.0, 12),   # mensual
+    (120.0, 4),   # trimestral
+)
+
+
+def resolve_context(context, index: pd.Index) -> int | None:
+    """Traduce el parámetro ``context`` de `walk_forward` a nº de filas.
+
+    - ``"auto"``: ``CONTEXT_YEARS`` años en la frecuencia inferida del índice
+      (252 filas en datos diarios, 12 en mensuales...).
+    - ``None``: todo el tramo de train disponible (propagación exacta, más cara).
+    - ``int >= 0``: nº de filas explícito; ``0`` reproduce el protocolo anterior
+      (cada bloque arranca en frío, sin contexto).
+    """
+    if context is None:
+        return None
+    if isinstance(context, str):
+        if context != "auto":
+            raise ValueError(f"context debe ser 'auto', None o int >= 0; recibido {context!r}")
+        obs_per_year = 252
+        if isinstance(index, pd.DatetimeIndex) and len(index) > 2:
+            gaps = np.diff(index.asi8) / 86_400e9  # días naturales
+            median_gap = float(np.median(gaps))
+            obs_per_year = next(
+                (n for limit, n in _OBS_PER_YEAR if median_gap <= limit), 1
+            )
+        return int(round(CONTEXT_YEARS * obs_per_year))
+    context = int(context)
+    if context < 0:
+        raise ValueError(f"context debe ser >= 0; recibido {context}")
+    return context
+
+
+def _ctx_start(start: int, lo: int, context: int | None) -> int:
+    """Primera fila del contexto: ``context`` filas antes de ``start``, sin salir
+    del train del fold (``lo``). ``None`` = desde el inicio del train."""
+    first = lo if context is None else max(lo, start - context)
+    return min(first, start)
+
+
+def _predict_block(det, X: pd.DataFrame, start: int, stop: int, lo: int, context):
+    """Predice las filas ``[start, stop)`` de X arrancando ``context`` filas antes.
+
+    Las filas de contexto son la cola del train (``>= lo``, inicio del train del
+    fold) y solo sirven para que los detectores con estado (autómatas de
+    histéresis, filtros forward, CUSUM) lleguen al bloque con el estado que
+    tendrían en tiempo real. Todas son anteriores a ``start``: causal. Se
+    devuelven únicamente las predicciones del bloque.
+    """
+    ctx_start = _ctx_start(start, lo, context)
+    window = X.iloc[ctx_start:stop]
+    offset = start - ctx_start
+    states = np.asarray(det.predict_online(window))[offset:]
+    proba = np.asarray(det.predict_proba(window))[offset:]
+    return states, proba
+
+
 def walk_forward(
     detector_factory,
     X: pd.DataFrame,
@@ -196,6 +261,7 @@ def walk_forward(
     step: int = 21,
     expanding: bool = True,
     min_train: int = 252 * 5,
+    context: int | str | None = "auto",
 ) -> pd.DataFrame:
     """Genera etiquetas y probabilidades OUT-OF-SAMPLE de forma causal.
 
@@ -227,6 +293,18 @@ def walk_forward(
         False -> ventana móvil de tamaño fijo `train_size`.
     min_train : int
         Mínimo de observaciones antes de empezar a predecir.
+    context : int | 'auto' | None
+        Propagación de estado entre bloques (ADR-003). Tras ajustar con el train
+        del fold, se predice sobre ``[cola del train de `context` filas] + bloque``
+        y se conservan solo las predicciones del bloque. Así un detector con
+        estado (histéresis de D01/D02/D06/D10, filtros forward, CUSUM) no
+        reinicia en "calma" en cada refit. Es causal: las filas de contexto son
+        anteriores al bloque y ya estaban en el train. ``'auto'`` (defecto) = 1
+        año en la frecuencia del índice (252 filas diarias, 12 mensuales);
+        ``None`` = todo el train; ``0`` = protocolo anterior (arranque en frío).
+        Para detectores sin estado (GMM, AE+GMM) el resultado es idéntico; los
+        que ya anteponen el train como burn-in (D04-D08, D10, D11) no duplican
+        nada porque recortan su burn-in a las fechas anteriores a la entrada.
 
     Returns
     -------
@@ -261,13 +339,16 @@ def walk_forward(
         raise ValueError(
             f"train_size/min_train ({first_split}) >= nº de observaciones ({n})"
         )
+    ctx_rows = resolve_context(context, X.index)
     records: list[tuple] = []       # CAUSAL OOS: 1 fila/fecha; lo leen TODAS las métricas
     stab_records: list[tuple] = []  # DIAGNÓSTICO (no causal): solo para label_stability
     prev_test: pd.DataFrame | None = None
+    prev_start = 0
     fold_id = 0
     t = first_split
     while t < n:
-        train = X.iloc[:t] if expanding else X.iloc[max(0, t - train_size):t]
+        train_lo = 0 if expanding else max(0, t - train_size)
+        train = X.iloc[train_lo:t]
         test = X.iloc[t:t + step]
         if len(test) == 0:
             break
@@ -285,20 +366,24 @@ def walk_forward(
         if market_returns is not None:
             mr_train = pd.Series(market_returns).reindex(train.index)
             det.label_states_economically(train, market_returns=mr_train)
-        states = np.asarray(det.predict_online(test))
-        proba = det.predict_proba(test)
+        # Predicción del bloque con la cola del train como contexto (ADR-003).
+        states, proba = _predict_block(det, X, t, t + len(test), train_lo, ctx_rows)
         p_crisis = proba[:, det.crisis_state]
         for d, s, p in zip(test.index, states, p_crisis):
             records.append((d, int(s), float(p), fold_id))
-        # Estabilidad: re-predecir el bloque PREVIO con este modelo (más datos).
+        # Estabilidad: re-predecir el bloque PREVIO con este modelo (más datos),
+        # con el mismo contexto que el bloque propio para que sea comparable.
         if prev_test is not None and len(prev_test):
-            s_prev = np.asarray(det.predict_online(prev_test))
+            s_prev = np.asarray(det.predict_online(
+                X.iloc[_ctx_start(prev_start, train_lo, ctx_rows):prev_start + len(prev_test)]
+            ))[-len(prev_test):]
             for d, s in zip(prev_test.index, s_prev):
                 stab_records.append((d, fold_id, int(s)))
         # Y registrar el bloque actual bajo su propio fold (para comparar).
         for d, s in zip(test.index, states):
             stab_records.append((d, fold_id, int(s)))
         prev_test = test
+        prev_start = t
         fold_id += 1
         t += step
 
