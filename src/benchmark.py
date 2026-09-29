@@ -463,12 +463,24 @@ def run_benchmark(
     train_days: dict[str, int] | None = None,
     force: bool = False,
     continue_on_error: bool = True,
+    cache_only: bool = False,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Ejecuta la matriz pista×detector con checkpoint después de cada ajuste."""
+    """Ejecuta la matriz pista×detector con checkpoint después de cada ajuste.
+
+    ``cache_only=True`` es un modo de solo lectura: nunca ajusta modelos ni
+    escribe ``manifest.json``/``run_status.csv``. Cada combinación cuya caché no
+    se verifique con la huella actual queda con estado ``sin_cache``. Sirve para
+    abrir el notebook 04 en otra máquina sin lanzar horas de cálculo ni
+    sobrescribir los artefactos versionados.
+    """
     tracks = [track.upper() for track in tracks]
     selected = set(detector_ids or [f"D{i:02d}" for i in range(1, 13)])
     output_dir = Path(output_dir)
     train_days = {**DEFAULT_TRAIN_DAYS, **(train_days or {})}
+    if force and cache_only:
+        raise ValueError("force=True y cache_only=True son incompatibles.")
+    if cache_only:
+        return _read_verified_cache(output_dir, tracks, selected, train_days)
     _write_manifest(output_dir, train_days, tracks)
     statuses: list[dict] = []
     metric_frames: list[pd.DataFrame] = []
@@ -504,6 +516,84 @@ def run_benchmark(
 
     metrics_all = pd.concat(metric_frames, ignore_index=True) if metric_frames else pd.DataFrame()
     return metrics_all, pd.DataFrame(statuses)
+
+
+def _read_verified_cache(
+    output_dir: Path,
+    tracks: Iterable[str],
+    selected: set[str],
+    train_days: dict[str, int],
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Lee solo las cachés verificadas por huella; no ajusta ni escribe nada."""
+    statuses: list[dict] = []
+    metric_frames: list[pd.DataFrame] = []
+    for track in tracks:
+        for spec in detector_specs(track):
+            if spec.detector_id not in selected:
+                continue
+            metric_path = _metric_path(output_dir, track, spec.detector_id)
+            panel_path = _panel_path(output_dir, track, spec.detector_id)
+            try:
+                expected = _cache_fingerprint(track, spec, train_days[track])
+                valid = _cache_matches(metric_path, panel_path, expected)
+                detail = (
+                    f"caché verificada: {_display_path(metric_path)}" if valid
+                    else "sin caché verificable (huella distinta o panel OOS ausente)"
+                )
+            except (FileNotFoundError, OSError) as exc:
+                valid = False
+                detail = f"no se pudo calcular la huella: {type(exc).__name__}: {exc}"
+            if valid:
+                metric_frames.append(pd.read_csv(metric_path))
+            statuses.append({
+                "pista": track,
+                "id": spec.detector_id,
+                "estado": "cache" if valid else "sin_cache",
+                "segundos": 0.0,
+                "detalle": detail,
+            })
+    metrics_all = pd.concat(metric_frames, ignore_index=True) if metric_frames else pd.DataFrame()
+    return metrics_all, pd.DataFrame(statuses)
+
+
+def metrics_provenance(output_dir: Path = DEFAULT_OUTPUT) -> pd.DataFrame:
+    """Trazabilidad de cada CSV de métricas frente a ``manifest.json``.
+
+    No necesita datos locales: comprueba que la huella escrita en cada CSV es la
+    que el manifiesto registró para esa pista/detector (es decir, que las
+    métricas versionadas proceden de la ejecución documentada) y si el panel OOS
+    correspondiente existe en disco. Es una comprobación más débil que
+    ``load_metrics(require_current=True)``, que además recalcula la huella con
+    el código y los datos locales.
+    """
+    output_dir = Path(output_dir)
+    try:
+        manifest = json.loads((output_dir / "manifest.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        manifest = {}
+    recorded = manifest.get("cache_fingerprints", {})
+    rows = []
+    for path in sorted((output_dir / "metrics").glob("[AB]_D*.csv")):
+        frame = pd.read_csv(path)
+        track = str(frame["pista"].iloc[0]).upper()
+        detector_id = str(frame["id"].iloc[0]).upper()
+        csv_fp = (
+            str(frame["cache_fingerprint"].iloc[0])
+            if "cache_fingerprint" in frame else None
+        )
+        manifest_fp = recorded.get(track, {}).get(detector_id)
+        rows.append({
+            "pista": track,
+            "id": detector_id,
+            "huella_csv": csv_fp,
+            "huella_manifest": manifest_fp,
+            "coincide_manifest": csv_fp is not None and csv_fp == manifest_fp,
+            "panel_oos_presente": _panel_path(output_dir, track, detector_id).is_file(),
+        })
+    out = pd.DataFrame(rows)
+    out.attrs["manifest_generated_utc"] = manifest.get("generated_utc")
+    out.attrs["manifest_runtime_versions"] = manifest.get("runtime_versions")
+    return out
 
 
 def load_metrics(
@@ -565,7 +655,16 @@ def load_metrics(
 
 
 def add_comparison_metrics(metrics: pd.DataFrame) -> pd.DataFrame:
-    """Añade agregados comparables sin mezclar pistas."""
+    """Añade agregados comparables sin mezclar pistas.
+
+    - ``mean_crisis_coverage``: media NO ponderada, por evento, de ``cov_<crisis>``
+      (fracción de días OOS de la ventana [pico, suelo] marcados como crisis). Las
+      crisis sin días OOS en esa pista son NaN y se omiten; una ventana solo
+      parcialmente OOS (p. ej. ``bear_1969_70`` en A: 11 de 370 días) cuenta como
+      un evento completo. Un volmageddon de 10 días pesa igual que la GFC.
+    - ``mean_trap_activation``: media de ``fa_<trampa>`` (fracción de días de la
+      trampa marcados como crisis; menor es mejor).
+    """
     out = metrics.copy()
     coverage = [
         c for c in out
@@ -578,7 +677,19 @@ def add_comparison_metrics(metrics: pd.DataFrame) -> pd.DataFrame:
 
 
 def rank_within_track(metrics: pd.DataFrame) -> pd.DataFrame:
-    """Ranking descriptivo sobre ejes independientes dentro de cada pista."""
+    """Ranking descriptivo sobre cinco ejes, calculado dentro de cada pista.
+
+    Cada eje se ordena por separado (1 = mejor); los empates reciben el rango
+    medio (``method="average"``) y los NaN van al fondo (p. ej. un
+    ``false_alarm_rate`` NaN porque el detector nunca marca crisis).
+    ``rank_medio`` es la media simple de los cinco rangos y ``puesto_pista`` su
+    rango con ``method="min"`` (los empates comparten puesto).
+
+    Limitación conocida: tres de los cinco ejes (trampas, switching y
+    estabilidad) premian la inactividad. Un detector trivial que nunca o siempre
+    marca crisis quedaría en mitad de la tabla; el notebook 05 lo muestra con
+    líneas base triviales. Es un mapa descriptivo, no una función de utilidad.
+    """
     out = add_comparison_metrics(metrics)
     directions = {
         "mean_crisis_coverage": False,
