@@ -70,17 +70,19 @@ Hay que distinguir dos niveles:
   truncado, y se cumple.
 - **Causalidad de calendario**: el dato fechado en `t` ya estaba *publicado* en `t`. El truncado **no**
   lo detecta. Hoy hay fugas conocidas de este tipo (series mensuales de FRED que son media del mes
-  fechada el día 1; lag macro de 1 mes insuficiente): ver
-  [`REVISION_2026-09-29.md`](REVISION_2026-09-29.md).
+  fechada el día 1; lag macro corto) que **ADR-003 corrigió** con una tabla única de lags
+  (`src/features.py::LAG_PUBLICACION`) y un test de truncado por fecha de publicación.
 
 ## Métricas del benchmark (lectura correcta)
 
 - **`false_alarm_rate`** es en realidad **1 − precisión** (fracción de días marcados como crisis que
   caen fuera de ventana de crisis), no FP/(FP+TN). La tasa base de marcar siempre crisis es ≈0,81 (A)
   y ≈0,83 (B).
-- **`rank_medio`** es **descriptivo** y está sesgado hacia la inactividad: 3 de sus 5 ejes (trampas,
-  switching, estabilidad) los gana un detector que no hace nada. Una línea base "siempre crisis"
-  quedaría 4ª en ambas pistas. Ver las líneas base en `05_comparacion_detectores`.
+- **Ranking principal (ADR-003):** `score_deteccion` = F1 entre precisión diaria y **recall por
+  evento** (crisis detectada = ≥ 3 sesiones consecutivas marcadas dentro de su ventana), tras filtrar
+  por niveles (precisión que no supera al azar, parpadeo, salida degenerada).
+- **`rank_medio`** (legacy) estaba sesgado hacia la inactividad: una línea base "siempre crisis"
+  quedaba 4ª. Se conserva solo como columna de comparación.
 - **Crisis "en ventana" ≠ "evaluadas OOS"**: 18/10 en ventana; 17 (una parcial) / 9 evaluadas OOS.
 - **Utilidad operativa** (fusión): solo sirve para **ordenar** alternativas; su signo no se interpreta.
 - **Precisión de avisos** (acuerdo con el confirmador) ≠ **atribución a crisis reales**.

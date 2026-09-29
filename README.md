@@ -90,12 +90,17 @@ python -m src.ingest.download    # descarga el catálogo -> data/raw/  (o abre n
 | 4 | Diseño + preprocesado causal v2 | ✅ (notebooks 02–03) |
 | D | Re-evaluar D1–D12 sobre `benchmark_spec.yaml` | ✅ benchmark y comparación ejecutados (notebooks 04–05) |
 | E | Fusionar alerta + confirmación y prueba pseudolive final | 🟡 D2+D6 seleccionado; pseudolive independiente pendiente (notebooks 06–07) |
-| — | Revisión completa 00–07 (2026-09-29) | ✅ correcciones sin cambio de métricas; decisiones abiertas en [`docs/REVISION_2026-09-29.md`](docs/REVISION_2026-09-29.md) |
+| — | Revisión completa 00–07 (2026-09-29) | ✅ [`docs/REVISION_2026-09-29.md`](docs/REVISION_2026-09-29.md) |
+| — | ADR-003: lags de publicación + propagación de estado + ranking por detección | ✅ benchmark re-ejecutado completo · [`ADR-003`](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) |
 
-**Lectura actual de D2+D6:** la fusión mejora a cada sensor por separado en ambas pistas, y D2 detecta
-pronto *dentro* de la crisis, adelantándose a D6 (mediana 5,5 sesiones en A, 2,5 en B). Pero **no
-anticipa el inicio** de las crisis más que el azar, y su elección como mejor alerta **no es robusta** a
-seleccionar en una mitad temporal y evaluar en la otra.
+**Ranking de detección (ADR-003, F1 recall-por-evento × precisión):**
+- **Pista A:** D10 (turbulencia) · D01 (VIX) · D03 (GMM) · D02 (riesgo compuesto) · D05 (MS-VAR)…
+- **Pista B:** D05 (MS-VAR) · D06 (GARCH-t) · D01 · D02 · D04… (D09 no supera al azar y D12 parpadea)
+
+**Lectura actual de la fusión (Fase E):** D2+D6 mejora a D2 y a D6 aislados en ambas pistas, pero
+**no anticipa** el inicio de las crisis, D2 y D7 quedan **empatados** como alerta, en A D7+D6 y D7 solo
+la superan, y el control por mitades elige otras alertas. La capa de alerta no añade anticipación:
+falta decidir qué regla congelar para el pseudolive (ver conclusión de `07`).
 
 > Los paneles OOS por detector (`results/benchmark_v2/panels/`) no se versionan. 06/07 necesitan
 > regenerar el subconjunto que usan (~25-30 min, requiere `arch`); 05 funciona solo con los CSV
