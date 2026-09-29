@@ -9,8 +9,8 @@
 # (equivale a ``python -m pip install -e ".[deep,jump,changepoint,dev]"``).
 
 # ── Núcleo de datos y cálculo ──────────────────────────────────────────────
-numpy>=1.26
-pandas>=2.1
+numpy>=1.26,<3        # benchmark validado con numpy 2.3
+pandas>=2.1,<3         # pandas 3: indices en us y cambio de orden en concat (ver pyproject)
 scipy>=1.11
 pyyaml>=6.0             # configs/catalog.yaml / configs/benchmark_spec.yaml
 pyarrow>=15.0           # parquet para data/raw y data/processed

@@ -119,7 +119,7 @@ def _ensamblar(pares: list[tuple[str, pd.Series | None]]) -> tuple[pd.DataFrame,
             omitidas.append(nombre)
         else:
             out[nombre] = serie.rename(nombre)
-    df = (pd.concat(out.values(), axis=1).sort_index() if out
+    df = (pd.concat(out.values(), axis=1, sort=True).sort_index() if out
           else pd.DataFrame(index=pd.DatetimeIndex([])))
     return df, omitidas
 
@@ -179,7 +179,7 @@ def construir_diarias(raw: RawDict, lags: Mapping[str, dict] | None = None
     p.append(('slope_10y3m_z', zscore_raw(raw, 'T10Y3M', 'slope_10y3m_z')))
     dgs10, dgs2, dgs30 = _get(raw, 'DGS10'), _get(raw, 'DGS2'), _get(raw, 'DGS30')
     if dgs10 is not None and dgs2 is not None and dgs30 is not None:
-        curv = pd.concat({'DGS10': dgs10, 'DGS2': dgs2, 'DGS30': dgs30}, axis=1)
+        curv = pd.concat({'DGS10': dgs10, 'DGS2': dgs2, 'DGS30': dgs30}, axis=1, sort=True)
         p.append(('curve_curvature_z', causal_zscore(2 * curv['DGS10'] - curv['DGS2'] - curv['DGS30'])))
     else:
         p.append(('curve_curvature_z', None))
@@ -187,7 +187,7 @@ def construir_diarias(raw: RawDict, lags: Mapping[str, dict] | None = None
     if dtb3 is not None and dff is not None:
         # Nota: DFF se publica también en fines de semana; en esas fechas la media es
         # solo DFF (skipna). No es look-ahead, pero mezcla composiciones.
-        short_rate = pd.concat({'DTB3': dtb3, 'DFF': dff}, axis=1).mean(axis=1)
+        short_rate = pd.concat({'DTB3': dtb3, 'DFF': dff}, axis=1, sort=True).mean(axis=1)
         p.append(('short_rate_z', causal_zscore(short_rate)))
     else:
         p.append(('short_rate_z', None))
@@ -208,7 +208,7 @@ def construir_diarias(raw: RawDict, lags: Mapping[str, dict] | None = None
     p.append(('VVIX_z', zscore_raw(raw, 'VVIX', 'VVIX_z')))
     vix3m, vix = _get(raw, 'VIX3M'), _get(raw, 'VIX')
     if vix3m is not None and vix is not None:
-        term = pd.concat({'VIX3M': vix3m, 'VIX': vix}, axis=1)
+        term = pd.concat({'VIX3M': vix3m, 'VIX': vix}, axis=1, sort=True)
         p.append(('vix_term_z', causal_zscore(term['VIX3M'] / term['VIX'])))
     else:
         p.append(('vix_term_z', None))
@@ -332,7 +332,7 @@ def alinear_mensual_con_edad(panel: pd.DataFrame, grid: pd.DatetimeIndex) -> pd.
         fecha_ultimo_dato = pd.Series(real.index, index=real.index).reindex(grid, method='ffill')
         edad_cols[f'{col}_edad_dias'] = (grid_fecha - fecha_ultimo_dato).dt.days
     edad_df = pd.DataFrame(edad_cols, index=grid)
-    return pd.concat([alineado, edad_df], axis=1)
+    return pd.concat([alineado, edad_df], axis=1, sort=True)
 
 
 def rejilla_nyse(raw: RawDict, inicio: str, fin: str) -> pd.DatetimeIndex:

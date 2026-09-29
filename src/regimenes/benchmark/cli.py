@@ -12,6 +12,13 @@ from regimenes.benchmark.ejecucion import consolidate_run, run_benchmark, run_jo
 from regimenes.detectores import detector_specs
 
 
+def _rango_ids() -> str:
+    """Rango de IDs del registro (p. ej. ``D01..D13``), para que la ayuda no se
+    desfase al anadir detectores."""
+    ids = sorted({s.detector_id for t in ("A", "B") for s in detector_specs(t)})
+    return f"{ids[0]}..{ids[-1]}" if ids else "D01.."
+
+
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="python -m regimenes.benchmark",
@@ -19,7 +26,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--track", nargs="+", default=["A", "B"], help="pistas: A, B o ambas")
     parser.add_argument("--detector", nargs="+", default=None,
-                        help="IDs (D01..D12). Con --jobs 1 solo se ejecutan esas "
+                        help=f"IDs del registro ({_rango_ids()}). Con --jobs 1 solo se ejecutan esas "
                              "combinaciones y NO se escribe manifest/run_status "
                              "(usa --consolidate al final); con --jobs > 1 se "
                              "reparten en procesos y este proceso consolida.")
@@ -27,8 +34,8 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--threads-per-job", type=int, default=1,
                         help="hilos BLAS/OpenMP por proceso con --jobs > 1 (0 = no tocar)")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="directorio de salida")
-    parser.add_argument("--force", action="store_true", help="ignora la caché y reajusta")
-    parser.add_argument("--cache-only", action="store_true", help="solo verifica la caché")
+    parser.add_argument("--force", action="store_true", help="ignora la cache y reajusta")
+    parser.add_argument("--cache-only", action="store_true", help="solo verifica la cache")
     parser.add_argument("--consolidate", action="store_true",
                         help="reescribe manifest.json y run_status.csv desde status/*.json")
     return parser.parse_args(argv)

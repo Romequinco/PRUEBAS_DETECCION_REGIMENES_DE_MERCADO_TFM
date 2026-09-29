@@ -2,9 +2,9 @@
   "pista": "A",
   "id": "D08",
   "estado": "ok",
-  "segundos": 1736.6780488999939,
-  "detalle": "results\\benchmark_v2\\metrics\\A_D08.csv",
-  "inicio_utc": "2026-09-29T08:43:15.456966+00:00",
-  "fin_utc": "2026-09-29T09:12:12.964499+00:00",
-  "pid": 16516
+  "segundos": 1776.0287443000052,
+  "detalle": "results\\benchmark\\metrics\\A_D08.csv",
+  "inicio_utc": "2026-09-29T12:41:39.110854+00:00",
+  "fin_utc": "2026-09-29T13:11:15.636721+00:00",
+  "pid": 19216
 }

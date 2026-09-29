@@ -15,6 +15,7 @@ Todas las rutas de disco salen de `regimenes.rutas`.
 | `benchmark/` | `src/benchmark.py` | `ejecucion.py` (paneles, gate, `run_one`/`run_job`/`run_benchmark` secuencial o paralelo `spawn`, `consolidate_run`), `cache.py` (huella por contenido, verificación de caché, `load_metrics`, `metrics_provenance`), `cli.py`. `run_benchmark(cache_only=True)` no recalcula nada. CLI: `python -m regimenes.benchmark --track A B --jobs 4`. Salida por defecto: `results/benchmark/`. |
 | `fusion/` | `src/fusion.py` | `maquina.py`: máquina causal normal/vigilancia/confirmado; emparejamiento uno-a-uno, atribución a crisis reales, ablación, sensibilidad, invariancia al truncado, `operational_utility`, `fusion_verdict`, `period_scorecard`, `select_then_evaluate`. `__init__` re-exporta la API pública. |
 | `viz/` | `src/viz.py` | `figuras.py`: estilo de casa y figuras estándar; `__init__` re-exporta la API y las ventanas de eventos. |
+| `informes.py` | (código repetido en los notebooks 05–11) | Utilidades de los notebooks de familia: carga verificada de caché + paneles OOS + ranking ADR-003 (`cargar_resultados_familia`, falla con el comando a ejecutar), contexto de pistas, tablas de cobertura/trampas/Jaccard y figuras comunes (estados OOS sobre el S&P 500, cobertura por crisis, plano del ranking). No entra en la huella de caché. |
 | `sinteticos/` | nuevo (esqueleto) | interfaz `Generador` (`fit`/`sample`/`name`), registro vacío y firmas de validación (`NotImplementedError`). |
 
 Grafo de imports sin ciclos: `evaluacion.metricas` ← `evaluacion.walk_forward` ←

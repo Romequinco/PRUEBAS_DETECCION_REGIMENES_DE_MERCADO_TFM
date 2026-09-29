@@ -1,0 +1,48 @@
+# CI del paquete ``regimenes`` (ADR-004).
+#
+# - Python 3.13, ``pip install -e .[dev]`` SIN los extras [deep] (torch) ni [jump]
+#   (jumpmodels): los tests que los necesitan se saltan con ``pytest.importorskip``.
+# - ``data/raw`` y ``data/processed`` estan gitignored: los tests marcados ``datos``
+#   se saltan con motivo (``skipif``/``skipUnless``). Los marcados ``resultados``
+#   SI corren, contra ``results/benchmark`` versionado (metricas, ranking, manifest).
+name: tests
+
+on:
+  push:
+    branches: [main, unificacion]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MPLBACKEND: Agg
+      PYTHONHASHSEED: "0"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Instalar paquete (editable, extras dev)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      - name: Lint minimo (ruff)
+        run: python -m ruff check src tests
+
+      - name: Tests
+        run: python -m pytest -q -rs

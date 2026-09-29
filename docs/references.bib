@@ -1,6 +1,20 @@
-% references.bib — Bibliografía central del banco de pruebas de regímenes.
-% Cada detector (FASE 3) cita de aquí las técnicas que usa via su propiedad
-% `bibliography`. Semilla extraída de la propuesta TFM; se amplía en FASE 2.
+% references.bib — BIBLIOGRAFÍA ÚNICA del TFM (fuente canónica para citar).
+% Fusión (ADR-004, 2026-09-29) de:
+%   - docs/references.bib previo (semilla de la propuesta + FASE 2 de la Capa 1),
+%   - los 7 .bib por familia de docs/teoria/F1..F7_*.bib (se conservan tal cual,
+%     como sidecars de cada ficha de teoría),
+%   - docs/historia/capa1/informe/references.bib (bib del informe LaTeX v1, que
+%     se conserva junto a su .tex para que siga compilando).
+% Deduplicado por clave y por DOI/título normalizado. Tres trabajos aparecían bajo
+% dos claves; queda UNA entrada canónica y la clave antigua se declara como alias
+% biblatex (campo `ids`), de modo que \cite{alias} sigue resolviendo con biblatex:
+%   - ms_angtimmermann2012 -> hmm_angtimmermann2012  (mismo DOI)
+%   - ms_hardy2001         -> hmm_hardy2001          (mismo DOI)
+%   - nn_bucci2021         -> clust_bucci2022realized (preprint arXiv de la versión
+%                                                     de revista; mismo título)
+% Con BibTeX clásico (sin `ids`), citar la clave canónica.
+% No confundir (papers DISTINTOS): hmm_nystrup2018 vs nn_nystrup2018;
+% kritzman2010 (turbulencia, "Skulls...") vs kritzman2012 (regímenes).
 
 % ---------------------------------------------------------------------------
 % Regímenes / Markov-switching / HMM (núcleo metodológico)
@@ -49,6 +63,17 @@
   doi     = {10.2469/faj.v68.n3.3}
 }
 
+@article{kritzman2010,
+  author  = {Kritzman, Mark and Li, Yuanzhen},
+  title   = {Skulls, Financial Turbulence, and Risk Management},
+  journal = {Financial Analysts Journal},
+  year    = {2010},
+  volume  = {66},
+  number  = {5},
+  pages   = {30--41},
+  doi     = {10.2469/faj.v66.n5.3}
+}
+
 % ---------------------------------------------------------------------------
 % Features macro / crédito (justifican variables de entrada)
 % ---------------------------------------------------------------------------
@@ -87,21 +112,10 @@
 
 % ###########################################################################
 % FASE 2 — ESTADO DEL ARTE. Entradas fusionadas desde los 7 sidecars de
-% docs/memory/sota/*.bib (2026-06-16). Cada bloque conserva el prefijo de
+% docs/teoria/F*_*.bib (2026-06-16). Cada bloque conserva el prefijo de
 % familia de su sidecar; no colisiona con las 7 claves semilla de arriba.
-% NOTA DE FUSIÓN: algunos papers aparecen bajo DOS claves (distinto prefijo)
-% porque dos subagentes los citaron en familias distintas. No es colisión de
-% clave (BibTeX las trata como entradas independientes), pero se documenta
-% para que el redactor del TFM cite la versión coherente con la familia:
-%   - Ang & Timmermann (2012): hmm_angtimmermann2012 == ms_angtimmermann2012
-%   - Hardy (2001):            hmm_hardy2001        == ms_hardy2001
-%   - Nystrup et al. (2018):   hmm_nystrup2018 (asignación regímenes) y
-%                              nn_nystrup2018 (portfolio across hidden regimes,
-%                              paper DISTINTO, no confundir)
-%   - Bucci & Ciciretti:       clust_bucci2022realized (versión revista, DOI) y
-%                              nn_bucci2021 (preprint arXiv del mismo trabajo)
-% Recomendación: en la redacción final, preferir clust_bucci2022realized sobre
-% nn_bucci2021 y unificar Ang&Timmermann/Hardy por su clave hmm_*.
+% NOTA DE FUSIÓN (FASE 2): los duplicados bajo dos claves se resolvieron en la
+% unificación (ADR-004); ver la cabecera (alias `ids`).
 % ###########################################################################
 
 % ===========================================================================
@@ -230,6 +244,7 @@
 }
 
 @article{clust_bucci2022realized,
+  ids     = {nn_bucci2021},
   author  = {Bucci, Andrea and Ciciretti, Vito},
   title   = {Market regime detection via realized covariances: A comparison between unsupervised learning and nonlinear models},
   journal = {Economic Modelling},
@@ -445,6 +460,7 @@
 }
 
 @article{hmm_hardy2001,
+  ids     = {ms_hardy2001},
   author  = {Hardy, Mary R.},
   title   = {A Regime-Switching Model of Long-Term Stock Returns},
   journal = {North American Actuarial Journal},
@@ -499,6 +515,7 @@
 }
 
 @article{hmm_angtimmermann2012,
+  ids     = {ms_angtimmermann2012},
   author  = {Ang, Andrew and Timmermann, Allan},
   title   = {Regime Changes and Financial Markets},
   journal = {Annual Review of Financial Economics},
@@ -565,27 +582,6 @@
   pages     = {1--86},
   doi       = {10.1108/S0731-9053(2011)000027B004},
   isbn      = {978-1-78052-526-6}
-}
-
-@article{ms_angtimmermann2012,
-  author  = {Ang, Andrew and Timmermann, Allan},
-  title   = {Regime Changes and Financial Markets},
-  journal = {Annual Review of Financial Economics},
-  year    = {2012},
-  volume  = {4},
-  pages   = {313--337},
-  doi     = {10.1146/annurev-financial-110311-101808}
-}
-
-@article{ms_hardy2001,
-  author  = {Hardy, Mary R.},
-  title   = {A Regime-Switching Model of Long-Term Stock Returns},
-  journal = {North American Actuarial Journal},
-  year    = {2001},
-  volume  = {5},
-  number  = {2},
-  pages   = {41--53},
-  doi     = {10.1080/10920277.2001.10595984}
 }
 
 @misc{ms_statsmodels,
@@ -937,16 +933,6 @@
   archivePrefix = {arXiv},
   primaryClass  = {q-fin.CP},
   url    = {https://arxiv.org/abs/2108.05801}
-}
-
-@misc{nn_bucci2021,
-  author = {Bucci, Andrea and Ciciretti, Vito},
-  title  = {Market Regime Detection via Realized Covariances: A Comparison between Unsupervised Learning and Nonlinear Models},
-  year   = {2021},
-  eprint = {2104.03667},
-  archivePrefix = {arXiv},
-  primaryClass  = {q-fin.ST},
-  url    = {https://arxiv.org/abs/2104.03667}
 }
 
 @article{nn_nystrup2018,

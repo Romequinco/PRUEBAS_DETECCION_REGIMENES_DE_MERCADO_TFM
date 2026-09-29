@@ -1,7 +1,14 @@
 # ADR-001 — Re-base de la capa de datos antes de comparar detectores
 
 - **Estado:** Aceptada · 2026-07-18
-- **Rama:** trabajo directo sobre `main`; el estado previo queda en `backup-main-pre-datos-v2` (y tag `capa1-exploracion`).
+- **Revisión posterior:** el último punto de §7 (*"Capa 1 se mantiene intacta"*) y el coste de §5
+  (*"duplicación intencionada del framework"*) quedan **revertidos por
+  [ADR-004](ADR-004-unificacion.md)** (decisión del usuario, 2026-09-29): la Capa 1 se unifica con v2 en el
+  paquete `regimenes`. El resto de esta ADR (re-base de datos, dos pistas) sigue vigente.
+- **Rama:** trabajo directo sobre `main`; el estado previo queda en la rama `backup-main-pre-datos-v2`
+  (solo en `origin`, commit `41e9499`). *Nota (unificación ADR-004): el tag `capa1-exploracion` que
+  citaba esta ADR nunca llegó a crearse (ni en local ni en `origin`); la Capa 1 congelada se recupera
+  con el tag `capa1-final` y el código v2 previo a la unificación con `v2-pre-unificacion`.*
 - **Ámbito:** afecta a la estructura del repo, la capa de datos y el protocolo de comparación. **No** toca el marco de evaluación (`src/evaluation.py`) ni la interfaz `RegimeDetector`.
 
 ---
@@ -106,8 +113,9 @@ Tras la Fase 3 se hizo una **limpieza intensa** del repo para dejar solo lo rele
   la *lógica* vive en `src/`).
 - **Retirada la maquinaria de builders**: de v2 y de `capa1_exploracion/scripts/` (Capa 1 está
   congelada; sus notebooks ya están ejecutados). El histórico íntegro sigue en la rama
-  `backup-main-pre-datos-v2` y el tag `capa1-exploracion`.
-- **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/SOTA_datos.md`).
+  `backup-main-pre-datos-v2` (el tag `capa1-exploracion` no existe: ver nota en la cabecera; usar `capa1-final`).
+- **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/datos/SOTA_datos.md`).
 - **`docs/` = hogar único del conocimiento** (ver `docs/README.md`): decisiones, datos, EDA, teoría.
   Ningún hallazgo, decisión ni teoría se perdió: se preservó en `docs/` antes de borrar.
 - **Capa 1 se mantiene intacta** (decisión del usuario) salvo la retirada de `scripts/`.
+  *(Revertido por [ADR-004](ADR-004-unificacion.md), 2026-09-29.)*

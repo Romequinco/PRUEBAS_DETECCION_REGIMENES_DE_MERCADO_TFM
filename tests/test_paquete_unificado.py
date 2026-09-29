@@ -15,6 +15,7 @@ from pathlib import Path
 import regimenes
 from regimenes.detectores.registry import detector_specs
 
+OPCIONALES = {"torch", "jumpmodels"}  # extras [deep] y [jump] (no se instalan en CI)
 PKG_DIR = Path(regimenes.__file__).resolve().parent
 PROHIBIDO = re.compile(
     r"^\s*(from\s+src[\s.]|import\s+src\b|from\s+detectors\b)"
@@ -34,7 +35,12 @@ class PaqueteUnificadoTests(unittest.TestCase):
     def test_factory_does_not_touch_sys_path(self) -> None:
         before = list(sys.path)
         for spec in detector_specs("A") + detector_specs("B"):
-            spec.factory()
+            try:
+                spec.factory()
+            except ModuleNotFoundError as exc:
+                # CI sin extras [deep]/[jump]: D12 importa torch al construirse.
+                if exc.name not in OPCIONALES:
+                    raise
         self.assertEqual(sys.path, before)
 
 

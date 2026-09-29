@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada · 2026-09-29
 - **Rama:** trabajo directo sobre `main`.
-- **Origen:** revisión completa de los notebooks 00–07 ([`../REVISION_2026-09-29.md`](../REVISION_2026-09-29.md)).
+- **Origen:** revisión completa de los notebooks 00–07 ([`../revisiones/REVISION_2026-09-29.md`](../revisiones/REVISION_2026-09-29.md)).
 - **Ámbito:** `src/features.py` (lags de publicación, alineación), `src/ingest/` (CAPE, Ken French,
   vol realizada), `src/evaluation.py` (walk-forward), `src/detectors/registry.py` (semillas),
   `src/benchmark.py` (ranking, huella de caché, ejecución paralela), `data/benchmark_spec.yaml`
@@ -10,6 +10,22 @@
   detectores congelados de `capa1_exploracion/`.
 - **Consecuencia:** invalida los resultados de `results/benchmark_v2/` y de la Fase E; el benchmark
   se re-ejecuta completo una vez con los tres cambios juntos.
+
+<!-- BEGIN ubicacion_v2 -->
+> **Ubicación tras ADR-004.** Esta ADR se redactó antes de la unificación; el texto conserva los
+> nombres de entonces. Traducción: `src/features.py::LAG_PUBLICACION` → `regimenes.features.lags.LAG_PUBLICACION`;
+> `src/evaluation.py` → `regimenes.evaluacion` (`walk_forward`, `metricas`); `src/detectors/registry.py` →
+> `regimenes.detectores.registry`; `src/benchmark.py` → `regimenes.benchmark` (`ejecucion`, `cache`, `cli`)
+> y `regimenes.evaluacion.ranking`; `bm.DETECTION_DEFAULTS` → `regimenes.evaluacion.ranking.DETECTION_DEFAULTS`;
+> `python -m src.benchmark` → `python -m regimenes.benchmark`; `data/benchmark_spec.yaml` →
+> `configs/benchmark_spec.yaml`; `results/benchmark_v2/` → `results/benchmark/` (p. ej.
+> `results/benchmark/ranking_v2.csv`); `results/fusion_*` → `results/fusion/{d07_d08,d02_d06}/`;
+> notebooks `04`/`05`/`06`/`07` → `04_protocolo_evaluacion`/`12_comparativa`/`13_fusion_d07_d08`/`14_fusion_d02_d06`
+> (así, "05 §8" es hoy `12_comparativa` §8); detectores de `capa1_exploracion/` → `regimenes.detectores.f1_reglas` … `f7_deep`.
+> "MS-VAR" (D05, `markov_switching_var`) no es un VAR sino un Markov-Switching univariante de media y
+> varianza, y "D01 VIX" en la pista A es un umbral de volatilidad realizada (no hay VIX antes de 1990):
+> ver [GLOSARIO](../GLOSARIO.md#nombres-de-detectores-que-confunden).
+<!-- END ubicacion_v2 -->
 
 ---
 
@@ -26,7 +42,9 @@ durante la revisión, sino que se elevaron a decisión:
    D10) arrancaban en calma al inicio de cada bloque OOS, recortando cobertura de forma artificial;
    D07 sí propagaba estado, por lo que la comparación no era justa.
 3. **Ranking sesgado a la inactividad.** `rank_medio` promediaba 5 ejes de los que 3 (trampas,
-   switching, estabilidad) los gana un detector que no hace nada: "siempre crisis" quedaba 4ª–6ª.
+   switching, estabilidad) los gana un detector que no hace nada: la línea base "siempre crisis" quedaba 4ª en ambas pistas
+   ([revisión 2026-09-29](../revisiones/REVISION_2026-09-29.md), banco previo a esta ADR; con el banco
+   re-ejecutado queda 5ª por `rank_medio` en ambas, `12_comparativa` §8).
 
 ## 2. Decisión
 
@@ -87,7 +105,8 @@ El ranking principal de cada pista pasa a ser un criterio de **detección** expl
   episodios de crisis < 3 sesiones) · 3 salida degenerada.
 - **Desempate:** menor `switching_rate` y después mayor `label_stability`. La persistencia ya no se
   promedia con la detección.
-- Umbrales explícitos en `bm.DETECTION_DEFAULTS`; sensibilidad documentada en 05 §8.
+- Umbrales explícitos en `bm.DETECTION_DEFAULTS` (hoy `regimenes.evaluacion.ranking.DETECTION_DEFAULTS`);
+  sensibilidad documentada en 05 §8 (hoy [`12_comparativa`](../../notebooks/12_comparativa.ipynb) §8).
 - Líneas base triviales (siempre crisis, siempre calma, azar diario, azar persistente) quedan al
   fondo por construcción, verificado por test.
 - La frontera de Pareto recall/precisión se publica como vista complementaria. `rank_medio` se
@@ -97,7 +116,8 @@ El ranking principal de cada pista pasa a ser un criterio de **detección** expl
 - Huella de caché por **contenido** (no bytes) de parquet y YAML, `.py` normalizado a LF, y hash de
   la copia de `detector_base` que realmente importan los detectores.
 - Semillas fijadas en `registry.py` para los detectores estocásticos (AIC/BIC deterministas).
-- Ejecución paralela por detector: `python -m src.benchmark --track A B --jobs N`.
+- Ejecución paralela por detector: `python -m src.benchmark --track A B --jobs N` (hoy
+  `python -m regimenes.benchmark --track A B --jobs N`).
 - Metadatos `data/raw/provenance.json` y `coverage_report.csv` regenerados desde los parquet locales
   (`--offline`).
 
@@ -121,8 +141,10 @@ Benchmark completo re-ejecutado (24/24 combinaciones `ok`, ~1 h 55 min con 9 pro
 | 4 | D02 riesgo compuesto (0,559) | D02 riesgo compuesto (0,501) |
 | 5 | D05 MS-VAR (0,546) | D04 HMM gaussiano (0,497) |
 
-(score F1 entre paréntesis; tabla completa en `results/benchmark_v2/ranking_v2.csv`). D07, 1º con
-`rank_medio`, cae al 8º (A) y 7º (B): era persistente, no preciso. En B, D09 no supera la precisión del
+(score F1 entre paréntesis; tabla completa en `results/benchmark_v2/ranking_v2.csv`, hoy
+`results/benchmark/ranking_v2.csv`). D07, 1º en A (5º en B) con el `rank_medio` del banco previo a
+esta ADR, cae al 8º (A) y 7º (B) del ranking de detección: era persistente, no preciso. (Con el
+banco re-ejecutado su `rank_medio` le daría el 2º en A y el 5º en B, columna `puesto_legacy`.) En B, D09 no supera la precisión del
 azar y D12 parpadea.
 
 Fase E: D2+D6 sigue mejorando a sus dos sensores, pero D2 y D7 quedan empatados como alerta, en A

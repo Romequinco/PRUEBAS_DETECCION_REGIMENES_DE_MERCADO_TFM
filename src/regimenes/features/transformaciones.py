@@ -196,7 +196,7 @@ def cross_sectional_std_ret(raw: RawDict, nombres: list[str]) -> pd.Series | Non
     rets = {n: logret(raw, n) for n in nombres if _get(raw, n) is not None}
     if len(rets) < 2:
         return None
-    return pd.concat(rets, axis=1).std(axis=1, ddof=1)
+    return pd.concat(rets, axis=1, sort=True).std(axis=1, ddof=1)
 
 
 def cross_sectional_std_level(raw: RawDict, nombres: list[str]) -> pd.Series | None:
@@ -204,7 +204,7 @@ def cross_sectional_std_level(raw: RawDict, nombres: list[str]) -> pd.Series | N
     lv = {n: _get(raw, n) for n in nombres if _get(raw, n) is not None}
     if len(lv) < 2:
         return None
-    return pd.concat(lv, axis=1).std(axis=1, ddof=1)
+    return pd.concat(lv, axis=1, sort=True).std(axis=1, ddof=1)
 
 
 def zscore_or_none(s: pd.Series | None) -> pd.Series | None:
@@ -280,5 +280,5 @@ def fed_stance(raw: RawDict) -> pd.Series | None:
         return None
     z1 = causal_zscore(ff)
     z2 = causal_zscore(spr)
-    combinado = pd.concat({'ff_z': z1, 'spr_z': z2}, axis=1).mean(axis=1, skipna=False)
+    combinado = pd.concat({'ff_z': z1, 'spr_z': z2}, axis=1, sort=True).mean(axis=1, skipna=False)
     return combinado.rename('fed_stance_z')
