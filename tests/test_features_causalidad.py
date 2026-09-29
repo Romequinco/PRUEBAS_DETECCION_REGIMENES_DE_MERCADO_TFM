@@ -1,4 +1,4 @@
-"""Tests sintéticos (sin datos en disco) de las primitivas y recetas causales de src/features.py.
+"""Tests sintéticos (sin datos en disco) de las primitivas y recetas causales de regimenes.features (antes src/features.py).
 
 Idea central: una transformación es causal si recomputarla con la entrada truncada en `cut`
 da exactamente los mismos valores <= cut que con la muestra completa (test de truncado).
@@ -10,7 +10,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src import features as ft
+from regimenes import features as ft
+from regimenes.features.paneles import _col
 
 
 def _serie_diaria(n: int = 800, seed: int = 0, nombre: str = "X", precio: bool = True) -> pd.Series:
@@ -204,7 +205,7 @@ def test_seleccionar_raw_multicolumna_y_gw():
     sel = ft.seleccionar_raw(disco, "FF_FACTORS_3_DAILY")
     assert list(sel.columns) == ["Mkt-RF", "SMB", "HML", "RF"]
     viejo = ft.seleccionar_raw(disco[["FF_FACTORS_3_DAILY"]], "FF_FACTORS_3_DAILY")  # formato v1
-    pd.testing.assert_series_equal(ft._col({"FF_FACTORS_3_DAILY": viejo}, "FF_FACTORS_3_DAILY", "Mkt-RF"),
+    pd.testing.assert_series_equal(_col({"FF_FACTORS_3_DAILY": viejo}, "FF_FACTORS_3_DAILY", "Mkt-RF"),
                                    ff["Mkt-RF"].rename("FF_FACTORS_3_DAILY"))
     gw = pd.DataFrame({"Index": [1.0, 2.0], "b/m": [0.5, 0.6]}, index=pd.date_range("2000-01-01", periods=2, freq="MS"))
     assert ft.seleccionar_raw(gw, "GW_PREDICTORS_MONTHLY").name == "GW_PREDICTORS_MONTHLY_b/m"

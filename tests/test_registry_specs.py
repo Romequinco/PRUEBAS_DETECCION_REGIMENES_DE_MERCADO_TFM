@@ -7,11 +7,10 @@ import unittest
 
 import yaml
 
-from src import benchmark as bm
-from src.detectors import detector_specs
-
-
-ROOT = Path(__file__).resolve().parents[1]
+from regimenes import rutas
+from regimenes.benchmark import cache as bm_cache
+from regimenes.benchmark import ejecucion as bm_ejecucion
+from regimenes.detectores import detector_specs
 
 
 class RegistryContractTests(unittest.TestCase):
@@ -45,7 +44,7 @@ class RegistryContractTests(unittest.TestCase):
                 self.assertTrue(used <= set(spec.features), (track, spec.detector_id, used))
 
     def test_stochastic_detectors_declare_their_seed(self) -> None:
-        from src.detectors.registry import SEED
+        from regimenes.detectores.registry import SEED
 
         stochastic = {"D03", "D04", "D08", "D09", "D12"}
         for track in ("A", "B"):
@@ -60,35 +59,35 @@ class RegistryContractTests(unittest.TestCase):
         spec = detector_specs("A")[0]
         self.assertIsNot(spec.factory(), spec.factory())
 
-    @unittest.skipUnless(bm.processed_available(), "sin paneles data/processed locales")
+    @unittest.skipUnless(bm_cache.processed_available(), "sin paneles data/processed locales")
     def test_features_exist_in_frozen_track_panels(self) -> None:
         for track in ("A", "B"):
-            columns = set(bm.load_track_panel(track).columns)
+            columns = set(bm_ejecucion.load_track_panel(track).columns)
             for spec in detector_specs(track):
                 self.assertTrue(set(spec.features) <= columns, (track, spec.detector_id))
 
     def test_track_windows_match_frozen_spec(self) -> None:
-        spec = yaml.safe_load((ROOT / "data" / "benchmark_spec.yaml").read_text(encoding="utf-8"))
+        spec = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))
         self.assertEqual(len(spec["crisis_windows"]["pista_A"]), 18)
         self.assertEqual(len(spec["crisis_windows"]["pista_B"]), 10)
 
 
 class CacheFingerprintScopeTests(unittest.TestCase):
     def test_hashed_detector_base_is_identical_to_the_one_imported(self) -> None:
-        """Los detectores importan ``src.detector_base`` (copia v2), pero la huella
-        hashea ``capa1_exploracion/src/detector_base.py``. Mientras ambas copias
-        sean idénticas la huella sigue siendo válida; si divergen, este test avisa
-        de que la caché dejaría de detectar el cambio."""
-        import src.detector_base as imported
+        """Tras ADR-004 solo existe una copia de ``RegimeDetector``
+        (``regimenes.detectores.base``). La huella debe hashear exactamente el
+        archivo que importan los detectores; si alguien reintrodujera una copia o
+        cambiara la resolución, este test avisa de que la caché dejaría de
+        detectar el cambio."""
+        import regimenes.detectores.base as imported
 
-        hashed = ROOT / "capa1_exploracion" / "src" / "detector_base.py"
-        self.assertIn(hashed.resolve(), [p.resolve() for p in bm._cache_code_paths()])
-        normalize = lambda p: Path(p).read_bytes().replace(b"\r\n", b"\n")  # noqa: E731
-        self.assertEqual(normalize(imported.__file__), normalize(hashed))
+        hashed = Path(bm_cache._resolved_detector_base()).resolve()
+        self.assertEqual(hashed, Path(imported.__file__).resolve())
+        self.assertIn(hashed, [p.resolve() for p in bm_cache._cache_code_paths()])
 
     def test_model_fingerprint_covers_the_numeric_pipeline(self) -> None:
         # Si se renombra una de estas funciones, la huella debe fallar ruidosamente.
-        self.assertEqual(len(bm._benchmark_model_sha256()), 64)
+        self.assertEqual(len(bm_cache._benchmark_model_sha256()), 64)
 
 
 if __name__ == "__main__":

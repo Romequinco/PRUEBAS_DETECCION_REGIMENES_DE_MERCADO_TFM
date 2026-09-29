@@ -8,8 +8,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src import evaluation as ev
-from src.fusion import (
+from regimenes import evaluacion as ev
+from regimenes.fusion import (
     FusionConfig,
     ablation_scorecard,
     assert_prefix_causal,

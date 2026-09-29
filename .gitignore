@@ -218,7 +218,7 @@ __marimo__/
 .streamlit/secrets.toml
 
 # --- Regime detection project ---
-# Datos crudos y procesados (se regeneran con src/data_loader.py y src/features.py)
+# Datos crudos y procesados (se regeneran con python -m regimenes.datos y notebooks/03_preprocesado)
 data/raw/*
 data/processed/*
 !data/raw/.gitkeep
@@ -231,7 +231,14 @@ data/processed/*
 results/*.png
 results/_archive/*.png
 results/*.parquet
-results/benchmark_v2/panels/*.parquet
+results/benchmark/panels/*.parquet
+# Trayectorias sinteticas generadas (regimenes.sinteticos): se regeneran, no se versionan
+data/sinteticos/*
+!data/sinteticos/.gitkeep
+# Paneles/parquet intermedios de las nuevas carpetas de resultados
+results/detectores/**/*.parquet
+results/sinteticos/**/*.parquet
+results/pseudolive/**/*.parquet
 
 # Artefactos intermedios de LaTeX (el .pdf y .tex SI se versionan; tectonic los regenera)
 report/*.aux

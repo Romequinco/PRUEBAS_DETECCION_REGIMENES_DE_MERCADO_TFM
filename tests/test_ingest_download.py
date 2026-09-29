@@ -1,4 +1,4 @@
-"""Tests offline de src/ingest (sin red y sin tocar data/raw real).
+"""Tests offline de regimenes.datos (antes src/ingest; sin red y sin tocar data/raw real).
 
 Cubren los bugs corregidos en la revision de 00/01:
   - fechas de Shiller (octubre = AAAA.1 se leia como enero -> fechas duplicadas);
@@ -13,7 +13,8 @@ import pandas as pd
 import pytest
 import yaml
 
-from src.ingest import download, sources
+from regimenes.datos import catalogo
+from regimenes.datos import descarga as download, fuentes as sources
 
 
 def test_shiller_dates_october_is_not_january():
@@ -46,7 +47,7 @@ def fake_repo(tmp_path, monkeypatch):
     catalog = tmp_path / "catalog.yaml"
     catalog.write_text(yaml.safe_dump(cat), encoding="utf-8")
     monkeypatch.setattr(download, "RAW", raw)
-    monkeypatch.setattr(download, "CATALOG", catalog)
+    monkeypatch.setattr(catalogo, "CATALOG", catalog)  # load_catalog lo lee de catalogo
     return raw
 
 
@@ -166,7 +167,7 @@ def fake_repo_ff(tmp_path, monkeypatch):
     catalog = tmp_path / "catalog.yaml"
     catalog.write_text(yaml.safe_dump(cat), encoding="utf-8")
     monkeypatch.setattr(download, "RAW", raw)
-    monkeypatch.setattr(download, "CATALOG", catalog)
+    monkeypatch.setattr(catalogo, "CATALOG", catalog)  # load_catalog lo lee de catalogo
     return raw
 
 
@@ -187,7 +188,7 @@ def test_download_ff_alias_y_vol_realizada(fake_repo_ff, monkeypatch):
     assert list(ff.columns) == ["FF_5_INDUSTRY", "Cnsmr", "Manuf", "HiTec", "Hlth", "Other"]
     assert (ff["FF_5_INDUSTRY"] == ff["Cnsmr"]).all() and rep.loc["FF_5_INDUSTRY", "n_cols"] == 6
     rv = pd.read_parquet(fake_repo_ff / "yfinance" / "REALIZED_VOL_SP500.parquet")["REALIZED_VOL_SP500"]
-    from src import features as ft
+    from regimenes import features as ft
     esperado = ft.realized_vol(ft.log_returns(precio)).dropna()
     np.testing.assert_allclose(rv.values, esperado.values)
     assert rv.max() < 1.0  # una vol anualizada, no un precio

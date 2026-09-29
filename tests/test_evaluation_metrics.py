@@ -7,8 +7,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src import evaluation as ev
-from src.detector_base import RegimeDetector
+from regimenes import evaluacion as ev
+from regimenes.detectores.base import RegimeDetector
 
 
 class _RecordingDetector(RegimeDetector):

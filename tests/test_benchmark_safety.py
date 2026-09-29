@@ -10,9 +10,11 @@ import json
 
 import pandas as pd
 
-from src import evaluation as ev
-from src import viz
-from src import benchmark as bm
+from regimenes import evaluacion as ev
+from regimenes import viz
+from regimenes.benchmark import cache as bm_cache
+from regimenes.benchmark import ejecucion as bm_run
+from regimenes.evaluacion import ranking as rk
 
 
 class EventWindowConfigurationTests(unittest.TestCase):
@@ -66,7 +68,7 @@ class RankingTests(unittest.TestCase):
             },
         ])
 
-        ranked = bm.rank_within_track(metrics).set_index("id")
+        ranked = rk.rank_within_track(metrics).set_index("id")
 
         self.assertNotIn("rank_mean_regime_duration", ranked.columns)
         self.assertEqual(ranked.loc["D01", "rank_medio"], 1.0)
@@ -77,7 +79,7 @@ class CacheTests(unittest.TestCase):
     def test_external_output_path_can_be_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             external = Path(temp) / "metric.csv"
-            self.assertEqual(bm._display_path(external), str(external.resolve()))
+            self.assertEqual(bm_cache._display_path(external), str(external.resolve()))
 
     def test_cache_requires_panel_and_exact_fingerprint(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -86,10 +88,10 @@ class CacheTests(unittest.TestCase):
             panel = root / "panel.parquet"
             pd.DataFrame({"cache_fingerprint": ["correcta"]}).to_csv(metric, index=False)
 
-            self.assertFalse(bm._cache_matches(metric, panel, "correcta"))
+            self.assertFalse(bm_cache._cache_matches(metric, panel, "correcta"))
             panel.write_bytes(b"panel")
-            self.assertTrue(bm._cache_matches(metric, panel, "correcta"))
-            self.assertFalse(bm._cache_matches(metric, panel, "otra"))
+            self.assertTrue(bm_cache._cache_matches(metric, panel, "correcta"))
+            self.assertFalse(bm_cache._cache_matches(metric, panel, "otra"))
 
     def test_legacy_cache_without_fingerprint_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -99,7 +101,7 @@ class CacheTests(unittest.TestCase):
             pd.DataFrame({"id": ["D01"]}).to_csv(metric, index=False)
             panel.write_bytes(b"panel")
 
-            self.assertFalse(bm._cache_matches(metric, panel, "cualquiera"))
+            self.assertFalse(bm_cache._cache_matches(metric, panel, "cualquiera"))
 
     def test_metric_loader_rejects_stale_results_by_default(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -111,14 +113,14 @@ class CacheTests(unittest.TestCase):
             pd.DataFrame({
                 "pista": ["A"],
                 "id": ["D01"],
-                "train_days": [bm.DEFAULT_TRAIN_DAYS["A"]],
+                "train_days": [bm_run.DEFAULT_TRAIN_DAYS["A"]],
             }).to_csv(metrics_dir / "A_D01.csv", index=False)
             (panels_dir / "A_D01.parquet").write_bytes(b"panel")
 
-            with mock.patch.object(bm, "_cache_fingerprint", return_value="actual"):
+            with mock.patch.object(bm_cache, "_cache_fingerprint", return_value="actual"):
                 with self.assertRaisesRegex(RuntimeError, "obsoletas"):
-                    bm.load_metrics(output)
-            loaded = bm.load_metrics(output, require_current=False)
+                    bm_cache.load_metrics(output)
+            loaded = bm_cache.load_metrics(output, require_current=False)
             self.assertEqual(len(loaded), 1)
 
     def test_metric_loader_uses_recorded_not_reader_runtime(self) -> None:
@@ -131,20 +133,20 @@ class CacheTests(unittest.TestCase):
             pd.DataFrame({
                 "pista": ["A"],
                 "id": ["D01"],
-                "train_days": [bm.DEFAULT_TRAIN_DAYS["A"]],
+                "train_days": [bm_run.DEFAULT_TRAIN_DAYS["A"]],
                 "cache_fingerprint": ["válida"],
             }).to_csv(metrics_dir / "A_D01.csv", index=False)
             (panels_dir / "A_D01.parquet").write_bytes(b"panel")
             recorded_runtime = {"python": "entorno-productor"}
             (output / "manifest.json").write_text(json.dumps({
-                "cache_schema_version": bm.CACHE_SCHEMA_VERSION,
+                "cache_schema_version": bm_cache.CACHE_SCHEMA_VERSION,
                 "runtime_versions": recorded_runtime,
             }), encoding="utf-8")
 
             with mock.patch.object(
-                bm, "_cache_fingerprint", return_value="válida"
+                bm_cache, "_cache_fingerprint", return_value="válida"
             ) as fingerprint:
-                loaded = bm.load_metrics(output)
+                loaded = bm_cache.load_metrics(output)
 
             self.assertEqual(len(loaded), 1)
             self.assertEqual(

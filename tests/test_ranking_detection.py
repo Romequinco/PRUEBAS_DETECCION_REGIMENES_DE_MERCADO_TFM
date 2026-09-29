@@ -9,12 +9,13 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src import benchmark as bm
-from src import evaluation as ev
+from regimenes import rutas
+from regimenes.benchmark import cache as bm_cache
+from regimenes.evaluacion import ranking as rk
+from regimenes import evaluacion as ev
 
 
-ROOT = Path(__file__).resolve().parents[1]
-RESULTS = ROOT / "results" / "benchmark_v2"
+RESULTS = rutas.RESULTS_BENCHMARK
 BASELINES = {"SIEMPRE_CRISIS", "SIEMPRE_CALMA", "AZAR_IID", "AZAR_PERSISTENTE"}
 
 WINDOWS = {"corta": ("2020-01-06", "2020-01-10"), "larga": ("2020-02-03", "2020-02-28"),
@@ -34,7 +35,7 @@ class EventDetectionTests(unittest.TestCase):
         # dos días sueltos en "larga" no bastan; tres consecutivos en "corta" sí
         flags = _flags([("2020-01-07", "2020-01-09"), ("2020-02-04", "2020-02-04"),
                         ("2020-02-06", "2020-02-06")])
-        table = bm.event_detection_table(flags, WINDOWS, min_run=3)
+        table = ev.event_detection_table(flags, WINDOWS, min_run=3)
         self.assertEqual(table.loc["corta", "detectada"], 1.0)
         self.assertEqual(table.loc["larga", "detectada"], 0.0)
         self.assertEqual(table.loc["larga", "racha_max"], 1)
@@ -42,14 +43,14 @@ class EventDetectionTests(unittest.TestCase):
 
     def test_short_window_needs_all_its_days(self) -> None:
         windows = {"mini": ("2020-01-06", "2020-01-07")}
-        self.assertEqual(bm.event_detection_table(
+        self.assertEqual(ev.event_detection_table(
             _flags([("2020-01-06", "2020-01-07")]), windows)["detectada"].iloc[0], 1.0)
-        self.assertEqual(bm.event_detection_table(
+        self.assertEqual(ev.event_detection_table(
             _flags([("2020-01-06", "2020-01-06")]), windows)["detectada"].iloc[0], 0.0)
 
     def test_summary_matches_judge_false_alarm_rate(self) -> None:
         flags = _flags([("2020-01-06", "2020-01-10"), ("2020-03-02", "2020-03-20")])
-        summary = bm.detection_summary(flags, WINDOWS)
+        summary = ev.detection_summary(flags, WINDOWS)
         windows = {k: v for k, v in WINDOWS.items()}
         far = ev.false_alarm_rate(flags.astype(int), 1, windows)
         self.assertAlmostEqual(summary["det_precision"], 1 - far)
@@ -62,13 +63,13 @@ class EventDetectionTests(unittest.TestCase):
                                summary["det_precision"] / summary["det_base_rate"])
 
     def test_never_marking_has_nan_precision_and_zero_score(self) -> None:
-        summary = bm.detection_summary(_flags([]), WINDOWS)
+        summary = ev.detection_summary(_flags([]), WINDOWS)
         self.assertTrue(np.isnan(summary["det_precision"]))
-        self.assertEqual(bm.detection_score(summary["det_precision"], 0.0), 0.0)
+        self.assertEqual(rk.detection_score(summary["det_precision"], 0.0), 0.0)
 
     def test_score_is_f_beta(self) -> None:
-        self.assertAlmostEqual(bm.detection_score(0.5, 1.0, 1.0), 2 * 0.5 / 1.5)
-        self.assertAlmostEqual(bm.detection_score(0.5, 1.0, 2.0), 5 * 0.5 / (4 * 0.5 + 1))
+        self.assertAlmostEqual(rk.detection_score(0.5, 1.0, 1.0), 2 * 0.5 / 1.5)
+        self.assertAlmostEqual(rk.detection_score(0.5, 1.0, 2.0), 5 * 0.5 / (4 * 0.5 + 1))
 
 
 class CoverageApproximationTests(unittest.TestCase):
@@ -85,11 +86,11 @@ class CoverageApproximationTests(unittest.TestCase):
         metrics = pd.DataFrame([row])
         with tempfile.TemporaryDirectory() as temp:
             output = Path(temp)
-            approx = bm.add_detection_metrics(metrics, output, benchmark=spec)
+            approx = rk.add_detection_metrics(metrics, output, benchmark=spec)
             (output / "panels").mkdir()
             pd.DataFrame({"state": states, "p_crisis": states.astype(float), "fold": 0}).to_parquet(
                 output / "panels" / "A_D01.parquet")
-            exact = bm.add_detection_metrics(metrics, output, benchmark=spec)
+            exact = rk.add_detection_metrics(metrics, output, benchmark=spec)
         self.assertEqual(approx.loc[0, "fuente_deteccion"], "cobertura_aprox_bdate")
         self.assertEqual(exact.loc[0, "fuente_deteccion"], "panel")
         for col in ("det_event_recall", "det_precision", "det_base_rate", "det_marked_rate"):
@@ -98,7 +99,7 @@ class CoverageApproximationTests(unittest.TestCase):
     def test_csv_columns_take_priority(self) -> None:
         metrics = pd.DataFrame([{"pista": "A", "id": "D01", "det_min_run": 3,
                                  "det_event_recall": 0.25, "det_precision": 0.5}])
-        out = bm.add_detection_metrics(metrics, Path("no-existe"))
+        out = rk.add_detection_metrics(metrics, Path("no-existe"))
         self.assertEqual(out.loc[0, "fuente_deteccion"], "csv")
         self.assertEqual(out.loc[0, "det_event_recall"], 0.25)
 
@@ -127,7 +128,7 @@ class RankDetectionTests(unittest.TestCase):
             _det_row("A", "ALARMAS_SUELTAS", 1.0, 0.6, 0.2, 0.05, 20, crisis_run=1.2),
             _det_row("A", "CONSTANTE", 1.0, 0.2, 0.2, 0.0, 1000, marked=1.0),
         ])
-        ranked = bm.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
+        ranked = rk.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
         self.assertEqual(list(ranked.sort_values("puesto_deteccion").index),
                          ["BUENO", "MEDIOCRE", "PEOR_QUE_AZAR", "ALARMAS_SUELTAS", "PARPADEO",
                           "CONSTANTE"])
@@ -142,7 +143,7 @@ class RankDetectionTests(unittest.TestCase):
             _det_row("A", "TRANQUILO", 0.8, 0.5, 0.2, 0.01, 100),
             _det_row("A", "MEJOR_SCORE_NERVIOSO", 0.9, 0.5, 0.2, 0.15, 6),
         ])
-        ranked = bm.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
+        ranked = rk.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
         self.assertEqual(ranked.loc["MEJOR_SCORE_NERVIOSO", "puesto_deteccion"], 1)
         self.assertEqual(ranked.loc["TRANQUILO", "puesto_deteccion"], 2)
         self.assertEqual(ranked.loc["NERVIOSO", "puesto_deteccion"], 3)
@@ -153,28 +154,28 @@ class RankDetectionTests(unittest.TestCase):
             _det_row("A", "Y", 0.8, 0.5, 0.2, 0.01, 50),
             _det_row("B", "Z", 0.1, 0.25, 0.2, 0.01, 50),
         ])
-        ranked = bm.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
+        ranked = rk.rank_detection(metrics, output_dir=Path("no-existe")).set_index("id")
         self.assertEqual(ranked.loc["X", "puesto_deteccion"], 1)
         self.assertEqual(ranked.loc["Y", "puesto_deteccion"], 1)
         self.assertEqual(ranked.loc["Z", "puesto_deteccion"], 1)
 
     def test_pareto_mask(self) -> None:
         frame = pd.DataFrame({"r": [1.0, 0.5, 0.4, 0.9], "p": [0.2, 0.5, 0.4, 0.2]})
-        self.assertEqual(bm.pareto_mask(frame, ["r", "p"]).tolist(), [True, True, False, False])
+        self.assertEqual(rk.pareto_mask(frame, ["r", "p"]).tolist(), [True, True, False, False])
 
 
 class BaselinesAtBottomTests(unittest.TestCase):
     """Las líneas base triviales deben quedar al fondo con el criterio nuevo."""
 
     def _rank_with_baselines(self, metrics: pd.DataFrame, output: Path) -> pd.DataFrame:
-        ranked = bm.rank_detection(metrics, output_dir=output)
+        ranked = rk.rank_detection(metrics, output_dir=output)
         rows = []
         for track, part in ranked.groupby("pista"):
-            index, _ = bm.track_oos_index(track, metrics, output)
+            index, _ = rk.track_oos_index(track, metrics, output)
             rate = float(part["det_marked_rate"].median())
             mean_run = float((2 * part["det_marked_rate"] * part["mean_regime_duration"]).median())
-            rows.append(bm.trivial_baselines(track, index, rate=rate, mean_run=mean_run, n_sims=40))
-        return bm.rank_detection(pd.concat([metrics, *rows], ignore_index=True), output_dir=output)
+            rows.append(rk.trivial_baselines(track, index, rate=rate, mean_run=mean_run, n_sims=40))
+        return rk.rank_detection(pd.concat([metrics, *rows], ignore_index=True), output_dir=output)
 
     def _assert_bottom(self, ranked: pd.DataFrame) -> None:
         for track, part in ranked.groupby("pista"):
@@ -195,7 +196,7 @@ class BaselinesAtBottomTests(unittest.TestCase):
 
     @unittest.skipUnless((RESULTS / "metrics").is_dir(), "sin métricas versionadas")
     def test_versioned_metrics(self) -> None:
-        metrics = bm.load_metrics(RESULTS, require_current=False)
+        metrics = bm_cache.load_metrics(RESULTS, require_current=False)
         self._assert_bottom(self._rank_with_baselines(metrics, RESULTS))
 
     def test_synthetic_detectors_even_when_always_crisis_scores_higher(self) -> None:
@@ -223,12 +224,12 @@ class BaselinesAtBottomTests(unittest.TestCase):
                    "mean_regime_duration": ev.mean_regime_duration(states),
                    "label_stability": 0.99, "fa_x": 0.0}
             row.update({f"cov_{k}": v for k, v in ev.crisis_coverage(states, 1, windows).items()})
-            row.update(bm.detection_summary(flags, windows))
+            row.update(ev.detection_summary(flags, windows))
             rows.append(row)
         metrics = pd.DataFrame(rows)
-        base = bm.trivial_baselines("A", index, rate=0.05, mean_run=10, benchmark=spec,
+        base = rk.trivial_baselines("A", index, rate=0.05, mean_run=10, benchmark=spec,
                                     n_sims=20, seed=int(rng.integers(1000)))
-        ranked = bm.rank_detection(pd.concat([metrics, base], ignore_index=True),
+        ranked = rk.rank_detection(pd.concat([metrics, base], ignore_index=True),
                                    output_dir=Path("no-existe"), benchmark=spec)
         crisis = ranked.set_index("id").loc["SIEMPRE_CRISIS"]
         self.assertGreater(crisis["score_deteccion"],
@@ -246,10 +247,10 @@ class VersionedRankingTests(unittest.TestCase):
         self.assertFalse(stored["id"].isin(BASELINES).any())
 
     def test_ranking_csv_reproducible_when_metrics_carry_detection(self) -> None:
-        metrics = bm.load_metrics(RESULTS, require_current=False)
+        metrics = bm_cache.load_metrics(RESULTS, require_current=False)
         if "det_event_recall" not in metrics or metrics["det_event_recall"].isna().any():
             self.skipTest("métricas previas a ADR-003: el ranking depende de los paneles locales")
-        rebuilt = bm.rank_detection(metrics, output_dir=RESULTS)
+        rebuilt = rk.rank_detection(metrics, output_dir=RESULTS)
         stored = pd.read_csv(RESULTS / "ranking_v2.csv")
         merged = stored.merge(rebuilt, on=["pista", "id"], suffixes=("_csv", "_new"))
         self.assertEqual(len(merged), len(stored))

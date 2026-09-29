@@ -1,8 +1,8 @@
 """Tests sobre datos reales del preprocesado v2 (notebooks/03_preprocesado.ipynb).
 
 Se saltan si `data/raw/` (gitignored) no está descargado. Cubren:
-- coherencia del banco congelado (`data/benchmark_spec.yaml`, ADR-002);
-- que `src.features.construir_paneles` reproduce EXACTAMENTE `data/processed/*` (los paneles
+- coherencia del banco congelado (`configs/benchmark_spec.yaml`, ADR-002);
+- que `regimenes.features.construir_paneles` reproduce EXACTAMENTE `data/processed/*` (los paneles
   que consumió el benchmark);
 - causalidad del pipeline COMPLETO por truncado (features + rejilla NYSE + `_edad_dias`);
 - regla anti-fuga (ninguna serie rol=validation como feature);
@@ -14,19 +14,17 @@ Se saltan si `data/raw/` (gitignored) no está descargado. Cubren:
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import pytest
 import yaml
 
-from src import features as ft
+from regimenes import features as ft
+from regimenes import rutas
 
-ROOT = Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "raw"
-PROCESSED = ROOT / "data" / "processed"
-SPEC = yaml.safe_load((ROOT / "data" / "benchmark_spec.yaml").read_text(encoding="utf-8"))
+RAW = rutas.DATA_RAW
+PROCESSED = rutas.DATA_PROCESSED
+SPEC = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))
 GW_COLUMN = ft.GW_COLUMN  # fijada en 03 §1
 
 _cov_path = RAW / "coverage_report.csv"
@@ -83,7 +81,7 @@ def test_benchmark_spec_coherente_con_adr002():
 
 
 def test_ninguna_serie_validation_es_feature():
-    cat = yaml.safe_load((ROOT / "data" / "catalog.yaml").read_text(encoding="utf-8"))
+    cat = yaml.safe_load(rutas.CATALOG.read_text(encoding="utf-8"))
     validation = {
         s["nombre_interno"]
         for bloque in cat.values() if isinstance(bloque, dict) and "series" in bloque

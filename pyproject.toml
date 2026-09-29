@@ -1,0 +1,62 @@
+# Paquete unico del TFM (ADR-004): Capa 1 congelada + codigo v2 unificados en
+# ``src/regimenes``. Instalacion de desarrollo (editable):
+#
+#     python -m pip install -e ".[deep,jump,dev]"
+#
+# ``requirements.txt`` sigue listando el entorno completo (incluye Jupyter) y
+# termina con ``-e .``; ver su cabecera.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "regimenes"
+version = "0.4.0"
+description = "Deteccion de regimenes de mercado: datos, features, detectores, evaluacion walk-forward, benchmark y fusion (TFM)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # Nucleo de datos y calculo
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scipy>=1.11",
+    "pyyaml>=6.0",             # configs/catalog.yaml, configs/benchmark_spec.yaml
+    "pyarrow>=15.0",           # parquet de data/raw y data/processed
+    # Capa de datos (regimenes.datos)
+    "yfinance>=0.2.40",
+    "requests>=2.31",
+    "openpyxl>=3.1",
+    "xlrd>=2.0",
+    "pandas-datareader>=0.10",
+    # Detectores (regimenes.detectores)
+    "scikit-learn>=1.4",       # GMM, PCA (D03, D12)
+    "hmmlearn>=0.3",           # HMM gaussiano / init HMM-t (D04, D08)
+    "statsmodels>=0.14",       # Markov-Switching (D05)
+    "arch>=6.0",               # GJR-GARCH-t (D06)
+    # Visualizacion (regimenes.viz)
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+]
+
+[project.optional-dependencies]
+deep = ["torch>=2.1"]                  # D12 autoencoder + GMM (f7_deep)
+jump = ["jumpmodels>=0.1"]             # D09 Statistical Jump Model (f2_clustering)
+changepoint = ["ruptures>=1.1"]        # oraculo PELT offline citado en D07; el codigo no lo importa
+dev = [
+    "pytest>=8.0",
+    "nbconvert>=7.0",
+    "nbformat>=5.9",
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["regimenes*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

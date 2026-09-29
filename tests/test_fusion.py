@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src.fusion import (
+from regimenes.fusion import (
     FusionConfig,
     assert_prefix_causal,
     confirmation_episode_table,

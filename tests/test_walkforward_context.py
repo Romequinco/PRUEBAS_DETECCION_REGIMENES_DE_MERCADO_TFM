@@ -17,8 +17,8 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from src import evaluation as ev
-from src.detector_base import RegimeDetector
+from regimenes import evaluacion as ev
+from regimenes.detectores.base import RegimeDetector
 
 
 class _HysteresisAutomaton(RegimeDetector):
@@ -182,7 +182,7 @@ class StatePropagationTests(unittest.TestCase):
     def test_changepoint_d07_does_not_double_count_its_burn_in(self) -> None:
         """D07 ya antepone todo el train como burn-in; con contexto el resultado
         debe ser idéntico (recorta su burn-in a las fechas previas a la entrada)."""
-        from src.detectors import detector_specs
+        from regimenes.detectores import detector_specs
 
         spec = next(s for s in detector_specs("A") if s.detector_id == "D07")
         rng = np.random.default_rng(7)
