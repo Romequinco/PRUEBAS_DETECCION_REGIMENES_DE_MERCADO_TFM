@@ -1,0 +1,10 @@
+{
+  "pista": "B",
+  "id": "D05",
+  "estado": "ok",
+  "segundos": 501.2534086000014,
+  "detalle": "results\\benchmark_v2\\metrics\\B_D05.csv",
+  "inicio_utc": "2026-09-29T08:43:15.460241+00:00",
+  "fin_utc": "2026-09-29T08:51:37.291223+00:00",
+  "pid": 23604
+}

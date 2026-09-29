@@ -1,25 +1,25 @@
-pista,id,estado,segundos,detalle
-A,D01,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D01.csv
-A,D02,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D02.csv
-A,D03,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D03.csv
-A,D04,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D04.csv
-A,D05,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D05.csv
-A,D06,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D06.csv
-A,D07,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D07.csv
-A,D08,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D08.csv
-A,D09,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D09.csv
-A,D10,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D10.csv
-A,D11,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D11.csv
-A,D12,cache,0.0,caché verificada: results\benchmark_v2\metrics\A_D12.csv
-B,D01,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D01.csv
-B,D02,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D02.csv
-B,D03,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D03.csv
-B,D04,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D04.csv
-B,D05,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D05.csv
-B,D06,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D06.csv
-B,D07,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D07.csv
-B,D08,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D08.csv
-B,D09,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D09.csv
-B,D10,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D10.csv
-B,D11,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D11.csv
-B,D12,cache,0.0,caché verificada: results\benchmark_v2\metrics\B_D12.csv
+pista,id,estado,segundos,detalle,inicio_utc,fin_utc,pid
+A,D01,ok,41.782570399998804,results\benchmark_v2\metrics\A_D01.csv,2026-09-29T08:43:15.486536+00:00,2026-09-29T08:43:58.000687+00:00,23532
+A,D02,ok,27.570116900002176,results\benchmark_v2\metrics\A_D02.csv,2026-09-29T08:43:58.002506+00:00,2026-09-29T08:44:25.982445+00:00,23532
+A,D03,ok,543.9994579000049,results\benchmark_v2\metrics\A_D03.csv,2026-09-29T08:44:18.085445+00:00,2026-09-29T08:53:22.487915+00:00,25496
+A,D04,ok,6815.726090199998,results\benchmark_v2\metrics\A_D04.csv,2026-09-29T08:44:25.984791+00:00,2026-09-29T10:38:02.028539+00:00,23532
+A,D05,ok,4131.002275400002,results\benchmark_v2\metrics\A_D05.csv,2026-09-29T08:43:15.437031+00:00,2026-09-29T09:52:06.978721+00:00,5800
+A,D06,ok,196.29505190000054,results\benchmark_v2\metrics\A_D06.csv,2026-09-29T08:46:19.154572+00:00,2026-09-29T08:49:35.879102+00:00,4840
+A,D07,ok,96.02084240000113,results\benchmark_v2\metrics\A_D07.csv,2026-09-29T08:47:08.540341+00:00,2026-09-29T08:48:45.034140+00:00,964
+A,D08,ok,1736.6780488999939,results\benchmark_v2\metrics\A_D08.csv,2026-09-29T08:43:15.456966+00:00,2026-09-29T09:12:12.964499+00:00,16516
+A,D09,ok,6375.252002399997,results\benchmark_v2\metrics\A_D09.csv,2026-09-29T08:48:45.039471+00:00,2026-09-29T10:35:00.745286+00:00,964
+A,D10,ok,2611.0210324999935,results\benchmark_v2\metrics\A_D10.csv,2026-09-29T08:49:12.669867+00:00,2026-09-29T09:32:44.010003+00:00,10584
+A,D11,ok,1838.2860035999984,results\benchmark_v2\metrics\A_D11.csv,2026-09-29T08:43:15.457643+00:00,2026-09-29T09:13:54.361799+00:00,16164
+A,D12,ok,356.52492809999967,results\benchmark_v2\metrics\A_D12.csv,2026-09-29T08:43:15.458065+00:00,2026-09-29T08:49:12.666926+00:00,10584
+B,D01,ok,5.2027854999978445,results\benchmark_v2\metrics\B_D01.csv,2026-09-29T08:49:35.882541+00:00,2026-09-29T08:49:41.340791+00:00,4840
+B,D02,ok,3.9698224000021582,results\benchmark_v2\metrics\B_D02.csv,2026-09-29T08:49:41.343198+00:00,2026-09-29T08:49:45.612495+00:00,4840
+B,D03,ok,55.1935766999959,results\benchmark_v2\metrics\B_D03.csv,2026-09-29T08:49:45.615191+00:00,2026-09-29T08:50:41.038191+00:00,4840
+B,D04,ok,747.105361599999,results\benchmark_v2\metrics\B_D04.csv,2026-09-29T08:50:41.040776+00:00,2026-09-29T09:03:08.378399+00:00,4840
+B,D05,ok,501.2534086000014,results\benchmark_v2\metrics\B_D05.csv,2026-09-29T08:43:15.460241+00:00,2026-09-29T08:51:37.291223+00:00,23604
+B,D06,ok,26.017410100001143,results\benchmark_v2\metrics\B_D06.csv,2026-09-29T08:51:37.295828+00:00,2026-09-29T08:52:03.566286+00:00,23604
+B,D07,ok,9.632825299995602,results\benchmark_v2\metrics\B_D07.csv,2026-09-29T08:52:03.568674+00:00,2026-09-29T08:52:13.443024+00:00,23604
+B,D08,ok,183.10216689999652,results\benchmark_v2\metrics\B_D08.csv,2026-09-29T08:43:15.478440+00:00,2026-09-29T08:46:19.152757+00:00,4840
+B,D09,ok,524.4988326000021,results\benchmark_v2\metrics\B_D09.csv,2026-09-29T08:52:13.445686+00:00,2026-09-29T09:00:58.192126+00:00,23604
+B,D10,ok,250.5095994000003,results\benchmark_v2\metrics\B_D10.csv,2026-09-29T08:53:22.490332+00:00,2026-09-29T08:57:33.210420+00:00,25496
+B,D11,ok,232.47964109999884,results\benchmark_v2\metrics\B_D11.csv,2026-09-29T08:43:15.479650+00:00,2026-09-29T08:47:08.538001+00:00,964
+B,D12,ok,62.04180780000024,results\benchmark_v2\metrics\B_D12.csv,2026-09-29T08:43:15.479768+00:00,2026-09-29T08:44:18.083435+00:00,25496
