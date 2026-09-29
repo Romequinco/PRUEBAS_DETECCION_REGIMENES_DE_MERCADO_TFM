@@ -1,7 +1,7 @@
 # D6 — `garch_t_vol` (FASE 3, Tanda 2) · Familia F5 (Volatilidad)
 
 <!-- BEGIN ubicacion_v2 -->
-> **Ubicación tras ADR-004.** Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` (registro: `regimenes.detectores.registry`, id `D06`) · Notebook v2 de familia: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb) · Resultados v2: sección [Resultados v2 (ADR-003)](#resultados-v2-adr-003) al final. Esta ficha nació en la Capa 1 (v1, congelada en el tag `capa1-final`); el texto histórico se conserva. Cuando menciona el núcleo (`src/`, `detector_base.py`, `evaluation.py`, `features.py`, `data_loader.py`, `INDEX.md`) se refiere al de la Capa 1: hoy `detector_base.py` → `src/regimenes/detectores/base.py`, `evaluation.py` → `regimenes.evaluacion`, `INDEX.md` → `docs/historia/capa1/memoria/INDEX.md`; `features.py`/`data_loader.py` de v1 quedan en el tag `capa1-final`.
+> **Ubicación.** Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` (registro: `regimenes.detectores.registry`, id `D06`) · Notebook v2 de familia: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb) · Resultados v2: sección [Resultados v2 (ADR-003)](#resultados-v2-adr-003) al final. Esta ficha nació en la Capa 1 (v1, congelada en el tag `capa1-final`); el texto histórico se conserva. Cuando menciona el núcleo (`src/`, `detector_base.py`, `evaluation.py`, `features.py`, `data_loader.py`, `INDEX.md`) se refiere al de la Capa 1: hoy `detector_base.py` → `src/regimenes/detectores/base.py`, `evaluation.py` → `regimenes.evaluacion`, `INDEX.md` → `docs/historia/capa1/memoria/INDEX.md`; `features.py`/`data_loader.py` de v1 quedan en el tag `capa1-final`.
 <!-- END ubicacion_v2 -->
 
 > Detector univariante sobre el **retorno log del S&P 500** (desde 1985). Ajusta un
@@ -150,7 +150,7 @@ causalidad ni la reactividad.
 <!-- BEGIN resultados_v2 (generado desde git HEAD; no editar a mano) -->
 ## Resultados v2 (ADR-003)
 
-> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` de la re-ejecución completa del benchmark (24/24) posterior a la unificación ADR-004 (`results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), numéricamente idéntica a la re-ejecución de ADR-003 §4 (ver `docs/revisiones/informe_unificacion.md`). Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
+> Fuente: `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` del benchmark completo (24/24; `results/benchmark/manifest.json`, generado el 2026-09-29T12:41 UTC), con las cifras de ADR-003 §4. Walk-forward causal, evaluación OOS por pista. Ranking de **detección**: evento detectado = ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre precisión diaria (1 − FAR) y recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Ver `docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md`.
 
 **Notebook de familia:** [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb) (F5 — GARCH) · **Teoría:** [`docs/teoria/F5_volatilidad_garch.md`](../teoria/F5_volatilidad_garch.md).
 

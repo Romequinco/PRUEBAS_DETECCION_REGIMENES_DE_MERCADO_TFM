@@ -1,4 +1,4 @@
-"""Benchmark v2 de detectores (antes src/benchmark.py).
+"""Benchmark v2 de detectores.
 
 - ``ejecucion``  paneles, gate, run_one/run_job/run_benchmark, consolidación.
 - ``cache``      rutas de artefactos, huella de caché y verificación de procedencia.

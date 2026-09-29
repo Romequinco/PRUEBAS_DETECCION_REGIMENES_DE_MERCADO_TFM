@@ -47,7 +47,7 @@ de existir de este banco de pruebas:
 7. **`P(estado 0 inicial)=1`**: inicialización degenerada.
 8. **Sin medida de incertidumbre** (Viterbi "duro", no `predict_proba` suave).
 
-> Nota de trazabilidad: `[SOTA §1]` y `[99 §2a]` resumen estas mismas debilidades en
+> Nota de correspondencia: `[SOTA §1]` y `[99 §2a]` resumen estas mismas debilidades en
 > cuatro grandes ejes (look-ahead en z-scores, ausencia de walk-forward, Viterbi duro
 > sin probabilidades, supuesto gaussiano). Las 8 finas están en `[PREV §7]`.
 
@@ -320,7 +320,7 @@ su validación sistémica se apoya en COVID 2020 [99 §4 limitaciones].
 
 ---
 
-## 7. Apéndice de trazabilidad — las 7 familias y los 12 detectores
+## 7. Apéndice de correspondencias — las 7 familias y los 12 detectores
 > Fuente: `[SOTA §2, §5]`. Útil para la sección de método del PDF.
 
 **Las 7 familias (F1–F7)** [SOTA §2–3]:

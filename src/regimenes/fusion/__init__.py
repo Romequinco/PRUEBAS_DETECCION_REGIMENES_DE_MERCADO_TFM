@@ -1,4 +1,4 @@
-"""Fusión causal normal/vigilancia/confirmado (antes src/fusion.py).
+"""Fusión causal normal/vigilancia/confirmado.
 
 La implementación vive en ``regimenes.fusion.maquina``; aquí se re-exporta su API
 pública para ``from regimenes.fusion import fuse_early_warning``.

@@ -1,9 +1,8 @@
 # docs/teoria — Estado del arte por familia
 
 Teoría de los detectores de regímenes del TFM. Las fichas F1–F7 y el documento maestro se
-redactaron en la FASE 2 de la Capa 1 (v1) y se movieron aquí con `git mv` en la unificación
-(ADR-004) desde `capa1_exploracion/memory/sota/` y `capa1_exploracion/memory/`; su contenido
-no cambia salvo rutas y una nota de ubicación al principio. F8 es nueva (esqueleto).
+redactaron en la FASE 2 de la Capa 1 (v1; originales en el tag `capa1-final`); su contenido es
+el de entonces salvo rutas y una nota de ubicación al principio. F8 es nueva (esqueleto).
 
 Cada ficha F1–F7 sigue la misma estructura: definición y supuestos · variantes principales ·
 fortalezas y debilidades · idoneidad para este proyecto (EDA, causalidad) · aplicaciones
@@ -26,9 +25,9 @@ candidatas adicionales. Los notebooks de familia (`notebooks/05`–`11`) toman d
 ## Bibliografía
 
 - `docs/references.bib` es la bibliografía única del proyecto: contiene ya todas las claves de
-  los siete `.bib` de familia (fusionadas en la FASE 2 de la Capa 1; comprobado en la
-  unificación que no falta ninguna).
-- Los `.bib` de familia se conservan como *sidecars* de trazabilidad (qué claves aportó cada
+  los siete `.bib` de familia (fusionadas en la FASE 2 de la Capa 1; comprobado que no falta
+  ninguna).
+- Los `.bib` de familia se conservan como *sidecars* de procedencia (qué claves aportó cada
   ficha). Prefijos: `reglas_`, `clust_`, `hmm_`, `ms_`, `vol_`, `cp_`, `nn_`; las claves
   compartidas sin prefijo (`hamilton1989`, `guidolintimmermann2007`, `kritzman2012`, …)
   viven solo en `docs/references.bib`.
@@ -38,5 +37,5 @@ candidatas adicionales. Los notebooks de familia (`notebooks/05`–`11`) toman d
 - Fichas por detector (implementación, hallazgos v1, resultados v2):
   [`docs/detectores/`](../detectores/README.md).
 - Memoria histórica de la Capa 1 (EDA v1, conclusiones, índice):
-  `docs/historia/capa1/memoria/`.
-- Decisiones de protocolo y ranking: `docs/decisions/ADR-001` … `ADR-003`.
+  [`docs/historia/capa1/`](../historia/capa1/README.md).
+- Decisiones de protocolo y ranking: [`docs/decisions/`](../decisions/ADR-001-rebase-datos.md) (ADR-001 … ADR-004).

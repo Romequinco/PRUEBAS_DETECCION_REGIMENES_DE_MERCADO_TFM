@@ -1,6 +1,6 @@
 """Configuracion comun de pytest para ``tests/`` (espejo de ``src/regimenes``).
 
-Estructura (ADR-004)::
+Estructura::
 
     tests/datos/        -> regimenes.datos
     tests/features/     -> regimenes.features
@@ -9,7 +9,7 @@ Estructura (ADR-004)::
     tests/benchmark/    -> regimenes.benchmark
     tests/fusion/       -> regimenes.fusion
     tests/sinteticos/   -> regimenes.sinteticos
-    tests/test_paquete_unificado.py -> guardas del paquete completo
+    tests/test_paquete.py -> guardas del paquete completo
 
 Marcadores (declarados en ``pyproject.toml``):
 

@@ -1,6 +1,6 @@
 """causalidad.py — Verificación de causalidad (test de truncado).
 
-Sección 5 del antiguo ``src/features.py`` (ADR-004). Ver el docstring de
+Sección 5 de la organización de ``regimenes.features``. Ver el docstring de
 ``regimenes.features.transformaciones`` ("Alcance del test de truncado").
 """
 

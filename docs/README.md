@@ -2,7 +2,7 @@
 
 Todo lo **relevante y durable** del TFM vive aquí o se enlaza desde aquí: las **decisiones**
 tomadas, los **datos** y lo encontrado en ellos, la **teoría** de cada familia de detectores, las
-**fichas** por detector, la **historia** de la Capa 1 y las **revisiones**. Si algo no está en este
+**fichas** por detector y la **historia** de la Capa 1. Si algo no está en este
 índice, es código (`src/regimenes/`), configuración (`configs/`), datos (`data/`) o resultados
 (`results/`).
 
@@ -11,12 +11,11 @@ docs/
 ├── README.md               este índice
 ├── GLOSARIO.md             conceptos canónicos + rutas y módulos + pipeline 00–20
 ├── references.bib          bibliografía ÚNICA del TFM
-├── decisions/              ADR-000 … ADR-004
+├── decisions/              ADR-001 … ADR-004
 ├── datos/                  SOTA_datos.md · EDA_v2.md · figs_eda/
 ├── teoria/                 README · 00_estado_del_arte.md · F1…F7_*.md (+ .bib por familia) · F8 (esqueleto)
 ├── detectores/             README · D01…D13_*.md (fichas por detector)
-├── historia/capa1/         archivo de la Capa 1 (memoria, informe, métricas y datos v1)
-├── revisiones/             contrato y registros de la unificación, baseline, revisión 2026-09-29
+├── historia/capa1/         la Capa 1: decisiones, hallazgos, memoria, informe, métricas y datos v1
 └── context/                propuesta TFM + resumen de la tarea previa
 ```
 
@@ -27,8 +26,8 @@ docs/
   (rutas y módulos de `regimenes`) y el **pipeline 00–20**.
 
 ## 1. Decisiones (por qué se hizo cada cosa)
-- **[`decisions/ADR-000-capa1-retrospectiva.md`](decisions/ADR-000-capa1-retrospectiva.md)** — la Capa 1
-  en retrospectiva: qué se decidió al construir los 12 detectores v1, qué se aprendió y qué falló.
+- **[`historia/capa1/README.md`](historia/capa1/README.md)** — punto de partida: qué se decidió al
+  construir los 12 detectores v1 de la Capa 1, qué se aprendió y qué falló (§2–§6).
 - **[`decisions/ADR-001-rebase-datos.md`](decisions/ADR-001-rebase-datos.md)** — la decisión madre:
   por qué se congelaron los 12 detectores y se re-basó la capa de datos (incomparabilidad 1:1, ~4
   crisis, FRED capado). Su punto *"Capa 1 se mantiene intacta"* lo revierte ADR-004.
@@ -39,8 +38,9 @@ docs/
   — lags de publicación, propagación de estado en el walk-forward y **ranking por detección**
   (F1 = media armónica, no producto, del recall por evento y la precisión diaria) que sustituye al
   `rank_medio`.
-- **[`decisions/ADR-004-unificacion.md`](decisions/ADR-004-unificacion.md)** — unificación de la Capa 1
-  y v2: paquete único `regimenes`, notebooks por familia 00–20, esta estructura de `docs/`.
+- **[`decisions/ADR-004-unificacion.md`](decisions/ADR-004-unificacion.md)** — un solo repositorio y
+  un solo paquete (`regimenes`): la Capa 1 integrada en el paquete, notebooks por familia 00–20 y esta
+  estructura de `docs/`.
 
 ## 2. Datos (qué se recopiló y qué dicen)
 - **[`datos/SOTA_datos.md`](datos/SOTA_datos.md)** — estado del arte de datos: qué series existen para
@@ -83,9 +83,9 @@ docs/
   la del informe v1; deduplicada, con alias `ids` para las claves repetidas).
 
 ## 4. Historia
-- **[`historia/capa1/README.md`](historia/capa1/README.md)** — qué fue la Capa 1, sus 12 detectores y 5
-  hallazgos, resumen de su EDA y su comparativa, dónde está hoy cada cosa y cómo recuperar el código y
-  los notebooks v1 (tag `capa1-final`).
+- **[`historia/capa1/README.md`](historia/capa1/README.md)** — qué fue la Capa 1: sus decisiones, 12
+  detectores y 5 hallazgos, resumen de su EDA y su comparativa, qué falló, correspondencia de rutas y
+  cómo recuperar el código y los notebooks v1 (tag `capa1-final`).
   - [`historia/capa1/memoria/`](historia/capa1/memoria/INDEX.md) — `INDEX`, `01_data_and_eda`,
     `99_conclusions` y `pdf_src/`.
   - [`historia/capa1/informe/informe_capa1.pdf`](historia/capa1/informe/informe_capa1.pdf) — informe
@@ -94,30 +94,17 @@ docs/
     detector, master, archivo y ablación HSMM.
 - **[`context/`](context/)** — propuesta original del TFM y resumen de la tarea previa (HMM gaussiano).
 
-## 5. Revisiones y trazabilidad
-- **[`revisiones/REVISION_2026-09-29.md`](revisiones/REVISION_2026-09-29.md)** — revisión completa de los
-  notebooks 00–07 previos a la unificación: correcciones, reproducibilidad y las decisiones abiertas que
-  resolvió ADR-003.
-- **[`revisiones/unificacion_contrato.md`](revisiones/unificacion_contrato.md)** — mapa vinculante
-  módulo antiguo → módulo nuevo de la unificación (149 definiciones públicas).
-- **[`revisiones/registro_eliminaciones.md`](revisiones/registro_eliminaciones.md)** — todo lo que se
-  eliminó en la unificación, por qué y dónde queda.
-- **[`revisiones/trazabilidad_notebooks.md`](revisiones/trazabilidad_notebooks.md)** — sección de notebook antigua → nueva (notebooks 04–07 y v1 →
-  00–20).
-- [`revisiones/baseline/`](revisiones/baseline/) — foto de referencia previa a la unificación
-  (inventario de API, tests, huellas de resultados y paneles).
-
 ---
 
 ## Orden de lectura
 
 Es el único orden de lectura del repo (el `README.md` raíz remite aquí):
 
-GLOSARIO → ADR-000 (Capa 1, de dónde venimos; detalle en `historia/capa1/README.md`) → ADR-001 →
+GLOSARIO → `historia/capa1/README.md` (Capa 1, de dónde venimos) → ADR-001 →
 SOTA_datos → EDA_v2 → ADR-002 → benchmark_spec → ADR-003 → ADR-004 (estructura actual) → teoría por
 familia → notebooks 04 → 05–11 → 12.
 
-*Visita rápida:* GLOSARIO → ADR-000 → ADR-004, y vuelve al orden completo cuando necesites el porqué
+*Visita rápida:* GLOSARIO → `historia/capa1/README.md` → ADR-004, y vuelve al orden completo cuando necesites el porqué
 de los datos (ADR-001/002) o del ranking (ADR-003).
 
 El orden de **lectura** de los notebooks (familias antes que la comparativa) no es el de

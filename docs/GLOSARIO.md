@@ -2,7 +2,7 @@
 
 > Definiciones **echadas a tierra** de los términos que gobiernan todo el repo. Es la **fuente
 > única**: los notebooks (`00`–`20`) y el resto de docs enlazan aquí en vez de redefinir.
-> Incluye también **dónde está cada cosa** tras la unificación ([ADR-004](decisions/ADR-004-unificacion.md))
+> Incluye también **dónde está cada cosa** (rutas y módulos del paquete `regimenes`, [ADR-004](decisions/ADR-004-unificacion.md))
 > y el **pipeline 00–20** (al final).
 
 ---
@@ -84,7 +84,7 @@ Hay que distinguir dos niveles:
   evento** (crisis detectada = ≥ 3 sesiones consecutivas marcadas dentro de su ventana), tras filtrar
   por niveles (precisión que no supera al azar, parpadeo, salida degenerada).
 - **`rank_medio`** (legacy) estaba sesgado hacia la inactividad: la línea base "siempre crisis"
-  quedaba 4ª en ambas pistas con el banco previo a ADR-003 ([revisión 2026-09-29](revisiones/REVISION_2026-09-29.md))
+  quedaba 4ª en ambas pistas con el banco previo a ADR-003
   y 5ª en ambas con el banco re-ejecutado (`12_comparativa` §8). Se conserva solo como columna de
   comparación (`rank_medio_legacy`, `puesto_legacy`).
 - **Crisis "en ventana" ≠ "evaluadas OOS"**: 18/10 en ventana; 17 (una parcial) / 9 evaluadas OOS.
@@ -148,7 +148,7 @@ Fase D: un detector puede cambiar su algoritmo, pero **no** estas ventanas/etiqu
 
 ---
 
-## Dónde está cada cosa (rutas y módulos tras ADR-004)
+## Dónde está cada cosa (rutas y módulos)
 
 Todo el código es el paquete **`regimenes`** (`src/regimenes/`, instalado con `pip install -e .`).
 Las rutas en disco salen **siempre** de `regimenes.rutas` (ningún módulo ni notebook calcula rutas
@@ -165,24 +165,20 @@ con `Path(__file__)`):
 | `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | fases S y F |
 | `DOCS` · `ENV_FILE` | `docs/` · `.env` | — |
 
-| Módulo | Qué contiene | Antes de ADR-004 |
-|---|---|---|
-| `regimenes.datos` (`catalogo`, `descarga`, `fuentes`) | descarga dirigida por catálogo · `python -m regimenes.datos` | `src/ingest/` · `python -m src.ingest.download` |
-| `regimenes.features` (`transformaciones`, `lags`, `paneles`, `causalidad`) | primitivas causales, `LAG_PUBLICACION`, `construir_paneles`, `assert_causal` | `src/features.py` |
-| `regimenes.detectores` (`base`, `registry`, `f1_reglas` … `f7_deep`) | `RegimeDetector`, `detector_specs`/`specs_table`, los 12 detectores + D13 | `src/detector_base.py`, `src/detectors/`, `capa1_exploracion/detectors/` |
-| `regimenes.evaluacion` (`walk_forward`, `metricas`, `ranking`) | el juez: walk-forward, métricas, ventanas de crisis, ranking ADR-003 | `src/evaluation.py` + parte de `src/benchmark.py` |
-| `regimenes.benchmark` (`ejecucion`, `cache`, `cli`) | ejecución y caché por huella · `python -m regimenes.benchmark` | `src/benchmark.py` · `python -m src.benchmark` |
-| `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado | `src/fusion.py` |
-| `regimenes.viz` (`figuras`) | estilo de casa de figuras | `src/viz.py` |
-| `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras | nuevo (código antes repetido en cada notebook) |
-| `regimenes.sinteticos` (`base`, `registry`, `validacion`) | interfaz `Generador` y validación (esqueleto) | nuevo |
+| Módulo | Qué contiene |
+|---|---|
+| `regimenes.datos` (`catalogo`, `descarga`, `fuentes`) | descarga dirigida por catálogo · `python -m regimenes.datos` |
+| `regimenes.features` (`transformaciones`, `lags`, `paneles`, `causalidad`) | primitivas causales, `LAG_PUBLICACION`, `construir_paneles`, `assert_causal` |
+| `regimenes.detectores` (`base`, `registry`, `f1_reglas` … `f7_deep`) | `RegimeDetector`, `detector_specs`/`specs_table`, los 12 detectores + D13 |
+| `regimenes.evaluacion` (`walk_forward`, `metricas`, `ranking`) | el juez: walk-forward, métricas, ventanas de crisis, ranking ADR-003 |
+| `regimenes.benchmark` (`ejecucion`, `cache`, `cli`) | ejecución y caché por huella · `python -m regimenes.benchmark` |
+| `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado |
+| `regimenes.viz` (`figuras`) | estilo de casa de figuras |
+| `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
+| `regimenes.sinteticos` (`base`, `registry`, `validacion`) | interfaz `Generador` y validación (esqueleto) |
 
-Mapa completo definición a definición: [`revisiones/unificacion_contrato.md`](revisiones/unificacion_contrato.md).
-Documentación movida: `docs/SOTA_datos.md`, `docs/EDA_v2.md`, `docs/figs_eda/` → [`datos/`](datos/EDA_v2.md);
-`docs/REVISION_2026-09-29.md` → [`revisiones/`](revisiones/REVISION_2026-09-29.md);
-`capa1_exploracion/memory/{00_state_of_the_art,sota/*}` → [`teoria/`](teoria/00_estado_del_arte.md);
-`capa1_exploracion/memory/detectors/*` → [`detectores/`](detectores/D01_rule_vix_threshold.md); el resto de
-la Capa 1 → [`historia/capa1/`](historia/capa1/README.md).
+La historia de la Capa 1 (decisiones, hallazgos, memoria, informe y métricas v1) está en
+[`historia/capa1/`](historia/capa1/README.md); su código y notebooks originales, en el tag `capa1-final`.
 
 **Familias e IDs.** `Fk` = familia de la teoría (F1 reglas/umbrales, F2 clustering, F3 HMM, F4
 Markov-Switching, F5 GARCH, F6 change-point, F7 redes). `Dnn` = detector (D01–D12 en el benchmark;
@@ -210,8 +206,5 @@ las métricas en caché. Los notebooks de fusión no verifican la huella: `13_fu
 directamente los paneles OOS (`load_panel`) y `14_fusion_d02_d06` usa el cribado versionado si faltan
 paneles.
 
-Numeración anterior a la unificación: `04_benchmark_detectores` → `04_protocolo_evaluacion`;
-`05_comparacion_detectores` → `12_comparativa`; `06_fusion_d07_d08` → `13_fusion_d07_d08`;
-`07_fusion_d02_d06` → `14_fusion_d02_d06`. Los notebooks v1 (`capa1_exploracion/notebooks/00`–`13`,
-`A1`) se rescatan en 05–12 y quedan íntegros en el tag `capa1-final`.
-
+Los notebooks v1 de la Capa 1 (un notebook por detector) se resumen en los notebooks de familia
+05–11 y quedan íntegros en el tag `capa1-final`.

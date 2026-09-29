@@ -1,6 +1,4 @@
 """CLI de la capa de datos: ``python -m regimenes.datos [--offline|--force --only A,B]``.
-
-(Antes el bloque ``if __name__ == "__main__"`` de ``src/ingest/download.py``, ADR-004.)
 """
 from regimenes.datos.descarga import download_all
 

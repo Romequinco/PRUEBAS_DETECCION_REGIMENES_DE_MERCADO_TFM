@@ -1,7 +1,7 @@
 # 06 — Change-point detection
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes en `capa1_exploracion/memory/sota/`), movida sin cambios de contenido salvo rutas. Bibliografía: [`F6_change_point.bib`](F6_change_point.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D07 `changepoint_online`](../detectores/D07_changepoint_online.md). Notebook v2: [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
+> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F6_change_point.bib`](F6_change_point.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D07 `changepoint_online`](../detectores/D07_changepoint_online.md). Notebook v2: [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
 <!-- END nota_v2 -->
 
 > Familia de la FASE 2 (estado del arte). Enfoque: detectar **instantes de cambio

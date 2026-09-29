@@ -1,6 +1,6 @@
 """Huella de caché, rutas de artefactos y verificación de procedencia del benchmark.
 
-Antes parte de src/benchmark.py. Contiene las rutas de salida (``DEFAULT_OUTPUT``
+Contiene las rutas de salida (``DEFAULT_OUTPUT``
 = ``results/benchmark``), la huella reproducible por contenido
 (:func:`_cache_fingerprint`), la verificación de la caché y la lectura de
 métricas (:func:`load_metrics`, :func:`metrics_provenance`).

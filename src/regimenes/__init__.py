@@ -1,6 +1,6 @@
 """regimenes: deteccion de regimenes de mercado (TFM).
 
-Paquete unico (ADR-004) que unifica la Capa 1 congelada y el codigo v2:
+Paquete unico del TFM (estructura en docs/decisions/ADR-004-unificacion.md):
 
 - ``regimenes.rutas``        rutas centralizadas del repositorio (unica fuente).
 - ``regimenes.datos``        descarga dirigida por ``configs/catalog.yaml``.

@@ -1,4 +1,4 @@
-# Entorno completo del TFM (codigo + notebooks). Desde ADR-004 el codigo es el
+# Entorno completo del TFM (codigo + notebooks). El codigo es el
 # paquete instalable ``regimenes`` (pyproject.toml); sus dependencias de
 # ejecucion se declaran alli. Este archivo se mantiene porque ademas fija el
 # entorno de notebooks y los extras opcionales, y termina instalando el propio

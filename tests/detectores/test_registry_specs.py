@@ -76,7 +76,7 @@ class RegistryContractTests(unittest.TestCase):
 
 class CacheFingerprintScopeTests(unittest.TestCase):
     def test_hashed_detector_base_is_identical_to_the_one_imported(self) -> None:
-        """Tras ADR-004 solo existe una copia de ``RegimeDetector``
+        """Solo existe una copia de ``RegimeDetector``
         (``regimenes.detectores.base``). La huella debe hashear exactamente el
         archivo que importan los detectores; si alguien reintrodujera una copia o
         cambiara la resolución, este test avisa de que la caché dejaría de

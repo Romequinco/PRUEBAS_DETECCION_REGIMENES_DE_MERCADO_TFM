@@ -10,7 +10,7 @@
 > `../../docs/decisions/ADR-001-rebase-datos.md`). Las rutas históricas `docs/memory/...`
 > de este documento apuntan a la antigua `capa1_exploracion/memory/...` (íntegra en el tag
 > `capa1-final`); hoy su contenido está en `docs/detectores/`, `docs/teoria/` y esta carpeta
-> (tabla de `../README.md` §6). El contenido no cambió.
+> (tabla de `../README.md` §7). El contenido no cambió.
 
 ## Estado por fase
 | Fase | Descripción | Estado |

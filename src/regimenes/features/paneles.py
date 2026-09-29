@@ -1,6 +1,6 @@
 """paneles.py — Constructores de panel (tabla FEAT de 02 -> paneles de 03).
 
-Sección 4 del antiguo ``src/features.py`` (ADR-004). Ver el docstring de
+Sección 4 de la organización de ``regimenes.features``. Ver el docstring de
 ``regimenes.features.transformaciones`` para la organización completa.
 """
 

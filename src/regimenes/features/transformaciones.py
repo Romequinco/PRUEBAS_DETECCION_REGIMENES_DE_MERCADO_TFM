@@ -1,7 +1,7 @@
 """
 transformaciones.py — Features CAUSALES para los detectores de régimen (preprocesado v2).
 
-(Antes ``src/features.py``, ADR-004.) Este módulo contiene las secciones 1 y 2; la 3 vive
+Este módulo contiene las secciones 1 y 2; la 3 vive
 en ``regimenes.features.lags``, la 4 en ``regimenes.features.paneles`` y la 5 en
 ``regimenes.features.causalidad``. ``regimenes.features`` re-exporta toda la API.
 

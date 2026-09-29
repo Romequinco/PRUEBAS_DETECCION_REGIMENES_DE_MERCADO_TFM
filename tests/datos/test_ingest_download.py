@@ -1,4 +1,4 @@
-"""Tests offline de regimenes.datos (antes src/ingest; sin red y sin tocar data/raw real).
+"""Tests offline de regimenes.datos (sin red y sin tocar data/raw real).
 
 Cubren los bugs corregidos en la revision de 00/01:
   - fechas de Shiller (octubre = AAAA.1 se leia como enero -> fechas duplicadas);

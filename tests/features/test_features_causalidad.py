@@ -1,4 +1,4 @@
-"""Tests sintéticos (sin datos en disco) de las primitivas y recetas causales de regimenes.features (antes src/features.py).
+"""Tests sintéticos (sin datos en disco) de las primitivas y recetas causales de regimenes.features.
 
 Idea central: una transformación es causal si recomputarla con la entrada truncada en `cut`
 da exactamente los mismos valores <= cut que con la muestra completa (test de truncado).

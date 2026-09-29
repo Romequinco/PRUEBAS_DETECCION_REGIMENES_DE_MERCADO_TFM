@@ -1,6 +1,5 @@
 """catalogo.py — Carga del catalogo de series (``configs/catalog.yaml``).
 
-(Antes el bloque ``load_catalog`` de ``src/ingest/download.py``, ADR-004.)
 ``load_catalog`` lee el global ``CATALOG`` de este modulo en tiempo de llamada, de modo
 que los tests pueden parchear ``regimenes.datos.catalogo.CATALOG``.
 """

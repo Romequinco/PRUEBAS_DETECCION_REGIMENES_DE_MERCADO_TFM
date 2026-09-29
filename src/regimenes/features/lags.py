@@ -1,6 +1,6 @@
 """lags.py — Causalidad de calendario: lags de publicación por serie (ADR-003).
 
-Sección 3 del antiguo ``src/features.py`` (ADR-004). Ver el docstring de
+Sección 3 de la organización de ``regimenes.features``. Ver el docstring de
 ``regimenes.features.transformaciones`` para la organización completa.
 """
 

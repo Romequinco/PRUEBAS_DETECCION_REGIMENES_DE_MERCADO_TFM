@@ -1,4 +1,4 @@
-"""Estilo de casa y figuras (antes src/viz.py).
+"""Estilo de casa y figuras.
 
 La implementación vive en ``regimenes.viz.figuras``; aquí se re-exporta su API
 pública y los tres dicts de ventanas de ``regimenes.evaluacion.metricas`` (mismos

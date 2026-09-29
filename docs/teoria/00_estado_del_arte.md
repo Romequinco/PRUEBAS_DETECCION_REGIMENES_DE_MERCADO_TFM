@@ -1,7 +1,7 @@
 # 00 — Estado del arte: detección de regímenes de mercado (FASE 2)
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Documento maestro de la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes `capa1_exploracion/memory/00_state_of_the_art.md`), movido sin cambios de contenido salvo rutas. Las fichas de familia viven ahora junto a él en `docs/teoria/` (`F1_…` a `F7_…`); `detectors/` (FASE 3) es hoy `src/regimenes/detectores/`; las fichas por detector están en [`docs/detectores/`](../detectores/README.md). Índice: [`README.md`](README.md).
+> **Origen y ubicación.** Documento maestro de la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Las fichas de familia viven junto a él en `docs/teoria/` (`F1_…` a `F7_…`); `detectors/` (FASE 3) es hoy `src/regimenes/detectores/`; las fichas por detector están en [`docs/detectores/`](../detectores/README.md). Índice: [`README.md`](README.md).
 <!-- END nota_v2 -->
 
 > Documento maestro de la FASE 2. Sintetiza las 7 fichas de familia de

@@ -6,9 +6,9 @@
   [ADR-004](ADR-004-unificacion.md)** (decisión del usuario, 2026-09-29): la Capa 1 se unifica con v2 en el
   paquete `regimenes`. El resto de esta ADR (re-base de datos, dos pistas) sigue vigente.
 - **Rama:** trabajo directo sobre `main`; el estado previo queda en la rama `backup-main-pre-datos-v2`
-  (solo en `origin`, commit `41e9499`). *Nota (unificación ADR-004): el tag `capa1-exploracion` que
-  citaba esta ADR nunca llegó a crearse (ni en local ni en `origin`); la Capa 1 congelada se recupera
-  con el tag `capa1-final` y el código v2 previo a la unificación con `v2-pre-unificacion`.*
+  (solo en `origin`, commit `41e9499`). El tag `capa1-exploracion` que citaba esta ADR no llegó a
+  crearse: la Capa 1 congelada se recupera con el tag `capa1-final`, donde vive la carpeta
+  `capa1_exploracion/` que se menciona abajo.
 - **Ámbito:** afecta a la estructura del repo, la capa de datos y el protocolo de comparación. **No** toca el marco de evaluación (`src/evaluation.py`) ni la interfaz `RegimeDetector`.
 
 ---
@@ -113,7 +113,7 @@ Tras la Fase 3 se hizo una **limpieza intensa** del repo para dejar solo lo rele
   la *lógica* vive en `src/`).
 - **Retirada la maquinaria de builders**: de v2 y de `capa1_exploracion/scripts/` (Capa 1 está
   congelada; sus notebooks ya están ejecutados). El histórico íntegro sigue en la rama
-  `backup-main-pre-datos-v2` (el tag `capa1-exploracion` no existe: ver nota en la cabecera; usar `capa1-final`).
+  `backup-main-pre-datos-v2` (la Capa 1 congelada, en el tag `capa1-final`).
 - **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/datos/SOTA_datos.md`).
 - **`docs/` = hogar único del conocimiento** (ver `docs/README.md`): decisiones, datos, EDA, teoría.
   Ningún hallazgo, decisión ni teoría se perdió: se preservó en `docs/` antes de borrar.

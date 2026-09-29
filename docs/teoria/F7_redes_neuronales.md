@@ -1,7 +1,7 @@
 # 07 — Redes neuronales / no supervisado moderno
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes en `capa1_exploracion/memory/sota/`), movida sin cambios de contenido salvo rutas. Bibliografía: [`F7_redes_neuronales.bib`](F7_redes_neuronales.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D12 `deep_ae_regime`](../detectores/D12_deep_ae_regime.md). Notebook v2: [`notebooks/11_familia_F7_deep.ipynb`](../../notebooks/11_familia_F7_deep.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
+> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F7_redes_neuronales.bib`](F7_redes_neuronales.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D12 `deep_ae_regime`](../detectores/D12_deep_ae_regime.md). Notebook v2: [`notebooks/11_familia_F7_deep.ipynb`](../../notebooks/11_familia_F7_deep.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
 <!-- END nota_v2 -->
 
 > Familia: métodos deep / no supervisado moderno para detección de regímenes.

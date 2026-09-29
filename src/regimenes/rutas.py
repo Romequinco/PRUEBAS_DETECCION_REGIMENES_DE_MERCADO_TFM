@@ -10,7 +10,7 @@ Directorios de datos y resultados (fuera del paquete):
 - ``data/raw``            descargas crudas (gitignored salvo procedencia)
 - ``data/processed``      paneles pistaA/pistaB (gitignored)
 - ``data/sinteticos``     trayectorias sinteticas generadas (gitignored)
-- ``results/benchmark``   salida de ``python -m regimenes.benchmark`` (antes results/benchmark_v2)
+- ``results/benchmark``   salida de ``python -m regimenes.benchmark``
 - ``results/fusion``      subcarpetas d07_d08/ y d02_d06/
 - ``results/detectores``, ``results/sinteticos``, ``results/pseudolive``
 """

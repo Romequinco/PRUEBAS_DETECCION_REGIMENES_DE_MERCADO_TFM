@@ -1,16 +1,15 @@
 """El juez: protocolo walk-forward, métricas y ranking de detección.
 
 - ``walk_forward``  ``EvaluationResult``, ``walk_forward``, ``evaluate``,
-                    ``results_table`` (antes src/evaluation.py).
+                    ``results_table``.
 - ``metricas``      ventanas de eventos, métricas individuales causales y
-                    detección por evento ``det_*`` (antes src/evaluation.py y
-                    src/benchmark.py).
-- ``ranking``       criterio de ranking de detección ADR-003 (antes src/benchmark.py).
+                    detección por evento ``det_*``.
+- ``ranking``       criterio de ranking de detección ADR-003.
                     NO se importa aquí (evita el ciclo ranking → benchmark → evaluacion):
                     ``from regimenes.evaluacion import ranking``.
 
-``from regimenes import evaluacion as ev`` expone la misma API que el antiguo
-``src.evaluation`` (``ev.walk_forward``, ``ev.CRISIS_WINDOWS``…). Los tres dicts de
+``from regimenes import evaluacion as ev`` expone la API del juez
+(``ev.walk_forward``, ``ev.CRISIS_WINDOWS``…). Los tres dicts de
 ventanas son los MISMOS objetos que ``regimenes.evaluacion.metricas``.
 """
 

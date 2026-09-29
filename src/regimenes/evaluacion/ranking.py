@@ -1,6 +1,6 @@
 """Criterio de ranking de detección (ADR-003) y ranking descriptivo heredado.
 
-Antes parte de src/benchmark.py. :func:`rank_detection` es el ranking principal;
+:func:`rank_detection` es el ranking principal;
 :func:`rank_within_track` (``rank_medio``) se conserva solo para comparar. Incluye
 las líneas base triviales y el nulo de azar persistente.
 

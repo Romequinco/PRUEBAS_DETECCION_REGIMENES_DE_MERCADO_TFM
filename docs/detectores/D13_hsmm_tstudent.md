@@ -1,15 +1,15 @@
 # D13 — `hsmm_tstudent` (ablación A1) · Familia F3 (HMM semi-Markov)
 
 <!-- BEGIN ubicacion_v2 -->
-> **Ubicación tras ADR-004.** Código: `src/regimenes/detectores/f3_hmm/hsmm_tstudent.py`
+> **Ubicación.** Código: `src/regimenes/detectores/f3_hmm/hsmm_tstudent.py`
 > (clase `HSMMTStudent`, hereda de `HMMTStudent` de D08) · Notebook v1:
 > `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` (tag `capa1-final`) · Métricas v1:
 > `docs/historia/capa1/resultados/ablation_hsmm/metrics_d13_hsmm.csv` y
 > `metrics_d8_reference.csv` (README de la ablación en la misma carpeta) · Notebook v2 de familia:
 > [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb) (sección de
 > ablación) · Teoría: [`docs/teoria/F3_hmm.md`](../teoria/F3_hmm.md).
-> Ficha nueva (no existía en `capa1_exploracion/memory/detectors/`): se redacta a partir del
-> README de la ablación y del markdown/salidas del notebook A1.
+> Ficha sin equivalente en la memoria de la Capa 1: se redacta a partir del README de la
+> ablación y del markdown/salidas del notebook A1.
 <!-- END ubicacion_v2 -->
 
 > Un *Hidden Semi-Markov Model* (HSMM) relaja el supuesto temporal más restrictivo del HMM

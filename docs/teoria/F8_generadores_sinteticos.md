@@ -1,6 +1,6 @@
 # F8 — Generadores de datos sintéticos (ESQUELETO)
 
-> **Estado: esqueleto (ADR-004).** Ficha nueva, sin equivalente en la Capa 1. Fija la
+> **Estado: esqueleto.** Ficha nueva, sin equivalente en la Capa 1. Fija la
 > estructura del estado del arte de la fase de sintéticos (notebooks
 > `15_sinteticos_generadores` a `18_sinteticos_aumento`) y la conecta con el código ya
 > previsto en `src/regimenes/sinteticos/` (interfaz `Generador`, registro,

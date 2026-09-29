@@ -1,8 +1,6 @@
 """
 fuentes.py — Descargadores por fuente para la capa de datos v2.
 
-(Antes ``src/ingest/sources.py``, ADR-004.)
-
 Cada `fetch_*` devuelve una `pd.Series` diaria/mensual indexada por fecha (o lanza
 excepcion). SIN imputar: cada serie arranca en su fecha real. La orquestacion
 (``regimenes.datos.descarga``) las cachea a data/raw/<fuente>/<nombre>.parquet y registra procedencia.

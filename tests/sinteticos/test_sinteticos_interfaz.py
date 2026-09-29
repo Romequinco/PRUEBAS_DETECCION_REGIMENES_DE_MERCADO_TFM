@@ -1,4 +1,4 @@
-"""Contrato del esqueleto ``regimenes.sinteticos`` (ADR-004, fase de unificacion).
+"""Contrato del esqueleto ``regimenes.sinteticos``.
 
 Fija dos cosas mientras no exista ningun generador real:
 

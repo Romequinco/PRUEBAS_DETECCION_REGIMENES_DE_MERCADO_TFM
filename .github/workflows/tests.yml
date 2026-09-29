@@ -1,4 +1,4 @@
-# CI del paquete ``regimenes`` (ADR-004).
+# CI del paquete ``regimenes``.
 #
 # - Python 3.13, ``pip install -e .[dev]`` SIN los extras [deep] (torch) ni [jump]
 #   (jumpmodels): los tests que los necesitan se saltan con ``pytest.importorskip``.
@@ -9,7 +9,7 @@ name: tests
 
 on:
   push:
-    branches: [main, unificacion]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 

@@ -1,7 +1,7 @@
 # 05 — Modelos de volatilidad / econométricos (ARIMA, ARCH/GARCH, RS-GARCH)
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes en `capa1_exploracion/memory/sota/`), movida sin cambios de contenido salvo rutas. Bibliografía: [`F5_volatilidad_garch.bib`](F5_volatilidad_garch.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D06 `garch_t_vol`](../detectores/D06_garch_t_vol.md), [D11 `msgarch_regime`](../detectores/D11_msgarch_regime.md). Notebook v2: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
+> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F5_volatilidad_garch.bib`](F5_volatilidad_garch.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D06 `garch_t_vol`](../detectores/D06_garch_t_vol.md), [D11 `msgarch_regime`](../detectores/D11_msgarch_regime.md). Notebook v2: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
 <!-- END nota_v2 -->
 
 > Familia de la FASE 2 centrada en la **modelización explícita de la varianza

@@ -1,4 +1,4 @@
-"""Regresiones del ranking descriptivo, del modo solo-caché y de la trazabilidad."""
+"""Regresiones del ranking descriptivo, del modo solo-caché y de la procedencia de las métricas."""
 
 from __future__ import annotations
 

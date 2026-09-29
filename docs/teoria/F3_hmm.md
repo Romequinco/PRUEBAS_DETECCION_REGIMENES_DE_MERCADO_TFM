@@ -1,7 +1,7 @@
 # 03 — Hidden Markov Models (HMM)
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes en `capa1_exploracion/memory/sota/`), movida sin cambios de contenido salvo rutas. Bibliografía: [`F3_hmm.bib`](F3_hmm.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D04 `hmm_gaussian_2s`](../detectores/D04_hmm_gaussian_2s.md), [D08 `hmm_tstudent`](../detectores/D08_hmm_tstudent.md), [D13 `hsmm_tstudent`](../detectores/D13_hsmm_tstudent.md). Notebook v2: [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
+> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F3_hmm.bib`](F3_hmm.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D04 `hmm_gaussian_2s`](../detectores/D04_hmm_gaussian_2s.md), [D08 `hmm_tstudent`](../detectores/D08_hmm_tstudent.md), [D13 `hsmm_tstudent`](../detectores/D13_hsmm_tstudent.md). Notebook v2: [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
 <!-- END nota_v2 -->
 
 > Estado del arte (FASE 2) de la familia **HMM como modelo de espacio de estados

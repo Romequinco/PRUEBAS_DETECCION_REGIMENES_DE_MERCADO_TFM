@@ -1,4 +1,4 @@
-# Makefile del TFM (paquete ``regimenes``, ADR-004).
+# Makefile del TFM (paquete ``regimenes``).
 #
 # Compatible con GNU Make en Linux/macOS y en Windows bajo Git Bash
 # (instalar make, p. ej. ``winget install ezwinports.make`` o ``choco install make``).

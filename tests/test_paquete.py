@@ -1,9 +1,9 @@
-"""Guardas del paquete unificado ``regimenes`` (ADR-004).
+"""Guardas del paquete ``regimenes``.
 
-Sustituye a ``test_clean_sys_path_removes_legacy_root_temporarily`` (eliminado con
-fila en docs/revisiones/registro_eliminaciones.md): con el paquete instalado ya no
-existe manipulacion de ``sys.path`` que limpiar, asi que se verifica justamente su
-ausencia en el codigo del paquete y en ``factory()``.
+El paquete se instala en editable y se importa con imports absolutos: ningun
+modulo debe manipular ``sys.path`` ni importar rutas fuera del paquete
+(``src.*``, ``detectors``, la Capa 1 del tag ``capa1-final``), y construir los
+detectores con ``factory()`` no debe tocar ``sys.path``.
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ PROHIBIDO = re.compile(
 )
 
 
-class PaqueteUnificadoTests(unittest.TestCase):
+class PaqueteTests(unittest.TestCase):
     def test_package_source_has_no_legacy_imports_or_sys_path(self) -> None:
         hits = []
         for py in sorted(PKG_DIR.rglob("*.py")):

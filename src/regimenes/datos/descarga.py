@@ -1,8 +1,7 @@
 """
 descarga.py — Orquestador de descarga v2, dirigido por configs/catalog.yaml.
 
-(Antes ``src/ingest/download.py``, ADR-004: ``load_catalog`` vive en
-``regimenes.datos.catalogo`` y el bloque CLI en ``regimenes.datos.__main__``.)
+``load_catalog`` vive en ``regimenes.datos.catalogo`` y la CLI en ``regimenes.datos.__main__``.
 
 Recorre TODAS las series del catalogo (pista_A + pista_B + validacion_externa),
 descarga cada una por su fuente, la guarda SIN imputar en

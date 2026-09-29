@@ -1,4 +1,4 @@
-"""CLI del benchmark: ``python -m regimenes.benchmark`` (antes ``python -m src.benchmark``)."""
+"""CLI del benchmark: ``python -m regimenes.benchmark``."""
 
 from __future__ import annotations
 

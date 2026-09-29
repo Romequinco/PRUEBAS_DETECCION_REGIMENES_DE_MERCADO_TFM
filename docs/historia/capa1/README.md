@@ -2,13 +2,14 @@
 
 > Archivo histórico de la **primera vuelta** del TFM: 12 detectores de régimen (7 familias) bajo un
 > marco causal común, evaluados sobre un set de datos pequeño (9 series, 15 features). Se **congeló**
-> en 2026-07-18 ([ADR-001](../../decisions/ADR-001-rebase-datos.md)) y se **unificó** con v2 en
-> 2026-09-29 ([ADR-004](../../decisions/ADR-004-unificacion.md)). Retrospectiva completa en
-> [ADR-000](../../decisions/ADR-000-capa1-retrospectiva.md).
+> el 2026-07-18 ([ADR-001](../../decisions/ADR-001-rebase-datos.md)); sus detectores e interfaz forman
+> hoy parte del paquete `regimenes` ([ADR-004](../../decisions/ADR-004-unificacion.md)). Este README es
+> también el registro de **qué se decidió en la Capa 1 y por qué** (§2), para que ADR-001 … ADR-004
+> se lean en orden.
 >
 > Esta carpeta conserva **los artefactos que no se re-ejecutan** (memoria, informe, métricas v1,
-> procedencia de datos v1). El código y la teoría que siguen vivos ya no están aquí: se movieron al
-> paquete `regimenes` y a `docs/teoria/` y `docs/detectores/` (tabla de §5).
+> procedencia de datos v1). El código y la teoría que siguen vivos están en el paquete `regimenes`,
+> `docs/teoria/` y `docs/detectores/` (tabla de §7); el original completo, en el tag `capa1-final` (§8).
 
 ---
 
@@ -19,9 +20,15 @@ qué"**: misma interfaz `RegimeDetector`, mismo protocolo walk-forward causal y 
 (cobertura por crisis, falsas alarmas en las trampas 2013/2018, lead/lag al suelo del drawdown,
 switching, duración, estabilidad, BIC) para los 12 detectores.
 
-Partía de la **tarea previa** (HMM gaussiano de 2 estados, in-sample, con z-scores de muestra
-completa; ver [`../../context/RESUMEN_DETECCION_REGIMENES.md`](../../context/RESUMEN_DETECCION_REGIMENES.md)),
-cuyas limitaciones (look-ahead, sin walk-forward, Viterbi duro, supuesto gaussiano) motivaron el banco.
+El TFM (MIAX) propone un sistema de detección de regímenes basado en un HMM t-Student multi-estado
+([`../../context/TFM_Proposal_v2.pdf`](../../context/TFM_Proposal_v2.pdf)). La Capa 1 partía de la
+**tarea previa**: un HMM gaussiano de 2 estados in-sample, con z-scores de muestra completa, que
+acertaba las crisis grandes (2008: 98.6 %, 2020: 92.3 %) pero se perdía las correcciones rápidas
+(2013: 10.9 %, Q4 2018: 20.6 %)
+([`../../context/RESUMEN_DETECCION_REGIMENES.md`](../../context/RESUMEN_DETECCION_REGIMENES.md)).
+Sus problemas —look-ahead de los z-scores, evaluación in-sample, Viterbi duro sin probabilidades,
+supuesto gaussiano y etiquetado frágil— no permitían saber si el HMM era una buena elección o solo
+una elección: de ahí el banco.
 
 Fases internas de la Capa 1 (numeración propia, **independiente** de la hoja de ruta v2): 0 estructura
 + interfaz + evaluador · 1 datos + EDA · 2 estado del arte · 3 implementación en 4 tandas · 4 síntesis
@@ -50,7 +57,30 @@ Fuente: [`memoria/99_conclusions.md`](memoria/99_conclusions.md) y
 [`resultados/ablation_hsmm/`](resultados/ablation_hsmm/README.md): la duración explícita **no** reduce
 el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 
-## 2. Los 5 hallazgos que sobreviven
+## 2. Decisiones de la Capa 1
+
+1. **Banco de pruebas, no detector.** El objetivo fue comparar familias bajo un marco común y
+   responder "¿cuál es el mejor *para qué*?", no fabricar un campeón.
+2. **Interfaz común `RegimeDetector`** con etiquetas canónicas (0 = calma … n−1 = crisis) y orden
+   económico de estados **vol-primario** (`_economic_state_order`, banda `VOL_CLOSE_FRAC`), para que
+   los estados sean comparables entre detectores y entre folds. Sigue viva en
+   `regimenes.detectores.base`.
+3. **Walk-forward causal como único protocolo** (expanding, re-ajuste cada `step`), con
+   `market_returns` para re-fijar el orden de estados en cada fold y un `stability_panel` aislado como
+   diagnóstico no causal.
+4. **Features causales** (z-score expanding) verificadas con `assert_causal` (truncar el futuro no
+   cambia el pasado).
+5. **Filtrado forward en los HMM** en lugar de Viterbi por bloque; `lead_lag` exige cruce sostenido
+   (3 días) para no premiar el parpadeo.
+6. **Datos sin imputar:** 9 series por yfinance (FRED inaccesible, fallbacks documentados), ventana
+   común 2007-04-11 → 2026-06 gobernada por HYG, 15 features.
+7. **Estado del arte por familias (7) antes de implementar**, con bibliografía por familia, y lista de
+   **12 detectores** de baseline a avanzado aprobada en el CHECKPOINT 2; implementados en 4 tandas.
+8. **Honestidad comparativa:** cobertura separada por grupo de ventana (vio 2008 OOS o no); métricas
+   de ajuste (logL/AIC/BIC) declaradas in-sample; "estrés agregado" para los multi-estado; los
+   resultados negativos (D11, D12) se conservan como evidencia.
+
+## 3. Los 5 hallazgos que sobreviven
 
 1. **El look-ahead de los z-scores in-sample compraba suavidad, no acierto.** D4 causal frente a su
    versión in-sample: el switching sube de 0.047 a 0.100 y sigue fallando 2013/2018; el acierto en
@@ -68,7 +98,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 [`memoria/99_conclusions.md`](memoria/99_conclusions.md) §2 y en el
 [informe](informe/informe_capa1.pdf).)
 
-## 3. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/00_eda.ipynb`)
+## 4. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/00_eda.ipynb`)
 
 - **Datos:** 9 series descargadas **sin imputar** (S&P 500, VIX, MOVE, TLT, IEF, HYG, GLD, DXY y la
   pendiente 10Y−3M). FRED era inaccesible en aquel entorno → fallbacks documentados: DXY por
@@ -90,7 +120,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 Memoria completa: [`memoria/01_data_and_eda.md`](memoria/01_data_and_eda.md). El EDA v2 que lo
 sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos/EDA_v2.md).
 
-## 4. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/13_comparison.ipynb`)
+## 5. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/13_comparison.ipynb`)
 
 - **Tesis:** no hay detector dominante; 4 familias se reparten 6 ejes (cobertura sistémica,
   especificidad, persistencia, lead/lag, BIC, coste). Es un resultado, no un fracaso.
@@ -104,29 +134,37 @@ sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos
   D7 (CUSUM); BIC: D8.
 - **Recomendación v1:** núcleo HMM t-Student multi-estado (respaldo *consistente con* la propuesta, no
   superioridad OOS estricta) + change-point tipo D7 como alerta temprana + D1/D5/D6 como control.
+  Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `13`–`14`).
 
 Figuras y tablas del informe: [`memoria/pdf_src/`](memoria/pdf_src/01_hallazgos.md).
 
-## 5. Por qué se congeló (ADR-001) y por qué se unifica (ADR-004)
+## 6. Qué falló y qué vino después
 
-- **Congelación (2026-07-18):** los 12 detectores **no eran comparables 1:1**: cada uno usaba su
-  subconjunto de features (1, 4, 7 o 15) y su ventana OOS (unos veían 4 crisis y ~8000 días; otros 2 y
-  ~2600). Los datos no eran una variable controlada. Se congeló la Capa 1 como foto y se re-basó la
-  capa de datos (dos pistas, `configs/benchmark_spec.yaml`). Ver
-  [ADR-001](../../decisions/ADR-001-rebase-datos.md).
-- **Unificación (2026-09-29):** v2 acabó importando los detectores de la Capa 1 (vía `sys.path`) y
-  duplicando su interfaz. Mantener dos árboles costaba más que lo que protegía. Por decisión del
-  usuario se revierte el punto *"Capa 1 se mantiene intacta"* de ADR-001: un solo paquete
-  (`regimenes`), un notebook por familia y este archivo histórico. Ver
-  [ADR-004](../../decisions/ADR-004-unificacion.md).
+- **Incomparabilidad 1:1:** cada detector construía su propia matriz de features (1, 4, 7 o 15) y su
+  propia ventana OOS; unos se juzgaban con 3,3× más datos y el doble de crisis que otros (4 crisis y
+  ~8000 días frente a 2 y ~2600).
+- **Potencia nula:** ~4 crisis en la ventana común; ningún intervalo de confianza separaba detectores.
+- **Taxonomía de features pobre:** casi todo vol/equity; sin crédito ni curva reales → 2013 invisible.
+- **Sin banco congelado:** los datos no eran una variable controlada, eran parte del detector.
 
-## 6. Dónde está hoy cada cosa
+Consecuencias:
 
-| Antes (Capa 1) | Hoy |
+- **[ADR-001](../../decisions/ADR-001-rebase-datos.md) (2026-07-18):** se congeló la Capa 1 y se
+  re-basó la capa de datos (dos pistas, 166 series, `configs/benchmark_spec.yaml`). El **juez**
+  (walk-forward + métricas) y la **interfaz** de la Capa 1 se reutilizaron en v2, y los 12 detectores
+  se re-evaluaron sobre el banco congelado ([ADR-002](../../decisions/ADR-002-ajuste-ventanas.md),
+  [ADR-003](../../decisions/ADR-003-causalidad-calendario-estado-ranking.md)).
+- **[ADR-004](../../decisions/ADR-004-unificacion.md) (2026-09-29):** los detectores y la interfaz de
+  la Capa 1 forman parte del paquete `regimenes`; cada familia se cuenta en su notebook (05–11) y esta
+  carpeta queda como archivo.
+
+## 7. Correspondencia de rutas (Capa 1 → hoy)
+
+| Ruta en la Capa 1 | Hoy |
 |---|---|
 | `capa1_exploracion/detectors/*.py` (12 + `hsmm_tstudent` + utilidades HMM) | `src/regimenes/detectores/f1_reglas/` … `f7_deep/` |
 | `capa1_exploracion/src/detector_base.py` | `src/regimenes/detectores/base.py` (era idéntica a la de v2) |
-| `capa1_exploracion/src/{data_loader,evaluation,features,viz}.py` (marco v1) | retirados al cerrar la unificación (`git rm -r capa1_exploracion`); recuperables con el tag `capa1-final` (§7). El juez vigente es `regimenes.evaluacion` |
+| `capa1_exploracion/src/{data_loader,evaluation,features,viz}.py` (marco v1) | no forman parte del paquete; en el tag `capa1-final` (§8). El juez vigente es `regimenes.evaluacion` |
 | `capa1_exploracion/memory/00_state_of_the_art.md` | [`docs/teoria/00_estado_del_arte.md`](../../teoria/00_estado_del_arte.md) |
 | `capa1_exploracion/memory/sota/0k_*.md` y `.bib` | `docs/teoria/Fk_*.md` y `.bib` (p. ej. [`F3_hmm.md`](../../teoria/F3_hmm.md)) |
 | `capa1_exploracion/memory/detectors/NN_*.md` | `docs/detectores/DNN_*.md` (p. ej. [`D08_hmm_tstudent.md`](../../detectores/D08_hmm_tstudent.md)) |
@@ -136,16 +174,16 @@ Figuras y tablas del informe: [`memoria/pdf_src/`](memoria/pdf_src/01_hallazgos.
 | `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | [`datos_v1/`](datos_v1/provenance.json) (aquí) |
 | `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/05_familia_F1_reglas` … `11_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
 | `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/07_familia_F3_hmm`; original en el tag |
-| `capa1_exploracion/notebooks/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §3–§4 de este README; originales en el tag |
+| `capa1_exploracion/notebooks/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §4–§5 de este README; originales en el tag |
 | bibliografía `report/references.bib` | fusionada en la bibliografía única [`docs/references.bib`](../../references.bib) (se conserva aquí para que el `.tex` compile) |
 
 **Rutas dentro de estos documentos.** La memoria y el informe son históricos y **no se reescriben**:
 sus rutas (`docs/memory/…`, `results/…`, `notebooks/…`, `report/…`, `detectors/…`) son relativas a la
 antigua raíz de la Capa 1 (`capa1_exploracion/`). Tradúcelas con la tabla anterior.
 
-## 7. Recuperar la Capa 1 original (tag `capa1-final`)
+## 8. Recuperar la Capa 1 original (tag `capa1-final`)
 
-El tag `capa1-final` apunta al último commit anterior a la unificación, con la Capa 1 completa
+El tag `capa1-final` apunta al último commit con la Capa 1 completa
 (notebooks v1 ejecutados con sus salidas, marco v1 y detectores en su sitio original):
 
 ```bash
@@ -154,10 +192,9 @@ git show capa1-final:capa1_exploracion/notebooks/13_comparison.ipynb > /tmp/13_c
 git worktree add ../capa1-v1 capa1-final                         # árbol completo, sin tocar tu rama
 ```
 
-Código v1 que solo vive en el tag desde que se retiró `capa1_exploracion/`: `data_loader.py`,
-`evaluation.py`, `features.py`, `viz.py` (marco v1) y los 15 notebooks v1. El código v2 previo a la
-unificación está en el tag `v2-pre-unificacion`; la historia anterior al re-base, en la rama remota
-`backup-main-pre-datos-v2`.
+Código v1 que solo vive en el tag: `data_loader.py`, `evaluation.py`, `features.py`, `viz.py`
+(marco v1) y los 15 notebooks v1. El código v2 con la Capa 1 como árbol aparte está en el tag
+`v2-pre-unificacion`; la historia anterior al re-base, en la rama remota `backup-main-pre-datos-v2`.
 
 > Si re-ejecutas un notebook v1 desde un worktree del tag, hazlo **desde dentro de
 > `capa1_exploracion/notebooks/`**: descubren su raíz subiendo hasta encontrar `src/`.

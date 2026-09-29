@@ -1,24 +1,23 @@
 # Detección de regímenes de mercado — TFM (MIAX)
 
-Banco de pruebas para **detección de regímenes de mercado**. El objetivo **no es un detector
-concreto**, sino el **marco de evaluación causal y comparable** que juzga a muchos detectores, la
-**base de datos sólida** sobre la que hacerlo y, a partir de ahí, un sistema de alerta + confirmación
-validado en pseudolive.
+El TFM propone un sistema de **detección de regímenes de mercado** (calma / estrés / crisis) que sirva
+de columna vertebral a la gestión del riesgo. Este repositorio es su **fase de detección**: no busca
+un detector concreto, sino el **marco de evaluación causal y comparable** que juzga a muchos
+detectores, la **base de datos sólida** sobre la que hacerlo y, a partir de ahí, un sistema de
+alerta + confirmación que se validará con datos sintéticos y en pseudolive.
 
-> **La historia de este repo, en una línea:**
-> *hicimos 12 detectores (Capa 1) → vimos que no eran comparables (cada uno con sus datos y su
-> periodo) → re-basamos los datos desde cero (dos pistas congeladas) → re-evaluamos los 12 con un
-> ranking por detección → unificamos todo en un solo paquete, con un notebook por familia.*
-> Decisiones: [ADR-000](docs/decisions/ADR-000-capa1-retrospectiva.md) →
-> [ADR-001](docs/decisions/ADR-001-rebase-datos.md) → [ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) →
-> [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) →
-> [ADR-004](docs/decisions/ADR-004-unificacion.md).
+> **En una línea:** *12 detectores de 7 familias (Capa 1) → no eran comparables (cada uno con sus
+> datos y su periodo) → datos re-basados en dos pistas congeladas → los 12 re-evaluados con un ranking
+> por detección → un solo paquete, con un notebook por familia → siguen datos sintéticos y pseudolive.*
 
-**Si acabas de llegar:** el índice de toda la documentación y el **orden de lectura** están en
-[`docs/README.md`](docs/README.md#orden-de-lectura). Visita rápida (el comienzo de ese mismo orden):
+**Si acabas de llegar:** el índice de la documentación y el **orden de lectura** están en
+[`docs/README.md`](docs/README.md#orden-de-lectura). Visita rápida:
 [`docs/GLOSARIO.md`](docs/GLOSARIO.md) (pistas, métricas, rutas) →
-[ADR-000](docs/decisions/ADR-000-capa1-retrospectiva.md) (de dónde venimos) → ADR-001 … ADR-003 →
-[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura actual).
+[`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) (de dónde venimos) → decisiones
+[ADR-001](docs/decisions/ADR-001-rebase-datos.md) (re-base de datos) ·
+[ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) (ventanas) ·
+[ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) (causalidad y ranking) ·
+[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura del repo y del paquete).
 
 ---
 
@@ -34,7 +33,8 @@ validado en pseudolive.
 ## Arquitectura del paquete `regimenes`
 
 Todo el código vive en un paquete instalable (`src/regimenes`, `pip install -e .`). Los notebooks,
-los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`.
+los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. Detalle por módulo en
+[`src/regimenes/README.md`](src/regimenes/README.md).
 
 | Módulo | Qué hace |
 |---|---|
@@ -58,7 +58,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 /
 ├── README.md · pyproject.toml · requirements.txt · Makefile · .env.example
 ├── configs/            catalog.yaml (universo + crisis) · benchmark_spec.yaml (banco congelado) · sinteticos.yaml
-├── src/regimenes/      el paquete (tabla de arriba); detalle en src/regimenes/README.md
+├── src/regimenes/      el paquete (tabla de arriba)
 ├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos)
 ├── notebooks/          00–20, planos y ordenados (tabla abajo)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
@@ -66,7 +66,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
 │   ├── fusion/         d07_d08/ · d02_d06/
 │   └── detectores/ · sinteticos/ · pseudolive/
-└── docs/               TODO el conocimiento: decisiones, datos, teoría, fichas, historia, revisiones (docs/README.md)
+└── docs/               README (índice) · GLOSARIO · references.bib · decisions/ (ADR-001…004) · datos/ · teoria/ · detectores/ · historia/capa1/ · context/
 ```
 
 ## Notebooks 00–20
@@ -126,9 +126,9 @@ Ranking de **detección** por pista: `score_deteccion` = F1 entre precisión dia
 (precisión que no supera al azar, parpadeo, salida degenerada). *Lift sobre azar* = precisión / tasa
 base (tasa base = precisión de marcar siempre crisis); definiciones de todas las columnas en el
 [GLOSARIO](docs/GLOSARIO.md#términos-del-ranking-columnas-de-ranking_v2csv--metrics_master_v2csv). Valores de
-`results/benchmark/ranking_v2.csv` versionado en git (commit `1f95a9b`); el ranking vivo lo
-recalcula [`12_comparativa`](notebooks/12_comparativa.ipynb), que escribe el `ranking*.csv` que leen los
-notebooks de familia.
+[`results/benchmark/ranking_v2.csv`](results/benchmark/ranking_v2.csv) (versionado; benchmark completo
+24/24 con caché verificada); el ranking lo recalcula [`12_comparativa`](notebooks/12_comparativa.ipynb),
+que escribe el `ranking*.csv` que leen los notebooks de familia.
 
 **Pista A** (17 crisis evaluadas OOS, tasa base de días de crisis 0.194)
 
@@ -165,7 +165,7 @@ en `19_decision_final` antes del pseudolive (detalle en [`14_fusion_d02_d06`](no
 ## Cómo reproducir
 
 ```bash
-cp .env.example .env              # pega tu FRED_API_KEY (gratis: fred.stlouisfed.org)
+cp .env.example .env               # pega tu FRED_API_KEY (gratis: fred.stlouisfed.org)
 python -m pip install -e ".[dev]"  # paquete + pytest/jupyter; `make install` añade [deep] torch (D12) y [jump] jumpmodels (D09)
 make help                          # lista los objetivos del Makefile (GNU Make; en Windows bajo Git Bash)
 ```
@@ -175,15 +175,14 @@ make help                          # lista los objetivos del Makefile (GNU Make;
 | Entorno completo | `make install` | `python -m pip install -e ".[deep,jump,dev]"` |
 | Datos crudos → `data/raw/` | `make datos` (verifica sin red) · `make datos DESCARGAR=1` (descarga lo que falte) | `python -m regimenes.datos --offline` · `python -m regimenes.datos` |
 | Paneles causales → `data/processed/` | `make features` | ejecuta `notebooks/03_preprocesado.ipynb` (usa `regimenes.features.construir_paneles`) |
-| Benchmark (12 detectores × 2 pistas) → `results/benchmark/` | `make benchmark JOBS=4` | `python -m regimenes.benchmark --track A B --jobs 4` (≈7,6 h de cómputo en serie²) |
+| Benchmark (12 detectores × 2 pistas) → `results/benchmark/` | `make benchmark JOBS=4` | `python -m regimenes.benchmark --track A B --jobs 4` (≈7,4 h de cómputo en serie²) |
 | Subconjunto de detectores | `make benchmark DETECTOR="D04 D08"` | `python -m regimenes.benchmark --track A B --detector D04 D08` (con `--jobs 1`, cerrar con `--consolidate`) |
 | Verificar caché sin reajustar | — | `python -m regimenes.benchmark --track A B --cache-only` |
 | Ejecutar los notebooks 00–14 en orden | `make notebooks` | `python -m jupyter nbconvert --to notebook --execute --inplace notebooks/NN_*.ipynb` |
 | Tests | `make test` · `make test-rapido` (sin datos ni resultados locales) | `python -m pytest` |
 
-² Suma de `elapsed_seconds` de `ranking_v2.csv` versionado (commit `1f95a9b`): ≈6,9 h en A y ≈0,7 h
-en B; solo D04-A tarda ≈1,9 h, que es el mínimo con cualquier número de procesos (ADR-003 midió
-~1 h 55 min con 9).
+² Suma de `elapsed_seconds` de `results/benchmark/ranking_v2.csv`: ≈6,6 h en A y ≈0,8 h en B; solo
+D04-A tarda ≈1,8 h, que es el mínimo con cualquier número de procesos (con 9 procesos, ≈2 h).
 
 **Qué comprueba cada notebook sobre la caché** (la huella cubre código, datos, especificación y
 versiones):
@@ -208,19 +207,18 @@ tras un benchmark nuevo, ejecuta antes `12_comparativa` a mano. Los paneles OOS
 Fases: **1–4** son las del re-base de datos ([ADR-001](docs/decisions/ADR-001-rebase-datos.md)):
 1 reorganización, 2 datos, 3 EDA + banco congelado, 4 diseño y preprocesado causal. Las posteriores se
 nombran por letra: **D** detectores (benchmark), **E** fusión *early warning* (alerta + confirmación),
-**U** unificación, **S** sintéticos, **F** final (decisión + pseudolive).
+**S** sintéticos, **F** final (decisión + pseudolive).
 
 | Fase | Qué | Estado |
 |---|---|---|
-| Capa 1 | 12 detectores v1 sobre 9 series (exploración) | ✅ congelada 2026-07-18 · [historia](docs/historia/capa1/README.md) · [ADR-000](docs/decisions/ADR-000-capa1-retrospectiva.md) |
+| Capa 1 | 12 detectores v1 sobre 9 series (exploración) | ✅ congelada 2026-07-18 · [historia](docs/historia/capa1/README.md) |
 | 1–3 | Reorganización · datos (166/174 series) · EDA + banco congelado | ✅ [ADR-001](docs/decisions/ADR-001-rebase-datos.md) · [ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) |
 | 4 | Diseño + preprocesado causal v2 | ✅ notebooks 02–03 |
-| D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` | ✅ benchmark completo (24/24; cifras versionadas en `1f95a9b`) · ⚠️ la caché local de `results/benchmark` está **obsoleta** tras la fase 1 de la unificación (cambian las huellas, [ADR-004](docs/decisions/ADR-004-unificacion.md) §5) hasta que termine su re-ejecución completa: mientras tanto 05–11 fallan al cargar con un `RuntimeError` que indica el comando a ejecutar, y 04/12 lo avisan y trabajan con las métricas versionadas |
-| — | Revisión completa (2026-09-29) + ADR-003 (lags de publicación, propagación de estado, ranking por detección) | ✅ [revisión](docs/revisiones/REVISION_2026-09-29.md) · [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) |
+| D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 04–12 |
+| — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](docs/decisions/ADR-004-unificacion.md) |
 | E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 13–14) |
-| U | **Unificación** Capa 1 + v2: paquete `regimenes`, notebooks por familia, docs | 🟡 en curso en la rama `unificacion` · [ADR-004](docs/decisions/ADR-004-unificacion.md) |
-| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🔜 notebooks 15–18 (esqueletos) + `regimenes.sinteticos` |
-| F | Decisión final + pseudolive independiente | 🔜 notebooks 19–20 |
+| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🔜 notebooks 15–18 (esqueletos) + `regimenes.sinteticos` + [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
+| F | Decisión final (futura ADR-005) + pseudolive independiente | 🔜 notebooks 19–20 (esqueletos) |
 
-Material histórico: el código y los notebooks v1 originales se recuperan con el tag git
-`capa1-final`; el código v2 previo a la unificación, con `v2-pre-unificacion`.
+Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
+`capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).

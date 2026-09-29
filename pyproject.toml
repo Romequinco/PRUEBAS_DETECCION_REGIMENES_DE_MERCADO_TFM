@@ -1,5 +1,5 @@
-# Paquete unico del TFM (ADR-004): Capa 1 congelada + codigo v2 unificados en
-# ``src/regimenes``. Instalacion de desarrollo (editable):
+# Paquete unico del TFM: todo el codigo (datos, features, detectores, juez,
+# benchmark, fusion, sinteticos) vive en ``src/regimenes``. Instalacion de desarrollo (editable):
 #
 #     python -m pip install -e ".[deep,jump,dev]"
 #
@@ -86,4 +86,4 @@ extend-exclude = ["notebooks", "*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E9", "F"]
-ignore = ["F401"]  # re-exportaciones de __init__ y alias publicos conservados (ADR-004)
+ignore = ["F401"]  # re-exportaciones de __init__ y alias publicos

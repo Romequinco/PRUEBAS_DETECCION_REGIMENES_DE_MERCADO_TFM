@@ -1,4 +1,4 @@
-"""Features causales y paneles v2 (antes ``src/features.py``).
+"""Features causales y paneles v2.
 
 Submodulos: ``transformaciones`` (primitivas causales y recetario),
 ``lags`` (lags de publicacion, ADR-003), ``paneles`` (constructores de panel),

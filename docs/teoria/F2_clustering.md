@@ -1,7 +1,7 @@
 # 02 — Clustering
 
 <!-- BEGIN nota_v2 -->
-> **Ubicación tras ADR-004.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1, tag `capa1-final`; antes en `capa1_exploracion/memory/sota/`), movida sin cambios de contenido salvo rutas. Bibliografía: [`F2_clustering.bib`](F2_clustering.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D03 `clustering_gmm`](../detectores/D03_clustering_gmm.md), [D09 `jump_model`](../detectores/D09_jump_model.md). Notebook v2: [`notebooks/06_familia_F2_clustering.ipynb`](../../notebooks/06_familia_F2_clustering.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
+> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F2_clustering.bib`](F2_clustering.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D03 `clustering_gmm`](../detectores/D03_clustering_gmm.md), [D09 `jump_model`](../detectores/D09_jump_model.md). Notebook v2: [`notebooks/06_familia_F2_clustering.ipynb`](../../notebooks/06_familia_F2_clustering.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
 <!-- END nota_v2 -->
 
 > Estado del arte de la familia **CLUSTERING** como detector de regímenes de

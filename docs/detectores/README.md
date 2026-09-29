@@ -1,11 +1,10 @@
 # docs/detectores — Fichas por detector
 
-Una ficha por detector del banco de pruebas. D01–D12 nacieron en la FASE 3 de la Capa 1 (v1)
-en `capa1_exploracion/memory/detectors/NN_<nombre>.md` y se movieron aquí con `git mv` en la
-unificación (ADR-004) como `DNN_<nombre>.md`; D13 (ablación HSMM) es nueva. Cada ficha
+Una ficha por detector del banco de pruebas. D01–D12 nacieron en la FASE 3 de la Capa 1 (v1;
+originales en el tag `capa1-final`); D13 (ablación HSMM) se redactó después. Cada ficha
 conserva su texto histórico (Implementado · Descubierto · hipótesis del CHECKPOINT 2 ·
-fricción con el núcleo), lleva al principio una nota de ubicación v2 y al final la sección
-**Resultados v2 (ADR-003)** con las métricas por pista.
+fricción con el núcleo), lleva al principio una nota de ubicación (código, notebook y teoría)
+y al final la sección **Resultados v2 (ADR-003)** con las métricas por pista.
 
 Puesto y `score_deteccion` por pista: `results/benchmark/ranking_v2.csv` en el commit `1f95a9b`
 (ranking de detección ADR-003; entre paréntesis el nivel si no es `elegible`).
