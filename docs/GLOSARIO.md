@@ -45,8 +45,8 @@ calidad: es una función.
 | **`fallback`** | **sustituto redundante** de una serie ya presente: solo se usa si falla la fuente primaria (regla de dedup del catálogo) | `GOLD_FUT` (fallback de `GOLD_GLD`) |
 | **`validation`** | **ground truth** para evaluar/etiquetar — **jamás feature** | `OFR_FSI`, `NFCI`, `NBER_RECESSION_DAILY` |
 
-Recuento actual: spine 23 · core 44 · enricher 62 · fallback 24 · validation 21 (sobre 166 series
-descargadas; 174 declaradas, 8 no descargables y declaradas).
+Recuento sobre las 174 **declaradas**: spine 23 · core 44 · enricher 62 · fallback 24 · validation 21.
+Sobre las 166 **descargadas**: enricher 58 · fallback 21 · validation 20 (spine/core sin cambio).
 
 ---
 
@@ -61,8 +61,29 @@ usa para **juzgar** los detectores en la Fase D, jamás en la matriz de features
 
 Toda feature es **causal**: en el instante `t` solo usa estadísticos de datos `≤ t` (z-score
 *expanding*/*rolling*, nunca de muestra completa — ese fue el error de la tarea previa). Se verifica
-con `assert_causal` (truncar el futuro y recomputar debe dar `max|Δ| = 0`). Se demuestra en
-[`02_diseno_preprocesado.ipynb`](../notebooks/02_diseno_preprocesado.ipynb) §4-5.
+con `assert_causal(builder, raw, cut)` de `src/features.py` (truncar el futuro y recomputar debe dar
+`max|Δ| = 0`). Se demuestra en [`02_diseno_preprocesado.ipynb`](../notebooks/02_diseno_preprocesado.ipynb)
+§4-5 y es el gate 1 de `03_preprocesado`.
+
+Hay que distinguir dos niveles:
+- **Causalidad computacional**: ningún cálculo en `t` usa filas posteriores a `t`. Es lo que prueba el
+  truncado, y se cumple.
+- **Causalidad de calendario**: el dato fechado en `t` ya estaba *publicado* en `t`. El truncado **no**
+  lo detecta. Hoy hay fugas conocidas de este tipo (series mensuales de FRED que son media del mes
+  fechada el día 1; lag macro de 1 mes insuficiente): ver
+  [`REVISION_2026-09-29.md`](REVISION_2026-09-29.md).
+
+## Métricas del benchmark (lectura correcta)
+
+- **`false_alarm_rate`** es en realidad **1 − precisión** (fracción de días marcados como crisis que
+  caen fuera de ventana de crisis), no FP/(FP+TN). La tasa base de marcar siempre crisis es ≈0,81 (A)
+  y ≈0,83 (B).
+- **`rank_medio`** es **descriptivo** y está sesgado hacia la inactividad: 3 de sus 5 ejes (trampas,
+  switching, estabilidad) los gana un detector que no hace nada. Una línea base "siempre crisis"
+  quedaría 4ª en ambas pistas. Ver las líneas base en `05_comparacion_detectores`.
+- **Crisis "en ventana" ≠ "evaluadas OOS"**: 18/10 en ventana; 17 (una parcial) / 9 evaluadas OOS.
+- **Utilidad operativa** (fusión): solo sirve para **ordenar** alternativas; su signo no se interpreta.
+- **Precisión de avisos** (acuerdo con el confirmador) ≠ **atribución a crisis reales**.
 
 ## El banco congelado (benchmark)
 
@@ -73,4 +94,4 @@ Fase D: un detector puede cambiar su algoritmo, pero **no** estas ventanas/etiqu
 ---
 
 *El pipeline del repo:* `00_descarga` (datos) → `01_eda` (análisis) → `02_diseno_preprocesado`
-(decisiones) → `03_preprocesado` (features, pendiente) → **Fase D** (detectores).
+(decisiones) → `03_preprocesado` (features) → `04–05` (**Fase D**, detectores) → `06–07` (**Fase E**, fusión).

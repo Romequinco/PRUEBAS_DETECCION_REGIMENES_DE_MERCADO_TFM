@@ -40,7 +40,10 @@ código (`src/`), datos (`data/`), o material congelado de la Capa 1 (`capa1_exp
   cross-asset, dinámica temporal.
 - **[`../notebooks/02_diseno_preprocesado.ipynb`](../notebooks/02_diseno_preprocesado.ipynb)** —
   decisiones del preprocesado demostradas (features, frecuencias, alineación causal); antecesor de
-  `03_preprocesado` (pendiente).
+  `03_preprocesado` (hecho: paneles causales + gate de truncado extremo a extremo).
+
+- **[`REVISION_2026-09-29.md`](REVISION_2026-09-29.md)** — revisión completa 00–07: qué se corrigió,
+  reproducibilidad comprobada y **decisiones abiertas** (fugas de calendario, reinicio de autómatas, criterio de ranking).
 
 ## 4. Teoría y contexto
 - **[`context/`](context/)** — propuesta original del TFM + resumen de la tarea previa (HMM gaussiano).

@@ -90,3 +90,13 @@ python -m src.ingest.download    # descarga el catálogo -> data/raw/  (o abre n
 | 4 | Diseño + preprocesado causal v2 | ✅ (notebooks 02–03) |
 | D | Re-evaluar D1–D12 sobre `benchmark_spec.yaml` | ✅ benchmark y comparación ejecutados (notebooks 04–05) |
 | E | Fusionar alerta + confirmación y prueba pseudolive final | 🟡 D2+D6 seleccionado; pseudolive independiente pendiente (notebooks 06–07) |
+| — | Revisión completa 00–07 (2026-09-29) | ✅ correcciones sin cambio de métricas; decisiones abiertas en [`docs/REVISION_2026-09-29.md`](docs/REVISION_2026-09-29.md) |
+
+**Lectura actual de D2+D6:** la fusión mejora a cada sensor por separado en ambas pistas, y D2 detecta
+pronto *dentro* de la crisis, adelantándose a D6 (mediana 5,5 sesiones en A, 2,5 en B). Pero **no
+anticipa el inicio** de las crisis más que el azar, y su elección como mejor alerta **no es robusta** a
+seleccionar en una mitad temporal y evaluar en la otra.
+
+> Los paneles OOS por detector (`results/benchmark_v2/panels/`) no se versionan. 06/07 necesitan
+> regenerar el subconjunto que usan (~25-30 min, requiere `arch`); 05 funciona solo con los CSV
+> versionados y verifica su huella contra `manifest.json`.
