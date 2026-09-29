@@ -15,12 +15,17 @@ Organización del módulo
    `cross_sectional_std_*`, `macro_z`, `mercado_z`, `mercado_spread_z`,
    `fed_stance`): composiciones de las primitivas usadas por
    `notebooks/03_preprocesado.ipynb`.
-3. **Constructores de panel** (`construir_diarias`, `construir_mensuales`,
-   `alinear_diaria`, `alinear_mensual_con_edad`): implementan la tabla `FEAT` de
-   02 sobre un diccionario `{serie: pd.Series cruda}` de una pista. Viven aquí (y
-   no solo en el notebook) para que la causalidad del pipeline COMPLETO se pueda
-   verificar con tests (`tests/test_preprocesado_causalidad.py`).
-4. **Verificación** (`truncation_max_abs_diff`, `assert_causal`): test de
+3. **Causalidad de calendario** (`LAG_PUBLICACION`, `aplicar_lag_publicacion`,
+   ADR-003): tabla ÚNICA de lags de publicación por serie cruda. Los constructores
+   la aplican a la entrada antes de calcular nada, de modo que el índice de toda
+   serie que entra a una feature es su FECHA DE DISPONIBILIDAD, no su fecha FRED.
+4. **Constructores de panel** (`seleccionar_raw`, `construir_diarias`,
+   `construir_mensuales`, `alinear_diaria`, `alinear_mensual_con_edad`): implementan
+   la tabla `FEAT` de 02 sobre un diccionario `{serie: pd.Series | pd.DataFrame
+   cruda}` de una pista. Viven aquí (y no solo en el notebook) para que la
+   causalidad del pipeline COMPLETO se pueda verificar con tests
+   (`tests/test_preprocesado_causalidad.py`).
+5. **Verificación** (`truncation_max_abs_diff`, `assert_causal`): test de
    truncado — recomputar con la entrada cortada en `cut` debe dar exactamente los
    mismos valores `<= cut` que con la muestra completa.
 
@@ -39,8 +44,8 @@ posteriores a `t`. NO demuestra que la FECHA con la que se indexa un dato sea su
 fecha de disponibilidad real. Un dato mensual fechado el día 1 del mes pero que
 es la media de todo ese mes (p. ej. `GS10`, `TB3MS`, `MOODYS_BAA`), o un dato
 macro publicado a mitad del mes siguiente, pasa el truncado y aun así contiene
-look-ahead de calendario. Eso se audita aparte (ver 02 §3.2 y la advertencia de
-`construir_mensuales`).
+look-ahead de calendario. Desde ADR-003 eso lo resuelve `LAG_PUBLICACION` (sección
+3), auditado en 02 §3.2 y cubierto por `tests/test_preprocesado_causalidad.py`.
 """
 
 from __future__ import annotations
@@ -133,7 +138,7 @@ def momentum(prices: pd.Series, long_w: int = 252, short_w: int = 21) -> pd.Seri
 # --------------------------------------------------------------------------- #
 # 2. Recetario v2 (composiciones de las primitivas; usado por 03_preprocesado)
 # --------------------------------------------------------------------------- #
-RawDict = Mapping[str, pd.Series]
+RawDict = Mapping[str, "pd.Series | pd.DataFrame"]
 
 BREADTH_11 = ['NASDAQ_COMP', 'NASDAQ100', 'RUSSELL2000', 'RUSSELL1000', 'RUSSELL3000',
               'SP_MIDCAP400', 'SP100', 'SP_SMALLCAP600', 'WILSHIRE5000', 'NYSE_COMP', 'SP500_TR']
@@ -202,11 +207,12 @@ def zscore_or_none(s: pd.Series | None) -> pd.Series | None:
     return causal_zscore(s) if s is not None else None
 
 
-def lag_publicacion(s: pd.Series, months: int = 1) -> pd.Series:
-    """Desplaza el ÍNDICE `months` hacia delante: el dato fechado en M se considera
-    disponible en M+months. No toca valores. (Demo en 02 §3.1 con INDPRO.)"""
+def lag_publicacion(s: pd.Series | pd.DataFrame, months: int = 1,
+                    days: int = 0) -> pd.Series | pd.DataFrame:
+    """Desplaza el ÍNDICE `months` meses + `days` días hacia delante: el dato fechado
+    en M se considera disponible en M+lag. No toca valores. (Demo en 02 §3.1.)"""
     s2 = s.copy()
-    s2.index = s2.index + pd.DateOffset(months=months)
+    s2.index = s2.index + pd.DateOffset(months=months, days=days)
     return s2
 
 
@@ -216,12 +222,15 @@ def yoy(s: pd.Series) -> pd.Series:
 
 
 def macro_z(raw: RawDict, nombre: str, out_name: str, transform: str = 'yoy',
-            lag_months: int = 1) -> pd.Series | None:
-    """Feature MACRO mensual: transformación nativa -> lag de publicación -> z-score.
+            lag_months: int = 0) -> pd.Series | None:
+    """Feature MACRO mensual: transformación nativa -> (lag) -> z-score.
 
-    El orden importa: si se hiciera zscore->lag, el z-score expanding habría usado el
-    dato antes de su fecha de disponibilidad. `transform`: 'yoy', 'diff12' (cambio a
-    12 meses, para tasas/niveles como UNRATE/PAYEMS) o 'nivel' (serie ya calculada).
+    ADR-003: dentro de `construir_mensuales` la entrada YA llega con el lag de
+    publicación de `LAG_PUBLICACION` aplicado (índice = fecha de disponibilidad), por
+    eso `lag_months` vale 0 por defecto; `lag_months > 0` solo para uso aislado sobre
+    una serie con fecha FRED. El orden importa: zscore->lag habría usado el dato antes
+    de su fecha de disponibilidad. `transform`: 'yoy', 'diff12' (cambio a 12 meses,
+    para tasas/niveles como UNRATE/PAYEMS) o 'nivel' (serie ya calculada).
     """
     s = _get(raw, nombre)
     if s is None:
@@ -234,24 +243,23 @@ def macro_z(raw: RawDict, nombre: str, out_name: str, transform: str = 'yoy',
         t = s
     else:
         raise ValueError(f'transform desconocido: {transform!r}')
-    publicado = lag_publicacion(t, lag_months)
+    publicado = lag_publicacion(t, lag_months) if lag_months else t
     return causal_zscore(publicado).rename(out_name)
 
 
 def mercado_z(raw: RawDict, nombre: str, out_name: str) -> pd.Series | None:
-    """Feature mensual de 'mercado' SIN lag de publicación (regla v1 de 02 §3.1).
+    """Feature mensual de 'mercado': z-score causal directo del NIVEL.
 
-    ADVERTENCIA (revisión): en FRED, GS10/TB3MS/GS1/GS5/FEDFUNDS/MOODYS_*/BAAFFM son
-    MEDIAS del mes fechadas el día 1 de ese mes; sin lag, el valor del mes M es visible
-    desde el día 1 de M (look-ahead de hasta ~1 mes). Se conserva por compatibilidad con
-    los paneles que consumió el benchmark; ver 02 §3.2.
+    No aplica lag por sí misma: en `construir_mensuales` la entrada ya llega retrasada
+    según `LAG_PUBLICACION` (ADR-003: GS10/TB3MS/GS1/GS5/FEDFUNDS/MOODYS_*/BAAFFM/CAPE/
+    GW son medias o cierres del mes M fechados el día 1 de M -> +1 mes).
     """
     s = _get(raw, nombre)
     return causal_zscore(s).rename(out_name) if s is not None else None
 
 
 def mercado_spread_z(raw: RawDict, a: str, b: str, out_stub: str) -> pd.Series | None:
-    """z-score causal del spread de NIVELES a - b (misma regla sin lag que `mercado_z`)."""
+    """z-score causal del spread de NIVELES a - b (misma regla que `mercado_z`)."""
     sa, sb = _get(raw, a), _get(raw, b)
     if sa is None or sb is None:
         return None
@@ -273,18 +281,163 @@ def fed_stance(raw: RawDict) -> pd.Series | None:
 
 
 # --------------------------------------------------------------------------- #
-# 3. Constructores de panel (tabla FEAT de 02 -> paneles de 03)
+# 3. Causalidad de calendario: lags de publicación por serie (ADR-003)
+# --------------------------------------------------------------------------- #
+# FUENTE ÚNICA de verdad. Convención de fecha de entrada = la de la fuente:
+#   - mensual FRED/Shiller/GW: día 1 del mes de REFERENCIA M;
+#   - trimestral FRED: día 1 del trimestre de referencia;
+#   - semanal ICSA: sábado de fin de la semana de referencia.
+# `meses`/`dias`: desplazamiento hasta la fecha desde la que el dato es PÚBLICO (se
+# redondea hacia el lado conservador: nunca antes de la publicación típica).
+# `tipo`: 'media_mes' (media/cierre del mes M -> visible al cerrar M), 'macro'
+# (publicación oficial en M+1), 'encuesta_en_mes' (publicada dentro del propio M),
+# 'trimestral', 'semanal'. Las series diarias de mercado (cierre en t) NO llevan entrada.
+LAG_PUBLICACION: dict[str, dict] = {
+    # --- media (o cierre) del mes M, fechada el 1 de M -> visible al cerrar M: +1 mes ---
+    'GS10': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED/H.15: media mensual de DGS10 (02 §3.2: MAE 0,003 pp vs media de M)'),
+    'GS5': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED/H.15: media mensual de DGS5'),
+    'GS1': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED/H.15: media mensual de DGS1'),
+    'TB3MS': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED/H.15: media mensual del T-bill 3m (mercado secundario)'),
+    'FEDFUNDS': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED/H.15: media mensual de la EFFR diaria'),
+    'TBILL3M_MINUS_FEDFUNDS': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED TB3SMFFM = TB3MS - FEDFUNDS (medias mensuales)'),
+    'MOODYS_BAA': dict(meses=1, dias=0, tipo='media_mes', fuente="FRED BAA: 'averages of daily data' (Moody's)"),
+    'MOODYS_AAA': dict(meses=1, dias=0, tipo='media_mes', fuente="FRED AAA: 'averages of daily data' (Moody's)"),
+    'BAAFFM': dict(meses=1, dias=0, tipo='media_mes', fuente='FRED BAAFFM = BAA - FEDFUNDS (medias mensuales)'),
+    'SHILLER_SP500_CAPE': dict(meses=1, dias=0, tipo='media_mes', fuente='Shiller ie_data.xls: P = media de cierres diarios de M; E10 con los últimos beneficios estimados/interpolados (peso 1/120)'),
+    'GW_PREDICTORS_MONTHLY': dict(meses=1, dias=0, tipo='media_mes', fuente='Goyal-Welch b/m: valor contable del año previo / precio de FIN de M (fechado el 1 de M)'),
+    'WTI_SPOT_MONTHLY': dict(meses=1, dias=10, tipo='media_mes', fuente='FRED WTISPLC: media mensual del spot diario; el spot diario de la EIA se publica con ~1 semana de retraso'),
+    # --- macro oficial publicada a mitad de M+1 (o con riesgo de retraso) -> día 1 de M+2 ---
+    'INDPRO': dict(meses=2, dias=0, tipo='macro', fuente='Fed G.17: ~día 15-17 de M+1'),
+    'PPI_ALL_COMMODITIES': dict(meses=2, dias=0, tipo='macro', fuente='BLS PPI: ~día 11-15 de M+1'),
+    'PPI_FUELS': dict(meses=2, dias=0, tipo='macro', fuente='BLS PPI: ~día 11-15 de M+1'),
+    'PPI_METALS': dict(meses=2, dias=0, tipo='macro', fuente='BLS PPI: ~día 11-15 de M+1'),
+    'CPIAUCSL': dict(meses=2, dias=0, tipo='macro', fuente='BLS CPI: ~día 10-15 de M+1'),
+    'CPILFESL': dict(meses=2, dias=0, tipo='macro', fuente='BLS CPI: ~día 10-15 de M+1'),
+    'UNRATE': dict(meses=2, dias=0, tipo='macro', fuente='BLS Employment Situation: 1er viernes de M+1, a veces día 8-10 o más tarde (cierres de gobierno) -> +1 mes filtraría ~1 semana; se redondea a M+2'),
+    'PAYEMS': dict(meses=2, dias=0, tipo='macro', fuente='BLS Employment Situation: idem UNRATE'),
+    'MANEMP': dict(meses=2, dias=0, tipo='macro', fuente='BLS Employment Situation: idem UNRATE'),
+    'HOUST': dict(meses=2, dias=0, tipo='macro', fuente='Census New Residential Construction: ~día 17-19 de M+1'),
+    'CFNAI': dict(meses=2, dias=0, tipo='macro', fuente='Chicago Fed: ~día 20-25 de M+1'),
+    'CFNAIMA3': dict(meses=2, dias=0, tipo='macro', fuente='Chicago Fed: ~día 20-25 de M+1'),
+    'RNUSBIS': dict(meses=2, dias=0, tipo='macro', fuente='BIS effective exchange rates (media mensual): publicados ~mitad de M+1'),
+    'NNUSBIS': dict(meses=2, dias=0, tipo='macro', fuente='BIS effective exchange rates (media mensual): publicados ~mitad de M+1'),
+    # --- encuestas publicadas DENTRO del propio mes M -> +1 mes ya es conservador ---
+    'UMCSENT': dict(meses=1, dias=0, tipo='encuesta_en_mes', fuente='U. Michigan: preliminar ~2º viernes de M, final ~último viernes de M (FRED guarda el final)'),
+    'PMI_PROXY_PHILLY': dict(meses=1, dias=0, tipo='encuesta_en_mes', fuente='Philadelphia Fed Manufacturing Business Outlook Survey: 3er jueves de M'),
+    # --- trimestral, fechado al inicio del trimestre -> avance BEA ~fin del mes siguiente al trimestre ---
+    'GDP_GROWTH_QOQ': dict(meses=4, dias=0, tipo='trimestral', fuente='BEA avance: ~día 25-30 del mes siguiente al cierre del trimestre = inicio + 1 trimestre + 1 mes. Excepciones por cierre de gobierno: Q3-2013 (7-nov), Q4-2018 (28-feb-2019), Q3-2025 (23-dic)'),
+    'GDPC1': dict(meses=4, dias=0, tipo='trimestral', fuente='BEA avance (idem GDP_GROWTH_QOQ); insumo solo-raw'),
+    # --- semanal, fechado el sábado de fin de semana de referencia ---
+    'ICSA': dict(meses=0, dias=5, tipo='semanal', fuente='DOL Unemployment Insurance Weekly Claims: jueves siguiente al sábado de referencia (8:30 ET, antes de la apertura)'),
+    # --- validación (NUNCA feature; se documentan por completitud, no se aplican aquí) ---
+    'NFCI': dict(meses=0, dias=5, tipo='semanal', fuente='Chicago Fed NFCI: semana que acaba el viernes, publicado el miércoles siguiente (rol=validation)'),
+    'STLFSI4': dict(meses=0, dias=6, tipo='semanal', fuente='St. Louis Fed FSI: semana que acaba el viernes, publicado el jueves siguiente (rol=validation)'),
+}
+
+
+def lag_de(nombre: str) -> pd.DateOffset | None:
+    """DateOffset de publicación de una serie cruda (None si es diaria de mercado)."""
+    e = LAG_PUBLICACION.get(nombre)
+    return None if e is None else pd.DateOffset(months=e['meses'], days=e['dias'])
+
+
+def aplicar_lag_publicacion(raw: RawDict, lags: Mapping[str, dict] | None = None) -> dict:
+    """Copia de `raw` con el ÍNDICE de cada serie de `LAG_PUBLICACION` desplazado a su
+    fecha de disponibilidad. Las series sin entrada (diarias de mercado) no cambian.
+
+    Espera series con su fecha de FUENTE (tal como vienen de data/raw). No es
+    idempotente: aplicarla dos veces duplica el lag (los constructores la llaman una
+    sola vez sobre la entrada cruda). `lags` permite otra tabla (p. ej. reconstruir la
+    regla v1 en 03 para medir el impacto de ADR-003); por defecto `LAG_PUBLICACION`."""
+    lags = LAG_PUBLICACION if lags is None else lags
+    out = {}
+    for n, s in raw.items():
+        e = lags.get(n)
+        out[n] = s if e is None else lag_publicacion(s, e['meses'], e['dias'])
+    return out
+
+
+def tabla_lags_publicacion() -> pd.DataFrame:
+    """`LAG_PUBLICACION` como tabla (serie, meses, días, tipo, fuente) para 02/03/_meta."""
+    df = pd.DataFrame.from_dict(LAG_PUBLICACION, orient='index')
+    df.index.name = 'serie'
+    return df.reset_index()
+
+
+# --------------------------------------------------------------------------- #
+# 4. Constructores de panel (tabla FEAT de 02 -> paneles de 03)
 # --------------------------------------------------------------------------- #
 N_FEAT_DIARIAS = 49
 N_FEAT_MENSUALES = 28
 
-# Clasificación de las 28 filas mensuales de FEAT (regla v1 de 02 §3.1).
-NOLAG_MENSUAL = ['credit_BaaAaa_mensual_z', 'credit_BaaFF_z', 'TB3MS_z', 'GS10_z',
-                 'term_spread_hist_z', 'GS1_z', 'GS5_z', 'fed_stance_z', 'CAPE_z', 'GW_valuation_z']
-LAG_MENSUAL = ['INDPRO_yoy_z', 'PPI_yoy_z', 'PPI_fuels_yoy_z', 'PPI_metals_yoy_z', 'UNRATE_chg_z',
-               'CPI_yoy_z', 'CPI_core_yoy_z', 'PAYEMS_chg_z', 'CFNAI_z', 'CFNAIMA3_z', 'PMI_proxy_z',
-               'UMCSENT_z', 'HOUST_yoy_z', 'MANEMP_yoy_z', 'GDP_growth_z', 'WTI_yoy_z',
-               'broad_dollar_real_z', 'broad_dollar_nominal_z']
+# Clasificación de las 28 filas mensuales de FEAT por NATURALEZA del dato. Desde ADR-003
+# ambas familias llevan lag de publicación (tabla LAG_PUBLICACION): +1 mes las 'mercado'
+# (medias/cierres de mes), +1/+2/+4 meses las 'macro' según su calendario de publicación.
+MENSUAL_MERCADO = ['credit_BaaAaa_mensual_z', 'credit_BaaFF_z', 'TB3MS_z', 'GS10_z',
+                   'term_spread_hist_z', 'GS1_z', 'GS5_z', 'fed_stance_z', 'CAPE_z', 'GW_valuation_z']
+MENSUAL_MACRO = ['INDPRO_yoy_z', 'PPI_yoy_z', 'PPI_fuels_yoy_z', 'PPI_metals_yoy_z', 'UNRATE_chg_z',
+                 'CPI_yoy_z', 'CPI_core_yoy_z', 'PAYEMS_chg_z', 'CFNAI_z', 'CFNAIMA3_z', 'PMI_proxy_z',
+                 'UMCSENT_z', 'HOUST_yoy_z', 'MANEMP_yoy_z', 'GDP_growth_z', 'WTI_yoy_z',
+                 'broad_dollar_real_z', 'broad_dollar_nominal_z']
+
+# Series crudas multi-columna (ADR-003). En disco llevan además una columna alias
+# `<nombre_interno>` (= la PRIMERA de esta lista) para no romper `read_parquet(...)[nombre]`.
+PANELES_MULTICOLUMNA = {
+    'FF_FACTORS_3_DAILY': ['Mkt-RF', 'SMB', 'HML', 'RF'],
+    'FF_FACTORS_5_DAILY': ['Mkt-RF', 'SMB', 'HML', 'RMW', 'CMA', 'RF'],
+    'FF_5_INDUSTRY': ['Cnsmr', 'Manuf', 'HiTec', 'Hlth', 'Other'],
+}
+GW_COLUMN = 'b/m'  # columna de GW_PREDICTORS_MONTHLY (fijada en 03 §1)
+
+
+def seleccionar_raw(df: pd.DataFrame, nombre: str) -> pd.Series | pd.DataFrame:
+    """Convención de carga ÚNICA (03 y tests): de `pd.read_parquet(data/raw/.../nombre)`
+    a la entrada del diccionario crudo de una pista.
+
+    - `GW_PREDICTORS_MONTHLY` -> Series de la columna `b/m` (nombre `..._b/m`).
+    - `PANELES_MULTICOLUMNA` -> DataFrame con sus columnas originales (sin el alias); si
+      el parquet es del formato antiguo (solo el alias), DataFrame de esa única columna.
+    - resto -> Series de la columna homónima.
+    """
+    if nombre == 'GW_PREDICTORS_MONTHLY':
+        return df[GW_COLUMN].sort_index().rename(f'{nombre}_{GW_COLUMN}')
+    if nombre in PANELES_MULTICOLUMNA:
+        cols = [c for c in PANELES_MULTICOLUMNA[nombre] if c in df.columns]
+        return (df[cols] if cols else df[[nombre]]).sort_index()
+    return df[nombre].sort_index()
+
+
+def _col(raw: RawDict, nombre: str, col: str) -> pd.Series | None:
+    """Columna `col` de una serie multi-columna de `raw`. Si la pista trae la serie como
+    Series (formato antiguo / tests sintéticos) solo se acepta la columna PRIMARIA."""
+    x = raw.get(nombre)
+    if x is None:
+        return None
+    primaria = PANELES_MULTICOLUMNA.get(nombre, [None])[0]
+    if isinstance(x, pd.Series):
+        return x if col == primaria else None
+    if col in x.columns:
+        return x[col]
+    if col == primaria and nombre in x.columns:
+        return x[nombre]
+    return None
+
+
+def _zscore_col(raw: RawDict, nombre: str, col: str, out_name: str) -> pd.Series | None:
+    s = _col(raw, nombre, col)
+    return causal_zscore(s.dropna()).rename(out_name) if s is not None else None
+
+
+def ff_industry_dispersion(raw: RawDict) -> pd.Series | None:
+    """Dispersión cross-seccional (std, ddof=1) de los retornos diarios (%) de las 5
+    carteras industriales de Ken French, fila a fila. None si no hay >= 2 carteras."""
+    x = raw.get('FF_5_INDUSTRY')
+    if not isinstance(x, pd.DataFrame):
+        return None
+    cols = [c for c in PANELES_MULTICOLUMNA['FF_5_INDUSTRY'] if c in x.columns]
+    if len(cols) < 2:
+        return None
+    return x[cols].std(axis=1, ddof=1).dropna().rename('FF_industry_dispersion')
 
 
 def _ensamblar(pares: list[tuple[str, pd.Series | None]]) -> tuple[pd.DataFrame, list[str]]:
@@ -299,18 +452,23 @@ def _ensamblar(pares: list[tuple[str, pd.Series | None]]) -> tuple[pd.DataFrame,
     return df, omitidas
 
 
-def construir_diarias(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
+def construir_diarias(raw: RawDict, lags: Mapping[str, dict] | None = None
+                      ) -> tuple[pd.DataFrame, list[str]]:
     """Las 49 filas `frecuencia=='diaria'` de FEAT, sobre el calendario NATIVO de cada
     fuente (sin alinear). Devuelve (panel, omitidas): una feature se omite si la pista no
-    tiene su(s) serie(s) fuente o si sale vacía.
+    tiene su(s) serie(s) fuente o si sale vacía. `raw` lleva fechas de FUENTE; aquí se
+    aplica `LAG_PUBLICACION` (solo afecta a ICSA entre las diarias: +5 días).
 
-    Notas de calidad conocidas (no alteran la causalidad):
-    - `SP500_vol_z` se recalcula desde SP500 porque el parquet REALIZED_VOL_SP500
-      contiene el PRECIO (bug de ingesta, ver 03 §3).
-    - `FF_industry_dispersion_z` NO es una dispersión: FF_5_INDUSTRY solo trae una
-      columna (una cartera industrial), así que es su z-score directo.
-    - `ICSA_z` se construye sobre fechas semanales (sábado); ver `alinear_diaria`.
+    Notas:
+    - `SP500_vol_z` se calcula desde SP500 (misma fórmula con la que la ingesta deriva
+      `REALIZED_VOL_SP500` desde ADR-003; antes ese parquet contenía el precio).
+    - `FF_industry_dispersion_z` = z de la std cross-seccional de las 5 carteras
+      industriales (ADR-003; antes era el z de una sola cartera).
+    - `FF_RMW_z` (ADR-003) sustituye a `FF_MKT5_z`, que duplicaba `FF_MKT_z` (mismo
+      Mkt-RF): factor rentabilidad/calidad RMW del fichero de 5 factores.
+    - `ICSA_z`: fechada el jueves de publicación (sábado + 5 días).
     """
+    raw = aplicar_lag_publicacion(raw, lags)
     sp500 = _get(raw, 'SP500')
     p: list[tuple[str, pd.Series | None]] = []
 
@@ -329,10 +487,10 @@ def construir_diarias(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
     p.append(('style_spread_z', spread_ret_z(raw, 'IWF_GROWTH', 'IWD_VALUE', 'style_spread')))
 
     # FACTORES FAMA-FRENCH (ya vienen como retorno en %)
-    p.append(('FF_MKT_z', zscore_raw(raw, 'FF_FACTORS_3_DAILY', 'FF_MKT_z')))
+    p.append(('FF_MKT_z', _zscore_col(raw, 'FF_FACTORS_3_DAILY', 'Mkt-RF', 'FF_MKT_z')))
     p.append(('FF_MOM_z', zscore_raw(raw, 'FF_MOM_DAILY', 'FF_MOM_z')))
-    p.append(('FF_industry_dispersion_z', zscore_raw(raw, 'FF_5_INDUSTRY', 'FF_industry_dispersion_z')))
-    p.append(('FF_MKT5_z', zscore_raw(raw, 'FF_FACTORS_5_DAILY', 'FF_MKT5_z')))
+    p.append(('FF_industry_dispersion_z', zscore_or_none(ff_industry_dispersion(raw))))
+    p.append(('FF_RMW_z', _zscore_col(raw, 'FF_FACTORS_5_DAILY', 'RMW', 'FF_RMW_z')))
 
     # CREDITO (diarias)
     p.append(('credit_BAA10Y_z', zscore_raw(raw, 'BAA10Y', 'credit_BAA10Y_z')))
@@ -398,7 +556,7 @@ def construir_diarias(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
     p.append(('GSCI_ret_z', ret_z(raw, 'SPGSCI', 'GSCI_ret_z')))
     p.append(('BCOM_ret_z', ret_z(raw, 'BCOM', 'BCOM_ret_z')))
 
-    # ACTIVIDAD (semanal en origen)
+    # ACTIVIDAD (semanal en origen; fechada el jueves de publicación por LAG_PUBLICACION)
     p.append(('ICSA_z', zscore_raw(raw, 'ICSA', 'ICSA_z')))
 
     # TIPIFICACION DE REGIMEN
@@ -412,30 +570,31 @@ def construir_diarias(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
     return _ensamblar(p)
 
 
-def construir_mensuales(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
+def construir_mensuales(raw: RawDict, lags: Mapping[str, dict] | None = None
+                        ) -> tuple[pd.DataFrame, list[str]]:
     """Las 28 filas `frecuencia=='mensual'` de FEAT en su frecuencia NATIVA (sin alinear).
 
-    Regla v1 (02 §3.1): 'mercado' (NOLAG_MENSUAL) -> z-score directo; 'macro'
-    (LAG_MENSUAL) -> lag de publicación de 1 mes ANTES del z-score.
-
-    ADVERTENCIA de calendario (revisión, ver 02 §3.2): (a) las 'mercado' de FRED son
-    medias del mes fechadas el día 1 -> look-ahead de hasta ~1 mes; (b) 1 mes de lag es
-    insuficiente para INDPRO/CPI/PPI/HOUST/CFNAI (publicados ~día 10-25 del mes
-    siguiente) y muy insuficiente para GDP_GROWTH_QOQ (trimestral, ~4 meses). Se
-    conserva la regla v1 porque sus paneles son la entrada del benchmark ejecutado.
+    ADR-003: la entrada `raw` lleva fechas de FUENTE; aquí se aplica
+    `aplicar_lag_publicacion` ANTES de cualquier transformación, así que el índice de
+    cada feature es la fecha desde la que el dato es público: 'mercado'
+    (MENSUAL_MERCADO, medias/cierres del mes) +1 mes; 'macro' (MENSUAL_MACRO) +1/+2/+4
+    meses según su calendario (ver `LAG_PUBLICACION`). Después: transformación nativa
+    (yoy/diff12/nivel/spread) -> z-score causal.
+    Salvedad: son la última vintage de FRED (revisada), no la publicada en tiempo real.
     """
+    raw = aplicar_lag_publicacion(raw, lags)
     p: list[tuple[str, pd.Series | None]] = [
-        # CREDITO (sin lag, regla v1)
+        # CREDITO (media del mes, +1 mes)
         ('credit_BaaAaa_mensual_z', mercado_spread_z(raw, 'MOODYS_BAA', 'MOODYS_AAA', 'credit_BaaAaa_mensual')),
         ('credit_BaaFF_z', mercado_z(raw, 'BAAFFM', 'credit_BaaFF_z')),
-        # TIPOS HISTORICOS (sin lag, regla v1)
+        # TIPOS HISTORICOS (media del mes, +1 mes)
         ('TB3MS_z', mercado_z(raw, 'TB3MS', 'TB3MS_z')),
         ('GS10_z', mercado_z(raw, 'GS10', 'GS10_z')),
         ('term_spread_hist_z', mercado_spread_z(raw, 'GS10', 'TB3MS', 'term_spread_hist')),
         ('GS1_z', mercado_z(raw, 'GS1', 'GS1_z')),
         ('GS5_z', mercado_z(raw, 'GS5', 'GS5_z')),
         ('fed_stance_z', fed_stance(raw)),
-        # MACRO REAL (lag 1 mes)
+        # MACRO REAL (lag de publicación por serie: LAG_PUBLICACION)
         ('INDPRO_yoy_z', macro_z(raw, 'INDPRO', 'INDPRO_yoy_z', 'yoy')),
         ('PPI_yoy_z', macro_z(raw, 'PPI_ALL_COMMODITIES', 'PPI_yoy_z', 'yoy')),
         ('PPI_fuels_yoy_z', macro_z(raw, 'PPI_FUELS', 'PPI_fuels_yoy_z', 'yoy')),
@@ -454,40 +613,46 @@ def construir_mensuales(raw: RawDict) -> tuple[pd.DataFrame, list[str]]:
         ('WTI_yoy_z', macro_z(raw, 'WTI_SPOT_MONTHLY', 'WTI_yoy_z', 'yoy')),
         ('broad_dollar_real_z', macro_z(raw, 'RNUSBIS', 'broad_dollar_real_z', 'nivel')),
         ('broad_dollar_nominal_z', macro_z(raw, 'NNUSBIS', 'broad_dollar_nominal_z', 'nivel')),
-        # VALORACION (sin lag, regla v1)
+        # VALORACION (PE10 de Shiller / b/m de Goyal-Welch, +1 mes)
         ('CAPE_z', mercado_z(raw, 'SHILLER_SP500_CAPE', 'CAPE_z')),
         ('GW_valuation_z', mercado_z(raw, 'GW_PREDICTORS_MONTHLY', 'GW_valuation_z')),
     ]
     assert len(p) == N_FEAT_MENSUALES
-    assert {n for n, _ in p} == set(NOLAG_MENSUAL) | set(LAG_MENSUAL)
+    assert {n for n, _ in p} == set(MENSUAL_MERCADO) | set(MENSUAL_MACRO)
     return _ensamblar(p)
 
 
+def _asof(panel: pd.DataFrame, grid: pd.DatetimeIndex) -> pd.DataFrame:
+    """As-of backward POR COLUMNA: en cada fecha de `grid`, el último valor no nulo
+    <= t de cada columna (aunque su fecha no esté en `grid`). Causal."""
+    return panel.sort_index().ffill().reindex(grid, method='ffill')
+
+
 def alinear_diaria(panel: pd.DataFrame, grid: pd.DatetimeIndex,
-                   asof_por_columna: bool = False) -> pd.DataFrame:
+                   asof_por_columna: bool = True) -> pd.DataFrame:
     """Alinea un panel de features DIARIAS (calendarios nativos concatenados) a `grid`.
 
-    Por defecto (v1, la que generó los paneles del benchmark):
-    `panel.reindex(grid, method='ffill').ffill()` — causal (solo mira fechas <= t).
+    Por defecto (ADR-003) as-of backward por columna (`_asof`), causal.
 
-    BUG CONOCIDO de la v1 (no se corrige por defecto para no alterar los paneles ya
-    consumidos): cuando una fecha de `grid` YA existe como fila de `panel` (porque otra
-    columna tiene dato ese día), `reindex` toma esa fila tal cual; si una columna solo
-    tiene datos en fechas FUERA de `grid` (p. ej. ICSA, fechada en sábado), sus valores
-    nunca llegan a la rejilla y la columna queda entera en NaN. Con
-    `asof_por_columna=True` se hace el as-of correcto por columna
-    (`panel.ffill().reindex(grid)`), igualmente causal.
+    `asof_por_columna=False` reproduce la v1 (`panel.reindex(grid, method='ffill')
+    .ffill()`), que tenía un BUG: cuando una fecha de `grid` YA existe como fila de
+    `panel` (porque otra columna tiene dato ese día), `reindex` toma esa fila tal cual;
+    si una columna solo tiene datos en fechas FUERA de `grid` (p. ej. ICSA, fechada en
+    sábado), sus valores nunca llegan a la rejilla y la columna queda entera en NaN (y
+    un dato de un festivo NYSE se pierde si la siguiente sesión ya tiene fila).
     """
     if asof_por_columna:
-        return panel.sort_index().ffill().reindex(grid)
+        return _asof(panel, grid)
     return panel.reindex(grid, method='ffill').ffill()
 
 
 def alinear_mensual_con_edad(panel: pd.DataFrame, grid: pd.DatetimeIndex) -> pd.DataFrame:
-    """Alinea un panel MENSUAL (ya con lag donde toque) a `grid` con reindex+ffill y
+    """Alinea un panel MENSUAL (ya con lag) a `grid` con as-of backward por columna y
     añade `<feature>_edad_dias`: días de calendario desde el último dato real (no
-    arrastrado) de esa columna visible en cada fecha. Causal: solo fechas <= t."""
-    alineado = panel.reindex(grid, method='ffill').ffill()
+    arrastrado) de esa columna visible en cada fecha. Causal: solo fechas <= t.
+    (ADR-003: as-of por columna porque, con lags en días, las fechas de disponibilidad ya
+    no caen todas el día 1 y un `reindex` por filas podría perder valores.)"""
+    alineado = _asof(panel, grid)
     grid_fecha = pd.Series(grid, index=grid)
     edad_cols = {}
     for col in panel.columns:
@@ -503,16 +668,17 @@ def rejilla_nyse(raw: RawDict, inicio: str, fin: str) -> pd.DatetimeIndex:
     return raw['SP500'].loc[inicio:fin].index
 
 
-def construir_paneles(raw: RawDict, inicio: str, fin: str,
-                      asof_por_columna: bool = False) -> dict[str, pd.DataFrame]:
-    """Pipeline completo de una pista: features nativas -> rejilla NYSE -> paneles.
+def construir_paneles(raw: RawDict, inicio: str, fin: str, asof_por_columna: bool = True,
+                      lags: Mapping[str, dict] | None = None) -> dict[str, pd.DataFrame]:
+    """Pipeline completo de una pista: (lags de publicación) -> features nativas ->
+    rejilla NYSE -> paneles. `raw` con fechas de FUENTE (tal cual data/raw).
 
     Devuelve {'diaria', 'mensual', 'omitidas_diaria', 'omitidas_mensual'} con los
     paneles alineados a la rejilla (exactamente lo que 03 escribe a disco, salvo el
     nombre del índice).
     """
-    diaria, om_d = construir_diarias(raw)
-    mensual, om_m = construir_mensuales(raw)
+    diaria, om_d = construir_diarias(raw, lags)
+    mensual, om_m = construir_mensuales(raw, lags)
     grid = rejilla_nyse(raw, inicio, fin)
     return {
         'diaria': alinear_diaria(diaria, grid, asof_por_columna=asof_por_columna),
@@ -523,10 +689,10 @@ def construir_paneles(raw: RawDict, inicio: str, fin: str,
 
 
 # --------------------------------------------------------------------------- #
-# 4. Verificación de causalidad (test de truncado)
+# 5. Verificación de causalidad (test de truncado)
 # --------------------------------------------------------------------------- #
 def truncar(raw: RawDict, cut: str | pd.Timestamp) -> dict[str, pd.Series]:
-    """Copia de `raw` con cada serie cortada en `cut` (inclusive)."""
+    """Copia de `raw` con cada serie cortada en `cut` (inclusive, fecha de FUENTE)."""
     return {k: v.loc[:cut] for k, v in raw.items()}
 
 

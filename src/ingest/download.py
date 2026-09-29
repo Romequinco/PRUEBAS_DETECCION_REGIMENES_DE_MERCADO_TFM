@@ -14,6 +14,20 @@ que el cache en disco (p. ej. yfinance devolviendo 1 sola fila para ^VIX9D) NO l
 sobrescribe: se conserva el cache y se registra un aviso (status=CACHE, campo `aviso`).
 `only`: acota que se (re)descarga; las series no pedidas y ausentes de disco conservan
 su fila del coverage_report anterior (asi un `only` nunca borra los ERROR declarados).
+`offline`: NUNCA llama a la red. Regenera provenance.json + coverage_report.csv
+exclusivamente desde los parquet en disco (las series ausentes conservan su fila previa o
+se marcan ERROR 'no en disco'). OJO: sin `offline`, una serie del catalogo que NO esta en
+disco se intenta descargar aunque no se pase `--force`.
+
+Post-procesado por serie (ADR-003, ver `COLUMNA_POR_SERIE` y `DERIVADAS`):
+  - Ken French multi-columna: se guardan TODAS las columnas y se antepone una columna
+    alias `<nombre_interno>` (= primera columna) para no romper `read_parquet(...)[nombre]`.
+  - REALIZED_VOL_SP500: se guarda la vol realizada 21d anualizada de ^GSPC (antes el precio).
+
+CLI:
+  python -m src.ingest.download                         # descarga lo que falte en disco
+  python -m src.ingest.download --offline               # solo regenera metadatos (sin red)
+  python -m src.ingest.download --force --only A,B      # re-descarga SOLO A y B
 """
 from __future__ import annotations
 
@@ -35,6 +49,24 @@ CATALOG = ROOT / "data" / "catalog.yaml"
 # considera degradada (fallo silencioso de la fuente) y no sobrescribe el cache.
 MIN_FRAC_VS_CACHE = 0.5
 MIN_OBS = 2
+
+# Columna concreta a extraer cuando la fuente es un CSV multi-columna del que solo interesa
+# una serie (solo fuente github). Vacio tras ADR-003: SHILLER_SP500_CAPE paso a leerse de la
+# columna CAPE del ie_data.xls canonico (fuente academico), porque el espejo datahub deja de
+# publicar PE10 en 2023-09 (lo rellena con 0.0) y su 1a columna numerica era el PRECIO.
+COLUMNA_POR_SERIE: dict[str, str] = {}
+
+
+def _vol_realizada_21d(precio: pd.Series) -> pd.Series:
+    """Vol realizada 21 sesiones anualizada (x sqrt(252)) de los log-retornos: MISMA
+    definicion que `src.features.realized_vol` (y que usa `SP500_vol_z`). Causal."""
+    from ..features import log_returns, realized_vol
+
+    return realized_vol(log_returns(precio.astype(float)), window=21, annualize=True).dropna()
+
+
+# Transformacion aplicada a la serie descargada ANTES de guardarla (ADR-003).
+DERIVADAS = {"REALIZED_VOL_SP500": _vol_realizada_21d}
 
 
 def load_catalog() -> dict:
@@ -58,8 +90,11 @@ def _checksum(s: pd.Series) -> str:
     return hashlib.sha256(pd.util.hash_pandas_object(s, index=True).values.tobytes()).hexdigest()[:16]
 
 
-def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataFrame:
-    """Descarga todo el catalogo. Devuelve el coverage_report como DataFrame."""
+def download_all(force: bool = False, only: list[str] | None = None,
+                 offline: bool = False) -> pd.DataFrame:
+    """Descarga todo el catalogo. Devuelve el coverage_report como DataFrame.
+
+    offline=True: no descarga nada (ni lo ausente); solo re-registra lo que hay en disco."""
     cat = load_catalog()
     RAW.mkdir(parents=True, exist_ok=True)
     provenance: dict[str, dict] = {}
@@ -83,14 +118,29 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
         # registrandose como CACHE -> `only` nunca vacia el coverage_report.
         targeted = (not only) or (nombre in only)
         cached = None
+        n_cols_cache = 1
         if out.exists():
             try:
-                cached = pd.read_parquet(out).iloc[:, 0]
+                _df_cache = pd.read_parquet(out)
+                cached = _df_cache.iloc[:, 0]
+                n_cols_cache = _df_cache.shape[1]
             except Exception:  # noqa: BLE001  (cache corrupto -> re-descarga)
                 cached = None
-        if cached is not None and (not force or not targeted):
-            _register_cache(rec, cached, provenance, rows, entry)
+        if cached is not None and (offline or not force or not targeted):
+            _register_cache(rec, cached, provenance, rows, entry, n_cols=n_cols_cache)
             print(f"[{i}/{total}] CACHE  {nombre:28} ({fuente})")
+            continue
+        if offline:
+            # sin red: conserva la fila previa (ERROR declarado) o registra la ausencia
+            if nombre in prev_rows:
+                rows.append(prev_rows[nombre])
+            else:
+                rows.append(rec | {"status": "ERROR", "n_obs": 0, "inicio": None, "fin": None,
+                                   "error": "no en disco (regeneracion offline)"})
+            provenance[nombre] = prev_prov.get(nombre, {**rec, "status": "ERROR",
+                                                        "error": "no en disco (regeneracion offline)",
+                                                        "url": entry.get("url")})
+            print(f"[{i}/{total}] AUSENTE {nombre:27} ({fuente}) -> offline, no se descarga")
             continue
         if not targeted:
             # no esta en disco y no se ha pedido -> conserva su fila previa (si la habia)
@@ -100,8 +150,16 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
                 provenance[nombre] = prev_prov[nombre]
             continue
         try:
-            obj = sources.fetch(fuente, sid, url=entry.get("url"))
+            kw = {"columna": COLUMNA_POR_SERIE[nombre]} if nombre in COLUMNA_POR_SERIE else {}
+            obj = sources.fetch(fuente, sid, url=entry.get("url"), **kw)
             obj = obj.sort_index()
+            if nombre in DERIVADAS:
+                obj = DERIVADAS[nombre](obj if isinstance(obj, pd.Series) else obj.iloc[:, 0])
+            if (isinstance(obj, pd.DataFrame) and fuente == "academico"
+                    and sources.es_ken_french(sid) and nombre not in obj.columns):
+                # alias homonimo = 1a columna (Mkt-RF / Cnsmr): contrato read_parquet(...)[nombre]
+                obj = obj.copy()
+                obj.insert(0, nombre, obj.iloc[:, 0])
             rep_new = obj.iloc[:, 0] if isinstance(obj, pd.DataFrame) else obj
             n_new = int(rep_new.dropna().shape[0])
             if n_new < MIN_OBS:
@@ -148,9 +206,11 @@ def download_all(force: bool = False, only: list[str] | None = None) -> pd.DataF
 
 
 def _register_cache(rec: dict, s: pd.Series, provenance: dict, rows: list,
-                    entry: dict, aviso: str | None = None) -> None:
+                    entry: dict, aviso: str | None = None, n_cols: int = 1) -> None:
     """Registra una serie servida desde el parquet en disco (status=CACHE)."""
     rec.update(_meta_from_series(s, cached=True))
+    if n_cols > 1:
+        rec["n_cols"] = n_cols
     extra = {"aviso": aviso} if aviso else {}
     provenance[rec["nombre"]] = {**rec, "status": "CACHE", "checksum": _checksum(s),
                                  "url": entry.get("url"), **extra}
@@ -199,8 +259,18 @@ def _meta_from_series(s: pd.Series, cached: bool) -> dict:
 if __name__ == "__main__":  # pragma: no cover
     import sys
 
-    force = "--force" in sys.argv
-    rep = download_all(force=force)
+    args = sys.argv[1:]
+    force = "--force" in args
+    offline = "--offline" in args
+    only = None
+    if "--only" in args:
+        k = args.index("--only")
+        if k + 1 >= len(args):
+            raise SystemExit("--only necesita una lista separada por comas")
+        only = [x.strip() for x in args[k + 1].split(",") if x.strip()]
+        if not force:
+            print("AVISO: --only sin --force no re-descarga lo que ya esta en disco")
+    rep = download_all(force=force, only=only, offline=offline)
     ok = (rep["status"].isin(["OK", "CACHE"])).sum()
     print(f"\n=== RESUMEN: {ok}/{len(rep)} series disponibles ===")
     print(rep["status"].value_counts().to_string())

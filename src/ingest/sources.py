@@ -120,8 +120,10 @@ def fetch_ofr(spec: str) -> pd.Series:
 # --------------------------------------------------------------------------- #
 # GitHub / datahub (raw CSV)
 # --------------------------------------------------------------------------- #
-def fetch_github_csv(spec: str) -> pd.Series:
-    """spec = '<owner/repo>:<path/al.csv>'. Toma 1a col de fecha + 1a col numerica."""
+def fetch_github_csv(spec: str, columna: str | None = None) -> pd.Series:
+    """spec = '<owner/repo>:<path/al.csv>'. Toma 1a col de fecha + 1a col numerica
+    (o la columna `columna` si se indica; ahi un 0.0 se trata como faltante, que es como
+    datahub marca los meses sin dato en p. ej. PE10)."""
     if ":" not in spec:
         raise RuntimeError(f"github spec sin ':': {spec}")
     repo, path = spec.split(":", 1)
@@ -144,6 +146,10 @@ def fetch_github_csv(spec: str) -> pd.Series:
     num = df.select_dtypes("number")
     if num.empty:
         raise RuntimeError(f"github {spec}: sin columna numerica")
+    if columna is not None:
+        if columna not in num.columns:
+            raise RuntimeError(f"github {spec}: sin columna {columna!r} (cols={list(num.columns)})")
+        return num[columna].mask(num[columna] == 0.0).dropna().rename(columna)
     return num.iloc[:, 0].dropna().rename(num.columns[0])
 
 
@@ -181,11 +187,19 @@ def _shiller_dates(col: pd.Series) -> pd.DatetimeIndex:
     return pd.DatetimeIndex(out)
 
 
+# Orden de preferencia de ie_data.xls. El enlace con UUID es el que publica hoy
+# https://shillerdata.com/ (actualizado mensualmente; CAPE hasta el mes en curso). Los dos
+# siguientes son espejos historicos que se quedaron congelados (2024-09 y 2023-09).
+SHILLER_XLS_URLS = (
+    "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/"
+    "70fec4f5-727f-4e53-b5f1-179af109c5fa/ie_data.xls",
+    "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls",
+    "http://www.econ.yale.edu/~shiller/data/ie_data.xls",
+)
+
+
 def _shiller_xls() -> pd.DataFrame:
-    for url in (
-        "https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/ie_data.xls",
-        "http://www.econ.yale.edu/~shiller/data/ie_data.xls",
-    ):
+    for url in SHILLER_XLS_URLS:
         try:
             raw = _get(url, timeout=60)
             xl = pd.read_excel(io.BytesIO(raw), sheet_name="Data", skiprows=7)
@@ -211,18 +225,24 @@ def _gw_quarter_index(raw: pd.Series) -> pd.DatetimeIndex:
     return pd.DatetimeIndex(out)
 
 
-def _french_zip(name: str) -> pd.Series:
-    """Primer bloque diario de un CSV de Ken French, **solo la PRIMERA columna de datos**.
+MISSING_FRENCH = (-99.99, -999.0)
 
-    Limitacion conocida (documentada, no silenciosa): para ficheros multi-columna se
-    conserva unicamente la primera columna, p. ej.
-      - F-F_Research_Data_Factors_daily      -> solo ``Mkt-RF`` (no SMB/HML/RF)
-      - F-F_Research_Data_5_Factors_2x3_daily -> solo ``Mkt-RF``
-      - 5_Industry_Portfolios_daily           -> solo ``Cnsmr`` (value-weighted)
-    Se mantiene asi porque el contrato de carga del repo es
-    ``pd.read_parquet(...)[nombre_interno]`` (una columna por serie). Si se quisiera el
-    panel completo habria que declararlo como serie multi-columna en catalog.yaml y
-    adaptar los consumidores (03_preprocesado).
+
+def _french_zip(name: str) -> pd.Series | pd.DataFrame:
+    """Primer bloque diario de un CSV de Ken French con **TODAS sus columnas** (ADR-003).
+
+    - Fichero de una sola columna (p. ej. ``F-F_Momentum_Factor_daily`` -> ``Mom``):
+      devuelve ``pd.Series`` (mismo formato en disco que antes).
+    - Fichero multi-columna: devuelve ``pd.DataFrame`` con los nombres originales de la
+      cabecera, p. ej.
+        - F-F_Research_Data_Factors_daily       -> Mkt-RF, SMB, HML, RF
+        - F-F_Research_Data_5_Factors_2x3_daily -> Mkt-RF, SMB, HML, RMW, CMA, RF
+        - 5_Industry_Portfolios_daily           -> Cnsmr, Manuf, HiTec, Hlth, Other
+          (primer bloque = value-weighted; el bloque equal-weighted se ignora)
+      ``download.py`` antepone una columna ALIAS con el ``nombre_interno`` (= primera
+      columna de datos) para conservar el contrato de carga
+      ``pd.read_parquet(...)[nombre_interno]`` (antes solo se guardaba esa columna).
+    Los faltantes de Ken French (-99.99 / -999) pasan a NaN.
     """
     import re
     import zipfile
@@ -231,21 +251,35 @@ def _french_zip(name: str) -> pd.Series:
     raw = _get(url, timeout=60)
     z = zipfile.ZipFile(io.BytesIO(raw))
     txt = z.read(z.namelist()[0]).decode("latin-1")
-    rows = []
+    rows: list[list[float]] = []
+    idx: list[pd.Timestamp] = []
+    header: list[str] | None = None
+    last_header: list[str] | None = None
     for ln in txt.splitlines():
         m = re.match(r"^\s*(\d{8})\s*,", ln)
         if m:
+            if header is None:
+                header = last_header
             parts = [p.strip() for p in ln.split(",")]
             try:
-                rows.append((pd.Timestamp(m.group(1)), float(parts[1])))
+                vals = [float(p) for p in parts[1:]]
             except ValueError:
-                pass
+                continue
+            idx.append(pd.Timestamp(m.group(1)))
+            rows.append(vals)
         elif rows:
-            break  # fin del bloque diario
+            break  # fin del primer bloque diario
+        elif ln.lstrip().startswith(","):
+            last_header = [c.strip() for c in ln.split(",")[1:]]
     if not rows:
         raise RuntimeError(f"Ken French {name}: bloque diario vacio")
-    idx, val = zip(*rows)
-    return pd.Series(val, index=pd.DatetimeIndex(idx), name=name)
+    ncol = len(rows[0])
+    cols = header if header is not None and len(header) == ncol else [f"c{i}" for i in range(ncol)]
+    df = pd.DataFrame(rows, index=pd.DatetimeIndex(idx), columns=cols)
+    df = df.mask(df.isin(MISSING_FRENCH))
+    if ncol == 1:
+        return df.iloc[:, 0].rename(name)
+    return df
 
 
 def fetch_academico(spec: str, url: str | None = None):
@@ -253,7 +287,11 @@ def fetch_academico(spec: str, url: str | None = None):
     # -- Shiller (ie_data.xls): columna por hint del id --
     if "ie_data" in s or "shiller" in s:
         xl = _shiller_xls()
-        if "long interest rate" in s or "gs10" in s or "rate" in s:
+        if "cape" in s:  # PE10 de Shiller (columna exacta 'CAPE', no 'TR CAPE')
+            if "CAPE" not in xl.columns:
+                raise RuntimeError(f"Shiller ie_data.xls sin columna CAPE: {list(xl.columns)}")
+            col = "CAPE"
+        elif "long interest rate" in s or "gs10" in s or "rate" in s:
             col = next((c for c in xl.columns if "GS10" in str(c) or "Long" in str(c)
                         or "Rate" in str(c)), xl.columns[6])
         else:
@@ -342,7 +380,17 @@ def fetch_stooq(ticker: str) -> pd.Series:
 # --------------------------------------------------------------------------- #
 # Dispatcher
 # --------------------------------------------------------------------------- #
-def fetch(fuente: str, series_id: str, url: str | None = None):
+def es_ken_french(spec: str) -> bool:
+    """True si `fetch_academico(spec)` enruta a la Data Library de Ken French."""
+    s = spec.lower()
+    return not any(k in s for k in ("ie_data", "shiller", "googlesheet", "jst", "anxious"))
+
+
+def fetch(fuente: str, series_id: str, url: str | None = None, columna: str | None = None):
+    if columna is not None and fuente != "github":
+        raise RuntimeError(f"`columna` solo se admite para fuente github (no {fuente})")
+    if fuente == "github":
+        return fetch_github_csv(series_id, columna=columna)
     if fuente == "fred":
         return fetch_fred_spread(series_id) if "," in series_id else fetch_fred(series_id)
     if fuente == "fred_spread":
@@ -351,8 +399,6 @@ def fetch(fuente: str, series_id: str, url: str | None = None):
         return fetch_yahoo(series_id)
     if fuente == "ofr":
         return fetch_ofr(series_id)
-    if fuente == "github":
-        return fetch_github_csv(series_id)
     if fuente == "academico":
         return fetch_academico(series_id, url=url)
     if fuente == "stooq":

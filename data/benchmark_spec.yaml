@@ -11,6 +11,14 @@
 #
 # Coherente con data/raw/<fuente>/<nombre>.parquet (status OK/CACHE en coverage_report.csv,
 # fechas verificadas leyendo los parquet 2026-07-18) y con data/catalog.yaml (crisis_catalog).
+#
+# ADR-003 (2026-09-29, solo DATOS; ventanas, crisis y lista de series SIN cambios):
+#   - causalidad de CALENDARIO: toda serie mensual/trimestral/semanal entra a las features con
+#     su lag de publicacion (tabla unica src/features.py::LAG_PUBLICACION: medias del mes +1 mes,
+#     macro +2 meses, PIB +4 meses, ICSA +5 dias). Las fechas "inicio->fin" de los comentarios de
+#     series_features son fechas de FUENTE (antes del lag), no de disponibilidad.
+#   - re-descargadas SHILLER_SP500_CAPE (ahora PE10 real, fuente ie_data.xls), REALIZED_VOL_SP500
+#     (ahora vol realizada, no precio) y los 3 Ken French multi-columna (todas las columnas).
 
 meta:
   version: 2
@@ -20,7 +28,7 @@ meta:
     ADR-002 (2026-07-20) reajusta v1: (a) el FIN de ventana lo gobierna la serie DIARIA mas fresca,
     nunca una mensual (una mensual con lag de publicacion se trata con ffill+lag, igual que ya se
     hacia con INDPRO; dejar que gobierne el fin era inconsistente con esa regla ya vigente); (b) el
-    pool de features candidatas crece de 35 a 106 series (63% de las 166 descargadas) manteniendo
+    pool de features candidatas crece de 35 a 106 series (64% de las 166 descargadas) manteniendo
     fuera solo validation (20, regla anti-fuga), fallback (21, redundantes) y 6 series descontinuadas
     (fuerzan el fin hacia atras si se incluyen: VXO, DTWEXM, TWEXMMTH, EURODOLLAR_TBILL_SPREAD,
     EURODOLLAR_3M, NBER_NY_COMMERCIAL_PAPER); (c) pista_A pasa de 1927 a 1962 (pierde 4 crisis:
@@ -42,21 +50,25 @@ meta:
     (2) CAUSALIDAD DE FEATURE: toda transformacion es causal (z-score expanding/rolling con
     estadisticos <= t; primitivas de src/features.py); prohibida cualquier media/std de muestra
     completa (fue el error de la tarea previa). Verificado en candidatas_features:
-    max|full - truncado| = 0.0 exacto.
+    max|full - truncado| = 0.0 exacto. Salvedad: el truncado prueba causalidad COMPUTACIONAL,
+    no de CALENDARIO (fecha del dato = fecha de publicacion); esta ultima la garantiza desde
+    ADR-003 el lag de publicacion por serie (src/features.py::LAG_PUBLICACION, verificado en
+    tests/test_preprocesado_causalidad.py con un truncado por fecha de publicacion). Queda
+    fuera: los datos son la ultima vintage revisada (no ALFRED/tiempo real).
     (3) LABELS != FEATURES: crisis_catalog (peak->trough del S&P500) se usa SOLO como etiqueta de
     evaluacion, jamas como feature. Es fiel al dato: recalculo del drawdown sobre ^GSPC cuadra con
     catalog.yaml con error maximo 0.048 pp (crisis_espina_profunda).
   regla_de_oro: "toda feature causal; NUNCA estadisticos de muestra completa"
   politica_datos: "sin-imputar; huecos = fechas ausentes del indice, no NaN (cobertura_calidad)"
-  calendario_panel: "NYSE como rejilla base; series FRED alineadas por merge_asof / ffill causal (<= t)"
+  calendario_panel: "NYSE como rejilla base; series no diarias retrasadas a su fecha de publicacion (ADR-003) y alineadas por as-of backward por columna (<= t)"
   n_crisis_catalogo: 22
-  carga_series: "pd.read_parquet('data/raw/{fuente}/{nombre}.parquet')[nombre]"
+  carga_series: "pd.read_parquet('data/raw/{fuente}/{nombre}.parquet')[nombre] (FF_FACTORS_3/5_DAILY y FF_5_INDUSTRY son multi-columna con alias homonimo = 1a columna; GW_PREDICTORS_MONTHLY -> columna b/m; convencion en src/features.py::seleccionar_raw)"
 
 # ===========================================================================
 # PISTA A — espina historica profunda. Objetivo: POTENCIA (maximo nº de crisis).
 # ===========================================================================
 pista_A:
-  descripcion: "S&P500 + vol realizada + factores + credito/macro profundos + curva de tipos completa; 41 features"
+  descripcion: "S&P500 + vol realizada + factores + credito/macro profundos + curva de tipos completa; 41 SERIES crudas -> 35 columnas de feature (12 diarias + 23 mensuales)"
   objetivo: potencia
   ventana_inicio: '1962-01-02'   # ADR-002: gobierna DGS10/DGS5/T10YFF — anade la curva de tipos completa
   ventana_fin: '2026-05-29'      # gobierna FF_FACTORS_3_DAILY / FF_MOM_DAILY (lag academico) — IGUAL que pista_B (ADR-002)
@@ -68,9 +80,9 @@ pista_A:
   series_features:
     # -- espina diaria de equity/vol/factores (1926-1927) --
     - SP500                 # 1927-12-30->2026-07-17; base de ret, drawdown, momentum
-    - REALIZED_VOL_SP500    # 1927-12-30->2026-07-17; workhorse causal (AUC 0.739)
-    - FF_FACTORS_3_DAILY    # 1926-07-01->2026-05-29; Mkt-RF/SMB/HML; gobierna el fin comun con B
-    - FF_5_INDUSTRY         # 1926-07-01->2026-05-29; 5 carteras industriales -> dispersion sectorial historica
+    - REALIZED_VOL_SP500    # 1928-01-16->2026-09-28; vol realizada 21d anualizada de ^GSPC (ADR-003: antes guardaba el PRECIO). SP500_vol_z (AUC 0.739) se calcula desde SP500 con la misma formula
+    - FF_FACTORS_3_DAILY    # 1926-07-01->2026-05-29 al congelar (gobierno el fin comun con B); re-descargada en ADR-003 (llega a 2026-08-31, la ventana NO se mueve); Mkt-RF/SMB/HML/RF
+    - FF_5_INDUSTRY         # 1926-07-01->2026-08-31; 5 carteras industriales -> dispersion sectorial historica (real desde ADR-003; antes solo 1 cartera)
     - FF_MOM_DAILY          # 1926-11-03->2026-05-29; momentum crashes (giros de regimen)
     # -- tipos: curva completa desde 1962 (nueva en v2; antes solo existia via GS10/TB3MS mensual) --
     - DGS10                 # 1962-01-02->2026-07-16; nivel 10y, DGS10_change_z ataca 2013
@@ -85,18 +97,18 @@ pista_A:
     - DFF                   # 1954-07-01->2026-07-16; Fed Funds efectivo
     - DTB6                  # 1958-12-09->2026-07-16; apoyo PCA curva
     - DTB1YR                # 1959-07-15->2026-07-16; apoyo PCA curva
-    # -- credito profundo mensual (spread Baa-Aaa, 1919; ffill causal) --
+    # -- credito profundo mensual (spread Baa-Aaa, 1919; media del mes -> lag +1 mes y ffill causal) --
     - MOODYS_BAA            # 1919-01-01->2026-06-01
     - MOODYS_AAA            # 1919-01-01->2026-06-01
     - BAAFFM                # 1954-07-01->2026-06-01; spread Baa vs Fed Funds
-    # -- tipos historicos mensuales (proxy pre-DGS, imprescindibles para 1962-1990) --
+    # -- tipos historicos mensuales (proxy pre-DGS, imprescindibles para 1962-1990; media del mes -> +1 mes) --
     - TB3MS                 # 1934-01-01->2026-06-01; corto plazo historico
     - GS10                  # 1953-04-01->2026-06-01; largo plazo historico
     - GS5                   # 1953-04-01->2026-06-01
     - GS1                   # 1953-04-01->2026-06-01
     - FEDFUNDS              # 1954-07-01->2026-06-01
     - TBILL3M_MINUS_FEDFUNDS # 1954-07-01->2026-06-01
-    # -- macro profundo mensual (ciclo real; ffill causal) --
+    # -- macro profundo mensual (ciclo real; lag de publicacion +2 meses, UMCSENT +1, PIB +4; ffill causal) --
     - INDPRO                # 1919-01-01->2026-06-01; produccion industrial YoY
     - PPI_ALL_COMMODITIES   # 1913-01-01->2026-06-01; inflacion materias primas YoY
     - PPI_FUELS             # 1947-01-01->2026-06-01
@@ -112,8 +124,8 @@ pista_A:
     - WTI_SPOT_MONTHLY      # 1946-01-01->2026-06-01; shock de petroleo
     - UMCSENT               # 1952-11-01->2026-05-01; sentimiento consumidor
     # -- valoracion / prima de riesgo, muy profundo (1871+) --
-    - SHILLER_SP500_CAPE    # 1871-01-01->2026-06-01; valoracion ciclicamente ajustada
-    - GW_PREDICTORS_MONTHLY # 1871-01-01->2025-12-01; predictores equity premium (columna a fijar en 03)
+    - SHILLER_SP500_CAPE    # 1881-01-01->2026-09-01; CAPE/PE10 de Shiller (ie_data.xls; ADR-003: antes era el PRECIO medio mensual del S&P 500); lag +1 mes
+    - GW_PREDICTORS_MONTHLY # 1871-01-01->2025-12-01; predictores equity premium (columna b/m, fijada en 03); lag +1 mes
   features_causales_derivadas:
     - SP500_vol_z          # AUC 0.739; +2.74 covid / +2.50 black_monday, pero NEGATIVO en bear lentos
     - SP500_momentum       # AUC 0.724; cubre el bear lento que la vol NO ve (1966/1969)
@@ -140,7 +152,7 @@ pista_A:
 # PISTA B — panel rico multi-activo. Objetivo: RIQUEZA (separar; atacar 2013).
 # ===========================================================================
 pista_B:
-  descripcion: "credito/curva/vol/breakevens/sectores/FX/breadth densos + espina de A; 106 features, 2007+"
+  descripcion: "credito/curva/vol/breakevens/sectores/FX/breadth densos + espina de A; 106 SERIES crudas -> 77 columnas de feature (49 diarias + 28 mensuales), 2007+"
   objetivo: riqueza
   ventana_inicio: '2007-04-11'   # ADR-002: gobierna HYG_CREDIT (credito HY) — mas rico que 2003 SIN perder crisis
   ventana_fin: '2026-05-29'      # ADR-002: gobierna FF_FACTORS_3_DAILY — IGUAL que pista_A a proposito
@@ -198,7 +210,7 @@ pista_B:
     - SHILLER_SP500_CAPE
     - GW_PREDICTORS_MONTHLY
     # -- 65 EXCLUSIVAS de B --
-    - FF_FACTORS_5_DAILY    # 1963-07-01; vintage 5-factor, contraste con FF_FACTORS_3_DAILY (redundante, ver FEAT)
+    - FF_FACTORS_5_DAILY    # 1963-07-01; 5 factores: aporta RMW (rentabilidad/calidad) -> FF_RMW_z (ADR-003 sustituye a FF_MKT5_z, duplicado de FF_MKT_z)
     # -- discriminadores primarios de NIVEL (top del ranking causal) --
     - VIX                   # 1990-01-02; VIX_level_z AUC 0.810
     - MOVE                  # 2002-11-12; MOVE_level_z AUC 0.800, mayor Cohen's d (+1.33)
@@ -268,7 +280,7 @@ pista_B:
     - BCOM                   # 1991-01-02; commodities, contraste con SPGSCI
     - GOLD_GLD               # 2004-11-18; refugio
     # -- actividad real de alta frecuencia (mas alla de la macro mensual profunda de A) --
-    - ICSA                   # 1967-01-07; peticiones desempleo (semanal real, ffill)
+    - ICSA                   # 1967-01-07; peticiones desempleo (semanal, fechada en sabado; lag +5 dias = jueves de publicacion; as-of por columna)
     - CFNAI                  # 1967-03-01; actividad nacional Chicago Fed
     - CFNAIMA3               # 1967-05-01; idem, MA3
     - PMI_PROXY_PHILLY       # 1968-05-01; proxy manufacturero regional
@@ -338,7 +350,7 @@ crisis_windows:
     inflation_bear_2022:        ['2022-01-03', '2022-10-12']   # -0.254 bear
     svb_banking_2023:           ['2023-02-02', '2023-03-13']   # -0.078 credit_event (sub_threshold)
     tariff_selloff_2025:        ['2025-02-19', '2025-04-08']   # -0.189 correction
-  pista_B:   # 10 (pico >= 2003-01-02; NO incluye dotcom, pico 2000-03-24 < inicio)
+  pista_B:   # 10 (pico >= 2007-04-11, inicio de B tras ADR-002; NO incluye dotcom, pico 2000-03-24 < inicio)
     gfc_2007_09:                ['2007-10-09', '2009-03-09']
     flash_crash_euro1_2010:     ['2010-04-23', '2010-07-02']
     us_downgrade_euro2_2011:    ['2011-04-29', '2011-10-03']
@@ -441,7 +453,7 @@ notas:
       la de 1929 es la mas severa del catalogo, -86.2%). A cambio gana la curva de tipos completa
       (DGS5/DGS10/T10YFF) como bloque nuevo, inexistente en v1. Sigue siendo la pista con mas potencia
       estadistica secular de las dos (18 vs 10 eventos) y con la unica espina de valoracion/macro
-      profunda (CAPE, GW predictors, 1871+). Punto debil: la vol realizada solo 've' los crashes/pánicos
+      profunda (CAPE 1881+, GW predictors 1871+). Punto debil: la vol realizada solo 've' los crashes/pánicos
       (z +2.5/+2.7) y es NEGATIVA en los bear lentos (1966 -0.46, 1969 -0.52); por eso el spine A lleva
       SP500_momentum, que si marca el bear lento de forma persistente.
     pista_B: >

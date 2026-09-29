@@ -89,21 +89,21 @@ pista_A:
     url: "https://finance.yahoo.com/quote/%5ESP500TR"
 
   - nombre_interno: SHILLER_SP500_CAPE
-    descripcion: "S&P500 mensual + CAPE (PE10) + Dividend/Earnings/CPI/Long-rate desde 1871. Mirror GitHub datahub (vivo) de la serie de Shiller."
-    fuente: github
-    fallback: "academico:ie_data.xls (Yale, canónico, ÚNICO con TR CAPE, pero va con retraso ~2023-09)"
-    id: "datasets/s-and-p-500:data/data.csv"
+    descripcion: "CAPE (PE10) de Shiller: precio real medio del mes / media 10 años de beneficios reales. Columna CAPE de ie_data.xls (hoja Data), mensual desde 1881-01 (los 10 primeros años del fichero no tienen PE10). ADR-003: hasta 2026-09 este parquet contenía por error el PRECIO medio mensual del S&P 500 (1ª columna numérica del espejo datahub)."
+    fuente: academico
+    fallback: "github:datasets/s-and-p-500 data/data.csv columna PE10 (espejo datahub: PE10 congelado en 2023-09, meses posteriores = 0.0)"
+    id: "ie_data.xls (col CAPE)"
     auth: none
-    inicio_verificado: "1871-01-01"
+    inicio_verificado: "1881-01-01"
     granularidad: mensual
     pista: A
     rol: spine
-    relevancia_regimen: "Ancla secular 150+ años; CAPE = régimen de valoración caro/barato y ciclos largos. CSV plano vivo hasta 2026-06 (ODC-PDDL-1.0)."
+    relevancia_regimen: "Ancla secular 140+ años; CAPE = régimen de valoración caro/barato y ciclos largos. ie_data.xls se actualiza mensualmente en shillerdata.com (los beneficios de los últimos meses son estimados)."
     verificado: true
-    url: "https://github.com/datasets/s-and-p-500"
+    url: "https://shillerdata.com/"
 
   - nombre_interno: FF_FACTORS_3_DAILY
-    descripcion: "Fama-French 3 factores DIARIOS (Mkt-RF, SMB, HML) + RF, mercado US (CRSP value-weighted)."
+    descripcion: "Fama-French 3 factores DIARIOS (Mkt-RF, SMB, HML) + RF, mercado US (CRSP value-weighted). Parquet multi-columna (ADR-003): columna alias FF_FACTORS_3_DAILY (= Mkt-RF) + Mkt-RF, SMB, HML, RF."
     fuente: academico
     id: "F-F_Research_Data_Factors_daily"
     auth: none
@@ -142,7 +142,7 @@ pista_A:
     url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
 
   - nombre_interno: FF_FACTORS_5_DAILY
-    descripcion: "Fama-French 5 factores DIARIOS (Mkt-RF, SMB, HML, RMW, CMA) + RF."
+    descripcion: "Fama-French 5 factores DIARIOS (Mkt-RF, SMB, HML, RMW, CMA) + RF. Parquet multi-columna (ADR-003): columna alias FF_FACTORS_5_DAILY (= Mkt-RF) + Mkt-RF, SMB, HML, RMW, CMA, RF."
     fuente: academico
     id: "F-F_Research_Data_5_Factors_2x3_daily"
     auth: none
@@ -155,7 +155,7 @@ pista_A:
     url: "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html"
 
   - nombre_interno: FF_5_INDUSTRY
-    descripcion: "Ken French 5 Industry Portfolios diarios (Cnsmr,Manuf,HiTec,Hlth,Other) desde 1926."
+    descripcion: "Ken French 5 Industry Portfolios diarios (Cnsmr,Manuf,HiTec,Hlth,Other) desde 1926, retornos value-weighted en %. Parquet multi-columna (ADR-003): columna alias FF_5_INDUSTRY (= Cnsmr) + las 5 carteras."
     fuente: academico
     id: "5_Industry_Portfolios_daily"
     auth: none
@@ -169,7 +169,7 @@ pista_A:
 
   # ---- Volatilidad (espina profunda; VIX/SKEW dual-uso) ----
   - nombre_interno: REALIZED_VOL_SP500
-    descripcion: "Volatilidad realizada del S&P500 (rolling std de log-returns anualizada), calculada de ^GSPC."
+    descripcion: "Volatilidad realizada del S&P500: std rolling 21 sesiones de log-returns de ^GSPC, anualizada x sqrt(252) (decimal). Se deriva en src/ingest/download.py (DERIVADAS); ADR-003: hasta 2026-09 el parquet contenía por error el PRECIO de ^GSPC."
     fuente: yfinance
     id: "^GSPC"
     auth: none
