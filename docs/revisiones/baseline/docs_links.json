@@ -1,0 +1,188 @@
+{
+ "docs/decisions/ADR-001-rebase-datos.md": [
+  {
+   "target": "../GLOSARIO.md",
+   "ok": true
+  }
+ ],
+ "docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md": [
+  {
+   "target": "../REVISION_2026-09-29.md",
+   "ok": true
+  }
+ ],
+ "docs/EDA_v2.md": [
+  {
+   "target": "decisions/ADR-002-ajuste-ventanas.md",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/cobertura_calidad__ventanas_recomendadas.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/hechos_estilizados__01_sp500_dist_normal_vs_t.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/hechos_estilizados__08_realized_vol_timeline.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/correlaciones_dinamicas__01_rolling_stock_bond_corr.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/correlaciones_dinamicas__07_bond_hedge_per_crisis.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/complejo_volatilidad__08_crisis_levels_heatmap.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/complejo_volatilidad__06_move_vs_vix.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/credito_curva_2013__01_puntociego_4paneles.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/credito_curva_2013__06_firma_credito_vs_curva.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/credito_curva_2013__07_zscores_causales.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/crisis_espina_profunda__01_sp500_drawdowns_nber.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/crisis_espina_profunda__03_salto_potencia_ventanas.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/candidatas_features__01_ranking_auc.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/candidatas_features__04_auc_vs_cobertura.png",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/candidatas_features__06_spotcheck_causal.png",
+   "ok": true
+  },
+  {
+   "target": "decisions/ADR-002-ajuste-ventanas.md",
+   "ok": true
+  }
+ ],
+ "docs/GLOSARIO.md": [
+  {
+   "target": "decisions/ADR-001-rebase-datos.md",
+   "ok": true
+  },
+  {
+   "target": "decisions/ADR-002-ajuste-ventanas.md",
+   "ok": true
+  },
+  {
+   "target": "../data/benchmark_spec.yaml",
+   "ok": true
+  },
+  {
+   "target": "../notebooks/02_diseno_preprocesado.ipynb",
+   "ok": true
+  },
+  {
+   "target": "../data/benchmark_spec.yaml",
+   "ok": true
+  }
+ ],
+ "docs/README.md": [
+  {
+   "target": "GLOSARIO.md",
+   "ok": true
+  },
+  {
+   "target": "decisions/ADR-001-rebase-datos.md",
+   "ok": true
+  },
+  {
+   "target": "decisions/ADR-002-ajuste-ventanas.md",
+   "ok": true
+  },
+  {
+   "target": "SOTA_datos.md",
+   "ok": true
+  },
+  {
+   "target": "../data/catalog.yaml",
+   "ok": true
+  },
+  {
+   "target": "../data/benchmark_spec.yaml",
+   "ok": true
+  },
+  {
+   "target": "../notebooks/00_descarga.ipynb",
+   "ok": true
+  },
+  {
+   "target": "EDA_v2.md",
+   "ok": true
+  },
+  {
+   "target": "figs_eda/",
+   "ok": true
+  },
+  {
+   "target": "../notebooks/01_eda.ipynb",
+   "ok": true
+  },
+  {
+   "target": "../notebooks/02_diseno_preprocesado.ipynb",
+   "ok": true
+  },
+  {
+   "target": "REVISION_2026-09-29.md",
+   "ok": true
+  },
+  {
+   "target": "context/",
+   "ok": true
+  },
+  {
+   "target": "references.bib",
+   "ok": true
+  },
+  {
+   "target": "../capa1_exploracion/README.md",
+   "ok": true
+  }
+ ],
+ "docs/REVISION_2026-09-29.md": [
+  {
+   "target": "decisions/ADR-003-causalidad-calendario-estado-ranking.md",
+   "ok": true
+  }
+ ],
+ "README.md": [
+  {
+   "target": "docs/decisions/ADR-002-ajuste-ventanas.md",
+   "ok": true
+  },
+  {
+   "target": "docs/REVISION_2026-09-29.md",
+   "ok": true
+  },
+  {
+   "target": "docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md",
+   "ok": true
+  }
+ ]
+}
