@@ -1,11 +1,21 @@
+# Entorno completo del TFM (codigo + notebooks). El codigo es el
+# paquete instalable ``regimenes`` (pyproject.toml); sus dependencias de
+# ejecucion se declaran alli. Este archivo se mantiene porque ademas fija el
+# entorno de notebooks y los extras opcionales, y termina instalando el propio
+# paquete en modo editable:
+#
+#     python -m pip install -r requirements.txt
+#
+# (equivale a ``python -m pip install -e ".[deep,jump,changepoint,dev]"``).
+
 # ── Núcleo de datos y cálculo ──────────────────────────────────────────────
-numpy>=1.26
-pandas>=2.1
+numpy>=1.26,<3        # benchmark validado con numpy 2.3
+pandas>=2.1,<3         # pandas 3: indices en us y cambio de orden en concat (ver pyproject)
 scipy>=1.11
-pyyaml>=6.0             # catalog.yaml / benchmark_spec.yaml
+pyyaml>=6.0             # configs/catalog.yaml / configs/benchmark_spec.yaml
 pyarrow>=15.0           # parquet para data/raw y data/processed
 
-# ── Capa de datos v2 (src/ingest/) ─────────────────────────────────────────
+# ── Capa de datos v2 (regimenes.datos) ─────────────────────────────────────────
 yfinance>=0.2.40        # índices, VIX/MOVE, ETFs, FX, commodities
 requests>=2.31          # descarga directa (OFR, github/datahub)
 # FRED se descarga vía API con key (FRED_API_KEY en .env; ver .env.example)
@@ -29,3 +39,7 @@ jupyter>=1.0
 ipykernel>=6.29
 nbformat>=5.9           # construcción/lectura de notebooks
 nbconvert>=7.0          # ejecución de notebooks (00_descarga, 01_eda)
+pytest>=8.0             # tests/ (testpaths en pyproject.toml)
+
+# ── Paquete del proyecto (src/regimenes), editable ─────────────────────────
+-e .

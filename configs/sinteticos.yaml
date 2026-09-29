@@ -1,0 +1,28 @@
+# Configuracion de generadores sinteticos (regimenes.sinteticos) - ESQUELETO.
+# Aun no hay generadores implementados; este archivo fija el formato esperado.
+# Rutas: salidas en data/sinteticos/ (gitignored) y results/sinteticos/
+# (ver regimenes.rutas.DATA_SINTETICOS / RESULTS_SINTETICOS).
+
+version: 0
+
+semilla: 42
+
+# Panel real de referencia sobre el que se ajustan los generadores.
+entrenamiento:
+  pista: B            # A | B (ver configs/benchmark_spec.yaml)
+  fin_train: null     # fecha de corte (YYYY-MM-DD); nada posterior entra en fit()
+  features: []        # vacio = mismas features que el nucleo de la pista
+
+# Generadores a ajustar: nombre del registro (regimenes.sinteticos.registry) -> parametros.
+generadores: {}
+#  msvar:
+#    familia: parametricos
+#    params: {n_regimenes: 2}
+
+muestreo:
+  n_paths: 0
+  length: 0           # sesiones por trayectoria
+  regimenes: null     # null = el generador simula tambien la cadena de regimenes
+
+validacion:
+  metricas: [fidelidad_marginal, fidelidad_dependencia, fidelidad_regimenes, utilidad_tstr, memorizacion]

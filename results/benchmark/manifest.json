@@ -1,0 +1,689 @@
+{
+  "generated_utc": "2026-09-29T12:41:35.741870+00:00",
+  "cache_schema_version": 3,
+  "benchmark_spec_sha256": "c7cdfade541387dcf75cca116dc14360e3675e8e80807341ef1311ae8f0890ef",
+  "runtime_versions": {
+    "python": "3.13.14",
+    "numpy": "2.3.3",
+    "pandas": "2.3.2",
+    "scipy": "1.16.2",
+    "scikit-learn": "1.8.0",
+    "hmmlearn": "0.3.3",
+    "arch": "8.0.0",
+    "torch": "2.13.0",
+    "jumpmodels": "0.1.1"
+  },
+  "train_days": {
+    "A": 2016,
+    "B": 756
+  },
+  "tracks": {
+    "A": [
+      {
+        "detector_id": "D01",
+        "label": "Regla de volatilidad/VIX",
+        "family": "Reglas",
+        "module": "rule_vix_threshold",
+        "class_name": "RuleVixThreshold",
+        "features": [
+          "SP500_vol_z"
+        ],
+        "params": {
+          "feature": "SP500_vol_z"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": "A: umbral de volatilidad realizada; VIX no existe en la pista histórica"
+      },
+      {
+        "detector_id": "D02",
+        "label": "Regla compuesta risk-off",
+        "family": "Reglas",
+        "module": "rule_composite_riskoff",
+        "class_name": "RuleCompositeRiskoff",
+        "features": [
+          "SP500_vol_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "SP500_drawdown"
+        ],
+        "params": {
+          "signs": {
+            "SP500_vol_z": 1,
+            "credit_BaaAaa_mensual_z": 1,
+            "term_spread_hist_z": -1,
+            "SP500_drawdown": -1
+          }
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D03",
+        "label": "GMM (K=3)",
+        "family": "Clustering",
+        "module": "clustering_gmm",
+        "class_name": "ClusteringGMM",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z"
+        ],
+        "params": {
+          "n_states": 3,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D04",
+        "label": "HMM gaussiano (K=2)",
+        "family": "HMM",
+        "module": "hmm_gaussian_2s",
+        "class_name": "HMMGaussian2S",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z"
+        ],
+        "params": {
+          "n_states": 2,
+          "n_init": 5,
+          "features": [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z"
+          ],
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D05",
+        "label": "Markov-Switching varianza",
+        "family": "Markov-Switching",
+        "module": "markov_switching_var",
+        "class_name": "MarkovSwitchingVar",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "n_states": 2
+        },
+        "step": 63,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D06",
+        "label": "GJR-GARCH-t",
+        "family": "GARCH",
+        "module": "garch_t_vol",
+        "class_name": "GarchTVol",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D07",
+        "label": "CUSUM online robusto",
+        "family": "Change-point",
+        "module": "changepoint_online",
+        "class_name": "ChangepointOnline",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "cost": "robust"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D08",
+        "label": "HMM t-Student (K=4)",
+        "family": "HMM",
+        "module": "hmm_tstudent",
+        "class_name": "HMMTStudent",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z"
+        ],
+        "params": {
+          "n_states": 4,
+          "n_init": 3,
+          "t_n_iter": 25,
+          "features": [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z"
+          ],
+          "random_state": 42
+        },
+        "step": 126,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D09",
+        "label": "Statistical Jump Model",
+        "family": "Jump model",
+        "module": "jump_model",
+        "class_name": "JumpModel",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z"
+        ],
+        "params": {
+          "n_states": 2,
+          "jump_penalty": 50.0,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D10",
+        "label": "Turbulencia Mahalanobis",
+        "family": "Reglas multivariantes",
+        "module": "turbulence_mahalanobis",
+        "class_name": "TurbulenceMahalanobis",
+        "features": [
+          "SP500_ret",
+          "SP500_vol_z",
+          "DGS10_change_z",
+          "FF_MKT_z"
+        ],
+        "params": {
+          "features": [
+            "SP500_ret",
+            "SP500_vol_z",
+            "DGS10_change_z",
+            "FF_MKT_z"
+          ]
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D11",
+        "label": "MS-GARCH",
+        "family": "GARCH",
+        "module": "msgarch_regime",
+        "class_name": "MSGarchRegime",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "n_init": 1,
+          "maxiter": 100
+        },
+        "step": 126,
+        "expanding": false,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D12",
+        "label": "Autoencoder + GMM",
+        "family": "Deep learning",
+        "module": "deep_ae_regime",
+        "class_name": "DeepAERegime",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z"
+        ],
+        "params": {
+          "n_states": 2,
+          "latent_dim": 2,
+          "hidden": 8,
+          "epochs": 40,
+          "gmm_n_init": 3,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      }
+    ],
+    "B": [
+      {
+        "detector_id": "D01",
+        "label": "Regla de volatilidad/VIX",
+        "family": "Reglas",
+        "module": "rule_vix_threshold",
+        "class_name": "RuleVixThreshold",
+        "features": [
+          "VIX_level_z"
+        ],
+        "params": {
+          "feature": "VIX_level_z"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": "B: regla VIX original"
+      },
+      {
+        "detector_id": "D02",
+        "label": "Regla compuesta risk-off",
+        "family": "Reglas",
+        "module": "rule_composite_riskoff",
+        "class_name": "RuleCompositeRiskoff",
+        "features": [
+          "VIX_level_z",
+          "credit_BAA10Y_z",
+          "slope_10y2y_z",
+          "SP500_drawdown"
+        ],
+        "params": {
+          "signs": {
+            "VIX_level_z": 1,
+            "credit_BAA10Y_z": 1,
+            "slope_10y2y_z": -1,
+            "SP500_drawdown": -1
+          }
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D03",
+        "label": "GMM (K=3)",
+        "family": "Clustering",
+        "module": "clustering_gmm",
+        "class_name": "ClusteringGMM",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond"
+        ],
+        "params": {
+          "n_states": 3,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D04",
+        "label": "HMM gaussiano (K=2)",
+        "family": "HMM",
+        "module": "hmm_gaussian_2s",
+        "class_name": "HMMGaussian2S",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond"
+        ],
+        "params": {
+          "n_states": 2,
+          "n_init": 5,
+          "features": [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z",
+            "VIX_level_z",
+            "MOVE_level_z",
+            "credit_BAA10Y_z",
+            "DFII10_change_z",
+            "corr_spx_bond"
+          ],
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D05",
+        "label": "Markov-Switching varianza",
+        "family": "Markov-Switching",
+        "module": "markov_switching_var",
+        "class_name": "MarkovSwitchingVar",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "n_states": 2
+        },
+        "step": 63,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D06",
+        "label": "GJR-GARCH-t",
+        "family": "GARCH",
+        "module": "garch_t_vol",
+        "class_name": "GarchTVol",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D07",
+        "label": "CUSUM online robusto",
+        "family": "Change-point",
+        "module": "changepoint_online",
+        "class_name": "ChangepointOnline",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "cost": "robust"
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D08",
+        "label": "HMM t-Student (K=4)",
+        "family": "HMM",
+        "module": "hmm_tstudent",
+        "class_name": "HMMTStudent",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond"
+        ],
+        "params": {
+          "n_states": 4,
+          "n_init": 3,
+          "t_n_iter": 25,
+          "features": [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z",
+            "VIX_level_z",
+            "MOVE_level_z",
+            "credit_BAA10Y_z",
+            "DFII10_change_z",
+            "corr_spx_bond"
+          ],
+          "random_state": 42
+        },
+        "step": 126,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D09",
+        "label": "Statistical Jump Model",
+        "family": "Jump model",
+        "module": "jump_model",
+        "class_name": "JumpModel",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond"
+        ],
+        "params": {
+          "n_states": 2,
+          "jump_penalty": 50.0,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D10",
+        "label": "Turbulencia Mahalanobis",
+        "family": "Reglas multivariantes",
+        "module": "turbulence_mahalanobis",
+        "class_name": "TurbulenceMahalanobis",
+        "features": [
+          "SP500_ret",
+          "VIX_change_z",
+          "DXY_change_z",
+          "slope_10y2y_z"
+        ],
+        "params": {
+          "features": [
+            "SP500_ret",
+            "VIX_change_z",
+            "DXY_change_z",
+            "slope_10y2y_z"
+          ]
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": false,
+        "variant": ""
+      },
+      {
+        "detector_id": "D11",
+        "label": "MS-GARCH",
+        "family": "GARCH",
+        "module": "msgarch_regime",
+        "class_name": "MSGarchRegime",
+        "features": [
+          "SP500_ret"
+        ],
+        "params": {
+          "feature": "SP500_ret",
+          "n_init": 1,
+          "maxiter": 100
+        },
+        "step": 126,
+        "expanding": false,
+        "slow": true,
+        "variant": ""
+      },
+      {
+        "detector_id": "D12",
+        "label": "Autoencoder + GMM",
+        "family": "Deep learning",
+        "module": "deep_ae_regime",
+        "class_name": "DeepAERegime",
+        "features": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond"
+        ],
+        "params": {
+          "n_states": 2,
+          "latent_dim": 2,
+          "hidden": 8,
+          "epochs": 40,
+          "gmm_n_init": 3,
+          "random_state": 42
+        },
+        "step": 21,
+        "expanding": true,
+        "slow": true,
+        "variant": ""
+      }
+    ]
+  },
+  "cache_fingerprints": {
+    "A": {
+      "D01": "d52aebe1866aea923c92532017e262d0616a05441b7f67af374d6e1f6a2a3288",
+      "D02": "a637ba4073c2400333d47f41e9374b2ae2e3ebe26f680bb5a29091db0931baa4",
+      "D03": "e36b0043a92826af242c0baaf4088a0272b2072550b7f5af8563d9d69ad7a3db",
+      "D04": "55c44eb7fdcdedd913d5b85954e099429b8295ff8fe92aa2004a4ac096249b13",
+      "D05": "8a22e23d808d80970fdf390e95e44a2ea6b2b08928bb928978cb151bb7b332c2",
+      "D06": "67f626d8b8cb07631f0681b65dcbafd150b5b02216e99843a25a11f75add9aa7",
+      "D07": "79d0f2a7f142b19ec1946c558afcffd2f8862530605593feaf5ed7b458d012d8",
+      "D08": "76c9eec18d7ad49d3b591294370bd31f0374a543a03613141752a32ef0298676",
+      "D09": "e6bd024880c25a6c09b98563b197294bcfdd3f4d1d544e4d2e03459131b94a34",
+      "D10": "69113eb1325d8ec89828629c7cf8a7370a7eee9574cbb670582b6d51d908ab0a",
+      "D11": "14bfab6a6693964b58053cbe238d0e73f60cc89afe4e8259a586232aac514a66",
+      "D12": "49c173d04ff66de8a607d507f44969517f3de5a9e4eaa93ca917b015247f55bc"
+    },
+    "B": {
+      "D01": "3dfbc1ac6031acb89774f31ef59673b9694e05968176ae57c5236fafe4c79269",
+      "D02": "ecebd7392e5c24c36880d9218df680a6d0d49cc179b51eab9bb3a7de0548e394",
+      "D03": "609817e0da3f1185743dd86fef0a718a031ab86f9eafc970b22a058aee35f62c",
+      "D04": "57dda44b0bcd988c009a4031b73487e179d52c9e61adcb0ecc07d93207ad6e78",
+      "D05": "d0f2430b382afa5a19bd9fd2d4e0076a349c0c7839287ced6417448746e03e34",
+      "D06": "28cb38cf12fdf260e0805c34df8b03f215fcd4da07973e643fe1b47970e4283b",
+      "D07": "df41348aecf8f7964d345e0978edb9dee70d834537053ea286ea6d06b641f5c5",
+      "D08": "95443a4e1da4f0e1866143067400678eab81d43d65fa9482653f1bd2a7e323f3",
+      "D09": "76c82c7995d3f6277c5a44f3b4ac7bfd1afc271799ffdcded0c6213cbb7a224f",
+      "D10": "f94e0ee7e99d123dcd305863149ab67d8aa20fdfefc6d39b64fabc4220c21b42",
+      "D11": "1dbf9ac59c3088bfc32a69931372495e6a53583f9bce66fd63df977aba5e91d0",
+      "D12": "e761c4fd89548c7328982663150510fae0bd56ec020af6780f7143645ea793be"
+    }
+  }
+}
