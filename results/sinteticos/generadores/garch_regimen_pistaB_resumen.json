@@ -1,0 +1,141 @@
+{
+  "nombre": "garch_regimen",
+  "familia": "parametricos",
+  "params": {
+    "columna_mercado": null,
+    "ajuste": "conjunto",
+    "persistencia_max": 0.995,
+    "min_obs_regimen": 100,
+    "techo_varianza": 1.0,
+    "cuantil_techo": 0.99,
+    "techo_nivel": 1.5,
+    "regresor_mercado": "retorno",
+    "residuos": "bootstrap",
+    "ridge": 0.0001,
+    "radio_max": 0.999,
+    "largo_contexto": 1
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 0.450072600004205,
+  "n_historial": 2,
+  "final_regimen": 1,
+  "final_n_obs": 699,
+  "final_n_rachas": 4,
+  "final_origen": "conjunto",
+  "final_mu": -0.1330781260155276,
+  "final_omega": 0.03539466607946196,
+  "final_alfa": 8.118338846576877e-18,
+  "final_gamma": 0.21449269140241883,
+  "final_beta": 0.8835373314274593,
+  "final_persistencia": 0.9907836771286687,
+  "final_nu": 15.233742511289625,
+  "final_vol_incondicional": 1.959702151103479,
+  "final_vol_incondicional_original": 0.02498520892596497,
+  "final_techo_h": 17.76773989344775,
+  "final_h_filtrada_max": 23.710960471987082,
+  "final_frac_train_sobre_techo": 0.010014306151645207,
+  "final_loglik": -1109.8994157134991,
+  "final_loglik_arch": -1122.5270659116447,
+  "final_convergencia_arch": true,
+  "final_convergencia": true,
+  "final_loglik_conjunta": -2866.5460751110427,
+  "final_loglik_conjunta_inicial": -2875.4096260465076,
+  "final_n_var": 699,
+  "final_radio_espectral_var": 0.999,
+  "final_radio_recortado": true,
+  "final_r2_var_medio": 0.8353411004814966,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42,
+      "fraccion_recorte_varianza": 0.004130952380952381,
+      "fraccion_recorte_varianza_regimen": [
+        0.004805257827664782,
+        0.0020827992822353243
+      ],
+      "fraccion_recorte_mercado": 2.777777777777778e-05,
+      "fraccion_recorte_nivel": 7.936507936507937e-07,
+      "techo_h": [
+        2.6583550778899374,
+        17.76773989344775
+      ]
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42,
+      "fraccion_recorte_varianza": 0.003924603174603174,
+      "fraccion_recorte_varianza_regimen": [
+        0.004321556579621096,
+        0.0025573192239858908
+      ],
+      "fraccion_recorte_mercado": 1.1904761904761905e-05,
+      "fraccion_recorte_nivel": 6.349206349206349e-06,
+      "techo_h": [
+        2.6583550778899374,
+        17.76773989344775
+      ]
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 1.1818382999990718,
+    "impuesta": 1.1500786999968113
+  },
+  "control": 1837.1470914520114
+}

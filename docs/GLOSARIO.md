@@ -146,6 +146,22 @@ cada notebook de familia):
 features + las etiquetas (crisis, falsos positivos, troughs). Es la **variable controlada** de la
 Fase D: un detector puede cambiar su algoritmo, pero **no** estas ventanas/etiquetas.
 
+## Generadores sintéticos (fase S)
+
+Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
+[`teoria/F8_generadores_sinteticos.md`](teoria/F8_generadores_sinteticos.md).
+
+| Término | Definición |
+|---|---|
+| **régimen de referencia sintético** | etiqueta binaria con la que se ajustan **todos** los generadores: 1 = el día cae dentro de alguna ventana `[pico, suelo]` de `crisis_windows` de la pista (`configs/benchmark_spec.yaml`), 0 = calma (`sinteticos.datos.regimen_referencia`). **Nunca sale de un detector** (sería circular: ese detector jugaría en casa sobre lo generado) |
+| **semántica del régimen sintético** | en el histórico `regime = 1` es «tramo pico→suelo de una crisis del catálogo»; en una trayectoria sintética es **«día extraído de la ley condicional de crisis»**: el tramo no tiene por qué ir de un máximo a un mínimo del precio generado. El laboratorio mide si un detector reconoce ese cambio de ley, no el recall por evento del benchmark |
+| **corte de entrenamiento** (`fin_train`) | última fecha que ve un generador: pista A 2006-12-31, pista B 2017-12-31 (`configs/sinteticos.yaml`). No puede partir un episodio de crisis |
+| **cadena de régimen** | el régimen es exógeno a los generadores: o se **impone** la secuencia al muestrear, o se **simula** con la cadena estimada en train (Markov con duraciones geométricas, o semi-Markov con las duraciones empíricas de las rachas), arrancando del último estado de train o de la distribución estacionaria |
+| **espacio de generación** (de trabajo) | lo que modelan los generadores: el log-retorno crudo del S&P 500 (`SP500_ret`) más las columnas **no derivables** del núcleo, estandarizadas solo con train. Las cuatro features deterministas de la senda del S&P 500 (`SP500_ret_z`, `SP500_vol_z`, `SP500_momentum`, `SP500_drawdown`) **no** se modelan |
+| **re-derivación** | vuelta al espacio público: esas cuatro features se recalculan con las mismas primitivas causales de `regimenes.features` sobre [historia real del S&P 500 hasta `fin_train`] + [retornos sintéticos]. Sobre la historia real reproduce el panel con error 0 (`error_rederivacion_`). Cada trayectoria es una continuación hipotética del mercado tras el corte |
+| **siguiente bloque** | formulación de RBIG y de los generadores neuronales: se modela la ley del bloque de 21 sesiones siguiente condicionada al contexto previo (21 sesiones en los neuronales, 5 en RBIG; `configs/sinteticos.yaml`) y al régimen de cada día del bloque, y una trayectoria larga se obtiene **encadenando** bloques (el bloque generado pasa a ser contexto del siguiente; el primer contexto son las últimas filas reales de train) |
+| **fechas sintéticas** | días hábiles de lunes a viernes posteriores al corte; son una etiqueta ordenada, **no** el calendario de la NYSE: no se cruzan por fecha con datos reales |
+
 ---
 
 ## Dónde está cada cosa (rutas y módulos)
@@ -175,13 +191,14 @@ con `Path(__file__)`):
 | `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado |
 | `regimenes.viz` (`figuras`) | estilo de casa de figuras |
 | `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
-| `regimenes.sinteticos` (`base`, `registry`, `validacion`) | interfaz `Generador` y validación (esqueleto) |
+| `regimenes.sinteticos` (`base`, `comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`, `parametricos/`, `neuronales/`, `validacion`) | interfaz `Generador` y base común `GeneradorBase`, régimen de referencia y cadena de regímenes, espacio de generación y re-derivación, bloques y encadenado, registro perezoso (`registry.crear`) y 10 generadores (6 paramétricos; 4 neuronales con el extra `[deep]`). `validacion` sigue siendo solo firmas (notebook 16) |
 
 La historia de la Capa 1 (decisiones, hallazgos, memoria, informe y métricas v1) está en
 [`historia/capa1/`](historia/capa1/README.md); su código y notebooks originales, en el tag `capa1-final`.
 
 **Familias e IDs.** `Fk` = familia de la teoría (F1 reglas/umbrales, F2 clustering, F3 HMM, F4
-Markov-Switching, F5 GARCH, F6 change-point, F7 redes). `Dnn` = detector (D01–D12 en el benchmark;
+Markov-Switching, F5 GARCH, F6 change-point, F7 redes; F8 no es una familia de detectores sino la
+de los generadores sintéticos). `Dnn` = detector (D01–D12 en el benchmark;
 D13 `hsmm_tstudent` solo como ablación de D08, fuera del ranking y de la huella de caché). El reparto
 por familia es el de los subpaquetes `f1_reglas` … `f7_deep` y de los notebooks 05–11.
 
@@ -195,7 +212,7 @@ por familia es el de los subpaquetes `f1_reglas` … `f7_deep` y de los notebook
 | **Features** | `02_diseno_preprocesado` → `03_preprocesado` | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels |
 | **D — detectores** | `04_protocolo_evaluacion` → `12_comparativa` → `05`–`11` (una familia cada uno) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/detectores/` |
 | **E — fusión** | `13_fusion_d07_d08` · `14_fusion_d02_d06` | `results/fusion/` |
-| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `data/sinteticos/`, `results/sinteticos/` (esqueletos) |
+| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `15`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste + historial de convergencia + tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `16`). `16`–`18`: esqueletos (validación, laboratorio, aumento) |
 | **F — cierre** | `19_decision_final` → `20_pseudolive` | sistema congelado + `results/pseudolive/` (esqueletos) |
 
 **Orden de ejecución en la fase D.** La numeración es de *lectura* (familias antes de la comparativa),

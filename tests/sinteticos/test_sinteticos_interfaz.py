@@ -1,14 +1,16 @@
-"""Contrato del esqueleto ``regimenes.sinteticos``.
-
-Fija dos cosas mientras no exista ningun generador real:
+"""Contrato de la interfaz ``regimenes.sinteticos``.
 
 1. La interfaz abstracta ``Generador`` (``name``/``fit``/``sample``): no se puede
    instanciar, una subclase incompleta tampoco, y una subclase minima cumple el
    contrato documentado (``fit`` devuelve ``self``; ``sample`` devuelve
    ``n_paths`` trayectorias de ``length`` pasos con columna ``regime``).
-2. Los stubs (registro y validacion) levantan ``NotImplementedError`` en lugar
-   de devolver resultados vacios silenciosos. Cuando se implemente uno, este
-   test debe actualizarse a la vez (es deliberado: obliga a cubrirlo).
+2. El registro (``registrar``/``crear``) con una subclase directa de ``Generador``.
+3. Los stubs de validacion (notebook 16) levantan ``NotImplementedError`` en
+   lugar de devolver resultados vacios silenciosos. Cuando se implemente uno,
+   este test debe actualizarse a la vez (es deliberado: obliga a cubrirlo).
+
+La base comun y el contrato de los generadores reales se prueban en
+``test_sinteticos_cimientos.py`` y ``test_contrato_generadores.py``.
 
 No necesita datos: corre igual en local, en ``make test-rapido`` y en CI.
 """
@@ -128,20 +130,38 @@ def test_metodos_abstractos_de_la_base_levantan_not_implemented(panel: pd.DataFr
         Generador.sample(gen, 1, 10)
 
 
-# --------------------------------------------------------------------------- stubs
+# --------------------------------------------------------------------------- registro y stubs
 
-def test_registro_vacio_y_sin_implementar() -> None:
-    assert registry.GENERADORES == {}
-    with pytest.raises(NotImplementedError):
-        registry.registrar(_GeneradorGaussiano)
-    with pytest.raises(NotImplementedError):
-        registry.crear("msvar")
-    assert registry.GENERADORES == {}
+def test_registro_registra_crea_y_rechaza_duplicados() -> None:
+    antes = dict(registry.GENERADORES)
+    try:
+        assert registry.registrar(_GeneradorGaussiano) is _GeneradorGaussiano
+        assert registry.GENERADORES["juguete_gauss"] is _GeneradorGaussiano
+        assert isinstance(registry.crear("juguete_gauss"), _GeneradorGaussiano)
+        assert "juguete_gauss" in registry.disponibles()
+        registry.registrar(_GeneradorGaussiano)  # re-registrar la misma clase es inocuo
+
+        class Impostor(_GeneradorGaussiano):
+            pass
+
+        with pytest.raises(ValueError):
+            registry.registrar(Impostor)
+        with pytest.raises(TypeError):
+            registry.registrar(dict)  # type: ignore[arg-type]
+        with pytest.raises(KeyError):
+            registry.crear("msvar")
+    finally:
+        registry.GENERADORES.clear()
+        registry.GENERADORES.update(antes)
 
 
-def test_subpaquetes_de_familias_vacios() -> None:
+def test_subpaquetes_de_familias_no_importan_generadores() -> None:
+    # Registro perezoso: los __init__ de familia no importan ningun generador
+    # (ni torch); cada modulo se carga bajo demanda con registry.crear().
     assert parametricos.__all__ == []
     assert neuronales.__all__ == []
+    familias = {familia for _, familia in registry.CATALOGO.values()}
+    assert familias == {"parametricos", "neuronales"}
 
 
 def _metricas_configuradas() -> list[str]:

@@ -252,3 +252,15 @@ report/*.synctex.gz
 # Figuras y paneles regenerables de los notebooks de familia (van embebidos en los notebooks)
 results/detectores/**/*.png
 results/detectores/**/*.parquet
+
+# Figuras y binarios de modelos de la fase de sinteticos (se regeneran con los
+# notebooks 15-18); los CSV/JSON/MD pequenos de results/sinteticos SI se versionan
+results/sinteticos/**/*.png
+results/sinteticos/**/*.parquet
+results/sinteticos/**/*.pkl
+results/sinteticos/**/*.pickle
+results/sinteticos/**/*.joblib
+results/sinteticos/**/*.pt
+results/sinteticos/**/*.pth
+results/sinteticos/**/*.npy
+results/sinteticos/**/*.npz

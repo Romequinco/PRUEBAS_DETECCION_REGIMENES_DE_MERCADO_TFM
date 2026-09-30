@@ -1,28 +1,87 @@
-# Configuracion de generadores sinteticos (regimenes.sinteticos) - ESQUELETO.
-# Aun no hay generadores implementados; este archivo fija el formato esperado.
+# Configuracion de generadores sinteticos (regimenes.sinteticos).
 # Rutas: salidas en data/sinteticos/ (gitignored) y results/sinteticos/
 # (ver regimenes.rutas.DATA_SINTETICOS / RESULTS_SINTETICOS).
 
-version: 0
+version: 1
 
 semilla: 42
 
-# Panel real de referencia sobre el que se ajustan los generadores.
+# Panel real de referencia sobre el que se ajustan los generadores (pista principal).
+# Regimen de referencia: 1 = dia dentro de [pico, suelo] de crisis_windows de la pista
+# (configs/benchmark_spec.yaml), 0 = calma. Nunca sale de un detector.
 entrenamiento:
-  pista: B            # A | B (ver configs/benchmark_spec.yaml)
-  fin_train: null     # fecha de corte (YYYY-MM-DD); nada posterior entra en fit()
-  features: []        # vacio = mismas features que el nucleo de la pista
+  pista: A                  # A | B (ver configs/benchmark_spec.yaml)
+  fin_train: "2006-12-31"   # corte inclusive; nada posterior entra en fit(). No parte ningun episodio
+                            # (dotcom termina 2002-10-09; la GFC empieza 2007-10-09)
+  features: []              # vacio = nucleo de la pista (CORE_A) + SP500_ret
 
-# Generadores a ajustar: nombre del registro (regimenes.sinteticos.registry) -> parametros.
-generadores: {}
-#  msvar:
-#    familia: parametricos
-#    params: {n_regimenes: 2}
+# Pista secundaria: mismo formato que `entrenamiento`.
+entrenamiento_secundario:
+  pista: B
+  fin_train: "2017-12-31"   # no parte ningun episodio (china_oil termina 2016-02-11;
+                            # volmageddon empieza 2018-01-26)
+  features: []              # vacio = CORE_B + SP500_ret
 
+# Generadores a ajustar: nombre del registro (regimenes.sinteticos.registry.CATALOGO)
+# -> familia y parametros. `params` sobrescribe los valores por defecto (`PARAMS`) de
+# la clase; una clave que la clase no declare es un error.
+generadores:
+  jitter:
+    familia: parametricos
+    params: {sigma: 0.1, longitud_media: 63}
+  bootstrap_regimen:
+    familia: parametricos
+    params: {longitud_media: 21}
+  gaussiano_regimen:
+    familia: parametricos
+    params: {estimador: ledoit_wolf}
+  var_regimen:
+    familia: parametricos
+    # anclar_media: la constante fija el punto fijo de cada regimen en su media muestral
+    # (false = constante de MCO; ver el docstring de parametricos/var_regimen.py)
+    params: {orden: 1, innovaciones: bootstrap, radio_max: 0.999, anclar_media: true}
+  garch_regimen:
+    familia: parametricos
+    # techo de h_t = techo_varianza x cuantil `cuantil_techo` de la varianza filtrada en
+    # train del regimen vigente (los recortes quedan contados en diagnostico_muestreo())
+    params: {ajuste: conjunto, persistencia_max: 0.995, techo_varianza: 1.0, cuantil_techo: 0.99, techo_nivel: 1.5}
+  rbig:
+    familia: parametricos
+    params: {largo_bloque: 21, largo_contexto: 5, n_componentes: 64}
+  flow_matching:
+    familia: neuronales
+    params: {largo_bloque: 21, largo_contexto: 21, epocas: 40}
+  difusion:
+    familia: neuronales
+    params: {largo_bloque: 21, largo_contexto: 21, epocas: 60}
+  cvae:
+    familia: neuronales
+    params: {largo_bloque: 21, largo_contexto: 21, epocas: 120}
+  cgan:
+    familia: neuronales
+    params: {largo_bloque: 21, largo_contexto: 21, epocas: 150}
+
+# Muestreo. `regimenes: null` = la cadena de regimenes se simula con las opciones
+# `inicial` y `duraciones`, que se pasan a sample() como dict:
+#   gen.sample(n_paths, length, {"inicial": ..., "duraciones": ...}, random_state=semilla)
+# - inicial: ultimo (continua el estado de la ultima fila de train) | estacionaria (el estado
+#   de partida de cada trayectoria se sortea de la distribucion estacionaria).
+# - duraciones: geometricas (Markov con la matriz empirica de train) | empiricas (semi-Markov:
+#   remuestrea las duraciones reales de las rachas de train de cada regimen).
+# Por que 100 trayectorias y arranque estacionario: con 50 trayectorias arrancando todas en
+# calma (ultimo estado de train) el % de crisis de la muestra tenia un error estandar de 2,1
+# puntos y quedaba por debajo del de train, y 7 de las 50 trayectorias no contenian ninguna
+# crisis (inservibles para evaluar deteccion). Con `estacionaria` el % esperado de crisis es
+# el de train. OJO: con duraciones geometricas sigue habiendo trayectorias sin crisis (~9 %
+# en la pista A: la calma dura de media ~1130 sesiones); quedan contadas en
+# diagnostico_muestreo()["n_trayectorias_sin_crisis"]. `duraciones: empiricas` las elimina
+# (ninguna calma real de train llega a 2520 sesiones) a cambio de mas dias de crisis (cifras por pista en el notebook 15, seccion 2.1).
 muestreo:
-  n_paths: 0
-  length: 0           # sesiones por trayectoria
-  regimenes: null     # null = el generador simula tambien la cadena de regimenes
+  n_paths: 100
+  length: 2520        # sesiones por trayectoria (~10 anos)
+  regimenes: null     # null = cadena simulada con `inicial` y `duraciones`
+  inicial: estacionaria
+  duraciones: geometricas
 
 validacion:
   metricas: [fidelidad_marginal, fidelidad_dependencia, fidelidad_regimenes, utilidad_tstr, memorizacion]

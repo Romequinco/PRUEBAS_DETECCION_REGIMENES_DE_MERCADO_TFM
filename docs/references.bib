@@ -13,6 +13,8 @@
 %   - nn_bucci2021         -> clust_bucci2022realized (preprint arXiv de la versión
 %                                                     de revista; mismo título)
 % Con BibTeX clásico (sin `ids`), citar la clave canónica.
+% Ampliación (2026-09-30): bloque [F8] con las claves synth_* de
+% docs/teoria/F8_generadores_sinteticos.bib (fase S, generadores sintéticos).
 % No confundir (papers DISTINTOS): hmm_nystrup2018 vs nn_nystrup2018;
 % kritzman2010 (turbulencia, "Skulls...") vs kritzman2012 (regímenes).
 
@@ -944,4 +946,335 @@
   number  = {1},
   pages   = {83--95},
   doi     = {10.1080/14697688.2017.1342857}
+}
+
+% ===========================================================================
+% [F8] Generadores de datos sintéticos  (sidecar F8_generadores_sinteticos.bib)
+%      Fusionado el 2026-09-30. Reutiliza sin re-declarar: hamilton1989,
+%      nn_kingma2014, vol_glosten1993, vol_bollerslev1987, vol_gray1996,
+%      vol_haasmittnikpaolella2004.
+% ===========================================================================
+@article{synth_cont2001,
+  author  = {Cont, Rama},
+  title   = {Empirical Properties of Asset Returns: Stylized Facts and Statistical Issues},
+  journal = {Quantitative Finance},
+  year    = {2001},
+  volume  = {1},
+  number  = {2},
+  pages   = {223--236},
+  doi     = {10.1080/713665670}
+}
+
+@article{synth_kunsch1989,
+  author  = {K{\"u}nsch, Hans R.},
+  title   = {The Jackknife and the Bootstrap for General Stationary Observations},
+  journal = {The Annals of Statistics},
+  year    = {1989},
+  volume  = {17},
+  number  = {3},
+  pages   = {1217--1241},
+  doi     = {10.1214/aos/1176347265}
+}
+
+@article{synth_politisromano1994,
+  author  = {Politis, Dimitris N. and Romano, Joseph P.},
+  title   = {The Stationary Bootstrap},
+  journal = {Journal of the American Statistical Association},
+  year    = {1994},
+  volume  = {89},
+  number  = {428},
+  pages   = {1303--1313},
+  doi     = {10.1080/01621459.1994.10476870}
+}
+
+@article{synth_ledoitwolf2004,
+  author  = {Ledoit, Olivier and Wolf, Michael},
+  title   = {A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices},
+  journal = {Journal of Multivariate Analysis},
+  year    = {2004},
+  volume  = {88},
+  number  = {2},
+  pages   = {365--411},
+  doi     = {10.1016/S0047-259X(03)00096-4}
+}
+
+@book{synth_krolzig1997,
+  author    = {Krolzig, Hans-Martin},
+  title     = {Markov-Switching Vector Autoregressions: Modelling, Statistical Inference, and Application to Business Cycle Analysis},
+  series    = {Lecture Notes in Economics and Mathematical Systems},
+  volume    = {454},
+  publisher = {Springer},
+  address   = {Berlin, Heidelberg},
+  year      = {1997},
+  doi       = {10.1007/978-3-642-51684-9}
+}
+
+@article{synth_bollerslev1990,
+  author  = {Bollerslev, Tim},
+  title   = {Modelling the Coherence in Short-Run Nominal Exchange Rates: A Multivariate Generalized {ARCH} Model},
+  journal = {The Review of Economics and Statistics},
+  year    = {1990},
+  volume  = {72},
+  number  = {3},
+  pages   = {498--505},
+  doi     = {10.2307/2109358}
+}
+
+@article{synth_laparra2011,
+  author  = {Laparra, Valero and Camps-Valls, Gustavo and Malo, Jes{\'u}s},
+  title   = {Iterative Gaussianization: From {ICA} to Random Rotations},
+  journal = {IEEE Transactions on Neural Networks},
+  year    = {2011},
+  volume  = {22},
+  number  = {4},
+  pages   = {537--549},
+  doi     = {10.1109/TNN.2011.2106511},
+  note    = {arXiv:1602.00229}
+}
+
+@inproceedings{synth_chengopinath2000,
+  author    = {Chen, Scott Saobing and Gopinath, Ramesh A.},
+  title     = {Gaussianization},
+  booktitle = {Advances in Neural Information Processing Systems 13 (NIPS 2000)},
+  pages     = {423--429},
+  year      = {2000},
+  url       = {https://proceedings.neurips.cc/paper_files/paper/2000/hash/3c947bc2f7ff007b86a9428b74654de5-Abstract.html}
+}
+
+@inproceedings{synth_sohn2015,
+  author    = {Sohn, Kihyuk and Lee, Honglak and Yan, Xinchen},
+  title     = {Learning Structured Output Representation using Deep Conditional Generative Models},
+  booktitle = {Advances in Neural Information Processing Systems 28 (NIPS 2015)},
+  year      = {2015},
+  url       = {https://papers.nips.cc/paper_files/paper/2015/hash/8d55a249e6baa5c06772297520da2051-Abstract.html}
+}
+
+@inproceedings{synth_higgins2017,
+  author    = {Higgins, Irina and Matthey, Loic and Pal, Arka and Burgess, Christopher and Glorot, Xavier and Botvinick, Matthew and Mohamed, Shakir and Lerchner, Alexander},
+  title     = {beta-{VAE}: Learning Basic Visual Concepts with a Constrained Variational Framework},
+  booktitle = {5th International Conference on Learning Representations (ICLR)},
+  year      = {2017},
+  address   = {Toulon, France},
+  url       = {https://openreview.net/forum?id=Sy2fzU9gl}
+}
+
+@inproceedings{synth_goodfellow2014,
+  author    = {Goodfellow, Ian J. and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+  title     = {Generative Adversarial Nets},
+  booktitle = {Advances in Neural Information Processing Systems 27 (NIPS 2014)},
+  year      = {2014},
+  note      = {arXiv:1406.2661},
+  eprint    = {1406.2661},
+  archivePrefix = {arXiv},
+  url       = {https://papers.nips.cc/paper_files/paper/2014/hash/f033ed80deb0234979a61f95710dbe25-Abstract.html}
+}
+
+@misc{synth_mirzaosindero2014,
+  author = {Mirza, Mehdi and Osindero, Simon},
+  title  = {Conditional Generative Adversarial Nets},
+  year   = {2014},
+  note   = {arXiv:1411.1784},
+  eprint = {1411.1784},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/1411.1784}
+}
+
+@inproceedings{synth_arjovsky2017,
+  author    = {Arjovsky, Martin and Chintala, Soumith and Bottou, L{\'e}on},
+  title     = {Wasserstein Generative Adversarial Networks},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {70},
+  pages     = {214--223},
+  year      = {2017},
+  note      = {arXiv:1701.07875},
+  eprint    = {1701.07875},
+  archivePrefix = {arXiv},
+  url       = {https://proceedings.mlr.press/v70/arjovsky17a.html}
+}
+
+@inproceedings{synth_gulrajani2017,
+  author    = {Gulrajani, Ishaan and Ahmed, Faruk and Arjovsky, Martin and Dumoulin, Vincent and Courville, Aaron},
+  title     = {Improved Training of {W}asserstein {GAN}s},
+  booktitle = {Advances in Neural Information Processing Systems 30 (NIPS 2017)},
+  year      = {2017},
+  note      = {arXiv:1704.00028},
+  eprint    = {1704.00028},
+  archivePrefix = {arXiv},
+  url       = {https://papers.nips.cc/paper_files/paper/2017/hash/892c3b1c6dccd52936e27cbd0ff683d6-Abstract.html}
+}
+
+@inproceedings{synth_ho2020,
+  author    = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},
+  title     = {Denoising Diffusion Probabilistic Models},
+  booktitle = {Advances in Neural Information Processing Systems 33 (NeurIPS 2020)},
+  pages     = {6840--6851},
+  year      = {2020},
+  note      = {arXiv:2006.11239},
+  eprint    = {2006.11239},
+  archivePrefix = {arXiv},
+  url       = {https://papers.nips.cc/paper_files/paper/2020/hash/4c5bcfec8584af0d967f1ab10179ca4b-Abstract.html}
+}
+
+@inproceedings{synth_song2021,
+  author    = {Song, Jiaming and Meng, Chenlin and Ermon, Stefano},
+  title     = {Denoising Diffusion Implicit Models},
+  booktitle = {9th International Conference on Learning Representations (ICLR)},
+  year      = {2021},
+  note      = {arXiv:2010.02502},
+  eprint    = {2010.02502},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2010.02502}
+}
+
+@misc{synth_hosalimans2022,
+  author = {Ho, Jonathan and Salimans, Tim},
+  title  = {Classifier-Free Diffusion Guidance},
+  year   = {2022},
+  note   = {arXiv:2207.12598. Versi{\'o}n corta en el NeurIPS 2021 Workshop on Deep Generative Models and Downstream Applications},
+  eprint = {2207.12598},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2207.12598}
+}
+
+@inproceedings{synth_nicholdhariwal2021,
+  author    = {Nichol, Alexander Quinn and Dhariwal, Prafulla},
+  title     = {Improved Denoising Diffusion Probabilistic Models},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning (ICML)},
+  series    = {PMLR},
+  volume    = {139},
+  pages     = {8162--8171},
+  year      = {2021},
+  note      = {arXiv:2102.09672},
+  eprint    = {2102.09672},
+  archivePrefix = {arXiv},
+  url       = {https://proceedings.mlr.press/v139/nichol21a.html}
+}
+
+@inproceedings{synth_lipman2023,
+  author    = {Lipman, Yaron and Chen, Ricky T. Q. and Ben-Hamu, Heli and Nickel, Maximilian and Le, Matt},
+  title     = {Flow Matching for Generative Modeling},
+  booktitle = {11th International Conference on Learning Representations (ICLR)},
+  year      = {2023},
+  note      = {arXiv:2210.02747},
+  eprint    = {2210.02747},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2210.02747}
+}
+
+@inproceedings{synth_liu2023,
+  author    = {Liu, Xingchao and Gong, Chengyue and Liu, Qiang},
+  title     = {Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow},
+  booktitle = {11th International Conference on Learning Representations (ICLR)},
+  year      = {2023},
+  note      = {arXiv:2209.03003},
+  eprint    = {2209.03003},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2209.03003}
+}
+
+@inproceedings{synth_yoon2019,
+  author    = {Yoon, Jinsung and Jarrett, Daniel and van der Schaar, Mihaela},
+  title     = {Time-series Generative Adversarial Networks},
+  booktitle = {Advances in Neural Information Processing Systems 32 (NeurIPS 2019)},
+  year      = {2019},
+  url       = {https://papers.nips.cc/paper_files/paper/2019/hash/c9efe5f26cd17ba6216bbe2a7d26d490-Abstract.html}
+}
+
+@article{synth_wiese2020,
+  author  = {Wiese, Magnus and Knobloch, Robert and Korn, Ralf and Kretschmer, Peter},
+  title   = {Quant {GAN}s: Deep Generation of Financial Time Series},
+  journal = {Quantitative Finance},
+  year    = {2020},
+  volume  = {20},
+  number  = {9},
+  pages   = {1419--1440},
+  doi     = {10.1080/14697688.2020.1730426}
+}
+
+@misc{synth_desai2021,
+  author = {Desai, Abhyuday and Freeman, Cynthia and Wang, Zuhui and Beaver, Ian},
+  title  = {{TimeVAE}: A Variational Auto-Encoder for Multivariate Time Series Generation},
+  year   = {2021},
+  note   = {arXiv:2111.08095},
+  eprint = {2111.08095},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2111.08095}
+}
+
+@misc{synth_buehler2020,
+  author = {B{\"u}hler, Hans and Horvath, Blanka and Lyons, Terry and Perez Arribas, Imanol and Wood, Ben},
+  title  = {A Data-driven Market Simulator for Small Data Environments},
+  year   = {2020},
+  note   = {arXiv:2006.14498},
+  eprint = {2006.14498},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/2006.14498}
+}
+
+@misc{synth_esteban2017,
+  author = {Esteban, Crist{\'o}bal and Hyland, Stephanie L. and R{\"a}tsch, Gunnar},
+  title  = {Real-valued (Medical) Time Series Generation with Recurrent Conditional {GAN}s},
+  year   = {2017},
+  note   = {arXiv:1706.02633},
+  eprint = {1706.02633},
+  archivePrefix = {arXiv},
+  url    = {https://arxiv.org/abs/1706.02633}
+}
+
+@inproceedings{synth_lopezpaz2017,
+  author    = {Lopez-Paz, David and Oquab, Maxime},
+  title     = {Revisiting Classifier Two-Sample Tests},
+  booktitle = {5th International Conference on Learning Representations (ICLR)},
+  year      = {2017},
+  note      = {arXiv:1610.06545},
+  eprint    = {1610.06545},
+  archivePrefix = {arXiv},
+  url       = {https://openreview.net/forum?id=SJkXfE5xx}
+}
+
+@article{synth_liao2024,
+  author  = {Liao, Shujian and Ni, Hao and Sabate-Vidales, Marc and Szpruch, Lukasz and Wiese, Magnus and Xiao, Baoren},
+  title   = {Sig-{W}asserstein {GAN}s for Conditional Time Series Generation},
+  journal = {Mathematical Finance},
+  year    = {2024},
+  volume  = {34},
+  number  = {2},
+  pages   = {622--670},
+  doi     = {10.1111/mafi.12423}
+}
+
+@inproceedings{synth_yuanqiao2024,
+  author    = {Yuan, Xinyu and Qiao, Yan},
+  title     = {Diffusion-{TS}: Interpretable Diffusion for General Time Series Generation},
+  booktitle = {12th International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  note      = {arXiv:2403.01742},
+  eprint    = {2403.01742},
+  archivePrefix = {arXiv},
+  url       = {https://openreview.net/forum?id=4h1apFjO99}
+}
+
+@inproceedings{synth_tashiro2021,
+  author    = {Tashiro, Yusuke and Song, Jiaming and Song, Yang and Ermon, Stefano},
+  title     = {{CSDI}: Conditional Score-based Diffusion Models for Probabilistic Time Series Imputation},
+  booktitle = {Advances in Neural Information Processing Systems 34 (NeurIPS 2021)},
+  pages     = {24804--24816},
+  year      = {2021},
+  note      = {arXiv:2107.03502},
+  eprint    = {2107.03502},
+  archivePrefix = {arXiv},
+  url       = {https://papers.nips.cc/paper_files/paper/2021/hash/cfe8504bda37b575c70ee1a8276f3486-Abstract.html}
+}
+
+@article{synth_conttailgan2026,
+  author  = {Cont, Rama and Cucuringu, Mihai and Xu, Renyuan and Zhang, Chao},
+  title   = {Tail-{GAN}: Learning to Simulate Tail Risk Scenarios},
+  journal = {Management Science},
+  year    = {2026},
+  volume  = {72},
+  number  = {4},
+  pages   = {2917--2936},
+  doi     = {10.1287/mnsc.2023.00936},
+  note    = {Preprint arXiv:2203.01664 (2022)}
 }

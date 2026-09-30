@@ -1,0 +1,114 @@
+{
+  "nombre": "flow_matching",
+  "familia": "neuronales",
+  "params": {
+    "largo_bloque": 21,
+    "largo_contexto": 21,
+    "umbral_persistencia": 0.9,
+    "colas": "arcsinh",
+    "escala_colas": 3.0,
+    "recorte": 1.5,
+    "ancho": 256,
+    "n_bloques": 3,
+    "dim_contexto": 128,
+    "dim_tiempo": 64,
+    "epocas": 40,
+    "tam_lote": 256,
+    "lr": 0.001,
+    "decaimiento_pesos": 0.0001,
+    "recorte_gradiente": 1.0,
+    "ema": 0.999,
+    "equilibrio": 0.25,
+    "frac_validacion": 0.15,
+    "niveles_validacion": 8,
+    "max_muestras_validacion": 1024,
+    "restaurar_mejor": true,
+    "n_pasos": 25,
+    "metodo_integracion": "heun"
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 13.404954199999338,
+  "n_historial": 40,
+  "final_epoca": 40,
+  "final_perdida": 0.9495784640312195,
+  "final_perdida_val": 0.7595242261886597,
+  "final_perdida_val_calma": 0.7595242261886597,
+  "final_perdida_val_crisis": NaN,
+  "final_lr": 2e-05,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42,
+      "fraccion_recortada": 0.0016832611832611833,
+      "coordenadas": 2772000
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42,
+      "fraccion_recortada": 0.002118686868686869,
+      "coordenadas": 2772000
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 19.51545040000201,
+    "impuesta": 19.486985800002003
+  },
+  "control": 1743.221678012138
+}

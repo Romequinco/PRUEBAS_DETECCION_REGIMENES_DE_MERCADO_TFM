@@ -49,7 +49,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-deep = ["torch>=2.1"]                  # D12 autoencoder + GMM (f7_deep)
+deep = ["torch>=2.1"]                  # D12 autoencoder + GMM (f7_deep) y generadores neuronales (sinteticos/neuronales: flow_matching, difusion, cvae, cgan)
 jump = ["jumpmodels>=0.1"]             # D09 Statistical Jump Model (f2_clustering)
 changepoint = ["ruptures>=1.1"]        # oraculo PELT offline citado en D07; el codigo no lo importa
 dev = [

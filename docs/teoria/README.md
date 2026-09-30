@@ -2,7 +2,9 @@
 
 Teoría de los detectores de regímenes del TFM. Las fichas F1–F7 y el documento maestro se
 redactaron en la FASE 2 de la Capa 1 (v1; originales en el tag `capa1-final`); su contenido es
-el de entonces salvo rutas y una nota de ubicación al principio. F8 es nueva (esqueleto).
+el de entonces salvo rutas y una nota de ubicación al principio. F8 es nueva (fase S): describe
+los diez generadores sintéticos implementados en `regimenes.sinteticos` y sigue la misma estructura
+adaptada (no hay detectores; la validación está pendiente del notebook 16).
 
 Cada ficha F1–F7 sigue la misma estructura: definición y supuestos · variantes principales ·
 fortalezas y debilidades · idoneidad para este proyecto (EDA, causalidad) · aplicaciones
@@ -20,15 +22,15 @@ candidatas adicionales. Los notebooks de familia (`notebooks/05`–`11`) toman d
 | [`F5_volatilidad_garch.md`](F5_volatilidad_garch.md) | F5 Volatilidad / GARCH / RS-GARCH | [`F5_volatilidad_garch.bib`](F5_volatilidad_garch.bib) | [D06](../detectores/D06_garch_t_vol.md), [D11](../detectores/D11_msgarch_regime.md) | [`09_familia_F5_garch`](../../notebooks/09_familia_F5_garch.ipynb) |
 | [`F6_change_point.md`](F6_change_point.md) | F6 Change-point detection | [`F6_change_point.bib`](F6_change_point.bib) | [D07](../detectores/D07_changepoint_online.md) | [`10_familia_F6_changepoint`](../../notebooks/10_familia_F6_changepoint.ipynb) |
 | [`F7_redes_neuronales.md`](F7_redes_neuronales.md) | F7 Redes neuronales / no supervisado moderno | [`F7_redes_neuronales.bib`](F7_redes_neuronales.bib) | [D12](../detectores/D12_deep_ae_regime.md) | [`11_familia_F7_deep`](../../notebooks/11_familia_F7_deep.ipynb) |
-| [`F8_generadores_sinteticos.md`](F8_generadores_sinteticos.md) | F8 Generadores sintéticos (**esqueleto**) | pendiente | — | `15_sinteticos_generadores` … `18_sinteticos_aumento` |
+| [`F8_generadores_sinteticos.md`](F8_generadores_sinteticos.md) | F8 Generadores sintéticos (10 generadores: remuestreo, paramétricos por régimen, RBIG y neuronales de «siguiente bloque») | [`F8_generadores_sinteticos.bib`](F8_generadores_sinteticos.bib) | — (generadores, no detectores: `regimenes.sinteticos`) | [`15_sinteticos_generadores`](../../notebooks/15_sinteticos_generadores.ipynb); `16`–`18` pendientes |
 
 ## Bibliografía
 
 - `docs/references.bib` es la bibliografía única del proyecto: contiene ya todas las claves de
   los siete `.bib` de familia (fusionadas en la FASE 2 de la Capa 1; comprobado que no falta
-  ninguna).
+  ninguna) y las de `F8_generadores_sinteticos.bib` (fusionadas el 2026-09-30).
 - Los `.bib` de familia se conservan como *sidecars* de procedencia (qué claves aportó cada
-  ficha). Prefijos: `reglas_`, `clust_`, `hmm_`, `ms_`, `vol_`, `cp_`, `nn_`; las claves
+  ficha). Prefijos: `reglas_`, `clust_`, `hmm_`, `ms_`, `vol_`, `cp_`, `nn_`, `synth_`; las claves
   compartidas sin prefijo (`hamilton1989`, `guidolintimmermann2007`, `kritzman2012`, …)
   viven solo en `docs/references.bib`.
 

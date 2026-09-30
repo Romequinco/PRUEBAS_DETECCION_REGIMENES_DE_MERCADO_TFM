@@ -1,0 +1,96 @@
+{
+  "nombre": "rbig",
+  "familia": "parametricos",
+  "params": {
+    "largo_bloque": 21,
+    "largo_contexto": 5,
+    "n_componentes": 64,
+    "max_capas": 30,
+    "min_capas": 3,
+    "tolerancia": 0.01,
+    "paciencia": 3,
+    "ruido_residual": true,
+    "paso": 1
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 2.0664369000005536,
+  "n_historial": 11,
+  "final_regimen": 1,
+  "final_capa": 8,
+  "final_n_muestras": 619,
+  "final_n_componentes": 64,
+  "final_reduccion_info": 0.9623792220442038,
+  "final_reduccion_acumulada": 7.622819326865438,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 2.979093699999794,
+    "impuesta": 2.3109642999988864
+  },
+  "control": 2270.551568260682
+}

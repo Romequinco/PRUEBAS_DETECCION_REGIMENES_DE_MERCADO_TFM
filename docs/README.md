@@ -13,7 +13,7 @@ docs/
 ├── references.bib          bibliografía ÚNICA del TFM
 ├── decisions/              ADR-001 … ADR-004
 ├── datos/                  SOTA_datos.md · EDA_v2.md · figs_eda/
-├── teoria/                 README · 00_estado_del_arte.md · F1…F7_*.md (+ .bib por familia) · F8 (esqueleto)
+├── teoria/                 README · 00_estado_del_arte.md · F1…F8_*.md (+ .bib por familia)
 ├── detectores/             README · D01…D13_*.md (fichas por detector)
 ├── historia/capa1/         la Capa 1: decisiones, hallazgos, memoria, informe, métricas y datos v1
 └── context/                propuesta TFM + resumen de la tarea previa
@@ -66,7 +66,9 @@ docs/
   [F2 clustering](teoria/F2_clustering.md) · [F3 HMM](teoria/F3_hmm.md) ·
   [F4 Markov-Switching](teoria/F4_markov_switching.md) · [F5 GARCH](teoria/F5_volatilidad_garch.md) ·
   [F6 change-point](teoria/F6_change_point.md) · [F7 redes](teoria/F7_redes_neuronales.md) ·
-  [F8 generadores sintéticos](teoria/F8_generadores_sinteticos.md) (esqueleto, fase S).
+  [F8 generadores sintéticos](teoria/F8_generadores_sinteticos.md) (fase S: los diez generadores de
+  `regimenes.sinteticos`, el espacio de generación y los criterios de validación, aún pendientes;
+  notebook [`15_sinteticos_generadores`](../notebooks/15_sinteticos_generadores.ipynb)).
 - **Fichas por detector** (implementado + descubierto): [D01](detectores/D01_rule_vix_threshold.md) ·
   [D02](detectores/D02_rule_composite_riskoff.md) · [D03](detectores/D03_clustering_gmm.md) ·
   [D04](detectores/D04_hmm_gaussian_2s.md) · [D05](detectores/D05_markov_switching_var.md) (Markov-Switching
@@ -79,8 +81,8 @@ docs/
 - La teoría y los resultados v2 de cada familia se cuentan juntos en los notebooks `05`–`11`
   (`05_familia_F1_reglas` … `11_familia_F7_deep`); la comparación entre familias, en
   [`12_comparativa`](../notebooks/12_comparativa.ipynb).
-- **[`references.bib`](references.bib)** — bibliografía única (fusión de la central, las 7 por familia y
-  la del informe v1; deduplicada, con alias `ids` para las claves repetidas).
+- **[`references.bib`](references.bib)** — bibliografía única (fusión de la central, las 7 por familia, la de
+  F8 y la del informe v1; deduplicada, con alias `ids` para las claves repetidas).
 
 ## 4. Historia
 - **[`historia/capa1/README.md`](historia/capa1/README.md)** — qué fue la Capa 1: sus decisiones, 12

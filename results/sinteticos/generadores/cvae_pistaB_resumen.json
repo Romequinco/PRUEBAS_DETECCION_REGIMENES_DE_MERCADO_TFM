@@ -1,0 +1,124 @@
+{
+  "nombre": "cvae",
+  "familia": "neuronales",
+  "params": {
+    "largo_bloque": 21,
+    "largo_contexto": 21,
+    "dim_latente": 16,
+    "ocultas": [
+      256,
+      256
+    ],
+    "beta": 1.0,
+    "epocas_rampa_beta": 20,
+    "free_bits": 0.05,
+    "epocas": 120,
+    "paciencia": 25,
+    "tam_lote": 256,
+    "lr": 0.001,
+    "clip": 5.0,
+    "weight_decay": 1e-05,
+    "dropout": 0.1,
+    "fraccion_validacion": 0.15,
+    "reajuste_completo": true,
+    "equilibrio": 0.5,
+    "escala_colas": 2.0,
+    "curtosis_colas": 3.0,
+    "umbral_ancla": 0.9,
+    "blanquear": true,
+    "saturar_contexto": true,
+    "log_var_min": -7.0,
+    "log_var_max": 2.0,
+    "ruido_observacion": true
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 21.31276760000037,
+  "n_historial": 91,
+  "final_epoca": 32,
+  "final_fase": 2,
+  "final_beta": 1.0,
+  "final_perdida": 135.80790502374822,
+  "final_reconstruccion": 117.25529896129261,
+  "final_kl": 18.5526065826416,
+  "final_val_reconstruccion": NaN,
+  "final_val_kl": NaN,
+  "final_val_elbo": NaN,
+  "final_unidades_activas": 16,
+  "final_sigma_decoder": 0.5314014554023743,
+  "final_cociente_dispersion": 0.746224582195282,
+  "final_cociente_dispersion_media": 0.31038933992385864,
+  "mejor_epoca": 32,
+  "val_elbo_invalido": false,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 1.321464599997853,
+    "impuesta": 1.545291400005226
+  },
+  "control": 1845.8320796144772
+}
