@@ -67,8 +67,9 @@ docs/
   [F4 Markov-Switching](teoria/F4_markov_switching.md) · [F5 GARCH](teoria/F5_volatilidad_garch.md) ·
   [F6 change-point](teoria/F6_change_point.md) · [F7 redes](teoria/F7_redes_neuronales.md) ·
   [F8 generadores sintéticos](teoria/F8_generadores_sinteticos.md) (fase S: los diez generadores de
-  `regimenes.sinteticos`, el espacio de generación y los criterios de validación, aún pendientes;
-  notebook [`15_sinteticos_generadores`](../notebooks/15_sinteticos_generadores.ipynb)).
+  `regimenes.sinteticos`, el espacio de generación y los criterios de validación y niveles del veredicto;
+  notebooks [`15_sinteticos_generadores`](../notebooks/15_sinteticos_generadores.ipynb) y
+  [`16_sinteticos_validacion`](../notebooks/16_sinteticos_validacion.ipynb)).
 - **Fichas por detector** (implementado + descubierto): [D01](detectores/D01_rule_vix_threshold.md) ·
   [D02](detectores/D02_rule_composite_riskoff.md) · [D03](detectores/D03_clustering_gmm.md) ·
   [D04](detectores/D04_hmm_gaussian_2s.md) · [D05](detectores/D05_markov_switching_var.md) (Markov-Switching

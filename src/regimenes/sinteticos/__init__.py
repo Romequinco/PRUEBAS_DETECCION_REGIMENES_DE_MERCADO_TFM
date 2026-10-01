@@ -16,7 +16,8 @@ regimen conocida para (a) estresar los detectores con verdad-terreno exacta y
 - ``registry``     registro con catalogo perezoso nombre -> modulo.
 - ``parametricos`` / ``neuronales``  un fichero por generador (los neuronales
                    requieren el extra ``[deep]``).
-- ``validacion``   metricas de fidelidad/utilidad/memorizacion (notebook 16).
+- ``validacion``   subpaquete de metricas de fidelidad/utilidad/memorizacion y
+                   veredicto (notebook 16).
 
 Configuracion en ``configs/sinteticos.yaml``; salidas en ``data/sinteticos``
 y ``results/sinteticos`` (ver ``regimenes.rutas``). Importar este paquete no

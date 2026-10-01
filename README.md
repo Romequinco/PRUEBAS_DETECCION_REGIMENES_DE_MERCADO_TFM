@@ -47,7 +47,7 @@ los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. 
 | `regimenes.fusion` | máquina causal normal / vigilancia / confirmado (alerta + confirmador) |
 | `regimenes.viz` | estilo de casa para figuras (franjas de crisis, paneles de estados) |
 | `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas de configuración/cobertura y figuras de estados OOS |
-| `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion` aún son firmas (notebook 16) |
+| `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion/` (notebook 16): un módulo por dimensión (`fidelidad`, `discriminador`, `memorizacion`, `utilidad` TSTR/TRTR y `veredicto` por niveles) con umbrales fijados a priori y cambios de reglas y niveles declarados y fechados en `configs/sinteticos.yaml` |
 
 Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` → `fusion` → (`sinteticos`, pseudolive);
 `informes` solo lee resultados para los notebooks 05–11.
@@ -65,7 +65,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
 │   ├── fusion/         d07_d08/ · d02_d06/
-│   └── detectores/ · sinteticos/ · pseudolive/
+│   └── detectores/ · sinteticos/ (generadores/ · validacion/) · pseudolive/
 └── docs/               README (índice) · GLOSARIO · references.bib · decisions/ (ADR-001…004) · datos/ · teoria/ · detectores/ · historia/capa1/ · context/
 ```
 
@@ -89,7 +89,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 | 13 | [`13_fusion_d07_d08`](notebooks/13_fusion_d07_d08.ipynb) | E | D7 alerta + D8 confirma |
 | 14 | [`14_fusion_d02_d06`](notebooks/14_fusion_d02_d06.ipynb) | E | selección auditable: D2 alerta + D6 confirma |
 | 15 | [`15_sinteticos_generadores`](notebooks/15_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 16) |
-| 16 | [`16_sinteticos_validacion`](notebooks/16_sinteticos_validacion.ipynb) | S | validación de fidelidad, utilidad (TSTR) y memorización (esqueleto) |
+| 16 | [`16_sinteticos_validacion`](notebooks/16_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
 | 17 | [`17_sinteticos_laboratorio`](notebooks/17_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido (esqueleto) |
 | 18 | [`18_sinteticos_aumento`](notebooks/18_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto) |
 | 19 | [`19_decision_final`](notebooks/19_decision_final.ipynb) | F | decisión final del sistema a congelar, futura ADR-005 (esqueleto) |
@@ -201,6 +201,9 @@ versiones):
 `make notebooks` ejecuta 00–14 en orden numérico: sirve cuando caché y ranking ya son coherentes;
 tras un benchmark nuevo, ejecuta antes `12_comparativa` a mano. Los paneles OOS
 (`results/benchmark/panels/*.parquet`) no se versionan: se regeneran con el benchmark.
+Los notebooks 15–16 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
+(~1 GB, no versionado), que genera `15_sinteticos_generadores` con `EJECUTAR = True`; después, 15 y
+16 se ejecutan a mano con `EJECUTAR = False` (16 lee además sus tablas de `results/sinteticos/validacion/`).
 
 ## Estado del proyecto
 
@@ -217,7 +220,7 @@ nombran por letra: **D** detectores (benchmark), **E** fusión *early warning* (
 | D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 04–12 |
 | — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](docs/decisions/ADR-004-unificacion.md) |
 | E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 13–14) |
-| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores implementados (notebook 15); validación, laboratorio y aumento pendientes (16–18) · `regimenes.sinteticos` · [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
+| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores y validación implementados (notebooks 15–16); laboratorio y aumento pendientes (17–18) · `regimenes.sinteticos` · [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
 | F | Decisión final (futura ADR-005) + pseudolive independiente | 🔜 notebooks 19–20 (esqueletos) |
 
 Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git

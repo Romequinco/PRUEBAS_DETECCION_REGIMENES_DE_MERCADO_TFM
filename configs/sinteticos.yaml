@@ -83,5 +83,91 @@ muestreo:
   inicial: estacionaria
   duraciones: geometricas
 
+# Validacion (notebook 16, regimenes.sinteticos.validacion). Todo se compara con el TRAMO DE
+# ENTRENAMIENTO real de cada pista (nunca con lo posterior a fin_train, reservado a 17-20).
+# Los umbrales se fijaron el 2026-10-01, ANTES de ver ningun resultado de validacion; no se
+# retocan a la vista de las cifras (si se cambian, el cambio y su motivo van en el notebook 16).
 validacion:
-  metricas: [fidelidad_marginal, fidelidad_dependencia, fidelidad_regimenes, utilidad_tstr, memorizacion]
+  metricas: [fidelidad_marginal, fidelidad_dependencia, distancia_correlaciones, fidelidad_regimenes,
+             condicionamiento, discriminador, utilidad_tstr, memorizacion]
+  semilla: 42
+  n_boot: 200                 # remuestreos por bloques del real para las bandas de referencia
+  discriminador:
+    largo_ventana: 21         # sesiones por ventana (real y sintetico)
+    n_pliegues: 5             # validacion cruzada agrupada (bloques reales / trayectorias)
+    # Cambio declarado (2026-10-01, DESPUES de ver la prueba de humo): con todas las columnas
+    # casi todos los generadores dan AUC ~0,99 (los delatan escalones y persistencia de las
+    # mensuales). El criterio del veredicto NO cambia (todas las columnas, umbral 0,75); se
+    # publica al lado una variante solo con estas columnas, informativa, fuera del veredicto.
+    columnas_informativas: [SP500_ret]
+  memorizacion:
+    largo_ventana: 1          # 1 = dia a dia en el espacio estandarizado con medias y sd de train
+    exclusion: 21             # la distancia real-real excluye vecinos a menos de 21 sesiones
+    # El veredicto lee el espacio de las columnas MODELADAS: en 'todas' las re-derivadas del S&P 500
+    # (continuan la senda sintetica) esconden la copia y jitter/bootstrap aprobarian. Regla a priori
+    # de la ficha F8: si una metrica no marca a los controles positivos como copia, no sirve.
+    espacio_veredicto: modeladas
+  tstr:
+    n_trayectorias: 20        # trayectorias por generador (un ajuste del detector por trayectoria)
+    detectores:
+      A: [D01, D02, D03, D06, D07]
+      B: [D01, D03, D06, D07]   # D02 y D10 usan features fuera del nucleo de B (no estan en el sintetico)
+  umbrales:
+    banda_cociente: [0.80, 1.25]      # cocientes sintetico/real admitidos (misma banda de lectura que el 15)
+    memorizacion_cociente_min: 0.90   # d_NN(sint->real) / d_NN(real->real), global y en crisis (suelo del taller)
+    discriminador_auc_max: 0.75       # AUC global real frente a sintetico (en crisis solo se publica el orden)
+    tstr_margen_trtr: 0.10            # score_deteccion TSTR >= TRTR - margen ...
+    tstr_fraccion_detectores: 0.5     # ... en MAS de esta fraccion de detectores, y TSTR > nulo aleatorio (p95)
+  # Una fila de fidelidad pasa si el valor sintetico cae en la banda del 95 % del real
+  # (bootstrap por bloques; en crisis por episodio) O su cociente cae en banda_cociente.
+  # Concrecion de la regla (2026-10-01, decidida tras las pruebas de humo de las funciones y
+  # ANTES de calcular el veredicto de ningun generador): cada criterio exige que pasen TODAS
+  # sus filas clave; el resto de filas (escalones, re-derivadas, Wasserstein, KS, ...) se publican
+  # como informacion.
+  reglas:
+    marginal:                 # por regimen (calma y crisis)
+      desviacion_modeladas: true          # desviacion de cada columna modelada
+      colas_ret: [q01, q99]               # amplitud de cola de SP500_ret
+    # Cambios declarados (2026-10-01, tras la revision metodologica del veredicto):
+    # - curtosis condicional: la mediana entre trayectorias de un estadistico de cola esta sesgada
+    #   a la baja y la banda real de crisis (por episodio) es vacia en A y casi un punto en B. Pasa
+    #   a `curtosis_condicional_tray`: el valor real debe caer en la banda 2,5-97,5 % de los
+    #   valores por trayectoria. Antes: curtosis_condicional (mediana frente a banda real).
+    # - persistencia: el cociente de acf1 ~0,99 casi nunca falla (bootstrap_regimen, pista A en
+    #   calma: acf1 0,969 frente a 0,996 pasa con una vida media de ~25 sesiones frente a ~320).
+    #   Pasa a `vida_media_persistentes` (cociente de vidas medias). Antes: acf1_persistentes.
+    # - correlaciones: con 1 x p95 suspende el control de fidelidad (bootstrap) y con 2 x p95
+    #   aprueban los 20 casos: no discrimina. Sale del veredicto (informativo). Antes: factor 2.
+    # - utilidad: informativa en las dos pistas (ver niveles.apto_aumento). Antes: solo en A.
+    # - referencia de igual a igual (2026-10-01, tras ver que el propio real troceado en ventanas
+    #   del largo de las trayectorias casi suspende la vida media, cociente ~0,80 en la pista A):
+    #   la autocorrelacion estimada en muestras cortas esta sesgada a la baja, asi que el valor
+    #   real y su banda de `vida_media_persistentes` y `acf_abs_k` se calculan sobre ventanas reales
+    #   de `muestreo.length` sesiones, SOLO si el real tiene al menos `min_ventanas_no_solapadas`
+    #   ventanas no solapadas (pista A si; pista B no: su train ya mide casi lo mismo que una
+    #   trayectoria y 4 ventanas casi identicas dejan la banda en un punto, que suspende hasta al
+    #   real troceado). Si no, real entero + banda bootstrap. Antes: real entero en las dos pistas.
+    dependencia:              # por regimen, dentro de racha
+      ret: [acf_abs_1, curtosis_condicional_tray]
+      persistentes: [vida_media_persistentes]
+      referencia_ventanas: true           # referencia real sobre ventanas del largo de las trayectorias
+      min_ventanas_no_solapadas: 3        # ... si caben al menos estas (si no, real entero)
+    # factor 2 x p95: decidido el 2026-10-01 tras las pruebas de humo y antes del veredicto (la banda
+    # real-remuestreo es estrechisima porque el remuestreo comparte dias con el real); despues las
+    # correlaciones pasaron a informativas (ver arriba).
+    correlaciones_factor_p95: 2.0         # solo para la lectura informativa (fuera del veredicto)
+    condicionamiento: [separacion_vol]    # cociente en banda_cociente (los AUC de regimen son informativos)
+    utilidad_pistas: []                   # TSTR de detectores informativo en A y B
+  niveles:
+    apto_laboratorio: [marginal, dependencia, condicionamiento, discriminador]   # antes con correlaciones
+    # Cambio declarado (2026-10-01, tras la revision metodologica del veredicto): un control
+    # negativo (filas reales iid, sin dinamica, regimen no informativo) APRUEBA el TSTR de
+    # detectores en la pista A (en B lo suspende, pero con 3 crisis evaluables el TSTR de B
+    # tampoco tiene potencia; detectores no supervisados: mide si la ley marginal permite calibrarlos, no si el
+    # sintetico transmite la senal de crisis). La utilidad pasa a ser informativa y el aumento
+    # exige memorizacion + condicionamiento, igual en las dos pistas. Antes: [utilidad, memorizacion].
+    apto_aumento: [memorizacion, condicionamiento]
+    # Nivel declarado el 2026-10-01 DESPUES de ver el veredicto (ningun generador apto_laboratorio:
+    # el discriminador con todas las columnas los separa a todos, AUC 0,78-0,999). No sustituye a
+    # apto_laboratorio: el 17 usa estos generadores advirtiendo que son distinguibles del real.
+    laboratorio_condicionado: [marginal, dependencia, condicionamiento]

@@ -26,7 +26,10 @@ PYTEST_ARGS ?=
 
 NB_DIR      := notebooks
 # 00..14: descarga, EDA, preprocesado, protocolo, familias F1-F7, comparativa y fusiones.
-# Los 15..20 (sinteticos, decision final, pseudo-live) son esqueletos y no se ejecutan aqui.
+# 15..16 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
+# data/sinteticos (~1 GB, gitignored), que genera el 15 con EJECUTAR=True; una vez generado, se
+# ejecutan a mano con EJECUTAR=False. 17..20 (laboratorio, aumento, decision final, pseudo-live)
+# son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-4]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb
 NBCONVERT   := $(PY) -m jupyter nbconvert --to notebook --execute --inplace \

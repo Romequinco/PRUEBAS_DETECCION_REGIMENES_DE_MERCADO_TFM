@@ -5,9 +5,9 @@
    contrato documentado (``fit`` devuelve ``self``; ``sample`` devuelve
    ``n_paths`` trayectorias de ``length`` pasos con columna ``regime``).
 2. El registro (``registrar``/``crear``) con una subclase directa de ``Generador``.
-3. Los stubs de validacion (notebook 16) levantan ``NotImplementedError`` en
-   lugar de devolver resultados vacios silenciosos. Cuando se implemente uno,
-   este test debe actualizarse a la vez (es deliberado: obliga a cubrirlo).
+3. Las metricas de validacion (notebook 16) declaradas en la configuracion
+   existen y conservan la firma posicional ``(real, sintetico, ...)`` (o
+   ``(real_regimes, sintetico)``); su logica se prueba en ``test_validacion_*.py``.
 
 La base comun y el contrato de los generadores reales se prueban en
 ``test_sinteticos_cimientos.py`` y ``test_contrato_generadores.py``.
@@ -176,19 +176,13 @@ def test_config_lista_las_metricas_de_validacion_existentes() -> None:
         assert callable(getattr(validacion, nombre, None)), nombre
 
 
-@pytest.mark.parametrize("nombre", [
-    "fidelidad_marginal", "fidelidad_dependencia", "fidelidad_regimenes",
-    "utilidad_tstr", "memorizacion",
-])
-def test_metricas_de_validacion_son_stubs(nombre: str, panel: pd.DataFrame) -> None:
-    fn = getattr(validacion, nombre)
-    args = {
-        "real": panel, "sintetico": [panel], "real_regimes": pd.Series(0, index=panel.index),
-        "detector_id": "D04",
-    }
-    kwargs = {k: args[k] for k in inspect.signature(fn).parameters}
-    with pytest.raises(NotImplementedError):
-        fn(**kwargs)
+@pytest.mark.parametrize("nombre", _metricas_configuradas())
+def test_metricas_de_validacion_conservan_la_firma(nombre: str) -> None:
+    params = list(inspect.signature(getattr(validacion, nombre)).parameters)
+    primero = "real_regimes" if nombre == "fidelidad_regimenes" else "real"
+    assert params[:2] == [primero, "sintetico"], (nombre, params)
+    if nombre == "utilidad_tstr":
+        assert params[2] == "detector_id"
 
 
 def test_rutas_de_sinteticos_definidas() -> None:

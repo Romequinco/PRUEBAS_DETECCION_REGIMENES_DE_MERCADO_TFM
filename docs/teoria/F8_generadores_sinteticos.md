@@ -1,7 +1,7 @@
 # F8 — Generadores de datos sintéticos
 
 <!-- BEGIN nota_v2 -->
-> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: [`F8_generadores_sinteticos.bib`](F8_generadores_sinteticos.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Notebook: [`notebooks/15_sinteticos_generadores.ipynb`](../../notebooks/15_sinteticos_generadores.ipynb). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados: las cifras de ajuste y de muestreo salen del notebook 15 y la validación, del 16 (pendiente).
+> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: [`F8_generadores_sinteticos.bib`](F8_generadores_sinteticos.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Notebook: [`notebooks/15_sinteticos_generadores.ipynb`](../../notebooks/15_sinteticos_generadores.ipynb). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados: las cifras de ajuste y de muestreo salen del notebook 15 y la validación, del 16.
 <!-- END nota_v2 -->
 
 > Familia: generadores de trayectorias multivariantes de features **con la
@@ -13,7 +13,7 @@
 > esté en su tramo de entrenamiento; con 8 episodios de crisis en el ajuste de la
 > pista A, lo que aquí se fabrica son variaciones sobre esos episodios, no crisis
 > nuevas. Distinguimos abajo lo que cada modelo reproduce por construcción de lo
-> que solo puede decidir la validación (notebook 16, pendiente).
+> que solo puede decidir la validación (notebook 16).
 
 ## Para qué sirven en este TFM
 
@@ -429,8 +429,8 @@ HMM-t. Lo que cambia y por qué:
 Los cuatro neuronales, RBIG, jitter y el gaussiano vienen de un taller previo del
 mismo equipo (generación de ventanas de 60 sesiones × 20 canales, 2003–2026, régimen
 etiquetado con un HMM de tres estados; sus decisiones D9, D16, D25 y D26). Su montaje
-**no es el de este TFM** y sus cifras no se trasladan, pero sus lecciones fijan cómo
-se leerá el notebook 16:
+**no es el de este TFM** y sus cifras no se trasladan, pero sus lecciones fijaron cómo
+se lee el notebook 16:
 
 - **Solo RBIG y flow matching pasaron a la vez memorización y discriminador.** El
   CVAE quedó rechazado por infradispersión (cociente de distancias al vecino más
@@ -456,42 +456,192 @@ se leerá el notebook 16:
   Toda métrica restringida a crisis lleva banda por *jackknife* de episodios, y del
   AUC discriminativo en crisis se publica el orden, no el valor.
 
-## Criterios de validación (pendientes: notebook 16)
+## Criterios de validación (notebook 16)
 
-`regimenes.sinteticos.validacion` contiene hoy **solo las firmas** de cinco funciones
-(levantan `NotImplementedError`); su lógica se implementará en
-`16_sinteticos_validacion`. Son las de `validacion.metricas` de
-`configs/sinteticos.yaml`:
+La validación vive en el subpaquete `regimenes.sinteticos.validacion`, un módulo por
+dimensión, y la ejecuta `16_sinteticos_validacion`. Cada generador se compara **solo con
+el tramo real de entrenamiento** con el que se ajustó (lo posterior a `fin_train` queda
+reservado a 17–20) y solo con las trayectorias de **cadena simulada**; las de secuencia
+impuesta son para el laboratorio. Real y sintético nunca se cruzan por fecha: se
+comparan por distribución o por posición dentro de cada trayectoria.
 
-| Criterio | Función | Qué comparará |
+| Módulo | Funciones | Papel |
 |---|---|---|
-| Fidelidad marginal | `fidelidad_marginal` | distribución por feature y por régimen: momentos, cuantiles de cola, KS |
-| Fidelidad de dependencia | `fidelidad_dependencia` | ACF de retornos y de `\|r\|`, correlaciones cruzadas por régimen |
-| Fidelidad de regímenes | `fidelidad_regimenes` | duraciones y matriz de transición real frente a sintética |
-| Utilidad (TSTR) | `utilidad_tstr` | detector ajustado en sintético y evaluado en real con el walk-forward y el ranking ADR-003 [synth_esteban2017] |
-| Memorización | `memorizacion` | distancia al vecino real más cercano, con índice de vecindad íntegro |
+| `_comun` | `separar_real`, `separar_sintetico`, `tramos`, `id_episodio`, `estandarizador` | convenciones compartidas: rachas, episodios, estandarización con media y desviación de train |
+| `fidelidad` | `fidelidad_marginal`, `fidelidad_dependencia`, `distancia_correlaciones`, `fidelidad_regimenes`, `condicionamiento` | marginales, hechos estilizados, correlaciones y señal de régimen; define el **contrato de salida** común |
+| `discriminador` | `discriminador` | test de dos muestras con clasificador |
+| `memorizacion` | `memorizacion` | distancia al vecino real más cercano |
+| `utilidad` | `referencia_trtr`, `utilidad_tstr`, `unir_utilidad` | TSTR frente a TRTR con las métricas por evento del benchmark |
+| `veredicto` | `veredicto` | aplica umbrales, reglas y niveles del yaml |
 
-Complemento previsto: un discriminador real/sintético (*classifier two-sample test*
-[synth_lopezpaz2017]). Las comparaciones contra el tramo real posterior al corte se
-hacen por distribución o por posición, nunca cruzando fechas.
+**Contrato de salida.** Todas las funciones devuelven una tabla larga con una fila por
+(régimen, columna, métrica) y las columnas `real`, `sintetico`, `banda_inf`/`banda_sup`
+(banda de referencia del real), `cociente` (sintético/real, solo para magnitudes de
+escala positivas) y `en_banda`. Una fila **pasa** si el valor sintético cae en la banda
+del 95 % del real **o** su cociente cae en `banda_cociente` (0,80–1,25). Un criterio
+exige que pasen **todas sus filas clave** (`validacion.reglas`); el resto de filas se
+publica como información, de modo que ninguna métrica compensa a otra. Los umbrales se
+fijaron en `validacion.umbrales` de `configs/sinteticos.yaml` antes de ver ningún
+resultado de validación.
+
+**Bandas del real.** Salen de `n_boot` remuestreos del tramo de entrenamiento: en
+**calma**, bootstrap por bloques contiguos de 63 sesiones tomados dentro de las rachas
+de calma (Künsch [synth_kunsch1989]; Politis y Romano [synth_politisromano1994]); en
+**crisis**, remuestreo por **episodio** completo, porque el n efectivo es el número de
+episodios y no el de días. La banda es el intervalo 2,5–97,5 % de los remuestreos. Para
+las distancias (Wasserstein, KS, Frobenius) la referencia es la distancia entre el real
+y un remuestreo del propio real, que es estricta (comparten días). Las bandas miden la
+variabilidad del real; la del sintético, con cien trayectorias apiladas, es casi nula y
+no se añade. Excepción: la **referencia de igual a igual** de la dependencia (abajo), cuya
+banda es la de ventanas reales del largo de las trayectorias.
+
+| Criterio | Función | Qué mide (filas clave) | Papel en el veredicto |
+|---|---|---|---|
+| Fidelidad marginal | `fidelidad_marginal` | por régimen: desviación de **cada** columna modelada y amplitud de cola relativa de `q01` y `q99` de `SP500_ret`, `(q_s − mediana_s) / (q_r − mediana_r)`. Momentos, Wasserstein, KS y re-derivadas, informativos | laboratorio |
+| Fidelidad de dependencia | `fidelidad_dependencia` | por régimen y **dentro de racha**: `acf_abs_1`, `curtosis_condicional_tray` y `vida_media_persistentes`; referencia real de igual a igual (ventanas del largo de las trayectorias) donde caben al menos `min_ventanas_no_solapadas` (3) ventanas no solapadas | laboratorio |
+| Condicionamiento | `condicionamiento` | cociente de la separación de volatilidad `sd(r ∣ crisis) / sd(r ∣ calma)`. Deriva en crisis y AUC de régimen, informativos | laboratorio y aumento |
+| Discriminador | `discriminador` | AUC global real frente a sintético con todas las columnas `≤ discriminador_auc_max` (0,75) [synth_lopezpaz2017] | laboratorio |
+| Memorización | `memorizacion` | `cociente_nn` en el espacio de las columnas **modeladas**, global y en crisis, `≥ memorizacion_cociente_min` (0,90) | aumento |
+| Correlaciones | `distancia_correlaciones` | Frobenius por régimen y del salto calma→crisis | informativo |
+| Utilidad (TSTR) | `utilidad_tstr` | detector ajustado en sintético y evaluado en real frente a TRTR [synth_esteban2017] | informativo |
+| Regímenes | `fidelidad_regimenes` | fracción de días, duraciones, `P_kk`, KS de duraciones | control (la cadena es común) |
+
+**Cómo se lee cada dimensión.**
+
+- **Hechos estilizados dentro de racha.** Las autocorrelaciones solo usan pares
+  `(t, t+k)` de la misma racha, para no mezclar el salto de nivel entre regímenes con la
+  dinámica propia (el notebook 15 las medía sobre la trayectoria entera; esas filas se
+  conservan como `regimen='todos'`). En el sintético se toma la mediana entre
+  trayectorias. La **curtosis condicional** es la de Pearson de `z_t = r_t / σ_t`, con
+  `σ_t` EWMA de RiskMetrics (λ = 0,94) sobre retornos **pasados**, sin reiniciar en los
+  cambios de racha. Como un estadístico de cola por trayectoria tiene la mediana sesgada
+  a la baja y la banda real de crisis descansa en muy pocos episodios, la fila clave
+  invierte la pregunta (`curtosis_condicional_tray`): ¿es el valor real típico del
+  generador, es decir, cae en la banda 2,5–97,5 % de los valores por trayectoria? La
+  persistencia de las features lentas se mide como **vida media** `h = ln 0,5 / ln ρ` de
+  un AR(1) con la acf1 de cada columna persistente: el cociente de dos acf1 cercanas a 1
+  apenas discrimina.
+- **Referencia de igual a igual** (`reglas.dependencia.referencia_ventanas` y
+  `min_ventanas_no_solapadas`). La autocorrelación estimada en una muestra corta está
+  sesgada a la baja, y más cuanto más cerca de 1: comparar trayectorias de
+  `muestreo.length` (2.520) sesiones con el real entero castiga incluso a un generador
+  perfecto, sobre todo en la vida media. Por eso el valor real y su banda de las ACF
+  (`acf_r_k`, `acf_abs_k`, `acf_sq_k`), del apalancamiento y de `vida_media_persistentes`
+  (filas de calma y crisis) se calculan sobre **ventanas reales del mismo largo** que las
+  trayectorias, deslizantes con paso de 63 sesiones: mediana entre ventanas y banda
+  2,5–97,5 % entre ventanas. Solo se aplica si el real admite al menos 3 ventanas **no
+  solapadas** de ese largo: en la pista A sí; en la B no (su tramo de entrenamiento mide
+  casi lo mismo que una trayectoria, y unas pocas ventanas casi idénticas dejarían la banda
+  en un punto que suspendería hasta al propio real troceado), y allí se mantiene el real
+  entero con banda bootstrap. El control es el real troceado en ventanas del largo de las
+  trayectorias, pasado por `fidelidad_dependencia` como si fuera un generador.
+- **Regímenes y condicionamiento.** Duraciones y transiciones las simula la base común
+  con la cadena de train, la misma ley para todos: `fidelidad_regimenes` es un control,
+  no un criterio. Lo que depende del generador es si un día con `regime = 1` se parece a
+  un día de crisis: la separación de volatilidad es el criterio; el AUC de una logística
+  que predice el régimen del día es informativo (el agrupado del real es bajo por la
+  heterogeneidad de los episodios, así que un generador fiel da uno mayor; el de ajuste
+  es el comparable).
+- **Discriminador** (*classifier two-sample test* [synth_lopezpaz2017]). Ventanas no
+  solapadas de 21 sesiones, resumidas por columna (media, desviación, mínimo, máximo,
+  último − primero, acf1; curtosis y media de `|r|` para el retorno) y clasificadas con un
+  `HistGradientBoostingClassifier` modesto de parámetros fijos, con validación cruzada
+  **agrupada** (bloques cronológicos del real, trayectorias enteras del sintético) y
+  clases equilibradas. Sustituye a la red recurrente de la métrica discriminativa de
+  TimeGAN [synth_yoon2019]: si un clasificador sencillo ya separa, el generador no pasa.
+  En crisis solo se publica el **orden** entre generadores. **Artefacto con copias:** si
+  un generador copia días reales, las copias de las ventanas reales de prueba están en
+  los pliegues de entrenamiento etiquetadas como sintéticas y el AUC cae **por debajo de
+  0,5**; el discriminador no detecta la copia (la premia), y el veredicto anota el
+  indicio para que lo resuelva la memorización.
+- **Memorización.** Cociente de medianas
+  `d_NN(sintético → real) / d_NN(real → real)`, con la distancia real–real excluyendo
+  vecinos a menos de 21 sesiones, en el espacio estandarizado con train. El índice de
+  vecindad es el real **íntegro** (solo se submuestrean consultas sintéticas; lección del
+  taller previo) y la banda es *jackknife* por racha. `frac_copias` y `dispersion`
+  separan copiar (cociente ≈ 0, dispersión normal, copias literales) de encoger
+  (cociente < 1, dispersión baja, sin copias). El veredicto lee el espacio de las
+  columnas **modeladas**: en el de todas, las re-derivadas continúan la senda sintética
+  y no la del día copiado, esconden la copia y los controles positivos (`jitter`,
+  `bootstrap_regimen`) aprobarían, lo que invalida la métrica por la regla a priori de
+  esta ficha.
+- **Utilidad: TSTR frente a TRTR** [synth_esteban2017]. Detectores baratos del banco
+  (`validacion.tstr.detectores`) se ajustan una vez por trayectoria sintética (orden
+  económico de estados con el retorno sintético) y se evalúan, con parámetros
+  congelados, en los mismos días fuera de muestra del **TRTR walk-forward** del tramo
+  real de entrenamiento, con el `score_deteccion` de ADR-003. Se publica también el
+  **TRTR fijo** (un solo ajuste con todo el real, evaluado igual que el TSTR) para separar
+  el efecto de los datos (TSTR frente a TRTR fijo) del del protocolo (fijo frente a
+  walk-forward), y un nulo aleatorio persistente con la agresividad de la propia señal
+  TSTR. **Es informativo** por dos razones: es dentro de muestra respecto al generador
+  (vio los días evaluados) y, sobre todo, un **control negativo** de filas reales i.i.d.,
+  sin dinámica y con régimen no informativo, aprueba la regla en la pista A; en la B la
+  suspende, pero con 3 crisis evaluables el TSTR de B tampoco tiene potencia. Los
+  detectores son no supervisados: ajustados en sintético aprenden estados por nivel de
+  volatilidad, así que el TSTR mide si la ley marginal permite calibrarlos, no si el
+  sintético transmite la señal de crisis.
+
+**Niveles del veredicto** (`validacion.niveles`). Cada nivel es la conjunción de sus
+criterios; todos los criterios se calculan y se publican, y solo deciden los que figuran
+en algún nivel.
+
+- **`apto_laboratorio`** = marginal + dependencia + condicionamiento + discriminador: lo
+  generado se parece al real lo bastante para estresar detectores con verdad de régimen
+  exacta (notebook 17) y un clasificador no lo distingue del real.
+- **`laboratorio_condicionado`** = marginal + dependencia + condicionamiento: el mismo
+  nivel sin el discriminador. No sustituye a `apto_laboratorio`: el 17 puede usar estos
+  generadores **advirtiendo** que son distinguibles del real.
+- **`apto_aumento`** = memorización + condicionamiento, igual en las dos pistas: lo
+  generado no es copia del entrenamiento y lleva la señal de régimen (notebook 18).
+
+**Decisiones declaradas.** Todas del 2026-10-01; el motivo y las cifras que justifican
+cada una están en los comentarios de la sección `validacion` de
+`configs/sinteticos.yaml` y en el notebook 16.
+
+- *Antes de ver ningún resultado de validación:* umbrales de `validacion.umbrales`
+  (banda de cocientes, suelo de memorización, techo del AUC del discriminador, regla de
+  utilidad). No se retocan a la vista de las cifras.
+- *Tras las pruebas de humo de las funciones y antes de calcular ningún veredicto:*
+  (1) variante del discriminador solo con `SP500_ret` (`columnas_informativas`), fuera del
+  veredicto, porque con todas las columnas los escalones y la persistencia de las series
+  mensuales bastan para separar; el criterio sigue usando todas; (2) espacio de
+  memorización `modeladas` (`espacio_veredicto`), por la regla de los controles
+  positivos; (3) regla «todas las filas clave» por criterio.
+- *Tras la revisión metodológica del veredicto:* (4) `curtosis_condicional_tray` sustituye
+  a la curtosis condicional mediana frente a la banda real; (5) `vida_media_persistentes`
+  sustituye a `acf1_persistentes`; (6) las correlaciones salen del veredicto
+  (informativas), porque con el factor sobre el p95 no discriminaban; (7) utilidad
+  informativa en las dos pistas (antes decidía en la pista A) y `apto_aumento` =
+  memorización + condicionamiento (antes, utilidad + memorización), porque el control
+  negativo i.i.d. aprobaba el TSTR en la pista A; (8) referencia de igual a igual en la
+  dependencia (`referencia_ventanas`, `min_ventanas_no_solapadas` = 3), tras ver que el
+  propio real troceado en ventanas del largo de las trayectorias casi suspendía la vida
+  media; se aplica en la pista A y no en la B (antes, real entero en las dos).
+- *Después de ver el veredicto:* (9) nivel `laboratorio_condicionado`, porque el
+  discriminador con todas las columnas separaba a todos los generadores y ninguno quedaba
+  `apto_laboratorio`.
 
 **Checklist de hechos estilizados** (Cont [synth_cont2001]; se contrastan los
-aplicables a datos diarios sin volumen):
+aplicables a datos diarios sin volumen, con métricas de `fidelidad` por régimen y
+dentro de racha):
 
-| Hecho | Contraste | Quién puede reproducirlo por construcción |
-|---|---|---|
-| Ausencia de autocorrelación lineal en retornos | ACF de `r_t` | todos |
-| Colas pesadas incondicionales | cuantiles de cola (la curtosis depende de un solo dato) | remuestreo, RBIG, GARCH-t; el gaussiano solo por mezcla |
-| Asimetría ganancia/pérdida | asimetría muestral | remuestreo, RBIG; no el GARCH-t simétrico |
-| Agrupamiento de volatilidad | ACF de `\|r_t\|` y de `r_t²` | GARCH; remuestreo y bloques solo hasta el largo del bloque; no gaussiano ni VAR dentro de régimen |
-| Colas pesadas condicionales | curtosis de los residuos estandarizados | GARCH-t; dudoso en neuronales (antecedente del taller) |
-| Decaimiento lento de la ACF de `\|r_t\|` | pendiente log-log | ninguno por construcción (GARCH(1,1) decae geométricamente) |
-| Efecto apalancamiento | `corr(r_t, r²_{t+τ})`, τ > 0 | GARCH (término GJR); remuestreo dentro del bloque |
-| Gaussianidad por agregación | curtosis frente al horizonte | poco discriminante por sí sola |
-| Correlaciones que cambian en crisis | correlación por régimen | todos los condicionados a régimen |
+| Hecho | Contraste implementado | Papel | Quién puede reproducirlo por construcción |
+|---|---|---|---|
+| Ausencia de autocorrelación lineal en retornos | `acf_r_k` | informativo | todos |
+| Colas pesadas incondicionales | amplitud de cola `q01`, `q99` (la curtosis depende de un solo dato) | criterio marginal | remuestreo, RBIG, GARCH-t; el gaussiano solo por mezcla |
+| Asimetría ganancia/pérdida | `asimetria` | informativo | remuestreo, RBIG; no el GARCH-t simétrico |
+| Agrupamiento de volatilidad | `acf_abs_1` (fila clave); `acf_abs_k`, `acf_sq_k` informativas | criterio dependencia | GARCH; remuestreo y bloques solo hasta el largo del bloque; no gaussiano ni VAR dentro de régimen |
+| Colas pesadas condicionales | `curtosis_condicional_tray` (EWMA causal, banda por trayectoria) | criterio dependencia | GARCH-t; dudoso en neuronales (antecedente del taller) |
+| Decaimiento lento de la ACF de `\|r_t\|` | `pendiente_loglog_abs` (retardos 1–21) | informativo | ninguno por construcción (GARCH(1,1) decae geométricamente) |
+| Efecto apalancamiento | `apalancamiento_k` = `corr(r_t, r²_{t+k})` | informativo | GARCH (término GJR); remuestreo dentro del bloque |
+| Gaussianidad por agregación | no se contrasta | — | poco discriminante por sí sola |
+| Correlaciones que cambian en crisis | `distancia_correlaciones` (Frobenius por régimen y `salto_correlacion`) | informativo | todos los condicionados a régimen |
+| Persistencia de las features lentas (propio del panel, no de Cont) | `vida_media_persistentes`; `escalones` informativo | criterio dependencia | remuestreo (escalones incluidos); VAR, GARCH y neuronales con contexto |
 
-Los contrastes se leen contra bandas de remuestreo de la serie real, no contra un
-valor puntual, y en crisis por episodio.
+**Salidas.** En `results/sinteticos/validacion/` (versionable salvo las figuras PNG): una
+tabla larga por dimensión y pista (`<dimension>_pista<X>.csv`), la referencia TRTR, el
+TSTR por trayectoria, los tiempos, la ficha de la configuración usada
+(`ficha_pista<X>.json`) y el veredicto generador × criterio (`veredicto_pista<X>.csv`).
 
 ## Riesgos metodológicos
 

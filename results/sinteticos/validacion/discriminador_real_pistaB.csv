@@ -1,0 +1,31 @@
+regimen,columna,tipo,metrica,real,sintetico,banda_inf,banda_sup,cociente,en_banda,grupo
+todos,—,—,auc,0.5,0.9307692307692307,0.6730769230769231,1.0,,,todas
+todos,—,—,n_ventanas,64.0,60.0,,,,,todas
+calma,—,—,auc,0.5,0.917142857142857,0.625,1.0,,,todas
+calma,—,—,n_ventanas,38.0,38.0,,,,,todas
+crisis,—,—,auc,0.5,0.5,0.5,0.5,,,todas
+crisis,—,—,n_ventanas,25.0,8.0,,,,,todas
+todos,—,—,auc,0.5,0.8936965811965812,0.7307692307692308,0.9615384615384616,,,modeladas lentas
+todos,—,—,n_ventanas,64.0,60.0,,,,,modeladas lentas
+calma,—,—,auc,0.5,0.9172321428571429,0.640625,1.0,,,modeladas lentas
+calma,—,—,n_ventanas,38.0,38.0,,,,,modeladas lentas
+crisis,—,—,auc,0.5,0.5,0.5,0.5,,,modeladas lentas
+crisis,—,—,n_ventanas,25.0,8.0,,,,,modeladas lentas
+todos,—,—,auc,0.5,0.8101495726495728,0.6666666666666666,0.8782051282051282,,,modeladas diarias
+todos,—,—,n_ventanas,64.0,60.0,,,,,modeladas diarias
+calma,—,—,auc,0.5,0.7860714285714285,0.5714285714285714,1.0,,,modeladas diarias
+calma,—,—,n_ventanas,38.0,38.0,,,,,modeladas diarias
+crisis,—,—,auc,0.5,0.5,0.5,0.5,,,modeladas diarias
+crisis,—,—,n_ventanas,25.0,8.0,,,,,modeladas diarias
+todos,—,—,auc,0.5,0.9098290598290599,0.5833333333333334,1.0,,,re-derivadas
+todos,—,—,n_ventanas,64.0,60.0,,,,,re-derivadas
+calma,—,—,auc,0.5,0.9028571428571428,0.625,1.0,,,re-derivadas
+calma,—,—,n_ventanas,38.0,38.0,,,,,re-derivadas
+crisis,—,—,auc,0.5,0.5,0.5,0.5,,,re-derivadas
+crisis,—,—,n_ventanas,25.0,8.0,,,,,re-derivadas
+todos,—,—,auc,0.5,0.8285256410256409,0.7115384615384616,0.9375,,,solo SP500_ret
+todos,—,—,n_ventanas,64.0,60.0,,,,,solo SP500_ret
+calma,—,—,auc,0.5,0.749375,0.5714285714285714,1.0,,,solo SP500_ret
+calma,—,—,n_ventanas,38.0,38.0,,,,,solo SP500_ret
+crisis,—,—,auc,0.5,0.5,0.5,0.5,,,solo SP500_ret
+crisis,—,—,n_ventanas,25.0,8.0,,,,,solo SP500_ret

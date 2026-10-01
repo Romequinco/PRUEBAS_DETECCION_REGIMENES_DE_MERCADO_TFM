@@ -1,0 +1,91 @@
+generador,regimen,columna,tipo,metrica,real,sintetico,banda_inf,banda_sup,cociente,en_banda,grupo
+jitter,todos,—,—,auc,0.5,0.9944117014210472,0.9747410962364234,1.0,,,todas
+jitter,todos,—,—,n_ventanas,536.0,536.0,,,,,todas
+jitter,calma,—,—,auc,0.5,0.9992813904466452,0.9980392156862745,1.0,,,todas
+jitter,calma,—,—,n_ventanas,424.0,424.0,,,,,todas
+jitter,crisis,—,—,auc,0.5,0.9651205936920222,0.8412698412698413,1.0,,,todas
+jitter,crisis,—,—,n_ventanas,106.0,106.0,,,,,todas
+jitter,todos,—,—,auc,0.5,0.9951933241652867,0.9773511829586595,1.0,,,modeladas lentas
+jitter,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas lentas
+jitter,calma,—,—,auc,0.5,0.9995041846353147,0.9988795518207283,1.0,,,modeladas lentas
+jitter,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas lentas
+jitter,crisis,—,—,auc,0.5,0.9692022263450835,0.8571428571428571,1.0,,,modeladas lentas
+jitter,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas lentas
+jitter,todos,—,—,auc,0.5,0.4065555809481043,0.3213914849428869,0.5676704742125304,,,modeladas diarias
+jitter,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas diarias
+jitter,calma,—,—,auc,0.5,0.34971988579069213,0.22020761245674741,0.4223356009070295,,,modeladas diarias
+jitter,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas diarias
+jitter,crisis,—,—,auc,0.5,0.2991960420531849,0.1341991341991342,0.41950113378684806,,,modeladas diarias
+jitter,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas diarias
+jitter,todos,—,—,auc,0.5,0.6154398056267214,0.5077881619937694,0.7857390100380754,,,re-derivadas
+jitter,todos,—,—,n_ventanas,536.0,536.0,,,,,re-derivadas
+jitter,calma,—,—,auc,0.5,0.5404663758674533,0.43977591036414565,0.7318458417849898,,,re-derivadas
+jitter,calma,—,—,n_ventanas,424.0,424.0,,,,,re-derivadas
+jitter,crisis,—,—,auc,0.5,0.517584003298289,0.32653061224489793,0.7619047619047619,,,re-derivadas
+jitter,crisis,—,—,n_ventanas,106.0,106.0,,,,,re-derivadas
+jitter,todos,—,—,auc,0.5,0.4182058560563234,0.3469193492557978,0.5396330910349603,,,solo SP500_ret
+jitter,todos,—,—,n_ventanas,536.0,536.0,,,,,solo SP500_ret
+jitter,calma,—,—,auc,0.5,0.3759990227328254,0.3449134948096886,0.42380952380952386,,,solo SP500_ret
+jitter,calma,—,—,n_ventanas,424.0,424.0,,,,,solo SP500_ret
+jitter,crisis,—,—,auc,0.5,0.37252112966398676,0.2619047619047619,0.5757575757575757,,,solo SP500_ret
+jitter,crisis,—,—,n_ventanas,106.0,106.0,,,,,solo SP500_ret
+bootstrap_regimen,todos,—,—,auc,0.5,0.7774324257501828,0.7444592790387183,0.8111259457053849,,,todas
+bootstrap_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,todas
+bootstrap_regimen,calma,—,—,auc,0.5,0.7841728291045966,0.7307256235827664,0.8044290657439447,,,todas
+bootstrap_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,todas
+bootstrap_regimen,crisis,—,—,auc,0.5,0.718243661100804,0.6406926406926408,0.8435374149659863,,,todas
+bootstrap_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,todas
+bootstrap_regimen,todos,—,—,auc,0.5,0.7041830081082417,0.6577535479404638,0.7846906987093902,,,modeladas lentas
+bootstrap_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas lentas
+bootstrap_regimen,calma,—,—,auc,0.5,0.7368698900790877,0.6933062880324543,0.7570861678004535,,,modeladas lentas
+bootstrap_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas lentas
+bootstrap_regimen,crisis,—,—,auc,0.5,0.679107400535972,0.6167800453514739,0.7868480725623583,,,modeladas lentas
+bootstrap_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas lentas
+bootstrap_regimen,todos,—,—,auc,0.5,0.3484621270135289,0.2578314295604015,0.43809523809523804,,,modeladas diarias
+bootstrap_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas diarias
+bootstrap_regimen,calma,—,—,auc,0.5,0.33739013874650603,0.25695501730103804,0.4002704530087898,,,modeladas diarias
+bootstrap_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas diarias
+bootstrap_regimen,crisis,—,—,auc,0.5,0.25813234384662953,0.16099773242630386,0.3854875283446712,,,modeladas diarias
+bootstrap_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas diarias
+bootstrap_regimen,todos,—,—,auc,0.5,0.6220406654986093,0.5449043168669336,0.7324333679473866,,,re-derivadas
+bootstrap_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,re-derivadas
+bootstrap_regimen,calma,—,—,auc,0.5,0.6019700322319598,0.5097789115646258,0.7553752535496957,,,re-derivadas
+bootstrap_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,re-derivadas
+bootstrap_regimen,crisis,—,—,auc,0.5,0.5522778808493094,0.4264069264069264,0.6848072562358276,,,re-derivadas
+bootstrap_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,re-derivadas
+bootstrap_regimen,todos,—,—,auc,0.5,0.41763084178972026,0.3658655985758789,0.5085669781931463,,,solo SP500_ret
+bootstrap_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,solo SP500_ret
+bootstrap_regimen,calma,—,—,auc,0.5,0.40000745139164523,0.3413840830449827,0.4951994590939824,,,solo SP500_ret
+bootstrap_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,solo SP500_ret
+bootstrap_regimen,crisis,—,—,auc,0.5,0.34073386930529787,0.21995464852607707,0.4480519480519481,,,solo SP500_ret
+bootstrap_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,solo SP500_ret
+garch_regimen,todos,—,—,auc,0.5,0.9367555004938183,0.8885427483558325,0.9809622706818968,,,todas
+garch_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,todas
+garch_regimen,calma,—,—,auc,0.5,0.9398766849539004,0.9173669467787116,0.9787414965986394,,,todas
+garch_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,todas
+garch_regimen,crisis,—,—,auc,0.5,0.698227169655741,0.47165532879818595,0.9047619047619048,,,todas
+garch_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,todas
+garch_regimen,todos,—,—,auc,0.5,0.9778748441365263,0.9447040498442367,0.9975077881619938,,,modeladas lentas
+garch_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas lentas
+garch_regimen,calma,—,—,auc,0.5,0.9784240955340893,0.9587559161595672,0.9994331065759637,,,modeladas lentas
+garch_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas lentas
+garch_regimen,crisis,—,—,auc,0.5,0.7499072356215214,0.5194805194805194,0.9501133786848073,,,modeladas lentas
+garch_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas lentas
+garch_regimen,todos,—,—,auc,0.5,0.7327675071600306,0.6336967808930427,0.7838896306186026,,,modeladas diarias
+garch_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,modeladas diarias
+garch_regimen,calma,—,—,auc,0.5,0.6909198436643081,0.6009688581314879,0.7743069641649764,,,modeladas diarias
+garch_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,modeladas diarias
+garch_regimen,crisis,—,—,auc,0.5,0.7565038136466707,0.6848072562358276,0.8049886621315192,,,modeladas diarias
+garch_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,modeladas diarias
+garch_regimen,todos,—,—,auc,0.5,0.6561154612556482,0.5224744103248776,0.864312911041883,,,re-derivadas
+garch_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,re-derivadas
+garch_regimen,calma,—,—,auc,0.5,0.5931411361028522,0.4622837370242214,0.7429344151453685,,,re-derivadas
+garch_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,re-derivadas
+garch_regimen,crisis,—,—,auc,0.5,0.5602143887858173,0.4437229437229437,0.6689342403628117,,,re-derivadas
+garch_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,re-derivadas
+garch_regimen,todos,—,—,auc,0.5,0.5795156170857105,0.5152301834544826,0.6673402374336954,,,solo SP500_ret
+garch_regimen,todos,—,—,n_ventanas,536.0,536.0,,,,,solo SP500_ret
+garch_regimen,calma,—,—,auc,0.5,0.5137416918085693,0.37605536332179934,0.6478701825557809,,,solo SP500_ret
+garch_regimen,calma,—,—,n_ventanas,424.0,424.0,,,,,solo SP500_ret
+garch_regimen,crisis,—,—,auc,0.5,0.686559472273758,0.6122448979591837,0.7467532467532467,,,solo SP500_ret
+garch_regimen,crisis,—,—,n_ventanas,106.0,106.0,,,,,solo SP500_ret

@@ -1,0 +1,32 @@
+{
+  "n_boot": 200,
+  "largo_bloque": 63,
+  "persistentes": [
+    "SP500_vol_z",
+    "SP500_momentum",
+    "SP500_drawdown",
+    "credit_BaaAaa_mensual_z",
+    "term_spread_hist_z",
+    "INDPRO_yoy_z",
+    "VIX_level_z",
+    "MOVE_level_z",
+    "credit_BAA10Y_z",
+    "corr_spx_bond"
+  ],
+  "mensuales": [
+    "credit_BaaAaa_mensual_z",
+    "term_spread_hist_z",
+    "INDPRO_yoy_z"
+  ],
+  "agregacion": "mediana",
+  "lambda_ewma": 0.94,
+  "curtosis": "pearson (normal = 3)",
+  "tope_vida_media": 10000.0,
+  "largo_referencia": 2520,
+  "referencia_ventanas_aplicada": false,
+  "motivo_referencia": "no aplicada: el real tiene 2702 filas, 1 ventanas no solapadas de 2520 < 3; referencia = real entero + bootstrap",
+  "paso_ventanas": null,
+  "n_ventanas_reales": 0,
+  "ventanas_solapadas": false,
+  "referencia_ventanas": []
+}
