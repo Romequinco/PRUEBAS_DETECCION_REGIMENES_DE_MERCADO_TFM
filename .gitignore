@@ -264,3 +264,6 @@ results/sinteticos/**/*.pt
 results/sinteticos/**/*.pth
 results/sinteticos/**/*.npy
 results/sinteticos/**/*.npz
+# Laboratorio (notebook 17): filas JSON por trabajo y logs; se versiona el consolidado filas.csv
+results/sinteticos/laboratorio/filas/
+results/sinteticos/laboratorio/*.log*

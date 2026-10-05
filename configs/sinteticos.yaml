@@ -171,3 +171,85 @@ validacion:
     # el discriminador con todas las columnas los separa a todos, AUC 0,78-0,999). No sustituye a
     # apto_laboratorio: el 17 usa estos generadores advirtiendo que son distinguibles del real.
     laboratorio_condicionado: [marginal, dependencia, condicionamiento]
+
+# Laboratorio de detectores con regimen conocido (notebook 17, regimenes.sinteticos.laboratorio).
+# PRE-REGISTRO fijado el 2026-10-05 ANTES de generar ninguna trayectoria del laboratorio ni ejecutar
+# ningun detector sobre ellas. Cualquier cambio posterior se declara aqui con fecha y «Antes: ...».
+#
+# Enfoque (decision del 2026-10-05, tras el veredicto del 16: ningun generador apto_laboratorio ni
+# laboratorio_condicionado): SIMULACION CONTROLADA. Se usan solo los tres parametricos con mecanismo
+# explicito (gaussiano_regimen, var_regimen, garch_regimen), ya ajustados en el 15 con el tramo de
+# train, como «mundos de juguete» con verdad-terreno exacta. El laboratorio ordena detectores por
+# robustez y mecanismo; NO mide rendimiento en el mercado real (los generadores son distinguibles
+# del real, ver validacion). Neuronales, rbig, jitter y bootstrap quedan fuera.
+laboratorio:
+  semilla: 42
+  generadores: [gaussiano_regimen, var_regimen, garch_regimen]
+  pistas: [A, B]
+  # Trayectoria = calentamiento + tramo puntuado. El calentamiento mide lo mismo que el train inicial
+  # del benchmark (benchmark.ejecucion.DEFAULT_TRAIN_DAYS: A 2016, B 756) y solo se puntua el tramo
+  # fuera de muestra del walk-forward (identico protocolo y specs que el benchmark).
+  largo_puntuado: 1260            # ~5 anos de sesiones fuera de muestra
+  # Secuencia de regimen IMPUESTA (garantiza crisis en el tramo puntuado): n crisis de duracion D en
+  # cada zona, cada una con inicio uniforme dentro de su hueco (margen minimo 21 sesiones), sorteado
+  # por trayectoria con la semilla.
+  crisis_calentamiento: {A: 2, B: 1}
+  crisis_puntuadas: 2
+  margen_min: 21
+  # Rejilla factorial de dificultad (por pista): generador x duracion x intensidad = 18 celdas.
+  duraciones: [21, 63, 252]       # sesiones de cada crisis (1 mes, 1 trimestre, 1 ano)
+  # Intensidad lambda: en las filas de crisis, por columna modelada en el espacio de trabajo, la
+  # media y la desviacion de crisis se interpolan entre las de calma (lambda 0) y las nativas
+  # (lambda 1) de la propia trayectoria: z <- m0 + lambda (m1 - m0) + (z - m1) (s0 + lambda (s1 - s0)) / s1;
+  # despues se re-derivan las features del S&P 500. 1.0 = crisis nativa; 0.5 = senal atenuada.
+  # Corregido el 2026-10-05, en la prueba de humo de la generacion y ANTES de ejecutar ningun
+  # detector: la contraccion simple hacia la media de calma tambien encogia la dispersion propia de
+  # la crisis y la dejaba mas tranquila que la calma (sd de SP500_ret 0,0035 frente a 0,0057).
+  # Antes: z <- m_calma + lambda (z - m_calma).
+  # (Sustituye a los ejes «separacion de vol / colas / salto de correlacion» del plan: tocarlos uno a
+  # uno exigiria editar el interior de cada generador; lambda los atenua todos a la vez.)
+  intensidades: [1.0, 0.5]
+  # Trayectorias por celda: se fija con el piloto de coste (solo tiempos, nunca metricas) para
+  # ajustarse a `presupuesto_horas` con `n_jobs` procesos; minimo 10.
+  # Fijado el 2026-10-05 con el piloto (results/sinteticos/laboratorio/piloto_coste.csv, solo tiempos,
+  # 10 procesos en paralelo): ~778 s por trayectoria y celda en A (D11 de A estimado en ~130 s, el
+  # doble que en B, porque su piloto fallo por un ZeroDivisionError del calculo del score, ya
+  # corregido) y ~375 s en B -> 18 celdas x 2 pistas caben 11 trayectorias en 8 h. Antes: null.
+  n_paths: 11
+  n_paths_min: 10
+  presupuesto_horas: 8
+  n_jobs: 10
+  # Detectores: los 12 del registro con su spec del benchmark. En B, D02 y D10 usan columnas que los
+  # generadores no producen (slope_10y2y_z, VIX_change_z, DXY_change_z): quedan fuera en B (no se
+  # sustituyen para no crear variantes nuevas).
+  excluir: {B: [D02, D10]}
+  min_run: 3                      # deteccion por evento = ADR-003
+  # Circularidad: detectores cuya hipotesis de modelo coincide con el mecanismo del generador
+  # («juegan en casa»); su lectura va aparte.
+  misma_familia:
+    gaussiano_regimen: [D03, D04]   # mezcla gaussiana / HMM gaussiano: regimen = gaussiana por estado
+    garch_regimen: [D06, D11]       # GARCH-t / MS-GARCH: volatilidad condicional por regimen
+    var_regimen: []
+  # Hipotesis (las cuatro preguntas del esqueleto):
+  # H1 recuperacion: con crisis de 252 sesiones e intensidad 1.0 la mayoria de detectores supera
+  #    el azar (lift > 1) y detecta >= la mitad de las crisis puntuadas.
+  # H2 degradacion: el score medio de cada detector baja al acortar la crisis y al atenuar la
+  #    intensidad (se publica la pendiente por detector, no se exige monotonia estricta).
+  # H3 concordancia: correlacion de Spearman entre el ranking del laboratorio (score medio en todas
+  #    las celdas) y el ranking real ADR-003 de la misma pista; se publica con p por permutacion.
+  #    El ranking real se lee SOLO en esta comparacion final.
+  # H4 circularidad: ventaja de score de los detectores de `misma_familia` en su generador frente a
+  #    su media en los otros generadores (diferencia con IC bootstrap entre trayectorias).
+  n_boot: 1000                    # IC bootstrap por percentiles entre trayectorias
+  # Declarado el 2026-10-06, DESPUES de ver los resultados (revision adversarial del notebook 17).
+  # Son lecturas EXPLORATORIAS, no hipotesis pre-registradas, y el notebook las marca asi:
+  # - metricas que solo existen con verdad exacta (ya calculadas en metricas.py antes de ejecutar,
+  #   pero no listadas aqui): retraso_medio (condicional a detectar: se lee junto al recall por
+  #   evento), exactitud_equilibrada y falsas_alarmas_ano (episodios de marca que empiezan en calma,
+  #   SIN exigir min_run; se completa con la fraccion de dias de calma marcados, derivada de
+  #   det_marked_rate, det_precision y det_base_rate);
+  # - descomposicion de H2 en recall por evento / precision / lift para separar dificultad de
+  #   prevalencia, e IC bootstrap de efecto_acortar (antes: solo signo de la diferencia de medias);
+  # - H4 ventaja_relativa (ventaja de casa menos la del resto de detectores en ese generador) con IC
+  #   bootstrap; la H4 pre-registrada es ventaja_casa.
+  # H3 no tenia umbral de exito: se publica rho y p, sin veredicto «se cumple / no se cumple».
