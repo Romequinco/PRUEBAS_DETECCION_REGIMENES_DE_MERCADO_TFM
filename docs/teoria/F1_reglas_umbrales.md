@@ -267,26 +267,7 @@ tau_out, min_dwell)`. Cero dependencias nuevas respecto al stack actual.
 - Tong, H. (1990). *Non-Linear Time Series: A Dynamical System Approach*. Oxford
   University Press. ISBN: 9780198522249. (modelos de umbral TAR/SETAR).
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-Familias detectadas durante la búsqueda que NO son reglas/umbrales y que deben
-desarrollarse en su memoria correspondiente (sólo se anotan aquí):
-
-- **Markov-switching / HMM (estado latente).** Núcleo de la tarea previa
-  (`hamilton1989`); emisiones t-Student/mixturas para fat tails. Es la familia de
-  contraste directa al baseline de reglas.
-- **Change-point detection / segmentación retrospectiva y online.** `ruptures`,
-  CUSUM, Bayesian online change-point (Adams & MacKay). Prima de la regla con
-  histéresis pero con base estadística de cambio de media/varianza.
-- **GARCH y regímenes de volatilidad (clustering).** Umbralizar la vol
-  condicional GARCH/EWMA; puente entre regla sobre vol y modelo estadístico.
-- **Statistical Jump Models (clustering temporal con penalización de saltos).**
-  Aparecieron como alternativa reciente al HMM con drawdowns más suaves
-  (arXiv:2402.05272); penalizan transiciones, lo que es la versión "aprendida" de
-  la histéresis.
-- **Índice de turbulencia / Mahalanobis multivariante (Kritzman et al. 2012).**
-  Aunque se umbraliza, su construcción es multivariante-estadística; encaja mejor
-  como método de distancia/anomalía que como regla simple.
-- **Clasificadores ML supervisados (logística/árboles/RL) sobre features de
-  régimen.** Varias referencias (preprints VIX-spike, RegimeFolio) entrenan
-  clasificadores; familia ML, fuera de alcance aquí.
+- **Jump models estadísticos** (arXiv:2402.05272): clustering temporal que penaliza las transiciones; es la versión «aprendida» de la histéresis (D09, ficha F2).
+- **Clasificadores supervisados** (logística, árboles) sobre features de régimen: fuera de alcance, porque exigen etiquetas de régimen que el banco reserva para evaluar.

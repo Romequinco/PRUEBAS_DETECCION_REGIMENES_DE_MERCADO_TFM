@@ -1,23 +1,46 @@
-# Detección de regímenes de mercado — TFM (MIAX)
+# Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence — TFM (MIAX)
 
-El TFM propone un sistema de **detección de regímenes de mercado** (calma / estrés / crisis) que sirva
-de columna vertebral a la gestión del riesgo. Este repositorio es su **fase de detección**: no busca
-un detector concreto, sino el **marco de evaluación causal y comparable** que juzga a muchos
-detectores, la **base de datos sólida** sobre la que hacerlo y, a partir de ahí, un sistema de
-alerta + confirmación que se validará con datos sintéticos y en pseudolive.
+El TFM es un **sistema multi-agente con RAG**: un equipo de agentes LLM (Macro, Equity, Risk, Portfolio y
+CIO, orquestados con LangGraph) que lee información financiera heterogénea, sabe en qué **régimen** está
+el mercado y, con ello, construye carteras y redacta un *investment memo* con citas a las fuentes. No
+predice precios: detecta el estado del mercado, lo contextualiza con evidencia y gestiona el riesgo. La
+visión completa está en [`docs/tfm/README.md`](docs/tfm/README.md) y la decisión de alcance en
+[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md).
+
+| Fase | Qué | Estado |
+|:---:|---|---|
+| 1 | Régimen de mercado: base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | 🟡 en curso (**este repositorio**, paquete `regimenes`) |
+| 2 | Ingesta, RAG y tools: corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | 🔜 |
+| 3 | Agentes Macro, Equity y Risk en LangGraph, salidas estructuradas y trazables | 🔜 |
+| 4 | Cartera y memo: Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | 🔜 |
+| 5 | Evaluación: backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos | 🔜 |
+
+**Este repositorio contiene hoy la Fase 1** (el régimen). No busca un detector concreto, sino el **marco
+de evaluación causal y comparable** que juzga a muchos detectores, la **base de datos sólida** sobre la que
+hacerlo y, a partir de ahí, un sistema de alerta + confirmación validado con datos sintéticos y en
+pseudolive. Su salida es la tool **`get_regimen(fecha)`**: estado, probabilidad y días en el estado, con
+solo información publicada hasta `fecha`.
 
 > **En una línea:** *12 detectores de 7 familias (Capa 1) → no eran comparables (cada uno con sus
 > datos y su periodo) → datos re-basados en dos pistas congeladas → los 12 re-evaluados con un ranking
-> por detección → un solo paquete, con un notebook por familia → siguen datos sintéticos y pseudolive.*
+> por detección → un solo paquete, con un notebook por familia → datos sintéticos y laboratorio →
+> decisión final y pseudolive → `get_regimen` → agentes.*
+
+> **Ojo con «Capa 1»:** en este repositorio es la primera vuelta exploratoria de 12 detectores v1 (tag
+> `capa1-final`); **no** es la «Capa 1/Capa 2» de la propuesta (42 ETFs / ~1.300 acciones). Ver el
+> [GLOSARIO](docs/GLOSARIO.md#capa-1-del-repositorio-no-es-la-capa-1-de-la-propuesta).
 
 **Si acabas de llegar:** el índice de la documentación y el **orden de lectura** están en
 [`docs/README.md`](docs/README.md#orden-de-lectura). Visita rápida:
+[`docs/tfm/README.md`](docs/tfm/README.md) (el TFM completo) →
+[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) →
 [`docs/GLOSARIO.md`](docs/GLOSARIO.md) (pistas, métricas, rutas) →
 [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) (de dónde venimos) → decisiones
 [ADR-001](docs/decisions/ADR-001-rebase-datos.md) (re-base de datos) ·
 [ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) (ventanas) ·
 [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) (causalidad y ranking) ·
-[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura del repo y del paquete).
+[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura del repo y del paquete) ·
+[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) (el TFM es multi-agente; el régimen es la Fase 1).
 
 ---
 
@@ -32,7 +55,7 @@ alerta + confirmación que se validará con datos sintéticos y en pseudolive.
 
 ## Arquitectura del paquete `regimenes`
 
-Todo el código vive en un paquete instalable (`src/regimenes`, `pip install -e .`). Los notebooks,
+Todo el código de la Fase 1 vive en un paquete instalable (`src/regimenes`, `pip install -e .`). Los notebooks,
 los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. Detalle por módulo en
 [`src/regimenes/README.md`](src/regimenes/README.md).
 
@@ -65,11 +88,13 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
 │   ├── fusion/         d07_d08/ · d02_d06/
-│   └── detectores/ · sinteticos/ (generadores/ · validacion/) · pseudolive/
-└── docs/               README (índice) · GLOSARIO · references.bib · decisions/ (ADR-001…004) · datos/ · teoria/ · detectores/ · historia/capa1/ · context/
+│   └── detectores/ · sinteticos/ (generadores/ · validacion/ · laboratorio/) · pseudolive/
+└── docs/               README (índice) · GLOSARIO · references.bib · tfm/ (el TFM completo) · decisions/ (ADR-001…005) · datos/ · teoria/ · detectores/ · historia/capa1/ · context/
 ```
 
 ## Notebooks 00–20
+
+Son el pipeline de la Fase 1.
 
 | Nº | Notebook | Fase | Qué hace |
 |---|---|---|---|
@@ -91,9 +116,9 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 | 15 | [`15_sinteticos_generadores`](notebooks/15_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 16) |
 | 16 | [`16_sinteticos_validacion`](notebooks/16_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
 | 17 | [`17_sinteticos_laboratorio`](notebooks/17_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 16): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
-| 18 | [`18_sinteticos_aumento`](notebooks/18_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto) |
-| 19 | [`19_decision_final`](notebooks/19_decision_final.ipynb) | F | decisión final del sistema a congelar, futura ADR-005 (esqueleto) |
-| 20 | [`20_pseudolive`](notebooks/20_pseudolive.ipynb) | F | regla congelada sobre datos no usados (esqueleto) |
+| 18 | [`18_sinteticos_aumento`](notebooks/18_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto; se mantiene, ADR-005) |
+| 19 | [`19_decision_final`](notebooks/19_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
+| 20 | [`20_pseudolive`](notebooks/20_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
 
 Los notebooks de familia (05–11) siguen una plantilla común: teoría de la familia, configuración
 desde el registro, ejecución con `EJECUTAR = False` (lee la caché de `results/benchmark`), estados OOS
@@ -160,7 +185,14 @@ la complejidad (D11, D12) sigue sin pagarse, como ya indicaba la Capa 1.
 **Fusión (Fase E).** D2 alerta + D6 confirma mejora a D2 y a D6 aislados en ambas pistas, pero **no
 anticipa** el inicio de las crisis; D2 y D7 quedan prácticamente empatados como alerta y el control por
 mitades elige otras alertas. La capa de alerta no añade anticipación: la regla a congelar se decide
-en `19_decision_final` antes del pseudolive (detalle en [`14_fusion_d02_d06`](notebooks/14_fusion_d02_d06.ipynb)).
+en `19_decision_final` (futura ADR-006) antes del pseudolive (detalle en [`14_fusion_d02_d06`](notebooks/14_fusion_d02_d06.ipynb)).
+
+**Laboratorio con régimen conocido (notebook 17).** Simulación controlada con `gaussiano_regimen`,
+`var_regimen` y `garch_regimen` (18 celdas por pista, 4356 trabajos), resultados en
+`results/sinteticos/laboratorio/`. H1 (recuperación) se cumple: 92 % en A y 100 % en B. H2: el score baja
+al acortar y atenuar la crisis (en parte por prevalencia; el recall por evento cae de 0,86 a 0,54 en A).
+H3: concordancia con el ranking de ADR-003 de ρ = 0,87 (p = 0,001) en A y 0,48 (p = 0,16) en B. H4: hay
+indicio de circularidad para D03 (+0,23 relativa en B) y ninguno para GARCH.
 
 ## Cómo reproducir
 
@@ -201,18 +233,22 @@ versiones):
 `make notebooks` ejecuta 00–14 en orden numérico: sirve cuando caché y ranking ya son coherentes;
 tras un benchmark nuevo, ejecuta antes `12_comparativa` a mano. Los paneles OOS
 (`results/benchmark/panels/*.parquet`) no se versionan: se regeneran con el benchmark.
-Los notebooks 15–16 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
+Los notebooks 15–17 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
 (~1 GB, no versionado), que genera `15_sinteticos_generadores` con `EJECUTAR = True`; después, 15 y
 16 se ejecutan a mano con `EJECUTAR = False` (16 lee además sus tablas de `results/sinteticos/validacion/`).
+El laboratorio (17) se ejecuta con su CLI, reanudable y con caché por huella:
+`python -m regimenes.sinteticos.laboratorio` (el notebook 17 lee `results/sinteticos/laboratorio/`).
 
 ## Estado del proyecto
 
-Fases: **1–4** son las del re-base de datos ([ADR-001](docs/decisions/ADR-001-rebase-datos.md)):
-1 reorganización, 2 datos, 3 EDA + banco congelado, 4 diseño y preprocesado causal. Las posteriores se
-nombran por letra: **D** detectores (benchmark), **E** fusión *early warning* (alerta + confirmación),
-**S** sintéticos, **F** final (decisión + pseudolive).
+Este repositorio es la **Fase 1** del TFM (ver la tabla de fases arriba y [ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md)).
+Sus etapas internas conservan los nombres históricos y se leen como **sub-fases de la Fase 1**:
+**1–4** son las del re-base de datos ([ADR-001](docs/decisions/ADR-001-rebase-datos.md)): 1 reorganización,
+2 datos, 3 EDA + banco congelado, 4 diseño y preprocesado causal; las posteriores se nombran por letra:
+**D** detectores (benchmark), **E** fusión *early warning* (alerta + confirmación), **S** sintéticos,
+**F** final (decisión + validación pseudolive).
 
-| Fase | Qué | Estado |
+| Sub-fase | Qué | Estado |
 |---|---|---|
 | Capa 1 | 12 detectores v1 sobre 9 series (exploración) | ✅ congelada 2026-07-18 · [historia](docs/historia/capa1/README.md) |
 | 1–3 | Reorganización · datos (166/174 series) · EDA + banco congelado | ✅ [ADR-001](docs/decisions/ADR-001-rebase-datos.md) · [ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) |
@@ -220,8 +256,9 @@ nombran por letra: **D** detectores (benchmark), **E** fusión *early warning* (
 | D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 04–12 |
 | — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](docs/decisions/ADR-004-unificacion.md) |
 | E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 13–14) |
-| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores y validación implementados (notebooks 15–16); laboratorio y aumento pendientes (17–18) · `regimenes.sinteticos` · [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
-| F | Decisión final (futura ADR-005) + pseudolive independiente | 🔜 notebooks 19–20 (esqueletos) |
+| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores, validación y laboratorio hechos (notebooks 15–17); aumento pendiente (18, esqueleto) · `regimenes.sinteticos` · [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
+| F | Decisión final del detector y contrato de `get_regimen` (futura ADR-006) + validación pseudolive de la tool | 🔜 notebooks 19–20 (esqueletos) |
+| Fases 2–5 | Ingesta y RAG, agentes, cartera y memo, evaluación | 🔜 diseño abierto en [`docs/tfm/`](docs/tfm/README.md) (cliente y carteras, datos alternativos, líneas abiertas); dónde vivirá su código, por decidir |
 
 Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
 `capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).

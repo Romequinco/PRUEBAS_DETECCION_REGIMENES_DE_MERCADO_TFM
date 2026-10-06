@@ -6,8 +6,8 @@
 
 > Estado del arte (FASE 2) de la familia **HMM como modelo de espacio de estados
 > latente con emisiones** (estilo `hmmlearn`/`pomegranate`). Frontera con el
-> **Markov-Switching econométrico** (Hamilton MS-AR, `statsmodels`): lo cubre OTRO
-> subagente. Ver nota de solape en "Candidatas adicionales". Referencias en
+> **Markov-Switching econométrico** (Hamilton MS-AR, `statsmodels`): se trata en la
+> ficha F4 (mismo motor de espacio de estados, distinto énfasis). Referencias en
 > `F3_hmm.bib` (claves nuevas `hmm_*`) y en `docs/references.bib` (claves ya
 > existentes citadas sin redefinir).
 
@@ -270,8 +270,7 @@ El marco del TFM es **causal, sin look-ahead, walk-forward**. Para el HMM esto e
   cambios de interfaz entre versiones), menos "plug-and-play" para regímenes que
   hmmlearn; conviene fijar versión.
 - **Alternativas/menciones**: `statsmodels` cubre el **Markov-Switching
-  econométrico** (MS-AR/Hamilton) — frontera de OTRO subagente, no desarrollar
-  aquí. En R, `depmixS4`, `HiddenMarkov` y el `fHMM` (HMM para series financieras)
+  econométrico** (MS-AR/Hamilton) — tratado en la ficha F4. En R, `depmixS4`, `HiddenMarkov` y el `fHMM` (HMM para series financieras)
   ofrecen emisiones t/gamma y selección por AIC/BIC, útiles como referencia
   metodológica [hmm_zucchini2016].
 - **t-Student "a mano" sobre hmmlearn**: si se quiere quedarse en hmmlearn, una
@@ -310,34 +309,12 @@ Ya existentes (en `docs/references.bib`, citadas sin redefinir):
 - [angbekaert2002] Ang & Bekaert (2002).
 - [gulko2002] Gulko (2002).
 - [kritzman2012] Kritzman, Page & Turkington (2012).
-- [hamilton1989] Hamilton (1989) — base del Markov-Switching (frontera del otro subagente).
+- [hamilton1989] Hamilton (1989) — base del Markov-Switching (tratado en la ficha F4).
 
 ---
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-- **SOLAPE HMM ↔ Markov-Switching econométrico (Hamilton, `statsmodels`).** El
-  HMM gaussiano de emisiones y el MS-AR de Hamilton son el **mismo motor de
-  espacio de estados con cadena latente**; difieren en énfasis: aquí
-  emisiones/features multivariantes latentes (hmmlearn), allí dinámica
-  autorregresiva univariante con cambio de régimen (statsmodels). **A resolver por
-  el sintetizador**: evitar doble conteo, presentar HMM y MS como dos caras del
-  regime-switching, y decidir si el baseline va por hmmlearn (este doc) o por
-  statsmodels (otro doc). [hamilton1989; hmm_angtimmermann2012]
-- **Hidden semi-Markov (HSMM)**: relajan la permanencia geométrica modelando
-  explícitamente la duración del régimen [hmm_bullabulla2006]. Útil si las
-  duraciones reales no son geométricas; podría mejorar 2013/2018. Mencionar como
-  extensión, no desarrollar aquí.
-- **Jump models / HMM con penalización de saltos** [hmm_nystrup2020]: a caballo
-  entre HMM y clustering; estados persistentes, buenos para detección online y
-  contra el flickering. Posible candidato propio si el sintetizador abre una
-  familia "regímenes robustos/online".
-- **Sticky / Bayesian nonparametric HMM (HDP-HMM)**: elige `K` automáticamente y
-  favorece estados persistentes; mayor coste, fuera del stack hmmlearn (criterio
-  del equipo).
-- **HMM de parámetros variables en el tiempo / tiempo continuo** [hmm_nystrup2017;
-  hmm_nystrup2015]: relajan la estacionariedad de `A` y `b_k`; relevantes para el
-  marco causal, pero implementación no trivial.
-- **Frontera con clustering (GMM/k-means sobre features)** y con **change-point
-  (CUSUM, bayesiano, `ruptures`)**: familias vecinas que cubren otros subagentes;
-  el GMM-HMM es el puente natural entre clustering y HMM.
+- **Sticky / HDP-HMM bayesiano no paramétrico:** elige `K` solo y favorece estados persistentes; coste alto y fuera del stack `hmmlearn`.
+- **HMM de parámetros variables en el tiempo / tiempo continuo** [hmm_nystrup2017; hmm_nystrup2015]: relajan la estacionariedad de `A` y de las emisiones; implementación no trivial.
+- El HSMM [hmm_bullabulla2006] sí está implementado como ablación (D13); los *jump models* [hmm_nystrup2020] como D09 (F2); HMM y Markov-Switching comparten motor y se distinguen en la ficha F4.

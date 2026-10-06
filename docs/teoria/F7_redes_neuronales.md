@@ -236,26 +236,8 @@ exploratorio", con disclaimer de muestra pequeña, y no construir LSTM supervisa
 (López de Prado 2018, ya en `references.bib`, se invoca en prosa por su crítica
 al backtest overfitting; no se re-declara para no duplicar la clave.)
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-- **Híbrido deep+HMM como puente entre familias.** El patrón "AE/VAE reduce →
-  HMM sobre el latente" conecta esta familia con la del HMM (fichero de HMM /
-  Nystrup et al. 2018, *Dynamic portfolio optimization across hidden market
-  regimes*, Quantitative Finance 18(1)). Recomendación al sintetizador:
-  considerar **PCA/AE + HMM** como una sola línea comparable (lineal vs. no
-  lineal en la reducción) en lugar de tratar deep y HMM como mundos aparte.
-- **Clustering del espacio latente** se solapa con la familia "Clustering"
-  (k-means/GMM): la decisión AE vs. PCA antes del clustering es el verdadero
-  punto de comparación; no duplicar el clustering en sí, sino el *reductor*.
-- **Wasserstein k-means de regímenes** (Horvath et al., arXiv:2110.11848) y
-  **statistical jump models** (Nystrup et al.) son alternativas no-deep que
-  imponen persistencia — pertenecen a Clustering/Change-point pero son rivales
-  directos del AE+clustering en muestras pequeñas; el sintetizador debería
-  contrastarlas frente a cualquier propuesta deep.
-- **AE de anomalías como "stress index"** se solapa conceptualmente con
-  reglas/umbrales sobre VIX y spreads (familia Reglas): el error de
-  reconstrucción es, en el fondo, otro índice de estrés a umbralar; conviene
-  benchmarkearlo contra el simple VIX>percentil para ver si el AE aporta algo.
-- (criterio del equipo) Recomendar al sintetizador que, si entra cualquier
-  detector deep, sea **uno solo, ligero, no supervisado**, etiquetado como
-  exploratorio, con resultado-negativo aceptable como contribución.
+- **PCA/AE + HMM** como una línea comparable (lineal frente a no lineal en la reducción) en lugar de mundos separados; no implementado más allá de D12.
+- **Wasserstein k-means y *jump models*** (Horvath et al.; Nystrup et al.): rivales no-deep del AE+clustering en muestras pequeñas (F2).
+- El error de reconstrucción del AE es otro índice de estrés: conviene contrastarlo con la regla simple sobre VIX (F1). Criterio del equipo: un único detector deep, ligero y no supervisado, etiquetado como exploratorio; un resultado negativo es una contribución aceptable.

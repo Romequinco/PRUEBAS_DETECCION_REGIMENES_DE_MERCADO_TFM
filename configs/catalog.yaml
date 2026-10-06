@@ -1,9 +1,14 @@
 # catalog.yaml — universo de datos declarado (FUENTE DE VERDAD de la capa de datos v2)
 #
-# ESTADO: POBLADO (FASE 2). Informe de fuentes en docs/SOTA_datos.md (12 categorias),
+# ESTADO: POBLADO (FASE 2). Informe de fuentes en docs/datos/SOTA_datos.md (12 categorias),
 # verificadas de verdad el 2026-07-18 (FRED API con FRED_API_KEY, yfinance period='max',
 # CSV de OFR y repos GitHub datahub/PDDL). Cada serie declara: nombre interno, fuente,
 # ticker/id, fallback, histórico verificado, granularidad, rol y a qué pista pertenece.
+#
+# NOTA (2026-10-06): este catálogo es el universo DECLARADO (v1 de la FASE 2). Las pistas OPERATIVAS (ventanas
+# del banco) son las de ADR-002: A desde 1962-01-02 y B desde 2007-04-11; los "1927" y "2003" de abajo son
+# el diseño original de ADR-001 y se conservan como histórico. "FASE 2"/"Fase D" son sub-fases de la Fase 1
+# (régimen) del TFM (ADR-005). Solo comentarios: las claves y valores entran en la huella de caché.
 #
 # Las dos pistas (decisión ADR-001; definiciones canónicas en docs/GLOSARIO.md):
 #   A = espina histórica profunda: banco desde 1927 (S&P500 diario ^GSPC lo gobierna;

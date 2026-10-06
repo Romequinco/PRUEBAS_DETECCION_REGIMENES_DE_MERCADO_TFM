@@ -1,6 +1,6 @@
 # Estado del arte de datos — Detección de regímenes de mercado
 
-**Proyecto:** banco de pruebas de detección de regímenes (Capa 1 de un TFM MIAX).
+**Proyecto:** banco de pruebas de detección de regímenes (Fase 1 —régimen— del TFM MIAX *Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence*; ver ADR-005).
 **Fecha de verificación de todo lo que sigue:** 2026-07-18.
 **Método:** cada serie se **descargó de verdad** (FRED API con `FRED_API_KEY` del `.env`, `yfinance period='max'`, CSV de OFR, ficheros académicos y repos GitHub). Se reporta la fecha de inicio **observada**, no la de marketing, y el estado (vivo / descontinuado / retirado).
 
@@ -18,6 +18,8 @@ Este documento es el estado del arte **de los datos** (no de los detectores). Ex
 | **B** | Panel **rico** multi-activo | banco 2003+ (vol-of-vol 2007) → hoy | **Muchas** features cross-asset (vol, crédito, curva, FX, commodities, liquidez, macro). Granularidad y diversidad para atacar regímenes modernos (incluido el punto ciego de 2013). |
 
 Muchas series sirven a **ambas** (p.ej. VIX desde 1990, DGS10 desde 1962): son profundas y a la vez parte del panel rico.
+
+> **Nota (ADR-002, 2026-07-20):** las ventanas de esta tabla son el diseño original. Las pistas **operativas** son A desde 1962-01-02 (gobierna la curva de tipos completa: DGS10, DGS5, T10YFF) y B desde 2007-04-11 (gobierna HYG_CREDIT), ambas hasta 2026-05-29; véase `configs/benchmark_spec.yaml`.
 
 ### 1.2. Roles de cada serie
 
@@ -430,7 +432,7 @@ Series elegidas por categoría, con rol y pista. Fuente: `FRED` (auth FRED_API_K
 
 | Fuente | Estado | Por qué |
 |---|---|---|
-| **Stooq** (CSV per-ticker y bulk) | Bloqueado | Challenge JavaScript proof-of-work (SHA-256); resuelto el PoW pero el CSV devuelve `Access denied`; el bulk (`d_us_txt.zip`) da HTTP 401. **No usable sin navegador.** Confirmado por todos los agentes. Sustituto: yfinance/FRED. |
+| **Stooq** (CSV per-ticker y bulk) | Bloqueado | Challenge JavaScript proof-of-work (SHA-256); resuelto el PoW pero el CSV devuelve `Access denied`; el bulk (`d_us_txt.zip`) da HTTP 401. **No usable sin navegador.** Comprobado en todas las pruebas. Sustituto: yfinance/FRED. |
 | **Nasdaq Data Link** (ex-Quandl) | Tapiado | Anónimo → Akamai 403 (requiere API key). El clásico free `WIKI/WIKIP` está **congelado en 2018-03**. La DB legacy `ML/*` (OAS BofA) da HTTP 403. |
 | **Tiingo** | Requiere token | Anónimo → 401. Free tier útil (30+ años EOD) pero exige registro; no verificable end-to-end aquí. |
 | **Kaggle** | No scriptable | Páginas SPA sin metadatos server-side; descarga requiere `kaggle.json`. Los datasets famosos (`borismarjanovic`, `^GSPC 1927-2025`) son **re-exports congelados** de `^GSPC`/`SPY`/Stooq → la copia viva (yfinance) es mejor salvo que se quiera un snapshot reproducible fijo. |

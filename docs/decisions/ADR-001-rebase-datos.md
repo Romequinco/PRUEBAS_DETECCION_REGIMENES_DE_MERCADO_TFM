@@ -10,6 +10,14 @@
   crearse: la Capa 1 congelada se recupera con el tag `capa1-final`, donde vive la carpeta
   `capa1_exploracion/` que se menciona abajo.
 - **Ámbito:** afecta a la estructura del repo, la capa de datos y el protocolo de comparación. **No** toca el marco de evaluación (`src/evaluation.py`) ni la interfaz `RegimeDetector`.
+- **Revisión posterior (2026-10-06):** el cuerpo no se reescribe; léase con estas correcciones.
+  (1) La **hoja de ruta de §6** está superada: la fase D (detectores) y las posteriores (E fusión, S
+  sintéticos) ya se hicieron; el estado vigente está en [ADR-004](ADR-004-unificacion.md) y
+  [ADR-005](ADR-005-reencuadre-tfm-multiagente.md). (2) Las **ventanas de §3.3** fueron ajustadas por
+  [ADR-002](ADR-002-ajuste-ventanas.md). (3) Las **rutas** citadas cambiaron con ADR-004 (`data/*.yaml` →
+  `configs/`, `src/evaluation.py` → `regimenes.evaluacion`, etc.). (4) **Terminología:** aquí «FASE 1»
+  y «Capa 1» designan la fase de datos y la primera vuelta de 12 detectores del repositorio; **no** son la
+  Fase 1 del TFM ni la «Capa 1» (42 ETFs) de la propuesta, ver ADR-005 §2 y §2.4.
 
 ---
 

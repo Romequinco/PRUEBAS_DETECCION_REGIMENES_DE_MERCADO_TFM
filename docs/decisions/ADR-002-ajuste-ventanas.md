@@ -1,6 +1,13 @@
 # ADR-002 — Ajuste de ventanas y ampliación del pool de features (post ADR-001)
 
 - **Estado:** Aceptada · 2026-07-20
+- **Revisión posterior (2026-10-06):** el cuerpo se conserva. Las rutas citadas (`data/benchmark_spec.yaml`,
+  `data/catalog.yaml`, `src/evaluation.py`, `src/detector_base.py`) son hoy `configs/benchmark_spec.yaml`,
+  `configs/catalog.yaml`, `regimenes.evaluacion` y la interfaz `RegimeDetector` del paquete `regimenes`
+  (ADR-004); el snippet de verificación de §6 lee hoy `configs/benchmark_spec.yaml`. La columna de
+  `GW_PREDICTORS_MONTHLY` que §5 dejaba pendiente **ya está resuelta**: `b/m` (fijada en el notebook 03;
+  véase `configs/benchmark_spec.yaml`). Las «Fase 3» y «Capa 1» de esta ADR son sub-fases y primera vuelta
+  de la Fase 1 del TFM (ADR-005).
 - **Rama:** trabajo directo sobre `main`.
 - **Ámbito:** afecta a `data/benchmark_spec.yaml` (ventanas + `series_features` + `crisis_windows.pista_A`),
   `notebooks/02_diseno_preprocesado.ipynb` (tabla `FEAT`), `notebooks/00_descarga.ipynb` (cierre) y la

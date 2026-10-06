@@ -5,9 +5,12 @@
 # los suelos de drawdown. A partir de aqui NINGUN detector puede cambiar estas ventanas ni
 # estas etiquetas: son la variable controlada que hace comparables los experimentos de Fase D.
 #
-# Derivado del EDA profundo (Fase 3): informe completo en docs/EDA_v2.md (ventanas por bloque
+# Derivado del EDA profundo (Fase 3): informe completo en docs/datos/EDA_v2.md (ventanas por bloque
 # de features, salto de potencia 22 vs 10 crisis, ranking causal de features, punto ciego 2013
 # = falso positivo, corr accion-bono cambia de signo ~2000). Recomputo en notebooks/01_eda.ipynb.
+#
+# NOTA (2026-10-06): "FASE D"/"Fase 3" son sub-fases de la Fase 1 (régimen) del TFM (ADR-005); las
+# ventanas operativas son las de ADR-002. Solo comentarios: las claves y valores entran en la huella de caché.
 #
 # Coherente con data/raw/<fuente>/<nombre>.parquet (status OK/CACHE en coverage_report.csv,
 # fechas verificadas leyendo los parquet 2026-07-18) y con configs/catalog.yaml (crisis_catalog).

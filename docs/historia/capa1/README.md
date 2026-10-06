@@ -1,6 +1,11 @@
 # Capa 1 (v1) — historia del primer banco de detectores
 
-> Archivo histórico de la **primera vuelta** del TFM: 12 detectores de régimen (7 familias) bajo un
+> **Reencuadre (ADR-005).** La Capa 1 es la **primera vuelta de la Fase 1** (régimen de mercado) del TFM,
+> que es un sistema multi-agente RAG ([ADR-005](../../decisions/ADR-005-reencuadre-tfm-multiagente.md)).
+> «Capa 1» es el nombre de esta vuelta exploratoria y **no** guarda relación con la «Capa 1» (42 ETFs) ni
+> la «Capa 2» (acciones) de la propuesta.
+>
+> Archivo histórico de la **primera vuelta** de la Fase 1 del TFM: 12 detectores de régimen (7 familias) bajo un
 > marco causal común, evaluados sobre un set de datos pequeño (9 series, 15 features). Se **congeló**
 > el 2026-07-18 ([ADR-001](../../decisions/ADR-001-rebase-datos.md)); sus detectores e interfaz forman
 > hoy parte del paquete `regimenes` ([ADR-004](../../decisions/ADR-004-unificacion.md)). Este README es
@@ -20,8 +25,10 @@ qué"**: misma interfaz `RegimeDetector`, mismo protocolo walk-forward causal y 
 (cobertura por crisis, falsas alarmas en las trampas 2013/2018, lead/lag al suelo del drawdown,
 switching, duración, estabilidad, BIC) para los 12 detectores.
 
-El TFM (MIAX) propone un sistema de detección de regímenes basado en un HMM t-Student multi-estado
-([`../../context/TFM_Proposal_v2.pdf`](../../context/TFM_Proposal_v2.pdf)). La Capa 1 partía de la
+La propuesta del TFM (MIAX) es un sistema multi-agente RAG con conciencia de régimen
+([`../../context/TFM_Proposal_v2.pdf`](../../context/TFM_Proposal_v2.pdf)), cuya pieza de régimen
+planteaba un HMM t-Student multi-estado ([ADR-005](../../decisions/ADR-005-reencuadre-tfm-multiagente.md)).
+La Capa 1 partía de la
 **tarea previa**: un HMM gaussiano de 2 estados in-sample, con z-scores de muestra completa, que
 acertaba las crisis grandes (2008: 98.6 %, 2020: 92.3 %) pero se perdía las correcciones rápidas
 (2013: 10.9 %, Q4 2018: 20.6 %)
@@ -32,7 +39,7 @@ una elección: de ahí el banco.
 
 Fases internas de la Capa 1 (numeración propia, **independiente** de la hoja de ruta v2): 0 estructura
 + interfaz + evaluador · 1 datos + EDA · 2 estado del arte · 3 implementación en 4 tandas · 4 síntesis
-comparativa · 5 pulido. Estado detallado por fase en [`memoria/INDEX.md`](memoria/INDEX.md).
+comparativa · 5 pulido (cerradas todas; el detalle de cada tanda está en el tag `capa1-final`, §8).
 
 ### Los 12 detectores (+ ablación D13)
 
@@ -132,11 +139,20 @@ sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos
 - **Veredictos por eje:** cobertura sistémica en ventana larga D5 0.98 ≈ D6 0.97 ≈ D1 0.92 (la vol
   manda; la sofisticación apenas bate a la regla VIX); especificidad, persistencia, lead/lag y coste:
   D7 (CUSUM); BIC: D8.
-- **Recomendación v1:** núcleo HMM t-Student multi-estado (respaldo *consistente con* la propuesta, no
+- **Recomendación v1** (superada por el benchmark v2, donde D8 queda 9.º en ambas pistas, ADR-003, y por
+  ADR-005): núcleo HMM t-Student multi-estado (respaldo *consistente con* la propuesta, no
   superioridad OOS estricta) + change-point tipo D7 como alerta temprana + D1/D5/D6 como control.
   Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `13`–`14`).
 
-Figuras y tablas del informe: [`memoria/pdf_src/`](memoria/pdf_src/01_hallazgos.md).
+Figuras y tablas del informe: [`informe/informe_capa1.pdf`](informe/informe_capa1.pdf). Sus cifras se
+verificaron contra la tabla maestra (20 cifras muestreadas, 0 discrepancias; las 4 citas centrales,
+correctas) y las cautelas exigidas (consistente con, no «confirma»; n≈4 crisis sin tests; BIC in-sample;
+lead/lag censurado a 252 días; cobertura por ventana; D11/D12 exploratorio-negativos) están presentes.
+
+**Tabla maestra.** `resultados/metrics_master.csv` (43 columnas) es la única canónica: el superset del
+antiguo `metrics_master_final.csv` (que aportaba `clase`, `coste`, `vio_2008_oos` y las columnas de
+estrés) y de la primera tabla (que aportaba `silhouette` y los IC de cobertura). Los dos originales,
+las figuras `fase4_*` y la revisión del PDF siguen en el tag `capa1-final`.
 
 ## 6. Qué falló y qué vino después
 
@@ -168,9 +184,10 @@ Consecuencias:
 | `capa1_exploracion/memory/00_state_of_the_art.md` | [`docs/teoria/00_estado_del_arte.md`](../../teoria/00_estado_del_arte.md) |
 | `capa1_exploracion/memory/sota/0k_*.md` y `.bib` | `docs/teoria/Fk_*.md` y `.bib` (p. ej. [`F3_hmm.md`](../../teoria/F3_hmm.md)) |
 | `capa1_exploracion/memory/detectors/NN_*.md` | `docs/detectores/DNN_*.md` (p. ej. [`D08_hmm_tstudent.md`](../../detectores/D08_hmm_tstudent.md)) |
-| `capa1_exploracion/memory/{INDEX,01_data_and_eda,99_conclusions}.md`, `pdf_src/` | [`memoria/`](memoria/INDEX.md) (aquí) |
-| `capa1_exploracion/report/` (tex, pdf, bib, revisión) | [`informe/`](informe/informe_capa1.pdf) (aquí) |
-| `capa1_exploracion/results/*.csv`, `_archive/`, `ablation_hsmm/` | [`resultados/`](resultados/metrics_master.csv) (aquí) |
+| `capa1_exploracion/memory/{01_data_and_eda,99_conclusions}.md` | [`memoria/`](memoria/99_conclusions.md) (aquí) |
+| `capa1_exploracion/memory/{INDEX.md,pdf_src/}`, `report/_revision_pdf.md`, `results/_archive/` | documentos de proceso: solo en el tag `capa1-final` |
+| `capa1_exploracion/report/` (tex, pdf, bib) | [`informe/`](informe/informe_capa1.pdf) (aquí) |
+| `capa1_exploracion/results/*.csv`, `ablation_hsmm/` | [`resultados/`](resultados/metrics_master.csv) (aquí) |
 | `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | [`datos_v1/`](datos_v1/provenance.json) (aquí) |
 | `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/05_familia_F1_reglas` … `11_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
 | `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/07_familia_F3_hmm`; original en el tag |

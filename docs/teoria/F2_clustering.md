@@ -241,26 +241,8 @@ de hacer el baseline comparable y sin look-ahead (criterio del equipo).
 16. Pedregosa, F. et al. (2011). *Scikit-learn: Machine Learning in Python*.
     JMLR 12:2825–2830.
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-> Familias/enfoques relevantes que **no** son CLUSTERING estático y que NO
-> desarrollo aquí; las anoto para el sintetizador:
-
-- **HMM / GMM-HMM y Markov-Switching (familia temporal).** Aparecen
-  constantemente como el "siguiente paso" sobre el clustering (añaden matriz de
-  transición que reduce el flickering). Bucci & Ciciretti (2022) y el whitepaper
-  de Two Sigma viven en esta frontera. *No es mía.*
-- **Jump models / Statistical Jump Models.** Clustering con penalización de
-  saltos temporales (impone persistencia tipo *minimum dwell*): puente exacto
-  entre clustering estático y dinámica temporal. Visto en MDPI Mathematics
-  13/2837 (regime-switching asset allocation con jump model + MPC). Candidata
-  fuerte para el sintetizador como "clustering con persistencia".
-- **Change-point detection / segmentación.** Detecta puntos de cambio de
-  estructura (el propio Münnix et al. roza esto). Familia distinta.
-- **Representation learning / autoencoders + clustering** (p. ej. arXiv:2410.22346,
-  "Representation Learning for Regime Detection in Block Hierarchical Financial
-  Markets") y modelos basados en redes (CNN/Siamese). Híbrido deep + clustering;
-  fuera de mi familia básica.
-- **Wasserstein / Optimal Transport como métrica** (Horvath et al.; Luan & Hamp):
-  lo cito porque es k-means, pero el componente OT podría tratarse como línea
-  metodológica propia por el sintetizador.
+- **Wasserstein / transporte óptimo como métrica** (Horvath et al.; Luan & Hamp): sustituye la distancia euclídea del k-means; no implementado.
+- **Representation learning + clustering** (p. ej. arXiv:2410.22346) y redes CNN/Siamesas: híbridos deep cubiertos de forma exploratoria en F7 (D12).
+- La persistencia temporal se aborda con los *jump models* (D09) y con las familias HMM y change-point (F3, F6).

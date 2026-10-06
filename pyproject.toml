@@ -1,4 +1,4 @@
-# Paquete unico del TFM: todo el codigo (datos, features, detectores, juez,
+# Paquete unico de la Fase 1 del TFM (regimen de mercado): su codigo (datos, features, detectores, juez,
 # benchmark, fusion, sinteticos) vive en ``src/regimenes``. Instalacion de desarrollo (editable):
 #
 #     python -m pip install -e ".[deep,jump,dev]"
@@ -13,7 +13,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "regimenes"
 version = "0.4.0"
-description = "Deteccion de regimenes de mercado: datos, features, detectores, evaluacion walk-forward, benchmark y fusion (TFM)."
+description = "Fase 1 del TFM: deteccion de regimenes de mercado (datos, features, detectores, evaluacion walk-forward, benchmark, fusion y sinteticos)."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

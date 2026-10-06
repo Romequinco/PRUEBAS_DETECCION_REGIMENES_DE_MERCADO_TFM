@@ -1,6 +1,12 @@
 # ADR-004 — Un solo repositorio y un solo paquete (`regimenes`)
 
 - **Estado:** Aceptada · 2026-09-29 (decisión del usuario).
+- **Revisión posterior (2026-10-06):** [ADR-005](ADR-005-reencuadre-tfm-multiagente.md) corrige §2:
+  «todo el TFM vive en `regimenes`» pasa a ser «`regimenes` es el código de la **Fase 1** (régimen) del TFM».
+  Estado actual de lo que §3 llamaba esqueletos: los notebooks 15–17 están **hechos** (`configs/sinteticos.yaml`
+  y la validación F8 completos; subpaquetes de `regimenes.sinteticos`: `parametricos`, `neuronales`,
+  `validacion` y `laboratorio`); el 18 se mantiene y los 19 (`decision_final`) y 20 (`pseudolive`) son el cierre
+  de la Fase 1: la señal de régimen que consumirán los agentes, no «el sistema final del TFM».
 - **Revierte:** [ADR-001](ADR-001-rebase-datos.md) §7, último punto (*"Capa 1 se mantiene intacta"*),
   y el coste asumido en ADR-001 §5 (*"duplicación intencionada del framework"*). El resto de ADR-001
   (re-base de datos, dos pistas), ADR-002 y ADR-003 siguen vigentes sin cambios.

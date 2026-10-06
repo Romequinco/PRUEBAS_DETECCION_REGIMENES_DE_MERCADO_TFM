@@ -244,17 +244,8 @@ de fat tails (preferir kernel/robusto) y el coste de post-etiquetado.
   Detection Methods*. Signal Processing 167:107299.
   DOI: 10.1016/j.sigpro.2019.107299. (Survey + librería `ruptures`.)
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-- **HMM / Markov-switching (familia ajena)**: alternativa que sí modela **regímenes
-  recurrentes** y los etiqueta nativamente (crisis vs calma). Complementaria al CPD:
-  el CPD detecta *cuándo* cambia, el HMM dice *a qué estado conocido* va. Sugerencia:
-  comparar lead/lag de CUSUM/BOCPD frente al HMM gaussiano/t-Student.
-- **Spectral residual / TDA-CPD (línea emergente)**: detección de transiciones por
-  homología persistente; reportada como pre-señal de giros de volatilidad (criterio
-  del equipo: aún no madura como baseline, vigilar).
-- **Costes robustos / no paramétricos adicionales**: variantes de CUSUM sobre rangos
-  o con coste Huber, y RuLSIF / density-ratio change-point — relevantes dado el
-  perfil fat-tails del EDA (criterio del equipo).
-- **`bayesian_changepoint_detection`** como implementación directa de BOCPD para la
-  pieza online causal (software, no paper).
+- **TDA / spectral-residual CPD:** transiciones por homología persistente, línea aún no madura como baseline.
+- **Costes robustos o no paramétricos** (CUSUM sobre rangos, coste Huber, RuLSIF / density-ratio), relevantes por las colas gordas del EDA; no implementados.
+- **`bayesian_changepoint_detection`** como implementación alternativa de BOCPD para la pieza online causal.

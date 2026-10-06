@@ -7,7 +7,7 @@
 > Documento maestro de la FASE 2. Sintetiza las 7 fichas de familia de
 > `docs/teoria/` en una tabla transversal, resuelve solapes entre familias
 > y propone la **lista definitiva de detectores para la FASE 3**. Es
-> autosuficiente: permite aprobar la lista de detectores (CHECKPOINT 2) sin abrir
+> autosuficiente: permite entender la lista de detectores sin abrir
 > las 7 fichas. Toda afirmación se cita por clave BibTeX de `docs/references.bib`;
 > lo no respaldado se marca "(síntesis del equipo)".
 >
@@ -168,7 +168,7 @@ indica si la familia es causal de forma nativa o cómo se causaliza.
   único** representante exploratorio.
 
 > **Nota de fusión bibliográfica.** Algunos papers fueron citados por dos
-> subagentes bajo claves distintas: Ang & Timmermann 2012
+> fichas bajo claves distintas: Ang & Timmermann 2012
 > (`hmm_angtimmermann2012` ≡ `ms_angtimmermann2012`), Hardy 2001
 > (`hmm_hardy2001` ≡ `ms_hardy2001`) y Bucci & Ciciretti
 > (`clust_bucci2022realized`, versión revista con DOI ≡ `nn_bucci2021`,
@@ -203,7 +203,7 @@ Ordenada de **baseline a avanzado**. Cada detector lleva: nombre propuesto (esti
 `detectors/`), familia, por qué entra (literatura + EDA), qué se espera que
 **capte** y qué se espera que **falle**, librería y **prioridad**
 (imprescindible / recomendado / opcional-exploratorio). Numerados para
-aprobar/ajustar por número en el CHECKPOINT 2.
+identificarlos por número.
 
 > **BASELINES IMPRESCINDIBLES: D1 (regla sobre VIX) y D4 (HMM gaussiano puente).**
 
@@ -371,13 +371,6 @@ exige la honestidad metodológica del EDA.
 
 ---
 
-## 6. Cierre — CHECKPOINT 2
+## 6. Cierre (nota histórica)
 
-Esta lista de **12 detectores** es una **propuesta** y requiere **aprobación del
-usuario (CHECKPOINT 2)** antes de implementar nada en `detectors/` (FASE 3). El
-usuario puede aprobar/ajustar por número: añadir, quitar, fusionar o cambiar la
-prioridad de cualquier `Dn`. Decisiones que quedan abiertas para la FASE 3 y que
-condicionan algunos detectores: la estrategia de walk-forward ante el inicio
-tardío de datos (2008 OOS, posiblemente con subconjunto SP500+VIX desde 1990) y
-el set definitivo de features. Nada se implementa hasta que esta lista esté
-firmada.
+Esta lista de **12 detectores** fue la propuesta de la FASE 2 de la Capa 1; se aprobó y se implementó en la FASE 3 (hoy `src/regimenes/detectores/`, ver [`docs/detectores/`](../detectores/README.md)). Las decisiones que quedaban abiertas entonces (estrategia de walk-forward ante el inicio tardío de datos y set de features) se resolvieron en [ADR-001](../decisions/ADR-001-rebase-datos.md) y [ADR-002](../decisions/ADR-002-ajuste-ventanas.md).

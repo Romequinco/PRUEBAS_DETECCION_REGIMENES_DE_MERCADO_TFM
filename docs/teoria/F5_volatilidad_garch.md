@@ -13,7 +13,7 @@
 >
 > **Nota de frontera (solape declarado):** el Markov-Switching "puro" sobre la
 > *media/varianza* (Hamilton 1989, sin dinámica GARCH dentro del régimen) lo
-> cubre otro subagente. Aquí el foco es la **varianza condicional
+> trata la ficha F4. Aquí el foco es la **varianza condicional
 > heteroscedástica** y su combinación con regímenes (RS-GARCH / MS-GARCH). El
 > solape concreto está en los modelos de cambio de régimen: la diferencia es que
 > el MS "puro" asume varianza constante *dentro* de cada estado, mientras que
@@ -90,7 +90,7 @@ colapsan esa dependencia:
 - **SWARCH / RS-GARCH / MS-GARCH sí detectan régimen**: el filtro de Hamilton
   entrega `P(s_t = crisis | información hasta t)`, una **probabilidad suave de
   régimen** directamente comparable con el `predict_proba` del HMM previo. Esta
-  es la rama relevante para el objetivo del TFM.
+  es la rama relevante para detectar régimen.
 
 **¿Capta crisis rápidas?** Sí, y es su ventaja diferencial frente al HMM
 gaussiano (que en la tarea previa **se perdió** Taper Tantrum 2013 y el sell-off
@@ -158,7 +158,7 @@ Conexión directa con los hallazgos del EDA (`docs/historia/capa1/memoria/01_dat
   usar la **probabilidad filtrada de régimen** `P(s_t | F_t)` como salida. Esto es
   lo más parecido conceptualmente al HMM previo, pero con **heteroscedasticidad
   explícita dentro de cada régimen** (en vez de varianza constante por estado).
-  Es la "extensión futura natural" que cita la propuesta TFM.
+  Es la extensión natural del GARCH-t hacia un detector de régimen.
 
 **Recomendación de encaje:** usar GARCH-t (Vía A) como **baseline econométrico
 fuerte y barato** que probablemente mejore la detección de crisis rápidas, y
@@ -256,26 +256,7 @@ alternativa causal barata es estimar en una ventana de calibración y solo
 - Sheppard, K. (s.f.). *arch: ARCH models in Python.* Software.
   https://github.com/bashtage/arch
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-Referencias de **familias ajenas** que tocan este tema y conviene que el
-sintetizador cruce con los subagentes correspondientes:
-
-- **Hamilton (1989)** — Markov-Switching "puro" de la media/varianza, base del
-  filtro de régimen. **Ya en `references.bib`**; corresponde al subagente de
-  Markov-Switching, no duplicar. Es la frontera directa con esta familia (RS-GARCH
-  = Hamilton + GARCH intra-régimen).
-- **Ang & Bekaert (2002)**, **Guidolin & Timmermann (2007)** — regímenes en
-  asignación de activos / correlaciones; **ya en `references.bib`**.
-- **Volatilidad realizada / HAR (Corsi, 2009)** — alternativa no paramétrica a
-  GARCH para estimar volatilidad, conectada con la feature `vol 21d` del EDA.
-  Pertenece a la familia de "features de volatilidad", no a ARCH; candidata para
-  el subagente de features/clustering.
-- **Engle & Sheppard / DCC-GARCH (correlación condicional dinámica)** —
-  extensión **multivariante** del GARCH para co-movimiento de varios activos;
-  relevante para el panel multi-activo del proyecto y para la feature
-  `corr_spx_bond`, pero excede la familia univariante de este informe. Candidata
-  para una posible rama multivariante.
-- **EM/filtro de Hamilton para HMM gaussiano** — el detector ya existente en la
-  tarea previa; el RS-GARCH es su generalización heteroscedástica. Solape a
-  señalar con el subagente HMM.
+- **Volatilidad realizada / HAR (Corsi, 2009):** alternativa no paramétrica a GARCH, ligada a la feature `vol 21d`; pertenece a las features de volatilidad.
+- **DCC-GARCH (Engle):** extensión multivariante para la correlación condicional dinámica (feature `corr_spx_bond`); fuera de la familia univariante de esta ficha y no implementada.

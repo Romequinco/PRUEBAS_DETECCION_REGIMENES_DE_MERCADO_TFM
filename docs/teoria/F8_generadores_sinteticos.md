@@ -4,6 +4,8 @@
 > **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: [`F8_generadores_sinteticos.bib`](F8_generadores_sinteticos.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Notebook: [`notebooks/15_sinteticos_generadores.ipynb`](../../notebooks/15_sinteticos_generadores.ipynb). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados: las cifras de ajuste y de muestreo salen del notebook 15 y la validación, del 16.
 <!-- END nota_v2 -->
 
+> **Estado (2026-10-06).** Notebook 15 (generadores) y 16 (validación) hechos: **ningún generador resulta `apto_laboratorio`**; `apto_aumento` son, en la pista A, todos salvo `jitter` y `bootstrap_regimen`, y en la B `gaussiano`, `var`, `garch_regimen`, `rbig` y `flow_matching`. El notebook 17 (laboratorio) está hecho como **simulación controlada** con `gaussiano`, `var` y `garch_regimen` (18 celdas por pista, 4356 trabajos) y cuatro hipótesis: H1 (los detectores recuperan la señal sintética) se cumple (92 % en A, 100 % en B); H2, el score baja al acortar y atenuar los episodios (en parte por la prevalencia; el recall por evento pasa de 0,86 a 0,54 en A); H3, el ranking sintético se correlaciona con el real (ρ 0,87, p 0,001 en A; 0,48, p 0,16 en B); H4, hay indicio de circularidad para D03 (+0,23 relativa en B) y ninguna para GARCH. El 18 (aumento) sigue pendiente.
+
 > Familia: generadores de trayectorias multivariantes de features **con la
 > secuencia de régimen conocida**. Núcleo: seis generadores paramétricos (jitter,
 > bootstrap por régimen, gaussiano por régimen, VAR por régimen, GJR-GARCH por
@@ -22,13 +24,13 @@ poca potencia estadística para separar detectores (ver la limitación de
 significancia de la Capa 1 en `docs/historia/capa1/memoria/99_conclusions.md`).
 Los generadores sintéticos se usan para tres cosas, por este orden de fiabilidad:
 
-1. **Laboratorio con verdad conocida** (notebook `17`): trayectorias cuya cadena de
+1. **Laboratorio con verdad conocida** (notebook `17`, hecho como simulación controlada): trayectorias cuya cadena de
    regímenes se conoce exactamente, para medir recall y precisión de los detectores
    sin la ambigüedad del etiquetado histórico.
 2. **Aumento de datos** (notebook `18`): entrenar detectores con más episodios de
    crisis y evaluarlos en real (TSTR, *train on synthetic, test on real*
    [synth_esteban2017]) sin tocar el test real.
-3. **Pruebas de estrés** de la máquina de fusión y del *pseudo-live* (notebook `20`).
+3. **Pruebas de estrés** de la máquina de fusión y de la señal de régimen que consumirán los agentes (tool `get_regimen`).
 
 Ninguno de los tres usos sustituye al benchmark real: el laboratorio responde a
 «¿detecta este detector un cambio de ley cuando lo hay?», no a «¿detecta las crisis
@@ -775,18 +777,7 @@ Gray 1996 [vol_gray1996] y Haas, Mittnik & Paolella 2004
 [vol_haasmittnikpaolella2004] están ya en `references.bib` con esas claves y no se
 re-declaran.)
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-- **Solape con F5 (GARCH):** `garch_regimen` es el generador gemelo de D06/D11; al
-  usarlo en el laboratorio hay que declarar la ventaja de esos detectores.
-- **Solape con F3/F4 (HMM, Markov-Switching):** la cadena de regímenes simulada es
-  una cadena de Markov de primer orden (o semi-Markov con duraciones empíricas, el
-  análogo del HSMM de D13); los detectores de esas familias asumen justo esa
-  estructura.
-- **Solape con F7 (redes):** el CVAE comparte herramienta con el autoencoder de D12;
-  la advertencia de F7 sobre muestra pequeña aplica aquí con más fuerza.
-- **Régimen endógeno:** un generador en el que la transición dependa del estado del
-  mercado (probabilidades de transición variables en el tiempo) cerraría la
-  debilidad de régimen exógeno; queda como extensión.
-- (criterio del equipo) Ningún resultado del laboratorio sintético se cita sin el
-  generador que lo produjo y sin su lectura de memorización al lado.
+- **Régimen endógeno:** un generador cuya transición dependa del estado del mercado (probabilidades de transición variables en el tiempo) cerraría la debilidad del régimen exógeno; no implementado.
+- Los solapes con otras familias (`garch_regimen` ~ D06/D11 de F5; la cadena de Markov simulada ~ F3/F4; el CVAE ~ el autoencoder D12 de F7) deben declararse al usar el laboratorio. Ningún resultado sintético se cita sin su generador y su lectura de memorización.

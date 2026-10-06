@@ -1,6 +1,6 @@
 # Informe maestro de EDA — Detección de regímenes de mercado (TFM)
 
-**Fase 3 (EDA profundo)** · 160 series descargadas (status OK/CACHE) · label de crisis = `crisis_catalog`
+**Fase 1 del TFM (régimen), sub-fase «Fase 3» (EDA profundo) del re-base de datos de ADR-001** · 160 series descargadas (status OK/CACHE) · label de crisis = `crisis_catalog`
 (22 eventos peak→trough, 1929–2025) · todas las transformaciones de *feature* son **causales**
 (en `t`, solo estadísticos ≤ `t`; `src/regimenes/features/`).
 
@@ -614,8 +614,12 @@ análisis (no entran en las cifras de arriba, que reflejan las 160 series analiz
 
 Habilitan las features clásicas de la Capa 1 que `src/regimenes/features/` referencia (`HYG_ret_z`,
 `TLT_ret_z`, `credit_spread_z = HYG−IEF`, `GOLD_ret_z`, `corr_spx_bond`). **No se han incorporado
-al `benchmark_spec.yaml` congelado** (que se fija con la evidencia del EDA); su análisis y posible
-entrada al banco quedan para una revisión del benchmark en la siguiente iteración.
+al `benchmark_spec.yaml` en ese momento** (que se fijó con la evidencia del EDA).
+
+> **Corrección (2026-10-06).** Esa frase quedó superada por ADR-002: el `benchmark_spec.yaml` vigente **sí incluye
+> la mayoría de estas series, en la pista B** (y, como `A ⊆ B`, ninguna en la A): `GOLD_GLD`, `HYG_CREDIT`
+> (gobierna el inicio de B, 2007-04-11), `IEF_TREASURY`, `LQD_IGCREDIT` y `TLT_TREASURY`. `GOLD_FUT`, el
+> respaldo de oro profundo, no figura entre las features.
 
 ---
 

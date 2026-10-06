@@ -331,6 +331,12 @@ su problema no era la métrica, era el modelo.
 
 ## 4. Recomendación para la siguiente capa del TFM
 
+> **Nota (2026-10).** Esta es la recomendación **v1**, superada por el benchmark v2
+> ([ADR-003](../../../decisions/ADR-003-causalidad-calendario-estado-ranking.md)), donde D8 queda 9.º en ambas
+> pistas, y por el reencuadre del TFM
+> ([ADR-005](../../../decisions/ADR-005-reencuadre-tfm-multiagente.md)): la «siguiente capa» es hoy la
+> selección de la señal de régimen de la Fase 1. Se conserva como registro de lo que se pensaba al cerrar la Capa 1.
+
 La propuesta original del TFM mayor (`docs/context/`) define un **HMM t-Student de
 4 estados** con lógica de **"dos velocidades"**. La pregunta que esta exploración
 debía responder con evidencia es: **¿confirma los datos esa elección, o sugiere

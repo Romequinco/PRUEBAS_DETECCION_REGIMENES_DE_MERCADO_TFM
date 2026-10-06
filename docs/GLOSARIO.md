@@ -2,8 +2,41 @@
 
 > Definiciones **echadas a tierra** de los términos que gobiernan todo el repo. Es la **fuente
 > única**: los notebooks (`00`–`20`) y el resto de docs enlazan aquí en vez de redefinir.
-> Incluye también **dónde está cada cosa** (rutas y módulos del paquete `regimenes`, [ADR-004](decisions/ADR-004-unificacion.md))
-> y el **pipeline 00–20** (al final).
+> Incluye también los **términos del TFM** completo (multi-agente, [ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md)),
+> **dónde está cada cosa** (rutas y módulos del paquete `regimenes`, [ADR-004](decisions/ADR-004-unificacion.md))
+> y el **pipeline 00–20** de la Fase 1 (al final).
+
+---
+
+## Términos del TFM
+
+El TFM es *Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence*; este repositorio es su
+Fase 1 ([ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md), visión completa en [`tfm/`](tfm/README.md)).
+
+| Término | Definición |
+|---|---|
+| **TFM · fases 1–5** | 1 régimen de mercado (este repositorio) · 2 ingesta, RAG y tools · 3 agentes Macro, Equity y Risk · 4 cartera y memo (Portfolio y CIO) · 5 evaluación (backtest con TimeGate frente a *baselines*). Las etapas internas de la Fase 1 (1–4 de datos, D, E, S, F) son **sub-fases** de la Fase 1 |
+| **agentes** | LLM orquestados con LangGraph: **Macro** (contexto macroeconómico), **Equity** (acciones y sectores), **Risk** (riesgo, usa el régimen), **Portfolio** (propone la cartera) y **CIO** (decide y redacta el memo, aplicando los límites del cliente). Detalle en [`tfm/ARQUITECTURA.md`](tfm/ARQUITECTURA.md) |
+| **RAG** | *retrieval-augmented generation*: el agente recupera pasajes de un corpus con fecha de publicación y los cita en lugar de responder de memoria |
+| **tool** | función que un agente puede invocar (p. ej. `get_regimen(fecha)` o una búsqueda sobre el corpus) |
+| **skill** | paquete reutilizable de instrucciones y procedimientos que un agente carga para una tarea concreta |
+| **TimeGate** | barrera temporal dentro de cada tool: solo devuelve información **publicada** hasta la fecha consultada. Es el mismo principio que el **lag de publicación** (`LAG_PUBLICACION`, [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md)) pero aplicado al corpus de los agentes y no a las series de los detectores |
+| **`get_regimen(fecha)`** | tool de salida de la Fase 1: estado, probabilidad y días en el estado, con solo información publicada hasta `fecha`. Los estados los fija el detector final (notebook 19, futura ADR-006); **equivalencia provisional**: calma / alerta / crisis ↔ normal / vigilancia / confirmado de `regimenes.fusion` |
+| **investment memo** | informe final del CIO Agent con la decisión de cartera, su justificación y citas a las fuentes |
+| **perfil de cliente** | formulario (idea: cuestionario de idoneidad tipo MiFID II, diseño abierto) cuyas respuestas son los **límites** del CIO Agent. Ver [`tfm/CLIENTE_Y_CARTERAS.md`](tfm/CLIENTE_Y_CARTERAS.md) |
+| **cartera con límites / en bruto** | las dos carteras por decisión: la que respeta los límites del perfil del cliente y la que recomiendan los agentes sin ellos (qué restricciones conserva, por decidir) |
+| **memoria de cartera** | estado persistente: cada cartera conoce la anterior como entrada de los agentes (formato por decidir) |
+| **botón de cataclismo** | alerta automática (modo broma) a partir de [ews.kylemcdonald.net](https://ews.kylemcdonald.net), que vigila vuelos de jets privados: si «los millonarios huyen», se desinvierte todo. Histórico desde octubre de 2025: solo en vivo o demostración |
+| **System One** | línea de investigación: modelos de decisión rápidos y tipados que resuelven decisiones simples antes de escalar al LLM («System Two»). Ver [`tfm/LINEAS_ABIERTAS.md`](tfm/LINEAS_ABIERTAS.md) |
+
+Otros materiales abiertos: [`tfm/DATOS_ALTERNATIVOS.md`](tfm/DATOS_ALTERNATIVOS.md).
+
+### Capa 1 del repositorio (no es la «Capa 1» de la propuesta)
+
+«**Capa 1**» en este repositorio es la **primera vuelta exploratoria de los 12 detectores v1**
+([`historia/capa1/`](historia/capa1/README.md), tag `capa1-final`). **No** es la «Capa 1» de la propuesta
+(universo de 42 ETFs) ni guarda relación con su «Capa 2» (~1.300 acciones). Se mantiene el nombre por
+coherencia con el tag y la historia ([ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md) §2.4).
 
 ---
 
@@ -166,6 +199,11 @@ Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
 | **apto para laboratorio** (`apto_laboratorio`) | nivel del veredicto del notebook 16: pasa fidelidad marginal, de dependencia, condicionamiento y discriminador; el generador sirve para el laboratorio con verdad de régimen (notebook 17) |
 | **laboratorio condicionado** (`laboratorio_condicionado`) | nivel declarado después de ver el veredicto: lo mismo que `apto_laboratorio` sin el discriminador. El 17 puede usar esos generadores **advirtiendo** que un clasificador los distingue del real |
 | **apto para aumento** (`apto_aumento`) | nivel del veredicto: pasa memorización y condicionamiento (igual en las dos pistas); el generador no copia el entrenamiento y lleva la señal de régimen (notebook 18) |
+| **simulación controlada** | uso del notebook 17: como ningún generador salió apto para laboratorio (16), los tres paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) se usan como **mundos de juguete** con verdad-terreno exacta, no como réplica del mercado |
+| **intensidad λ** | factor con el que el laboratorio acerca la ley de las filas de crisis a la de calma (`escenarios.atenuar`): λ = 1 deja la trayectoria tal cual, λ = 0 elimina la diferencia entre regímenes |
+| **H1–H4** | hipótesis pre-registradas del laboratorio: H1 recuperación (los detectores reconocen la crisis en la celda fácil), H2 degradación (el score baja al acortar y atenuar la crisis), H3 concordancia con el ranking de ADR-003 sobre datos reales, H4 circularidad (un detector no gana más en el mundo generado por su propia familia) |
+| **circularidad** | ventaja de un detector «de casa» sobre trayectorias generadas por un modelo de su misma familia (p. ej. D03 GMM con `gaussiano_regimen`); es la razón de que el régimen de referencia nunca salga de un detector |
+| **retraso** | en el laboratorio, sesiones entre el inicio de un episodio de crisis impuesto y la primera detección (`retraso_medio`, `laboratorio.metricas`) |
 | **fechas sintéticas** | días hábiles de lunes a viernes posteriores al corte; son una etiqueta ordenada, **no** el calendario de la NYSE: no se cruzan por fecha con datos reales |
 
 ---
@@ -184,7 +222,7 @@ con `Path(__file__)`):
 | `RESULTS_BENCHMARK` | `results/benchmark/` | `metrics/`, `status/`, `panels/`, `manifest.json`, `ranking_v2.csv`, `metrics_master_v2.csv` |
 | `RESULTS_FUSION` · `RESULTS_FUSION_D07_D08` · `RESULTS_FUSION_D02_D06` | `results/fusion/{d07_d08,d02_d06}/` | tablas de las fusiones |
 | `RESULTS_DETECTORES` | `results/detectores/<fk_nombre>/` | figuras de los notebooks de familia |
-| `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | fases S y F; `results/sinteticos/generadores/` (notebook 15) y `results/sinteticos/validacion/` (notebook 16: tablas largas por dimensión y pista, veredicto, ficha JSON; las PNG no se versionan) |
+| `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | fases S y F; `results/sinteticos/generadores/` (notebook 15), `results/sinteticos/validacion/` (notebook 16: tablas largas por dimensión y pista, veredicto, ficha JSON; las PNG no se versionan) y `results/sinteticos/laboratorio/` (notebook 17: filas por trabajo, tablas H1–H4, figuras) |
 | `DOCS` · `ENV_FILE` | `docs/` · `.env` | — |
 
 | Módulo | Qué contiene |
@@ -197,7 +235,7 @@ con `Path(__file__)`):
 | `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado |
 | `regimenes.viz` (`figuras`) | estilo de casa de figuras |
 | `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
-| `regimenes.sinteticos` (`base`, `comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`, `parametricos/`, `neuronales/`, `validacion`) | interfaz `Generador` y base común `GeneradorBase`, régimen de referencia y cadena de regímenes, espacio de generación y re-derivación, bloques y encadenado, registro perezoso (`registry.crear`) y 10 generadores (6 paramétricos; 4 neuronales con el extra `[deep]`). `validacion/` (notebook 16) es un subpaquete con un módulo por dimensión: `fidelidad`, `discriminador`, `memorizacion`, `utilidad` y `veredicto` |
+| `regimenes.sinteticos` (`base`, `comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`, `parametricos/`, `neuronales/`, `validacion`, `laboratorio`) | interfaz `Generador` y base común `GeneradorBase`, régimen de referencia y cadena de regímenes, espacio de generación y re-derivación, bloques y encadenado, registro perezoso (`registry.crear`) y 10 generadores (6 paramétricos; 4 neuronales con el extra `[deep]`). `validacion/` (notebook 16) es un subpaquete con un módulo por dimensión: `fidelidad`, `discriminador`, `memorizacion`, `utilidad` y `veredicto`. `laboratorio/` (notebook 17) contiene `escenarios`, `metricas`, `ejecucion` (CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
 
 La historia de la Capa 1 (decisiones, hallazgos, memoria, informe y métricas v1) está en
 [`historia/capa1/`](historia/capa1/README.md); su código y notebooks originales, en el tag `capa1-final`.
@@ -210,7 +248,9 @@ por familia es el de los subpaquetes `f1_reglas` … `f7_deep` y de los notebook
 
 ---
 
-## Pipeline 00–20
+## Pipeline 00–20 (Fase 1 del TFM)
+
+Los notebooks 00–20 son el pipeline de la **Fase 1** (el régimen); las «fases» de la tabla son sus sub-fases.
 
 | Fase | Notebooks | Qué produce |
 |---|---|---|
@@ -218,8 +258,8 @@ por familia es el de los subpaquetes `f1_reglas` … `f7_deep` y de los notebook
 | **Features** | `02_diseno_preprocesado` → `03_preprocesado` | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels |
 | **D — detectores** | `04_protocolo_evaluacion` → `12_comparativa` → `05`–`11` (una familia cada uno) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/detectores/` |
 | **E — fusión** | `13_fusion_d07_d08` · `14_fusion_d02_d06` | `results/fusion/` |
-| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `15`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste + historial de convergencia + tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `16`). `16`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `17`–`18`: esqueletos (laboratorio, aumento) |
-| **F — cierre** | `19_decision_final` → `20_pseudolive` | sistema congelado + `results/pseudolive/` (esqueletos) |
+| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `15`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste + historial de convergencia + tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `16`). `16`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `17`: laboratorio de detectores con régimen conocido (simulación controlada con `gaussiano_regimen`, `var_regimen` y `garch_regimen`; CLI `python -m regimenes.sinteticos.laboratorio`) en `results/sinteticos/laboratorio/`. `18`: esqueleto (aumento) |
+| **F — cierre** | `19_decision_final` → `20_pseudolive` | `19`: decisión final del detector de régimen y contrato de `get_regimen` (futura ADR-006); `20`: validación de la tool sobre datos no usados en `results/pseudolive/` (esqueletos) |
 
 **Orden de ejecución en la fase D.** La numeración es de *lectura* (familias antes de la comparativa),
 pero tras un benchmark nuevo hay que ejecutar `12_comparativa` **antes** que `05`–`11`: es 12 quien

@@ -9,7 +9,7 @@
 > Switching de medias y/o varianzas, filtro de Kim, e implementación moderna en
 > `statsmodels` (`MarkovRegression` / `MarkovAutoregression`). El HMM con
 > emisiones (hmmlearn) y el RS-GARCH se tratan en otras fichas; aquí se señala el
-> solape para que el sintetizador lo resuelva.
+> solape con ellos.
 
 ## Definición y supuestos
 
@@ -177,7 +177,7 @@ inferencia es por máxima verosimilitud con tests y criterios de información
 estándar. Sirve como **baseline econométrico interpretable** contra el cual
 contrastar el HMM multivariante y métodos avanzados.
 
-**Relación / solape con HMM (para el sintetizador).** El MS gaussiano y el HMM
+**Relación / solape con HMM.** El MS gaussiano y el HMM
 gaussiano son **matemáticamente parientes**: ambos tienen un estado latente
 discreto con dinámica de Markov y emisiones paramétricas, y ambos se estiman con
 el mismo aparato (forward filtering + EM/Baum-Welch ≡ filtro de Hamilton + ML).
@@ -188,7 +188,7 @@ Diferencias prácticas de tradición, no de fondo:
    - **HMM (ML / hmmlearn)**: típicamente **multivariante** (emisiones
      gaussianas/t/GMM sobre un vector de features), énfasis en decodificación
      (Viterbi) y en `predict_proba`; sin componente AR por defecto.
-   El sintetizador debería tratarlos como **dos puntos del mismo continuo** y
+   Conviene tratarlos como **dos puntos del mismo continuo** y
    evitar contarlos como familias independientes: la decisión real es
    *univariante-AR-interpretable* (MS) vs *multivariante-emisiones-flexibles*
    (HMM). Para el panel de 15 features, HMM; para una señal interpretable sobre
@@ -284,23 +284,8 @@ sino que lo complementa con interpretabilidad y un marco de inferencia formal.
 - Ang, A. & Bekaert, G. (2002). (Clave existente `angbekaert2002`.)
 - Guidolin, M. & Timmermann, A. (2007). (Clave existente `guidolintimmermann2007`.)
 
-## Candidatas adicionales (para el sintetizador)
+## Variantes no implementadas
 
-- **HMM gaussiano/t-Student/GMM-HMM** (otra ficha): pariente matemático directo
-  del MS; resolver el solape como un único continuo univariante-AR vs
-  multivariante-emisiones. Para las 15 features, HMM es el vehículo natural.
-- **RS-GARCH / MS-GARCH** (ficha de volatilidad): extensión del MS con
-  heterocedasticidad GARCH dentro de cada régimen; ataca las colas mejor que el
-  MS gaussiano. Haas, Mittnik & Paolella (2004) es la referencia habitual.
-- **MS-VAR (Krolzig)**: versión multivariante del MS-AR; relevante si se quiere
-  un MS sobre varias series (p. ej. acciones+bonos) en lugar de HMM, pero con
-  fuerte coste en parámetros — mencionar como puente MS↔multivariante.
-- **TVTP — time-varying transition probabilities** (Filardo, Diebold-Lee-Weinbach):
-  probabilidades de transición dependientes de covariables (p. ej. VIX, slope);
-  permitiría que la entrada en crisis dependa de las features causales. No está en
-  `statsmodels` nativo (criterio del equipo).
-- **Emisiones t-Student en MS**: para las colas del EDA (kurtosis 25.6 / 39.6);
-  requiere salir de `statsmodels` (implementación propia o paquete especializado).
-- **Tests de número de regímenes** (Hansen 1992; Garcia 1998): tratan el problema
-  de parámetros no identificados bajo la nula al contrastar `K` vs `K+1`; útiles si
-  se quiere justificar formalmente el número de regímenes en vez de BIC.
+- **MS-VAR (Krolzig):** versión multivariante del MS-AR; coste en parámetros alto. (Ojo: el «MS-VAR» D05 del repositorio es univariante, ver GLOSARIO.)
+- **TVTP** (Filardo; Diebold-Lee-Weinbach): probabilidades de transición dependientes de covariables como VIX o pendiente de la curva; no está en `statsmodels` nativo.
+- **Emisiones t-Student en MS** (colas del EDA) y **tests del número de regímenes** (Hansen 1992; Garcia 1998), útiles para justificar `K` más allá del BIC; ambos exigen implementación propia.

@@ -1,6 +1,11 @@
 # ADR-003 — Causalidad de calendario, propagación de estado y ranking por detección
 
 - **Estado:** Aceptada · 2026-09-29
+- **Revisión posterior (2026-10-06):** (1) la «regla a congelar para el pseudolive» (§4) se decide en el
+  notebook `19_decision_final` y quedará registrada en la **futura ADR-006** (la antigua «futura ADR-005»,
+  renumerada por [ADR-005](ADR-005-reencuadre-tfm-multiagente.md)). (2) `LAG_PUBLICACION` es el *TimeGate*
+  de las **series numéricas**; el TimeGate de los documentos (corpus del RAG) es trabajo de la Fase 2 del
+  TFM. (3) ALFRED (vintages en tiempo real) sigue siendo una limitación declarada.
 - **Rama:** trabajo directo sobre `main`.
 - **Origen:** revisión completa del código y de los notebooks de datos, preprocesado, benchmark,
   comparativa y fusión (2026-09-29), hecha sin re-ejecutar el benchmark: se corrigió todo lo que no

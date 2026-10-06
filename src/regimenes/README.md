@@ -1,6 +1,6 @@
 # src/regimenes/ — paquete único
 
-Paquete instalable `regimenes` (`pip install -e .`) con todo el código del TFM: datos, features,
+Paquete instalable `regimenes` (`pip install -e .`) con el código de la Fase 1 del TFM (el régimen de mercado, [ADR-005](../../docs/decisions/ADR-005-reencuadre-tfm-multiagente.md)): datos, features,
 detectores (los 12 de la Capa 1 más la ablación D13, por familia), juez, benchmark, fusión y
 sintéticos ([ADR-004](../../docs/decisions/ADR-004-unificacion.md)). Imports internos absolutos (`from regimenes.x import y`), sin tocar `sys.path`.
 Todas las rutas de disco salen de `regimenes.rutas`.
