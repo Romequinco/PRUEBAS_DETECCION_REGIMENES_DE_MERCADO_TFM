@@ -11,7 +11,7 @@ si además sabe en qué régimen está el mercado puede aplicar el criterio de r
 | Paso | Qué hace |
 |---|---|
 | **1 · Leer** | Información heterogénea (bancos centrales, 10-K/10-Q, informes de riesgo, noticias, mercados de predicción, series macro), cada fuente con su RAG especializado. |
-| **2 · Situar** | Un detector cuantitativo dice si estamos en calma, alerta o crisis (Fase 1). Condiciona todo lo demás. |
+| **2 · Situar** | Un detector cuantitativo dice en qué estado está el mercado (hipótesis de trabajo: calma, alerta o crisis; Fase 1). Condiciona todo lo demás. |
 | **3 · Decidir** | Cartera con pesos por activo, construida con criterios de riesgo y explicada en un memo de inversión con citas a las fuentes. |
 
 **No predecimos precios:** detectamos el estado del mercado, lo contextualizamos con evidencia y gestionamos el riesgo.

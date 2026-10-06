@@ -138,4 +138,4 @@ benchmark_spec → ADR-003 → ADR-004 (estructura actual) → teoría por famil
 de los datos (ADR-001/002) o del ranking (ADR-003).
 
 El orden de **lectura** de los notebooks (familias antes que la comparativa) no es el de
-**ejecución** tras un benchmark nuevo (04 → 12 → 05–11): ver [GLOSARIO](GLOSARIO.md#pipeline-0020).
+**ejecución** tras un benchmark nuevo (04 → 12 → 05–11): ver [GLOSARIO](GLOSARIO.md#pipeline-0020-fase-1-del-tfm).
