@@ -15,6 +15,12 @@ visión completa está en [`docs/tfm/README.md`](docs/tfm/README.md) y la decisi
 | 4 | Cartera y memo: Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | 🔜 |
 | 5 | Evaluación: backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos | 🔜 |
 
+Requisitos añadidos en la tutoría, todos con el diseño abierto: cliente minorista con formulario de perfil
+que fija los límites del CIO, dos carteras (con límites y «en bruto»), memoria de la cartera anterior, datos
+alternativos (operaciones del Congreso, divergencias en Polymarket…), un «botón de cataclismo» automático
+(EWS, modo broma) y los *System One decision agents* como línea de investigación. Detalle en
+[`docs/tfm/`](docs/tfm/README.md).
+
 **Este repositorio contiene hoy la Fase 1** (el régimen). No busca un detector concreto, sino el **marco
 de evaluación causal y comparable** que juzga a muchos detectores, la **base de datos sólida** sobre la que
 hacerlo y, a partir de ahí, un sistema de alerta + confirmación validado con datos sintéticos y en
