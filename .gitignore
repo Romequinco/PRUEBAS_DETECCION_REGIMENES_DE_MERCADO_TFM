@@ -218,3 +218,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Cloudflare pipeline credentials and generated local data
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+.wrangler/
+node_modules/
+.DS_Store
+/data/local/
+/data/cache/
+/data/exports/
+/data/manual-inbox/
+*.sqlite
+*.sqlite3
+*.db
