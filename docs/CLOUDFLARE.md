@@ -127,7 +127,9 @@ y [precio Workers](https://developers.cloudflare.com/workers/platform/pricing/).
 3. Registrar y consultar sus metadatos en D1.
 4. Repetir el mismo lote y comprobar que no crea duplicados.
 5. Probar una versión revisada del mismo documento y conservar ambas versiones.
-6. Consultar con una fecha histórica y comprobar la exclusión de documentos futuros.
+6. Consultar pasajes en modo general y abrir originales con citas; comprobar que
+   la falta de una fecha pública exacta no bloquea un texto validado. Cuando se
+   active el modo histórico, verificar además la exclusión de versiones posteriores.
 7. Ejecutar el job desde GitHub con el ordenador apagado y revisar el checkpoint.
 
 Nada de esto se presenta como verificado todavía.

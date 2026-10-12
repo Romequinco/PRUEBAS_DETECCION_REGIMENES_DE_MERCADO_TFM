@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bancos centrales, riesgo sistémico y literatura: fuentes gratuitas</title><style>
+:root {color-scheme:light; --navy:#2d5c87; --ink:#203447; --line:#d8e3ed;}
+* {box-sizing:border-box;} body {margin:0;background:#f0f4f8;color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,sans-serif;}
+main {max-width:1200px;margin:24px auto;padding:32px 40px;background:#fff;border:1px solid var(--line);border-radius:12px;}
+h1 {color:var(--navy);font-size:2rem;line-height:1.25;} h2 {color:var(--navy);margin-top:2.7rem;padding-top:16px;border-top:3px solid var(--line);line-height:1.3;}
+p {max-width:100%;} a {color:#155fa0;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;}
+table {border-collapse:collapse;width:100%;margin:20px 0;font-size:.93rem;} th,td {border:1px solid var(--line);padding:12px;text-align:left;vertical-align:top;overflow-wrap:anywhere;}
+th {background:var(--navy);color:white;font-weight:600;} tr:nth-child(even) td {background:#f5f8fb;}
+pre,code {background:#f2f5f8;font-size:.9em;} code {padding:2px 4px;border-radius:3px;} li {margin:8px 0;}
+.jp-InputPrompt,.prompt {display:none;} .jp-Cell,.cell {margin:0;padding:0;} .jp-RenderedHTMLCommon {overflow-x:auto;}
+@media(max-width:700px){main{margin:0;padding:20px 16px;border-radius:0;} body{font-size:15px;} th,td{padding:8px;} h1{font-size:1.6rem;}}
+@media print {body{background:white;font-size:11px;}main{border:0;margin:0;padding:0;}h2{break-after:avoid;}tr{break-inside:avoid;}}
+</style></head><body><main><div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-00"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Bancos-centrales,-riesgo-sist%C3%A9mico-y-literatura">Bancos centrales, riesgo sistémico y literatura<a class="anchor-link" href="#Bancos-centrales,-riesgo-sist%C3%A9mico-y-literatura">¶</a></h1><p><strong>Notebook de selección de fuentes · revisión: 12 de octubre de 2026</strong></p>
+<p>Objetivo: decidir de dónde obtener cada tipo de información de la captura, priorizando fuentes gratuitas, originales y verificables. Los <strong>14 apartados</strong> reproducen sus tarjetas; las tablas separan los subtipos de documentos.</p>
+<p><strong>Orientación actual del proyecto:</strong> construir una biblioteca amplia de literatura, informes y comunicaciones para que los agentes busquen evidencias y fundamenten decisiones. Se recopilará por lotes; la prioridad es cobertura, calidad y consulta útil, sin exigir ingesta inmediata. Las fechas y versiones aportan contexto. Las indicaciones de TimeGate de este cuaderno se aplican cuando se pide una evaluación histórica, y no bloquean por defecto la incorporación al corpus general.</p>
+<p>Una publicación sin fecha pública exacta puede ser útil si conocemos su procedencia, términos y versión y el texto es fiable; la incertidumbre se muestra al agente. Mantener papers e informes antiguos como contexto, identificar ediciones y no confundir una guía sustituida con una vigente. El detalle del diseño está en <a href="../docs/CORPUS_PARA_AGENTES.md">Corpus de conocimiento para agentes</a>.</p>
+<p>Este cuaderno es documental: se puede leer sin ejecutar celdas. Los enlaces son las referencias que respaldan las recomendaciones. Se han consultado portales, páginas de publicaciones y fichas de datasets; todavía no se ha descargado ni validado un corpus completo ni probado la automatización de todas las fuentes.</p>
+<p><strong>Cómo interpretar “calidad”.</strong> Para comunicaciones institucionales, elegir el emisor original: texto íntegro, fecha, versión y procedencia. Para papers, evaluar también metodología, revisión académica y versión. Un repositorio cómodo de descargar no convierte sus textos o etiquetas en información de mayor calidad.</p>
+<p><strong>Cómo interpretar “gratis”.</strong> Se refiere al acceso digital indicado. Descargar sin pagar no implica permiso ilimitado para redistribuir, comercializar o realizar descargas masivas. Las restricciones expresas más relevantes aparecen en sus apartados. El futuro almacenamiento y procesamiento tienen sus propios costes.</p>
+<p>Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referencias del proyecto, <strong>no inventarios verificados</strong>. Un bloqueo técnico de una web no demuestra que el contenido sea de pago.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-01"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Vista-r%C3%A1pida-e-%C3%ADndice">Vista rápida e índice<a class="anchor-link" href="#Vista-r%C3%A1pida-e-%C3%ADndice">¶</a></h2><table>
+<thead>
+<tr>
+<th>Apartado</th>
+<th>Primera opción recomendada</th>
+<th>¿Gratis?</th>
+<th>Prioridad de incorporación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#fed">1. Fed</a></td>
+<td>Federal Reserve</td>
+<td>Sí, documentos públicos</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#bce">2. BCE</a></td>
+<td>Banco Central Europeo</td>
+<td>Sí</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#boe-boj">3. BoE y BoJ</a></td>
+<td>Cada banco emisor</td>
+<td>Sí</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#discursos-bis">4. Discursos BIS</a></td>
+<td>Descarga oficial BIS</td>
+<td>Sí; uso no comercial en el paquete</td>
+<td>Alta: facilita un corpus amplio</td>
+</tr>
+<tr>
+<td><a href="#otros-bancos">5. Otros bancos centrales</a></td>
+<td>Portales de cada banco</td>
+<td>Publicaciones públicas gratuitas; acceso variable</td>
+<td>Media</td>
+</tr>
+<tr>
+<td><a href="#organismos">6. Organismos</a></td>
+<td>Banco Mundial, FMI y OCDE</td>
+<td>Sí para las fuentes propuestas</td>
+<td>Media</td>
+</tr>
+<tr>
+<td><a href="#datasets">7. Datasets abiertos</a></td>
+<td>Fichas y archivos originales del dataset</td>
+<td>Sí o cuenta gratuita; licencias distintas</td>
+<td>Complementaria</td>
+</tr>
+<tr>
+<td><a href="#estabilidad">8. Estabilidad financiera</a></td>
+<td>Fed, BCE, BoE, ESRB, OFR y FSB</td>
+<td>Sí</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#bis-papers">9. BIS QR y Working Papers</a></td>
+<td>Publicaciones oficiales BIS</td>
+<td>Sí</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#gfsr">10. FMI GFSR</a></td>
+<td>FMI: PDF y datos por edición</td>
+<td>Sí</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td><a href="#papers-crisis">11. Papers de crisis</a></td>
+<td>Emisor, autor o repositorio institucional</td>
+<td>Muchos sí; NBER/editoriales, parcialmente</td>
+<td>Alta: desde el piloto</td>
+</tr>
+<tr>
+<td><a href="#huellas">12. Huellas de crisis</a></td>
+<td>ESRB + FMI + Macrohistory; elaboración propia</td>
+<td>Bases gratuitas con condiciones</td>
+<td>Después de validar las bases</td>
+</tr>
+<tr>
+<td><a href="#cartera">13. Literatura de cartera y CIO</a></td>
+<td>Autores/instituciones y EUR-Lex, ESMA, CNMV</td>
+<td>Mixto en literatura; normativa propuesta gratuita</td>
+<td>Alta: selección abierta desde el piloto</td>
+</tr>
+<tr>
+<td><a href="#literatura-tarde">14. La literatura llega tarde</a></td>
+<td>Historial de versiones y evidencia de publicación</td>
+<td>Metadatos gratuitos; análisis propio</td>
+<td>Opcional: evaluación histórica posterior</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-02"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1.-Fed">1. Fed<a class="anchor-link" href="#1.-Fed">¶</a></h2><p><a id="fed"></a></p>
+<p><strong>Elección:</strong> Federal Reserve como fuente principal. Conserva el documento institucional y permite relacionarlo con la reunión correspondiente. Los datasets externos sirven de complemento.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente de mayor calidad recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comunicados y decisiones FOMC</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm">Calendarios y documentos FOMC</a></td>
+<td>Sí, sin cuenta</td>
+<td>HTML y PDF enlazados por reunión</td>
+</tr>
+<tr>
+<td>Actas</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm">Mismo calendario FOMC</a> y <a href="https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm">archivo histórico</a></td>
+<td>Sí</td>
+<td>HTML/PDF; publicación separada del comunicado</td>
+</tr>
+<tr>
+<td>Ruedas de prensa</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm">Calendario FOMC</a></td>
+<td>Sí</td>
+<td>Transcripción cuando esté publicada; vídeo como complemento</td>
+</tr>
+<tr>
+<td>Beige Book</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/beigebook/default.htm">Archivo oficial Beige Book</a></td>
+<td>Sí</td>
+<td>HTML/PDF por edición y distrito</td>
+</tr>
+<tr>
+<td>Transcripciones y material histórico</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm">FOMC Historical Materials</a></td>
+<td>Sí</td>
+<td>PDF y documentos por año</td>
+</tr>
+<tr>
+<td>Discursos</td>
+<td><a href="https://www.federalreserve.gov/newsevents/speeches.htm">Speeches de la Fed</a></td>
+<td>Sí</td>
+<td>HTML/PDF con autor y fecha</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y tiempo:</strong> preferir HTML para extraer párrafos y conservar el PDF original cuando exista. Las actas actuales suelen publicarse unas tres semanas después; las transcripciones completas se publican con aproximadamente cinco años de retraso. Usar la fecha efectiva de cada publicación: los “+21 días” y “+6 años” de la captura no son reglas universales para todo el histórico. El archivo enlazado documenta el régimen de publicación.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-03"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="2.-BCE">2. BCE<a class="anchor-link" href="#2.-BCE">¶</a></h2><p><a id="bce"></a></p>
+<p><strong>Elección:</strong> portal del BCE. Mantiene decisiones, comparecencias y deliberaciones como series distintas, evitando mezclar documentos de la misma reunión.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decisiones de política monetaria</td>
+<td><a href="https://www.ecb.europa.eu/press/govcdec/mopo/html/index.en.html">Monetary policy decisions</a></td>
+<td>Sí</td>
+<td>Listados y texto HTML</td>
+</tr>
+<tr>
+<td>Declaración y preguntas/respuestas</td>
+<td><a href="https://www.ecb.europa.eu/press/press_conference/html/index.en.html">Conferencias de prensa</a></td>
+<td>Sí</td>
+<td>HTML; separar declaración y cada Q&amp;A</td>
+</tr>
+<tr>
+<td>Accounts, equivalentes a actas resumidas</td>
+<td><a href="https://www.ecb.europa.eu/press/accounts/html/index.en.html">Monetary policy accounts</a></td>
+<td>Sí</td>
+<td>HTML con fecha de reunión y de publicación</td>
+</tr>
+<tr>
+<td>Discursos</td>
+<td><a href="https://www.ecb.europa.eu/press/key/html/index.en.html">Speeches</a></td>
+<td>Sí</td>
+<td>HTML/PDF según documento</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y tiempo:</strong> guardar el idioma original y vincular traducciones como versiones relacionadas. Las accounts están disponibles después de la reunión; usar la fecha real de publicación, sin imponer “+28 días” a todas las ediciones. La fecha de reunión identifica el evento; la fecha de publicación decide cuándo podía conocerlo el pipeline.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-04"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="3.-BoE-y-BoJ">3. BoE y BoJ<a class="anchor-link" href="#3.-BoE-y-BoJ">¶</a></h2><p><a id="boe-boj"></a></p>
+<p><strong>Elección:</strong> Bank of England y Bank of Japan, respectivamente. Para análisis textual, sus informes y actas completos tienen más valor que un resumen de prensa externo.</p>
+<table>
+<thead>
+<tr>
+<th>Banco e información</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BoE: decisión y actas MPC</td>
+<td><a href="https://www.bankofengland.co.uk/monetary-policy/the-interest-rate-bank-rate">Última decisión y enlaces a documentos</a>; <a href="https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/july-2026">ejemplo publicado: julio de 2026</a></td>
+<td>Sí</td>
+<td>HTML/PDF; descubrir ediciones desde enlaces oficiales</td>
+</tr>
+<tr>
+<td>BoE: Monetary Policy Report</td>
+<td><a href="https://www.bankofengland.co.uk/sitemap/monetary-policy-report">Archivo MPR</a></td>
+<td>Sí</td>
+<td>Informes HTML/PDF por edición</td>
+</tr>
+<tr>
+<td>BoE: discursos</td>
+<td><a href="https://www.bankofengland.co.uk/news/speeches">Speeches</a></td>
+<td>Sí</td>
+<td>HTML y documentos enlazados</td>
+</tr>
+<tr>
+<td>BoJ: comunicados, opiniones y actas</td>
+<td><a href="https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm">Calendario y documentos de reuniones</a></td>
+<td>Sí</td>
+<td>Enlaces a declaraciones, Summary of Opinions y Minutes</td>
+</tr>
+<tr>
+<td>BoJ: informes de perspectivas</td>
+<td><a href="https://www.boj.or.jp/en/mopo/outlook/index.htm">Outlook Report</a></td>
+<td>Sí</td>
+<td>PDF de informes y perspectivas</td>
+</tr>
+<tr>
+<td>BoJ: discursos incluidos en BIS</td>
+<td><a href="https://www.bis.org/speeches/central-bank">Discursos de bancos centrales BIS</a></td>
+<td>Sí</td>
+<td>Complemento; contrastar con el original del BoJ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y tiempo:</strong> en BoJ, las opiniones y las actas son documentos diferentes. Su <a href="https://www.boj.or.jp/en/about/education/oshiete/seisaku/b20.htm">explicación oficial del procedimiento</a> vincula la publicación de actas a su aprobación en una reunión posterior. El “+44 días” de la captura no debe convertirse en retraso fijo. Las traducciones al inglés pueden aparecer después del original japonés.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-05"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="4.-Discursos-BIS-y-Annual-Report">4. Discursos BIS y Annual Report<a class="anchor-link" href="#4.-Discursos-BIS-y-Annual-Report">¶</a></h2><p><a id="discursos-bis"></a></p>
+<p><strong>Elección para un corpus internacional:</strong> descarga oficial del BIS. Para el texto definitivo de un discurso concreto, contrastar con el banco emisor si hay discrepancias.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discursos de bancos centrales</td>
+<td><a href="https://www.bis.org/speeches/central-bank/download">Descarga oficial de discursos BIS</a></td>
+<td>Sí, sin cuenta; paquete para uso no comercial según sus condiciones</td>
+<td>Archivos CSV UTF-8 comprimidos, por año o conjunto, desde 1996</td>
+</tr>
+<tr>
+<td>Documento individual y metadatos</td>
+<td><a href="https://www.bis.org/speeches/central-bank">Catálogo BIS</a></td>
+<td>Sí</td>
+<td>Página y documento enlazado</td>
+</tr>
+<tr>
+<td>Informe económico anual</td>
+<td><a href="https://www.bis.org/publications/aer">Annual Economic Report</a></td>
+<td>Sí</td>
+<td>Capítulos e informe completo</td>
+</tr>
+<tr>
+<td>Informe institucional anual</td>
+<td><a href="https://www.bis.org/about/areport/index.htm">Annual Report</a></td>
+<td>Sí</td>
+<td>Informe de actividad institucional</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad:</strong> el paquete es especialmente útil para empezar sin reconstruir miles de páginas. BIS advierte que la cobertura no es exhaustiva y que la conversión automática puede introducir errores. Validar muestras contra los originales y guardar la fecha/versión de la descarga. Annual Economic Report y Annual Report tienen objetivos diferentes: catalogarlos por separado. No asumir que todas las publicaciones BIS comparten la licencia del paquete de discursos.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-06"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="5.-Otros-bancos-centrales">5. Otros bancos centrales<a class="anchor-link" href="#5.-Otros-bancos-centrales">¶</a></h2><p><a id="otros-bancos"></a></p>
+<p><strong>Elección:</strong> emisor original para decisiones, actas, informes y discursos. Las publicaciones digitales públicas indicadas son la primera ruta gratuita; no se ha probado todavía una descarga masiva de cada banco.</p>
+<table>
+<thead>
+<tr>
+<th>Banco</th>
+<th>Punto de entrada oficial</th>
+<th>Información que buscar</th>
+<th>Gratuidad y acceso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BCB, Brasil</td>
+<td><a href="https://www.bcb.gov.br/en/monetarypolicy/copomstatements/cronologicos">Comunicados Copom</a></td>
+<td>Decisiones; localizar también actas e informes</td>
+<td>Comunicados gratuitos; conservar original portugués cuando corresponda</td>
+</tr>
+<tr>
+<td>BoC, Canadá</td>
+<td><a href="https://www.bankofcanada.ca/core-functions/monetary-policy/">Monetary policy</a></td>
+<td>Decisiones, MPR, deliberaciones y discursos</td>
+<td>Publicaciones gratuitas; HTML/PDF</td>
+</tr>
+<tr>
+<td>SNB, Suiza</td>
+<td><a href="https://www.snb.ch/en/the-snb/mandates-goals/monetary-policy/decisions">Monetary policy decisions</a></td>
+<td>Evaluaciones y decisiones monetarias</td>
+<td>Gratuitas; documentos por evaluación</td>
+</tr>
+<tr>
+<td>Riksbank, Suecia</td>
+<td><a href="https://www.riksbank.se/en-gb/monetary-policy/">Monetary policy</a></td>
+<td>Decisiones, actas e informes</td>
+<td>Gratuitas; HTML/PDF</td>
+</tr>
+<tr>
+<td>Norges Bank, Noruega</td>
+<td><a href="https://www.norges-bank.no/en/topics/Monetary-policy/">Monetary policy</a></td>
+<td>Decisiones, informes y discursos</td>
+<td>Gratuitas; HTML/PDF</td>
+</tr>
+<tr>
+<td>RBNZ, Nueva Zelanda</td>
+<td><a href="https://www.rbnz.govt.nz/monetary-policy">Monetary policy</a></td>
+<td>Statements y decisiones del comité</td>
+<td>Publicaciones gratuitas; archivos por edición</td>
+</tr>
+<tr>
+<td>RBI, India</td>
+<td><a href="https://www.rbi.org.in/">Portal oficial</a></td>
+<td>Press Releases, MPC, Speeches y Reports</td>
+<td>Seleccionar documentos públicos gratuitos; no confundir con publicaciones ofrecidas por suscripción</td>
+</tr>
+<tr>
+<td>Banxico, México</td>
+<td><a href="https://www.banxico.org.mx/publicaciones-y-prensa/anuncios-de-las-decisiones-de-politica-monetaria/anuncios-politica-monetaria-t.html">Anuncios de decisiones</a></td>
+<td>Anuncios; localizar minutas e informes relacionados</td>
+<td>Anuncios gratuitos; PDF</td>
+</tr>
+<tr>
+<td>Banco de España</td>
+<td><a href="https://www.bde.es/wbe/es/publicaciones/">Publicaciones</a></td>
+<td>Proyecciones, análisis y estabilidad financiera</td>
+<td>Gratuitas; HTML/PDF</td>
+</tr>
+<tr>
+<td>RBA, Australia</td>
+<td><a href="https://www.rba.gov.au/monetary-policy/">Monetary policy</a></td>
+<td>Decisiones, actas e informes monetarios</td>
+<td>Gratuitas; HTML/PDF</td>
+</tr>
+<tr>
+<td>PBoC, China</td>
+<td><a href="https://www.pbc.gov.cn/en/">Portal inglés</a>; <a href="https://www.pbc.gov.cn/en/3688229/3688353/3688362/5385746/index.html">ejemplo de informe publicado</a></td>
+<td>Monetary Policy Reports y comunicaciones</td>
+<td>Ejemplo de acceso público; cobertura y automatización por comprobar</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad:</strong> registrar país, institución, idioma y tipo de documento. Banco de España pertenece al Eurosistema: las decisiones monetarias del euro se obtienen del BCE; una traducción o republicación no es una decisión adicional. Para discursos internacionales, BIS es una alternativa gratuita útil, con cobertura parcial. Preferir descargas o feeds oficialmente ofrecidos antes de desarrollar extracción de páginas; no presuponer que todos ofrecen JSON/RSS/API.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-07"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="6.-Organismos:-Banco-Mundial,-FMI-WEO-y-OCDE">6. Organismos: Banco Mundial, FMI WEO y OCDE<a class="anchor-link" href="#6.-Organismos:-Banco-Mundial,-FMI-WEO-y-OCDE">¶</a></h2><p><a id="organismos"></a></p>
+<p><strong>Elección:</strong> informe original más los datos de su edición. El texto explica supuestos y riesgos; las tablas permiten conservar valores y proyecciones sin errores de extracción de PDF.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Banco Mundial: Global Economic Prospects</td>
+<td><a href="https://www.worldbank.org/en/publication/global-economic-prospects">GEP oficial</a></td>
+<td>Sí</td>
+<td>Informe completo y capítulos PDF</td>
+</tr>
+<tr>
+<td>Datos GEP</td>
+<td><a href="https://datacatalog.worldbank.org/search/dataset/0037888/global-economic-prospects">Catálogo de datos GEP</a></td>
+<td>Sí; ficha declara CC BY 4.0</td>
+<td>Descargas de tablas; formatos según recurso</td>
+</tr>
+<tr>
+<td>FMI: World Economic Outlook</td>
+<td><a href="https://www.imf.org/en/Publications/WEO">WEO oficial</a></td>
+<td>Sí para los informes digitales propuestos</td>
+<td>PDF por edición y materiales asociados</td>
+</tr>
+<tr>
+<td>Series y proyecciones WEO</td>
+<td><a href="https://data.imf.org/Datasets/WEO">Dataset WEO del FMI</a>; <a href="https://www.imf.org/en/publications/weo/weo-database/2024/october">ejemplo de edición histórica</a></td>
+<td>Sí</td>
+<td>Portal de datos y archivos de edición</td>
+</tr>
+<tr>
+<td>OCDE: Economic Outlook</td>
+<td><a href="https://www.oecd.org/en/publications/oecd-economic-outlook_16097408.html">Serie oficial</a></td>
+<td>Sí, publicación digital</td>
+<td>Informes y enlaces a datos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Acceso:</strong> la OCDE <a href="https://www.oecd.org/en/about/news/press-releases/2024/07/oecd-data-publications-and-analysis-become-freely-accessible.html">anunció acceso gratuito a sus datos, publicaciones y análisis desde julio de 2024</a>. El estado “bloqueada” de la captura no justifica comprar una suscripción. Un problema técnico se registra y se resuelve mediante rutas oficiales alternativas o descarga manual.</p>
+<p><strong>Tiempo:</strong> preservar cada edición o vintage. Una serie revisada hoy no reproduce lo conocido en 2008; una proyección WEO tampoco es un dato observado. Conservar unidad, país, periodo, condición observado/proyectado y edición.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-08"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="7.-Datasets-abiertos:-Hugging-Face,-FOMC-y-Beige-Book">7. Datasets abiertos: Hugging Face, FOMC y Beige Book<a class="anchor-link" href="#7.-Datasets-abiertos:-Hugging-Face,-FOMC-y-Beige-Book">¶</a></h2><p><a id="datasets"></a></p>
+<p><strong>Elección:</strong> útiles para prototipos y anotaciones; las fuentes oficiales de los apartados anteriores siguen siendo la referencia para texto y fechas.</p>
+<table>
+<thead>
+<tr>
+<th>Dataset o tipo</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Calidad, licencia y limitación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Comunicaciones de múltiples bancos</td>
+<td><a href="https://huggingface.co/datasets/aufklarer/central-bank-communications">aufklarer/central-bank-communications</a></td>
+<td>Descarga pública gratuita; ficha declara CC BY 4.0</td>
+<td>Candidato compatible con la descripción de la captura; no se ha demostrado que sea exactamente su dataset. Incluye corpus/anotaciones; contrastar procedencia y fechas</td>
+</tr>
+<tr>
+<td>Frases FOMC con tono anotado</td>
+<td><a href="https://huggingface.co/datasets/gtfintechlab/fomc_communication">gtfintechlab/fomc_communication</a></td>
+<td>Sí; ficha declara CC BY-NC 4.0</td>
+<td>Adecuado para etiquetas hawkish/dovish/neutral; restringe uso comercial. No sustituye un archivo completo de documentos</td>
+</tr>
+<tr>
+<td>Discursos de bancos centrales</td>
+<td><a href="https://huggingface.co/datasets/istat-ai/cb-speeches">istat-ai/cb-speeches</a></td>
+<td>Acceso condicionado a cuenta y aceptación/solicitud según ficha</td>
+<td>Revisar permisos del contenido original además de la licencia declarada. Para empezar, preferir descarga directa BIS</td>
+</tr>
+<tr>
+<td>Beige Book</td>
+<td><a href="https://www.federalreserve.gov/monetarypolicy/beigebook/default.htm">Archivo oficial Fed</a></td>
+<td>Sí, sin cuenta</td>
+<td>Mejor procedencia para el texto completo; la captura no identifica un dataset concreto de Beige Book</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y tiempo:</strong> una etiqueta de sentimiento es una interpretación, no una afirmación oficial del banco. Registrar quién anotó, método y versión. Si un dataset contiene <code>meeting_date</code> pero no evidencia de publicación, esa fecha no basta para TimeGate. Usarlo como semilla y reconstruir la disponibilidad desde el original. No atribuir CC BY a todos los datasets de una plataforma.</p>
+<p>Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracción se hayan validado aunque su fecha exacta sea desconocida. Reconstruir la disponibilidad precisa solo cuando haga falta para el modo histórico; no dejar estos corpus fuera únicamente por ese dato ausente.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-09"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="8.-Estabilidad-financiera">8. Estabilidad financiera<a class="anchor-link" href="#8.-Estabilidad-financiera">¶</a></h2><p><a id="estabilidad"></a></p>
+<p><strong>Elección:</strong> informe completo de la institución que lo produce, junto con tablas y anexos publicados. Son fuentes primarias para saber qué riesgos comunicaba cada organismo.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fed Financial Stability Report</td>
+<td><a href="https://www.federalreserve.gov/publications/financial-stability-report.htm">FSR Fed</a></td>
+<td>Sí</td>
+<td>PDF/HTML y ediciones anteriores</td>
+</tr>
+<tr>
+<td>BCE Financial Stability Review</td>
+<td><a href="https://www.ecb.europa.eu/pub/financial-stability/fsr/html/index.en.html">FSR BCE</a></td>
+<td>Sí</td>
+<td>Informe, capítulos y artículos</td>
+</tr>
+<tr>
+<td>BoE Financial Stability Report</td>
+<td><a href="https://www.bankofengland.co.uk/sitemap/financial-stability-report">Archivo FSR BoE</a></td>
+<td>Sí</td>
+<td>HTML/PDF por edición</td>
+</tr>
+<tr>
+<td>ESRB: informes de riesgo sistémico</td>
+<td><a href="https://www.esrb.europa.eu/pub/reports/html/index.en.html">Reports ESRB</a></td>
+<td>Sí</td>
+<td>Informes temáticos, anuales y anexos</td>
+</tr>
+<tr>
+<td>OFR: evaluación y análisis</td>
+<td><a href="https://www.financialresearch.gov/annual-reports/">Annual Reports OFR</a></td>
+<td>Sí</td>
+<td>Informes anuales y material asociado</td>
+</tr>
+<tr>
+<td>FSB: supervisión y vulnerabilidades</td>
+<td><a href="https://www.fsb.org/publications/">Publications FSB</a></td>
+<td>Sí</td>
+<td>Informes por tema y fecha</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad:</strong> conservar gráficos y referencias a tablas junto al texto. “Estabilidad financiera” agrupa series distintas: no tratar un informe anual OFR y un FSR semestral como observaciones idénticas. Deduplicar informe completo y capítulos, sin perder su relación. Los recuentos de la captura no representan necesariamente todo el archivo actual.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-10"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="9.-BIS-Quarterly-Review-y-Working-Papers">9. BIS Quarterly Review y Working Papers<a class="anchor-link" href="#9.-BIS-Quarterly-Review-y-Working-Papers">¶</a></h2><p><a id="bis-papers"></a></p>
+<p><strong>Elección:</strong> catálogo oficial BIS, tanto para el documento como para número de serie, autores y fecha.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quarterly Review completo y artículos</td>
+<td><a href="https://www.bis.org/publications/qr">BIS Quarterly Review</a></td>
+<td>Sí</td>
+<td>Ediciones y artículos HTML/PDF</td>
+</tr>
+<tr>
+<td>Working Papers</td>
+<td><a href="https://www.bis.org/publications/working-paper">BIS Working Papers</a></td>
+<td>Sí</td>
+<td>Catálogo y PDFs individuales</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y tiempo:</strong> separar el informe trimestral de sus artículos y vincularlos con un documento padre. Un Working Paper no equivale automáticamente a un artículo revisado por una revista. Guardar la versión y el número de la serie. Para TimeGate, contrastar la fecha de lanzamiento con la portada y la ficha: la fecha de modificación de una página migrada puede ser posterior a la publicación original.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-11"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="10.-FMI-Global-Financial-Stability-Report-%E2%80%94-GFSR">10. FMI Global Financial Stability Report — GFSR<a class="anchor-link" href="#10.-FMI-Global-Financial-Stability-Report-%E2%80%94-GFSR">¶</a></h2><p><a id="gfsr"></a></p>
+<p><strong>Elección:</strong> FMI como editor original. Es una fuente central para riesgos financieros globales y debe formar parte del corpus aunque alguna ruta de acceso automático falle.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Acceso previsto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GFSR completo</td>
+<td><a href="https://www.imf.org/en/Publications/GFSR">Serie oficial GFSR</a></td>
+<td>Sí, PDF digital</td>
+<td>Ediciones, capítulos y anexos</td>
+</tr>
+<tr>
+<td>Ejemplo de PDF completo</td>
+<td><a href="https://www.imf.org/-/media/files/publications/gfsr/2026/april/english/text.pdf">GFSR abril de 2026, texto inglés</a></td>
+<td>Sí, enlace público</td>
+<td>PDF original descargable</td>
+</tr>
+<tr>
+<td>Ruta editorial alternativa</td>
+<td><a href="https://www.elibrary.imf.org/subject/082">IMF eLibrary: estabilidad financiera</a></td>
+<td>Acceso gratuito a materiales abiertos; comprobar el documento concreto</td>
+<td>Ficha editorial y versiones disponibles</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y acceso:</strong> la captura marca “BLOQUEADA” por WAF; eso describe un obstáculo de adquisición, no un precio. Si falla la descarga automática, usar el enlace oficial al PDF o descarga manual con registro de procedencia. No es necesario empezar comprando el informe impreso. Una traducción de un resumen ejecutivo no sustituye el informe completo en inglés.</p>
+<p><strong>Tiempo:</strong> ciertos registros de ediciones antiguas pueden reflejar la incorporación al portal. Comprobar fecha original de edición/lanzamiento y conservar evidencia; no usar sin más la fecha reciente de la ficha migrada.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-12"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="11.-Papers-de-crisis">11. Papers de crisis<a class="anchor-link" href="#11.-Papers-de-crisis">¶</a></h2><p><a id="papers-crisis"></a></p>
+<p><strong>Elección:</strong> buscar primero el documento publicado por su institución o una versión autorizada del autor. La calidad científica depende de cada trabajo; el proveedor de descarga, por sí solo, no demuestra revisión o robustez.</p>
+<table>
+<thead>
+<tr>
+<th>Tipo de fuente</th>
+<th>Recomendación y enlace</th>
+<th>¿Gratis?</th>
+<th>Uso y límites</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Working papers institucionales</td>
+<td><a href="https://www.bis.org/publications/working-paper">BIS</a> y <a href="https://www.ecb.europa.eu/press/research-publications/working-papers/html/index.en.html">BCE</a></td>
+<td>Sí, publicaciones propuestas</td>
+<td>Original, autores y serie; buenas primeras fuentes sobre crisis financieras</td>
+</tr>
+<tr>
+<td>Preprints</td>
+<td><a href="https://arxiv.org/">arXiv</a> y <a href="https://info.arxiv.org/help/api/index.html">documentación de su API</a></td>
+<td>Lectura pública gratuita</td>
+<td>API de metadatos; PDF y versiones individuales. Cobertura económica selectiva; no confundir preprint y versión revisada</td>
+</tr>
+<tr>
+<td>Working papers y manuscritos</td>
+<td><a href="https://www.ssrn.com/">SSRN</a>; <a href="https://blog.ssrn.com/2020/08/03/what-is-the-ssrn-login-worth-core-values-and-commitments-to-researchers/">explicación del acceso del proveedor</a></td>
+<td>Muchos gratuitos; puede requerir cuenta gratuita</td>
+<td>Comprobar archivo concreto y condiciones; no asumir API masiva pública</td>
+</tr>
+<tr>
+<td>NBER Working Papers</td>
+<td><a href="https://www.nber.org/subscribe">Condiciones de acceso NBER</a></td>
+<td>Parcial: cupos, acceso elegible o suscripción</td>
+<td>Priorizar copia autorizada del autor/institución si el PDF exige pago; no es una fuente totalmente gratuita</td>
+</tr>
+<tr>
+<td>Descubrimiento por DOI</td>
+<td><a href="https://www.crossref.org/documentation/retrieve-metadata/rest-api/">Crossref REST API</a></td>
+<td>Metadatos públicos gratuitos</td>
+<td>Título, autores, DOI y fechas; no entrega necesariamente texto completo</td>
+</tr>
+<tr>
+<td>Localizar copias de acceso abierto</td>
+<td><a href="https://unpaywall.org/api/v2">Unpaywall API v2</a></td>
+<td>API gratuita con identificación por email y límites</td>
+<td>Consultar por DOI; enlaza ubicaciones abiertas, sin garantizar una copia para todo paper</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Orden recomendado:</strong> original institucional → versión editorial abierta → manuscrito autorizado del autor → preprint documentado. Si solo queda una versión de pago, guardar referencia y estado pendiente; decidir más adelante si merece comprarla.</p>
+<p><strong>Alcance:</strong> la imagen no aporta la bibliografía de sus 386 papers/37 crisis. No se puede afirmar que se haya localizado ese conjunto exacto. Antes de recolectarlo, definir crisis, criterios de inclusión y lista de referencias. Deduplicar por DOI y conservar separadas las versiones que cambian resultados.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-13"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="12.-Huellas-de-crisis">12. Huellas de crisis<a class="anchor-link" href="#12.-Huellas-de-crisis">¶</a></h2><p><a id="huellas"></a></p>
+<p><strong>Elección:</strong> bases documentadas de crisis como referencia, y construcción propia de las “huellas”. Las 18 crisis y 7 familias de la captura son una selección/taxonomía del proyecto; no identifican por sí mismas una descarga existente.</p>
+<table>
+<thead>
+<tr>
+<th>Información necesaria</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Calidad y limitación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Episodios de crisis europeas</td>
+<td><a href="https://www.esrb.europa.eu/pub/financial-crises/html/index.en.html">Financial crises database ESRB</a></td>
+<td>Sí, descarga pública</td>
+<td>Definiciones, episodios y documentación institucional</td>
+</tr>
+<tr>
+<td>Crisis bancarias internacionales</td>
+<td><a href="https://www.elibrary.imf.org/abstract/journals/001/2026/094/article-A001-en.xml">FMI: Systemic Banking Crises Database 1970–2025</a></td>
+<td>Trabajo digital abierto</td>
+<td>Actualización documentada; localizar anexos y distinguir episodio/país</td>
+</tr>
+<tr>
+<td>Referencia histórica del FMI</td>
+<td><a href="https://www.elibrary.imf.org/abstract/journals/001/2018/206/article-A001-en.xml">Laeven y Valencia, 2018</a></td>
+<td>Texto digital abierto</td>
+<td>Versión anterior útil para reproducibilidad; no mezclar vintages</td>
+</tr>
+<tr>
+<td>Series macrofinancieras de largo plazo</td>
+<td><a href="https://www.macrohistory.net/database/">Jordà–Schularick–Taylor Macrohistory Database</a></td>
+<td>Sí; CC BY-NC-SA 4.0 según sus términos</td>
+<td>Datos, cronología y documentación; uso no comercial y condiciones de atribución/compartición</td>
+</tr>
+<tr>
+<td>Familias, señales y huellas</td>
+<td>Elaboración propia a partir de las bases y documentos anteriores</td>
+<td>Sin compra de un dataset propio; procesamiento aparte</td>
+<td>Definir variables, reglas, evidencias y versión de la clasificación</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tiempo:</strong> una crisis identificada retrospectivamente en una base publicada en 2026 no era una etiqueta disponible para operar en 2008. Separar el catálogo ex post para evaluación de los indicadores y documentos disponibles en cada fecha. Reconciliar diferencias de definición entre fuentes; no fusionar episodios solo por compartir año.</p>
+<p>En consulta general, el análisis retrospectivo es conocimiento útil para los agentes y puede incorporarse con su metodología y procedencia. La restricción de disponibilidad anterior al evento se reserva a backtests o simulaciones históricas.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-14"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="13.-Literatura-de-cartera-y-CIO">13. Literatura de cartera y CIO<a class="anchor-link" href="#13.-Literatura-de-cartera-y-CIO">¶</a></h2><p><a id="cartera"></a></p>
+<p><strong>Elección:</strong> textos académicos originales o versiones autorizadas para construcción de carteras; organismos oficiales para normativa y guías de idoneidad. Son dos grupos relacionados, con criterios de calidad distintos.</p>
+<table>
+<thead>
+<tr>
+<th>Información solicitada</th>
+<th>Fuente recomendada</th>
+<th>¿Gratis?</th>
+<th>Criterio de calidad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teoría y evidencia sobre carteras</td>
+<td>Versiones abiertas del editor, repositorios universitarios y working papers <a href="https://www.bis.org/publications/working-paper">BIS</a> / <a href="https://www.ecb.europa.eu/press/research-publications/working-papers/html/index.en.html">BCE</a></td>
+<td>Muchos trabajos sí; libros y artículos comerciales pueden costar</td>
+<td>Autoría, método, revisión y versión; usar DOI y rutas abiertas del apartado 11</td>
+</tr>
+<tr>
+<td>Datos de factores y carteras para contrastar papers</td>
+<td><a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Kenneth French Data Library, Dartmouth</a></td>
+<td>Descargas públicas gratuitas</td>
+<td>Fuente académica de datos; complemento, no sustituto de la literatura</td>
+</tr>
+<tr>
+<td>MiFID II</td>
+<td><a href="https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32014L0065">Directiva 2014/65/UE en EUR-Lex</a></td>
+<td>Sí</td>
+<td>Texto oficial; seleccionar versión consolidada y fecha aplicable</td>
+</tr>
+<tr>
+<td>Idoneidad MiFID II</td>
+<td><a href="https://www.esma.europa.eu/document/guidelines-certain-aspects-mifid-ii-suitability-requirements-1">ESMA: directrices actualizadas</a></td>
+<td>Sí</td>
+<td>Directrices oficiales; conservar edición, traducción y fechas</td>
+</tr>
+<tr>
+<td>Guías nacionales</td>
+<td><a href="https://www.cnmv.es/portal/legislacion/guias-tecnicas?lang=es">Guías técnicas CNMV</a></td>
+<td>Sí</td>
+<td>Publicaciones del supervisor español; identificar documento y vigencia</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calidad y alcance:</strong> la captura no identifica las 34 referencias de cartera ni los 20 documentos de idoneidad: hace falta su bibliografía para reproducir la colección exacta. Idoneidad y conveniencia son evaluaciones distintas; etiquetar correctamente las guías. Los memos privados de un CIO no son necesariamente públicos ni sustituibles por un paper: incorporar únicamente material publicado o autorizado.</p>
+<p><strong>Tiempo:</strong> conservar versiones históricas de normativa, guías y literatura. Un texto actualizado no representa automáticamente las reglas o conocimientos disponibles años antes; los datasets empíricos también pueden sufrir revisiones.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-15"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="14.-La-literatura-llega-tarde">14. La literatura llega tarde<a class="anchor-link" href="#14.-La-literatura-llega-tarde">¶</a></h2><p><a id="literatura-tarde"></a></p>
+<p><strong>Elección:</strong> construir una auditoría de disponibilidad por versión. Esta tarjeta describe un análisis derivado, no un proveedor adicional del que descargar un corpus ya terminado.</p>
+<p><strong>Prioridad actual:</strong> conservar fechas y versiones durante la ingesta, pero posponer esta auditoría detallada hasta que se necesite un estudio histórico. Un paper posterior a una crisis puede aportar mucho a la biblioteca actual de los agentes.</p>
+<table>
+<thead>
+<tr>
+<th>Evidencia necesaria</th>
+<th>Fuente de mayor calidad</th>
+<th>¿Gratis?</th>
+<th>Qué registrar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primera versión pública de un preprint</td>
+<td>Historial de versiones en <a href="https://arxiv.org/">arXiv</a> o ficha original <a href="https://www.ssrn.com/">SSRN</a></td>
+<td>Metadatos públicos; acceso concreto según portal</td>
+<td>Identificador, versión y fecha pública respaldada</td>
+</tr>
+<tr>
+<td>Publicación anticipada/editorial</td>
+<td>Ficha del editor y <a href="https://www.crossref.org/documentation/retrieve-metadata/rest-api/">Crossref</a></td>
+<td>Metadatos normalmente gratuitos; texto puede ser de pago</td>
+<td>Online first, publicación formal y fuente de cada fecha</td>
+</tr>
+<tr>
+<td>Copia previa autorizada</td>
+<td>Repositorio institucional del autor; <a href="https://unpaywall.org/api/v2">Unpaywall</a> ayuda a localizarla</td>
+<td>Copias abiertas gratuitas cuando existen</td>
+<td>Fecha de depósito y de apertura pública, que pueden ser distintas</td>
+</tr>
+<tr>
+<td>Recuento y retraso frente a una crisis</td>
+<td>Cálculo propio con corpus, versiones y fecha de corte explícitos</td>
+<td>Fuentes anteriores; coste de procesamiento aparte</td>
+<td>Incluido/excluido/incierto y razón verificable</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Regla:</strong> incluir solo la versión cuya disponibilidad pública anterior o igual al corte esté respaldada por evidencia. Una copia encontrada hoy no prueba que pudiera descargarse entonces. Si falta la fecha, marcar “incierta” y excluir de la evaluación histórica estricta hasta resolverla; no inventar un retraso medio.</p>
+<p>Para comprobar “18 de 77 disponibles el 15-09-2008”, primero necesitamos los 77 identificadores y su historial. Tampoco se ha verificado el “+1,6 años” de la imagen. Informar denominador, tratamiento de versiones y casos inciertos antes de presentar esos valores como resultado.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-16"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Reglas-comunes-para-el-futuro-pipeline">Reglas comunes para el futuro pipeline<a class="anchor-link" href="#Reglas-comunes-para-el-futuro-pipeline">¶</a></h2><p>La columna “Cómo se trata” de la captura se traduce en estas decisiones de diseño; se implementarán cuando empiece la fase de código.</p>
+<table>
+<thead>
+<tr>
+<th>Necesidad</th>
+<th>Qué conservar o hacer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Original verificable</td>
+<td>HTML/PDF original, URL, institución, tipo, idioma, fecha de descarga y hash del archivo</td>
+</tr>
+<tr>
+<td>Catálogo y versiones</td>
+<td>Título, autores, identificador/DOI, versión, tema, país, idioma, estado editorial conocido, términos y relación con traducciones y documento padre</td>
+</tr>
+<tr>
+<td>Fechas como contexto</td>
+<td>Fecha del evento/publicación cuando se conozcan y fecha de descarga; mostrar precisión e incertidumbre sin bloquear el corpus general</td>
+</tr>
+<tr>
+<td>TimeGate opcional</td>
+<td>Para backtests: primera disponibilidad pública de la versión y evidencia; no confundir con descarga ni inventar horas</td>
+</tr>
+<tr>
+<td>Troceado de bancos centrales</td>
+<td>Párrafos y una unidad por pregunta/respuesta, conservando contexto y orden; el rango de 60–350 palabras de la captura es una pauta inicial</td>
+</tr>
+<tr>
+<td>Troceado de informes</td>
+<td>Sección, aproximadamente 800 tokens como pauta, con vínculo al documento padre y referencias a tablas</td>
+</tr>
+<tr>
+<td>Búsqueda y RAG</td>
+<td>Catálogo y búsqueda textual del texto validado; embeddings por lotes prioritarios, ampliables según utilidad y coste; filtros temporales solo en modo histórico</td>
+</tr>
+<tr>
+<td>Consulta de agentes</td>
+<td>Buscar por pregunta/tema/fuente/tipo, recuperar pasajes, ampliar contexto y abrir el documento completo con fuente, versión, página/sección y URL</td>
+</tr>
+<tr>
+<td>Cobertura útil</td>
+<td>Medir documentos únicos utilizables por familia y tema, errores y referencias sin texto; evaluar relevancia y respaldo de citas con preguntas de referencia</td>
+</tr>
+<tr>
+<td>Tono y diferencias</td>
+<td>Resultados derivados con modelo/método/versión y fecha de cálculo; vinculados al texto fuente</td>
+</tr>
+<tr>
+<td>Destino Cloudflare</td>
+<td>R2 para originales, texto y JSONL; D1 para metadatos consultables. Las fuentes no se conectan directamente a R2: el recolector escribe los objetos y el catálogo</td>
+</tr>
+</tbody>
+</table>
+<p>No es necesario contratar una fuente de datos para comenzar la colección propuesta. Primero validar un pequeño lote gratuito y diverso; ampliar luego la carga retrospectiva. Como punto de partida, refrescos semanales para comunicaciones y mensuales para literatura, ajustables al piloto. Mantener los corpus fuera de Git y conservar en el repositorio documentación, configuración y, más adelante, el código de adquisición.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered" id="cell-id=fuentes-17"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Orden-recomendado-para-empezar-sin-pagar-por-fuentes">Orden recomendado para empezar sin pagar por fuentes<a class="anchor-link" href="#Orden-recomendado-para-empezar-sin-pagar-por-fuentes">¶</a></h2><ol>
+<li><strong>Piloto diverso:</strong> paquete de discursos BIS, muestra de BIS QR/Working Papers y papers de crisis, informes de estabilidad/GFSR, comunicaciones Fed/BCE y referencias de cartera abiertas. Validar formatos y utilidad de varias familias.</li>
+<li><strong>Consulta inicial:</strong> buscar pasajes en texto validado, abrir contexto y comprobar citas; medir cobertura y calidad. Subir PDFs a R2 requiere además esa capa de recuperación para que los agentes los aprovechen.</li>
+<li><strong>Cargas amplias:</strong> ampliar series y años del piloto, BoE/BoJ, GEP/WEO/OCDE, otros bancos y literatura de cartera/regulación. Priorizar descargas masivas oficiales y versiones abiertas autorizadas.</li>
+<li><strong>RAG y agentes:</strong> combinar búsqueda textual y semántica, ampliar embeddings por lotes y conectar una interfaz de consulta con citas. Mantener accesibles los documentos sin embeddings.</li>
+<li><strong>Derivados opcionales:</strong> tono, diferencias y huellas si aportan utilidad; reconstrucción temporal detallada y estudio de literatura tardía cuando se soliciten evaluaciones históricas.</li>
+</ol>
+<p><strong>Criterio de aceptación para la biblioteca general:</strong> original accesible y conservado, procedencia y términos registrados, texto suficientemente completo, versión/hash e identificador reproducible. Las fechas conocidas se conservan y las ausentes se marcan; no se exige precisión extrema. Referencias sin texto y fallos graves de extracción permanecen como pendientes. Para análisis histórico estricto se añade evidencia de disponibilidad antes del corte. El volumen se evalúa junto con relevancia, diversidad de fuentes y calidad de las citas.</p>
+</div>
+</div>
+</div>
+</main></body></html>

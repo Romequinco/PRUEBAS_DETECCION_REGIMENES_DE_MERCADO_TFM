@@ -1,8 +1,9 @@
 # Configuración futura
 
 - `sources/`: un registro por fuente con listado oficial, método permitido,
-  tipos de documentos, formatos y frecuencia.
-- `policies/`: selección RAG, reglas históricas, límites de descarga y retención.
+  tipos de documentos, formatos, temas, prioridad y frecuencia de lotes.
+- `policies/`: calidad, deduplicación, acceso, indexación progresiva, retención
+  y modo histórico opcional. Propuesta de refresco semanal/mensual, ajustable.
 - `environments/`: nombres de buckets, IDs de catálogo y parámetros no secretos
   de desarrollo y producción.
 

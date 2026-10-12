@@ -1,14 +1,20 @@
-# Modelo de datos y disponibilidad histórica
+# Modelo de datos, consulta general y TimeGate opcional
 
 Diseño conceptual; no se han creado tablas SQL ni contratos ejecutables.
+
+La consulta general del corpus es el modo predeterminado: admite literatura
+relevante aunque no se conozca la fecha exacta de su primera disponibilidad.
+Se conservan fechas, versiones y dudas para aportar contexto. El modo histórico
+estricto se solicita explícitamente y tiene requisitos adicionales de evidencia.
 
 ## Registros del catálogo D1
 
 | Entidad | Información principal |
 |---|---|
-| sources | Institución, familias, URLs, acceso, licencia y política temporal |
-| documents | ID lógico, fuente, título, autores, idioma, tipo y tema |
-| document_versions | Versión, URL, hash, edición, fechas y claves R2 |
+| sources | Institución, familias, URLs, acceso, términos y frecuencia de refresco |
+| documents | ID lógico, fuente, título, autores, idioma, tipo, tema, país y estado editorial cuando se conozca |
+| document_versions | Versión, URL, hash, edición, fechas, calidad de extracción, estado histórico y claves R2 |
+| indexing_runs | Motor/versión, lotes, estado de indexación textual o semántica, errores y cobertura |
 | source_observations | Cuándo y dónde se observó cada versión, estado HTTP y evidencia |
 | ingestion_runs | Fuente, lote, etapas, errores, conteos, bytes y checkpoint |
 | derived_artifacts | Método/modelo, versión del pipeline, entradas y referencias R2 |
@@ -22,7 +28,9 @@ El catálogo mantiene IDs y claves de los artefactos. Se evaluará el tamaño de
 Campos previstos: document_id, version_id, source_id, institución, familia,
 título, autores, idioma, URL canónica, URL de descarga, formato, licencia,
 SHA-256, tamaño, texto/segmentos, referencia al original, versión del extractor,
-calidad de extracción y política RAG (key o archive).
+calidad de extracción, temas, país, estado editorial, relación con traducciones,
+prioridad de indexación y estado de búsqueda textual/semántica. La prioridad
+determina el orden de indexación, no la exclusión permanente del corpus.
 
 Los fragmentos tendrán chunk_id, version_id, parent_id, sección, página,
 posición en el texto, texto, tokens y versión de segmentación. Su disponibilidad
@@ -44,7 +52,26 @@ precisión (hora exacta, solo día o fecha desconocida). Si solo se conoce el d�
 las consultas intradía aplicarán una regla conservadora explícita; no se inventará
 la hora de publicación. El campo policy_version permite reproducir esa decisión.
 
-## Regla TimeGate
+## Requisitos de consulta general
+
+Una versión ready necesita procedencia, original recuperable, términos de acceso
+registrados y extracción suficientemente completa. La ausencia de una fecha
+pública exacta se comunica como incertidumbre; no bloquea esta modalidad. Una
+referencia sin texto permanece en el catálogo como pendiente y no se devuelve
+como pasaje de evidencia. Los fallos de OCR y las tablas omitidas se registran.
+
+Por defecto se consulta la versión identificada como vigente o más reciente de
+cada documento; las relaciones de sustitución se registran cuando la fuente las
+confirma. Las versiones anteriores siguen disponibles para contexto o comparación.
+Si el estado es desconocido, se indica; no se presenta automáticamente una guía
+antigua como vigente ni se eliminan papers por edad.
+
+El resultado incluye texto, document_id/version_id, título, institución/autores,
+tipo, fecha conocida y su precisión, página/sección, URL y referencia al original.
+El agente puede ampliar contexto o abrir el documento completo. Aplicar filtros
+temáticos y de acceso en búsqueda y recuperación; el corte temporal es opcional.
+
+## Regla TimeGate, solo para consultas históricas
 
 Una consulta as_of solo puede usar versiones cuyo contenido estuviera disponible
 antes de la fecha/hora de corte, con evidencia suficiente y derechos de acceso
@@ -89,12 +116,14 @@ actual de un listado web.
 
 ## RAG y derivados
 
-Aplicar filtros temporales al recuperar candidatos y comprobar otra vez la
-versión padre antes de entregarlos. Registrar la fecha de corte y el conjunto
-de versiones usado en cada análisis. Cualquier extracción bajo demanda del
-archivo debe pasar por la misma comprobación.
+En consultas históricas, aplicar filtros temporales al recuperar candidatos y
+comprobar otra vez la versión padre antes de entregarlos, también al abrir el
+archivo completo. En consultas generales, conservar contexto temporal sin
+imponer un corte. Registrar modo de consulta, filtros y versiones usados; el
+corte se registra cuando exista.
 
-Un score de tono o un resumen conserva entradas, fecha de corte, modelo, prompt,
+Un score de tono o un resumen conserva entradas, modo de consulta y fecha de
+corte si corresponde, modelo, prompt,
 versión y fecha de cálculo. Para evaluación histórica debe revisarse también
 el conocimiento incorporado en el modelo: filtrar documentos no elimina por
 sí solo el conocimiento de hechos futuros aprendido durante su entrenamiento.

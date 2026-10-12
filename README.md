@@ -2,7 +2,12 @@
 
 Repositorio para descubrir, recopilar y conservar documentos de bancos
 centrales, estabilidad financiera y literatura económica; preparar un archivo
-consultable y un subconjunto para RAG con control de disponibilidad temporal.
+amplio, consultable y trazable para que los agentes recuperen literatura y
+evidencias al preparar sus decisiones.
+
+La prioridad es la cobertura, la calidad del texto y la facilidad de consulta.
+Se recopilará por lotes, sin requerir ingesta inmediata. Las fechas y versiones
+se conservan como contexto; TimeGate será opcional para evaluaciones históricas.
 
 La referencia inicial es la imagen «Bancos centrales, riesgo sistémico y
 literatura» aportada por el usuario el 11 de octubre de 2026. Las cantidades,
@@ -11,21 +16,24 @@ por verificar, no resultados de una recolección ejecutada.
 
 ## Estado
 
-Solo hay documentación y carpetas reservadas con `.gitkeep`. No hay scripts,
+Hay documentación, un notebook de selección de fuentes y carpetas reservadas
+con `.gitkeep`. No hay scripts de recolección,
 dependencias instaladas, SQL, workflows ejecutables, infraestructura desplegada,
 credenciales, documentos descargados ni integración Cloudflare activa.
 El repositorio existente utiliza `main` y está conectado a
 `feraltauste1/Bancos-centrales-riesgo-sistem-tico-y-literatura` en GitHub.
-Esta estructura está preparada localmente; todavía no se ha hecho commit ni push
-de estos archivos.
+El notebook documenta recomendaciones de fuentes; no representa una
+recolección de datos ya ejecutada.
 
 ## Diseño elegido
 
-- Python para recolectores, descargas, PDF/HTML, normalización y lotes históricos.
+- Python para recolectores, descargas, PDF/HTML y normalización por lotes.
 - Cloudflare R2 para originales, texto extraído, JSONL y resultados derivados.
 - Cloudflare D1 para catálogo de documentos, versiones, procedencia y ejecuciones.
 - GitHub Actions como primer ejecutor de lotes pequeños, manuales y programados.
-- RAG selectivo en una fase posterior; el resto se conserva en el archivo.
+- Catálogo y búsqueda de texto para todo el corpus validado; acceso al documento completo.
+- RAG progresivo sobre las familias prioritarias, ampliable al medir utilidad y coste.
+- Refrescos semanales o mensuales como punto de partida, según familia de fuentes.
 - Worker de consulta e índice vectorial opcionales cuando exista un corpus validado.
 
 R2 es almacenamiento de objetos. D1 aporta las consultas SQL del catálogo.
@@ -37,9 +45,10 @@ Esta selección es una propuesta de arquitectura, no servicios ya contratados.
 ```text
 Bancos-centrales-riesgo-sistem-tico-y-literatura/
 ├── docs/                       Diseño y guías de puesta en marcha
+├── notebooks/                  Fuentes recomendadas: notebook, Markdown y HTML
 ├── config/
 │   ├── sources/                Fuentes, URLs y tipos de documento
-│   ├── policies/               TimeGate, acceso, retención y selección RAG
+│   ├── policies/               Calidad, acceso, retención y consulta histórica opcional
 │   └── environments/           Parámetros públicos de dev y prod
 ├── src/macro_riesgo/
 │   ├── collectors/             Descubrir documentos por institución
@@ -47,9 +56,9 @@ Bancos-centrales-riesgo-sistem-tico-y-literatura/
 │   ├── parsing/                Extraer HTML, PDF y tablas
 │   ├── normalization/          Metadatos y documento común
 │   ├── storage/                Acceso R2 y registro D1
-│   ├── temporal/               Disponibilidad histórica y versiones
+│   ├── temporal/               Fechas, versiones y TimeGate opcional
 │   ├── chunking/               Párrafos, Q&A y secciones con padre
-│   ├── retrieval/              Archivo y RAG con filtro temporal
+│   ├── retrieval/              Búsqueda, archivo y RAG para agentes
 │   ├── analysis/               Tono, diferencias y derivados
 │   └── orchestration/          Jobs, checkpoints y recuperación
 ├── schemas/                    Futuros contratos y esquema del catálogo
@@ -70,11 +79,15 @@ vacíos que puedan confundirse con una aplicación ejecutable.
 
 ## Qué leer primero
 
-1. [Conectar Cloudflare desde cero](docs/CLOUDFLARE.md).
-2. [Arquitectura y flujo de datos](docs/ARQUITECTURA.md).
-3. [Inventario de fuentes de la imagen](docs/FUENTES.md).
-4. [Modelo de datos y TimeGate](docs/MODELO_Y_TIMEGATE.md).
-5. [Orden de implementación](docs/ROADMAP.md).
+1. [Notebook: fuentes de calidad, priorizando gratuitas](notebooks/01_fuentes_prioridad_gratuita.ipynb).
+   También disponible en [HTML para abrir en el navegador](notebooks/01_fuentes_prioridad_gratuita.html)
+   y [Markdown](notebooks/01_fuentes_prioridad_gratuita.md).
+2. [Objetivo del corpus y consulta por agentes](docs/CORPUS_PARA_AGENTES.md).
+3. [Conectar Cloudflare desde cero](docs/CLOUDFLARE.md).
+4. [Arquitectura y flujo de datos](docs/ARQUITECTURA.md).
+5. [Inventario de fuentes de la imagen](docs/FUENTES.md).
+6. [Modelo de datos y TimeGate opcional](docs/MODELO_Y_TIMEGATE.md).
+7. [Orden de implementación](docs/ROADMAP.md).
 
 El repositorio de Mi app calendario es un proyecto independiente. Su preparación
 de despliegue no forma parte de este pipeline.
