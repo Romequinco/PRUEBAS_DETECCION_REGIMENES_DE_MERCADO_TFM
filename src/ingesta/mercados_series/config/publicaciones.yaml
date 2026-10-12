@@ -1,0 +1,215 @@
+# Publicaciones del Tema 1: cuándo se hace público cada valor de una serie (y alias de ids).
+#
+# Estructura:
+#   alias:   {alias: id canónico}   ids con prefijo de fuente ('fred:', 'yf:', 'ecb:'...)
+#
+#   publicadores: una entrada por organismo o publicación periódica (hora a la que salen sus datos)
+#     hora:        "HH:MM" local de publicación (entre comillas: YAML 1.1 lee 08:30 como un entero)
+#     huso:        huso IANA de 'hora'
+#     dia:         mismo            la fecha dada ES la del día de publicación (calendario o dato del día)
+#                  siguiente_habil  el dato del día D sale el siguiente día hábil tras D
+#                  lunes_siguiente  el dato del día D sale el lunes siguiente (o el hábil posterior)
+#     habiles:     solo si dia != mismo: semana (L-V) | us_federal (festivos federales de EE. UU.)
+#                  | target (festivos TARGET2)
+#     margen_min:  (opcional) minutos extra tras 'hora' (0 salvo que se declare)
+#     fuente:      URL del calendario o de la nota metodológica
+#     verificado:  true solo si se ha contrastado con la fuente oficial
+#     notas:       (opcional) lista de aclaraciones
+#     (visibilidad.disponible_publicador(clave, fecha) → instante UTC de publicación)
+#
+#   series:  una entrada por id canónico (o patrón con '*', p. ej. 'ecb:EXR.D.*.EUR')
+#     fuente:             id de la ficha de la fuente (results/ingesta/mercados_series/fichas/)
+#     metodo:             vintage_exacto | calendario | lag_fijo | cierre_mercado | derivada | fichero
+#     publicador:         (opcional) clave de 'publicadores' cuya hora aplica
+#     hora_local:         "HH:MM" de publicación declarada (null si solo se conoce el día)
+#     huso:               huso IANA de hora_local
+#     margen_min:         minutos extra tras hora_local (0 salvo que se declare)
+#     lag:                solo lag_fijo: retraso desde el FIN del periodo de referencia ("35D", "1M"...)
+#     mercado:            solo cierre_mercado: clave de mercados.yaml
+#     componentes:        solo derivada: ids de los que depende (fecha_publicacion = la máxima;
+#                         contrato.fecha_publicacion_derivada)
+#     calendario:         URL o fichero del calendario oficial (calendario, vintage_exacto)
+#     revisable:          (opcional) true si la fuente revisa valores ya publicados: entonces la
+#                         serie se carga con vintages (ALFRED, ediciones), nunca con 'unico'
+#     notas:              lista de incidencias (huecos permanentes, retrasos, cambios de hora)
+#     verificado:         true solo si se ha contrastado con la fuente oficial
+#     (claves desconocidas o que falten las que exige el método: error al cargar)
+#
+#   cierres_extraordinarios: días no hábiles fuera del calendario fijo, por calendario
+#     (us_federal | target): lista de {fecha, motivo}. es_habil y disponible_publicador los usan
+#     por defecto. Añadir uno solo retrasa publicaciones (conservador), nunca las adelanta.
+#
+# PENDIENTE (extractores): resto de series FRED/ALFRED, BCE, Eurostat, OCDE, curvas, etc.
+# Regla para los extractores: una serie revisable (PIB, empleo, producción...) no se vuelca con el
+# histórico de hoy y vintage 'unico' (sería el valor revisado con la fecha de la primera
+# publicación): se carga con sus vintages (ALFRED realtime_start) o se declara revisable: false.
+
+alias:
+  VIX: "fred:VIXCLS"
+  EURUSD: "ecb:EXR.D.USD.EUR"
+
+publicadores:
+  bls:
+    hora: "08:30"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.bls.gov/schedule/
+    verificado: false
+    notas:
+      - "Empleo (Employment Situation), IPC, IPP... a las 08:30; JOLTS va aparte (10:00)"
+
+  jolts:
+    hora: "10:00"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.bls.gov/schedule/news_release/jolts.htm
+    verificado: false
+
+  bea:
+    hora: "08:30"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.bea.gov/news/schedule
+    verificado: false
+
+  census:
+    hora: "08:30"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.census.gov/economic-indicators/calendar-listview.html
+    verificado: false
+    notas:
+      - "Algunos indicadores salen a las 10:00 (ventas de vivienda nueva, gasto en construcción, inventarios): su serie debe declarar hora_local"
+
+  fed_g17:
+    hora: "09:15"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.federalreserve.gov/releases/g17/
+    verificado: false
+    notas:
+      - "Producción industrial y utilización de capacidad"
+
+  fed_h15:
+    hora: "16:15"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://www.federalreserve.gov/releases/h15/
+    verificado: false
+    notas:
+      - "Actualización diaria: el dato de D se publica el día hábil siguiente hacia las 16:15 NY (sin contrastar)"
+
+  fed_h10:
+    hora: "16:15"
+    huso: America/New_York
+    dia: lunes_siguiente
+    habiles: us_federal
+    fuente: https://www.federalreserve.gov/releases/h10/
+    verificado: false
+    notas:
+      - "Semanal: los tipos diarios de la semana salen el lunes siguiente (martes si el lunes es festivo)"
+
+  treasury_curva:
+    hora: "18:00"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics
+    verificado: false
+    notas:
+      - "Curva par diaria del Tesoro de EE. UU.: se toma el fin de la tarde del mismo día (conservador)"
+      - "18:00 NY > 16:30: el dato del día t es visible en la decisión de t+1"
+      - "Sin fuente para la hora de publicación: Treasury solo documenta que las cotizaciones se toman hacia las 15:30; pendiente de verificar (solo cambiaría algo si se publicase antes de las 16:30)"
+
+  ecb_fx:
+    hora: "16:00"
+    huso: Europe/Berlin
+    dia: mismo
+    fuente: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/
+    verificado: false
+    notas:
+      - "Tipos de referencia del euro (unidades de X por 1 EUR), hacia las 16:00 CET, días TARGET2"
+
+  ecb_estr:
+    hora: "08:00"
+    huso: Europe/Berlin
+    dia: siguiente_habil
+    habiles: target
+    fuente: https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_short-term_rate/
+    verificado: false
+    notas:
+      - "El €STR del día D se publica a las 08:00 CET del siguiente día hábil TARGET2"
+
+  eurostat:
+    hora: "11:00"
+    huso: Europe/Luxembourg
+    dia: mismo
+    fuente: https://ec.europa.eu/eurostat/news/release-calendar
+    verificado: false
+    notas:
+      - "Indicadores del euro (Euro indicators) a las 11:00 CET"
+
+  umich:
+    hora: "10:00"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.sca.isr.umich.edu/
+    verificado: false
+    notas:
+      - "Confianza del consumidor (preliminar y final) a las 10:00 NY"
+
+series:
+  "fred:UNRATE":
+    fuente: fred_alfred
+    metodo: vintage_exacto
+    publicador: bls
+    hora_local: "08:30"
+    huso: America/New_York
+    margen_min: 0
+    calendario: https://www.bls.gov/schedule/news_release/empsit.htm
+    revisable: true
+    notas:
+      - "2025-10: nunca publicado (cierre del Gobierno federal); fila con valor nulo y nota"
+      - "2025-09: publicado el 2025-11-20 (previsto 2025-10-03)"
+      - "2026-01: publicado el 2026-02-11 (previsto 2026-02-06) por el cierre parcial del Gobierno"
+      - "Encuesta de hogares: sin revisiones mensuales; la revisión anual de factores estacionales sale con el informe de enero y reescribe ~5 años de datos desestacionalizados"
+    verificado: false
+
+  "ecb:EXR.D.*.EUR":
+    fuente: ecb_exr
+    metodo: calendario
+    publicador: ecb_fx
+    hora_local: "16:00"
+    huso: Europe/Berlin
+    margen_min: 0
+    calendario: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/
+    notas:
+      - "Unidades de X por 1 EUR; días TARGET2"
+    verificado: false
+    revisable: false
+
+# Cierres no programados (sin contrastar con la fuente oficial: verificado pendiente). Los federales
+# salen de órdenes ejecutivas (lutos nacionales, Nochebuena o 26-dic concedidos) y emergencias;
+# la Fed no publica H.15/H.10 en días de cierre del Gobierno federal (supuesto conservador).
+cierres_extraordinarios:
+  us_federal:
+    - {fecha: "2001-09-11", motivo: "atentados del 11-S: cierre de oficinas federales"}
+    - {fecha: "2001-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2004-06-11", motivo: "luto nacional por Ronald Reagan"}
+    - {fecha: "2007-01-02", motivo: "luto nacional por Gerald Ford"}
+    - {fecha: "2007-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2008-12-26", motivo: "orden ejecutiva: 26 de diciembre"}
+    - {fecha: "2012-10-29", motivo: "huracán Sandy: cierre de oficinas federales en Washington"}
+    - {fecha: "2012-10-30", motivo: "huracán Sandy: cierre de oficinas federales en Washington"}
+    - {fecha: "2012-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2014-12-26", motivo: "orden ejecutiva: 26 de diciembre"}
+    - {fecha: "2015-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2018-12-05", motivo: "luto nacional por George H. W. Bush"}
+    - {fecha: "2018-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2019-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2020-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2024-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2025-01-09", motivo: "luto nacional por Jimmy Carter"}
+    - {fecha: "2025-12-24", motivo: "orden ejecutiva: Nochebuena"}
+    - {fecha: "2025-12-26", motivo: "orden ejecutiva: 26 de diciembre"}
+  target: []
