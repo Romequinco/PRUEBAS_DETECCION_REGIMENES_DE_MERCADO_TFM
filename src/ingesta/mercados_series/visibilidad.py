@@ -61,7 +61,9 @@ _PATRON_HORA = re.compile(r"^(?:[01]\d|2[0-3]):[0-5]\d$")
 _CLAVES_MERCADO = {"nombre", "huso", "cierres", "fuente", "verificado"}
 _CLAVES_MERCADO_OPC = {"notas"}
 _CLAVES_PUBLICADOR = {"hora", "huso", "dia", "fuente", "verificado"}
-_CLAVES_PUBLICADOR_OPC = {"habiles", "margen_min", "notas"}
+_CLAVES_PUBLICADOR_OPC = {"habiles", "margen_min", "notas", "festivos_moviles", "previo"}
+# Festivos que un publicador añade a su calendario de hábiles (SIFMA cierra en Viernes Santo).
+FESTIVOS_MOVILES = ("viernes_santo",)
 _UTC = "datetime64[ns, UTC]"
 _FECHA = "datetime64[ns]"
 
@@ -386,7 +388,9 @@ def disponible_publicacion(fecha_local: FechaLike, hora_local: time | str, huso:
 _CLAVES_SERIE = {"fuente", "metodo", "verificado"}
 _CLAVES_SERIE_OPC = {"publicador", "hora_local", "huso", "margen_min", "lag", "mercado", "componentes",
                      "calendario", "notas", "revisable"}
-_PATRON_LAG = re.compile(r"\d+[DM]")
+# "<n>D" días, "<n>M" fines de mes o "<n>M<m>D" (primero los fines de mes): desde el FIN del
+# periodo (``catalogo.fecha_publicacion_lag``).
+_PATRON_LAG = re.compile(r"\d+[DM]|\d+M\d+D")
 
 
 def _validar_serie_cfg(entrada: Any, donde: str, publicadores: dict[str, Any]) -> dict[str, Any]:
@@ -406,7 +410,11 @@ def _validar_serie_cfg(entrada: Any, donde: str, publicadores: dict[str, Any]) -
     if pub is not None and pub not in publicadores:
         raise ValueError(f"{donde}: publicador {pub!r} no está en 'publicadores'")
     if metodo == "lag_fijo" and not (isinstance(entrada.get("lag"), str) and _PATRON_LAG.fullmatch(entrada["lag"])):
-        raise ValueError(f"{donde}: lag_fijo necesita 'lag' como \"<n>D\" o \"<n>M\" (desde el fin del periodo)")
+        raise ValueError(f"{donde}: lag_fijo necesita 'lag' como \"<n>D\", \"<n>M\" o \"<n>M<m>D\" "
+                         f"(desde el fin del periodo)")
+    if entrada.get("lag") is not None and not (isinstance(entrada["lag"], str)
+                                               and _PATRON_LAG.fullmatch(entrada["lag"])):
+        raise ValueError(f"{donde}: 'lag' {entrada['lag']!r} no es \"<n>D\", \"<n>M\" ni \"<n>M<m>D\"")
     if metodo == "cierre_mercado":
         mercado = entrada.get("mercado")
         if mercado not in _mercados(None):
@@ -467,11 +475,24 @@ def _validar_publicaciones(crudo: Any, origen: str) -> dict[str, Any]:
             raise ValueError(f"{donde}: 'verificado' debe ser true o false")
         if not isinstance(entrada["fuente"], str) or not entrada["fuente"].strip():
             raise ValueError(f"{donde}: falta 'fuente'")
+        moviles = list(entrada.get("festivos_moviles") or [])
+        if any(m not in FESTIVOS_MOVILES for m in moviles):
+            raise ValueError(f"{donde}: festivos_moviles {moviles} fuera de {list(FESTIVOS_MOVILES)}")
+        previo = entrada.get("previo")
+        if previo is not None:
+            _claves(previo, {"hasta", "publicador"}, set(), f"{donde}, previo")
+            previo = {"hasta": _fecha_cfg(previo["hasta"], f"{donde}, previo"), "publicador": str(previo["publicador"])}
         publicadores[str(clave)] = {
             "hora": _hora(entrada["hora"], donde), "huso": _huso(entrada["huso"], donde),
             "dia": entrada["dia"], "habiles": habiles, "margen_min": margen,
             "fuente": entrada["fuente"], "verificado": entrada["verificado"],
-            "notas": list(entrada.get("notas") or [])}
+            "notas": list(entrada.get("notas") or []), "festivos_moviles": moviles, "previo": previo}
+    for clave, pub in publicadores.items():
+        previo = pub["previo"]
+        if previo is not None and (previo["publicador"] not in publicadores or previo["publicador"] == clave
+                                   or publicadores[previo["publicador"]]["previo"] is not None):
+            raise ValueError(f"{origen}: publicador {clave!r}: previo.publicador {previo['publicador']!r} debe ser "
+                             f"otro publicador sin 'previo'")
     series = {str(clave): _validar_serie_cfg(entrada, f"{origen}: serie {clave!r}", publicadores)
               for clave, entrada in (crudo["series"] or {}).items()}
     cierres = _validar_cierres(crudo.get("cierres_extraordinarios"), origen)
@@ -480,11 +501,60 @@ def _validar_publicaciones(crudo: Any, origen: str) -> dict[str, Any]:
 
 
 @lru_cache(maxsize=8)
-def _publicaciones_cache(ruta: str, _mtime_ns: int) -> dict[str, Any]:
-    return _validar_publicaciones(_leer_yaml(Path(ruta)), Path(ruta).name)
+def _publicaciones_cache(ruta: str, _mtime_ns: int, catalogo: tuple | None = None) -> dict[str, Any]:
+    base = _validar_publicaciones(_leer_yaml(Path(ruta)), Path(ruta).name)
+    if catalogo is None:
+        return base
+    return _fusionar_catalogo(base, Path(catalogo[0]), Path(ruta).name)
 
 
-def cargar_publicaciones(ruta: Path | None = None) -> dict[str, Any]:
+def _fusionar_catalogo(base: dict[str, Any], ruta_catalogo: Path, origen: str) -> dict[str, Any]:
+    """Añade a ``base`` las series y los alias de ``catalogo_series.yaml`` (una sola fuente de verdad).
+
+    Cada entrada del catálogo aporta su parte de publicación (las claves de ``series``), que se
+    valida con las mismas reglas que una serie de ``publicaciones.yaml``. Un id o un alias
+    declarado en los dos ficheros es un error (nada se duplica). Import perezoso: ``catalogo``
+    importa este módulo.
+    """
+    from ingesta.mercados_series import catalogo
+
+    cat = catalogo.cargar_catalogo(ruta_catalogo, publicaciones=base)
+    out = dict(base)
+    series, alias = dict(base["series"]), dict(base["alias"])
+    for sid, entrada in cat.items():
+        donde = f"{origen} + {ruta_catalogo.name}: serie {sid!r}"
+        if sid in series:
+            raise ValueError(f"{donde}: declarada en los dos ficheros (déjala solo en el catálogo)")
+        series[sid] = _validar_serie_cfg(catalogo.parte_publicacion(entrada), donde, base["publicadores"])
+        for a in entrada["alias"]:
+            if a in alias:
+                raise ValueError(f"{donde}: alias {a!r} declarado en los dos ficheros")
+            alias[a] = sid
+    out["series"], out["alias"] = series, alias
+    return out
+
+
+def _clave_catalogo(ruta: Path | None) -> tuple | None:
+    """Clave de caché del catálogo: ruta y fechas de modificación de catálogo y lags."""
+    if ruta is None:
+        return None
+    from ingesta.mercados_series import catalogo
+
+    r = Path(ruta).resolve()
+    return (str(r), r.stat().st_mtime_ns, catalogo.RUTA_LAGS.stat().st_mtime_ns)
+
+
+def _ruta_catalogo(ruta: Path | None, catalogo: Path | bool | None) -> Path | None:
+    if catalogo is False or (catalogo is None and ruta is not None):
+        return None
+    if catalogo is None or catalogo is True:
+        from ingesta.mercados_series.catalogo import RUTA_CATALOGO
+
+        return RUTA_CATALOGO
+    return Path(catalogo)
+
+
+def cargar_publicaciones(ruta: Path | None = None, *, catalogo: Path | bool | None = None) -> dict[str, Any]:
     """Lee ``config/publicaciones.yaml`` (o ``ruta``) y lo devuelve validado.
 
     Resultado: ``{"alias": {...}, "publicadores": {clave: {hora, huso, dia, habiles, margen_min,
@@ -494,9 +564,15 @@ def cargar_publicaciones(ruta: Path | None = None) -> dict[str, Any]:
     claves de cada serie y los campos que exige su método (``lag`` en ``lag_fijo``, ``mercado``
     de ``mercados.yaml`` en ``cierre_mercado``, ``componentes`` en ``derivada``), que su
     ``publicador`` exista y las fechas de los cierres extraordinarios. ``ValueError`` con la clave.
+
+    ``catalogo``: las series del Tema 1 viven en ``config/catalogo_series.yaml`` y se fusionan
+    aquí (series y alias; un id o alias repetido en los dos ficheros es un error). Por defecto
+    se fusiona solo con la ``ruta`` por defecto; ``False`` no fusiona; ``True`` o una ruta fuerzan
+    el catálogo por defecto o el indicado.
     """
     r = Path(ruta) if ruta is not None else RUTA_PUBLICACIONES
-    return copy.deepcopy(_publicaciones_cache(str(r.resolve()), r.stat().st_mtime_ns))
+    cat = _clave_catalogo(_ruta_catalogo(ruta, catalogo))
+    return copy.deepcopy(_publicaciones_cache(str(r.resolve()), r.stat().st_mtime_ns, cat))
 
 
 @lru_cache(maxsize=256)
@@ -514,7 +590,8 @@ def _festivos(calendario: str, anio: int) -> frozenset[date]:
 
 
 def _publicaciones_defecto() -> dict[str, Any]:
-    """``config/publicaciones.yaml`` validado (cacheado, solo lectura)."""
+    """``config/publicaciones.yaml`` validado (cacheado, solo lectura; sin fusionar el catálogo:
+    publicadores y cierres extraordinarios no dependen de él)."""
     return _publicaciones_cache(str(RUTA_PUBLICACIONES), RUTA_PUBLICACIONES.stat().st_mtime_ns)
 
 
@@ -559,10 +636,14 @@ def disponible_publicador(clave: str, fecha: FechaLike, publicaciones: dict[str,
     """Instante UTC en que sale el dato de ``fecha`` según el publicador ``clave``.
 
     ``fecha`` es el día de publicación del calendario (``dia: mismo``) o el día del dato
-    (``siguiente_habil``: primer hábil posterior; ``lunes_siguiente``: el lunes posterior o, si es
-    festivo, el siguiente hábil). Los hábiles siguen el calendario ``habiles`` del publicador, los
-    ``cierres_extraordinarios`` de ``publicaciones`` y ``festivos`` (extra).
-    ``KeyError`` si el publicador no existe.
+    (``siguiente_habil``: primer hábil posterior al primer hábil >= ``fecha``; en un día hábil es
+    el hábil siguiente, y el dato de un sábado, domingo o festivo, como los de DFF, sale con el
+    del hábil siguiente a ese: medido en ALFRED, sábado → martes; ``lunes_siguiente``: el lunes
+    posterior o, si es festivo, el siguiente hábil). Los hábiles siguen el calendario ``habiles``
+    del publicador, los ``cierres_extraordinarios`` de ``publicaciones``, sus ``festivos_moviles``
+    (``viernes_santo``: SOFR sigue a SIFMA) y ``festivos`` (extra). Un publicador con ``previo``
+    (``{hasta, publicador}``) fecha los datos hasta ``hasta`` con el otro publicador (vigencias: los
+    diferenciales que FRED calcula con H.15 antes del 2019-06-21). ``KeyError`` si no existe.
     """
     cfg = publicaciones if publicaciones is not None else _publicaciones_defecto()
     try:
@@ -571,7 +652,14 @@ def disponible_publicador(clave: str, fecha: FechaLike, publicaciones: dict[str,
         definidos = sorted(cfg["publicadores"])
         raise KeyError(f"publicador desconocido {clave!r}; definidos: {definidos}") from None
     d = _dia(fecha).date()
+    previo = pub.get("previo")
+    if previo is not None and d <= _fecha_cfg(previo["hasta"], f"publicador {clave!r}"):
+        return disponible_publicador(previo["publicador"], fecha, publicaciones, festivos)
+    festivos = list(festivos)
+    if "viernes_santo" in (pub.get("festivos_moviles") or []):
+        festivos += [easter(a) - timedelta(days=2) for a in (d.year, d.year + 1)]
     if pub["dia"] == "siguiente_habil":
+        d = _siguiente_habil(d, pub["habiles"], festivos, cfg)
         d = _siguiente_habil(d + timedelta(days=1), pub["habiles"], festivos, cfg)
     elif pub["dia"] == "lunes_siguiente":
         d = _siguiente_habil(d + timedelta(days=7 - d.weekday()), pub["habiles"], festivos, cfg)

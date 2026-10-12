@@ -382,7 +382,9 @@ def test_t1_publicaciones_yaml_completo_y_valido():
     assert set(PUBLICADORES) <= set(p["publicadores"])
     for clave, pub in p["publicadores"].items():
         assert pub["dia"] in v.DIAS_PUBLICACION and isinstance(pub["verificado"], bool), clave
-    assert p["publicadores"]["fed_h15"]["verificado"] is False
+    # Bloque 2: H.15 y H.10 medidos en ALFRED y contrastados con la página oficial (sondas_horas_bloque2.csv).
+    assert p["publicadores"]["fed_h15"]["verificado"] is True
+    assert p["publicadores"]["fed_h10"]["verificado"] is True
     assert p["publicadores"]["treasury_curva"]["hora"] == time(18, 0)
     assert p["alias"]["VIX"] == "fred:VIXCLS"
     assert p["series"]["fred:UNRATE"]["publicador"] == "bls"

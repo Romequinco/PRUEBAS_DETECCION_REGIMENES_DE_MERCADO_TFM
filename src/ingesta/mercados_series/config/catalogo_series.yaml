@@ -1,0 +1,4252 @@
+# Catálogo de series del Tema 1 (bloque 2): UNA entrada por serie de la base. Única fuente de verdad
+# de las series del tema; visibilidad.cargar_publicaciones fusiona su parte de publicación con
+# publicaciones.yaml y la valida con las mismas reglas (ingesta.mercados_series.catalogo).
+#
+# Origen: las 197 columnas de data/raw (Fase 1, solo lectura) — 3 columnas «alias» de Ken French y
+# 2 copias con el mismo id de fuente (VIX_VALIDATION_REF, SP500_DAILY_DRAWDOWN_SRC) se declaran como
+# alias —, más los sustitutos y componentes que descarga el extractor de FRED y las series derivadas.
+# This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
+#
+# Campos (obligatorios):
+#   alias        nombre(s) interno(s) de la Fase 1 (texto, lista o null); resuelven al id
+#   nombre       nombre legible
+#   fuente       id de la ficha de fuente (fred_alfred, yfinance, ken_french, goyal_welch, shiller,
+#                datahub, ofr_fsi, calculo_propio); va en la columna 'fuente' de la base
+#   id_origen    id o ticker en la fuente (fred:/yf: => id = prefijo:id_origen)
+#   frecuencia   diaria | semanal | mensual | trimestral | anual (la real medida, no la de provenance)
+#   unidad       unidad exacta del valor ('% anual' en FRED; 'tanto por uno' en Goyal-Welch...)
+#   divisa       ISO de la divisa del valor o null si no es monetaria (convenio del BCE: en un tipo
+#                de cambio, la divisa cotizada: DEXJPUS 'JPY por 1 USD' -> JPY; DEXUSAL -> USD)
+#   metodo       vintage_exacto | calendario | lag_fijo | cierre_mercado | derivada | fichero
+#                + publicador (calendario, vintage_exacto) | mercado (cierre_mercado)
+#                | lag_clave (lag_fijo, fichero: clave de config/lags.yaml) | componentes (derivada)
+#   revisable    true si la fuente revisa valores publicados: vintage_exacto, o lag_fijo/fichero con
+#                la nota obligatoria «valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)»
+#   rol_fase1    spine | core | enricher | fallback | validation | null (provenance.json)
+#   licencia     términos; 'copyright <titular>' para ICE, S&P, Moody's, Cboe...; FRED: solo local
+#   estado       activa | retirada (la fuente dejó de publicarla) | capada (historia recortada por
+#                la fuente) | excluida_ajustada (ETF con auto_adjust=True: fuera de la base, a
+#                get_precios) | pendiente_alfred (se cargará con vintages de ALFRED) | duplicada
+#                (copia de otra serie con otro id: duplicado_de)
+#   verificado   true solo si lo esencial (publicación y metadatos) se ha medido o contrastado
+# Campos opcionales: fichero_fase1 ('<carpeta>/<fichero>.parquet:<columna>' en data/raw, texto o
+#   lista), fase1_utilizable (false si el parquet de data/raw está corrupto), sucesor, duplicado_de,
+#   notas (huecos medidos, descarga, incidencias).
+# Reglas de carga desde data/raw: series yfinance -> descartar la barra con fecha >= día de
+#   descarga (mtime del parquet en NY; la descarga de 2026-07-20 fue a las 15:37 NY, intradía).
+#   Huecos permanentes -> fila con valor nulo y nota. Revisables -> vintage 'unico' + nota obligatoria.
+
+version: 1
+series:
+  fred:DGS1MO:
+    alias: DGS1MO
+    nombre: Rendimiento del Tesoro de EE. UU. a 1 mes (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS1MO
+    fichero_fase1: fred/DGS1MO.parquet:DGS1MO
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 1-Month Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 2001-07-31 a 2026-10-08'
+    verificado: true
+  fred:DGS3MO:
+    alias: DGS3MO
+    nombre: Rendimiento del Tesoro de EE. UU. a 3 meses (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS3MO
+    fichero_fase1: fred/DGS3MO.parquet:DGS3MO
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 3-Month Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1981-09-01 a 2026-10-08'
+    verificado: true
+  fred:DGS6MO:
+    alias: DGS6MO
+    nombre: Rendimiento del Tesoro de EE. UU. a 6 meses (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS6MO
+    fichero_fase1: fred/DGS6MO.parquet:DGS6MO
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 6-Month Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1981-09-01 a 2026-10-08'
+    verificado: true
+  fred:DGS1:
+    alias: DGS1
+    nombre: Rendimiento del Tesoro de EE. UU. a 1 año (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS1
+    fichero_fase1: fred/DGS1.parquet:DGS1
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1962-01-02 a 2026-10-08'
+    verificado: true
+  fred:DGS2:
+    alias: DGS2
+    nombre: Rendimiento del Tesoro de EE. UU. a 2 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS2
+    fichero_fase1: fred/DGS2.parquet:DGS2
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1976-06-01 a 2026-10-08'
+    verificado: true
+  fred:DGS3:
+    alias: DGS3
+    nombre: Rendimiento del Tesoro de EE. UU. a 3 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS3
+    fichero_fase1: fred/DGS3.parquet:DGS3
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1962-01-02 a 2026-10-08'
+    verificado: true
+  fred:DGS5:
+    alias: DGS5
+    nombre: Rendimiento del Tesoro de EE. UU. a 5 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS5
+    fichero_fase1: fred/DGS5.parquet:DGS5
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1962-01-02 a 2026-10-08'
+    verificado: true
+  fred:DGS7:
+    alias: DGS7
+    nombre: Rendimiento del Tesoro de EE. UU. a 7 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS7
+    fichero_fase1: fred/DGS7.parquet:DGS7
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1969-07-01 a 2026-10-08'
+    verificado: true
+  fred:DGS10:
+    alias: DGS10
+    nombre: Rendimiento del Tesoro de EE. UU. a 10 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS10
+    fichero_fase1: fred/DGS10.parquet:DGS10
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1962-01-02 a 2026-10-08'
+    verificado: true
+  fred:DGS20:
+    alias: DGS20
+    nombre: Rendimiento del Tesoro de EE. UU. a 20 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS20
+    fichero_fase1: fred/DGS20.parquet:DGS20
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 20-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1962-01-02 a 2026-10-08'
+    - 'hueco medido en data/raw: sin datos de 1987-01-01 a 1993-09-30 (2466 días)'
+    verificado: true
+  fred:DGS30:
+    alias: DGS30
+    nombre: Rendimiento del Tesoro de EE. UU. a 30 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DGS30
+    fichero_fase1: fred/DGS30.parquet:DGS30
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 30-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Daily, NSA, 1977-02-15 a 2026-10-08'
+    verificado: true
+  fred:DTB3:
+    alias: DTB3
+    nombre: Letra del Tesoro de EE. UU. a 3 meses, mercado secundario (tipo de descuento, H.15)
+    fuente: fred_alfred
+    id_origen: DTB3
+    fichero_fase1: fred/DTB3.parquet:DTB3
+    frecuencia: diaria
+    unidad: '% anual (base descuento)'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''3-Month Treasury Bill Secondary Market Rate, Discount Basis'', Percent, Daily, NSA, 1954-01-04
+      a 2026-10-08'
+    verificado: true
+  fred:DTB6:
+    alias: DTB6
+    nombre: Letra del Tesoro de EE. UU. a 6 meses, mercado secundario (tipo de descuento, H.15)
+    fuente: fred_alfred
+    id_origen: DTB6
+    fichero_fase1: fred/DTB6.parquet:DTB6
+    frecuencia: diaria
+    unidad: '% anual (base descuento)'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''6-Month Treasury Bill Secondary Market Rate, Discount Basis'', Percent, Daily, NSA, 1958-12-09
+      a 2026-10-08'
+    verificado: true
+  fred:DTB1YR:
+    alias: DTB1YR
+    nombre: Letra del Tesoro de EE. UU. a 1 año, mercado secundario (tipo de descuento, H.15)
+    fuente: fred_alfred
+    id_origen: DTB1YR
+    fichero_fase1: fred/DTB1YR.parquet:DTB1YR
+    frecuencia: diaria
+    unidad: '% anual (base descuento)'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''1-Year Treasury Bill Secondary Market Rate, Discount Basis'', Percent, Daily, NSA, 1959-07-15
+      a 2026-10-08'
+    - 'hueco medido en data/raw: sin datos de 2001-08-25 a 2002-01-29 (159 días)'
+    - 'hueco medido en data/raw: sin datos de 2002-02-06 a 2008-06-02 (2310 días)'
+    verificado: true
+  fred:DFII5:
+    alias: DFII5
+    nombre: Rendimiento real de los TIPS a 5 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DFII5
+    fichero_fase1: fred/DFII5.parquet:DFII5
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment
+      Basis, Inflation-Indexed'', Percent, Daily, NSA, 2003-01-02 a 2026-10-08'
+    verificado: true
+  fred:DFII10:
+    alias: DFII10
+    nombre: Rendimiento real de los TIPS a 10 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DFII10
+    fichero_fase1: fred/DFII10.parquet:DFII10
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment
+      Basis, Inflation-Indexed'', Percent, Daily, NSA, 2003-01-02 a 2026-10-08'
+    verificado: true
+  fred:DFII30:
+    alias: DFII30
+    nombre: Rendimiento real de los TIPS a 30 años (vencimiento constante, H.15)
+    fuente: fred_alfred
+    id_origen: DFII30
+    fichero_fase1: fred/DFII30.parquet:DFII30
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 30-Year Constant Maturity, Quoted on an Investment
+      Basis, Inflation-Indexed'', Percent, Daily, NSA, 2010-02-22 a 2026-10-08'
+    verificado: true
+  fred:DFF:
+    alias: DFF
+    nombre: Tipo efectivo de los fondos federales, diario con fines de semana (H.15)
+    fuente: fred_alfred
+    id_origen: DFF
+    fichero_fase1: fred/DFF.parquet:DFF
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'sábados, domingos y festivos repiten el tipo del hábil anterior y se publican con el dato del hábil siguiente (medido:
+      sábado -> martes)'
+    - 'FRED (2026-10-12): ''Federal Funds Effective Rate'', Percent, Daily, 7-Day, NSA, 1954-07-01 a 2026-10-08'
+    verificado: true
+  fred:DPCREDIT:
+    alias: DPCREDIT
+    nombre: Tipo de la ventanilla de descuento, crédito primario (H.15)
+    fuente: fred_alfred
+    id_origen: DPCREDIT
+    fichero_fase1: fred/DPCREDIT.parquet:DPCREDIT
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'tipo administrado (conocido de antemano): se toma la publicación de H.15 en D+1 (conservador)'
+    - 'FRED (2026-10-12): ''Discount Window Primary Credit Rate'', Percent, Daily, NSA, 2003-01-09 a 2026-10-08'
+    verificado: true
+  fred:IORB:
+    alias: IORB
+    nombre: Tipo de interés de los saldos de reserva (IORB)
+    fuente: fred_alfred
+    id_origen: IORB
+    fichero_fase1: fred/IORB.parquet:IORB
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'tipo administrado: FRED publica fechas futuras (medido: observación del 2026-10-13 cargada el 2026-10-09); se toma
+      H.15 en D+1 (conservador, nunca antes de la fecha)'
+    - sustituye a IOER (antes de 2021-07-29)
+    - 'FRED (2026-10-12): ''Interest Rate on Reserve Balances (IORB Rate)'', Percent, Daily, 7-Day, NSA, 2021-07-29 a 2026-10-13'
+    verificado: true
+  fred:DED3:
+    alias: EURODOLLAR_3M
+    nombre: Depósito en eurodólares a 3 meses, Londres (H.15)
+    fuente: fred_alfred
+    id_origen: DED3
+    fichero_fase1: fred/EURODOLLAR_3M.parquet:EURODOLLAR_3M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_h15
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:DCPF3M
+    notas:
+    - H.15 dejó de publicarlo en octubre de 2016 (último dato 2016-10-07)
+    - 'FRED (2026-10-12): ''U.S. Short-Term Interest Rates: Daily 3-Month Eurodollar Deposit Rate (DISCONTINUED)'', Percent,
+      Daily, NSA, 1971-01-04 a 2016-10-07'
+    - 'sucesor: papel comercial financiero a 3 meses (DCPF3M), sustituto decidido de la financiación sin garantía'
+    verificado: true
+  fred:EFFR:
+    alias: EFFR
+    nombre: Tipo efectivo de los fondos federales (Fed de Nueva York, días hábiles)
+    fuente: fred_alfred
+    id_origen: EFFR
+    fichero_fase1: fred/EFFR.parquet:EFFR
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: nyfed_effr
+    revisable: false
+    rol_fase1: core
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    duplicado_de: fred:DFF
+    notas:
+    - 'mismos valores que DFF en los días hábiles (medido: 6537/6537 desde 2000-07-03), pero publicada antes (09:00 de D+1
+      frente a 16:15 de H.15)'
+    - 'FRED (2026-10-12): ''Effective Federal Funds Rate'', Percent, Daily, NSA, 2000-07-03 a 2026-10-08'
+    verificado: true
+  fred:OBFR:
+    alias: OBFR
+    nombre: Overnight Bank Funding Rate (Fed de Nueva York)
+    fuente: fred_alfred
+    id_origen: OBFR
+    fichero_fase1: fred/OBFR.parquet:OBFR
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: nyfed_effr
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Overnight Bank Funding Rate'', Percent, Daily, NSA, 2016-03-01 a 2026-10-08'
+    verificado: true
+  fred:SOFR:
+    alias: SOFR
+    nombre: Secured Overnight Financing Rate (Fed de Nueva York)
+    fuente: fred_alfred
+    id_origen: SOFR
+    fichero_fase1: fred/SOFR.parquet:SOFR
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: nyfed_sofr
+    revisable: false
+    rol_fase1: core
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Secured Overnight Financing Rate'', Percent, Daily, NSA, 2018-04-03 a 2026-10-08'
+    verificado: false
+  fred:T10Y2Y:
+    alias: T10Y2Y
+    nombre: Diferencial Tesoro 10 años menos 2 años
+    fuente: fred_alfred
+    id_origen: T10Y2Y
+    fichero_fase1: fred/T10Y2Y.parquet:T10Y2Y
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_tesoro_calculadas
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity'', Percent, Daily,
+      NSA, 1976-06-01 a 2026-10-09'
+    verificado: true
+  fred:T10Y3M:
+    alias: T10Y3M
+    nombre: Diferencial Tesoro 10 años menos 3 meses
+    fuente: fred_alfred
+    id_origen: T10Y3M
+    fichero_fase1: fred/T10Y3M.parquet:T10Y3M
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_tesoro_calculadas
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''10-Year Treasury Constant Maturity Minus 3-Month Treasury Constant Maturity'', Percent, Daily,
+      NSA, 1982-01-04 a 2026-10-09'
+    verificado: true
+  fred:T10YIE:
+    alias: T10YIE
+    nombre: Inflación implícita a 10 años (DGS10 - DFII10)
+    fuente: fred_alfred
+    id_origen: T10YIE
+    fichero_fase1: fred/T10YIE.parquet:T10YIE
+    frecuencia: diaria
+    unidad: '% anual (inflación implícita)'
+    divisa: null
+    metodo: calendario
+    publicador: fred_tesoro_calculadas
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''10-Year Breakeven Inflation Rate'', Percent, Daily, NSA, 2003-01-02 a 2026-10-09'
+    verificado: true
+  fred:T5YIE:
+    alias: T5YIE
+    nombre: Inflación implícita a 5 años (DGS5 - DFII5)
+    fuente: fred_alfred
+    id_origen: T5YIE
+    fichero_fase1: fred/T5YIE.parquet:T5YIE
+    frecuencia: diaria
+    unidad: '% anual (inflación implícita)'
+    divisa: null
+    metodo: calendario
+    publicador: fred_tesoro_calculadas
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''5-Year Breakeven Inflation Rate'', Percent, Daily, NSA, 2003-01-02 a 2026-10-09'
+    verificado: true
+  fred:T5YIFR:
+    alias: T5YIFR
+    nombre: Inflación esperada a 5 años dentro de 5 años (5y5y)
+    fuente: fred_alfred
+    id_origen: T5YIFR
+    fichero_fase1: fred/T5YIFR.parquet:T5YIFR
+    frecuencia: diaria
+    unidad: '% anual (inflación implícita)'
+    divisa: null
+    metodo: calendario
+    publicador: fred_tesoro_calculadas
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''5-Year, 5-Year Forward Inflation Expectation Rate'', Percent, Daily, NSA, 2003-01-02 a 2026-10-09'
+    verificado: true
+  fred:T10YFF:
+    alias: T10YFF
+    nombre: Diferencial Tesoro 10 años menos fondos federales
+    fuente: fred_alfred
+    id_origen: T10YFF
+    fichero_fase1: fred/T10YFF.parquet:T10YFF
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_calculadas_dia_siguiente
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''10-Year Treasury Constant Maturity Minus Federal Funds Rate'', Percent, Daily, NSA, 1962-01-02
+      a 2026-10-08'
+    verificado: true
+  fred:T5YFF:
+    alias: T5YFF
+    nombre: Diferencial Tesoro 5 años menos fondos federales
+    fuente: fred_alfred
+    id_origen: T5YFF
+    fichero_fase1: fred/T5YFF.parquet:T5YFF
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_calculadas_dia_siguiente
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''5-Year Treasury Constant Maturity Minus Federal Funds Rate'', Percent, Daily, NSA, 1962-01-02
+      a 2026-10-08'
+    verificado: true
+  fred:BAA10Y:
+    alias: BAA10Y
+    nombre: Diferencial bonos corporativos Baa de Moody's menos Tesoro a 10 años
+    fuente: fred_alfred
+    id_origen: BAA10Y
+    fichero_fase1: fred/BAA10Y.parquet:BAA10Y
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_calculadas_dia_siguiente
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED la publica en D+1 hacia las 17:03 NY (medido): visible en la decisión de D+2'
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Baa Corporate Bond Yield Relative to Yield on 10-Year Treasury Constant Maturity'',
+      Percent, Daily, NSA, 1986-01-02 a 2026-10-08'
+    verificado: true
+  fred:DBAA:
+    alias: null
+    nombre: Rendimiento de bonos corporativos Baa de Moody's (diario)
+    fuente: fred_alfred
+    id_origen: DBAA
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: moodys
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - componente de deriv:DBAA-DAAA; lo descarga el extractor de FRED (no está en data/raw)
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Baa Corporate Bond Yield'', Percent, Daily, NSA, 1986-01-02 a 2026-10-08'
+    verificado: true
+  fred:DAAA:
+    alias: null
+    nombre: Rendimiento de bonos corporativos Aaa de Moody's (diario)
+    fuente: fred_alfred
+    id_origen: DAAA
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: moodys
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - componente de deriv:DBAA-DAAA; lo descarga el extractor de FRED (no está en data/raw)
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Aaa Corporate Bond Yield'', Percent, Daily, NSA, 1983-01-03 a 2026-10-08'
+    verificado: true
+  fred:DEXJPUS:
+    alias: DEXJPUS
+    nombre: Yenes japoneses por dólar (H.10, mediodía en Nueva York)
+    fuente: fred_alfred
+    id_origen: DEXJPUS
+    fichero_fase1: fred/DEXJPUS.parquet:DEXJPUS
+    frecuencia: diaria
+    unidad: JPY por 1 USD
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Japanese Yen to U.S. Dollar Spot Exchange Rate'', Japanese Yen to One U.S. Dollar, Daily, NSA,
+      1971-01-04 a 2026-10-02'
+    - 'tipo de cambio (cotización): divisa null, no es un importe convertible a USD (bloque 2)'
+    verificado: true
+  fred:DEXSZUS:
+    alias: DEXSZUS
+    nombre: Francos suizos por dólar (H.10, mediodía en Nueva York)
+    fuente: fred_alfred
+    id_origen: DEXSZUS
+    fichero_fase1: fred/DEXSZUS.parquet:DEXSZUS
+    frecuencia: diaria
+    unidad: CHF por 1 USD
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Swiss Francs to U.S. Dollar Spot Exchange Rate'', Swiss Francs to One U.S. Dollar, Daily, NSA,
+      1971-01-04 a 2026-10-02'
+    - 'tipo de cambio (cotización): divisa null, no es un importe convertible a USD (bloque 2)'
+    verificado: true
+  fred:DEXUSAL:
+    alias: DEXUSAL
+    nombre: Dólares de EE. UU. por dólar australiano (H.10; cotización invertida)
+    fuente: fred_alfred
+    id_origen: DEXUSAL
+    fichero_fase1: fred/DEXUSAL.parquet:DEXUSAL
+    frecuencia: diaria
+    unidad: USD por 1 AUD
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'cotización invertida respecto a DEXJPUS/DEXSZUS: USD por unidad de AUD'
+    - 'FRED (2026-10-12): ''U.S. Dollars to Australian Dollar Spot Exchange Rate'', U.S. Dollars to One Australian Dollar,
+      Daily, NSA, 1971-01-04 a 2026-10-02'
+    - 'tipo de cambio (cotización): divisa null, no es un importe convertible a USD (bloque 2)'
+    verificado: true
+  fred:DEXUSEU:
+    alias: null
+    nombre: Dólares de EE. UU. por euro (H.10, mediodía en Nueva York)
+    fuente: fred_alfred
+    id_origen: DEXUSEU
+    frecuencia: diaria
+    unidad: USD por 1 EUR
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: null
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - sustituto decidido para EURUSD (FX secundario frente al BCE, semanal por H.10); empieza el 1999-01-04; lo descarga el
+      extractor de FRED
+    - 'FRED (2026-10-12): ''U.S. Dollars to Euro Spot Exchange Rate'', U.S. Dollars to One Euro, Daily, NSA, 1999-01-04 a
+      2026-10-02'
+    - 'tipo de cambio (cotización): divisa null, no es un importe convertible a USD (bloque 2)'
+    verificado: true
+  fred:DTWEXM:
+    alias: DTWEXM
+    nombre: Índice nominal del dólar frente a monedas principales (H.10)
+    fuente: fred_alfred
+    id_origen: DTWEXM
+    fichero_fase1: fred/DTWEXM.parquet:DTWEXM
+    frecuencia: diaria
+    unidad: índice (marzo-1973 = 100)
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:DTWEXAFEGS
+    notas:
+    - la Fed lo dejó de publicar en enero de 2020 (último dato 2019-12-31); empalme con DTWEXAFEGS (solape 2006-2019)
+    - 'FRED (2026-10-12): ''Nominal Major Currencies U.S. Dollar Index (Goods Only) (DISCONTINUED)'', Index Mar 1973=100,
+      Daily, NSA, 1973-01-02 a 2019-12-31'
+    verificado: true
+  fred:DTWEXBGS:
+    alias: null
+    nombre: Índice nominal amplio del dólar (H.10)
+    fuente: fred_alfred
+    id_origen: DTWEXBGS
+    frecuencia: diaria
+    unidad: índice (enero-2006 = 100)
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: null
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - sustituto decidido (dólar amplio); lo descarga el extractor de FRED
+    - 'pesos comerciales revisados cada año: posibles revisiones de historia (sin medir; candidata a ALFRED)'
+    - 'FRED (2026-10-12): ''Nominal Broad U.S. Dollar Index'', Index Jan 2006=100, Daily, NSA, 2006-01-02 a 2026-10-02'
+    verificado: true
+  fred:DTWEXAFEGS:
+    alias: null
+    nombre: Índice nominal del dólar frente a economías avanzadas (H.10)
+    fuente: fred_alfred
+    id_origen: DTWEXAFEGS
+    frecuencia: diaria
+    unidad: índice (enero-2006 = 100)
+    divisa: null
+    metodo: calendario
+    publicador: fed_h10
+    revisable: false
+    rol_fase1: null
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - sucesor de DTWEXM; lo descarga el extractor de FRED
+    - 'pesos comerciales revisados cada año: posibles revisiones de historia (sin medir; candidata a ALFRED)'
+    - 'FRED (2026-10-12): ''Nominal Advanced Foreign Economies U.S. Dollar Index'', Index Jan 2006=100, Daily, NSA, 2006-01-02
+      a 2026-10-02'
+    verificado: true
+  fred:TEDRATE:
+    alias: null
+    nombre: TED spread (LIBOR 3M en USD menos letra a 3 meses)
+    fuente: fred_alfred
+    id_origen: TEDRATE
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_calculadas_dia_siguiente
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Benchmark Administration (LIBOR); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:CPFF
+    notas:
+    - descontinuada en enero de 2022 con el fin del LIBOR; histórico 1986-2022 (solape con DED3-DTB3 en 1986-2016)
+    - 'FRED aún la sirve (medido 2026-10-12): 1986-01-02 a 2022-01-21, 8.853 obs'
+    - 'FRED (2026-10-12): ''TED Spread (DISCONTINUED)'', Percent, Daily, NSA, 1986-01-02 a 2022-01-21'
+    verificado: false
+  fred:DCPF3M:
+    alias: null
+    nombre: Papel comercial financiero AA a 3 meses
+    fuente: fred_alfred
+    id_origen: DCPF3M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: fed_cp
+    revisable: false
+    rol_fase1: null
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - sustituto decidido (financiación); lo descarga el extractor de FRED
+    - 'FRED (2026-10-12): ''90-Day AA Financial Commercial Paper Interest Rate'', Percent, Daily, NSA, 1997-01-02 a 2026-10-06'
+    verificado: false
+  fred:CPFF:
+    alias: null
+    nombre: Papel comercial financiero a 3 meses menos fondos federales
+    fuente: fred_alfred
+    id_origen: CPFF
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: fred_calculadas_dia_siguiente
+    revisable: false
+    rol_fase1: null
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'sucesor del TED para estrés de financiación; ALFRED: 7/7 publicadas en D+1'
+    - 'FRED (2026-10-12): ''3-Month Commercial Paper Minus Federal Funds Rate'', Percent, Daily, NSA, 1997-01-02 a 2026-10-06'
+    verificado: true
+  fred:BAMLH0A0HYM2:
+    alias: null
+    nombre: OAS del índice ICE BofA US High Yield
+    fuente: fred_alfred
+    id_origen: BAMLH0A0HYM2
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil). Medido 2026-10-12: hoy empieza en 2023-10-10; ALFRED tampoco
+      conserva el historial (vintage 2026-03-31 por vintage_dates y por realtime_start/realtime_end: empieza en 2023-10-10;
+      vintages 2023-01-03 y 2019-01-02: HTTP 400; primer vintage conservado 2023-10-10). Archivar ya: descarga diaria para
+      acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA US High Yield Index Option-Adjusted Spread'', Percent, Daily, Close, NSA, 2023-10-10
+      a 2026-10-08'
+    verificado: false
+  fred:BAMLC0A0CM:
+    alias: null
+    nombre: OAS del índice ICE BofA US Corporate (grado de inversión)
+    fuente: fred_alfred
+    id_origen: BAMLC0A0CM
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil). Medido 2026-10-12: hoy empieza en 2023-10-10; ALFRED tampoco
+      conserva el historial (vintage 2026-03-31 por vintage_dates y por realtime_start/realtime_end: empieza en 2023-10-10;
+      vintages 2023-01-03 y 2019-01-02: HTTP 400; primer vintage conservado 2023-10-10). Archivar ya: descarga diaria para
+      acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA US Corporate Index Option-Adjusted Spread'', Percent, Daily, Close, NSA, 2023-10-10 a
+      2026-10-08'
+    verificado: false
+  fred:BAMLH0A0HYM2EY:
+    alias: null
+    nombre: Rendimiento efectivo del índice ICE BofA US High Yield
+    fuente: fred_alfred
+    id_origen: BAMLH0A0HYM2EY
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA US High Yield Index Effective Yield'', Percent, Daily, Close, NSA, 2023-10-10 a 2026-10-08'
+    verificado: false
+  fred:BAMLC0A0CMEY:
+    alias: null
+    nombre: Rendimiento efectivo del índice ICE BofA US Corporate
+    fuente: fred_alfred
+    id_origen: BAMLC0A0CMEY
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA US Corporate Index Effective Yield'', Percent, Daily, Close, NSA, 2023-10-10 a 2026-10-08'
+    verificado: false
+  fred:BAMLC0A4CBBB:
+    alias: null
+    nombre: OAS del índice ICE BofA BBB US Corporate
+    fuente: fred_alfred
+    id_origen: BAMLC0A4CBBB
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA BBB US Corporate Index Option-Adjusted Spread'', Percent, Daily, Close, NSA, 2023-10-10
+      a 2026-10-08'
+    verificado: false
+  fred:BAMLC0A1CAAA:
+    alias: null
+    nombre: OAS del índice ICE BofA AAA US Corporate
+    fuente: fred_alfred
+    id_origen: BAMLC0A1CAAA
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA AAA US Corporate Index Option-Adjusted Spread'', Percent, Daily, Close, NSA, 2023-10-10
+      a 2026-10-08'
+    verificado: false
+  fred:BAMLH0A1HYBB:
+    alias: null
+    nombre: OAS del índice ICE BofA BB US High Yield
+    fuente: fred_alfred
+    id_origen: BAMLH0A1HYBB
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA BB US High Yield Index Option-Adjusted Spread'', Percent, Daily, Close, NSA, 2023-10-10
+      a 2026-10-08'
+    verificado: false
+  fred:BAMLH0A3HYC:
+    alias: null
+    nombre: OAS del índice ICE BofA CCC y menor US High Yield
+    fuente: fred_alfred
+    id_origen: BAMLH0A3HYC
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: calendario
+    publicador: ice_bofa_fred
+    revisable: false
+    rol_fase1: null
+    licencia: 'copyright ICE Data Indices; vía FRED: solo local, sin redistribuir'
+    estado: capada
+    notas:
+    - 'FRED solo sirve 3 años (desde abril-2026, ventana móvil) (capado supuesto igual: medido en BAMLH0A0HYM2 y BAMLC0A0CM).
+      Archivar ya: descarga diaria para acumular historia'
+    - 'FRED (2026-10-12): ''ICE BofA CCC & Lower US High Yield Index Option-Adjusted Spread'', Percent, Daily, Close, NSA,
+      2023-10-10 a 2026-10-08'
+    verificado: false
+  fred:WEI:
+    alias: null
+    nombre: Índice económico semanal (Weekly Economic Index, Lewis-Mertens-Stock)
+    fuente: fred_alfred
+    id_origen: WEI
+    frecuencia: semanal
+    unidad: índice (escalado al crecimiento interanual del PIB, %)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: nyfed_wei
+    revisable: true
+    rol_fase1: null
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: pendiente_alfred
+    notas:
+    - 'semana que acaba el sábado; publicado el jueves siguiente (medido: last_updated 2026-10-08 11:46 NY con la semana del
+      2026-10-03)'
+    - 'se re-estima cada semana: cargar con vintages de ALFRED'
+    - 'primera vintage en ALFRED 2020-04-16: las semanas de 2008-2020 solo son visibles desde esa fecha'
+    - 'FRED (2026-10-12): ''Weekly Economic Index (Lewis-Mertens-Stock)'', Index, Weekly, Ending Saturday, NSA, 2008-01-05
+      a 2026-10-03'
+    verificado: false
+  fred:VIXCLS:
+    alias:
+    - VIX
+    - VIX_VALIDATION_REF
+    nombre: Índice de volatilidad Cboe VIX (S&P 500, 30 días)
+    fuente: fred_alfred
+    id_origen: VIXCLS
+    fichero_fase1:
+    - fred/VIX.parquet:VIX
+    - fred/VIX_VALIDATION_REF.parquet:VIX_VALIDATION_REF
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'VIX_VALIDATION_REF es una copia idéntica (medido 9232/9232): alias del mismo id'
+    - 'FRED (2026-10-12): ''CBOE Volatility Index: VIX'', Index, Daily, Close, NSA, 1990-01-02 a 2026-10-09'
+    verificado: false
+  fred:VXOCLS:
+    alias: VXO
+    nombre: Índice Cboe VXO (S&P 100, metodología antigua del VIX)
+    fuente: fred_alfred
+    id_origen: VXOCLS
+    fichero_fase1: fred/VXO.parquet:VXO
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:VIXCLS
+    notas:
+    - Cboe lo descontinuó el 2021-09-23
+    - 'FRED (2026-10-12): ''CBOE S&P 100 Volatility Index: VXO (DISCONTINUED)'', Index, Daily, Close, NSA, 1986-01-02 a 2021-09-23'
+    verificado: false
+  fred:VXNCLS:
+    alias: VXN
+    nombre: Índice de volatilidad Cboe del Nasdaq 100 (VXN)
+    fuente: fred_alfred
+    id_origen: VXNCLS
+    fichero_fase1: fred/VXN.parquet:VXN
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE NASDAQ 100 Volatility Index'', Index, Daily, Close, NSA, 2001-02-02 a 2026-10-09'
+    verificado: false
+  fred:VXDCLS:
+    alias: VXD
+    nombre: Índice de volatilidad Cboe del DJIA (VXD)
+    fuente: fred_alfred
+    id_origen: VXDCLS
+    fichero_fase1: fred/VXD.parquet:VXD
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE DJIA Volatility Index'', Index, Daily, Close, NSA, 1997-10-07 a 2026-10-09'
+    verificado: false
+  fred:RVXCLS:
+    alias: RVX
+    nombre: Índice de volatilidad Cboe del Russell 2000 (RVX)
+    fuente: fred_alfred
+    id_origen: RVXCLS
+    fichero_fase1: fred/RVX.parquet:RVX
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE Russell 2000 Volatility Index'', Index, Daily, Close, NSA, 2004-01-02 a 2026-10-09'
+    verificado: false
+  fred:OVXCLS:
+    alias: OVX
+    nombre: Índice de volatilidad Cboe del petróleo (OVX)
+    fuente: fred_alfred
+    id_origen: OVXCLS
+    fichero_fase1: fred/OVX.parquet:OVX
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE Crude Oil ETF Volatility Index'', Index, Daily, Close, NSA, 2007-05-10 a 2026-10-09'
+    verificado: false
+  fred:GVZCLS:
+    alias: GVZ
+    nombre: Índice de volatilidad Cboe del oro (GVZ)
+    fuente: fred_alfred
+    id_origen: GVZCLS
+    fichero_fase1: fred/GVZ.parquet:GVZ
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE Gold ETF Volatility Index'', Index, Daily, Close, NSA, 2008-06-03 a 2026-10-09'
+    verificado: false
+  fred:VXEEMCLS:
+    alias: VXEEM
+    nombre: Índice de volatilidad Cboe de emergentes (VXEEM)
+    fuente: fred_alfred
+    id_origen: VXEEMCLS
+    fichero_fase1: fred/VXEEM.parquet:VXEEM
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE Emerging Markets ETF Volatility Index'', Index, Daily, Close, NSA, 2011-03-16 a 2026-10-09'
+    verificado: false
+  fred:VXEWZCLS:
+    alias: VXEWZ
+    nombre: Índice de volatilidad Cboe de Brasil (VXEWZ)
+    fuente: fred_alfred
+    id_origen: VXEWZCLS
+    fichero_fase1: fred/VXEWZ.parquet:VXEWZ
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''CBOE Brazil ETF Volatility Index'', Index, Daily, Close, NSA, 2011-03-16 a 2026-10-09'
+    verificado: false
+  fred:EVZCLS:
+    alias: EVZ
+    nombre: Índice de volatilidad Cboe del euro (EVZ)
+    fuente: fred_alfred
+    id_origen: EVZCLS
+    fichero_fase1: fred/EVZ.parquet:EVZ
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    notas:
+    - Cboe lo descontinuó (último dato 2025-03-11)
+    - 'FRED (2026-10-12): ''CBOE EuroCurrency ETF Volatility Index (DISCONTINUED)'', Index, Daily, Close, NSA, 2007-11-01
+      a 2025-03-11'
+    verificado: false
+  fred:VXTYN:
+    alias: VXTYN
+    nombre: Índice de volatilidad Cboe/CBOT del bono a 10 años (VXTYN)
+    fuente: fred_alfred
+    id_origen: VXTYN
+    fichero_fase1: fred/VXTYN.parquet:VXTYN
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: yf:^MOVE
+    notas:
+    - descontinuado el 2020-05-15
+    - 'FRED (2026-10-12): ''CBOE 10-Year Treasury Note Volatility Futures (DISCONTINUED)'', Index, Daily, Close, NSA, 2003-01-02
+      a 2020-05-15'
+    verificado: false
+  fred:NASDAQ100:
+    alias: NASDAQ100
+    nombre: Índice Nasdaq 100
+    fuente: fred_alfred
+    id_origen: NASDAQ100
+    fichero_fase1: fred/NASDAQ100.parquet:NASDAQ100
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNAS
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright Nasdaq; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''NASDAQ-100'', Index, Daily, Close, NSA, 1986-01-02 a 2026-10-09'
+    verificado: false
+  fred:GS10:
+    alias: GS10
+    nombre: Rendimiento del Tesoro a 10 años, media mensual (H.15)
+    fuente: fred_alfred
+    id_origen: GS10
+    fichero_fase1: fred/GS10.parquet:GS10
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: GS10
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Monthly, NSA, 1953-04-01 a 2026-09-01'
+    verificado: false
+  fred:GS5:
+    alias: GS5
+    nombre: Rendimiento del Tesoro a 5 años, media mensual (H.15)
+    fuente: fred_alfred
+    id_origen: GS5
+    fichero_fase1: fred/GS5.parquet:GS5
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: GS5
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Monthly, NSA, 1953-04-01 a 2026-09-01'
+    verificado: false
+  fred:GS1:
+    alias: GS1
+    nombre: Rendimiento del Tesoro a 1 año, media mensual (H.15)
+    fuente: fred_alfred
+    id_origen: GS1
+    fichero_fase1: fred/GS1.parquet:GS1
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: GS1
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment
+      Basis'', Percent, Monthly, NSA, 1953-04-01 a 2026-09-01'
+    verificado: false
+  fred:TB3MS:
+    alias: TB3MS
+    nombre: Letra del Tesoro a 3 meses, media mensual (H.15)
+    fuente: fred_alfred
+    id_origen: TB3MS
+    fichero_fase1: fred/TB3MS.parquet:TB3MS
+    frecuencia: mensual
+    unidad: '% anual (base descuento)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: TB3MS
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''3-Month Treasury Bill Secondary Market Rate, Discount Basis'', Percent, Monthly, NSA, 1934-01-01
+      a 2026-09-01'
+    verificado: false
+  fred:FEDFUNDS:
+    alias: FEDFUNDS
+    nombre: Tipo efectivo de los fondos federales, media mensual (H.15)
+    fuente: fred_alfred
+    id_origen: FEDFUNDS
+    fichero_fase1: fred/FEDFUNDS.parquet:FEDFUNDS
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: FEDFUNDS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Federal Funds Effective Rate'', Percent, Monthly, NSA, 1954-07-01 a 2026-09-01'
+    verificado: false
+  fred:TB3SMFFM:
+    alias: TBILL3M_MINUS_FEDFUNDS
+    nombre: Letra a 3 meses menos fondos federales, medias mensuales
+    fuente: fred_alfred
+    id_origen: TB3SMFFM
+    fichero_fase1: fred/TBILL3M_MINUS_FEDFUNDS.parquet:TBILL3M_MINUS_FEDFUNDS
+    frecuencia: mensual
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: TBILL3M_MINUS_FEDFUNDS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'calculada por FRED (= TB3MS - FEDFUNDS salvo redondeo: medido 96,2 % idéntico, |dif| máx. 0,03)'
+    - 'FRED (2026-10-12): ''3-Month Treasury Bill Minus Federal Funds Rate'', Percent, Monthly, NSA, 1954-07-01 a 2026-09-01'
+    verificado: false
+  fred:BAA:
+    alias: MOODYS_BAA
+    nombre: Rendimiento de bonos corporativos Baa de Moody's, media mensual
+    fuente: fred_alfred
+    id_origen: BAA
+    fichero_fase1: fred/MOODYS_BAA.parquet:MOODYS_BAA
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: MOODYS_BAA
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Baa Corporate Bond Yield'', Percent, Monthly, NSA, 1919-01-01 a 2026-09-01'
+    verificado: false
+  fred:AAA:
+    alias: MOODYS_AAA
+    nombre: Rendimiento de bonos corporativos Aaa de Moody's, media mensual
+    fuente: fred_alfred
+    id_origen: AAA
+    fichero_fase1: fred/MOODYS_AAA.parquet:MOODYS_AAA
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: MOODYS_AAA
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Aaa Corporate Bond Yield'', Percent, Monthly, NSA, 1919-01-01 a 2026-09-01'
+    verificado: false
+  fred:BAAFFM:
+    alias: BAAFFM
+    nombre: Baa de Moody's menos fondos federales, medias mensuales
+    fuente: fred_alfred
+    id_origen: BAAFFM
+    fichero_fase1: fred/BAAFFM.parquet:BAAFFM
+    frecuencia: mensual
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BAAFFM
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Moody''s Seasoned Baa Corporate Bond Minus Federal Funds Rate'', Percent, Monthly, NSA, 1954-07-01
+      a 2026-09-01'
+    verificado: false
+  fred:WTISPLC:
+    alias: WTI_SPOT_MONTHLY
+    nombre: Petróleo WTI al contado, media mensual
+    fuente: fred_alfred
+    id_origen: WTISPLC
+    fichero_fase1: fred/WTI_SPOT_MONTHLY.parquet:WTI_SPOT_MONTHLY
+    frecuencia: mensual
+    unidad: USD por barril
+    divisa: USD
+    metodo: lag_fijo
+    lag_clave: WTI_SPOT_MONTHLY
+    revisable: false
+    rol_fase1: spine
+    licencia: 'FRB St. Louis con datos de EIA/Dow Jones; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Spot Crude Oil Price: West Texas Intermediate (WTI)'', Dollars per Barrel, Monthly, NSA, 1946-01-01
+      a 2026-09-01'
+    verificado: false
+  fred:INDPRO:
+    alias: INDPRO
+    nombre: Índice de producción industrial (G.17)
+    fuente: fred_alfred
+    id_origen: INDPRO
+    fichero_fase1: fred/INDPRO.parquet:INDPRO
+    frecuencia: mensual
+    unidad: índice (2017 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: fed_g17
+    lag_clave: INDPRO
+    revisable: true
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Industrial Production: Total Index'', Index 2017=100, Monthly, SA, 1919-01-01 a 2026-08-01'
+    verificado: false
+  fred:PPIACO:
+    alias: PPI_ALL_COMMODITIES
+    nombre: 'Índice de precios de producción: todas las mercancías'
+    fuente: fred_alfred
+    id_origen: PPIACO
+    fichero_fase1: fred/PPI_ALL_COMMODITIES.parquet:PPI_ALL_COMMODITIES
+    frecuencia: mensual
+    unidad: índice (1982 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: PPI_ALL_COMMODITIES
+    revisable: true
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Producer Price Index by Commodity: All Commodities'', Index 1982=100, Monthly, NSA, 1913-01-01
+      a 2026-08-01'
+    verificado: false
+  fred:WPU0561:
+    alias: PPI_FUELS
+    nombre: 'Índice de precios de producción: petróleo crudo (producción nacional)'
+    fuente: fred_alfred
+    id_origen: WPU0561
+    fichero_fase1: fred/PPI_FUELS.parquet:PPI_FUELS
+    frecuencia: mensual
+    unidad: índice (1982 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: PPI_FUELS
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Producer Price Index by Commodity: Fuels and Related Products and Power: Crude Petroleum (Domestic
+      Production)'', Index 1982=100, Monthly, NSA, 1947-01-01 a 2026-08-01'
+    verificado: false
+  fred:WPU102301:
+    alias: PPI_METALS
+    nombre: 'Índice de precios de producción: chatarra de cobre'
+    fuente: fred_alfred
+    id_origen: WPU102301
+    fichero_fase1: fred/PPI_METALS.parquet:PPI_METALS
+    frecuencia: mensual
+    unidad: índice (1982 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: PPI_METALS
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Producer Price Index by Commodity: Metals and Metal Products: Copper Base Scrap'', Index 1982=100,
+      Monthly, NSA, 1957-01-01 a 2026-08-01'
+    verificado: false
+  fred:CPIAUCSL:
+    alias: CPIAUCSL
+    nombre: Índice de precios de consumo, todos los artículos (desestacionalizado)
+    fuente: fred_alfred
+    id_origen: CPIAUCSL
+    fichero_fase1: fred/CPIAUCSL.parquet:CPIAUCSL
+    frecuencia: mensual
+    unidad: índice (1982-84 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: CPIAUCSL
+    revisable: true
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - '2025-10: nunca publicado (cierre del Gobierno federal): hueco permanente, valor nulo con nota'
+    - 'FRED (2026-10-12): ''Consumer Price Index for All Urban Consumers: All Items in U.S. City Average'', Index 1982-1984=100,
+      Monthly, SA, 1947-01-01 a 2026-08-01'
+    - 'meses sin dato en data/raw (medido): 2025-10'
+    verificado: false
+  fred:CPILFESL:
+    alias: CPILFESL
+    nombre: IPC subyacente, sin alimentos ni energía (desestacionalizado)
+    fuente: fred_alfred
+    id_origen: CPILFESL
+    fichero_fase1: fred/CPILFESL.parquet:CPILFESL
+    frecuencia: mensual
+    unidad: índice (1982-84 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: CPILFESL
+    revisable: true
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - '2025-10: nunca publicado (cierre del Gobierno federal): hueco permanente, valor nulo con nota'
+    - 'FRED (2026-10-12): ''Consumer Price Index for All Urban Consumers: All Items Less Food and Energy in U.S. City Average'',
+      Index 1982-1984=100, Monthly, SA, 1957-01-01 a 2026-08-01'
+    - 'meses sin dato en data/raw (medido): 2025-10'
+    verificado: false
+  fred:UNRATE:
+    alias: UNRATE
+    nombre: Tasa de paro (desestacionalizada)
+    fuente: fred_alfred
+    id_origen: UNRATE
+    fichero_fase1: fred/UNRATE.parquet:UNRATE
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: UNRATE
+    revisable: true
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - '2025-10: nunca publicado (cierre del Gobierno federal); fila con valor nulo y nota'
+    - '2025-09: publicado el 2025-11-20 (previsto 2025-10-03)'
+    - '2026-01: publicado el 2026-02-11 (previsto 2026-02-06) por el cierre parcial del Gobierno'
+    - 'Encuesta de hogares: sin revisiones mensuales; la revisión anual de factores estacionales sale con el informe de enero
+      y reescribe ~5 años de datos desestacionalizados'
+    - 'FRED (2026-10-12): ''Unemployment Rate'', Percent, Monthly, SA, 1948-01-01 a 2026-09-01'
+    - 'meses sin dato en data/raw (medido): 2025-10'
+    verificado: false
+  fred:PAYEMS:
+    alias: PAYEMS
+    nombre: Empleo no agrícola total (desestacionalizado)
+    fuente: fred_alfred
+    id_origen: PAYEMS
+    fichero_fase1: fred/PAYEMS.parquet:PAYEMS
+    frecuencia: mensual
+    unidad: miles de personas
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: PAYEMS
+    revisable: true
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''All Employees, Total Nonfarm'', Thousands of Persons, Monthly, SA, 1939-01-01 a 2026-09-01'
+    verificado: false
+  fred:MANEMP:
+    alias: MANEMP
+    nombre: Empleo en manufacturas (desestacionalizado)
+    fuente: fred_alfred
+    id_origen: MANEMP
+    fichero_fase1: fred/MANEMP.parquet:MANEMP
+    frecuencia: mensual
+    unidad: miles de personas
+    divisa: null
+    metodo: lag_fijo
+    publicador: bls
+    lag_clave: MANEMP
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: BLS); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''All Employees, Manufacturing'', Thousands of Persons, Monthly, SA, 1939-01-01 a 2026-09-01'
+    verificado: false
+  fred:HOUST:
+    alias: HOUST
+    nombre: Viviendas iniciadas (tasa anual desestacionalizada)
+    fuente: fred_alfred
+    id_origen: HOUST
+    fichero_fase1: fred/HOUST.parquet:HOUST
+    frecuencia: mensual
+    unidad: miles de viviendas
+    divisa: null
+    metodo: lag_fijo
+    publicador: census
+    lag_clave: HOUST
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Census); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''New Privately-Owned Housing Units Started: Total Units'', Thousands of Units, Monthly, SAAR, 1959-01-01
+      a 2026-08-01'
+    verificado: false
+  fred:CFNAI:
+    alias: CFNAI
+    nombre: Índice de actividad nacional de la Fed de Chicago
+    fuente: fred_alfred
+    id_origen: CFNAI
+    fichero_fase1: fred/CFNAI.parquet:CFNAI
+    frecuencia: mensual
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: CFNAI
+    revisable: true
+    rol_fase1: core
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Chicago Fed National Activity Index'', Index, Monthly, NSA, 1967-03-01 a 2026-08-01'
+    - 'primera vintage de ALFRED 2011-05-23: cota superior de su creación (sin verificar la fecha real); sin publicado_desde para no marcar como reconstruidos años que quizá sí se publicaron'
+    verificado: false
+  fred:CFNAIMA3:
+    alias: CFNAIMA3
+    nombre: Índice de actividad nacional de la Fed de Chicago, media de 3 meses
+    fuente: fred_alfred
+    id_origen: CFNAIMA3
+    fichero_fase1: fred/CFNAIMA3.parquet:CFNAIMA3
+    frecuencia: mensual
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: CFNAIMA3
+    revisable: true
+    rol_fase1: core
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Chicago Fed National Activity Index: Three Month Moving Average'', Index, Monthly, NSA, 1967-05-01
+      a 2026-08-01'
+    - 'primera vintage de ALFRED 2011-05-23: cota superior de su creación (sin verificar la fecha real); sin publicado_desde para no marcar como reconstruidos años que quizá sí se publicaron'
+    verificado: false
+  fred:RNUSBIS:
+    alias: RNUSBIS
+    nombre: Tipo de cambio efectivo real estrecho de EE. UU. (BIS)
+    fuente: fred_alfred
+    id_origen: RNUSBIS
+    fichero_fase1: fred/RNUSBIS.parquet:RNUSBIS
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: RNUSBIS
+    revisable: true
+    rol_fase1: spine
+    licencia: 'BIS (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Real Narrow Effective Exchange Rate for United States'', Index 2020=100, Monthly, NSA, 1964-01-01
+      a 2026-07-01'
+    verificado: false
+  fred:NNUSBIS:
+    alias: NNUSBIS
+    nombre: Tipo de cambio efectivo nominal estrecho de EE. UU. (BIS)
+    fuente: fred_alfred
+    id_origen: NNUSBIS
+    fichero_fase1: fred/NNUSBIS.parquet:NNUSBIS
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NNUSBIS
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'BIS (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Narrow Effective Exchange Rate for United States'', Index 2020=100, Monthly, NSA, 1964-01-01 a
+      2026-07-01'
+    verificado: false
+  fred:UMCSENT:
+    alias: UMCSENT
+    nombre: Confianza del consumidor de la Universidad de Michigan (dato final)
+    fuente: fred_alfred
+    id_origen: UMCSENT
+    fichero_fase1: fred/UMCSENT.parquet:UMCSENT
+    frecuencia: mensual
+    unidad: índice (1966-T1 = 100)
+    divisa: null
+    metodo: lag_fijo
+    publicador: umich
+    lag_clave: UMCSENT
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Universidad de Michigan (Surveys of Consumers); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'preliminar a mitad de M y final a final de M: el lag (día 1 de M+1) ya es posterior al final'
+    - 'hasta 1977 la encuesta era trimestral o irregular: meses sin dato que no son huecos'
+    - 'FRED (2026-10-12): ''University of Michigan: Consumer Sentiment'', Index 1966:Q1=100, Monthly, NSA, 1952-11-01 a 2026-08-01'
+    - 210 meses sin dato en data/raw (medido) entre 1952-12 y 1977-12
+    verificado: false
+  fred:GACDFSA066MSFRBPHI:
+    alias: PMI_PROXY_PHILLY
+    nombre: 'Encuesta manufacturera de la Fed de Filadelfia: actividad general actual (desestacionalizada)'
+    fuente: fred_alfred
+    id_origen: GACDFSA066MSFRBPHI
+    fichero_fase1: fred/PMI_PROXY_PHILLY.parquet:PMI_PROXY_PHILLY
+    frecuencia: mensual
+    unidad: índice de difusión
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: PMI_PROXY_PHILLY
+    revisable: true
+    rol_fase1: core
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Current General Activity; Diffusion Index for Federal Reserve District 3: Philadelphia'', Index,
+      Monthly, SA, 1968-05-01 a 2026-09-01'
+    verificado: false
+  fred:A191RL1Q225SBEA:
+    alias: GDP_GROWTH_QOQ
+    nombre: PIB real, variación trimestral anualizada
+    fuente: fred_alfred
+    id_origen: A191RL1Q225SBEA
+    fichero_fase1: fred/GDP_GROWTH_QOQ.parquet:GDP_GROWTH_QOQ
+    frecuencia: trimestral
+    unidad: '% (tasa trimestral anualizada)'
+    divisa: null
+    metodo: lag_fijo
+    publicador: bea
+    lag_clave: GDP_GROWTH_QOQ
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: BEA); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'cierres del Gobierno que retrasaron el avance más allá del lag: Q3-2013 (7-nov), Q4-2018 (28-feb-2019), Q3-2025 (23-dic):
+      posible fuga de unas semanas (copia congelada de ADR-003)'
+    - 'FRED (2026-10-12): ''Real Gross Domestic Product'', Percent Change from Preceding Period, Quarterly, SAAR, 1947-04-01
+      a 2026-04-01'
+    verificado: false
+  fred:GDPC1:
+    alias: GDPC1
+    nombre: PIB real (dólares encadenados de 2017, tasa anual)
+    fuente: fred_alfred
+    id_origen: GDPC1
+    fichero_fase1: fred/GDPC1.parquet:GDPC1
+    frecuencia: trimestral
+    unidad: miles de millones de USD de 2017
+    divisa: USD
+    metodo: lag_fijo
+    publicador: bea
+    lag_clave: GDPC1
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: BEA); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - mismos retrasos por cierres del Gobierno que A191RL1Q225SBEA
+    - 'FRED (2026-10-12): ''Real Gross Domestic Product'', Billions of Chained 2017 Dollars, Quarterly, SAAR, 1947-01-01 a
+      2026-04-01'
+    verificado: false
+  fred:ICSA:
+    alias: ICSA
+    nombre: Peticiones iniciales de subsidio de paro (desestacionalizadas)
+    fuente: fred_alfred
+    id_origen: ICSA
+    fichero_fase1: fred/ICSA.parquet:ICSA
+    frecuencia: semanal
+    unidad: número de peticiones
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: ICSA
+    revisable: true
+    rol_fase1: core
+    licencia: 'dominio público (Gobierno de EE. UU.: DOL); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'fecha = sábado de fin de la semana de referencia; publicado el jueves siguiente a las 08:30 (medido: last_updated 2026-10-08
+      08:33 NY con la semana del 2026-10-03)'
+    - 'FRED (2026-10-12): ''Initial Claims'', Number, Weekly, Ending Saturday, SA, 1967-01-07 a 2026-10-03'
+    verificado: false
+  fred:NFCI:
+    alias: NFCI
+    nombre: Índice nacional de condiciones financieras de la Fed de Chicago
+    fuente: fred_alfred
+    id_origen: NFCI
+    fichero_fase1: fred/NFCI.parquet:NFCI
+    frecuencia: semanal
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NFCI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2011-05-25'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - semana que acaba el viernes; se re-estima entero cada semana
+    - 'FRED (2026-10-12): ''Chicago Fed National Financial Conditions Index'', Index, Weekly, Ending Friday, NSA, 1971-01-08
+      a 2026-10-02'
+    - 'publicado_desde 2011-05-25: NFCI creado en mayo de 2011 (primera vintage de ALFRED 2011-05-25): los valores desde 1971 son una reconstrucción; get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:STLFSI4:
+    alias: STLFSI4
+    nombre: Índice de estrés financiero de la Fed de St. Louis (v4)
+    fuente: fred_alfred
+    id_origen: STLFSI4
+    fichero_fase1: fred/STLFSI4.parquet:STLFSI4
+    frecuencia: semanal
+    unidad: índice (0 = normal)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: STLFSI4
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2022-11-10'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'medido: last_updated 2026-10-07 11:25 NY (miércoles) con el viernes 2026-10-02: el lag congelado (jueves) es conservador'
+    - 'FRED (2026-10-12): ''St. Louis Fed Financial Stress Index'', Index, Weekly, Ending Friday, NSA, 1993-12-31 a 2026-10-02'
+    - 'publicado_desde 2022-11-10: versión 4 del índice publicada desde 2022-11-10 (primera vintage de ALFRED): los valores anteriores se recalcularon con la metodología nueva; get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:IRLTLT01USM156N:
+    alias: IRLTLT01USM156N
+    nombre: Tipo de interés a largo plazo de EE. UU., bono a 10 años (OCDE, MEI)
+    fuente: fred_alfred
+    id_origen: IRLTLT01USM156N
+    fichero_fase1: fred/IRLTLT01USM156N.parquet:IRLTLT01USM156N
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: IRLTLT01USM156N
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'OCDE (CC BY 4.0); vía FRED: solo local, sin redistribuir'
+    estado: duplicada
+    duplicado_de: fred:GS10
+    notas:
+    - idéntica a GS10 (medido 879/879 desde 1953-04-01)
+    - 'FRED (2026-10-12): ''Interest Rates: Long-Term Government Bond Yields: 10-Year: Main (Including Benchmark) for United
+      States'', Percent, Monthly, NSA, 1953-04-01 a 2026-08-01'
+    verificado: false
+  fred:TWEXMMTH:
+    alias: TWEXMMTH
+    nombre: Índice del dólar frente a monedas principales, media mensual (G.5)
+    fuente: fred_alfred
+    id_origen: TWEXMMTH
+    fichero_fase1: fred/TWEXMMTH.parquet:TWEXMMTH
+    frecuencia: mensual
+    unidad: índice (marzo-1973 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: TWEXMMTH
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:TWEXAFEGSMTH
+    notas:
+    - discontinuada en 2020 (último dato 2019-12-01)
+    - 'FRED (2026-10-12): ''Nominal Major Currencies U.S. Dollar Index (Goods Only) (DISCONTINUED)'', Index Mar 1973=100,
+      Monthly, NSA, 1973-01-01 a 2019-12-01'
+    verificado: false
+  fred:TWEXAFEGSMTH:
+    alias: TWEXAFEGSMTH
+    nombre: Índice del dólar frente a economías avanzadas, media mensual (G.5)
+    fuente: fred_alfred
+    id_origen: TWEXAFEGSMTH
+    fichero_fase1: fred/TWEXAFEGSMTH.parquet:TWEXAFEGSMTH
+    frecuencia: mensual
+    unidad: índice (enero-2006 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: TWEXAFEGSMTH
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'FRED (2026-10-12): ''Nominal Advanced Foreign Economies U.S. Dollar Index'', Index Jan 2006=100, Monthly, NSA, 2006-01-01
+      a 2026-09-01'
+    verificado: false
+  fred:M13002US35620M156NNBR:
+    alias: NBER_NY_COMMERCIAL_PAPER
+    nombre: Papel comercial en Nueva York (NBER Macrohistory)
+    fuente: fred_alfred
+    id_origen: M13002US35620M156NNBR
+    fichero_fase1: fred/NBER_NY_COMMERCIAL_PAPER.parquet:NBER_NY_COMMERCIAL_PAPER
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NBER_NY_COMMERCIAL_PAPER
+    revisable: false
+    rol_fase1: spine
+    licencia: 'NBER (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    notas:
+    - serie histórica cerrada (1857-1971)
+    - 'FRED (2026-10-12): ''Commercial Paper Rates for New York, NY'', Percent, Monthly, NSA, 1857-01-01 a 1971-12-01'
+    verificado: false
+  fred:LIOR3M:
+    alias: LIBOR_3M_QUARTERLY
+    nombre: LIBOR a 3 meses en USD, trimestral (OCDE)
+    fuente: fred_alfred
+    id_origen: LIOR3M
+    fichero_fase1: fred/LIBOR_3M_QUARTERLY.parquet:LIBOR_3M_QUARTERLY
+    frecuencia: trimestral
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: LIBOR_3M_QUARTERLY
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright ICE Benchmark Administration (LIBOR); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:CPFF
+    notas:
+    - última observación 2016-10-01; las series LIBOR diarias de FRED devuelven HTTP 400
+    - 'FRED (2026-10-12): ''3-month London Interbank Offered Rate (LIBOR)'', Percent per Annum, Quarterly, NSA, 1970-01-01
+      a 2016-10-01'
+    verificado: false
+  fred:ANFCI:
+    alias: ANFCI
+    nombre: NFCI ajustado por condiciones económicas (Fed de Chicago)
+    fuente: fred_alfred
+    id_origen: ANFCI
+    fichero_fase1: fred/ANFCI.parquet:ANFCI
+    frecuencia: semanal
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: ANFCI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2011-05-25'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - mismo release que NFCI (miércoles 08:30 NY); se re-estima cada semana
+    - 'FRED (2026-10-12): ''Chicago Fed Adjusted National Financial Conditions Index'', Index, Weekly, Ending Friday, NSA,
+      1971-01-08 a 2026-10-02'
+    - 'publicado_desde 2011-05-25: ANFCI creado con el NFCI (primera vintage de ALFRED 2011-05-25); get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:NFCIRISK:
+    alias: NFCI_RISK
+    nombre: Subíndice de riesgo del NFCI
+    fuente: fred_alfred
+    id_origen: NFCIRISK
+    fichero_fase1: fred/NFCI_RISK.parquet:NFCI_RISK
+    frecuencia: semanal
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NFCI_RISK
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2012-07-05'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - mismo release que NFCI (miércoles 08:30 NY); se re-estima cada semana
+    - 'FRED (2026-10-12): ''Chicago Fed National Financial Conditions Risk Subindex'', Index, Weekly, Ending Friday, NSA,
+      1971-01-08 a 2026-10-02'
+    - 'publicado_desde 2012-07-05: subíndice del NFCI publicado desde 2012 (primera vintage de ALFRED); get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:NFCICREDIT:
+    alias: NFCI_CREDIT
+    nombre: Subíndice de crédito del NFCI
+    fuente: fred_alfred
+    id_origen: NFCICREDIT
+    fichero_fase1: fred/NFCI_CREDIT.parquet:NFCI_CREDIT
+    frecuencia: semanal
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NFCI_CREDIT
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2012-07-05'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - mismo release que NFCI (miércoles 08:30 NY); se re-estima cada semana
+    - 'FRED (2026-10-12): ''Chicago Fed National Financial Conditions Credit Subindex'', Index, Weekly, Ending Friday, NSA,
+      1971-01-08 a 2026-10-02'
+    - 'publicado_desde 2012-07-05: subíndice del NFCI publicado desde 2012 (primera vintage de ALFRED 2012-07-05); get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:NFCILEVERAGE:
+    alias: NFCI_LEVERAGE
+    nombre: Subíndice de apalancamiento del NFCI
+    fuente: fred_alfred
+    id_origen: NFCILEVERAGE
+    fichero_fase1: fred/NFCI_LEVERAGE.parquet:NFCI_LEVERAGE
+    frecuencia: semanal
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NFCI_LEVERAGE
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2012-07-05'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - mismo release que NFCI (miércoles 08:30 NY); se re-estima cada semana
+    - 'FRED (2026-10-12): ''Chicago Fed National Financial Conditions Leverage Subindex'', Index, Weekly, Ending Friday, NSA,
+      1971-01-08 a 2026-10-02'
+    - 'publicado_desde 2012-07-05: subíndice del NFCI publicado desde 2012 (primera vintage de ALFRED 2012-07-05); get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:KCFSI:
+    alias: KCFSI
+    nombre: Índice de estrés financiero de la Fed de Kansas City
+    fuente: fred_alfred
+    id_origen: KCFSI
+    fichero_fase1: fred/KCFSI.parquet:KCFSI
+    frecuencia: mensual
+    unidad: índice (0 = normal)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: KCFSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Kansas City Financial Stress Index'', Index, Monthly, NSA, 1990-02-01 a 2026-09-01'
+    - 'primera vintage de ALFRED 2010-11-08: cota superior de su creación (sin verificar la fecha real); sin publicado_desde para no marcar como reconstruidos años que quizá sí se publicaron'
+    verificado: false
+  fred:CFSI:
+    alias: CFSI
+    nombre: Índice de estrés financiero de la Fed de Cleveland
+    fuente: fred_alfred
+    id_origen: CFSI
+    fichero_fase1: fred/CFSI.parquet:CFSI
+    frecuencia: diaria
+    unidad: índice (desviaciones típicas)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: CFSI
+    revisable: true
+    rol_fase1: fallback
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - descontinuado en 2016 (último dato 2016-05-05)
+    - 'FRED (2026-10-12): ''Cleveland Financial Stress Index (DISCONTINUED)'', Z-score, Daily, 7-Day, NSA, 1991-09-25 a 2016-05-05'
+    verificado: false
+  fred:USREC:
+    alias: NBER_RECESSION_MONTHLY
+    nombre: Indicador de recesión del NBER (mensual, pico a valle)
+    fuente: fred_alfred
+    id_origen: USREC
+    fichero_fase1: fred/NBER_RECESSION_MONTHLY.parquet:NBER_RECESSION_MONTHLY
+    frecuencia: mensual
+    unidad: 0/1
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NBER_RECESSION_MONTHLY
+    revisable: true
+    rol_fase1: validation
+    licencia: 'NBER (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'fechado retroactivo por el comité del NBER: los meses recientes valen 0 hasta que se data una recesión'
+    - 'FRED (2026-10-12): ''NBER based Recession Indicators for the United States from the Period following the Peak through
+      the Trough'', +1 or 0, Monthly, NSA, 1854-12-01 a 2026-09-01'
+    verificado: false
+  fred:USRECD:
+    alias: NBER_RECESSION_DAILY
+    nombre: Indicador de recesión del NBER (diario, pico a valle)
+    fuente: fred_alfred
+    id_origen: USRECD
+    fichero_fase1: fred/NBER_RECESSION_DAILY.parquet:NBER_RECESSION_DAILY
+    frecuencia: diaria
+    unidad: 0/1
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: NBER_RECESSION_DAILY
+    revisable: true
+    rol_fase1: validation
+    licencia: 'NBER (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - idéntico a USREC en los días 1 (medido 2059/2059)
+    - 'FRED (2026-10-12): ''NBER based Recession Indicators for the United States from the Period following the Peak through
+      the Trough'', +1 or 0, Daily, 7-Day, NSA, 1854-12-01 a 2026-10-08'
+    verificado: false
+  fred:RECPROUSM156N:
+    alias: RECESSION_PROB_SMOOTHED
+    nombre: Probabilidad suavizada de recesión (Chauvet-Piger)
+    fuente: fred_alfred
+    id_origen: RECPROUSM156N
+    fichero_fase1: fred/RECESSION_PROB_SMOOTHED.parquet:RECESSION_PROB_SMOOTHED
+    frecuencia: mensual
+    unidad: '% (probabilidad)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: RECESSION_PROB_SMOOTHED
+    revisable: true
+    rol_fase1: validation
+    licencia: 'copyright Marcelle Chauvet y Jeremy Piger; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Smoothed U.S. Recession Probabilities'', Percent, Monthly, NSA, 1967-06-01 a 2026-08-01'
+    - 'primera vintage de ALFRED 2012-09-04: cota superior de su creación (sin verificar la fecha real); sin publicado_desde para no marcar como reconstruidos años que quizá sí se publicaron'
+    verificado: false
+  fred:SAHMREALTIME:
+    alias: SAHM_RULE_REALTIME
+    nombre: Regla de Sahm en tiempo real
+    fuente: fred_alfred
+    id_origen: SAHMREALTIME
+    fichero_fase1: fred/SAHM_RULE_REALTIME.parquet:SAHM_RULE_REALTIME
+    frecuencia: mensual
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: SAHM_RULE_REALTIME
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2019-09-06'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - '2025-10: sin dato (no hubo paro de octubre-2025): hueco permanente, valor nulo con nota'
+    - 'FRED (2026-10-12): ''Real-time Sahm Rule Recession Indicator'', Percentage Points, Monthly, SA, 1959-12-01 a 2026-09-01'
+    - 'meses sin dato en data/raw (medido): 2025-10'
+    - 'publicado_desde 2019-09-06: regla de Sahm propuesta en 2019 (primera vintage de ALFRED 2019-09-06): los valores anteriores son reconstrucción; get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:SAHMCURRENT:
+    alias: SAHM_RULE_CURRENT
+    nombre: Regla de Sahm con el paro actual (revisado)
+    fuente: fred_alfred
+    id_origen: SAHMCURRENT
+    fichero_fase1: fred/SAHM_RULE_CURRENT.parquet:SAHM_RULE_CURRENT
+    frecuencia: mensual
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: SAHM_RULE_CURRENT
+    revisable: true
+    rol_fase1: validation
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    publicado_desde: '2019-09-06'
+    notas:
+    - 'valores del último vintage: posible fuga de revisiones (ALFRED en el bloque 3)'
+    - 'FRED (2026-10-12): ''Sahm Rule Recession Indicator'', Percentage Points, Monthly, SA, 1949-03-01 a 2026-09-01'
+    - 'publicado_desde 2019-09-06: regla de Sahm propuesta en 2019 (primera vintage de ALFRED 2019-09-06): los valores anteriores son reconstrucción; get_serie avisa de las filas anteriores (serie reconstruida hacia atrás)'
+    verificado: false
+  fred:JHDUSRGDPBR:
+    alias: GDP_RECESSION_HAMILTON
+    nombre: Fechas de recesión según el índice de Hamilton basado en el PIB
+    fuente: fred_alfred
+    id_origen: JHDUSRGDPBR
+    fichero_fase1: fred/GDP_RECESSION_HAMILTON.parquet:GDP_RECESSION_HAMILTON
+    frecuencia: trimestral
+    unidad: 0/1
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: GDP_RECESSION_HAMILTON
+    revisable: false
+    rol_fase1: validation
+    licencia: 'James D. Hamilton (uso con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - Hamilton indica que el índice publicado no se revisa (sin contrastar)
+    - 'FRED (2026-10-12): ''Dates of U.S. recessions as inferred by GDP-based recession indicator'', +1 or 0, Quarterly, NSA,
+      1967-10-01 a 2026-01-01'
+    - 'primera vintage de ALFRED 2016-01-29: cota superior de su creación (sin verificar la fecha real); sin publicado_desde para no marcar como reconstruidos años que quizá sí se publicaron'
+    verificado: false
+  deriv:DBAA-DAAA:
+    alias: MOODYS_BAA_AAA_SPREAD
+    nombre: Diferencial Baa menos Aaa de Moody's (diario)
+    fuente: calculo_propio
+    id_origen: fred:DBAA - fred:DAAA
+    fichero_fase1: fred/MOODYS_BAA_AAA_SPREAD.parquet:MOODYS_BAA_AAA_SPREAD
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: derivada
+    componentes:
+    - fred:DBAA
+    - fred:DAAA
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright Moody''s; vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - data/raw trae el diferencial ya calculado (Fase 1); sus componentes los baja el extractor de FRED para fechar cada valor
+      (máxima fecha_publicacion de DBAA y DAAA)
+    verificado: false
+  deriv:DED3-DTB3:
+    alias: EURODOLLAR_TBILL_SPREAD
+    nombre: Eurodólar 3M menos letra del Tesoro 3M (TED original)
+    fuente: calculo_propio
+    id_origen: fred:DED3 - fred:DTB3
+    fichero_fase1: fred/EURODOLLAR_TBILL_SPREAD.parquet:EURODOLLAR_TBILL_SPREAD
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: derivada
+    componentes:
+    - fred:DED3
+    - fred:DTB3
+    revisable: false
+    rol_fase1: spine
+    licencia: 'dominio público (Gobierno de EE. UU.: Fed, Tesoro); vía FRED: solo local, sin redistribuir'
+    estado: retirada
+    sucesor: fred:CPFF
+    notas:
+    - = DED3 - DTB3 (medido 11370/11370 idénticos); termina con DED3 en 2016-10-07
+    - 'sucesor: CPFF (papel comercial - fondos federales); TEDRATE también está retirada'
+    verificado: false
+  deriv:SOFR-EFFR:
+    alias: null
+    nombre: SOFR menos EFFR (presión de financiación garantizada)
+    fuente: calculo_propio
+    id_origen: fred:SOFR - fred:EFFR
+    frecuencia: diaria
+    unidad: puntos porcentuales
+    divisa: null
+    metodo: derivada
+    componentes:
+    - fred:SOFR
+    - fred:EFFR
+    revisable: false
+    rol_fase1: null
+    licencia: 'Bancos de la Reserva Federal (uso libre con cita); vía FRED: solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - sustituto decidido del TED para el tramo vivo (desde 2018-04-03)
+    verificado: false
+  deriv:VOLREAL21_GSPC:
+    alias: REALIZED_VOL_SP500
+    nombre: Volatilidad realizada del S&P 500 (21 sesiones, anualizada)
+    fuente: calculo_propio
+    id_origen: std(log-rentabilidades de yf:^GSPC, 21) * sqrt(252)
+    fichero_fase1: yfinance/REALIZED_VOL_SP500.parquet:REALIZED_VOL_SP500
+    frecuencia: diaria
+    unidad: tanto por uno anualizado
+    divisa: null
+    metodo: derivada
+    componentes:
+    - yf:^GSPC
+    revisable: false
+    rol_fase1: spine
+    licencia: 'derivada de S&P Dow Jones Indices (vía Yahoo Finance): solo local'
+    estado: activa
+    notas:
+    - 'data/raw (rederivada el 2026-09-29) llega a 2026-09-28 con un ^GSPC más reciente que el de data/raw: recalcular desde
+      yf:^GSPC para fechar cada valor'
+    - 'descarga Fase 1 2026-09-29 04:21 NY; última barra 2026-09-28 completa (regla: descartar la barra con fecha >= día de
+      descarga)'
+    verificado: false
+  yf:^GSPC:
+    alias:
+    - SP500
+    - SP500_DAILY_DRAWDOWN_SRC
+    nombre: Índice S&P 500 (precio)
+    fuente: yfinance
+    id_origen: ^GSPC
+    fichero_fase1:
+    - yfinance/SP500.parquet:SP500
+    - yfinance/SP500_DAILY_DRAWDOWN_SRC.parquet:SP500_DAILY_DRAWDOWN_SRC
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - SP500_DAILY_DRAWDOWN_SRC es el mismo ^GSPC (alias); solo difiere en la última barra intradía
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^SP500TR:
+    alias: SP500_TR
+    nombre: Índice S&P 500 Total Return (dividendos reinvertidos)
+    fuente: yfinance
+    id_origen: ^SP500TR
+    fichero_fase1: yfinance/SP500_TR.parquet:SP500_TR
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^IXIC:
+    alias: NASDAQ_COMP
+    nombre: Índice Nasdaq Composite
+    fuente: yfinance
+    id_origen: ^IXIC
+    fichero_fase1: yfinance/NASDAQ_COMP.parquet:NASDAQ_COMP
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNAS
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright Nasdaq; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^NYA:
+    alias: NYSE_COMP
+    nombre: Índice NYSE Composite
+    fuente: yfinance
+    id_origen: ^NYA
+    fichero_fase1: yfinance/NYSE_COMP.parquet:NYSE_COMP
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright ICE/NYSE; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^OEX:
+    alias: SP100
+    nombre: Índice S&P 100
+    fuente: yfinance
+    id_origen: ^OEX
+    fichero_fase1: yfinance/SP100.parquet:SP100
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^SP400:
+    alias: SP_MIDCAP400
+    nombre: Índice S&P MidCap 400
+    fuente: yfinance
+    id_origen: ^SP400
+    fichero_fase1: yfinance/SP_MIDCAP400.parquet:SP_MIDCAP400
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^SP600:
+    alias: SP_SMALLCAP600
+    nombre: Índice S&P SmallCap 600
+    fuente: yfinance
+    id_origen: ^SP600
+    fichero_fase1: yfinance/SP_SMALLCAP600.parquet:SP_SMALLCAP600
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^DJI:
+    alias: DJIA
+    nombre: Índice Dow Jones Industrial Average
+    fuente: yfinance
+    id_origen: ^DJI
+    fichero_fase1: yfinance/DJIA.parquet:DJIA
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^RUT:
+    alias: RUSSELL2000
+    nombre: Índice Russell 2000
+    fuente: yfinance
+    id_origen: ^RUT
+    fichero_fase1: yfinance/RUSSELL2000.parquet:RUSSELL2000
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright FTSE Russell; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^RUA:
+    alias: RUSSELL3000
+    nombre: Índice Russell 3000
+    fuente: yfinance
+    id_origen: ^RUA
+    fichero_fase1: yfinance/RUSSELL3000.parquet:RUSSELL3000
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright FTSE Russell; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^RUI:
+    alias: RUSSELL1000
+    nombre: Índice Russell 1000
+    fuente: yfinance
+    id_origen: ^RUI
+    fichero_fase1: yfinance/RUSSELL1000.parquet:RUSSELL1000
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright FTSE Russell; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^W5000:
+    alias: WILSHIRE5000
+    nombre: Índice Wilshire 5000 Total Market
+    fuente: yfinance
+    id_origen: ^W5000
+    fichero_fase1: yfinance/WILSHIRE5000.parquet:WILSHIRE5000
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Wilshire (FT Wilshire); vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY; última barra 2026-07-17 completa (regla: descartar la barra con fecha >= día de
+      descarga)'
+    verificado: false
+  yf:^SKEW:
+    alias: SKEW
+    nombre: Índice Cboe SKEW (riesgo de cola del S&P 500)
+    fuente: yfinance
+    id_origen: ^SKEW
+    fichero_fase1: yfinance/SKEW.parquet:SKEW
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:37 NY; última barra 2026-07-17 completa (regla: descartar la barra con fecha >= día de
+      descarga)'
+    verificado: false
+  yf:^VIX9D:
+    alias: VIX9D
+    nombre: Índice de volatilidad Cboe a 9 días
+    fuente: yfinance
+    id_origen: ^VIX9D
+    fichero_fase1: yfinance/VIX9D.parquet:VIX9D
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^VIX3M:
+    alias: VIX3M
+    nombre: Índice de volatilidad Cboe a 3 meses
+    fuente: yfinance
+    id_origen: ^VIX3M
+    fichero_fase1: yfinance/VIX3M.parquet:VIX3M
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^VIX6M:
+    alias: VIX6M
+    nombre: Índice de volatilidad Cboe a 6 meses
+    fuente: yfinance
+    id_origen: ^VIX6M
+    fichero_fase1: yfinance/VIX6M.parquet:VIX6M
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^VVIX:
+    alias: VVIX
+    nombre: Índice Cboe VVIX (volatilidad del VIX)
+    fuente: yfinance
+    id_origen: ^VVIX
+    fichero_fase1: yfinance/VVIX.parquet:VVIX
+    frecuencia: diaria
+    unidad: puntos de índice (volatilidad implícita anualizada, %)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^MOVE:
+    alias: MOVE
+    nombre: Índice ICE BofA MOVE (volatilidad implícita de los Treasuries)
+    fuente: yfinance
+    id_origen: ^MOVE
+    fichero_fase1: yfinance/MOVE.parquet:MOVE
+    frecuencia: diaria
+    unidad: puntos básicos (volatilidad normal implícita anualizada)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CME
+    revisable: false
+    rol_fase1: core
+    licencia: 'copyright ICE Data Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'mercado CME (opciones sobre futuros de Treasuries, cierre 17:00 NY): visible en t+1 (conservador)'
+    - Yahoo lo actualiza con retraso (~1 semana según el catálogo de la Fase 1)
+    - 'descarga Fase 1 2026-07-20 15:38 NY; última barra 2026-07-17 completa (regla: descartar la barra con fecha >= día de
+      descarga)'
+    verificado: false
+  yf:^SPGSCI:
+    alias: SPGSCI
+    nombre: Índice S&P GSCI de materias primas
+    fuente: yfinance
+    id_origen: ^SPGSCI
+    fichero_fase1: yfinance/SPGSCI.parquet:SPGSCI
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: CME
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright S&P Dow Jones Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'cierre de los futuros que lo componen: mercado CME (17:00 NY, t+1; conservador)'
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^BCOM:
+    alias: BCOM
+    nombre: Índice Bloomberg Commodity
+    fuente: yfinance
+    id_origen: ^BCOM
+    fichero_fase1: yfinance/BCOM.parquet:BCOM
+    frecuencia: diaria
+    unidad: puntos de índice
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: CME
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright Bloomberg; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'cierre de los futuros que lo componen: mercado CME (17:00 NY, t+1; conservador)'
+    - 'descarga Fase 1 2026-07-20 15:37 NY; última barra 2026-07-17 completa (regla: descartar la barra con fecha >= día de
+      descarga)'
+    verificado: false
+  yf:DX-Y.NYB:
+    alias: DXY
+    nombre: Índice dólar ICE (DXY)
+    fuente: yfinance
+    id_origen: DX-Y.NYB
+    fichero_fase1: yfinance/DXY.parquet:DXY
+    frecuencia: diaria
+    unidad: puntos de índice (marzo-1973 = 100)
+    divisa: null
+    metodo: cierre_mercado
+    mercado: ICE_DXY
+    revisable: false
+    rol_fase1: spine
+    licencia: 'copyright ICE Data Indices; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 1971-1973 es historia reconstruida (el DXY nace en 1973)
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:GC=F:
+    alias: GOLD_FUT
+    nombre: Futuro continuo del oro (COMEX, contrato activo de Yahoo)
+    fuente: yfinance
+    id_origen: GC=F
+    fichero_fase1: yfinance/GOLD_FUT.parquet:GOLD_FUT
+    frecuencia: diaria
+    unidad: USD por onza troy
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: CME
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'datos de CME Group; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'serie continua de Yahoo sin ajustar: saltos en los cambios de vencimiento'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^TNX:
+    alias: TNX_YF
+    nombre: Índice Cboe del rendimiento del Tesoro a 10 años
+    fuente: yfinance
+    id_origen: ^TNX
+    fichero_fase1: yfinance/TNX_YF.parquet:TNX_YF
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'no es copia de DGS10 (medido: 50,7 % de días idénticos, |dif| máx. 0,11)'
+    - 'descarga Fase 1 2026-07-20 15:37 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^FVX:
+    alias: FVX_YF
+    nombre: Índice Cboe del rendimiento del Tesoro a 5 años
+    fuente: yfinance
+    id_origen: ^FVX
+    fichero_fase1: yfinance/FVX_YF.parquet:FVX_YF
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'no es copia de DGS5 (medido: 50,9 % de días idénticos, |dif| máx. 0,18)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^TYX:
+    alias: TYX_YF
+    nombre: Índice Cboe del rendimiento del Tesoro a 30 años
+    fuente: yfinance
+    id_origen: ^TYX
+    fichero_fase1: yfinance/TYX_YF.parquet:TYX_YF
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'no es copia de DGS30 (medido: 36,8 % de días idénticos, |dif| máx. 0,29)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:^IRX:
+    alias: IRX_YF
+    nombre: Índice Cboe de la letra del Tesoro a 13 semanas
+    fuente: yfinance
+    id_origen: ^IRX
+    fichero_fase1: yfinance/IRX_YF.parquet:IRX_YF
+    frecuencia: diaria
+    unidad: '% anual (base descuento)'
+    divisa: null
+    metodo: cierre_mercado
+    mercado: CBOE_IDX
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'copyright Cboe Global Markets; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: activa
+    notas:
+    - 'no es copia de DTB3 (medido: 56,3 % de días idénticos, |dif| máx. 0,51)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:SPY:
+    alias: SP500_CAPWEIGHT_ETF
+    nombre: SPDR S&P 500 ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: SPY
+    fichero_fase1: yfinance/SP500_CAPWEIGHT_ETF.parquet:SP500_CAPWEIGHT_ETF
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:RSP:
+    alias: SP500_EW
+    nombre: Invesco S&P 500 Equal Weight ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: RSP
+    fichero_fase1: yfinance/SP500_EW.parquet:SP500_EW
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLK:
+    alias: SPDR_XLK
+    nombre: Technology Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLK
+    fichero_fase1: yfinance/SPDR_XLK.parquet:SPDR_XLK
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLF:
+    alias: SPDR_XLF
+    nombre: Financial Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLF
+    fichero_fase1: yfinance/SPDR_XLF.parquet:SPDR_XLF
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLE:
+    alias: SPDR_XLE
+    nombre: Energy Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLE
+    fichero_fase1: yfinance/SPDR_XLE.parquet:SPDR_XLE
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLV:
+    alias: SPDR_XLV
+    nombre: Health Care Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLV
+    fichero_fase1: yfinance/SPDR_XLV.parquet:SPDR_XLV
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLI:
+    alias: SPDR_XLI
+    nombre: Industrial Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLI
+    fichero_fase1: yfinance/SPDR_XLI.parquet:SPDR_XLI
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLY:
+    alias: SPDR_XLY
+    nombre: Consumer Discretionary Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLY
+    fichero_fase1: yfinance/SPDR_XLY.parquet:SPDR_XLY
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLP:
+    alias: SPDR_XLP
+    nombre: Consumer Staples Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLP
+    fichero_fase1: yfinance/SPDR_XLP.parquet:SPDR_XLP
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLU:
+    alias: SPDR_XLU
+    nombre: Utilities Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLU
+    fichero_fase1: yfinance/SPDR_XLU.parquet:SPDR_XLU
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLB:
+    alias: SPDR_XLB
+    nombre: Materials Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLB
+    fichero_fase1: yfinance/SPDR_XLB.parquet:SPDR_XLB
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLRE:
+    alias: XLRE_REALESTATE
+    nombre: Real Estate Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLRE
+    fichero_fase1: yfinance/XLRE_REALESTATE.parquet:XLRE_REALESTATE
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:XLC:
+    alias: XLC_COMMSERVICES
+    nombre: Communication Services Select Sector SPDR (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: XLC
+    fichero_fase1: yfinance/XLC_COMMSERVICES.parquet:XLC_COMMSERVICES
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:IWM:
+    alias: IWM_SMALL
+    nombre: iShares Russell 2000 ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: IWM
+    fichero_fase1: yfinance/IWM_SMALL.parquet:IWM_SMALL
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:IWD:
+    alias: IWD_VALUE
+    nombre: iShares Russell 1000 Value ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: IWD
+    fichero_fase1: yfinance/IWD_VALUE.parquet:IWD_VALUE
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:IWF:
+    alias: IWF_GROWTH
+    nombre: iShares Russell 1000 Growth ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: IWF
+    fichero_fase1: yfinance/IWF_GROWTH.parquet:IWF_GROWTH
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:GLD:
+    alias: GOLD_GLD
+    nombre: SPDR Gold Shares (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: GLD
+    fichero_fase1: yfinance/GOLD_GLD.parquet:GOLD_GLD
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:HYG:
+    alias: HYG_CREDIT
+    nombre: iShares iBoxx High Yield Corporate Bond ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: HYG
+    fichero_fase1: yfinance/HYG_CREDIT.parquet:HYG_CREDIT
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:IEF:
+    alias: IEF_TREASURY
+    nombre: iShares 7-10 Year Treasury Bond ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: IEF
+    fichero_fase1: yfinance/IEF_TREASURY.parquet:IEF_TREASURY
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:LQD:
+    alias: LQD_IGCREDIT
+    nombre: iShares iBoxx Investment Grade Corporate Bond ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: LQD
+    fichero_fase1: yfinance/LQD_IGCREDIT.parquet:LQD_IGCREDIT
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:TLT:
+    alias: TLT_TREASURY
+    nombre: iShares 20+ Year Treasury Bond ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: TLT
+    fichero_fase1: yfinance/TLT_TREASURY.parquet:TLT_TREASURY
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: core
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:39 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:SPHB:
+    alias: SPHB_HIGHBETA
+    nombre: Invesco S&P 500 High Beta ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: SPHB
+    fichero_fase1: yfinance/SPHB_HIGHBETA.parquet:SPHB_HIGHBETA
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:SPLV:
+    alias: SPLV_LOWVOL
+    nombre: Invesco S&P 500 Low Volatility ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: SPLV
+    fichero_fase1: yfinance/SPLV_LOWVOL.parquet:SPLV_LOWVOL
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  yf:MTUM:
+    alias: MTUM_MOMENTUM
+    nombre: iShares MSCI USA Momentum Factor ETF (cierre ajustado de Yahoo)
+    fuente: yfinance
+    id_origen: MTUM
+    fichero_fase1: yfinance/MTUM_MOMENTUM.parquet:MTUM_MOMENTUM
+    frecuencia: diaria
+    unidad: USD por participación (ajustado a posteriori)
+    divisa: USD
+    metodo: cierre_mercado
+    mercado: XNYS
+    revisable: false
+    rol_fase1: enricher
+    licencia: 'precios de mercado de ETF; vía Yahoo Finance: uso personal, solo local, sin redistribuir'
+    estado: excluida_ajustada
+    notas:
+    - 'descargada con auto_adjust=True: niveles reajustados a posteriori por dividendos y splits (fuga); no entra en la base
+      de series: se servirá as-traded por get_precios (bloque 6)'
+    - 'descarga Fase 1 2026-07-20 15:38 NY: la última barra (2026-07-20) es intradía -> se descarta al cargar'
+    verificado: false
+  ff:F3D.Mkt-RF:
+    alias: FF_FACTORS_3_DAILY
+    nombre: 'Fama-French: exceso de rentabilidad del mercado (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_Factors_daily:Mkt-RF
+    fichero_fase1:
+    - academico/FF_FACTORS_3_DAILY.parquet:Mkt-RF
+    - academico/FF_FACTORS_3_DAILY.parquet:FF_FACTORS_3_DAILY
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: spine
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - la columna FF_FACTORS_3_DAILY de data/raw es una copia de Mkt-RF (alias)
+    verificado: false
+  ff:F3D.SMB:
+    alias: null
+    nombre: 'Fama-French: factor tamaño SMB (diario, 3 factores)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_Factors_daily:SMB
+    fichero_fase1: academico/FF_FACTORS_3_DAILY.parquet:SMB
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: spine
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:F3D.HML:
+    alias: null
+    nombre: 'Fama-French: factor valor HML (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_Factors_daily:HML
+    fichero_fase1: academico/FF_FACTORS_3_DAILY.parquet:HML
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: spine
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:F3D.RF:
+    alias: null
+    nombre: 'Fama-French: tipo libre de riesgo (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_Factors_daily:RF
+    fichero_fase1: academico/FF_FACTORS_3_DAILY.parquet:RF
+    frecuencia: diaria
+    unidad: '% (tipo del día)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: spine
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:F5D.Mkt-RF:
+    alias: FF_FACTORS_5_DAILY
+    nombre: 'Fama-French 5 factores: exceso de rentabilidad del mercado (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:Mkt-RF
+    fichero_fase1:
+    - academico/FF_FACTORS_5_DAILY.parquet:Mkt-RF
+    - academico/FF_FACTORS_5_DAILY.parquet:FF_FACTORS_5_DAILY
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: duplicada
+    duplicado_de: ff:F3D.Mkt-RF
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - idéntico a F3D.Mkt-RF (medido 15897/15897 desde 1963-07-01); la columna FF_FACTORS_5_DAILY es copia (alias)
+    verificado: false
+  ff:F5D.SMB:
+    alias: null
+    nombre: 'Fama-French 5 factores: SMB (diario, 2x3)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:SMB
+    fichero_fase1: academico/FF_FACTORS_5_DAILY.parquet:SMB
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'distinto del SMB de 3 factores (medido: 7,4 % idénticos)'
+    verificado: false
+  ff:F5D.HML:
+    alias: null
+    nombre: 'Fama-French 5 factores: HML (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:HML
+    fichero_fase1: academico/FF_FACTORS_5_DAILY.parquet:HML
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: duplicada
+    duplicado_de: ff:F3D.HML
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - idéntico a F3D.HML (medido 15897/15897 desde 1963-07-01)
+    verificado: false
+  ff:F5D.RMW:
+    alias: null
+    nombre: 'Fama-French 5 factores: rentabilidad operativa RMW (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:RMW
+    fichero_fase1: academico/FF_FACTORS_5_DAILY.parquet:RMW
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:F5D.CMA:
+    alias: null
+    nombre: 'Fama-French 5 factores: inversión CMA (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:CMA
+    fichero_fase1: academico/FF_FACTORS_5_DAILY.parquet:CMA
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:F5D.RF:
+    alias: null
+    nombre: 'Fama-French 5 factores: tipo libre de riesgo (diario)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_5_Factors_2x3_daily:RF
+    fichero_fase1: academico/FF_FACTORS_5_DAILY.parquet:RF
+    frecuencia: diaria
+    unidad: '% (tipo del día)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: duplicada
+    duplicado_de: ff:F3D.RF
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - idéntico a F3D.RF (medido 15897/15897 desde 1963-07-01)
+    verificado: false
+  ff:MOMD.Mom:
+    alias: FF_MOM_DAILY
+    nombre: 'Fama-French: factor momentum (diario)'
+    fuente: ken_french
+    id_origen: F-F_Momentum_Factor_daily:Mom
+    fichero_fase1: academico/FF_MOM_DAILY.parquet:FF_MOM_DAILY
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'revisión completa entre ediciones (medido en el bloque 2): la edición de data/raw (2026-07-20) y la del 2026-09-25 difieren en 14699 de 26152 días comunes (máx. 3,79 pp; correlación 0,994; no es un desfase de fechas). La base guarda la última: los valores antiguos no son los que se conocían en su fecha'
+    verificado: false
+  ff:F3M.Mkt-RF:
+    alias: FF_FACTORS_3_MONTHLY
+    nombre: 'Fama-French: exceso de rentabilidad del mercado (mensual)'
+    fuente: ken_french
+    id_origen: F-F_Research_Data_Factors:Mkt-RF
+    fichero_fase1: academico/FF_FACTORS_3_MONTHLY.parquet:FF_FACTORS_3_MONTHLY
+    frecuencia: mensual
+    unidad: '% (rentabilidad mensual)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: fallback
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'data/raw solo guardó Mkt-RF del fichero mensual (SMB, HML y RF mensuales: pendientes)'
+    verificado: false
+  ff:IND5D.Cnsmr:
+    alias: FF_5_INDUSTRY
+    nombre: 'Ken French, 5 carteras sectoriales: consumo (diario, ponderada por valor)'
+    fuente: ken_french
+    id_origen: 5_Industry_Portfolios_daily:Cnsmr
+    fichero_fase1:
+    - academico/FF_5_INDUSTRY.parquet:Cnsmr
+    - academico/FF_5_INDUSTRY.parquet:FF_5_INDUSTRY
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - la columna FF_5_INDUSTRY de data/raw es una copia de Cnsmr (alias)
+    verificado: false
+  ff:IND5D.Manuf:
+    alias: null
+    nombre: 'Ken French, 5 carteras sectoriales: manufacturas (diario, ponderada por valor)'
+    fuente: ken_french
+    id_origen: 5_Industry_Portfolios_daily:Manuf
+    fichero_fase1: academico/FF_5_INDUSTRY.parquet:Manuf
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:IND5D.HiTec:
+    alias: null
+    nombre: 'Ken French, 5 carteras sectoriales: alta tecnología (diario, ponderada por valor)'
+    fuente: ken_french
+    id_origen: 5_Industry_Portfolios_daily:HiTec
+    fichero_fase1: academico/FF_5_INDUSTRY.parquet:HiTec
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:IND5D.Hlth:
+    alias: null
+    nombre: 'Ken French, 5 carteras sectoriales: salud (diario, ponderada por valor)'
+    fuente: ken_french
+    id_origen: 5_Industry_Portfolios_daily:Hlth
+    fichero_fase1: academico/FF_5_INDUSTRY.parquet:Hlth
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  ff:IND5D.Other:
+    alias: null
+    nombre: 'Ken French, 5 carteras sectoriales: otros (diario, ponderada por valor)'
+    fuente: ken_french
+    id_origen: 5_Industry_Portfolios_daily:Other
+    fichero_fase1: academico/FF_5_INDUSTRY.parquet:Other
+    frecuencia: diaria
+    unidad: '% (rentabilidad diaria)'
+    divisa: null
+    metodo: fichero
+    lag_clave: FF_MENSUAL
+    revisable: true
+    rol_fase1: enricher
+    licencia: 'Kenneth R. French Data Library (uso académico con cita; datos CRSP): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.Index:
+    alias: null
+    nombre: 'Goyal-Welch: S&P 500 a fin de mes'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):Index
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:Index
+    frecuencia: mensual
+    unidad: puntos de índice
+    divisa: USD
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.D12:
+    alias: null
+    nombre: 'Goyal-Welch: Dividendos del S&P 500, suma de 12 meses'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):D12
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:D12
+    frecuencia: mensual
+    unidad: USD por índice
+    divisa: USD
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.E12:
+    alias: null
+    nombre: 'Goyal-Welch: Beneficios del S&P 500, suma de 12 meses'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):E12
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:E12
+    frecuencia: mensual
+    unidad: USD por índice
+    divisa: USD
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.bm:
+    alias: null
+    nombre: 'Goyal-Welch: Valor contable sobre valor de mercado del DJIA'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):b/m
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:b/m
+    frecuencia: mensual
+    unidad: ratio
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.tbl:
+    alias: null
+    nombre: 'Goyal-Welch: Letra del Tesoro a 3 meses'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):tbl
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:tbl
+    frecuencia: mensual
+    unidad: tanto por uno anual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    duplicado_de: fred:TB3MS
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - = TB3MS / 100 (medido 1104/1104 desde 1934-01-01)
+    - '= TB3MS / 100 en el tramo común (1934-): duplicado_de con factor 1/100; se deja activa porque cubre 1920-1933, que TB3MS no tiene (filtrar los duplicados perdería 14 años)'
+    verificado: false
+  gw:M.AAA:
+    alias: null
+    nombre: 'Goyal-Welch: Rendimiento de bonos corporativos Aaa (Moody''s)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):AAA
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:AAA
+    frecuencia: mensual
+    unidad: tanto por uno anual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: duplicada
+    duplicado_de: fred:AAA
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - = AAA de FRED / 100 (medido 1284/1284)
+    verificado: false
+  gw:M.BAA:
+    alias: null
+    nombre: 'Goyal-Welch: Rendimiento de bonos corporativos Baa (Moody''s)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):BAA
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:BAA
+    frecuencia: mensual
+    unidad: tanto por uno anual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: duplicada
+    duplicado_de: fred:BAA
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - = BAA de FRED / 100 (medido 1284/1284)
+    verificado: false
+  gw:M.lty:
+    alias: null
+    nombre: 'Goyal-Welch: Rendimiento del bono público a largo plazo (Ibbotson)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):lty
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:lty
+    frecuencia: mensual
+    unidad: tanto por uno anual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'no es GS10 (medido: 10,4 % idénticos)'
+    verificado: false
+  gw:M.ntis:
+    alias: null
+    nombre: 'Goyal-Welch: Emisión neta de acciones de la NYSE (ntis)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):ntis
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:ntis
+    frecuencia: mensual
+    unidad: tanto por uno
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.Rfree:
+    alias: null
+    nombre: 'Goyal-Welch: Tipo libre de riesgo mensual'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):Rfree
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:Rfree
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.infl:
+    alias: null
+    nombre: 'Goyal-Welch: Inflación mensual del IPC'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):infl
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:infl
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.ltr:
+    alias: null
+    nombre: 'Goyal-Welch: Rentabilidad del bono público a largo plazo'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):ltr
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:ltr
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.corpr:
+    alias: null
+    nombre: 'Goyal-Welch: Rentabilidad de bonos corporativos a largo plazo'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):corpr
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:corpr
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.svar:
+    alias: null
+    nombre: 'Goyal-Welch: Varianza realizada del mercado (suma de rentabilidades diarias al cuadrado)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):svar
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:svar
+    frecuencia: mensual
+    unidad: tanto por uno al cuadrado (mensual)
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.csp:
+    alias: null
+    nombre: 'Goyal-Welch: Prima transversal (cross-sectional premium)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):csp
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:csp
+    frecuencia: mensual
+    unidad: tanto por uno
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: retirada
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - termina en 2002-12 en el fichero de Goyal-Welch
+    verificado: false
+  gw:M.CRSP_SPvw:
+    alias: null
+    nombre: 'Goyal-Welch: Rentabilidad del S&P 500 con dividendos (CRSP)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):CRSP_SPvw
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:CRSP_SPvw
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  gw:M.CRSP_SPvwx:
+    alias: null
+    nombre: 'Goyal-Welch: Rentabilidad del S&P 500 sin dividendos (CRSP)'
+    fuente: goyal_welch
+    id_origen: GoogleSheet 1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ (hoja Monthly):CRSP_SPvwx
+    fichero_fase1: academico/GW_PREDICTORS_MONTHLY.parquet:CRSP_SPvwx
+    frecuencia: mensual
+    unidad: tanto por uno mensual
+    divisa: null
+    metodo: fichero
+    lag_clave: GW_ANUAL
+    revisable: true
+    rol_fase1: core
+    licencia: 'Goyal-Welch (uso académico con cita; datos CRSP/S&P): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    verificado: false
+  shiller:CAPE:
+    alias: SHILLER_SP500_CAPE
+    nombre: CAPE de Shiller (PER ajustado al ciclo, 10 años)
+    fuente: shiller
+    id_origen: ie_data.xls (col CAPE)
+    fichero_fase1: academico/SHILLER_SP500_CAPE.parquet:SHILLER_SP500_CAPE
+    frecuencia: mensual
+    unidad: ratio (precio real / media de 10 años de beneficios reales)
+    divisa: null
+    metodo: fichero
+    lag_clave: SHILLER_FICHERO
+    revisable: true
+    rol_fase1: spine
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'los últimos meses usan beneficios estimados o interpolados y el mes en curso aparece antes de cerrar (medido: septiembre-2026
+      ya estaba el 2026-09-29): se revisan'
+    - 'regla SHILLER_FICHERO (1M1D) en lugar de la copia congelada (1D): la edición del 2026-09-02 trajo agosto 2 días después
+      del día 1 (medido, bloque 2)'
+    verificado: false
+  shiller:LONGRATE:
+    alias: SHILLER_LONGRATE
+    nombre: Tipo de interés a largo de Shiller (bono a 10 años)
+    fuente: shiller
+    id_origen: ie_data.xls (col Long Interest Rate)
+    fichero_fase1: academico/SHILLER_LONGRATE.parquet:SHILLER_LONGRATE
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: fichero
+    lag_clave: SHILLER_FICHERO
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita): solo local'
+    estado: activa
+    duplicado_de: fred:GS10
+    fase1_utilizable: false
+    notas:
+    - 'data/raw NO utilizable: 153 fechas repetidas (los octubres ''1871.10'' se leyeron como enero ''1871.1''); re-extraer
+      de ie_data.xls'
+    - 'el fichero de data/raw es el espejo de Yale, congelado en 2024-09; en shillerdata.com (ie_data.xls) la columna llega a
+      2026-09 sin huecos entre 1871-01 y 2026-08 (medido 2026-10-12): la base la re-extrae de ahí (fuentes.academicos)'
+    - 'desde 1953-04 coincide con GS10 en 876 de 879 meses de ie_data.xls (medido en la base del bloque 2): 2018-05 por redondeo; 2019-06 y 2019-07 por un error de Shiller (2019-07 = 1,63, el valor de agosto)'
+    verificado: false
+  shiller:P:
+    alias: null
+    nombre: 'Shiller: S&P Composite, media mensual de cierres diarios (P)'
+    fuente: shiller
+    id_origen: ie_data.xls (col P)
+    frecuencia: mensual
+    unidad: puntos de índice (media mensual)
+    divisa: USD
+    metodo: fichero
+    lag_clave: SHILLER_FICHERO
+    revisable: true
+    rol_fase1: null
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita; copyright S&P Dow Jones Indices): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'el mes en curso aparece con el cierre del día 1 (provisional): fuentes.academicos lo descarta'
+    verificado: false
+  shiller:D:
+    alias: null
+    nombre: 'Shiller: dividendos del S&P Composite, anualizados (D)'
+    fuente: shiller
+    id_origen: ie_data.xls (col D)
+    frecuencia: mensual
+    unidad: USD por índice (anualizado)
+    divisa: USD
+    metodo: fichero
+    lag_clave: SHILLER_DE
+    revisable: true
+    rol_fase1: null
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita; copyright S&P Dow Jones Indices): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'el mes en curso aparece con el cierre del día 1 (provisional): fuentes.academicos lo descarta'
+    - 'D llega con retraso trimestral: medido junio-2026 como último en la edición del 2026-09-02'
+    verificado: false
+  shiller:E:
+    alias: null
+    nombre: 'Shiller: beneficios del S&P Composite, anualizados (E)'
+    fuente: shiller
+    id_origen: ie_data.xls (col E)
+    frecuencia: mensual
+    unidad: USD por índice (anualizado)
+    divisa: USD
+    metodo: fichero
+    lag_clave: SHILLER_DE
+    revisable: true
+    rol_fase1: null
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita; copyright S&P Dow Jones Indices): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'el mes en curso aparece con el cierre del día 1 (provisional): fuentes.academicos lo descarta'
+    - 'E llega con retraso trimestral: medido junio-2026 como último en la edición del 2026-09-02'
+    verificado: false
+  shiller:CPI:
+    alias: null
+    nombre: 'Shiller: IPC de EE. UU. (CPI de la hoja)'
+    fuente: shiller
+    id_origen: ie_data.xls (col CPI)
+    frecuencia: mensual
+    unidad: índice
+    divisa: null
+    metodo: fichero
+    lag_clave: SHILLER_FICHERO
+    revisable: true
+    rol_fase1: null
+    licencia: 'Robert J. Shiller, ie_data.xls (uso académico con cita; copyright S&P Dow Jones Indices): solo local'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'el mes en curso aparece con el cierre del día 1 (provisional): fuentes.academicos lo descarta'
+    - 'los últimos meses son estimaciones de Shiller'
+    verificado: false
+  datahub:US10Y_MENSUAL:
+    alias: GH_US10Y_MONTHLY
+    nombre: Rendimiento del Tesoro a 10 años, mensual (espejo datahub)
+    fuente: datahub
+    id_origen: datasets/bond-yields-us-10y:data/monthly.csv
+    fichero_fase1: github/GH_US10Y_MONTHLY.parquet:GH_US10Y_MONTHLY
+    frecuencia: mensual
+    unidad: '% anual'
+    divisa: null
+    metodo: fichero
+    lag_clave: GH_US10Y_MONTHLY
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'ODC-PDDL-1.0 (datahub.io; derivado de FRED/Shiller): solo local'
+    estado: duplicada
+    duplicado_de: fred:GS10
+    notas:
+    - idéntica a GS10 (medido 878/878 desde 1953-04-01)
+    verificado: false
+  datahub:SP500_MENSUAL:
+    alias: SP500_MONTHLY_DEEP_SRC
+    nombre: S&P 500 mensual desde 1871 (precio medio de Shiller, espejo datahub)
+    fuente: datahub
+    id_origen: datasets/s-and-p-500:data/data.csv (SP500)
+    fichero_fase1: github/SP500_MONTHLY_DEEP_SRC.parquet:SP500_MONTHLY_DEEP_SRC
+    frecuencia: mensual
+    unidad: puntos de índice (media mensual)
+    divisa: USD
+    metodo: fichero
+    lag_clave: SP500_MONTHLY_DEEP_SRC
+    revisable: false
+    rol_fase1: fallback
+    licencia: 'ODC-PDDL-1.0 (datahub.io; derivado de FRED/Shiller): solo local'
+    estado: activa
+    duplicado_de: shiller:P
+    notas:
+    - 'no es el Index de fin de mes de Goyal-Welch (medido: 35,9 % idénticos)'
+    - 'copia del precio medio mensual de Shiller (shiller:P): coincide en 1833 de 1866 meses; los 33 distintos, desde 2023-09, son valores provisionales congelados en el espejo de datahub (medido en el bloque 2)'
+    verificado: false
+  ofr:FSI:
+    alias: OFR_FSI
+    nombre: Índice de estrés financiero de la OFR (total)
+    fuente: ofr_fsi
+    id_origen: fsi.csv:OFR FSI
+    fichero_fase1: ofr/OFR_FSI.parquet:OFR_FSI
+    frecuencia: diaria
+    unidad: índice (0 = estrés medio)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: OFR_FSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'dominio público (Gobierno de EE. UU.: OFR)'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'modelo de factores dinámico: la historia puede cambiar al re-estimarse (sin medir)'
+    - 'fsi.csv oficial: HTTP 200 con el User-Agent identificable de ingesta.comun.http y robots.txt que lo permite (medido
+      2026-10-12; la Fase 1 creía que hacía falta un User-Agent de navegador)'
+    verificado: false
+  ofr:FSI_CREDIT:
+    alias: OFR_FSI_CREDIT
+    nombre: 'OFR FSI: aportación del crédito'
+    fuente: ofr_fsi
+    id_origen: fsi.csv:Credit
+    fichero_fase1: ofr/OFR_FSI_CREDIT.parquet:OFR_FSI_CREDIT
+    frecuencia: diaria
+    unidad: índice (0 = estrés medio)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: OFR_FSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'dominio público (Gobierno de EE. UU.: OFR)'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'modelo de factores dinámico: la historia puede cambiar al re-estimarse (sin medir)'
+    - 'fsi.csv oficial: HTTP 200 con el User-Agent identificable de ingesta.comun.http y robots.txt que lo permite (medido
+      2026-10-12; la Fase 1 creía que hacía falta un User-Agent de navegador)'
+    verificado: false
+  ofr:FSI_FUNDING:
+    alias: OFR_FSI_FUNDING
+    nombre: 'OFR FSI: aportación de la financiación'
+    fuente: ofr_fsi
+    id_origen: fsi.csv:Funding
+    fichero_fase1: ofr/OFR_FSI_FUNDING.parquet:OFR_FSI_FUNDING
+    frecuencia: diaria
+    unidad: índice (0 = estrés medio)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: OFR_FSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'dominio público (Gobierno de EE. UU.: OFR)'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'modelo de factores dinámico: la historia puede cambiar al re-estimarse (sin medir)'
+    - 'fsi.csv oficial: HTTP 200 con el User-Agent identificable de ingesta.comun.http y robots.txt que lo permite (medido
+      2026-10-12; la Fase 1 creía que hacía falta un User-Agent de navegador)'
+    verificado: false
+  ofr:FSI_VOLATILITY:
+    alias: OFR_FSI_VOLATILITY
+    nombre: 'OFR FSI: aportación de la volatilidad'
+    fuente: ofr_fsi
+    id_origen: fsi.csv:Volatility
+    fichero_fase1: ofr/OFR_FSI_VOLATILITY.parquet:OFR_FSI_VOLATILITY
+    frecuencia: diaria
+    unidad: índice (0 = estrés medio)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: OFR_FSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'dominio público (Gobierno de EE. UU.: OFR)'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'modelo de factores dinámico: la historia puede cambiar al re-estimarse (sin medir)'
+    - 'fsi.csv oficial: HTTP 200 con el User-Agent identificable de ingesta.comun.http y robots.txt que lo permite (medido
+      2026-10-12; la Fase 1 creía que hacía falta un User-Agent de navegador)'
+    verificado: false
+  ofr:FSI_US:
+    alias: OFR_FSI_US
+    nombre: 'OFR FSI: aportación de EE. UU.'
+    fuente: ofr_fsi
+    id_origen: fsi.csv:United States
+    fichero_fase1: ofr/OFR_FSI_US.parquet:OFR_FSI_US
+    frecuencia: diaria
+    unidad: índice (0 = estrés medio)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: OFR_FSI
+    revisable: true
+    rol_fase1: validation
+    licencia: 'dominio público (Gobierno de EE. UU.: OFR)'
+    estado: activa
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)'
+    - 'modelo de factores dinámico: la historia puede cambiar al re-estimarse (sin medir)'
+    - 'fsi.csv oficial: HTTP 200 con el User-Agent identificable de ingesta.comun.http y robots.txt que lo permite (medido
+      2026-10-12; la Fase 1 creía que hacía falta un User-Agent de navegador)'
+    verificado: false

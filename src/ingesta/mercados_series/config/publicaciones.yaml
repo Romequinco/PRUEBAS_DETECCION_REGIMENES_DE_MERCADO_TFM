@@ -15,7 +15,14 @@
 #     fuente:      URL del calendario o de la nota metodológica
 #     verificado:  true solo si se ha contrastado con la fuente oficial
 #     notas:       (opcional) lista de aclaraciones
+#     festivos_moviles: (opcional) [viernes_santo]: días sin publicación que el calendario 'habiles'
+#                  no recoge (SOFR sigue a SIFMA, que cierra en Viernes Santo)
+#     previo:      (opcional) {hasta: AAAA-MM-DD, publicador: clave}: los datos hasta 'hasta' se
+#                  fechan con otro publicador (vigencias: la hora medida hoy no vale para el pasado)
 #     (visibilidad.disponible_publicador(clave, fecha) → instante UTC de publicación)
+#   Las fechas de las series de Moody's, de los diferenciales que calcula FRED, de SOFR/EFFR y del
+#   papel comercial se contrastan además con la primera vintage de ALFRED, observación a
+#   observación: config/excepciones_publicacion.csv (fecha = max(regla, ALFRED)).
 #
 #   series:  una entrada por id canónico (o patrón con '*', p. ej. 'ecb:EXR.D.*.EUR')
 #     fuente:             id de la ficha de la fuente (results/ingesta/mercados_series/fichas/)
@@ -24,13 +31,20 @@
 #     hora_local:         "HH:MM" de publicación declarada (null si solo se conoce el día)
 #     huso:               huso IANA de hora_local
 #     margen_min:         minutos extra tras hora_local (0 salvo que se declare)
-#     lag:                solo lag_fijo: retraso desde el FIN del periodo de referencia ("35D", "1M"...)
+#     lag:                solo lag_fijo (y fichero): retraso desde el FIN del periodo de referencia:
+#                         "<n>D" días naturales, "<n>M" fines de mes (MonthEnd) o "<n>M<m>D" (primero
+#                         los fines de mes); fin = último día del periodo ('fin_periodo' de
+#                         config/lags.yaml) o la propia fecha. Ejemplo: "1M1D" desde el fin de enero =
+#                         1 de marzo (catalogo.fecha_publicacion_lag; conversión en lags.yaml)
 #     mercado:            solo cierre_mercado: clave de mercados.yaml
 #     componentes:        solo derivada: ids de los que depende (fecha_publicacion = la máxima;
 #                         contrato.fecha_publicacion_derivada)
 #     calendario:         URL o fichero del calendario oficial (calendario, vintage_exacto)
 #     revisable:          (opcional) true si la fuente revisa valores ya publicados: entonces la
-#                         serie se carga con vintages (ALFRED, ediciones), nunca con 'unico'
+#                         serie se carga con vintages (ALFRED, ediciones), nunca con 'unico'. Única
+#                         excepción (bloque 2, declarada en el catálogo): metodo lag_fijo o fichero con
+#                         la nota obligatoria catalogo.NOTA_REVISABLE (series de data/raw con el
+#                         último vintage; el bloque 3 las sustituye por vintages exactos)
 #     notas:              lista de incidencias (huecos permanentes, retrasos, cambios de hora)
 #     verificado:         true solo si se ha contrastado con la fuente oficial
 #     (claves desconocidas o que falten las que exige el método: error al cargar)
@@ -39,13 +53,16 @@
 #     (us_federal | target): lista de {fecha, motivo}. es_habil y disponible_publicador los usan
 #     por defecto. Añadir uno solo retrasa publicaciones (conservador), nunca las adelanta.
 #
-# PENDIENTE (extractores): resto de series FRED/ALFRED, BCE, Eurostat, OCDE, curvas, etc.
+# Series del Tema 1 (bloque 2): viven en config/catalogo_series.yaml (una entrada por serie, con su
+# parte de publicación validada con estas mismas reglas) y se fusionan al cargar
+# (visibilidad.cargar_publicaciones). Aquí solo quedan las que aún no están catalogadas (BCE) y los
+# patrones. Un id o alias declarado en los dos ficheros es un error.
+# PENDIENTE (extractores): BCE, Eurostat, OCDE, curvas, etc.
 # Regla para los extractores: una serie revisable (PIB, empleo, producción...) no se vuelca con el
 # histórico de hoy y vintage 'unico' (sería el valor revisado con la fecha de la primera
 # publicación): se carga con sus vintages (ALFRED realtime_start) o se declara revisable: false.
 
-alias:
-  VIX: "fred:VIXCLS"
+alias:   # los alias de la Fase 1 (VIX, SP500...) están en catalogo_series.yaml
   EURUSD: "ecb:EXR.D.USD.EUR"
 
 publicadores:
@@ -96,9 +113,15 @@ publicadores:
     dia: siguiente_habil
     habiles: us_federal
     fuente: https://www.federalreserve.gov/releases/h15/
-    verificado: false
+    verificado: true
     notas:
-      - "Actualización diaria: el dato de D se publica el día hábil siguiente hacia las 16:15 NY (sin contrastar)"
+      - "Página oficial (2026-10-12): 'The release is posted daily Monday through Friday at 4:15pm'"
+      - "Medido en ALFRED (bloque 2): DGS10 y DTB3 15/15 y DFF 15/15 días hábiles de sep-oct 2026 con realtime_start = hábil siguiente; FRED last_updated 16:16 NY (DGS10, DTB3, DFF, DFII10, DPCREDIT)"
+      - "DFF trae sábados y domingos (el tipo del viernes): salen con el dato del lunes, el martes (medido 6/6). Regla de siguiente_habil: hábil posterior al primer hábil >= D"
+      - "FRED release 18: 444 fechas de publicación de 2025-01-02 a 2026-10-09, todas de lunes a viernes"
+      - "Histórico (sonda del bloque 2, sin reproducir): en mar-jun de 2012 ALFRED registra DGS10 y DTB3 con 1 a 3 días de retraso sobre el hábil siguiente en 8 de 86 días (DFF 10 de 122); en 2026, 0. Supuesto: es la carga de FRED, no la Fed, que publicaba el H.15 diario en su web; no se aplican excepciones a H.15 diario"
+      - "Antes de 2005-06-28 (primera vintage de DGS10 en ALFRED) no se puede medir; antes de 2017 el H.15 impreso era semanal: la regla 'hábil siguiente' supone la edición diaria en la web (pendiente de contrastar en el bloque 3)"
+      - "Sondas: results/ingesta/mercados_series/tablas/sondas_horas_bloque2.csv"
 
   fed_h10:
     hora: "16:15"
@@ -106,9 +129,99 @@ publicadores:
     dia: lunes_siguiente
     habiles: us_federal
     fuente: https://www.federalreserve.gov/releases/h10/
+    verificado: true
+    notas:
+      - "Página oficial (2026-10-12): 'On Mondays at 4:15 p.m. the Federal Reserve Board releases daily...'"
+      - "Medido en ALFRED (bloque 2): DEXUSEU, 25/25 observaciones de ago-oct 2026 publicadas el lunes siguiente o el martes 2026-09-08 (lunes 7 festivo); FRED last_updated 16:16 NY (DEXUSEU, DTWEXBGS)"
+      - "FRED release 17: 92 fechas de 2025-01-06 a 2026-10-05 (83 lunes, 9 martes tras festivo)"
+
+  moodys:
+    hora: "12:00"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://fred.stlouisfed.org/series/DBAA
+    verificado: true
+    notas:
+      - "Rendimientos diarios de Moody's (DBAA, DAAA) en FRED: el dato de D aparece el hábil siguiente (ALFRED, DBAA 15/15 en sep-oct 2026)"
+      - "Hora: una muestra de FRED last_updated (DBAA y DAAA, 2026-10-09 11:31 NY); Moody's no publica calendario. Cualquier hora <= 16:30 da la misma fecha de decisión (D+1)"
+      - "FRED es la vía pública de Moody's: su retraso es el real. Moody's dejó de estar en FRED de oct-2016 a mar-2017 (todo publicado el 2017-03-22) y hay días sueltos en D+2/D+3 (2026: 7 de 193): excepciones por observación con la primera vintage de ALFRED (config/excepciones_publicacion.csv)"
+
+  fred_tesoro_calculadas:
+    hora: "17:05"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://fred.stlouisfed.org/series/T10Y2Y
+    verificado: true
+    notas:
+      - "Diferenciales y breakevens que calcula FRED con la curva diaria del Tesoro (T10Y2Y, T10Y3M, T10YIE, T5YIE, T5YIFR): el dato de D sale el MISMO día D (ALFRED: T10Y2Y y T10YIE 16/16 con realtime_start = D) hacia las 17:03 NY (last_updated 2026-10-09) → visible en la decisión de D+1"
+      - "Antes del 2019-06-21 FRED los calculaba con H.15 (D+1 a las 16:15): 'previo' fecha esos datos con fed_h15. Con la hora de hoy, el diferencial de un viernes se veía el sábado y sus componentes el lunes (2339 filas de T10Y2Y)"
+    previo: {hasta: "2019-06-20", publicador: fed_h15}
+
+  fred_calculadas_dia_siguiente:
+    hora: "17:05"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://fred.stlouisfed.org/series/BAA10Y
+    verificado: true
+    notas:
+      - "Diferenciales que FRED calcula con un componente que sale en D+1 (Moody's o DFF de H.15): BAA10Y, T10YFF, T5YFF, CPFF, TEDRATE"
+      - "Medido: ALFRED BAA10Y 15/15 y CPFF 7/7 con realtime_start = hábil siguiente; FRED last_updated 17:03 NY (BAA10Y, T10YFF, T5YFF, CPFF) → visible en la decisión de D+2"
+      - "Conservador: con los componentes (DBAA 11:31 y DGS10 16:15 de D+1) el valor ya sería calculable en la decisión de D+1"
+
+  nyfed_sofr:
+    hora: "08:00"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://www.newyorkfed.org/markets/reference-rates/sofr
     verificado: false
     notas:
-      - "Semanal: los tipos diarios de la semana salen el lunes siguiente (martes si el lunes es festivo)"
+      - "Página oficial (2026-10-12): 'Each business day, the New York Fed publishes the SOFR ... at approximately 8:00 a.m. ET' (dato del hábil anterior); FRED last_updated 08:02 NY"
+      - "SOFR sigue el calendario de SIFMA: Viernes Santo sin publicación (festivos_moviles), que us_federal no recoge. Medido en ALFRED: el dato del 2026-04-02 salió el lunes 2026-04-06. Otros cierres de SIFMA sueltos: excepciones de ALFRED"
+    festivos_moviles: [viernes_santo]
+
+  nyfed_effr:
+    hora: "09:00"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://www.newyorkfed.org/markets/reference-rates/effr
+    verificado: true
+    notas:
+      - "Página oficial (2026-10-12): 'The New York Fed publishes the EFFR for the prior business day ... at approximately 9:00 a.m.'; FRED last_updated 09:02 NY (EFFR y OBFR)"
+
+  fed_cp:
+    hora: "16:15"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://www.federalreserve.gov/releases/cp/
+    verificado: false
+    notas:
+      - "Tipos de papel comercial (DCPF3M): una muestra de FRED last_updated (2026-10-07 16:16 NY con el dato del 06); CPFF, calculada con él, sale en D+1 (ALFRED 7/7)"
+
+  ice_bofa_fred:
+    hora: "09:15"
+    huso: America/New_York
+    dia: siguiente_habil
+    habiles: us_federal
+    fuente: https://fred.stlouisfed.org/series/BAMLH0A0HYM2
+    verificado: false
+    notas:
+      - "OAS e índices ICE BofA en FRED: una muestra de last_updated (2026-10-09 09:08 NY con el dato del 08); un vintage por día hábil en ALFRED"
+      - "Medido (bloque 2): last_updated 2026-10-09 09:08-09:09 NY en las 8 OAS con el dato del 08. ALFRED fecha la vintage el mismo día del dato (24/24 D+0), antes de la carga real: realtime_start no vale para la hora"
+
+  nyfed_wei:
+    hora: "12:00"
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.newyorkfed.org/research/policy/weekly-economic-index
+    verificado: false
+    notas:
+      - "Weekly Economic Index: los jueves, con la semana que acaba el sábado anterior; una muestra de FRED last_updated (2026-10-08 11:46 NY). Con vintage_exacto la fecha es la del vintage (realtime_start)"
+      - "ALFRED: 428 vintages 2020-04-16..2026-10-08 (jueves 328, martes 89, miércoles 10, viernes 1)"
 
   treasury_curva:
     hora: "18:00"
@@ -158,23 +271,7 @@ publicadores:
     notas:
       - "Confianza del consumidor (preliminar y final) a las 10:00 NY"
 
-series:
-  "fred:UNRATE":
-    fuente: fred_alfred
-    metodo: vintage_exacto
-    publicador: bls
-    hora_local: "08:30"
-    huso: America/New_York
-    margen_min: 0
-    calendario: https://www.bls.gov/schedule/news_release/empsit.htm
-    revisable: true
-    notas:
-      - "2025-10: nunca publicado (cierre del Gobierno federal); fila con valor nulo y nota"
-      - "2025-09: publicado el 2025-11-20 (previsto 2025-10-03)"
-      - "2026-01: publicado el 2026-02-11 (previsto 2026-02-06) por el cierre parcial del Gobierno"
-      - "Encuesta de hogares: sin revisiones mensuales; la revisión anual de factores estacionales sale con el informe de enero y reescribe ~5 años de datos desestacionalizados"
-    verificado: false
-
+series:   # las del Tema 1 están en catalogo_series.yaml
   "ecb:EXR.D.*.EUR":
     fuente: ecb_exr
     metodo: calendario
