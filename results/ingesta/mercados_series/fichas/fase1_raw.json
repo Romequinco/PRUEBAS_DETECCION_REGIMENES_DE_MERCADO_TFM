@@ -1,0 +1,130 @@
+{
+  "fuente": "fase1_raw",
+  "nombre": "data/raw de la Fase 1 (instantánea agregada de FRED, yfinance, Ken French, Goyal-Welch, Shiller, datahub y OFR)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "equity",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "data/raw (repositorio, gitignored; procedencia en data/raw/provenance.json)",
+  "acceso": "descarga",
+  "autenticacion": "ninguna (local; FRED_API_KEY solo en la descarga original de la Fase 1)",
+  "coste": "0 €",
+  "licencia_y_terminos": "mixta: FRED solo local, sin redistribuir; ICE, S&P, Moody's, Cboe, FTSE Russell, Nasdaq, Bloomberg y Wilshire con copyright (marca 'licencia' del catálogo); Ken French, Goyal-Welch y Shiller de uso académico. This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+  "cobertura_inicio": "1854-12-01",
+  "cobertura_fin": "2026-08-31",
+  "frecuencia": "diaria, semanal, mensual y trimestral (según serie)",
+  "retraso_publicacion": "regla de cada serie (no es una medición): fecha_publicacion - fecha_referencia = calendario: mediana 1 d (de 1 a 9); cierre_mercado: mediana 1 d (de 0 a 1); derivada: mediana 1 d (de 0 a 6); fichero: mediana 75 d (de 45 a 578); lag_fijo: mediana 61 d (de 5 a 761). Medido en ALFRED (primera vintage de cada observación, output_type=4) en 63 series de FRED: 12375 de 65065 periodos se publicaron después de la regla (hasta 272 días: cierres del Gobierno, Moody's 2016-17, medias de H.15 de 1997-2016) y se corrigen con config/excepciones_publicacion.csv; holgura mediana de la regla 0.0 días",
+  "formato": "parquet (una columna por serie; FF y Goyal-Welch multicolumna)",
+  "volumen_estimado": "166 parquet, 16.8 MB; 1349499 filas en la tabla larga",
+  "limites": "instantánea estática (sin actualización): la sustituyen los extractores del bloque 2-3; las revisables llevan el último vintage (fuga de revisiones posible)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "series_con_fichero": 192,
+    "series_cargadas": 167,
+    "excluidas": {
+      "estado excluida_ajustada": 24,
+      "fase1_utilizable: false (parquet de data/raw no fiable)": 1
+    },
+    "filas": 1349499,
+    "valores": 1349282,
+    "huecos_declarados": 217,
+    "series_con_huecos": [
+      "fred:CPIAUCSL",
+      "fred:CPILFESL",
+      "fred:DGS20",
+      "fred:DTB1YR",
+      "fred:SAHMREALTIME",
+      "fred:UMCSENT",
+      "fred:UNRATE"
+    ],
+    "barras_intradia_descartadas": 22,
+    "periodos_provisionales_descartados": {
+      "shiller:CAPE": 1
+    },
+    "filas_derivadas_sin_componentes": {
+      "deriv:VOLREAL21_GSPC": 50
+    },
+    "copias_alias_distintas": 0,
+    "retraso_por_metodo_regla": {
+      "calendario": {
+        "series": 36,
+        "lag_mediano_dias": 1.0,
+        "lag_min_dias": 1,
+        "lag_max_dias": 9
+      },
+      "cierre_mercado": {
+        "series": 38,
+        "lag_mediano_dias": 1.0,
+        "lag_min_dias": 0,
+        "lag_max_dias": 1
+      },
+      "derivada": {
+        "series": 3,
+        "lag_mediano_dias": 1.0,
+        "lag_min_dias": 0,
+        "lag_max_dias": 6
+      },
+      "fichero": {
+        "series": 37,
+        "lag_mediano_dias": 75.0,
+        "lag_min_dias": 45,
+        "lag_max_dias": 578
+      },
+      "lag_fijo": {
+        "series": 53,
+        "lag_mediano_dias": 61.0,
+        "lag_min_dias": 5,
+        "lag_max_dias": 761
+      }
+    },
+    "publicacion_medida_alfred": {
+      "series_medidas": 63,
+      "periodos_cubiertos": 65065,
+      "periodos_con_fuga_de_la_regla": 12375,
+      "series_con_fugas": 54,
+      "fuga_max_dias": 272,
+      "holgura_mediana_dias_mediana": 0.0,
+      "tabla": "results/ingesta/mercados_series/tablas/publicacion_alfred_medida.csv"
+    },
+    "fin_por_frecuencia": {
+      "diaria": {
+        "series": 100,
+        "fin_mediano": "2026-07-17"
+      },
+      "mensual": {
+        "series": 56,
+        "fin_mediano": "2026-06-01"
+      },
+      "semanal": {
+        "series": 7,
+        "fin_mediano": "2026-07-10"
+      },
+      "trimestral": {
+        "series": 4,
+        "fin_mediano": "2025-10-01"
+      }
+    },
+    "dias_de_descarga_ny": {
+      "2026-07-20": 161,
+      "2026-09-29": 5
+    },
+    "desfase_descarga_yfinance_dias": {
+      "mediana": 3.0,
+      "max": 3
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.fase1 (tabla_fase1, resumen_fase1); detalle por serie en results/ingesta/mercados_series/tablas/fase1_resumen.csv (metadatos, sin valores)",
+    "Fechas de publicación por la regla del catálogo (cierre de mercado, publicador, lag de lags.yaml, máxima de componentes); disponible_utc solo donde se conoce la hora (cierres y publicadores)",
+    "yfinance: se descarta la barra con fecha >= día de descarga; la descarga del 2026-07-20 fue a las 15:37 NY (intradía). El instante está declarado en config/descargas_fase1.yaml (medido con el mtime): si data/raw se copia o restaura y el mtime cambia, se avisa y manda lo declarado",
+    "Ficheros académicos: se descartan los periodos no cerrados el día de la descarga (Shiller trae el mes en curso, provisional)",
+    "ETF de yfinance con auto_adjust=True fuera de la base (excluida_ajustada; get_precios en el bloque 6)",
+    "Huecos permanentes: en periódicas (mensual, trimestral, semanal), una fila nula con nota por periodo sin dato; en diarias, una fila nula con nota tras cada interrupción de más de 31 días naturales",
+    "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis."
+  ],
+  "fecha_sonda": "2026-10-12"
+}
