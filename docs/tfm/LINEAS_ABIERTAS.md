@@ -46,6 +46,9 @@ Fase 2 (ADR-005 §2.3).
 
 ## 4. Dónde vivirá el código de las fases 2–5
 
-**Abierto.** Opciones: nuevos paquetes en este repositorio (junto a `regimenes`) o un repositorio aparte que consuma
+**Fase 2: decidido.** En este repositorio, paquete `src/ingesta` con un subpaquete por tema y una rama por persona
+([`docs/fase2`](../fase2/README.md)); sus dependencias pesadas, en un entorno aparte para no alterar la huella de la Fase 1.
+
+**Fases 3–5: abierto.** Opciones: nuevos paquetes en este repositorio (junto a `regimenes`) o un repositorio aparte que consuma
 `get_regimen`. Se decidirá en una ADR propia. Criterios a considerar: aislamiento de dependencias (LLM, vectores), caché y
 reproducibilidad de la Fase 1, y despliegue.

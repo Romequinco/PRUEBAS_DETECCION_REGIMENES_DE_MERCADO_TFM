@@ -51,7 +51,8 @@ Secuencia propuesta al tutor: (1) cerrar la Fase 1, (2) catálogo de tools, (3) 
 | Fase | Ubicación |
 |:---:|---|
 | 1 | Este repositorio: paquete [`src/regimenes`](../../src/regimenes) y notebooks `00`–`20` (ver el [README raíz](../../README.md)). Sub-fases internas históricas: 1–4 (re-base de datos, ADR-001), D detectores, E fusión, S sintéticos, F decisión final y validación pseudolive. Todas se leen como **sub-fases de la Fase 1**. |
-| 2–5 | Por decidir: paquetes nuevos en este repositorio o un repositorio aparte (ver [LINEAS_ABIERTAS.md](LINEAS_ABIERTAS.md)). |
+| 2 | Paquete [`src/ingesta`](../../src/ingesta), un subpaquete por tema (mercados y series, bancos centrales y riesgo, empresas, noticias y alternativos), cada uno en su rama. Reparto y reglas: [`docs/fase2`](../fase2/README.md). |
+| 3–5 | Por decidir (ver [LINEAS_ABIERTAS.md](LINEAS_ABIERTAS.md)). |
 
 Salida de la Fase 1: la tool `get_regimen(fecha)`. El notebook `19_decision_final` congela la regla y define el
 contrato; `20_pseudolive` lo valida sobre datos no usados.

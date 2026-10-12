@@ -88,6 +88,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── README.md · pyproject.toml · requirements.txt · Makefile · .env.example
 ├── configs/            catalog.yaml (universo + crisis) · benchmark_spec.yaml (banco congelado) · sinteticos.yaml
 ├── src/regimenes/      el paquete (tabla de arriba)
+├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
 ├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos)
 ├── notebooks/          00–20, planos y ordenados (tabla abajo)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/

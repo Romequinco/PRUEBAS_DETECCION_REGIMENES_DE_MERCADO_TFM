@@ -1,0 +1,3 @@
+# Dependencias propias del Tema 3 · Empresas: filings, fundamentales y sentimiento (buscar_filings, get_fundamentales).
+# Instalar: python -m pip install -r requirements/ingesta-empresas.txt
+# Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.

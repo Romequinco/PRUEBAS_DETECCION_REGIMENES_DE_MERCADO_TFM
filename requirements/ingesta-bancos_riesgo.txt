@@ -1,0 +1,3 @@
+# Dependencias propias del Tema 2 · Bancos centrales, riesgo sistémico y literatura (buscar_macro, buscar_riesgo).
+# Instalar: python -m pip install -r requirements/ingesta-bancos_riesgo.txt
+# Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.

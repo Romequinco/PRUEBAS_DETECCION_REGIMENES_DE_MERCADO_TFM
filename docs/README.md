@@ -13,6 +13,7 @@ docs/
 ├── GLOSARIO.md             conceptos canónicos + términos del TFM + rutas y módulos + pipeline 00–20 (Fase 1)
 ├── references.bib          bibliografía ÚNICA del TFM
 ├── tfm/                    el TFM completo: arquitectura, cliente y carteras, datos alternativos, líneas abiertas
+├── fase2/                  Fase 2 (datos de los agentes): reparto en cuatro temas, ramas y reglas comunes
 ├── decisions/              ADR-001 … ADR-005
 ├── datos/                  SOTA_datos.md · EDA_v2.md · figs_eda/
 ├── teoria/                 README · 00_estado_del_arte.md · F1…F8_*.md (+ .bib por familia)

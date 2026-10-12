@@ -1,0 +1,3 @@
+# Dependencias propias del Tema 4 · Noticias y datos alternativos (buscar_noticias, get_polymarket).
+# Instalar: python -m pip install -r requirements/ingesta-noticias_alt.txt
+# Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.

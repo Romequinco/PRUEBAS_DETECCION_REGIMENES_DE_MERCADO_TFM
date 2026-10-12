@@ -267,3 +267,7 @@ results/sinteticos/**/*.npz
 # Laboratorio (notebook 17): filas JSON por trabajo y logs; se versiona el consolidado filas.csv
 results/sinteticos/laboratorio/filas/
 results/sinteticos/laboratorio/*.log*
+
+# Fase 2 (ingesta): corpus pesado local y entornos aparte
+/corpus/
+.venv-*/

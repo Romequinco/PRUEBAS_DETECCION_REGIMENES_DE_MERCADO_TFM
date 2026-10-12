@@ -66,13 +66,14 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["regimenes*"]
+include = ["regimenes*", "ingesta*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = [
     "datos: necesita data/raw o data/processed locales (gitignored); se salta si faltan",
     "resultados: lee results/benchmark versionado (transitorio si un benchmark lo esta reescribiendo)",
+    "live: Fase 2 (ingesta), toca la red; se salta salvo INGESTA_LIVE=1",
 ]
 
 # Ruff: configuracion minima (lint, sin reformateo). Uso: ``ruff check src tests``.

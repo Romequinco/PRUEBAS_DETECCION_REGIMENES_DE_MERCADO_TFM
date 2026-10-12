@@ -1,0 +1,3 @@
+# Dependencias propias del Tema 1 · Mercados y series numéricas (get_precios, get_serie).
+# Instalar: python -m pip install -r requirements/ingesta-mercados_series.txt
+# Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
