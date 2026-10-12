@@ -1,0 +1,153 @@
+{
+  "fuente": "shiller",
+  "nombre": "Robert J. Shiller: ie_data.xls (S&P Composite, dividendos, beneficios, CPI, tipo largo, CAPE)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "macro",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://shillerdata.com/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Robert J. Shiller, datos de 'Irrational Exuberance' (shillerdata.com): uso académico con cita; precios del S&P Composite con copyright S&P Dow Jones Indices: solo local, sin redistribuir",
+  "cobertura_inicio": "1871-01-01",
+  "cobertura_fin": "2026-08-01",
+  "frecuencia": "mensual; edición irregular",
+  "retraso_publicacion": "medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no está medido): la primera edición conocida con el último periodo sale 2-64 días tras su fin (series vigentes); reglas del catálogo: 1M1D desde el fin de mes (4 series) y 3M1D desde el fin de trimestre (2 series) (regla - primera decisión tras esa edición: 29 a 29 días)",
+  "formato": "xls",
+  "volumen_estimado": "1.67 MB por edición (1 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ediciones": {
+      "ie_data.xls": [
+        {
+          "fecha_edicion": "2026-09-02T17:51:53+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:17.107008+00:00",
+          "bytes": 1674752
+        }
+      ]
+    },
+    "descargas": [
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 1674752,
+        "descargado_utc": "2026-10-12T16:05:17.107008+00:00",
+        "error": null
+      }
+    ],
+    "series": {
+      "shiller:CAPE": {
+        "origen": "crudo",
+        "n_obs": 1748,
+        "n_huecos": 0,
+        "inicio": "1881-01-01",
+        "fin": "2026-08-01",
+        "retraso_edicion_dias": 2.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 1,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1749.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "shiller:CPI": {
+        "origen": "crudo",
+        "n_obs": 1868,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2026-08-01",
+        "retraso_edicion_dias": 2.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 1,
+        "filas_con_cota": 0,
+        "fase1_comunes": null,
+        "fase1_distintos": null,
+        "fase1_max_abs": null
+      },
+      "shiller:D": {
+        "origen": "crudo",
+        "n_obs": 1866,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2026-06-01",
+        "retraso_edicion_dias": 64.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": null,
+        "fase1_distintos": null,
+        "fase1_max_abs": null
+      },
+      "shiller:E": {
+        "origen": "crudo",
+        "n_obs": 1866,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2026-06-01",
+        "retraso_edicion_dias": 64.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": null,
+        "fase1_distintos": null,
+        "fase1_max_abs": null
+      },
+      "shiller:LONGRATE": {
+        "origen": "crudo",
+        "n_obs": 1868,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2026-08-01",
+        "retraso_edicion_dias": 2.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 1,
+        "filas_con_cota": 0,
+        "fase1_comunes": null,
+        "fase1_distintos": null,
+        "fase1_max_abs": null
+      },
+      "shiller:P": {
+        "origen": "crudo",
+        "n_obs": 1868,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2026-08-01",
+        "retraso_edicion_dias": 2.0,
+        "regla_vs_edicion_dias": 29.0,
+        "provisionales_descartados": 1,
+        "filas_con_cota": 0,
+        "fase1_comunes": null,
+        "fase1_distintos": null,
+        "fase1_max_abs": null
+      }
+    },
+    "copias_data_raw": {
+      "academico/SHILLER_SP500_CAPE.parquet": {
+        "descarga_ny": "2026-09-29 04:21",
+        "ultimo": "2026-09-01",
+        "fechas_repetidas": 0,
+        "octubres": 145
+      },
+      "academico/SHILLER_LONGRATE.parquet": {
+        "descarga_ny": "2026-07-20 15:38",
+        "ultimo": "2024-09-01",
+        "fechas_repetidas": 153,
+        "octubres": 0
+      }
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.academicos (crudos en <corpus>/mercados_series/crudo/shiller/, un fichero por día de descarga con su .meta.json)",
+    "fecha_publicacion = max(regla del catálogo, primera decisión tras la última vez que se vio una edición sin ese periodo); periodos no cerrados en la fecha de edición: provisionales, fuera",
+    "Fechas AAAA.MM: 1871.1 es octubre (regresión del bug de la Fase 1: 153 octubres leídos como enero en SHILLER_LONGRATE)",
+    "La última fila es el mes en curso con el cierre del día 1 (nota al pie de la hoja): se descarta; CPI de los últimos meses estimado por Shiller",
+    "El espejo de Yale (econ.yale.edu) está congelado en 2024-09: no se usa"
+  ],
+  "fecha_sonda": "2026-10-12"
+}

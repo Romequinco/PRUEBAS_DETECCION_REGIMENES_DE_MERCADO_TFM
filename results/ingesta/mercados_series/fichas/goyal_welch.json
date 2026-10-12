@@ -1,0 +1,303 @@
+{
+  "fuente": "goyal_welch",
+  "nombre": "Goyal-Welch: predictores de la prima de riesgo (hoja mensual)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "macro",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://sites.google.com/view/agoyal145",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Amit Goyal (Welch y Goyal 2008, actualizada): uso académico con cita; incluye datos CRSP, S&P y Moody's con copyright: solo local, sin redistribuir",
+  "cobertura_inicio": "1871-01-01",
+  "cobertura_fin": "2025-12-01",
+  "frecuencia": "mensual; edición anual",
+  "retraso_publicacion": "medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no está medido): la primera edición conocida con el último periodo sale 201-201 días tras su fin (series vigentes); reglas del catálogo: 7M1D desde el fin de anio (17 series) (regla - primera decisión tras esa edición: 12 a 12 días)",
+  "formato": "xlsx (Google Sheet exportada)",
+  "volumen_estimado": "0.49 MB por edición (1 fichero(s))",
+  "limites": "Google redirige a googleusercontent; 1 petición/s",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ediciones": {
+      "gw_predictores.xlsx": [
+        {
+          "fecha_edicion": "2026-08-18T16:17:12+00:00",
+          "fuente_fecha": "xlsx_modificado",
+          "visto": "2026-10-12T16:05:17.992561+00:00",
+          "bytes": 485064,
+          "xlsx_modificado": "2026-08-18T16:17:12+00:00"
+        }
+      ]
+    },
+    "descargas": [
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 485064,
+        "descargado_utc": "2026-10-12T16:05:17.992561+00:00",
+        "error": null
+      }
+    ],
+    "series": {
+      "gw:M.AAA": {
+        "origen": "crudo",
+        "n_obs": 1284,
+        "n_huecos": 0,
+        "inicio": "1919-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1284.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.BAA": {
+        "origen": "crudo",
+        "n_obs": 1284,
+        "n_huecos": 0,
+        "inicio": "1919-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1284.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.CRSP_SPvw": {
+        "origen": "crudo",
+        "n_obs": 1200,
+        "n_huecos": 0,
+        "inicio": "1926-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1200.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.CRSP_SPvwx": {
+        "origen": "crudo",
+        "n_obs": 1200,
+        "n_huecos": 0,
+        "inicio": "1926-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1200.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.D12": {
+        "origen": "crudo",
+        "n_obs": 1860,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1860.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.E12": {
+        "origen": "crudo",
+        "n_obs": 1860,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1860.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.Index": {
+        "origen": "crudo",
+        "n_obs": 1860,
+        "n_huecos": 0,
+        "inicio": "1871-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1860.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.Rfree": {
+        "origen": "crudo",
+        "n_obs": 1859,
+        "n_huecos": 0,
+        "inicio": "1871-02-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1859.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.bm": {
+        "origen": "crudo",
+        "n_obs": 1258,
+        "n_huecos": 0,
+        "inicio": "1921-03-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1258.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.corpr": {
+        "origen": "crudo",
+        "n_obs": 1200,
+        "n_huecos": 0,
+        "inicio": "1926-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1200.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.csp": {
+        "origen": "crudo",
+        "n_obs": 788,
+        "n_huecos": 0,
+        "inicio": "1937-05-01",
+        "fin": "2002-12-01",
+        "retraso_edicion_dias": null,
+        "regla_vs_edicion_dias": null,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 788.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.infl": {
+        "origen": "crudo",
+        "n_obs": 1355,
+        "n_huecos": 0,
+        "inicio": "1913-02-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1355.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.ltr": {
+        "origen": "crudo",
+        "n_obs": 1200,
+        "n_huecos": 0,
+        "inicio": "1926-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1200.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.lty": {
+        "origen": "crudo",
+        "n_obs": 1284,
+        "n_huecos": 0,
+        "inicio": "1919-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1284.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.ntis": {
+        "origen": "crudo",
+        "n_obs": 1189,
+        "n_huecos": 0,
+        "inicio": "1926-12-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1189.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.svar": {
+        "origen": "crudo",
+        "n_obs": 1691,
+        "n_huecos": 0,
+        "inicio": "1885-02-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1691.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "gw:M.tbl": {
+        "origen": "crudo",
+        "n_obs": 1272,
+        "n_huecos": 0,
+        "inicio": "1920-01-01",
+        "fin": "2025-12-01",
+        "retraso_edicion_dias": 201.0,
+        "regla_vs_edicion_dias": 12.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1272.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      }
+    },
+    "copias_data_raw": {
+      "academico/GW_PREDICTORS_MONTHLY.parquet": {
+        "descarga_ny": "2026-07-20 15:38",
+        "ultimo": "2025-12-01",
+        "fechas_repetidas": 0,
+        "octubres": 155
+      }
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.academicos (crudos en <corpus>/mercados_series/crudo/goyal_welch/, un fichero por día de descarga con su .meta.json)",
+    "fecha_publicacion = max(regla del catálogo, primera decisión tras la última vez que se vio una edición sin ese periodo); periodos no cerrados en la fecha de edición: provisionales, fuera",
+    "Sin Last-Modified (Google): fecha de edición = dcterms:modified del xlsx",
+    "Regla 7M1D (1 de agosto del año siguiente) sin ediciones antiguas medidas",
+    "Series retiradas (gw:M.csp acaba en 2002): fuera de las métricas de retraso de la edición (no miden la edición actual)",
+    "Content-Disposition da el nombre de la edición (PredictorData<AAAA>.xlsx)"
+  ],
+  "fecha_sonda": "2026-10-12"
+}

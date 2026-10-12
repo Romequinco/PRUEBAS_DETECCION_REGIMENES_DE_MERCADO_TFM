@@ -1,0 +1,150 @@
+{
+  "fuente": "ofr_fsi",
+  "nombre": "OFR Financial Stress Index (fsi.csv)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.financialresearch.gov/financial-stress-index/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Office of Financial Research (Tesoro de EE. UU.): dominio público; insumos de mercado de terceros con copyright: solo local",
+  "cobertura_inicio": "2000-01-03",
+  "cobertura_fin": "2026-10-08",
+  "frecuencia": "diaria; fichero actualizado cada día hábil",
+  "retraso_publicacion": "medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no está medido): la primera edición conocida con el último periodo sale 4-4 días tras su fin (series vigentes); reglas del catálogo: 5D desde el fin de fecha (5 series) (regla - primera decisión tras esa edición: 1 a 1 días)",
+  "formato": "csv",
+  "volumen_estimado": "0.52 MB por edición (1 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ediciones": {
+      "fsi.csv": [
+        {
+          "fecha_edicion": "2026-10-12T14:00:18+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:20.250549+00:00",
+          "bytes": 516136
+        }
+      ]
+    },
+    "descargas": [
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 516136,
+        "descargado_utc": "2026-10-12T16:05:20.250549+00:00",
+        "error": null
+      }
+    ],
+    "series": {
+      "ofr:FSI": {
+        "origen": "crudo",
+        "n_obs": 6776,
+        "n_huecos": 0,
+        "inicio": "2000-01-03",
+        "fin": "2026-10-08",
+        "retraso_edicion_dias": 4.0,
+        "regla_vs_edicion_dias": 1.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 6716.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ofr:FSI_CREDIT": {
+        "origen": "crudo",
+        "n_obs": 6776,
+        "n_huecos": 0,
+        "inicio": "2000-01-03",
+        "fin": "2026-10-08",
+        "retraso_edicion_dias": 4.0,
+        "regla_vs_edicion_dias": 1.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 6716.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ofr:FSI_FUNDING": {
+        "origen": "crudo",
+        "n_obs": 6776,
+        "n_huecos": 0,
+        "inicio": "2000-01-03",
+        "fin": "2026-10-08",
+        "retraso_edicion_dias": 4.0,
+        "regla_vs_edicion_dias": 1.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 6716.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ofr:FSI_US": {
+        "origen": "crudo",
+        "n_obs": 6776,
+        "n_huecos": 0,
+        "inicio": "2000-01-03",
+        "fin": "2026-10-08",
+        "retraso_edicion_dias": 4.0,
+        "regla_vs_edicion_dias": 1.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 6716.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ofr:FSI_VOLATILITY": {
+        "origen": "crudo",
+        "n_obs": 6776,
+        "n_huecos": 0,
+        "inicio": "2000-01-03",
+        "fin": "2026-10-08",
+        "retraso_edicion_dias": 4.0,
+        "regla_vs_edicion_dias": 1.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 6716.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      }
+    },
+    "copias_data_raw": {
+      "ofr/OFR_FSI.parquet": {
+        "descarga_ny": "2026-07-20 15:39",
+        "ultimo": "2026-07-16",
+        "fechas_repetidas": 0
+      },
+      "ofr/OFR_FSI_CREDIT.parquet": {
+        "descarga_ny": "2026-07-20 15:39",
+        "ultimo": "2026-07-16",
+        "fechas_repetidas": 0
+      },
+      "ofr/OFR_FSI_FUNDING.parquet": {
+        "descarga_ny": "2026-07-20 15:39",
+        "ultimo": "2026-07-16",
+        "fechas_repetidas": 0
+      },
+      "ofr/OFR_FSI_US.parquet": {
+        "descarga_ny": "2026-07-20 15:39",
+        "ultimo": "2026-07-16",
+        "fechas_repetidas": 0
+      },
+      "ofr/OFR_FSI_VOLATILITY.parquet": {
+        "descarga_ny": "2026-07-20 15:39",
+        "ultimo": "2026-07-16",
+        "fechas_repetidas": 0
+      }
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.academicos (crudos en <corpus>/mercados_series/crudo/ofr_fsi/, un fichero por día de descarga con su .meta.json)",
+    "fecha_publicacion = max(regla del catálogo, primera decisión tras la última vez que se vio una edición sin ese periodo); periodos no cerrados en la fecha de edición: provisionales, fuera",
+    "Descarga con el User-Agent identificable de ingesta.comun.http: HTTP 200 (sin 403); si la OFR bloquea, se usa la copia de data/raw con su regla",
+    "metodo lag_fijo (catálogo): 5D desde la fecha"
+  ],
+  "fecha_sonda": "2026-10-12"
+}

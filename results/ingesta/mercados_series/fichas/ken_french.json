@@ -1,0 +1,392 @@
+{
+  "fuente": "ken_french",
+  "nombre": "Kenneth R. French Data Library (factores Fama-French, momentum, 5 industrias)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "macro",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Kenneth R. French Data Library: uso académico con cita; construida con datos de CRSP (copyright CRSP / Center for Research in Security Prices): solo local, sin redistribuir",
+  "cobertura_inicio": "1926-07-01",
+  "cobertura_fin": "2026-08-31",
+  "frecuencia": "diaria y mensual; un fichero nuevo al mes",
+  "retraso_publicacion": "medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no está medido): la primera edición conocida con el último periodo sale 25-25 días tras su fin (series vigentes); reglas del catálogo: 45D desde el fin de mes (17 series) (regla - primera decisión tras esa edición: 19 a 19 días)",
+  "formato": "zip con CSV",
+  "volumen_estimado": "0.95 MB por edición (5 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ediciones": {
+      "F-F_Research_Data_Factors_daily": [
+        {
+          "fecha_edicion": "2026-09-25T21:55:02+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:09.359083+00:00",
+          "bytes": 178184,
+          "crsp": "202608",
+          "creado_zip": "2026-09-24T09:09:46"
+        }
+      ],
+      "F-F_Research_Data_Factors": [
+        {
+          "fecha_edicion": "2026-09-25T21:55:02+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:11.021086+00:00",
+          "bytes": 13065,
+          "crsp": "202608",
+          "creado_zip": "2026-09-24T09:09:44"
+        }
+      ],
+      "F-F_Research_Data_5_Factors_2x3_daily": [
+        {
+          "fecha_edicion": "2026-09-25T21:55:02+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:12.139821+00:00",
+          "bytes": 150292,
+          "crsp": "202608",
+          "creado_zip": "2026-09-24T09:09:46"
+        }
+      ],
+      "F-F_Momentum_Factor_daily": [
+        {
+          "fecha_edicion": "2026-09-25T21:55:02+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:13.685236+00:00",
+          "bytes": 85269,
+          "crsp": "202608",
+          "creado_zip": "2026-09-24T09:14:28"
+        }
+      ],
+      "5_Industry_Portfolios_daily": [
+        {
+          "fecha_edicion": "2026-09-25T21:55:11+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:15.132044+00:00",
+          "bytes": 519831,
+          "crsp": "202608",
+          "creado_zip": "2026-09-24T09:16:34"
+        }
+      ]
+    },
+    "descargas": [
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 178184,
+        "descargado_utc": "2026-10-12T16:05:09.359083+00:00",
+        "error": null
+      },
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 13065,
+        "descargado_utc": "2026-10-12T16:05:11.021086+00:00",
+        "error": null
+      },
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 150292,
+        "descargado_utc": "2026-10-12T16:05:12.139821+00:00",
+        "error": null
+      },
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 85269,
+        "descargado_utc": "2026-10-12T16:05:13.685236+00:00",
+        "error": null
+      },
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 519831,
+        "descargado_utc": "2026-10-12T16:05:15.132044+00:00",
+        "error": null
+      }
+    ],
+    "series": {
+      "ff:F3D.HML": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F3D.Mkt-RF": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F3D.RF": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F3D.SMB": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F3M.Mkt-RF": {
+        "origen": "crudo",
+        "n_obs": 1202,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-01",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 1199.0,
+        "fase1_distintos": 1.0,
+        "fase1_max_abs": 0.009999999999999787
+      },
+      "ff:F5D.CMA": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F5D.HML": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F5D.Mkt-RF": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F5D.RF": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F5D.RMW": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:F5D.SMB": {
+        "origen": "crudo",
+        "n_obs": 15897,
+        "n_huecos": 0,
+        "inicio": "1963-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 15897.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:IND5D.Cnsmr": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:IND5D.HiTec": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:IND5D.Hlth": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:IND5D.Manuf": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:IND5D.Other": {
+        "origen": "crudo",
+        "n_obs": 26317,
+        "n_huecos": 0,
+        "inicio": "1926-07-01",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26317.0,
+        "fase1_distintos": 0.0,
+        "fase1_max_abs": 0.0
+      },
+      "ff:MOMD.Mom": {
+        "origen": "crudo",
+        "n_obs": 26216,
+        "n_huecos": 0,
+        "inicio": "1926-11-03",
+        "fin": "2026-08-31",
+        "retraso_edicion_dias": 25.0,
+        "regla_vs_edicion_dias": 19.0,
+        "provisionales_descartados": 0,
+        "filas_con_cota": 0,
+        "fase1_comunes": 26152.0,
+        "fase1_distintos": 14699.0,
+        "fase1_max_abs": 3.79
+      }
+    },
+    "copias_data_raw": {
+      "academico/FF_FACTORS_3_DAILY.parquet": {
+        "descarga_ny": "2026-09-29 04:21",
+        "ultimo": "2026-08-31",
+        "fechas_repetidas": 0
+      },
+      "academico/FF_FACTORS_3_MONTHLY.parquet": {
+        "descarga_ny": "2026-07-20 15:37",
+        "ultimo": "2026-05-01",
+        "fechas_repetidas": 0,
+        "octubres": 100
+      },
+      "academico/FF_FACTORS_5_DAILY.parquet": {
+        "descarga_ny": "2026-09-29 04:21",
+        "ultimo": "2026-08-31",
+        "fechas_repetidas": 0
+      },
+      "academico/FF_5_INDUSTRY.parquet": {
+        "descarga_ny": "2026-09-29 04:21",
+        "ultimo": "2026-08-31",
+        "fechas_repetidas": 0
+      },
+      "academico/FF_MOM_DAILY.parquet": {
+        "descarga_ny": "2026-07-20 15:37",
+        "ultimo": "2026-05-29",
+        "fechas_repetidas": 0
+      }
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.academicos (crudos en <corpus>/mercados_series/crudo/ken_french/, un fichero por día de descarga con su .meta.json)",
+    "fecha_publicacion = max(regla del catálogo, primera decisión tras la última vez que se vio una edición sin ese periodo); periodos no cerrados en la fecha de edición: provisionales, fuera",
+    "Primer bloque de cada CSV (industrias: ponderadas por valor); -99.99 y -999 son faltantes; retornos en %",
+    "La cabecera 'created using the AAAAMM CRSP database' da el último mes; el zip lleva la fecha interna de creación",
+    "Revisión completa del momentum diario entre ediciones: data/raw (2026-07-20) y la edición del 2026-09-25 difieren en 14699 de 26152 días comunes (máx. 3,79 pp, correlación 0,994, sin desfase de fechas); el resto de ficheros, 0 diferencias salvo 1 de 0,01 en F3M. La base guarda la última edición (nota de revisables)",
+    "Regla +45 días medida con una sola edición (agosto-2026, Last-Modified a 25 días); las ediciones históricas (p. ej. el cambio de CRSP a CIZ en 2023) no se pudieron medir: la Wayback Machine respondió 429. Pendiente con más calma"
+  ],
+  "fecha_sonda": "2026-10-12"
+}
