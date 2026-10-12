@@ -1,0 +1,316 @@
+{
+  "fuente": "fred_alfred",
+  "nombre": "FRED / ALFRED (Federal Reserve Bank of St. Louis)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://fred.stlouisfed.org/docs/api/fred/",
+  "acceso": "api",
+  "autenticacion": "clave gratuita",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de uso de la API de FRED: datos solo en local, sin redistribuir; cada serie conserva el copyright de su titular (ICE, Moody's, Cboe...). This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+  "cobertura_inicio": "1983-01-03",
+  "cobertura_fin": "2026-10-08",
+  "frecuencia": "diaria y semanal (sustitutos del bloque 2)",
+  "retraso_publicacion": "medido en ALFRED (primera vintage de cada observación, días hábiles de EE. UU., últimos 35 días): DBAA {'D+1': 23}; DCPF3M {'D+1': 11}; DEXUSEU {'D+1': 4, 'D+2': 4, 'D+3': 4, 'D+4': 4, 'D+5': 3}; WEI {'D+4': 4}. Hora (FRED last_updated en NY): CPFF 2026-10-07 17:03; DAAA 2026-10-09 11:31; DBAA 2026-10-09 11:31; DCPF3M 2026-10-07 16:16; DEXUSEU 2026-10-05 16:16; DTWEXAFEGS 2026-10-05 16:16; DTWEXBGS 2026-10-05 16:16; TEDRATE 2022-01-28 17:01; WEI 2026-10-08 11:46. OAS de ICE: ver la ficha ice_bofa_oas",
+  "formato": "json",
+  "volumen_estimado": "16.9 MB de JSON crudo en disco (todas las peticiones archivadas, sin las OAS de ICE)",
+  "limites": "120 peticiones/min por clave (aquí 1/s); series/observations hasta 100000 filas por página (offset); vintage_dates hasta 2000 por petición según la API, pero con 2000 la URL (~26 KB) da HTTP 400 en el CDN (medido): se trocea en grupos de 500; vintagedates y release/dates hasta 10000 por página",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "series": {
+      "fred:BAMLC0A0CM": {
+        "filas": 785,
+        "n_obs": 785,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A0CMEY": {
+        "filas": 785,
+        "n_obs": 785,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A1CAAA": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A4CBBB": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A0HYM2": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A0HYM2EY": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A1HYBB": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A3HYC": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:CPFF": {
+        "filas": 6754,
+        "n_obs": 6753,
+        "nulos_punto": 1,
+        "inicio": "1997-01-02",
+        "fin": "2026-10-06",
+        "vintages": 1
+      },
+      "fred:DAAA": {
+        "filas": 10988,
+        "n_obs": 10988,
+        "nulos_punto": 0,
+        "inicio": "1983-01-03",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DBAA": {
+        "filas": 10229,
+        "n_obs": 10229,
+        "nulos_punto": 0,
+        "inicio": "1986-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DCPF3M": {
+        "filas": 6755,
+        "n_obs": 6754,
+        "nulos_punto": 1,
+        "inicio": "1997-01-02",
+        "fin": "2026-10-06",
+        "vintages": 1
+      },
+      "fred:DEXUSEU": {
+        "filas": 6960,
+        "n_obs": 6960,
+        "nulos_punto": 0,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:DTWEXAFEGS": {
+        "filas": 5203,
+        "n_obs": 5203,
+        "nulos_punto": 0,
+        "inicio": "2006-01-02",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:DTWEXBGS": {
+        "filas": 5203,
+        "n_obs": 5203,
+        "nulos_punto": 0,
+        "inicio": "2006-01-02",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:TEDRATE": {
+        "filas": 8853,
+        "n_obs": 8853,
+        "nulos_punto": 0,
+        "inicio": "1986-01-02",
+        "fin": "2022-01-21",
+        "vintages": 1
+      },
+      "fred:WEI": {
+        "filas": 11648,
+        "n_obs": 979,
+        "nulos_punto": 0,
+        "inicio": "2008-01-05",
+        "fin": "2026-10-03",
+        "vintages": 428
+      }
+    },
+    "existen_en_fred": {
+      "fred:BAMLC0A0CM": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:12-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLC0A0CMEY": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:20-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLC0A1CAAA": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:17-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLC0A4CBBB": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:09:16-05",
+        "last_updated_ny": "2026-10-09 09:09"
+      },
+      "fred:BAMLH0A0HYM2": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:04-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLH0A0HYM2EY": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:43-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLH0A1HYBB": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:08:26-05",
+        "last_updated_ny": "2026-10-09 09:08"
+      },
+      "fred:BAMLH0A3HYC": {
+        "observation_start": "2023-10-10",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:09:09-05",
+        "last_updated_ny": "2026-10-09 09:09"
+      },
+      "fred:CPFF": {
+        "observation_start": "1997-01-02",
+        "observation_end": "2026-10-06",
+        "last_updated": "2026-10-07 16:03:41-05",
+        "last_updated_ny": "2026-10-07 17:03"
+      },
+      "fred:DAAA": {
+        "observation_start": "1983-01-03",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 10:31:25-05",
+        "last_updated_ny": "2026-10-09 11:31"
+      },
+      "fred:DBAA": {
+        "observation_start": "1986-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 10:31:25-05",
+        "last_updated_ny": "2026-10-09 11:31"
+      },
+      "fred:DCPF3M": {
+        "observation_start": "1997-01-02",
+        "observation_end": "2026-10-06",
+        "last_updated": "2026-10-07 15:16:35-05",
+        "last_updated_ny": "2026-10-07 16:16"
+      },
+      "fred:DEXUSEU": {
+        "observation_start": "1999-01-04",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:41-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:DTWEXAFEGS": {
+        "observation_start": "2006-01-02",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:51-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:DTWEXBGS": {
+        "observation_start": "2006-01-02",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:53-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:TEDRATE": {
+        "observation_start": "1986-01-02",
+        "observation_end": "2022-01-21",
+        "last_updated": "2022-01-28 16:01:02-06",
+        "last_updated_ny": "2022-01-28 17:01"
+      },
+      "fred:WEI": {
+        "observation_start": "2008-01-05",
+        "observation_end": "2026-10-03",
+        "last_updated": "2026-10-08 10:46:22-05",
+        "last_updated_ny": "2026-10-08 11:46"
+      }
+    },
+    "retrasos_habiles": {
+      "BAMLC0A0CM": {
+        "D+0": 24
+      },
+      "BAMLH0A0HYM2": {
+        "D+0": 24
+      },
+      "DBAA": {
+        "D+1": 23
+      },
+      "DCPF3M": {
+        "D+1": 11
+      },
+      "DEXUSEU": {
+        "D+1": 4,
+        "D+2": 4,
+        "D+3": 4,
+        "D+4": 4,
+        "D+5": 3
+      },
+      "WEI": {
+        "D+4": 4
+      }
+    },
+    "wei_vintages": {
+      "n_vintages": 428,
+      "primera": "2020-04-16",
+      "ultima": "2026-10-08",
+      "dia_semana": {
+        "Thursday": 328,
+        "Tuesday": 89,
+        "Wednesday": 10,
+        "Friday": 1
+      }
+    },
+    "red": {
+      "peticiones": 0,
+      "segundos": 12.3
+    },
+    "tabla_retrasos": "results/ingesta/mercados_series/tablas/publicacion_fred_sustitutos.csv"
+  },
+  "notas": [
+    "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+    "Caché cruda: un JSON por petición en <corpus>/mercados_series/crudo/fred/ (fecha de descarga en el nombre); la clave nunca se guarda",
+    "Valores '.' de FRED: en las diarias, los sueltos (festivos) se descartan y cada racha de más de 31 días deja una fila nula con nota; en las demás frecuencias, valor nulo con nota",
+    "Fechas de publicación de Moody's, diferenciales calculados por FRED, SOFR/EFFR/OBFR, papel comercial y la macro lag_fijo contrastadas con la primera vintage de ALFRED (output_type=4): tablas/publicacion_alfred_medida.csv y config/excepciones_publicacion.csv",
+    "WEI se carga con todas sus vintages de ALFRED (vintage_exacto); el resto, vintage 'unico' (no revisables según el catálogo)"
+  ],
+  "fecha_sonda": "2026-10-12"
+}

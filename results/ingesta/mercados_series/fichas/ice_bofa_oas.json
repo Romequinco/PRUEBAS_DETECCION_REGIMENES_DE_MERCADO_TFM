@@ -1,0 +1,192 @@
+{
+  "fuente": "ice_bofa_oas",
+  "nombre": "ICE BofA: OAS y rendimientos de índices de crédito (vía FRED)",
+  "tema": "mercados_series",
+  "agentes": [
+    "risk",
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+  "acceso": "api",
+  "autenticacion": "clave gratuita (FRED)",
+  "coste": "0 €",
+  "licencia_y_terminos": "copyright ICE Data Indices, LLC; uso vía FRED solo en local, sin redistribuir. This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+  "cobertura_inicio": "2023-10-10",
+  "cobertura_fin": "2026-10-08",
+  "frecuencia": "diaria (días hábiles)",
+  "retraso_publicacion": "hábil siguiente hacia las 09:10 NY (FRED last_updated 2026-10-09 09:08, 2026-10-09 09:09 con el dato de 2026-10-08): visible en la decisión de D+1. ALFRED fecha la vintage el mismo día del dato (BAMLC0A0CM {'D+0': 24}; BAMLH0A0HYM2 {'D+0': 24}), antes de la carga real: realtime_start no sirve para medir la hora de ICE",
+  "formato": "json",
+  "volumen_estimado": "1.1 MB de JSON crudo en disco (8 series, 1 día(s) de descarga archivados)",
+  "limites": "FRED solo sirve desde el 2023-10-10 (unos 3 años); que sea una ventana móvil y no un corte fijo está sin confirmar (se verá con la descarga siguiente). ALFRED no conserva el historial anterior: archivo propio desde la primera descarga; para no perder historia basta una descarga dentro de cada ventana, la diaria solo hace falta para tener el dato al día",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "series": {
+      "fred:BAMLC0A0CM": {
+        "filas": 785,
+        "n_obs": 785,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A0CMEY": {
+        "filas": 785,
+        "n_obs": 785,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A1CAAA": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLC0A4CBBB": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A0HYM2": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A0HYM2EY": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A1HYBB": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAMLH0A3HYC": {
+        "filas": 786,
+        "n_obs": 786,
+        "nulos_punto": 0,
+        "inicio": "2023-10-10",
+        "fin": "2026-10-08",
+        "vintages": 1
+      }
+    },
+    "historial_alfred": {
+      "BAMLH0A0HYM2": {
+        "n_vintages": 786,
+        "primer_vintage": "2023-10-10",
+        "vintage_2026-03-31": {
+          "vintage_dates": {
+            "n_obs": 648,
+            "inicio": "2023-10-10",
+            "fin": "2026-03-31"
+          },
+          "realtime": {
+            "n_obs": 648,
+            "inicio": "2023-10-10",
+            "fin": "2026-03-31"
+          }
+        },
+        "vintage_2019-01-02": {
+          "vintage_dates": {
+            "error": "FRED series/observations {'limit': '100000', 'offset': '0', 'series_id': 'BAMLH0A0HYM2', 'vintage_dates': '2019-01-02'}: 400 Client Error: Bad Request for url: "
+          },
+          "realtime": {
+            "error": "FRED series/observations {'limit': '100000', 'offset': '0', 'realtime_end': '2019-01-02', 'realtime_start': '2019-01-02', 'series_id': 'BAMLH0A0HYM2'}: 400 Clie"
+          }
+        },
+        "en_primer_vintage": {
+          "vintage_dates": {
+            "n_obs": 1,
+            "inicio": "2023-10-10",
+            "fin": "2023-10-10"
+          },
+          "realtime": {
+            "n_obs": 1,
+            "inicio": "2023-10-10",
+            "fin": "2023-10-10"
+          }
+        },
+        "realtime_1776_9999_output_type_4": {
+          "n_obs": 785,
+          "inicio": "2023-10-11"
+        }
+      },
+      "BAMLC0A0CM": {
+        "n_vintages": 784,
+        "primer_vintage": "2023-10-10",
+        "vintage_2026-03-31": {
+          "vintage_dates": {
+            "n_obs": 647,
+            "inicio": "2023-10-10",
+            "fin": "2026-03-31"
+          },
+          "realtime": {
+            "n_obs": 647,
+            "inicio": "2023-10-10",
+            "fin": "2026-03-31"
+          }
+        },
+        "vintage_2019-01-02": {
+          "vintage_dates": {
+            "error": "FRED series/observations {'limit': '100000', 'offset': '0', 'series_id': 'BAMLC0A0CM', 'vintage_dates': '2019-01-02'}: 400 Client Error: Bad Request for url: ht"
+          },
+          "realtime": {
+            "error": "FRED series/observations {'limit': '100000', 'offset': '0', 'realtime_end': '2019-01-02', 'realtime_start': '2019-01-02', 'series_id': 'BAMLC0A0CM'}: 400 Client"
+          }
+        },
+        "en_primer_vintage": {
+          "vintage_dates": {
+            "n_obs": 1,
+            "inicio": "2023-10-10",
+            "fin": "2023-10-10"
+          },
+          "realtime": {
+            "n_obs": 1,
+            "inicio": "2023-10-10",
+            "fin": "2023-10-10"
+          }
+        },
+        "realtime_1776_9999_output_type_4": {
+          "n_obs": 783,
+          "inicio": "2023-10-11"
+        }
+      }
+    },
+    "last_updated_ny": {
+      "fred:BAMLC0A0CM": "2026-10-09 09:08",
+      "fred:BAMLC0A0CMEY": "2026-10-09 09:08",
+      "fred:BAMLC0A1CAAA": "2026-10-09 09:08",
+      "fred:BAMLC0A4CBBB": "2026-10-09 09:09",
+      "fred:BAMLH0A0HYM2": "2026-10-09 09:08",
+      "fred:BAMLH0A0HYM2EY": "2026-10-09 09:08",
+      "fred:BAMLH0A1HYBB": "2026-10-09 09:08",
+      "fred:BAMLH0A3HYC": "2026-10-09 09:09"
+    },
+    "primera_descarga_archivo": "2026-10-12"
+  },
+  "notas": [
+    "Capada: la historia propia empieza en la primera descarga del archivo; cada descarga diaria se conserva y tabla_fred_sustitutos une todas (primer valor visto por fecha)",
+    "Historial anterior: ALFRED en el vintage 2026-03-31 (por vintage_dates y por realtime_start/realtime_end) también empieza en el primer vintage conservado; los vintages anteriores dan error (ver mediciones.historial_alfred). Variante con todas las vintages en una llamada (realtime_start=1776-07-04, realtime_end=9999-12-31, output_type=4): empieza en BAMLH0A0HYM2 2023-10-11, BAMLC0A0CM 2023-10-11. No se puede recuperar por FRED",
+    "Publicador ice_bofa_fred (09:15 NY del hábil siguiente, según last_updated): visible en la decisión de D+1",
+    "Series archivadas: BAMLC0A0CM, BAMLC0A0CMEY, BAMLC0A1CAAA, BAMLC0A4CBBB, BAMLH0A0HYM2, BAMLH0A0HYM2EY, BAMLH0A1HYBB, BAMLH0A3HYC",
+    "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis."
+  ],
+  "fecha_sonda": "2026-10-12"
+}
