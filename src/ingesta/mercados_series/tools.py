@@ -25,6 +25,8 @@ import numpy as np
 import pandas as pd
 
 from ingesta.mercados_series import almacen, divisas, timegate, visibilidad
+from ingesta.mercados_series import catalogo as cat_mod
+from ingesta.mercados_series.catalogo import NOTA_EXCEPCION, NOTA_RECONSTRUIDA, es_nota_revisable
 from ingesta.mercados_series.contrato import FECHA, REAL, TEXTO, vacio_series
 
 FechaLike = date | str | pd.Timestamp
@@ -83,15 +85,46 @@ def _validar_opcion(valor: str, validas: tuple[str, ...], nombre: str) -> None:
         raise ValueError(f"{nombre} desconocido {valor!r}; válidos: {list(validas)}")
 
 
+def alias_por_defecto() -> dict[str, str]:
+    """Alias del catálogo (``catalogo.alias``: nombres de la Fase 1) más los de ``publicaciones.yaml``.
+
+    Un alias no puede estar en los dos ficheros (lo impide ``visibilidad.cargar_publicaciones``).
+    """
+    return {**visibilidad.cargar_publicaciones(catalogo=False)["alias"], **cat_mod.alias()}
+
+
 def resolver_id(id: str, alias: dict[str, str] | None = None) -> str:
     """Id canónico de ``id``: ``alias[id]`` si es un alias; si no, ``id`` tal cual.
 
-    ``alias`` por defecto: sección ``alias`` de ``config/publicaciones.yaml``.
+    ``alias`` por defecto: ``alias_por_defecto()`` (catálogo de series + ``publicaciones.yaml``).
     """
     if not isinstance(id, str) or not id:
         raise ValueError(f"id de serie vacío o no textual: {id!r}")
-    tabla = alias if alias is not None else visibilidad.cargar_publicaciones()["alias"]
-    return tabla.get(id, id)
+    tabla = alias if alias is not None else alias_por_defecto()
+    if id in tabla:
+        return tabla[id]
+    if alias is None and id not in cat_mod._cat(None):
+        # Ids y alias sin distinguir mayúsculas ('gw:M.TBL' → 'gw:M.tbl'), solo si es único.
+        return cat_mod.resolver_caja(id) or id
+    return id
+
+
+def _comprobar_excluida(canonico: str, id: str) -> None:
+    """``KeyError`` si el catálogo excluye ``canonico`` de la base de series (ETF ajustadas).
+
+    También un ticker suelto (``'SPY'``) cuyo ``yf:<ticker>`` está excluido. Es un metadato
+    estático (no depende de la fecha): no revela nada del futuro.
+    """
+    cat = cat_mod._cat(None)
+    if canonico not in cat and f"yf:{canonico}" in cat:
+        canonico = f"yf:{canonico}"
+    e = cat.get(canonico)
+    if e is None or e["estado"] != "excluida_ajustada":
+        return
+    nombre = repr(canonico) if canonico == id else f"{canonico!r} (alias {id!r})"
+    raise KeyError(f"serie {nombre} excluida de la base de series: ETF de yfinance con niveles ajustados a "
+                   f"posteriori (auto_adjust=True). Usa get_precios({e['id_origen']!r}, fecha), que reconstruye "
+                   f"el ajuste con lo conocido en la fecha (bloque 6)")
 
 
 # --- Respuestas ---------------------------------------------------------------------------------
@@ -179,14 +212,51 @@ class RespuestaPrecios:
 
 
 # --- get_serie ----------------------------------------------------------------------------------
+# Huecos de una respuesta que se detallan uno a uno; con más, un solo aviso con el recuento.
+MAX_HUECOS_DETALLADOS = 3
+
+
+def _sin_notas_comunes(nota: Any) -> str:
+    """Nota de un hueco sin las notas que ya avisan aparte (revisables, excepción, reconstruida)."""
+    partes = [p for p in str(nota or "").split("; ")
+              if p and not es_nota_revisable(p) and not p.startswith((NOTA_EXCEPCION, NOTA_RECONSTRUIDA))]
+    return "; ".join(partes) or "sin nota"
+
+
 def _avisos_serie(datos: pd.DataFrame) -> list[str]:
+    """Avisos de una respuesta, agregados: como mucho uno por tipo (huecos, fechas, revisiones...)."""
     avisos = []
-    for fila in datos[datos["valor"].isna()].itertuples(index=False):
-        avisos.append(f"{_iso(fila.fecha_referencia)}: valor nulo (hueco declarado): {fila.nota}")
+    nulos = datos[datos["valor"].isna()]
+    if len(nulos) <= MAX_HUECOS_DETALLADOS:
+        for fila in nulos.itertuples(index=False):
+            avisos.append(f"{_iso(fila.fecha_referencia)}: valor nulo (hueco declarado): "
+                          f"{_sin_notas_comunes(fila.nota)}")
+    else:
+        notas = sorted({_sin_notas_comunes(n) for n in nulos["nota"]})
+        detalle = "; ".join(notas[:3]) + (f" (y {len(notas) - 3} notas más)" if len(notas) > 3 else "")
+        avisos.append(f"{len(nulos)} periodos con valor nulo (huecos declarados) entre "
+                      f"{_iso(nulos['fecha_referencia'].min())} y {_iso(nulos['fecha_referencia'].max())}: {detalle}")
+    nota = datos["nota"].fillna("").astype(str)
     lag = datos["metodo_publicacion"] == "lag_fijo"
+    medidas = nota.str.contains(NOTA_EXCEPCION, regex=False)
     if lag.any():
-        avisos.append(f"fecha de publicación aproximada en {int(lag.sum())} periodos (método lag_fijo: "
-                      f"retraso declarado y conservador, no la fecha real de publicación)")
+        avisos.append(f"fecha de publicación por regla en {int(lag.sum())} periodos (método lag_fijo: retraso "
+                      f"declarado en lags.yaml, no la fecha real de cada publicación; corregido con la primera "
+                      f"vintage de ALFRED en {int((lag & medidas).sum())} periodos)")
+    elif medidas.any():
+        avisos.append(f"fecha de publicación retrasada a la primera vintage de ALFRED en {int(medidas.sum())} "
+                      f"periodos (la regla de su publicador la adelantaba)")
+    reconstruidas = nota.str.contains(NOTA_RECONSTRUIDA, regex=False)
+    if reconstruidas.any():
+        primera = nota[reconstruidas].iloc[0]
+        desde = primera[primera.index(NOTA_RECONSTRUIDA) + len(NOTA_RECONSTRUIDA):].split(";")[0].strip()
+        avisos.append(f"{int(reconstruidas.sum())} periodos con fecha de publicación anterior a la creación del "
+                      f"índice ({desde}): son valores reconstruidos hacia atrás que nadie conocía en su fecha")
+    # Series revisables cargadas con el último vintage (catálogo, bloque 2): lo dice la nota de la fila.
+    revisadas = es_nota_revisable(datos["nota"])
+    if revisadas.any():
+        avisos.append(f"serie revisable con los valores del último vintage o edición en {int(revisadas.sum())} "
+                      f"periodos: posible fuga de revisiones (no son los valores que se conocían en su fecha)")
     return avisos
 
 
@@ -211,8 +281,10 @@ def get_serie(id: str, fecha: FechaLike, *, desde: FechaLike | None = None, divi
               base_fx: pd.DataFrame | None = None) -> RespuestaSerie:
     """Serie ``id`` tal como se conocía en ``fecha`` (``timegate.as_of_series``).
 
-    ``id``: canónico con prefijo de fuente (``'fred:DGS10'``) o alias (``'VIX'``), resuelto con
-    ``alias`` o, por defecto, con la sección ``alias`` de ``config/publicaciones.yaml``.
+    ``id``: canónico con prefijo de fuente (``'fred:DGS10'``) o alias de la Fase 1 (``'VIX'``),
+    resuelto con ``alias`` o, por defecto, con ``alias_por_defecto()`` (catálogo de series y
+    ``publicaciones.yaml``). Una ETF que el catálogo excluye de la base (``excluida_ajustada``)
+    lanza ``KeyError`` con un mensaje que remite a ``get_precios``.
     ``desde``: recorta por ``fecha_referencia >= desde`` (con un aviso si no queda nada).
     ``base``: tabla del contrato (por defecto ``almacen.leer_series``); ``base_fx``: tabla con el
     FX (por defecto ``base`` si se pasó, si no el almacén).
@@ -227,12 +299,17 @@ def get_serie(id: str, fecha: FechaLike, *, desde: FechaLike | None = None, divi
 
     ``KeyError`` si no hay nada publicado del id hasta ``fecha``, tanto si no existe como si se
     publicará después (no se revela cuál). Unidad, divisa y fuente salen de filas visibles. Un
-    periodo con valor nulo (hueco permanente) se devuelve nulo y añade un aviso con su nota; el
-    método ``lag_fijo`` añade el aviso «fecha de publicación aproximada».
+    periodo con valor nulo (hueco permanente) se devuelve nulo y añade un aviso con su nota (con
+    más de ``MAX_HUECOS_DETALLADOS``, uno solo con el recuento, el primero, el último y las notas
+    distintas); el método ``lag_fijo`` añade el aviso «fecha de publicación por regla»; una fecha
+    retrasada a la primera vintage de ALFRED, una serie reconstruida hacia atrás y una revisable
+    cargada con el último vintage o edición (``catalogo.NOTAS_REVISABLE``) añaden el suyo. Como
+    mucho un aviso por tipo. Un id sin alias se resuelve sin distinguir mayúsculas si es único.
     """
     f = timegate.fecha_decision(fecha)
     _validar_opcion(divisa, DIVISAS_SALIDA, "divisa")
     canonico = resolver_id(id, alias)
+    _comprobar_excluida(canonico, id)
     corte = timegate.fecha_decision(desde) if desde is not None else None
     tabla = base if base is not None else almacen.leer_series(canonico)
     visibles = timegate.as_of_series(tabla, canonico, f)
@@ -367,5 +444,5 @@ def get_precios(tk: str | Sequence[str], fecha: FechaLike, *, desde: FechaLike |
 
 __all__ = [
     "AJUSTES", "COLUMNAS_DATOS_PRECIOS", "COLUMNAS_DATOS_SERIE", "DIVISAS_SALIDA", "RespuestaPrecios",
-    "RespuestaSerie", "get_precios", "get_serie", "resolver_id",
+    "RespuestaSerie", "alias_por_defecto", "get_precios", "get_serie", "resolver_id",
 ]

@@ -193,7 +193,8 @@ def test_t1_get_serie_lag_fijo_avisa(fx):
     base = pd.concat([_serie_lag_fijo(), fx], ignore_index=True)
     r = get_serie("sint:PIB_EUR", "2024-12-31", base=base)
     assert r.metodo_publicacion == "lag_fijo" and len(r.datos) == 6
-    assert any("aproximada" in a for a in r.avisos)
+    assert any("por regla" in a and "lag_fijo" in a for a in r.avisos)
+    assert not any("conservador" in a for a in r.avisos)   # regresión: no lo es en los cierres del Gobierno
 
 
 def test_t1_get_serie_a_usd(fx):

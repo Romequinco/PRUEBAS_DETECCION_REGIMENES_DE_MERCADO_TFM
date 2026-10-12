@@ -16,9 +16,10 @@ from ingesta.mercados_series.divisas import (
 
 # Fixings a mano alrededor de la Semana Santa de 2024 (TARGET cerrado el 29-mar y el 1-abr).
 DIAS = pd.to_datetime(["2024-03-26", "2024-03-27", "2024-03-28", "2024-04-02", "2024-04-03"])
-USD_EUR = [1.0837, 1.0830, 1.0811, 1.0763, 1.0792]
-GBP_EUR = [0.85733, 0.85690, 0.85553, 0.85595, 0.85688]
-JPY_EUR = [164.12, 163.88, 163.45, 163.20, 163.55]
+# Fixings SINTÉTICOS con la estructura del BCE (unidades de X por 1 EUR; Semana Santa sin fixing).
+USD_EUR = [1.1000, 1.1200, 1.0900, 1.1100, 1.0800]
+GBP_EUR = [0.86000, 0.85000, 0.87000, 0.84000, 0.88000]
+JPY_EUR = [160.00, 161.50, 159.00, 162.00, 158.50]
 
 
 def _filas_fx(serie: str, dias, valores, publicado=None) -> pd.DataFrame:

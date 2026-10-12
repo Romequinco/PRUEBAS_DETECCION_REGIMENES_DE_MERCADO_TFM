@@ -114,7 +114,7 @@ def test_t1_ticker_de_fichero_rechaza_nombres_no_canonicos(nombre):
 
 
 def test_t1_rutas_por_defecto(corpus_en_tmp):
-    assert almacen.ruta_series() == corpus_en_tmp / "mercados_series" / "series" / "series.parquet"
+    assert almacen.ruta_series() == corpus_en_tmp / "mercados_series" / "series" / "base_series.parquet"
     assert almacen.ruta_series().parent.is_dir()
     assert (almacen.ruta_precios("yahoo", "^GSPC")
             == corpus_en_tmp / "mercados_series" / "precios" / "yahoo" / "~5EGSPC.parquet")
@@ -167,7 +167,7 @@ def test_t1_leer_series_sin_fichero(tmp_path):
 
 def test_t1_series_ruta_por_defecto(vintages, corpus_en_tmp):
     ruta = escribir_series(vintages)
-    assert ruta == corpus_en_tmp / "mercados_series" / "series" / "series.parquet"
+    assert ruta == corpus_en_tmp / "mercados_series" / "series" / "base_series.parquet"
     pd.testing.assert_frame_equal(leer_series(), vintages)
 
 

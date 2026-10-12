@@ -2,7 +2,7 @@
 
 Estructura::
 
-    <corpus>/mercados_series/series/series.parquet                 tabla larga de todas las series
+    <corpus>/mercados_series/series/base_series.parquet            tabla larga de todas las series
     <corpus>/mercados_series/precios/<proveedor>/<ticker>.parquet  un fichero por ticker
 
 Toda escritura valida con ``contrato`` y es atómica (``.tmp`` + ``os.replace``). La base solo
@@ -46,6 +46,8 @@ from ingesta.mercados_series.contrato import (
 )
 
 TEMA = "mercados_series"
+# Nombre del parquet de la base de series (bloque 2: ``base.construir_base`` lo escribe entero).
+FICHERO_SERIES = "base_series.parquet"
 
 # Caracteres permitidos tal cual en el nombre de fichero de un ticker; el resto se codifica
 # como ``~XX`` (hexadecimal del byte UTF-8): '^GSPC' → '~5EGSPC', 'ES=F' → 'ES~3DF', 'BTC/USD' →
@@ -135,10 +137,10 @@ def _validar_proveedor(proveedor: str) -> str:
 
 # --- Rutas --------------------------------------------------------------------------------------
 def ruta_series() -> Path:
-    """``corpus_dir('mercados_series') / 'series' / 'series.parquet'`` (crea la carpeta)."""
+    """``corpus_dir('mercados_series') / 'series' / FICHERO_SERIES`` (crea la carpeta)."""
     carpeta = corpus_dir(TEMA) / "series"
     carpeta.mkdir(parents=True, exist_ok=True)
-    return carpeta / "series.parquet"
+    return carpeta / FICHERO_SERIES
 
 
 def _carpeta_precios(proveedor: str) -> Path:
@@ -257,23 +259,40 @@ def _leer_guardado(ruta: Path, columnas: dict[str, str], vacio) -> pd.DataFrame:
     return df[list(columnas)].astype(columnas)
 
 
-def escribir_series(df: pd.DataFrame, ruta: Path | None = None, *, permitir_perdidas: bool = False) -> Path:
+def escribir_series(df: pd.DataFrame, ruta: Path | None = None, *, permitir_perdidas: bool = False,
+                    revisables: Iterable[str] = (), purgar: Iterable[str] = ()) -> Path:
     """Valida ``df`` y reemplaza en el almacén las series presentes en él; el resto no se toca.
 
     Base que solo crece: si para alguna serie de ``df`` falta una clave
     ``(serie, fecha_referencia, vintage)`` ya guardada, o una clave guardada cambia en alguna de
     ``VIGILADAS_SERIES`` (valor, fecha de publicación, ``disponible_utc``, método, nota, unidad,
     divisa o fuente), lanza ``ErrorContrato`` (salvo ``permitir_perdidas=True``, para corregir
-    errores propios). La tabla resultante se valida entera una vez. Escritura atómica. Devuelve la
+    errores propios). ``revisables``: ids cuyo ``valor`` puede cambiar (revisiones de la última
+    edición de una serie con vintage ``unico``, declaradas con su nota); el resto de columnas y
+    las claves siguen vigiladas. ``purgar``: ids que se quitan del almacén (series que ya no se
+    construyen). La tabla resultante se valida entera una vez. Escritura atómica. Devuelve la
     ruta escrita.
     """
     nuevo = validar_series(df)
     ruta = Path(ruta) if ruta is not None else ruta_series()
     guardado = _leer_guardado(ruta, COLUMNAS_SERIES, vacio_series)
+    purgar = set(purgar)
+    if purgar:
+        guardado = guardado[~guardado["serie"].isin(purgar)].reset_index(drop=True)
     presentes = set(nuevo["serie"])
     afectado = guardado["serie"].isin(presentes)
     if not permitir_perdidas and afectado.any():
-        problemas = _perdidas_series(guardado[afectado], nuevo)
+        rev = set(revisables)
+        g = guardado[afectado]
+        fijas = g[~g["serie"].isin(rev)]
+        problemas = _perdidas_series(fijas, nuevo) if len(fijas) else []
+        revisadas = g[g["serie"].isin(rev)]
+        if len(revisadas):
+            sin_valor = tuple(c for c in VIGILADAS_SERIES if c != "valor")
+            extra = _cambios(revisadas, nuevo, list(CLAVE_SERIES), sin_valor)
+            if extra:
+                problemas += [f"revisables: {p}" for p in extra] + [
+                    "una revisión solo puede cambiar el valor (fechas, método y nota quedan fijos)"]
         if problemas:
             raise ErrorContrato("series", problemas)
     total = validar_series(pd.concat([guardado[~afectado], nuevo], ignore_index=True))
@@ -381,7 +400,7 @@ def tickers_guardados(proveedor: str = "yahoo", ruta: Path | None = None) -> lis
 
 
 __all__ = [
-    "CARACTERES_SEGUROS", "ESQUEMA_PRECIOS", "ESQUEMA_SERIES", "nombre_fichero_ticker",
+    "CARACTERES_SEGUROS", "ESQUEMA_PRECIOS", "FICHERO_SERIES", "ESQUEMA_SERIES", "nombre_fichero_ticker",
     "ticker_de_fichero", "ruta_series", "ruta_precios", "escribir_series", "leer_series",
     "escribir_precios", "leer_precios", "tickers_guardados",
 ]
