@@ -8,7 +8,7 @@ reparte en **cuatro temas**: cada uno tiene responsable, rama y carpetas propias
 
 | Tema | Carpeta | Rama | Agentes | Tools que alimenta | Responsable |
 |---|---|---|---|---|---|
-| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | _por asignar_ |
+| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | Romen (@Romequinco) |
 | 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `fase2/t2-bancos-riesgo` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | _por asignar_ |
 | 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | `fase2/t3-empresas` | Equity, Risk | `buscar_filings`, `get_fundamentales` | _por asignar_ |
 | 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `fase2/t4-noticias-alt` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | _por asignar_ |

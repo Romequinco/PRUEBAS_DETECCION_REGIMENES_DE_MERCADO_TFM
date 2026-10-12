@@ -1,3 +1,15 @@
 # Dependencias propias del Tema 1 · Mercados y series numéricas (get_precios, get_serie).
 # Instalar: python -m pip install -r requirements/ingesta-mercados_series.txt
 # Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
+#
+# La primera línea efectiva aplica el candado de versiones de la Fase 1 (ruta relativa a
+# este fichero; pip la resuelve así). Si alguna herramienta no la resolviera, instalar con
+# -c explícito: python -m pip install -r requirements/ingesta-mercados_series.txt -c requirements/ingesta-mercados_series.constraints.txt
+-c ingesta-mercados_series.constraints.txt
+
+duckdb>=1.1              # almacén analítico local: consultas SQL sobre los parquet del corpus
+pandera>=0.24            # contratos de esquema para los DataFrame de precios y series (pandera.pandas)
+hypothesis>=6.100        # tests basados en propiedades de normalizadores y validadores
+requests-cache>=1.2      # caché HTTP en SQLite: evita repetir descargas y respeta los límites de las APIs
+sdmx1>=2.20              # cliente SDMX para BCE, OCDE, Eurostat, BIS e IMF
+exchange_calendars>=4.5  # calendarios de sesiones bursátiles para alinear y validar fechas de precios
