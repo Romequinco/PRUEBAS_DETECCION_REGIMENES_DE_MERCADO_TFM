@@ -16,20 +16,25 @@ hay que evaluarlos y justificar si entran o no.
 
 ## Fuentes a investigar
 
-- [ ] Precios: yfinance (acciones por mercado, ETF, índices, FX, futuros, cripto) y alternativas (EODHD, Tiingo, Stooq…)
-- [ ] Constituyentes históricos de índices (S&P 500, STOXX 600…) y sesgo de supervivencia
-- [ ] Curvas soberanas oficiales (US Treasury, BCE, Bundesbank, BoE, MoF Japón…)
-- [ ] Divisas y tipos del euro (BCE)
-- [ ] Cripto (fuentes públicas de velas)
-- [ ] Fondos de inversión (NAV, CNMV, ESMA) — viabilidad
+- [x] Precios: yfinance as-traded (núcleo de 92 tickers; nivel ampliado con CLI reanudable, sin descargar)
+      (`proveedores.yahoo`, ficha `yahoo`); Tiingo como alternativa opcional (sin probar: exige cuenta)
+- [x] Constituyentes históricos (S&P 500 point-in-time; composición actual de 10 índices más) y sesgo de
+      supervivencia declarado y medido (`fuentes.constituyentes`, `supervivencia`; WRDS pendiente)
+- [x] Curvas soberanas oficiales: US Treasury, BCE, BoE (ficheros), MoF Japón, BoC y Bundesbank (`fuentes.curvas`,
+      `fuentes.bancos_centrales`)
+- [x] Divisas y tipos del euro (BCE: EXR, €STR, EONIA, tipos oficiales; `fuentes.bce`)
+- [x] Cripto: Coinbase (USD) principal y Binance Vision de control (`fuentes.cripto`)
+- [x] Fondos de inversión: fuera de la optimización (solo VBMFX como proxy de AGG antes de 2003-09)
 - [x] Reutilizar las series de la Fase 1 (`data/raw`, `configs/catalog.yaml`, `regimenes.features.lags`) como **niveles**
       legibles: hecho en el bloque 2 (`fuentes.fase1`, ficha `fase1_raw`); las ETF ajustadas quedan para `get_precios`
 - [x] FRED / ALFRED: FRED como fuente viva de todas sus series del catálogo (`fuentes.fred`, fichas `fred_alfred` e
       `ice_bofa_oas`) y vintages exactos de ALFRED de las 161 revisables (bloque 3: `fuentes.alfred`, ficha `alfred_vintages`)
 - [x] Académicas: Ken French, Shiller, Goyal-Welch y OFR FSI en la base; JST R6 como tabla de validación
       (`fuentes.academicos`, fichas `ken_french`, `shiller`, `goyal_welch`, `ofr_fsi`, `jst_macrohistory`)
-- [ ] Macro internacional: OCDE, BCE, Eurostat, FMI, Banco Mundial, BIS, DBnomics, bancos centrales
-- [ ] Tipo libre de riesgo, baselines (buy & hold, 60/40, momentum) y costes de transacción
+- [x] Macro internacional: OCDE (ediciones), BCE, Eurostat, FMI (WEO, parcial), Banco Mundial, BIS, Philly RTDSM y
+      bancos centrales (bloque 4); DBnomics vetado por `robots.txt`
+- [x] Tipo libre de riesgo, baselines (buy & hold, 60/40, 1/N, RSP, momentum sectorial) y costes de transacción
+      (bloque 8: `cartera`)
 
 ## Entregables
 
@@ -40,6 +45,10 @@ hay que evaluarlos y justificar si entran o no.
 4. **Hecho (bloque 3)**: vintages exactos de ALFRED, FRED como fuente viva y ediciones académicas con vintage propio
    (ver «Vintages (bloque 3)»).
 5. Limpieza y EDA de las series (huecos, rupturas, series retiradas): inventario en el notebook 02 y revisiones en el 03.
+6. **Hecho (bloques 4–8)**: macro internacional (notebook 04), universo (05), precios as-traded (06), supervivencia
+   (07), libre de riesgo, baselines y costes (08). Ver las secciones de cada bloque.
+7. **Hecho (bloque 9, cierre)**: calidad global, tabla de fichas y las dos tools en 2008-09-15 y 2020-03-16
+   (notebook 09) y truncado real de `get_serie` y `get_precios` (`test_t1_cierre.py`, `@pytest.mark.datos`).
 
 ## Contrato (bloque 1)
 
@@ -178,8 +187,8 @@ gráficos (inventario, cobertura, retrasos, retiradas, el mismo día visto por `
 | [`fuentes.academicos`](fuentes/academicos.py) | Ken French, Shiller (CAPE, tipo largo, P, D, E, CPI) y Goyal-Welch con vintage por edición (`AAAA-MM`); OFR FSI con la última edición | hecho; fichas `ken_french`, `shiller`, `goyal_welch`, `ofr_fsi`, `jst_macrohistory` |
 | [`fuentes.fase1`](fuentes/fase1.py) | `data/raw` de la Fase 1: solo lo que no está en FRED (índices de yfinance, datahub) y respaldo de FRED si no trae filas | hecho; ficha `fase1_raw` |
 | derivadas propias | `deriv:A-B` recalculadas con sus componentes de la base (DBAA−DAAA, DED3−DTB3, SOFR−EFFR y, desde el bloque 3, BAA10Y = DBAA−DGS10, T10YFF = DGS10−DFF, T5YFF = DGS5−DFF, CPFF = DCPF3M−DFF); la vol. realizada del S&P 500 la fecha `fase1` | hecho |
-| bloque 4 | OCDE (CLI) y macro internacional | pendiente |
-| bloque 6 | precios as-traded (`get_precios`), incluidas las ETF de la Fase 1 | pendiente |
+| bloque 4 | macro internacional: BCE, Eurostat, BIS, FMI, Banco Mundial, OCDE, Philly RTDSM y bancos centrales (`base.CARGADORES_OFICIALES`) | hecho; ver «Macro internacional (bloque 4)» |
+| bloque 6 | curvas soberanas oficiales (`fuentes.curvas`) en la base; precios as-traded en el almacén de precios (`get_precios`), incluidas las ETF de la Fase 1 | hecho; ver «Precios (bloque 6)» |
 
 **Reglas de fecha por método** (`metodo_publicacion`):
 
@@ -315,20 +324,190 @@ la regla fija adelantaba la fecha del 2,8 % de los 48 161 periodos medidos (128 
 todos los valores eran los revisados de hoy (el 99 % de los periodos se revisa en la serie mediana). Recorrido con
 gráficos: [`notebooks/fase2/mercados_series/03_alfred_vintages.ipynb`](../../../notebooks/fase2/mercados_series/03_alfred_vintages.ipynb).
 
+## Macro internacional (bloque 4)
+
+Países del alcance: EE. UU., zona euro (composición cambiante `U2`/`EA`; la zona euro pasa a 21 en 2026), G7 (DE, FR,
+IT, UK, JP, CA) y China; el resto del mundo, anual (Banco Mundial). Prefijos: `ecb:`, `eurostat:`, `bis:`, `imf:`,
+`wb:`, `oecd:`, `philly:`, `boc:`, `boj:`, `bbk:`, `rba:`. Recorrido con gráficos:
+[`notebooks/fase2/mercados_series/04_macro_internacional.ipynb`](../../../notebooks/fase2/mercados_series/04_macro_internacional.ipynb).
+
+- **BCE** ([`fuentes.bce`](fuentes/bce.py)): 44 divisas de referencia (vigentes y retiradas; TWD no está), €STR (hábil
+  TARGET siguiente a las 08:00 de Berlín), EONIA como predecesor (1999-2021), tipos oficiales DFR y MRO en su fecha de
+  efecto, HICP (dataflow con proveedor 4D0, ECOICOP v2), paro y PIB. `includeHistory` solo devuelve la versión vigente:
+  las revisables quedan casi todas con la regla previa y nota (posible fuga de revisiones).
+- **Eurostat** ([`fuentes.eurostat`](fuentes/eurostat.py)): HICP en `prc_hicp_minr` (ECOICOP v2) y `prc_hicp_manr`
+  (v1, retirada en 2025-12; ruptura medida: en EA, 24 de 348 meses distintos, máximo 0,1 puntos), paro, ESI y PIB a
+  las 11:00 de Luxemburgo. `une_rt_m` y ESI no traen `EA` de composición cambiante (solo EA20/EA21).
+- **BIS** ([`fuentes.bis`](fuentes/bis.py)): tipos oficiales, brecha de crédito, servicio de la deuda y tipos de cambio
+  efectivos; lag fijo conservador. **Banco Mundial** ([`fuentes.worldbank`](fuentes/worldbank.py)): PIB, IPC y paro de
+  217 países, anual, fin de t+1. **FMI WEO** ([`fuentes.imf`](fuentes/imf.py)): solo la edición 2026-10 (las
+  proyecciones se descartan; el contrato no admite previsiones). Las ediciones 2008-2025 están en DBnomics, que prohíbe
+  el acceso por `robots.txt`.
+- **OCDE** ([`fuentes.oecd`](fuentes/oecd.py)): `DF_STES_REVISIONS` da ediciones reales (`vintage` = `AAAA-MM`, fecha
+  conservadora a fin de mes): CLI desde 2001, IPC y paro desde 1999. Sin CLI de la zona euro ni paro de China.
+- **Philly RTDSM** ([`fuentes.philly_rtdsm`](fuentes/philly_rtdsm.py)): solo los vintages anteriores al primero de
+  ALFRED (ROUTPUT 1965-1991); PCPI, EMPLOY y RUC no aportan filas.
+- **Bancos centrales** ([`fuentes.bancos_centrales`](fuentes/bancos_centrales.py)): BoC (Valet, desde 2001), BoJ (desde
+  1998), Bundesbank (Svensson a 10 años, desde 1997) y RBA (desde 2011). BoE (IADB) vetado por `robots.txt`; sus curvas
+  salen de los ficheros publicados (bloque 6).
+
+## Universo (bloque 5)
+
+[`config/universo.yaml`](config/universo.yaml) y [`universo`](universo.py): 202 instrumentos (137 ETF, 8 ETP, 22
+índices, 6 de volatilidad, 8 divisas, 18 futuros, 2 cripto y VBMFX), por capa (116 tácticos, 54 de contexto, 27
+estratégicos y 5 baselines); 52 invertibles por un minorista de la UE con su UCITS equivalente mapeado y empalme con el
+proxy de EE. UU. (mediana de 4,5 años antes de cada UCITS). ISIN comprobados con el dígito de control; fechas de
+lanzamiento de justETF; divisas medidas en Yahoo (`GBp`, `GBP`, `CHF`, `USX`). Constituyentes
+([`fuentes.constituyentes`](fuentes/constituyentes.py)): S&P 500 point-in-time 1996-2026 (fecha efectiva del cambio) y
+composición actual de 10 índices (Wikipedia; sin Nikkei 225 ni Ibovespa). El universo ampliado (~1.700 tickers) se
+define con los constituyentes. Futuros: solo contexto. Fondos: fuera de la optimización. Recorrido:
+[`05_universo.ipynb`](../../../notebooks/fase2/mercados_series/05_universo.ipynb).
+
+## Precios (bloque 6)
+
+**Contrato de precios.** [`proveedores.yahoo`](proveedores/yahoo.py) baja con `auto_adjust=False`, `actions=True` y
+`period='max'` (verificado contra `firstTradeDate`), a 0,5 tickers/s como máximo. Yahoo devuelve OHLC, volumen y
+dividendos ajustados por los splits posteriores: el adaptador los deshace (`timegate.des_ajustar_yahoo`), descarta la
+vela incompleta del día y nunca guarda `Adj Close`. Cada ticker va a `<corpus>/mercados_series/precios/yahoo/<ticker>.parquet`
+con `fecha_publicacion` = cierre local + 30 min (Cboe, CME, FX de Yahoo y NAV de fondos, en D+1). `get_precios`
+reconstruye el ajuste a fecha (`ajuste='ninguno' | 'splits' | 'total'`) solo con los eventos visibles y convierte a USD
+con el FX del BCE visible (subunidades `GBp`, `ZAc`, `ILA`, `USX` normalizadas). Comprobado contra el `Adj Close` de
+Yahoo de hoy: error relativo mediano < 1e-4 desde 2000. Calidad: [`calidad`](calidad.py) (saltos sin split, volumen
+cero, cierres repetidos, dividendos altos).
+
+- **Núcleo**: 92 de 92 tickers (ETF de la propuesta, AGG, RSP, VBMFX, IBIT, ETHA, 16 índices, 4 divisas, 5 futuros y
+  20 acciones grandes): 657.499 sesiones, unos 6 minutos (`python -m ingesta.mercados_series.proveedores.yahoo nucleo`,
+  reanudable con registro en `logs/yahoo_nucleo.jsonl`).
+- **Nivel ampliado** (~1.700 tickers): CLI lista (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`),
+  sin descargar.
+- **Cripto** ([`fuentes.cripto`](fuentes/cripto.py)): Coinbase BTC-USD y ETH-USD (vela UTC, visible en D+1) como fuente
+  principal y Binance Vision (BTCUSDT, ETHUSDT) como control (`tablas/cripto_comparacion_binance_coinbase.csv`).
+- **Curvas** ([`fuentes.curvas`](fuentes/curvas.py)): US Treasury (par, desde 1990), BCE (Svensson, desde 2004), BoE
+  (gilt nominal, desde 1979), MoF Japón (JGB, desde 1974) y BoC (desde 2001), en la base de series con prefijos `ust:`,
+  `ecb:`, `boe:`, `mof:` y `boc:`. Hora de publicación de cada una en su ficha; la del Tesoro (18:00 NY) sin verificar.
+
+Recorrido: [`06_precios_cobertura.ipynb`](../../../notebooks/fase2/mercados_series/06_precios_cobertura.ipynb).
+
+## Supervivencia (bloque 7)
+
+[`supervivencia`](supervivencia.py): el sesgo se **declara y se mide**. Sobre una muestra estratificada de tramos del
+S&P 500 (62 salidos y 60 actuales), Yahoo cubre completos 59 de 60 actuales y solo 14 de 62 salidos (40 sin datos); la
+fracción media de sesiones cubiertas de los salidos es 0,23 y es nula para las salidas anteriores a 2006
+(`tablas/supervivencia_cobertura.csv`, ficha `supervivencia`). Corrección completa: CRSP vía WRDS (pendiente de la
+licencia de MIAX); alternativa: Tiingo (exige cuenta propia; sin probar). Comandos: `python -m
+ingesta.mercados_series.supervivencia descargar` (reanudable) y `... medir`. Es una medición: no añade series,
+publicadores ni mercados, y la rentabilidad diaria de la muestra vive en `<corpus>/mercados_series/supervivencia/` (no
+entra en la base ni en `get_serie`/`get_precios`). Recorrido:
+[`07_supervivencia.ipynb`](../../../notebooks/fase2/mercados_series/07_supervivencia.ipynb).
+
+## Cartera: libre de riesgo, baselines y costes (bloque 8)
+
+[`cartera`](cartera/): todo punto en el tiempo (cada valor usa solo lo visible en su fecha).
+
+- **Libre de riesgo** ([`cartera.libre_riesgo`](cartera/libre_riesgo.py)): DTB3 para los agentes; French RF para
+  evaluar ex post; en EUR, EONIA hasta 2019 y €STR después (`fred:DTB3`, `ff:F3D.RF`, `ecb:EONIA`, `ecb:ESTR`; sin
+  series, publicadores ni mercados propios; Euribor 3M no está catalogado).
+- **Baselines** ([`cartera.baselines`](cartera/baselines.py)): buy & hold SPY, 60/40 SPY/AGG (VBMFX antes de 2003-09),
+  1/N sobre los ETF invertibles vivos en cada fecha, RSP, momentum sectorial 12-1 top 3 (SPDR) y 60/40 europeo (anexo).
+- **Costes** ([`cartera.costes`](cartera/costes.py)): DEGIRO con 10.000 € (IBKR como sensibilidad); coste = comisión +
+  0,25 % de FX + spread base por clase × multiplicador de crisis (CHL normalizado, entre 1 y 10)
+  (`tablas/costes_modelo.csv`). Comisiones de la tarifa pública sin verificar.
+
+Informe: `python -m ingesta.mercados_series.cartera.informe`; ficha `cartera_baselines_costes` (parcial). Los precios
+se leen con `almacen.leer_precios` (validados por contrato: los 92 tickers del núcleo, ARCX y NAV_US incluidos). Recorrido:
+[`08_libre_riesgo_baselines_costes.ipynb`](../../../notebooks/fase2/mercados_series/08_libre_riesgo_baselines_costes.ipynb).
+
+## Fuentes y estado (cierre, bloque 9)
+
+Estado de cada ficha de `results/ingesta/mercados_series/fichas/` (2026-10-13): **ok** si se ha descargado y validado
+entera, **parcial** si falta una parte documentada en la ficha y **bloqueada** si no se puede descargar.
+
+| ficha | estado | cobertura medida | nota |
+|---|---|---|---|
+| `fred_alfred`, `alfred_vintages` | ok | 1854 – 2026-10 | vintages exactos de las 161 revisables; 80 series vivas |
+| `ice_bofa_oas` | parcial | 2023-10-10 – 2026-10 | ventana móvil de 3 años en FRED |
+| `fase1_raw` | ok | 1854 – 2026-08 | solo lo que no está en FRED |
+| `ken_french`, `shiller`, `goyal_welch`, `ofr_fsi`, `jst_macrohistory` | ok | 1870 – 2026-08 | ediciones archivadas desde 2026; JST solo validación |
+| `bce`, `eurostat`, `bis`, `worldbank` | ok | 1945 – 2026-10 | sin vintages salvo la versión vigente |
+| `oecd` | parcial | 1949 – 2026-09 | sin CLI de la zona euro ni paro de China |
+| `imf_weo` | parcial | 1980 – 2026 | solo la edición 2026-10 (DBnomics vetado por `robots.txt`) |
+| `philly_rtdsm` | ok | 1939 – 2026-08 | solo aporta ROUTPUT anterior a ALFRED |
+| `boc`, `boj`, `bundesbank`, `rba` | ok | 1997 – 2026-10 | RBA desde 2011; BoC desde 2001 |
+| `boe` (IADB) | bloqueada | – | `robots.txt` prohíbe la ruta CSV |
+| `ust_curva`, `bce_curvas`, `boe_curvas`, `mof_jgb`, `boc_curva` | ok | 1974 – 2026-10 | curvas oficiales |
+| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado sin descargar |
+| `coinbase`, `binance_vision` | ok | 2015 – 2026-10 | Binance de control |
+| `universo` | ok | – | 202 instrumentos |
+| `sp500_constituyentes` | ok | 1996 – 2026-08 | fecha efectiva del cambio |
+| `indices_constituyentes` | parcial | foto de 2026-10-13 | sin Nikkei 225 ni Ibovespa |
+| `supervivencia` | ok | 1996 – 2026-08 | medición; corrección WRDS pendiente |
+| `cartera_baselines_costes` | parcial | 1993 – 2026-10 | comisiones sin verificar; 1/N con lista estática |
+
+Calidad global, cobertura por fuente, método y época y las dos tools en 2008-09-15 y 2020-03-16 (solo metadatos):
+[`09_cierre_calidad.ipynb`](../../../notebooks/fase2/mercados_series/09_cierre_calidad.ipynb). Truncado real
+(5 series, 5 tickers, 3 fechas): `tests/ingesta/mercados_series/test_t1_cierre.py`.
+
 ## Deudas pendientes
 
-- Archivo periódico de las OAS de ICE (ventana móvil de 3 años en FRED): pendiente de programar.
-- package-data de los YAML de config en `pyproject.toml`: pendiente (PR común cuando haga falta empaquetar; hoy
-  funciona con `pip install -e`).
+Precios y universo:
+- **Descarga del nivel ampliado de precios** (~1.700 tickers): CLI lista (`proveedores.yahoo ampliado`), sin ejecutar;
+  hacerla en tandas de menos de 10 minutos.
+- **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX; hasta entonces el sesgo se declara y se mide. **Tiingo**
+  como alternativa opcional (exige cuenta y clave del usuario; sin probar).
+- VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente; ISIN por verificar (IUAA.L,
+  NGAS.L, AIGA.L y 5 de EE. UU.); `inicio_esperado` de los ETF de EE. UU. documentado de memoria.
+- Fecha de anuncio de los cambios del S&P 500 (hoy, fecha efectiva: conservadora para las altas).
+- S&P 500: 28 tramos llevan el ticker posterior con sufijo Q/QQ de quiebra (ENRNQ, AAMRQ...): anotados en la nota del
+  tramo y contados en la ficha; falta mapearlos al ticker de la época (CIK/PERMNO con WRDS).
+- Yahoo: el mercado declarado en `universo.yaml` manda sobre `exchangeName`; el respaldo por huso solo avisa (no
+  falla) para los tickers fuera del universo.
+- Baselines: se ejecuta al cierre de la fecha de decisión (convención documentada aquí); falta un test que impida a
+  una estrategia futura usar ese mismo cierre en su señal.
+
+Horas y calendarios:
+- **Horas históricas de publicación sin verificar**: las horas se midieron hoy (sondas) y se aplican hacia atrás; las
+  del Tesoro (18:00 NY), Ken French (+45 días), H.15 diario histórico, Goyal-Welch, NBER y OFR son reglas
+  (`verificado: false` en `lags.yaml` y en `mercados.yaml` para los mercados nuevos).
+- **Horizontes del SEP**: las proyecciones del SEP solo se ven desde su fecha de referencia (el contrato no admite
+  previsiones); falta decidir si van a una tabla aparte de proyecciones (igual que las del WEO).
+- EONIA se fecha con el publicador de €STR (hábil siguiente a las 08:00): conservador frente a la publicación real.
+
+Macro internacional:
+- FMI WEO: ediciones 2008-2025 (pedir permiso a DBnomics o localizar el archivo del FMI), zona euro (WEO de agregados)
+  y verificar las fechas de edición.
+- OCDE: CLI de la zona euro (probar EA19, G4E o `DF_CLI`); valorar marcar `oecd:LI_AA.*` como re-estimadas enteras.
+- BCE, Eurostat, BIS y Banco Mundial sin historia de revisiones: valores de hoy con regla y nota de revisable.
+- Historia larga de RBA (antes de 2011) y BoC (antes de 2001); BoE IADB vetado (alternativa: series del Reino Unido de
+  la OCDE o de FRED).
+- Empalme de `philly:ROUTPUT` (PNB real hasta 1991) con `fred:GDPC1`.
+- Paro y PIB de Eurostat/BCE con claves propias (`EUROSTAT_PARO` 2M, `EUROSTAT_PARO_UK` 3M, `EUROSTAT_PIB` 2M10D),
+  conservadoras en todo el histórico: faltan tramos por época (paro 1M5D desde 2012; PIB t+31 desde 2016, t+46 en
+  2003-2015) y la fecha nacional de cada país; `lags.yaml` aún no admite tramos.
+- HICP ECOICOP v2, EA20, EA21 e I10 solo visibles desde su creación (retropolaciones): falta la serie empalmada por
+  fecha de publicación (v1 hasta la primera versión de v2, EA cambiante por defecto para los agentes). Las fechas de
+  creación de EA20 y EA21 (`fuentes.eurostat.CREACION_GEO`) son aproximaciones conservadoras sin verificar. Las
+  entradas del catálogo de estas series conservan `lag_clave: UNRATE`/`GDPC1`: actualizar al integrar.
+- FMI WEO: la versión 9.0.0 se descargó el 2026-10-13 a las 07:46 NY, antes de la publicación declarada (09:00 NY):
+  verificar `FECHAS_EDICION` con las notas de prensa y separar las estimaciones del año en curso (id o tabla aparte).
+- Curvas: el hábil siguiente de la última fila usa días laborables sin festivos (TARGET, Japón, Canadá, Reino Unido);
+  se corrige solo en la reconstrucción siguiente.
+
+Mantenimiento:
+- **Archivo periódico de las OAS de ICE** (ventana móvil de 3 años en FRED): pendiente de programar.
 - Descarga periódica de las ediciones académicas (French mensual, Shiller, Goyal-Welch anual) para medir sus
   revisiones futuras: hoy se archiva a mano (`fuentes.academicos --descargar` y `--archivar`).
+- **package-data** de los YAML de config en `pyproject.toml`: pendiente (PR común cuando haga falta empaquetar; hoy
+  funciona con `pip install -e`).
+- Comisiones de DEGIRO e IBKR de la tarifa pública sin verificar; 1/N con la lista estática del núcleo.
 
 ## Decididas
 
 - Divisa base: USD (se guarda la original y se convierte al leer).
 - Hora de decisión: 16:30 America/New_York de cada día natural (tras el cierre de Nueva York).
+- Supervivencia: se declara y se mide (bloque 7); la corrección con WRDS/CRSP depende de la licencia de MIAX.
+- Cripto: Coinbase (USD) principal y Binance Vision de control. Futuros, solo contexto. Fondos, fuera de la optimización.
 
 ## Preguntas abiertas
 
-- ¿Fuente de precios para la versión final (gratuita o de pago)?
-- ¿Cómo se corrige o se declara el sesgo de supervivencia?
+- ¿Fuente de precios para la versión final (Yahoo, Tiingo o WRDS/CRSP si llega la licencia)?
+- ¿Proyecciones (SEP, WEO) en una tabla aparte o fuera del tema?
