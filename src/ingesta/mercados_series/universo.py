@@ -5,8 +5,7 @@ y valida cada instrumento:
 
 - campos obligatorios y enumerados (``clase``, ``capa``, ``estado``); ids únicos con prefijo de
   fuente (``yf:``, ``coinbase:``); ``tickers.yahoo`` se deduce de ``yf:<ticker>`` si falta;
-- ``mercado`` existe en ``config/mercados.yaml`` o en ``config/fragmentos/*.yaml`` (sección
-  ``mercados``); ``divisa`` ISO 4217 o subunidad (``GBp``, ``ZAc``, ``ILA``);
+- ``mercado`` existe en ``config/mercados.yaml``; ``divisa`` ISO 4217 o subunidad (``GBp``, ``ZAc``, ``ILA``);
 - ISIN con dígito de control correcto (Luhn sobre letras expandidas) y ``invertible_minorista_ue``
   coherente: un ETF/ETP invertible por un minorista de la UE necesita ISIN no estadounidense (los
   ETF de EE. UU. no publican KID PRIIPs);
@@ -48,7 +47,6 @@ from ingesta.comun.rutas import resultados_dir
 CONFIG = Path(__file__).resolve().parent / "config"
 RUTA_UNIVERSO = CONFIG / "universo.yaml"
 RUTA_MERCADOS = CONFIG / "mercados.yaml"
-DIR_FRAGMENTOS = CONFIG / "fragmentos"
 TEMA = "mercados_series"
 
 CLASES = ("etf", "etp", "indice", "volatilidad", "divisa", "futuro", "cripto", "fondo")
@@ -92,13 +90,9 @@ def divisa_base(divisa: str) -> tuple[str, int]:
     return SUBUNIDADES.get(divisa, (divisa, 1))
 
 
-def claves_mercados(ruta_mercados: Path | None = None, dir_fragmentos: Path | None = None) -> set[str]:
-    """Claves de mercado conocidas: ``mercados.yaml`` + secciones ``mercados`` de los fragmentos."""
-    claves = set((yaml.safe_load((ruta_mercados or RUTA_MERCADOS).read_text(encoding="utf-8")) or {}).keys())
-    carpeta = dir_fragmentos or DIR_FRAGMENTOS
-    if carpeta.exists():
-        for p in sorted(carpeta.glob("*.yaml")):
-            claves |= set(((yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get("mercados") or {}).keys())
+def claves_mercados(ruta_mercados: Path | None = None) -> set[str]:
+    """Claves de mercado conocidas (las de ``config/mercados.yaml``)."""
+    claves = (yaml.safe_load((ruta_mercados or RUTA_MERCADOS).read_text(encoding="utf-8")) or {}).keys()
     return {str(c) for c in claves}
 
 
@@ -129,7 +123,7 @@ def _validar_instrumento(crudo: dict, donde: str, mercados: set[str]) -> dict[st
     if not isinstance(i["invertible_minorista_ue"], bool):
         raise ValueError(f"{donde}: 'invertible_minorista_ue' debe ser true o false")
     if i["mercado"] not in mercados:
-        raise ValueError(f"{donde}: mercado {i['mercado']!r} no está en mercados.yaml ni en los fragmentos")
+        raise ValueError(f"{donde}: mercado {i['mercado']!r} no está en mercados.yaml")
     if not (_PATRON_DIVISA.match(str(i["divisa"])) or i["divisa"] in SUBUNIDADES):
         raise ValueError(f"{donde}: divisa {i['divisa']!r} no es ISO 4217 ni subunidad {tuple(SUBUNIDADES)}")
     tickers = dict(i["tickers"] or {})

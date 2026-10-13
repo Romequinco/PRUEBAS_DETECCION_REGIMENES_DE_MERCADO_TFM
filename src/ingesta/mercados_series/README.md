@@ -16,7 +16,7 @@ hay que evaluarlos y justificar si entran o no.
 
 ## Fuentes a investigar
 
-- [x] Precios: yfinance as-traded (núcleo de 92 tickers; nivel ampliado con CLI reanudable, sin descargar)
+- [x] Precios: yfinance as-traded (núcleo de 92 tickers; nivel ampliado de 1.842 tickers en descarga, con posproceso)
       (`proveedores.yahoo`, ficha `yahoo`); Tiingo como alternativa opcional (sin probar: exige cuenta)
 - [x] Constituyentes históricos (S&P 500 point-in-time; composición actual de 10 índices más) y sesgo de
       supervivencia declarado y medido (`fuentes.constituyentes`, `supervivencia`; WRDS pendiente)
@@ -378,8 +378,11 @@ cero, cierres repetidos, dividendos altos).
 - **Núcleo**: 92 de 92 tickers (ETF de la propuesta, AGG, RSP, VBMFX, IBIT, ETHA, 16 índices, 4 divisas, 5 futuros y
   20 acciones grandes): 657.499 sesiones, unos 6 minutos (`python -m ingesta.mercados_series.proveedores.yahoo nucleo`,
   reanudable con registro en `logs/yahoo_nucleo.jsonl`).
-- **Nivel ampliado** (~1.700 tickers): CLI lista (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`),
-  sin descargar.
+- **Nivel ampliado** (1.842 tickers: S&P 500 histórico y constituyentes actuales de 10 índices): descarga reanudable
+  en curso (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`). `... proveedores.yahoo posproceso`
+  lee solo lo ya guardado y escribe la cobertura por índice y mercado, los fallidos (vacío, deslistado) y las
+  incidencias de `calidad` en `tablas/yahoo_ampliado_cobertura.csv` y en la ficha `yahoo` («descarga en curso: N de
+  M» mientras no se haya intentado toda la lista); se repite al terminar.
 - **Cripto** ([`fuentes.cripto`](fuentes/cripto.py)): Coinbase BTC-USD y ETH-USD (vela UTC, visible en D+1) como fuente
   principal y Binance Vision (BTCUSDT, ETHUSDT) como control (`tablas/cripto_comparacion_binance_coinbase.csv`).
 - **Curvas** ([`fuentes.curvas`](fuentes/curvas.py)): US Treasury (par, desde 1990), BCE (Svensson, desde 2004), BoE
@@ -408,12 +411,14 @@ entra en la base ni en `get_serie`/`get_precios`). Recorrido:
   evaluar ex post; en EUR, EONIA hasta 2019 y €STR después (`fred:DTB3`, `ff:F3D.RF`, `ecb:EONIA`, `ecb:ESTR`; sin
   series, publicadores ni mercados propios; Euribor 3M no está catalogado).
 - **Baselines** ([`cartera.baselines`](cartera/baselines.py)): buy & hold SPY, 60/40 SPY/AGG (VBMFX antes de 2003-09),
-  1/N sobre los ETF invertibles vivos en cada fecha, RSP, momentum sectorial 12-1 top 3 (SPDR) y 60/40 europeo (anexo).
+  1/N sobre los ETF invertibles vivos en cada fecha, RSP, momentum sectorial 12-1 top 3 (SPDR) y 60/40 europeo (anexo:
+  CSPX.L/EUNA.DE desde 2017-11). Se ejecuta al cierre de la fecha de control y la señal solo ve `sesion < fecha`
+  (`baselines.vista_senal`; test `test_t1_a_baselines_senal`).
 - **Costes** ([`cartera.costes`](cartera/costes.py)): DEGIRO con 10.000 € (IBKR como sensibilidad); coste = comisión +
   0,25 % de FX + spread base por clase × multiplicador de crisis (CHL normalizado, entre 1 y 10)
   (`tablas/costes_modelo.csv`). Comisiones de la tarifa pública sin verificar.
 
-Informe: `python -m ingesta.mercados_series.cartera.informe`; ficha `cartera_baselines_costes` (parcial). Los precios
+Informe: `python -m ingesta.mercados_series.cartera.informe`; ficha `cartera_baselines_costes`. Los precios
 se leen con `almacen.leer_precios` (validados por contrato: los 92 tickers del núcleo, ARCX y NAV_US incluidos). Recorrido:
 [`08_libre_riesgo_baselines_costes.ipynb`](../../../notebooks/fase2/mercados_series/08_libre_riesgo_baselines_costes.ipynb).
 
@@ -435,13 +440,13 @@ entera, **parcial** si falta una parte documentada en la ficha y **bloqueada** s
 | `boc`, `boj`, `bundesbank`, `rba` | ok | 1997 – 2026-10 | RBA desde 2011; BoC desde 2001 |
 | `boe` (IADB) | bloqueada | – | `robots.txt` prohíbe la ruta CSV |
 | `ust_curva`, `bce_curvas`, `boe_curvas`, `mof_jgb`, `boc_curva` | ok | 1974 – 2026-10 | curvas oficiales |
-| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado sin descargar |
+| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado en descarga (posproceso parcial) |
 | `coinbase`, `binance_vision` | ok | 2015 – 2026-10 | Binance de control |
 | `universo` | ok | – | 202 instrumentos |
 | `sp500_constituyentes` | ok | 1996 – 2026-08 | fecha efectiva del cambio |
 | `indices_constituyentes` | parcial | foto de 2026-10-13 | sin Nikkei 225 ni Ibovespa |
 | `supervivencia` | ok | 1996 – 2026-08 | medición; corrección WRDS pendiente |
-| `cartera_baselines_costes` | parcial | 1993 – 2026-10 | comisiones sin verificar; 1/N con lista estática |
+| `cartera_baselines_costes` | ok | 1993 – 2026-10 | comisiones sin verificar; 1/N con lista estática; 60/40 UCITS desde 2017-11 |
 
 Calidad global, cobertura por fuente, método y época y las dos tools en 2008-09-15 y 2020-03-16 (solo metadatos):
 [`09_cierre_calidad.ipynb`](../../../notebooks/fase2/mercados_series/09_cierre_calidad.ipynb). Truncado real
@@ -450,19 +455,25 @@ Calidad global, cobertura por fuente, método y época y las dos tools en 2008-0
 ## Deudas pendientes
 
 Precios y universo:
-- **Descarga del nivel ampliado de precios** (~1.700 tickers): CLI lista (`proveedores.yahoo ampliado`), sin ejecutar;
-  hacerla en tandas de menos de 10 minutos.
+- **Nivel ampliado de precios**: descarga en curso (1.842 tickers a 0,5 tickers/s, unas 2 horas; reanudable). Al
+  terminar: repetir `proveedores.yahoo posproceso` y reejecutar el notebook 06.
 - **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX; hasta entonces el sesgo se declara y se mide. **Tiingo**
-  como alternativa opcional (exige cuenta y clave del usuario; sin probar).
-- VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente; ISIN por verificar (IUAA.L,
-  NGAS.L, AIGA.L y 5 de EE. UU.); `inicio_esperado` de los ETF de EE. UU. documentado de memoria.
-- Fecha de anuncio de los cambios del S&P 500 (hoy, fecha efectiva: conservadora para las altas).
+  como alternativa opcional (exige cuenta y clave del usuario; sin probar). Con el ampliado a medias (352 de 1.842) solo
+  10 de los 759 tramos salidos tienen ticker descargado: no mejora la muestra (122 tramos); recalcular al terminar.
+- VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente. ISIN: IUAA.L (IE00B44CGS96),
+  AIGA.L (GB00B15KYH63) y XLI (US81369Y7040) verificados; quedan NGAS.L (los ISIN probados en justETF son de otros
+  ETC de WisdomTree) y CPER, BITO, VIXY y VBMFX (las fichas del emisor no traen el ISIN en el HTML; son señal, no se
+  invierten). AIGA.L sigue `por_verificar`: Yahoo solo da una vela. `inicio_esperado` de los ETF de EE. UU. = primer
+  día medido en Yahoo (corregidos VTI, EFA, EZU, EDV, BWX y BITO).
 - S&P 500: 28 tramos llevan el ticker posterior con sufijo Q/QQ de quiebra (ENRNQ, AAMRQ...): anotados en la nota del
-  tramo y contados en la ficha; falta mapearlos al ticker de la época (CIK/PERMNO con WRDS).
+  tramo y contados en la ficha. El fichero sin actualizar de fja05680 trae los mismos tickers Q con el mes de exclusión
+  (AAMRQ-201312), no el de la época: el mapeo exige CIK/PERMNO (WRDS). (Fechas de anuncio: cerrada; la fecha efectiva
+  es conservadora y sin fuga, ver la ficha `sp500_constituyentes`.)
 - Yahoo: el mercado declarado en `universo.yaml` manda sobre `exchangeName`; el respaldo por huso solo avisa (no
   falla) para los tickers fuera del universo.
-- Baselines: se ejecuta al cierre de la fecha de decisión (convención documentada aquí); falta un test que impida a
-  una estrategia futura usar ese mismo cierre en su señal.
+- Baselines: el 60/40 europeo (CSPX.L/EUNA.DE) solo arranca en 2017-11 (lanzamiento de EUNA.DE); para alargarlo hace
+  falta un agregado UCITS más antiguo o el empalme con BNDX. (Señal frente a ejecución: cerrada; la señal solo ve
+  `sesion < fecha`, con test.)
 
 Horas y calendarios:
 - **Horas históricas de publicación sin verificar**: las horas se midieron hoy (sondas) y se aplican hacia atrás; las

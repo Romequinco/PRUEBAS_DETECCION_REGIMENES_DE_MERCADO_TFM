@@ -1,4 +1,4 @@
-"""Tests de ``ingesta.mercados_series.universo`` (bloque 5) y del fragmento ``b5_universo.yaml``.
+"""Tests de ``ingesta.mercados_series.universo`` (bloque 5) y de sus mercados en ``mercados.yaml``.
 
 Sin red: el YAML real del universo (solo metadatos) y universos SINTÉTICOS mínimos para los
 errores. ``leer_justetf`` con un HTML sintético con el formato de la ficha de justETF.
@@ -17,7 +17,6 @@ from ingesta.mercados_series import visibilidad
 
 PROPUESTA = ("SPY QQQ IWM VGK EWJ EEM FXI EWZ MCHI VPL XLK XLF XLE XLV XLC XLI XLY XLP XLRE XLB XLU TLT IEF SHY "
              "TIP LQD HYG EMB BNDX GLD SLV USO UNG PDBC DBA CPER VNQ VNQI BITO ETHE VIXY SHV").split()
-FRAGMENTO = U.DIR_FRAGMENTOS / "b5_universo.yaml"
 
 
 @pytest.fixture(scope="module")
@@ -80,15 +79,14 @@ def test_t1_b5_universo_fondos_por_que_no_entran(universo):
     assert next(i for i in universo["instrumentos"] if i["id"] == "yf:VBMFX")["estado"] == "proxy"
 
 
-def test_t1_b5_fragmento_mercados_valido():
-    # Fragmento fundido por el integrador: los mercados del universo están en mercados.yaml.
+def test_t1_b5_mercados_del_universo_en_mercados_yaml():
     mercados = visibilidad.cargar_mercados()
     assert {"ARCX", "NAV_US", "STOXX_IDX", "ICE_MOVE", "FX_YAHOO"} <= set(mercados)
     usados = {i["mercado"] for i in U.cargar_universo(mercados=set(mercados))["instrumentos"] if i.get("mercado")}
     assert usados <= set(mercados)
 
 
-def test_t1_b5_fragmento_publicacion_arca(tmp_path):
+def test_t1_b5_publicacion_arca_nav_stoxx_fx(tmp_path):
     m = visibilidad.cargar_mercados()
     # cierre 16:00 + 30 min = 16:30: la sesión del martes se ve en la decisión del mismo martes
     assert str(visibilidad.fecha_publicacion_cierre("2026-10-06", "ARCX", m).date()) == "2026-10-06"
@@ -145,11 +143,10 @@ def test_t1_b5_equivalente_ucits_debe_ser_invertible():
         U.validar_universo(c, mercados={"XNYS"})
 
 
-def test_t1_b5_claves_mercados_con_fragmentos(tmp_path):
-    (tmp_path / "frag").mkdir()
-    (tmp_path / "m.yaml").write_text("XNYS: {}\n", encoding="utf-8")
-    (tmp_path / "frag" / "x.yaml").write_text("mercados:\n  NUEVO: {}\nseries: {}\n", encoding="utf-8")
-    assert U.claves_mercados(tmp_path / "m.yaml", tmp_path / "frag") == {"XNYS", "NUEVO"}
+def test_t1_b5_claves_mercados_solo_de_mercados_yaml(tmp_path):
+    (tmp_path / "m.yaml").write_text("XNYS: {}\nARCX: {}\n", encoding="utf-8")
+    assert U.claves_mercados(tmp_path / "m.yaml") == {"XNYS", "ARCX"}
+    assert {"ARCX", "NAV_US", "STOXX_IDX", "FX_YAHOO"} <= U.claves_mercados()
 
 
 def test_t1_b5_leer_justetf_sintetico():
@@ -187,3 +184,4 @@ def test_t1_b5_divisas_coinciden_con_yahoo_medido(universo):
     distintas = [(i["id"], i["divisa"], y[i["id"]]) for i in universo["instrumentos"]
                  if i["id"] in y.index and i["divisa"] != y[i["id"]]]
     assert not distintas
+

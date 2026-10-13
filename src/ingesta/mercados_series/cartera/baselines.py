@@ -9,13 +9,20 @@ de la estrategia. Con esa respuesta (y solo con ella):
    (punto en el tiempo también dentro del tramo), y el valor es
    ``V_prev · Σ w_i · P_i(d) / P_i(control anterior)``: un cociente de precios ajustados con la
    misma base, que no depende de los dividendos o splits posteriores;
-2. la estrategia decide los pesos nuevos (o ``None``: no se opera y los pesos derivan);
+2. la estrategia decide los pesos nuevos (o ``None``: no se opera y los pesos derivan) con la
+   VISTA DE SEÑAL: solo las sesiones anteriores a la fecha de control (``sesion < fecha``);
 3. se cobra el coste de la rotación (``ModeloCostes`` o ninguno) y se descuenta del valor.
 
 La base de cada ticker se recorta a la ventana que hace falta (``[control anterior o
 fecha − ventana, fecha]``): las filas posteriores a la fecha nunca son visibles y los eventos
 anteriores a la ventana afectan igual a numerador y denominador, así que el resultado no cambia.
 Propiedad clave (test de truncado): la curva en ``t`` no cambia si se añaden precios posteriores.
+
+Convención de ejecución: se opera al cierre de cada instrumento en la fecha de control (ese cierre
+es el ``P_i(control anterior)`` del tramo siguiente y el precio del coste). Para que la señal no use
+el mismo cierre con el que se ejecuta, ``estrategia.pesos`` recibe las vistas recortadas a
+``sesion < fecha`` (``vista_senal``): la señal de ``t`` usa como mucho el cierre de ``t − 1``. Lo
+comprueba ``test_t1_a_baselines_senal_no_usa_cierre_de_ejecucion``.
 
 Todo en USD (los tickers en otra divisa se piden con ``divisa='USD'`` y el FX del BCE visible).
 El efectivo no remunera (los pesos suman 1 una vez invertida la cartera).
@@ -84,6 +91,13 @@ def precio_en(vista: pd.DataFrame, fechas: pd.DatetimeIndex | Sequence) -> np.nd
     i = np.searchsorted(pub, idx.to_numpy("datetime64[ns]"), side="right") - 1
     cierres = vista["close"].to_numpy(float)
     return np.where(i >= 0, cierres[np.clip(i, 0, None)], np.nan)
+
+
+def vista_senal(vista: pd.DataFrame | None, fecha: pd.Timestamp) -> pd.DataFrame | None:
+    """Vista para la señal de ``fecha``: sin la sesión de ``fecha`` ni posteriores (se ejecuta a ese cierre)."""
+    if vista is None:
+        return None
+    return vista[vista["sesion"] < pd.Timestamp(fecha).normalize()].reset_index(drop=True)
 
 
 def vivo(vista: pd.DataFrame | None, fecha: pd.Timestamp, dias: int = DIAS_FRESCO) -> bool:
@@ -157,7 +171,8 @@ def simular(estrategia: Estrategia, precios: dict[str, pd.DataFrame], inicio, fi
                 total = sum(nuevos_pesos.values())
                 pesos = {tk: x / total for tk, x in nuevos_pesos.items()} if total > 0 else pesos
         # En el último control solo se valora (la curva en ``fin`` es la de antes de operar).
-        objetivo = estrategia.pesos(fecha, vistas, dict(pesos)) if fecha < fin_ts else None
+        senal = {tk: vista_senal(v, fecha) for tk, v in vistas.items()}
+        objetivo = estrategia.pesos(fecha, senal, dict(pesos)) if fecha < fin_ts else None
         if objetivo:
             objetivo = {tk: float(w) for tk, w in objetivo.items() if w > 0}
             suma = sum(objetivo.values())
@@ -294,5 +309,5 @@ def metricas(resultado: Resultado, rf: pd.Series | None = None) -> dict[str, flo
 __all__ = [
     "Estrategia", "INICIO_AGG", "Resultado", "SPDR_SECTORES", "buy_hold", "cartera_fija", "fechas_control",
     "metricas", "momentum_sectorial", "precio_en", "sesenta_cuarenta", "sesenta_cuarenta_europeo", "simular",
-    "uno_n", "vivo",
+    "uno_n", "vista_senal", "vivo",
 ]

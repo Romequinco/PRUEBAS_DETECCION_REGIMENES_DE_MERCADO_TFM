@@ -19,7 +19,7 @@
   "frecuencia": "diaria (sesiones del mercado de cotización)",
   "retraso_publicacion": "cierre local + 30 min (visibilidad por mercado): Europa y Asia y EE. UU. (16:00) el mismo día de decisión; VIX (16:15), futuros CME, FX y fondos (NAV) en D+1; medido en mediciones.retraso_fecha_publicacion_dias_por_mercado",
   "formato": "parquet (as-traded, un fichero por ticker)",
-  "volumen_estimado": "92 tickers del núcleo; ~1.700 en el universo ampliado",
+  "volumen_estimado": "92 tickers del núcleo; ampliado: 364 con datos de 1842 (descarga en curso: 387 de 1842)",
   "limites": "sin límite publicado; <= 0.5 tickers/s, timeout 90 s, 3 reintentos",
   "estado_sonda": "ok",
   "mediciones": {
@@ -264,16 +264,124 @@
       "https://finance.yahoo.com/quote/AAPL/history/": true
     },
     "segundos_medios_por_ticker": 1.68,
-    "avisos_inicio": {}
+    "avisos_inicio": {},
+    "ampliado": {
+      "estado": "descarga en curso: 387 de 1842",
+      "n_lista": 1842,
+      "n_intentados": 387,
+      "n_ok": 364,
+      "fallidos": {
+        "AABA": "deslistado",
+        "AAMRQ": "deslistado",
+        "ABC": "deslistado",
+        "ABKFQ": "deslistado",
+        "ABMD": "deslistado",
+        "ABS": "deslistado",
+        "ACAS": "deslistado",
+        "ACKH": "deslistado",
+        "ACS": "deslistado",
+        "ADS": "deslistado",
+        "AET": "deslistado",
+        "AFS-A": "deslistado",
+        "AGC": "deslistado",
+        "AGN": "deslistado",
+        "AHM": "deslistado",
+        "AKS": "deslistado",
+        "AL": "deslistado",
+        "ALTR": "deslistado",
+        "ALXN": "deslistado",
+        "AMCC": "deslistado",
+        "ANDV": "deslistado",
+        "ANDW": "deslistado",
+        "ANRZQ": "deslistado"
+      },
+      "sin_cotizacion_reciente": 0,
+      "por_indice": {
+        "aex": {
+          "lista": 25,
+          "intentados": 5,
+          "ok": 5,
+          "inicio_mediana": "2008-10-24"
+        },
+        "cac40": {
+          "lista": 40,
+          "intentados": 4,
+          "ok": 4,
+          "inicio_mediana": "2000-11-02"
+        },
+        "dax": {
+          "lista": 40,
+          "intentados": 3,
+          "ok": 3,
+          "inicio_mediana": "1998-06-24"
+        },
+        "ftse100": {
+          "lista": 100,
+          "intentados": 6,
+          "ok": 6,
+          "inicio_mediana": "2002-01-22"
+        },
+        "ftse_mib": {
+          "lista": 40,
+          "intentados": 2,
+          "ok": 2,
+          "inicio_mediana": "2000-11-16"
+        },
+        "hang_seng": {
+          "lista": 85,
+          "intentados": 85,
+          "ok": 85,
+          "inicio_mediana": "2005-09-29"
+        },
+        "ibex35": {
+          "lista": 35,
+          "intentados": 6,
+          "ok": 6,
+          "inicio_mediana": "2006-03-01"
+        },
+        "kospi200": {
+          "lista": 200,
+          "intentados": 200,
+          "ok": 200,
+          "inicio_mediana": "2002-06-05"
+        },
+        "nifty50": {
+          "lista": 50,
+          "intentados": 2,
+          "ok": 2,
+          "inicio_mediana": "2005-03-14"
+        },
+        "smi": {
+          "lista": 20,
+          "intentados": 3,
+          "ok": 3,
+          "inicio_mediana": "2019-04-08"
+        },
+        "sp500": {
+          "lista": 1209,
+          "intentados": 72,
+          "ok": 49,
+          "inicio_mediana": "1997-05-15"
+        }
+      },
+      "incidencias_calidad": {
+        "salto": 170,
+        "volumen_cero": 41958,
+        "cierre_repetido": 124173,
+        "dividendo_alto": 31
+      },
+      "tabla": "results/ingesta/mercados_series/tablas/yahoo_ampliado_cobertura.csv",
+      "medido_utc": "2026-10-13T14:35:50+00:00"
+    }
   },
   "notas": [
     "Proveedor: ingesta.mercados_series.proveedores.yahoo (auto_adjust=False, actions=True, period='max' con verificación del inicio contra firstTradeDate)",
     "As-traded: se deshacen los splits de la vista de Yahoo (OHLC y dividendos × producto de splits posteriores, volumen ÷); Adj Close nunca se guarda; el ajuste a fecha lo hace timegate.ajustar_a_fecha",
-    "Mercados ARCX, NAV_US, STOXX_IDX y FX_YAHOO vienen del fragmento b5_universo: hasta que se integren en mercados.yaml, leer estos precios exige mercados_con_fragmentos()",
+    "Mercado de cada ticker: el declarado en universo.yaml manda sobre exchangeName; ARCX, NAV_US, STOXX_IDX y FX_YAHOO están en mercados.yaml",
     "Yahoo empieza hacia 1993-2000 en muchos índices y acciones no estadounidenses: ver inicio por mercado",
     "Supervivencia: Yahoo solo sirve tickers vivos (o reutilizados); deslistados fuera (WRDS pendiente)",
     "Dividendos de valores en GBp que Yahoo da en GBP se pasan a peniques; consolidaciones (VOD.L) y dividendos en acciones de Taiwán (splits fraccionarios) se anotan",
-    "Nivel AMPLIADO (S&P 500 histórico y constituyentes): pendiente; comando python -m ingesta.mercados_series.proveedores.yahoo ampliado --fichero <csv>"
+    "Nivel AMPLIADO (S&P 500 histórico y constituyentes actuales de 10 índices): descarga en curso: 387 de 1842; cobertura por índice y mercado en tablas/yahoo_ampliado_cobertura.csv (orden posproceso); un ticker del S&P 500 histórico reutilizado por otra empresa devuelve la empresa ACTUAL"
   ],
   "fecha_sonda": "2026-10-13"
 }

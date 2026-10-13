@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from ingesta.mercados_series import calidad, sinteticos, timegate
+from ingesta.mercados_series import calidad, sinteticos, timegate, visibilidad
 from ingesta.mercados_series.contrato import COLUMNAS_PRECIOS, validar_precios
 from ingesta.mercados_series.proveedores import ProveedorPrecios
 from ingesta.mercados_series.proveedores import yahoo as y
@@ -49,9 +49,8 @@ def _vista(p: pd.DataFrame, huso: str = "America/New_York") -> pd.DataFrame:
 
 
 def _contrato(v, meta=META_AAPL, ticker="AAPL", descargado=DESCARGA):
-    with y.mercados_con_fragmentos():
-        tabla, info = y.a_contrato(v, meta, ticker, descargado)
-        return validar_precios(tabla), info
+    tabla, info = y.a_contrato(v, meta, ticker, descargado)
+    return validar_precios(tabla), info
 
 
 def test_deshace_split_y_dividendo():
@@ -71,8 +70,7 @@ def test_ajustar_a_fecha_hoy_reproduce_adj_close():
     p = _as_traded()
     v = _vista(p)
     tabla, _ = _contrato(v)
-    with y.mercados_con_fragmentos():
-        aj = timegate.ajustar_a_fecha(tabla, "2026-10-13")
+    aj = timegate.ajustar_a_fecha(tabla, "2026-10-13")
     np.testing.assert_allclose(aj["close_aj_total"].to_numpy(), v["Adj Close"].to_numpy(), rtol=1e-12)
     np.testing.assert_allclose(aj["close_aj_splits"].to_numpy(), v["Close"].to_numpy(), rtol=1e-12)
 
@@ -130,7 +128,7 @@ def test_contra_split_y_split_fraccionario_anotados():
 ])
 def test_mercado_de(ticker, meta, esperado):
     assert y.mercado_de(ticker, meta) == esperado
-    assert esperado in y.mercados_fusionados()
+    assert esperado in visibilidad.cargar_mercados()
 
 
 def test_mercado_desconocido_lanza():
@@ -197,8 +195,7 @@ def test_live_aapl_nvda_y_adj_close():
     # Adj Close de Yahoo leído al vuelo (nunca se guarda) frente al ajuste causal con fecha = hoy.
     vista, _, _ = y.descargar_vista("AAPL")
     adj = vista["Adj Close"].set_axis(pd.DatetimeIndex(vista.index).tz_localize(None).normalize())
-    with y.mercados_con_fragmentos():
-        aj = timegate.ajustar_a_fecha(aapl, pd.Timestamp.now(tz="America/New_York").date())
+    aj = timegate.ajustar_a_fecha(aapl, pd.Timestamp.now(tz="America/New_York").date())
     comun = aj.set_index("sesion")["close_aj_total"].loc[lambda s: s.index >= "2000-01-01"]
     rel = (comun / adj.reindex(comun.index) - 1.0).abs().dropna()
     assert len(rel) > 6000

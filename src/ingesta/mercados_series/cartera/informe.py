@@ -159,6 +159,7 @@ def ficha(mediciones: dict) -> FichaFuente:
     inicios = [m["inicio"] for m in met.values() if m.get("inicio")]
     fines = [m["fin"] for m in met.values() if m.get("fin")]
     eu = [k for k, m in met.items() if "UCITS" in k and not m]
+    eur_ok = bool(mediciones.get("libre_riesgo", {}).get("eur", {}).get("disponible"))
     return FichaFuente(
         fuente=FUENTE, nombre="Bloque 8: libre de riesgo, baselines y modelo de costes (derivado)", tema=TEMA,
         agentes=["portfolio", "risk", "cio"], rag="serie", url="(derivado de precios/yahoo y de la base de series)",
@@ -170,7 +171,7 @@ def ficha(mediciones: dict) -> FichaFuente:
                              "(16:30 Nueva York); DTB3 en T+1 (medido en mediciones.libre_riesgo); French RF solo ex post"),
         formato="parquet (curvas, en el corpus) y csv de parámetros",
         volumen_estimado="< 5 MB de curvas", limites="sin red; coste de cálculo medido en segundos por estrategia",
-        estado_sonda="parcial" if eu or not mediciones.get("libre_riesgo", {}).get("eur", {}).get("disponible") else "ok",
+        estado_sonda="parcial" if eu or not eur_ok else "ok",
         mediciones=mediciones,
         notas=[
             "Baselines con get_precios en cada control (último hábil de mes) y base recortada a la ventana; test de truncado",
@@ -178,8 +179,13 @@ def ficha(mediciones: dict) -> FichaFuente:
             "1/N sobre los ETF del núcleo de Yahoo vivos en la fecha (lista estática del núcleo: sesgo de supervivencia "
             "declarado; WRDS pendiente)",
             "60/40 europeo (anexo) con CSPX.L/EUNA.DE: sin precios UCITS descargados, no invierte" if eu else
-            "60/40 europeo con UCITS",
-            "EONIA/€STR del bloque 4 aún no en la base: sin libre de riesgo en EUR; Euribor 3M no catalogado",
+            "60/40 europeo (anexo): CSPX.L (USD, Londres) 60 % y EUNA.DE (EUR, Xetra; a USD con el FX del BCE "
+            "visible) 40 %, rebalanceo anual; empieza cuando EUNA.DE está vivo (lanzado en 2017-11)",
+            "Ejecución al cierre de la fecha de control; la señal solo ve sesiones anteriores (sesion < fecha: "
+            "baselines.vista_senal), con test que falla si una estrategia usa el cierre de ejecución",
+            "EUR: EONIA hasta que €STR es visible y €STR después (lr.tasa_eur, de la base de series); Euribor 3M "
+            "no catalogado" if eur_ok else
+            "EONIA/€STR no están en la base: sin libre de riesgo en EUR; Euribor 3M no catalogado",
             "Comisiones DEGIRO/IBKR de la tarifa pública sin verificar (verificado=False en costes_modelo.csv)",
             _nota_carga(mediciones.get("brutos", {}).get("avisos_carga", [])),
         ])

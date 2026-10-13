@@ -13,7 +13,7 @@
   "autenticacion": "ninguna",
   "coste": "0 €",
   "licencia_y_terminos": "derivado de Yahoo (uso personal), FRED (dominio público) y Ken French (cita)",
-  "cobertura_inicio": "1993-01-29",
+  "cobertura_inicio": "1993-02-26",
   "cobertura_fin": "2026-10-12",
   "frecuencia": "curvas diarias (día hábil); rebalanceo mensual o anual",
   "retraso_publicacion": "punto en el tiempo: cada valor usa solo precios con fecha_publicacion <= el día (16:30 Nueva York); DTB3 en T+1 (medido en mediciones.libre_riesgo); French RF solo ex post",
@@ -25,43 +25,43 @@
     "brutos": {
       "metricas": {
         "buy&hold SPY": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.10867075149651595,
-          "vol": 0.18193995487724815,
-          "sharpe": 0.6388724257039929,
+          "cagr": 0.1085816061071776,
+          "vol": 0.18205676109070001,
+          "sharpe": 0.638151932900726,
           "max_drawdown": -0.5518944026470529,
           "rebalanceos": 1,
           "coste_total_usd": 0.0,
-          "segundos": 6.0,
+          "segundos": 4.6,
           "avisos": [],
           "notas": []
         },
         "60/40 SPY/AGG": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.08571481905967504,
-          "vol": 0.10774424521216,
-          "sharpe": 0.791340552538399,
+          "cagr": 0.0854483472269425,
+          "vol": 0.10780759868763216,
+          "sharpe": 0.7887385475990039,
           "max_drawdown": -0.33716268157670604,
           "rebalanceos": 35,
           "coste_total_usd": 0.0,
-          "segundos": 14.7,
+          "segundos": 12.3,
           "avisos": [],
           "notas": [
             "empalme AGG: VBMFX → AGG (se usa el primero vivo en cada control)"
           ]
         },
         "1/N 46 ETF": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.08651369643505813,
-          "vol": 0.14475647425033167,
-          "sharpe": 0.6262948741425369,
-          "max_drawdown": -0.4228562151234425,
-          "rebalanceos": 405,
+          "cagr": 0.08643245013881429,
+          "vol": 0.1448054745047015,
+          "sharpe": 0.6256323393398366,
+          "max_drawdown": -0.4228562151234426,
+          "rebalanceos": 404,
           "coste_total_usd": 0.0,
-          "segundos": 174.3,
+          "segundos": 142.4,
           "avisos": [],
           "notas": []
         },
@@ -74,7 +74,7 @@
           "max_drawdown": -0.5992281317277888,
           "rebalanceos": 1,
           "coste_total_usd": 0.0,
-          "segundos": 3.7,
+          "segundos": 3.2,
           "avisos": [],
           "notas": []
         },
@@ -87,12 +87,20 @@
           "max_drawdown": -0.46069472289716484,
           "rebalanceos": 322,
           "coste_total_usd": 0.0,
-          "segundos": 43.5,
+          "segundos": 38.0,
           "avisos": [],
           "notas": []
         },
         "60/40 UCITS CSPX.L/EUNA.DE": {
-          "segundos": 0.0,
+          "inicio": "2017-11-30",
+          "fin": "2026-10-12",
+          "cagr": 0.08459481347825393,
+          "vol": 0.11197345829711537,
+          "sharpe": 0.7569420448281556,
+          "max_drawdown": -0.25419698855708817,
+          "rebalanceos": 10,
+          "coste_total_usd": 0.0,
+          "segundos": 10.7,
           "avisos": [],
           "notas": []
         }
@@ -102,15 +110,15 @@
     "costes": {
       "costes": {
         "60/40 SPY/AGG [degiro]": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.08518499621703457,
-          "vol": 0.1077329163323099,
-          "sharpe": 0.7870341673210958,
-          "max_drawdown": -0.3380044295128959,
+          "cagr": 0.08491482402149853,
+          "vol": 0.10780139111986205,
+          "sharpe": 0.7843706003053843,
+          "max_drawdown": -0.33800763486630725,
           "rebalanceos": 35,
-          "coste_total_usd": 630.8081654799845,
-          "segundos": 14.4
+          "coste_total_usd": 624.6623349238878,
+          "segundos": 12.1
         },
         "momentum sectorial 12-1 top 3 [degiro]": {
           "inicio": "1999-12-31",
@@ -121,29 +129,29 @@
           "max_drawdown": -0.47198249044499985,
           "rebalanceos": 322,
           "coste_total_usd": 12165.222156842949,
-          "segundos": 47.4
+          "segundos": 39.1
         },
         "1/N 46 ETF [degiro]": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.05572928407411859,
-          "vol": 0.14487201870848637,
-          "sharpe": 0.4342120180870057,
-          "max_drawdown": -0.4622126318976587,
-          "rebalanceos": 405,
-          "coste_total_usd": 30974.76324904964,
-          "segundos": 176.9
+          "cagr": 0.055136240685011106,
+          "vol": 0.14493277312540082,
+          "sharpe": 0.43034424667319726,
+          "max_drawdown": -0.4626654546894775,
+          "rebalanceos": 404,
+          "coste_total_usd": 30951.155644248225,
+          "segundos": 147.9
         },
         "60/40 SPY/AGG [ibkr]": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.08558616891611326,
-          "vol": 0.1077419435389745,
-          "sharpe": 0.7902923187923868,
-          "max_drawdown": -0.3374875856935432,
+          "cagr": 0.08531798105975241,
+          "vol": 0.10780620339008933,
+          "sharpe": 0.7876707176324673,
+          "max_drawdown": -0.33748836025931095,
           "rebalanceos": 35,
-          "coste_total_usd": 177.65236498405798,
-          "segundos": 13.4
+          "coste_total_usd": 176.31067965704503,
+          "segundos": 13.3
         },
         "momentum sectorial 12-1 top 3 [ibkr]": {
           "inicio": "1999-12-31",
@@ -154,18 +162,18 @@
           "max_drawdown": -0.4647539941523473,
           "rebalanceos": 322,
           "coste_total_usd": 4530.4655163218495,
-          "segundos": 42.2
+          "segundos": 41.9
         },
         "60/40 SPY/AGG [degiro_sin_multiplicador]": {
-          "inicio": "1993-01-29",
+          "inicio": "1993-02-26",
           "fin": "2026-10-12",
-          "cagr": 0.08520106515330572,
-          "vol": 0.1077327923391386,
-          "sharpe": 0.7871677720183617,
-          "max_drawdown": -0.33787465378982506,
+          "cagr": 0.08493092582973572,
+          "vol": 0.10780126680483874,
+          "sharpe": 0.7845044235934002,
+          "max_drawdown": -0.3378778591708864,
           "rebalanceos": 35,
-          "coste_total_usd": 598.3181476045588,
-          "segundos": 12.7
+          "coste_total_usd": 592.6442150957738,
+          "segundos": 13.3
         },
         "momentum sectorial 12-1 top 3 [degiro_sin_multiplicador]": {
           "inicio": "1999-12-31",
@@ -175,8 +183,8 @@
           "sharpe": 0.4417337789996786,
           "max_drawdown": -0.47042351058222154,
           "rebalanceos": 322,
-          "coste_total_usd": 11589.647030106833,
-          "segundos": 40.6
+          "coste_total_usd": 11589.647030106835,
+          "segundos": 40.1
         }
       },
       "multiplicador_spy": {
@@ -232,8 +240,9 @@
     "Baselines con get_precios en cada control (último hábil de mes) y base recortada a la ventana; test de truncado",
     "60/40: VBMFX hasta el primer control con AGG visible (2003-09-30); VBMFX publica en D+1 (NAV)",
     "1/N sobre los ETF del núcleo de Yahoo vivos en la fecha (lista estática del núcleo: sesgo de supervivencia declarado; WRDS pendiente)",
-    "60/40 europeo con UCITS",
-    "EONIA/€STR del bloque 4 aún no en la base: sin libre de riesgo en EUR; Euribor 3M no catalogado",
+    "60/40 europeo (anexo): CSPX.L (USD, Londres) 60 % y EUNA.DE (EUR, Xetra; a USD con el FX del BCE visible) 40 %, rebalanceo anual; empieza cuando EUNA.DE está vivo (lanzado en 2017-11)",
+    "Ejecución al cierre de la fecha de control; la señal solo ve sesiones anteriores (sesion < fecha: baselines.vista_senal), con test que falla si una estrategia usa el cierre de ejecución",
+    "EUR: EONIA hasta que €STR es visible y €STR después (lr.tasa_eur, de la base de series); Euribor 3M no catalogado",
     "Comisiones DEGIRO/IBKR de la tarifa pública sin verificar (verificado=False en costes_modelo.csv)",
     "Precios validados por contrato con almacen.leer_precios (ningún ticker leído sin validar)"
   ],

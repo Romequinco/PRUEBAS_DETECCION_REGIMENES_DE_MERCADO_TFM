@@ -1,0 +1,3 @@
+ticker,estado,clase,mercado,exchange,huso,divisa,primera_cotizacion,inicio,fin,sesiones,splits,dividendos,velas_incompletas,avisos,notas,error,descargado,segundos
+CSPX.L,ok,ETF,XLON,LSE,Europe/London,USD,2010-09-15,2010-09-15,2026-10-09,4058,0,0,1,,,,2026-10-13T14:26:15.914408+00:00,2.82
+EUNA.DE,ok,ETF,XETR,GER,Europe/Berlin,EUR,2017-11-21,2017-11-21,2026-10-09,2255,0,0,1,,,,2026-10-13T14:26:25.915366+00:00,0.56

@@ -5,13 +5,17 @@ S&P 500 (``sp500``): repositorio ``fja05680/sp500`` de GitHub (licencia MIT), fi
 lista COMPLETA de miembros vigente desde esa fecha (``date,tickers``; desde 1996-01-02). Se
 convierte en tramos de pertenencia: una fila por (ticker, alta, baja) con ``baja`` = primera fecha
 del fichero en la que ya no está (excluida; null si sigue). ``fecha_publicacion`` = fecha del
-cambio (fecha efectiva: S&P lo anuncia unos días antes, luego es conservadora).
-``fecha_publicacion_baja`` = ``baja``. Notas:
+cambio (fecha efectiva: S&P lo anuncia unos días antes, luego es conservadora: un alta o una baja
+solo se ven cuando ya han ocurrido, nunca antes de su anuncio; no hay fuga, solo se pierde la
+información del anuncio). ``fecha_publicacion_baja`` = ``baja``. Notas:
 
 - los miembros de 1996-01-02 estaban antes de esa fecha (inicio del fichero, alta truncada);
 - un ticker con varios tramos es una reentrada o un TICKER REUTILIZADO por otra empresa (el
   fichero no lleva identificador permanente: CIK/PERMNO pendiente de WRDS);
-- los tickers son los de cada momento según el autor (cambios de ticker = baja + alta).
+- los tickers son los de cada momento según el autor (cambios de ticker = baja + alta), salvo los
+  28 tramos de quiebra con sufijo Q/QQ (``NOTA_TICKER_POSTERIOR``): el fichero sin actualizar del
+  mismo repositorio (``S&P 500 Historical Components & Changes.csv``) los lleva igual, con el mes
+  de exclusión de cotización (``AAMRQ-201312``), así que fja05680 no da el ticker de la época.
 
 Fotos actuales (``indices``): tablas de composición de Wikipedia (inglés), si ``robots_permite``:
 DAX, CAC 40, IBEX 35, FTSE MIB, AEX, FTSE 100, SMI, Nikkei 225, Ibovespa, NIFTY 50, Hang Seng y
@@ -264,7 +268,8 @@ def ficha_sp500(med: dict[str, Any]) -> Path:
         autenticacion="ninguna", coste="0 €",
         licencia_y_terminos="Código y datos del repositorio con licencia MIT; la composición es de S&P Dow Jones Indices (solo local)",
         cobertura_inicio=med.get("inicio"), cobertura_fin=med.get("fin"), frecuencia="por evento (cambios del índice)",
-        retraso_publicacion=(f"fecha_publicacion = fecha efectiva del cambio (S&P lo anuncia antes: conservador); "
+        retraso_publicacion=(f"fecha_publicacion = fecha efectiva del cambio (S&P lo anuncia antes: conservador, "
+                             "sin fuga: solo se pierde la información del anuncio); "
                              f"medido: el último cambio del fichero es de hace {med.get('dias_desde_ultimo_cambio')} días"),
         formato="csv → parquet", volumen_estimado=f"{med.get('bytes', 0) / 1e6:.1f} MB de CSV; {med.get('n_tramos')} tramos",
         limites="raw.githubusercontent.com, 1 petición/s; actualización manual del autor (irregular)",
@@ -273,7 +278,11 @@ def ficha_sp500(med: dict[str, Any]) -> Path:
                "Un ticker con varios tramos puede ser reentrada o ticker reutilizado por otra empresa: sin CIK/PERMNO no se distingue (WRDS pendiente de MIAX)",
                "Los miembros a 1996-01-02 tienen el alta truncada al inicio del fichero",
                f"{med.get('tramos_ticker_posterior', 'sin medir')} tramos con ticker posterior al tramo (sufijo Q/QQ "
-               "de quiebra: ENRNQ, AAMRQ...): nota en el tramo; deuda: mapear al ticker de la época con CIK/PERMNO",
+               "de quiebra: ENRNQ, AAMRQ...): nota en el tramo. Cotejado (2026-10-13) con el fichero sin actualizar "
+               "del repositorio (S&P 500 Historical Components & Changes.csv): lleva los mismos tickers Q con el mes "
+               "de exclusión (AAMRQ-201312), no el de la época; el mapeo exige CIK/PERMNO (WRDS)",
+               "Fechas de anuncio: sin fuente pública histórica y reutilizable (las notas de S&P DJI no se pueden "
+               "archivar en bloque); la fecha efectiva es conservadora y sin fuga: deuda cerrada",
                "Sin datos de precios de los miembros: solo pertenencia (supervivencia de la sección cruzada medida aquí)"],
     ))
 
