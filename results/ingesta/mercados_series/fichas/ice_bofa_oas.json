@@ -15,10 +15,10 @@
   "cobertura_inicio": "2023-10-10",
   "cobertura_fin": "2026-10-08",
   "frecuencia": "diaria (días hábiles)",
-  "retraso_publicacion": "hábil siguiente hacia las 09:10 NY (FRED last_updated 2026-10-09 09:08, 2026-10-09 09:09 con el dato de 2026-10-08): visible en la decisión de D+1. ALFRED fecha la vintage el mismo día del dato (BAMLC0A0CM {'D+0': 24}; BAMLH0A0HYM2 {'D+0': 24}), antes de la carga real: realtime_start no sirve para medir la hora de ICE",
+  "retraso_publicacion": "hábil siguiente hacia las 09:10 NY (FRED last_updated 2026-10-09 09:08, 2026-10-09 09:09 con el dato de 2026-10-08): visible en la decisión de D+1. ALFRED fecha la vintage el mismo día del dato (BAMLC0A0CM {'D+0': 23}; BAMLH0A0HYM2 {'D+0': 23}), antes de la carga real: realtime_start no sirve para medir la hora de ICE",
   "formato": "json",
-  "volumen_estimado": "1.1 MB de JSON crudo en disco (8 series, 1 día(s) de descarga archivados)",
-  "limites": "FRED solo sirve desde el 2023-10-10 (unos 3 años); que sea una ventana móvil y no un corte fijo está sin confirmar (se verá con la descarga siguiente). ALFRED no conserva el historial anterior: archivo propio desde la primera descarga; para no perder historia basta una descarga dentro de cada ventana, la diaria solo hace falta para tener el dato al día",
+  "volumen_estimado": "0.7 MB de JSON crudo en disco (8 series, 2 día(s) de descarga archivados: 20261012, 20261013)",
+  "limites": "FRED solo sirve unos 3 años (ventana móvil). ALFRED no conserva el historial anterior: archivo propio desde la primera descarga (2026-10-12); para no perder historia basta una descarga (incremental) dentro de cada ventana, la diaria solo hace falta para tener el dato al día. El archivo periódico está pendiente de programar",
   "estado_sonda": "parcial",
   "mediciones": {
     "series": {
@@ -179,14 +179,17 @@
       "fred:BAMLH0A1HYBB": "2026-10-09 09:08",
       "fred:BAMLH0A3HYC": "2026-10-09 09:09"
     },
-    "primera_descarga_archivo": "2026-10-12"
+    "dias_archivados": [
+      "20261012",
+      "20261013"
+    ]
   },
   "notas": [
-    "Capada: la historia propia empieza en la primera descarga del archivo; cada descarga diaria se conserva y tabla_fred_sustitutos une todas (primer valor visto por fecha)",
+    "Capada: la historia propia empieza en la primera descarga del archivo; cada descarga se conserva y tabla_fred_vivo une todas (primer valor visto por fecha); las siguientes a la primera son incrementales",
     "Historial anterior: ALFRED en el vintage 2026-03-31 (por vintage_dates y por realtime_start/realtime_end) también empieza en el primer vintage conservado; los vintages anteriores dan error (ver mediciones.historial_alfred). Variante con todas las vintages en una llamada (realtime_start=1776-07-04, realtime_end=9999-12-31, output_type=4): empieza en BAMLH0A0HYM2 2023-10-11, BAMLC0A0CM 2023-10-11. No se puede recuperar por FRED",
     "Publicador ice_bofa_fred (09:15 NY del hábil siguiente, según last_updated): visible en la decisión de D+1",
     "Series archivadas: BAMLC0A0CM, BAMLC0A0CMEY, BAMLC0A1CAAA, BAMLC0A4CBBB, BAMLH0A0HYM2, BAMLH0A0HYM2EY, BAMLH0A1HYBB, BAMLH0A3HYC",
     "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis."
   ],
-  "fecha_sonda": "2026-10-12"
+  "fecha_sonda": "2026-10-13"
 }

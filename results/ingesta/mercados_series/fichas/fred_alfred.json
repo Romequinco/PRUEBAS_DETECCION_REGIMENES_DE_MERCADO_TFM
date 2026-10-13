@@ -13,16 +13,48 @@
   "autenticacion": "clave gratuita",
   "coste": "0 €",
   "licencia_y_terminos": "Términos de uso de la API de FRED: datos solo en local, sin redistribuir; cada serie conserva el copyright de su titular (ICE, Moody's, Cboe...). This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
-  "cobertura_inicio": "1983-01-03",
-  "cobertura_fin": "2026-10-08",
-  "frecuencia": "diaria y semanal (sustitutos del bloque 2)",
-  "retraso_publicacion": "medido en ALFRED (primera vintage de cada observación, días hábiles de EE. UU., últimos 35 días): DBAA {'D+1': 23}; DCPF3M {'D+1': 11}; DEXUSEU {'D+1': 4, 'D+2': 4, 'D+3': 4, 'D+4': 4, 'D+5': 3}; WEI {'D+4': 4}. Hora (FRED last_updated en NY): CPFF 2026-10-07 17:03; DAAA 2026-10-09 11:31; DBAA 2026-10-09 11:31; DCPF3M 2026-10-07 16:16; DEXUSEU 2026-10-05 16:16; DTWEXAFEGS 2026-10-05 16:16; DTWEXBGS 2026-10-05 16:16; TEDRATE 2022-01-28 17:01; WEI 2026-10-08 11:46. OAS de ICE: ver la ficha ice_bofa_oas",
+  "cobertura_inicio": "1854-12-01",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "fuente viva (bloque 3), sin las OAS de ICE: diaria 57, mensual 14, trimestral 1 series",
+  "retraso_publicacion": "medido en ALFRED (primera vintage de cada observación, días hábiles de EE. UU., últimos 35 días): DBAA {'D+1': 23}; DCPF3M {'D+1': 11}; DEXUSEU {'D+1': 4, 'D+2': 4, 'D+3': 4, 'D+4': 4, 'D+5': 3}; DFF {'D+1': 23, 'D+2': 8}; DGS10 {'D+1': 23}; SOFR {'D+1': 23}; VIXCLS {'D+0': 21, 'D+1': 1, 'D+2': 1, 'D+3': 1}. Hora de carga en FRED (last_updated en NY): AAA 2026-10-01 11:31; BAA 2026-10-01 11:31; BAA10Y 2026-10-09 17:03; BAAFFM 2026-10-01 17:03; CPFF 2026-10-07 17:03; DAAA 2026-10-09 11:31; DBAA 2026-10-09 11:31; DCPF3M 2026-10-07 16:16; DED3 2016-10-11 19:15; DEXJPUS 2026-10-05 16:16; DEXSZUS 2026-10-05 16:16; DEXUSAL 2026-10-05 16:16; DEXUSEU 2026-10-05 16:16; DFF 2026-10-09 16:16; DFII10 2026-10-09 16:16; DFII30 2026-10-09 16:16; DFII5 2026-10-09 16:16; DGS1 2026-10-09 16:16; DGS10 2026-10-09 16:16; DGS1MO 2026-10-09 16:16; DGS2 2026-10-09 16:16; DGS20 2026-10-09 16:17; DGS3 2026-10-09 16:17; DGS30 2026-10-09 16:16; DGS3MO 2026-10-09 16:17; DGS5 2026-10-09 16:17; DGS6MO 2026-10-09 16:17; DGS7 2026-10-09 16:16; DPCREDIT 2026-10-09 16:17; DTB1YR 2026-10-09 16:16; DTB3 2026-10-09 16:16; DTB6 2026-10-09 16:16; DTWEXAFEGS 2026-10-05 16:16; DTWEXBGS 2026-10-05 16:16; DTWEXM 2020-01-06 16:49; EFFR 2026-10-09 09:02; EVZCLS 2025-03-12 09:36; FEDFUNDS 2026-10-01 16:16; GS1 2026-10-01 16:16; GS10 2026-10-01 16:16; GS5 2026-10-01 16:16; GVZCLS 2026-10-12 09:37; IORB 2026-10-09 16:31; IRLTLT01USM156N 2026-09-15 16:28; LIOR3M 2017-06-09 09:51; M13002US35620M156NNBR 2012-08-20 09:19; NASDAQ100 2026-10-12 23:37; OBFR 2026-10-09 09:02; OVXCLS 2026-10-12 09:37; RVXCLS 2026-10-12 09:37; SOFR 2026-10-09 08:02; T10Y2Y 2026-10-09 17:03; T10Y3M 2026-10-09 17:03; T10YFF 2026-10-09 17:03; T10YIE 2026-10-09 17:03; T5YFF 2026-10-09 17:03; T5YIE 2026-10-09 17:03; T5YIFR 2026-10-09 17:03; TB3MS 2026-10-01 16:16; TB3SMFFM 2026-10-01 17:03; TEDRATE 2022-01-28 17:01; TWEXAFEGSMTH 2026-10-01 16:16; TWEXMMTH 2020-01-06 16:51; USRECD 2026-10-12 19:02; VIXCLS 2026-10-12 09:37; VXDCLS 2026-10-12 09:37; VXEEMCLS 2026-10-12 09:37; VXEWZCLS 2026-10-12 09:37; VXNCLS 2026-10-12 09:37; VXOCLS 2021-09-24 09:36; VXTYN 2020-06-17 10:20; WTISPLC 2026-10-07 13:33. Se fecha con la regla del catálogo (publicador, cierre o lag) y las excepciones medidas; OAS de ICE: ver la ficha ice_bofa_oas. Derivadas propias frente a la serie de FRED (fechas comunes / distintas / dif. máx.): deriv:DBAA-DGS10 vs BAA10Y 10193 / 1 / 0.02; deriv:DCPF3M-DFF vs CPFF 6753 / 0 / 0.0; deriv:DGS10-DFF vs T10YFF 16176 / 1 / 0.02; deriv:DGS5-DFF vs T5YFF 16176 / 0 / 0.0",
   "formato": "json",
-  "volumen_estimado": "16.9 MB de JSON crudo en disco (todas las peticiones archivadas, sin las OAS de ICE)",
+  "volumen_estimado": "66.8 MB de JSON crudo en disco (descargas de lo vigente archivadas de 72 series, 2 día(s); sin las OAS de ICE ni las vintages de ALFRED)",
   "limites": "120 peticiones/min por clave (aquí 1/s); series/observations hasta 100000 filas por página (offset); vintage_dates hasta 2000 por petición según la API, pero con 2000 la URL (~26 KB) da HTTP 400 en el CDN (medido): se trocea en grupos de 500; vintagedates y release/dates hasta 10000 por página",
   "estado_sonda": "ok",
   "mediciones": {
     "series": {
+      "fred:AAA": {
+        "filas": 1293,
+        "n_obs": 1293,
+        "nulos_punto": 0,
+        "inicio": "1919-01-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:BAA": {
+        "filas": 1293,
+        "n_obs": 1293,
+        "nulos_punto": 0,
+        "inicio": "1919-01-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:BAA10Y": {
+        "filas": 10193,
+        "n_obs": 10193,
+        "nulos_punto": 0,
+        "inicio": "1986-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:BAAFFM": {
+        "filas": 867,
+        "n_obs": 867,
+        "nulos_punto": 0,
+        "inicio": "1954-07-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
       "fred:BAMLC0A0CM": {
         "filas": 785,
         "n_obs": 785,
@@ -119,12 +151,196 @@
         "fin": "2026-10-06",
         "vintages": 1
       },
+      "fred:DED3": {
+        "filas": 11652,
+        "n_obs": 11652,
+        "nulos_punto": 0,
+        "inicio": "1971-01-04",
+        "fin": "2016-10-07",
+        "vintages": 1
+      },
+      "fred:DEXJPUS": {
+        "filas": 13975,
+        "n_obs": 13975,
+        "nulos_punto": 0,
+        "inicio": "1971-01-04",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:DEXSZUS": {
+        "filas": 13981,
+        "n_obs": 13981,
+        "nulos_punto": 0,
+        "inicio": "1971-01-04",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:DEXUSAL": {
+        "filas": 13974,
+        "n_obs": 13974,
+        "nulos_punto": 0,
+        "inicio": "1971-01-04",
+        "fin": "2026-10-02",
+        "vintages": 1
+      },
       "fred:DEXUSEU": {
         "filas": 6960,
         "n_obs": 6960,
         "nulos_punto": 0,
         "inicio": "1999-01-04",
         "fin": "2026-10-02",
+        "vintages": 1
+      },
+      "fred:DFF": {
+        "filas": 26398,
+        "n_obs": 26398,
+        "nulos_punto": 0,
+        "inicio": "1954-07-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DFII10": {
+        "filas": 5947,
+        "n_obs": 5947,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DFII30": {
+        "filas": 4162,
+        "n_obs": 4162,
+        "nulos_punto": 0,
+        "inicio": "2010-02-22",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DFII5": {
+        "filas": 5947,
+        "n_obs": 5947,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS1": {
+        "filas": 16178,
+        "n_obs": 16178,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS10": {
+        "filas": 16178,
+        "n_obs": 16178,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS1MO": {
+        "filas": 6300,
+        "n_obs": 6300,
+        "nulos_punto": 0,
+        "inicio": "2001-07-31",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS2": {
+        "filas": 12586,
+        "n_obs": 12586,
+        "nulos_punto": 0,
+        "inicio": "1976-06-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS20": {
+        "filas": 14490,
+        "n_obs": 14489,
+        "nulos_punto": 1,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS3": {
+        "filas": 16178,
+        "n_obs": 16178,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS30": {
+        "filas": 12408,
+        "n_obs": 12408,
+        "nulos_punto": 0,
+        "inicio": "1977-02-15",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS3MO": {
+        "filas": 11276,
+        "n_obs": 11276,
+        "nulos_punto": 0,
+        "inicio": "1981-09-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS5": {
+        "filas": 16178,
+        "n_obs": 16178,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS6MO": {
+        "filas": 11276,
+        "n_obs": 11276,
+        "nulos_punto": 0,
+        "inicio": "1981-09-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DGS7": {
+        "filas": 14308,
+        "n_obs": 14308,
+        "nulos_punto": 0,
+        "inicio": "1969-07-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DPCREDIT": {
+        "filas": 6196,
+        "n_obs": 6196,
+        "nulos_punto": 0,
+        "inicio": "2003-01-09",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DTB1YR": {
+        "filas": 15110,
+        "n_obs": 15108,
+        "nulos_punto": 2,
+        "inicio": "1959-07-15",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DTB3": {
+        "filas": 18184,
+        "n_obs": 18184,
+        "nulos_punto": 0,
+        "inicio": "1954-01-04",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:DTB6": {
+        "filas": 16944,
+        "n_obs": 16944,
+        "nulos_punto": 0,
+        "inicio": "1958-12-09",
+        "fin": "2026-10-08",
         "vintages": 1
       },
       "fred:DTWEXAFEGS": {
@@ -143,6 +359,214 @@
         "fin": "2026-10-02",
         "vintages": 1
       },
+      "fred:DTWEXM": {
+        "filas": 11834,
+        "n_obs": 11834,
+        "nulos_punto": 0,
+        "inicio": "1973-01-02",
+        "fin": "2019-12-31",
+        "vintages": 1
+      },
+      "fred:EFFR": {
+        "filas": 6596,
+        "n_obs": 6596,
+        "nulos_punto": 0,
+        "inicio": "2000-07-03",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:EVZCLS": {
+        "filas": 4360,
+        "n_obs": 4360,
+        "nulos_punto": 0,
+        "inicio": "2007-11-01",
+        "fin": "2025-03-11",
+        "vintages": 1
+      },
+      "fred:FEDFUNDS": {
+        "filas": 867,
+        "n_obs": 867,
+        "nulos_punto": 0,
+        "inicio": "1954-07-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:GS1": {
+        "filas": 882,
+        "n_obs": 882,
+        "nulos_punto": 0,
+        "inicio": "1953-04-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:GS10": {
+        "filas": 882,
+        "n_obs": 882,
+        "nulos_punto": 0,
+        "inicio": "1953-04-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:GS5": {
+        "filas": 882,
+        "n_obs": 882,
+        "nulos_punto": 0,
+        "inicio": "1953-04-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:GVZCLS": {
+        "filas": 4620,
+        "n_obs": 4620,
+        "nulos_punto": 0,
+        "inicio": "2008-06-03",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:IORB": {
+        "filas": 1903,
+        "n_obs": 1903,
+        "nulos_punto": 0,
+        "inicio": "2021-07-29",
+        "fin": "2026-10-13",
+        "vintages": 1
+      },
+      "fred:IRLTLT01USM156N": {
+        "filas": 881,
+        "n_obs": 881,
+        "nulos_punto": 0,
+        "inicio": "1953-04-01",
+        "fin": "2026-08-01",
+        "vintages": 1
+      },
+      "fred:LIOR3M": {
+        "filas": 188,
+        "n_obs": 188,
+        "nulos_punto": 0,
+        "inicio": "1970-01-01",
+        "fin": "2016-10-01",
+        "vintages": 1
+      },
+      "fred:M13002US35620M156NNBR": {
+        "filas": 1380,
+        "n_obs": 1380,
+        "nulos_punto": 0,
+        "inicio": "1857-01-01",
+        "fin": "1971-12-01",
+        "vintages": 1
+      },
+      "fred:NASDAQ100": {
+        "filas": 10275,
+        "n_obs": 10275,
+        "nulos_punto": 0,
+        "inicio": "1986-01-02",
+        "fin": "2026-10-12",
+        "vintages": 1
+      },
+      "fred:OBFR": {
+        "filas": 2666,
+        "n_obs": 2666,
+        "nulos_punto": 0,
+        "inicio": "2016-03-01",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:OVXCLS": {
+        "filas": 4888,
+        "n_obs": 4888,
+        "nulos_punto": 0,
+        "inicio": "2007-05-10",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:RVXCLS": {
+        "filas": 5727,
+        "n_obs": 5727,
+        "nulos_punto": 0,
+        "inicio": "2004-01-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:SOFR": {
+        "filas": 2128,
+        "n_obs": 2128,
+        "nulos_punto": 0,
+        "inicio": "2018-04-03",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:T10Y2Y": {
+        "filas": 12587,
+        "n_obs": 12587,
+        "nulos_punto": 0,
+        "inicio": "1976-06-01",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:T10Y3M": {
+        "filas": 11196,
+        "n_obs": 11196,
+        "nulos_punto": 0,
+        "inicio": "1982-01-04",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:T10YFF": {
+        "filas": 16176,
+        "n_obs": 16176,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:T10YIE": {
+        "filas": 5948,
+        "n_obs": 5948,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:T5YFF": {
+        "filas": 16176,
+        "n_obs": 16176,
+        "nulos_punto": 0,
+        "inicio": "1962-01-02",
+        "fin": "2026-10-08",
+        "vintages": 1
+      },
+      "fred:T5YIE": {
+        "filas": 5948,
+        "n_obs": 5948,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:T5YIFR": {
+        "filas": 5948,
+        "n_obs": 5948,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:TB3MS": {
+        "filas": 1113,
+        "n_obs": 1113,
+        "nulos_punto": 0,
+        "inicio": "1934-01-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:TB3SMFFM": {
+        "filas": 867,
+        "n_obs": 867,
+        "nulos_punto": 0,
+        "inicio": "1954-07-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
       "fred:TEDRATE": {
         "filas": 8853,
         "n_obs": 8853,
@@ -151,16 +575,120 @@
         "fin": "2022-01-21",
         "vintages": 1
       },
-      "fred:WEI": {
-        "filas": 11648,
-        "n_obs": 979,
+      "fred:TWEXAFEGSMTH": {
+        "filas": 643,
+        "n_obs": 249,
+        "nulos_punto": 394,
+        "inicio": "2006-01-01",
+        "fin": "2026-09-01",
+        "vintages": 1
+      },
+      "fred:TWEXMMTH": {
+        "filas": 564,
+        "n_obs": 564,
         "nulos_punto": 0,
-        "inicio": "2008-01-05",
-        "fin": "2026-10-03",
-        "vintages": 428
+        "inicio": "1973-01-01",
+        "fin": "2019-12-01",
+        "vintages": 1
+      },
+      "fred:USRECD": {
+        "filas": 62772,
+        "n_obs": 62772,
+        "nulos_punto": 0,
+        "inicio": "1854-12-01",
+        "fin": "2026-10-11",
+        "vintages": 1
+      },
+      "fred:VIXCLS": {
+        "filas": 9292,
+        "n_obs": 9292,
+        "nulos_punto": 0,
+        "inicio": "1990-01-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:VXDCLS": {
+        "filas": 7299,
+        "n_obs": 7299,
+        "nulos_punto": 0,
+        "inicio": "1997-10-07",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:VXEEMCLS": {
+        "filas": 3916,
+        "n_obs": 3916,
+        "nulos_punto": 0,
+        "inicio": "2011-03-16",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:VXEWZCLS": {
+        "filas": 3916,
+        "n_obs": 3916,
+        "nulos_punto": 0,
+        "inicio": "2011-03-16",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:VXNCLS": {
+        "filas": 6460,
+        "n_obs": 6460,
+        "nulos_punto": 0,
+        "inicio": "2001-02-02",
+        "fin": "2026-10-09",
+        "vintages": 1
+      },
+      "fred:VXOCLS": {
+        "filas": 9002,
+        "n_obs": 9002,
+        "nulos_punto": 0,
+        "inicio": "1986-01-02",
+        "fin": "2021-09-23",
+        "vintages": 1
+      },
+      "fred:VXTYN": {
+        "filas": 4363,
+        "n_obs": 4363,
+        "nulos_punto": 0,
+        "inicio": "2003-01-02",
+        "fin": "2020-05-15",
+        "vintages": 1
+      },
+      "fred:WTISPLC": {
+        "filas": 969,
+        "n_obs": 969,
+        "nulos_punto": 0,
+        "inicio": "1946-01-01",
+        "fin": "2026-09-01",
+        "vintages": 1
       }
     },
     "existen_en_fred": {
+      "fred:AAA": {
+        "observation_start": "1919-01-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 10:31:25-05",
+        "last_updated_ny": "2026-10-01 11:31"
+      },
+      "fred:BAA": {
+        "observation_start": "1919-01-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 10:31:24-05",
+        "last_updated_ny": "2026-10-01 11:31"
+      },
+      "fred:BAA10Y": {
+        "observation_start": "1986-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 16:03:40-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:BAAFFM": {
+        "observation_start": "1954-07-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 16:03:35-05",
+        "last_updated_ny": "2026-10-01 17:03"
+      },
       "fred:BAMLC0A0CM": {
         "observation_start": "2023-10-10",
         "observation_end": "2026-10-08",
@@ -233,11 +761,149 @@
         "last_updated": "2026-10-07 15:16:35-05",
         "last_updated_ny": "2026-10-07 16:16"
       },
+      "fred:DED3": {
+        "observation_start": "1971-01-04",
+        "observation_end": "2016-10-07",
+        "last_updated": "2016-10-11 18:15:41-05",
+        "last_updated_ny": "2016-10-11 19:15"
+      },
+      "fred:DEXJPUS": {
+        "observation_start": "1971-01-04",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:35-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:DEXSZUS": {
+        "observation_start": "1971-01-04",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:44-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:DEXUSAL": {
+        "observation_start": "1971-01-04",
+        "observation_end": "2026-10-02",
+        "last_updated": "2026-10-05 15:16:56-05",
+        "last_updated_ny": "2026-10-05 16:16"
+      },
       "fred:DEXUSEU": {
         "observation_start": "1999-01-04",
         "observation_end": "2026-10-02",
         "last_updated": "2026-10-05 15:16:41-05",
         "last_updated_ny": "2026-10-05 16:16"
+      },
+      "fred:DFF": {
+        "observation_start": "1954-07-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:30-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DFII10": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:34-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DFII30": {
+        "observation_start": "2010-02-22",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:36-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DFII5": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:31-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS1": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:33-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS10": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:34-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS1MO": {
+        "observation_start": "2001-07-31",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:31-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS2": {
+        "observation_start": "1976-06-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:36-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS20": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:02-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DGS3": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:04-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DGS30": {
+        "observation_start": "1977-02-15",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:38-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DGS3MO": {
+        "observation_start": "1981-09-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:05-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DGS5": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:06-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DGS6MO": {
+        "observation_start": "1981-09-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:04-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DGS7": {
+        "observation_start": "1969-07-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:32-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DPCREDIT": {
+        "observation_start": "2003-01-09",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:17:06-05",
+        "last_updated_ny": "2026-10-09 16:17"
+      },
+      "fred:DTB1YR": {
+        "observation_start": "1959-07-15",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:33-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DTB3": {
+        "observation_start": "1954-01-04",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:32-05",
+        "last_updated_ny": "2026-10-09 16:16"
+      },
+      "fred:DTB6": {
+        "observation_start": "1958-12-09",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 15:16:51-05",
+        "last_updated_ny": "2026-10-09 16:16"
       },
       "fred:DTWEXAFEGS": {
         "observation_start": "2006-01-02",
@@ -251,25 +917,241 @@
         "last_updated": "2026-10-05 15:16:53-05",
         "last_updated_ny": "2026-10-05 16:16"
       },
+      "fred:DTWEXM": {
+        "observation_start": "1973-01-02",
+        "observation_end": "2019-12-31",
+        "last_updated": "2020-01-06 15:49:01-06",
+        "last_updated_ny": "2020-01-06 16:49"
+      },
+      "fred:EFFR": {
+        "observation_start": "2000-07-03",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:02:33-05",
+        "last_updated_ny": "2026-10-09 09:02"
+      },
+      "fred:EVZCLS": {
+        "observation_start": "2007-11-01",
+        "observation_end": "2025-03-11",
+        "last_updated": "2025-03-12 08:36:06-05",
+        "last_updated_ny": "2025-03-12 09:36"
+      },
+      "fred:FEDFUNDS": {
+        "observation_start": "1954-07-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:52-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:GS1": {
+        "observation_start": "1953-04-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:42-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:GS10": {
+        "observation_start": "1953-04-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:43-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:GS5": {
+        "observation_start": "1953-04-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:48-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:GVZCLS": {
+        "observation_start": "2008-06-03",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:34-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:IORB": {
+        "observation_start": "2021-07-29",
+        "observation_end": "2026-10-13",
+        "last_updated": "2026-10-09 15:31:32-05",
+        "last_updated_ny": "2026-10-09 16:31"
+      },
+      "fred:IRLTLT01USM156N": {
+        "observation_start": "1953-04-01",
+        "observation_end": "2026-08-01",
+        "last_updated": "2026-09-15 15:28:56-05",
+        "last_updated_ny": "2026-09-15 16:28"
+      },
+      "fred:LIOR3M": {
+        "observation_start": "1970-01-01",
+        "observation_end": "2016-10-01",
+        "last_updated": "2017-06-09 08:51:40-05",
+        "last_updated_ny": "2017-06-09 09:51"
+      },
+      "fred:M13002US35620M156NNBR": {
+        "observation_start": "1857-01-01",
+        "observation_end": "1971-12-01",
+        "last_updated": "2012-08-20 08:19:07-05",
+        "last_updated_ny": "2012-08-20 09:19"
+      },
+      "fred:NASDAQ100": {
+        "observation_start": "1986-01-02",
+        "observation_end": "2026-10-12",
+        "last_updated": "2026-10-12 22:37:24-05",
+        "last_updated_ny": "2026-10-12 23:37"
+      },
+      "fred:OBFR": {
+        "observation_start": "2016-03-01",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 08:02:33-05",
+        "last_updated_ny": "2026-10-09 09:02"
+      },
+      "fred:OVXCLS": {
+        "observation_start": "2007-05-10",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:35-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:RVXCLS": {
+        "observation_start": "2004-01-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:36-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:SOFR": {
+        "observation_start": "2018-04-03",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 07:02:22-05",
+        "last_updated_ny": "2026-10-09 08:02"
+      },
+      "fred:T10Y2Y": {
+        "observation_start": "1976-06-01",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-09 16:03:38-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T10Y3M": {
+        "observation_start": "1982-01-04",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-09 16:03:38-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T10YFF": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 16:03:39-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T10YIE": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-09 16:03:38-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T5YFF": {
+        "observation_start": "1962-01-02",
+        "observation_end": "2026-10-08",
+        "last_updated": "2026-10-09 16:03:37-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T5YIE": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-09 16:03:36-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:T5YIFR": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-09 16:03:36-05",
+        "last_updated_ny": "2026-10-09 17:03"
+      },
+      "fred:TB3MS": {
+        "observation_start": "1934-01-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:48-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:TB3SMFFM": {
+        "observation_start": "1954-07-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 16:03:32-05",
+        "last_updated_ny": "2026-10-01 17:03"
+      },
       "fred:TEDRATE": {
         "observation_start": "1986-01-02",
         "observation_end": "2022-01-21",
         "last_updated": "2022-01-28 16:01:02-06",
         "last_updated_ny": "2022-01-28 17:01"
       },
-      "fred:WEI": {
-        "observation_start": "2008-01-05",
-        "observation_end": "2026-10-03",
-        "last_updated": "2026-10-08 10:46:22-05",
-        "last_updated_ny": "2026-10-08 11:46"
+      "fred:TWEXAFEGSMTH": {
+        "observation_start": "2006-01-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-01 15:16:40-05",
+        "last_updated_ny": "2026-10-01 16:16"
+      },
+      "fred:TWEXMMTH": {
+        "observation_start": "1973-01-01",
+        "observation_end": "2019-12-01",
+        "last_updated": "2020-01-06 15:51:02-06",
+        "last_updated_ny": "2020-01-06 16:51"
+      },
+      "fred:USRECD": {
+        "observation_start": "1854-12-01",
+        "observation_end": "2026-10-11",
+        "last_updated": "2026-10-12 18:02:32-05",
+        "last_updated_ny": "2026-10-12 19:02"
+      },
+      "fred:VIXCLS": {
+        "observation_start": "1990-01-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:34-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:VXDCLS": {
+        "observation_start": "1997-10-07",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:36-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:VXEEMCLS": {
+        "observation_start": "2011-03-16",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:35-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:VXEWZCLS": {
+        "observation_start": "2011-03-16",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:34-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:VXNCLS": {
+        "observation_start": "2001-02-02",
+        "observation_end": "2026-10-09",
+        "last_updated": "2026-10-12 08:37:35-05",
+        "last_updated_ny": "2026-10-12 09:37"
+      },
+      "fred:VXOCLS": {
+        "observation_start": "1986-01-02",
+        "observation_end": "2021-09-23",
+        "last_updated": "2021-09-24 08:36:03-05",
+        "last_updated_ny": "2021-09-24 09:36"
+      },
+      "fred:VXTYN": {
+        "observation_start": "2003-01-02",
+        "observation_end": "2020-05-15",
+        "last_updated": "2020-06-17 09:20:48-05",
+        "last_updated_ny": "2020-06-17 10:20"
+      },
+      "fred:WTISPLC": {
+        "observation_start": "1946-01-01",
+        "observation_end": "2026-09-01",
+        "last_updated": "2026-10-07 12:33:23-05",
+        "last_updated_ny": "2026-10-07 13:33"
       }
     },
     "retrasos_habiles": {
       "BAMLC0A0CM": {
-        "D+0": 24
+        "D+0": 23
       },
       "BAMLH0A0HYM2": {
-        "D+0": 24
+        "D+0": 23
       },
       "DBAA": {
         "D+1": 23
@@ -284,33 +1166,1000 @@
         "D+4": 4,
         "D+5": 3
       },
-      "WEI": {
-        "D+4": 4
+      "DFF": {
+        "D+1": 23,
+        "D+2": 8
+      },
+      "DGS10": {
+        "D+1": 23
+      },
+      "SOFR": {
+        "D+1": 23
+      },
+      "VIXCLS": {
+        "D+0": 21,
+        "D+1": 1,
+        "D+2": 1,
+        "D+3": 1
       }
     },
-    "wei_vintages": {
-      "n_vintages": 428,
-      "primera": "2020-04-16",
-      "ultima": "2026-10-08",
-      "dia_semana": {
-        "Thursday": 328,
-        "Tuesday": 89,
-        "Wednesday": 10,
-        "Friday": 1
-      }
+    "por_metodo": {
+      "calendario": 44,
+      "lag_fijo": 16,
+      "cierre_mercado": 12
+    },
+    "por_frecuencia": {
+      "diaria": 57,
+      "mensual": 14,
+      "trimestral": 1
     },
     "red": {
-      "peticiones": 0,
-      "segundos": 12.3
+      "peticiones": 21,
+      "segundos": 36.5
     },
+    "descarga": null,
+    "derivadas": [
+      {
+        "derivada": "deriv:DBAA-DGS10",
+        "serie_fred": "fred:BAA10Y",
+        "fechas_comunes": 10193,
+        "valores_distintos": 1,
+        "dif_max": 0.02,
+        "fecha_dif_max": "1991-01-29",
+        "solo_derivada": 0,
+        "solo_fred": 0,
+        "publicacion_distinta": 10187,
+        "adelanto_mediano_dias": 1.0,
+        "derivada_posterior": 3
+      },
+      {
+        "derivada": "deriv:DCPF3M-DFF",
+        "serie_fred": "fred:CPFF",
+        "fechas_comunes": 6753,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_derivada": 1,
+        "solo_fred": 0,
+        "publicacion_distinta": 5604,
+        "adelanto_mediano_dias": 1.0,
+        "derivada_posterior": 330
+      },
+      {
+        "derivada": "deriv:DGS10-DFF",
+        "serie_fred": "fred:T10YFF",
+        "fechas_comunes": 16176,
+        "valores_distintos": 1,
+        "dif_max": 0.02,
+        "fecha_dif_max": "1991-01-29",
+        "solo_derivada": 2,
+        "solo_fred": 0,
+        "publicacion_distinta": 16176,
+        "adelanto_mediano_dias": 1.0,
+        "derivada_posterior": 0
+      },
+      {
+        "derivada": "deriv:DGS5-DFF",
+        "serie_fred": "fred:T5YFF",
+        "fechas_comunes": 16176,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_derivada": 2,
+        "solo_fred": 0,
+        "publicacion_distinta": 16176,
+        "adelanto_mediano_dias": 1.0,
+        "derivada_posterior": 0
+      }
+    ],
+    "contraste_fase1": [
+      {
+        "serie": "fred:AAA",
+        "inicio_fred": "1919-01-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1919-01-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 1290,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 188
+      },
+      {
+        "serie": "fred:BAA",
+        "inicio_fred": "1919-01-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1919-01-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 1290,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 188
+      },
+      {
+        "serie": "fred:BAA10Y",
+        "inicio_fred": "1986-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1986-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 10134,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 196
+      },
+      {
+        "serie": "fred:BAAFFM",
+        "inicio_fred": "1954-07-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1954-07-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 864,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 32
+      },
+      {
+        "serie": "fred:DED3",
+        "inicio_fred": "1971-01-04",
+        "fin_fred": "2016-10-07",
+        "inicio_fase1": "1971-01-04",
+        "fin_fase1": "2016-10-07",
+        "fechas_comunes": 11652,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DEXJPUS",
+        "inicio_fred": "1971-01-04",
+        "fin_fred": "2026-10-02",
+        "inicio_fase1": "1971-01-04",
+        "fin_fase1": "2026-07-10",
+        "fechas_comunes": 13916,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DEXSZUS",
+        "inicio_fred": "1971-01-04",
+        "fin_fred": "2026-10-02",
+        "inicio_fase1": "1971-01-04",
+        "fin_fase1": "2026-07-10",
+        "fechas_comunes": 13922,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DEXUSAL",
+        "inicio_fred": "1971-01-04",
+        "fin_fred": "2026-10-02",
+        "inicio_fase1": "1971-01-04",
+        "fin_fase1": "2026-07-10",
+        "fechas_comunes": 13915,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DFF",
+        "inicio_fred": "1954-07-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1954-07-01",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 26314,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 84,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DFII10",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 5888,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DFII30",
+        "inicio_fred": "2010-02-22",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2010-02-22",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 4103,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DFII5",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 5888,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS1",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16119,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS10",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16119,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS1MO",
+        "inicio_fred": "2001-07-31",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2001-07-31",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 6241,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS2",
+        "inicio_fred": "1976-06-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1976-06-01",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 12527,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS20",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 14430,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS3",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16119,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS30",
+        "inicio_fred": "1977-02-15",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1977-02-15",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 12349,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS3MO",
+        "inicio_fred": "1981-09-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1981-09-01",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 11217,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS5",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16119,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS6MO",
+        "inicio_fred": "1981-09-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1981-09-01",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 11217,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DGS7",
+        "inicio_fred": "1969-07-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1969-07-01",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 14249,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DPCREDIT",
+        "inicio_fred": "2003-01-09",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2003-01-09",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 6136,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 60,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DTB1YR",
+        "inicio_fred": "1959-07-15",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1959-07-15",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 15049,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DTB3",
+        "inicio_fred": "1954-01-04",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1954-01-04",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 18125,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DTB6",
+        "inicio_fred": "1958-12-09",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1958-12-09",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16885,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:DTWEXM",
+        "inicio_fred": "1973-01-02",
+        "fin_fred": "2019-12-31",
+        "inicio_fase1": "1973-01-02",
+        "fin_fase1": "2019-12-31",
+        "fechas_comunes": 11834,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:EFFR",
+        "inicio_fred": "2000-07-03",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2000-07-03",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 6538,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 58,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:EVZCLS",
+        "inicio_fred": "2007-11-01",
+        "fin_fred": "2025-03-11",
+        "inicio_fase1": "2007-11-01",
+        "fin_fase1": "2025-03-11",
+        "fechas_comunes": 4360,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:FEDFUNDS",
+        "inicio_fred": "1954-07-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1954-07-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 864,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 164
+      },
+      {
+        "serie": "fred:GS1",
+        "inicio_fred": "1953-04-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1953-04-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 879,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 164
+      },
+      {
+        "serie": "fred:GS10",
+        "inicio_fred": "1953-04-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1953-04-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 879,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 164
+      },
+      {
+        "serie": "fred:GS5",
+        "inicio_fred": "1953-04-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1953-04-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 879,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 164
+      },
+      {
+        "serie": "fred:GVZCLS",
+        "inicio_fred": "2008-06-03",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2008-06-03",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 4561,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:IORB",
+        "inicio_fred": "2021-07-29",
+        "fin_fred": "2026-10-13",
+        "inicio_fase1": "2021-07-29",
+        "fin_fase1": "2026-07-20",
+        "fechas_comunes": 1818,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 85,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:IRLTLT01USM156N",
+        "inicio_fred": "1953-04-01",
+        "fin_fred": "2026-08-01",
+        "inicio_fase1": "1953-04-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 879,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 2,
+        "solo_fase1": 0,
+        "publicacion_distinta": 23
+      },
+      {
+        "serie": "fred:LIOR3M",
+        "inicio_fred": "1970-01-01",
+        "fin_fred": "2016-10-01",
+        "inicio_fase1": "1970-01-01",
+        "fin_fase1": "2016-10-01",
+        "fechas_comunes": 188,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 3
+      },
+      {
+        "serie": "fred:M13002US35620M156NNBR",
+        "inicio_fred": "1857-01-01",
+        "fin_fred": "1971-12-01",
+        "inicio_fase1": "1857-01-01",
+        "fin_fase1": "1971-12-01",
+        "fechas_comunes": 1380,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:NASDAQ100",
+        "inicio_fred": "1986-01-02",
+        "fin_fred": "2026-10-12",
+        "inicio_fase1": "1986-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 10215,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 60,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:OBFR",
+        "inicio_fred": "2016-03-01",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2016-03-01",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 2608,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 58,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:OVXCLS",
+        "inicio_fred": "2007-05-10",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2007-05-10",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 4829,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:RVXCLS",
+        "inicio_fred": "2004-01-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2004-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 5668,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:SOFR",
+        "inicio_fred": "2018-04-03",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "2018-04-03",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 2070,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 58,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:T10Y2Y",
+        "inicio_fred": "1976-06-01",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "1976-06-01",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 12528,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 1360
+      },
+      {
+        "serie": "fred:T10Y3M",
+        "inicio_fred": "1982-01-04",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "1982-01-04",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 11137,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 1360
+      },
+      {
+        "serie": "fred:T10YFF",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16117,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 33
+      },
+      {
+        "serie": "fred:T10YIE",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 5889,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 1360
+      },
+      {
+        "serie": "fred:T5YFF",
+        "inicio_fred": "1962-01-02",
+        "fin_fred": "2026-10-08",
+        "inicio_fase1": "1962-01-02",
+        "fin_fase1": "2026-07-16",
+        "fechas_comunes": 16117,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 33
+      },
+      {
+        "serie": "fred:T5YIE",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 5889,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 1360
+      },
+      {
+        "serie": "fred:T5YIFR",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 5889,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 1360
+      },
+      {
+        "serie": "fred:TB3MS",
+        "inicio_fred": "1934-01-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1934-01-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 1110,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 164
+      },
+      {
+        "serie": "fred:TB3SMFFM",
+        "inicio_fred": "1954-07-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1954-07-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 864,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 16
+      },
+      {
+        "serie": "fred:TWEXAFEGSMTH",
+        "inicio_fred": "2006-01-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "2006-01-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 246,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:TWEXMMTH",
+        "inicio_fred": "1973-01-01",
+        "fin_fred": "2019-12-01",
+        "inicio_fase1": "1973-01-01",
+        "fin_fase1": "2019-12-01",
+        "fechas_comunes": 564,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:USRECD",
+        "inicio_fred": "1854-12-01",
+        "fin_fred": "2026-10-11",
+        "inicio_fase1": "1854-12-01",
+        "fin_fase1": "2026-07-05",
+        "fechas_comunes": 62674,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 98,
+        "solo_fase1": 0,
+        "publicacion_distinta": 153
+      },
+      {
+        "serie": "fred:VIXCLS",
+        "inicio_fred": "1990-01-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "1990-01-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 9232,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 60,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXDCLS",
+        "inicio_fred": "1997-10-07",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "1997-10-07",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 7240,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXEEMCLS",
+        "inicio_fred": "2011-03-16",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2011-03-16",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 3857,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXEWZCLS",
+        "inicio_fred": "2011-03-16",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2011-03-16",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 3857,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXNCLS",
+        "inicio_fred": "2001-02-02",
+        "fin_fred": "2026-10-09",
+        "inicio_fase1": "2001-02-02",
+        "fin_fase1": "2026-07-17",
+        "fechas_comunes": 6401,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 59,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXOCLS",
+        "inicio_fred": "1986-01-02",
+        "fin_fred": "2021-09-23",
+        "inicio_fase1": "1986-01-02",
+        "fin_fase1": "2021-09-23",
+        "fechas_comunes": 9002,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:VXTYN",
+        "inicio_fred": "2003-01-02",
+        "fin_fred": "2020-05-15",
+        "inicio_fase1": "2003-01-02",
+        "fin_fase1": "2020-05-15",
+        "fechas_comunes": 4363,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 0,
+        "solo_fase1": 0,
+        "publicacion_distinta": 0
+      },
+      {
+        "serie": "fred:WTISPLC",
+        "inicio_fred": "1946-01-01",
+        "fin_fred": "2026-09-01",
+        "inicio_fase1": "1946-01-01",
+        "fin_fase1": "2026-06-01",
+        "fechas_comunes": 966,
+        "valores_distintos": 0,
+        "dif_max": 0.0,
+        "fecha_dif_max": null,
+        "solo_fred": 3,
+        "solo_fase1": 0,
+        "publicacion_distinta": 32
+      }
+    ],
     "tabla_retrasos": "results/ingesta/mercados_series/tablas/publicacion_fred_sustitutos.csv"
   },
   "notas": [
     "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
-    "Caché cruda: un JSON por petición en <corpus>/mercados_series/crudo/fred/ (fecha de descarga en el nombre); la clave nunca se guarda",
+    "Fuente viva (bloque 3): las series de FRED que no van por ALFRED se descargan de la API y FRED pasa a ser su fuente; data/raw queda solo para la Fase 1 (y para lo que no está en FRED). Prioridad en la base: alfred (vintage_exacto) > fred vivo > fase1",
+    "Descarga reanudable: la primera de cada serie es completa y las siguientes incrementales (desde 62 días antes del último dato); la tabla une todas las descargas completas archivadas (primer valor visto por fecha). Caché cruda: un JSON por página en <corpus>/mercados_series/crudo/fred/ (fecha de descarga en el nombre); la clave nunca se guarda",
     "Valores '.' de FRED: en las diarias, los sueltos (festivos) se descartan y cada racha de más de 31 días deja una fila nula con nota; en las demás frecuencias, valor nulo con nota",
-    "Fechas de publicación de Moody's, diferenciales calculados por FRED, SOFR/EFFR/OBFR, papel comercial y la macro lag_fijo contrastadas con la primera vintage de ALFRED (output_type=4): tablas/publicacion_alfred_medida.csv y config/excepciones_publicacion.csv",
-    "WEI se carga con todas sus vintages de ALFRED (vintage_exacto); el resto, vintage 'unico' (no revisables según el catálogo)"
+    "Fechas de publicación de Moody's, diferenciales calculados por FRED, SOFR/EFFR/OBFR, papel comercial y las mensuales lag_fijo contrastadas con la primera vintage de ALFRED (output_type=4): tablas/publicacion_alfred_medida.csv y config/excepciones_publicacion.csv (se aplican al cargar)",
+    "BAA10Y, T10YFF, T5YFF y CPFF: la serie principal es la derivada propia de sus componentes (fecha = máxima de los componentes, D+1); la de FRED (D+2) queda como duplicada para contrastar: tablas/derivadas_fred_medida.csv",
+    "Las series revisables de FRED (vintage_exacto) se cargan con sus vintages de ALFRED en fuentes.alfred (ficha alfred_vintages; caché propia en crudo/alfred/)"
   ],
-  "fecha_sonda": "2026-10-12"
+  "fecha_sonda": "2026-10-13"
 }

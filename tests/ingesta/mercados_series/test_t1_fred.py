@@ -1,8 +1,11 @@
-"""Tests del extractor de FRED/ALFRED del Tema 1 (bloque 2): ``fuentes.fred``.
+"""Tests del extractor de FRED/ALFRED del Tema 1 (bloques 2 y 3): ``fuentes.fred``.
 
 Sin red: respuestas JSON SINTÉTICAS con el formato real de la API (ningún valor real de FRED/ICE) y
-un transporte falso. Los ``@pytest.mark.live`` piden una serie corta (solo con ``INGESTA_LIVE=1``);
-el que lee el archivo crudo local se salta si no existe.
+un transporte falso. Bloque 3: regla de la fuente viva, descarga reanudable (páginas interrumpidas,
+incrementales, tandas con tiempo máximo), derivadas (fecha = máxima de los componentes, valor A − B,
+contraste con la serie de FRED) y fichas sin guardar. Los ``@pytest.mark.live`` piden una serie corta
+y la sonda de 3 series de la fuente viva (solo con ``INGESTA_LIVE=1``); el que lee el archivo crudo
+local se salta si no existe.
 """
 from __future__ import annotations
 
@@ -55,6 +58,8 @@ class Falso:
         if "vintage_dates" in params:
             pedidas = set(params["vintage_dates"].split(","))
             filas = [o for o in filas if o["realtime_start"] in pedidas]
+        if "observation_start" in params:
+            filas = [o for o in filas if o["date"] >= params["observation_start"]]
         off = int(params.get("offset", 0))
         return _respuesta_obs(filas[off:off + self.pagina], offset=off, count=len(filas))
 
@@ -186,9 +191,11 @@ def test_t1_fred_union_del_archivo_ventana_movil():
 
 
 # --- Catálogo → contrato: fechas de publicación -------------------------------------------------
+# Bloque 3: las revisables de ALFRED (vintage_exacto) en su forma del bloque 2 (regla previa, lag_fijo):
+# estos tests ejercitan las reglas de publicación con entradas reales del catálogo.
 @pytest.fixture(scope="module")
 def cat():
-    return catalogo.cargar_catalogo()
+    return catalogo.vista_regla_previa()
 
 
 def _fila(tabla: pd.DataFrame, fecha: str) -> pd.Series:
@@ -265,12 +272,15 @@ def test_t1_fred_metodo_no_admitido(cat):
 def test_t1_fred_ids_sustitutos(cat):
     ids = f.ids_sustitutos(cat)
     for s in ("fred:DBAA", "fred:DAAA", "fred:DEXUSEU", "fred:DTWEXBGS", "fred:DTWEXAFEGS", "fred:TEDRATE",
-              "fred:DCPF3M", "fred:CPFF", "fred:WEI", "fred:BAMLH0A0HYM2", "fred:BAMLC0A0CM",
+              "fred:DCPF3M", "fred:CPFF", "fred:BAMLH0A0HYM2", "fred:BAMLC0A0CM",
               "fred:BAMLH0A0HYM2EY", "fred:BAMLC0A4CBBB", "fred:BAMLC0A1CAAA"):
         assert s in ids, s
     for s in ("fred:SOFR", "fred:EFFR", "fred:DED3", "fred:DGS10"):        # ya vienen de data/raw
         assert s not in ids, s
+    # Bloque 3: las vintage_exacto (WEI y las 128 nuevas de ALFRED) las carga ALFRED, no este cargador.
+    assert "fred:WEI" not in ids and "fred:UNRATE" not in ids
     assert all(cat[s]["fuente"] == "fred_alfred" and not cat[s]["fichero_fase1"] for s in ids)
+    assert all(cat[s]["metodo"] != "vintage_exacto" for s in ids)
 
 
 def test_t1_fred_tabla_sustitutos_con_transporte_falso(tmp_path, cat):
@@ -320,6 +330,245 @@ def test_t1_fred_historial_vintage_registra_errores(tmp_path):
     assert "error" in err["vintage_dates"] and SECRETO not in err["realtime"]["error"]
 
 
+# --- Bloque 3: fuente viva ----------------------------------------------------------------------
+@pytest.fixture(scope="module")
+def cat_real():
+    return catalogo.cargar_catalogo()
+
+
+SIN_EXC = pd.DataFrame({"serie": pd.Series(dtype=object), "fecha_referencia": pd.Series(dtype="datetime64[ns]"),
+                        "fecha_publicacion": pd.Series(dtype="datetime64[ns]")})
+
+
+def _vivo(sid: str, cat: dict, valores: dict[str, str]) -> pd.DataFrame:
+    """Filas del contrato de ``sid`` (regla de su entrada) con valores SINTÉTICOS."""
+    return f.tabla_serie(sid, f.parsear_observaciones([_obs(d, v) for d, v in valores.items()]), cat[sid])
+
+
+def test_t1_fred_ids_fred_vivo_regla(cat_real):
+    ids = set(f.ids_fred_vivo(cat_real))
+    for sid, e in cat_real.items():
+        esperado = (e["fuente_viva"] == "fred" and e["metodo"] != "vintage_exacto"
+                    and e["estado"] in catalogo.ESTADOS_CARGABLES)
+        assert (sid in ids) == esperado, sid
+    for s in ("fred:DGS10", "fred:DFF", "fred:SOFR", "fred:VIXCLS", "fred:NASDAQ100", "fred:GS10", "fred:DEXJPUS",
+              "fred:BAA10Y", "fred:CPFF", "fred:BAMLH0A0HYM2", "fred:USRECD", "fred:TEDRATE"):
+        assert s in ids, s                       # H.15, NY Fed, Cboe/NASDAQ, mensuales, duplicadas, capadas, retiradas
+    for s in ("fred:UNRATE", "fred:WEI", "fred:GDPC1", "yf:^GSPC", "deriv:DBAA-DGS10", "ff:F3D.SMB"):
+        assert s not in ids, s                   # ALFRED, otras fuentes y derivadas propias
+    assert all(s.startswith("fred:") and cat_real[s]["metodo"] in f.METODOS_VIVO for s in ids)
+    assert set(f.ids_sustitutos(cat_real)) <= ids
+    # fuente_viva null (FRED ya no la sirve) o estado no cargable: fuera.
+    otro = {s: dict(e) for s, e in cat_real.items()}
+    otro["fred:DGS10"]["fuente_viva"] = None
+    otro["fred:DFF"]["estado"] = "pendiente_alfred"
+    ids2 = f.ids_fred_vivo(otro)
+    assert "fred:DGS10" not in ids2 and "fred:DFF" not in ids2 and "fred:DGS5" in ids2
+
+
+def test_t1_fred_vivo_rechaza_series_ajenas(tmp_path, cat_real):
+    cli, _ = _cliente(tmp_path, {})
+    for sid in ("fred:UNRATE", "yf:^GSPC", "BAA10Y"):            # BAA10Y: alias de la derivada propia
+        with pytest.raises(ValueError, match="fuente viva"):
+            f.tabla_fred_vivo([sid], cliente=cli, cat=cat_real, sin_red=True)
+
+
+def test_t1_fred_descarga_interrumpida_se_reanuda(tmp_path):
+    filas = [_obs(f"2026-09-{d:02d}", f"{d}.0") for d in range(1, 8)]
+    falso = Falso({("series/observations", "XVIVO"): {"observations": filas}}, pagina=3)
+    cortes = []
+
+    def transporte(url, params):
+        if int(params.get("offset", 0)) == 3 and not cortes:
+            cortes.append(1)
+            raise RuntimeError(f"corte de red en {url}?api_key={params['api_key']}")
+        return falso(url, params)
+
+    cli = f.ClienteFred(SECRETO, transporte=transporte, carpeta=tmp_path, hoy="2026-10-12")
+    with pytest.raises(f.ErrorFred) as e:
+        f.descargar_vigente(cli, "XVIVO")
+    assert SECRETO not in str(e.value)
+    assert cli.descargas_vigentes("XVIVO") == []                       # la página suelta no cuenta
+    assert len(list((tmp_path / "series_observations" / "XVIVO").glob("*.json"))) == 1
+    r = f.descargar_vigente(cli, "XVIVO")
+    assert r["modo"] == "completa" and r["peticiones"] == 2            # solo las páginas que faltaban
+    assert [int(p["offset"]) for _, p in falso.llamadas] == [0, 3, 6]
+    [(dia, params, obs)] = cli.descargas_vigentes("XVIVO")
+    assert dia == "20261012" and params == {"series_id": "XVIVO"} and len(obs) == 7
+    assert f.descargar_vigente(cli, "XVIVO")["modo"] == "cache" and len(falso.llamadas) == 3
+
+
+def test_t1_fred_descarga_incremental_y_union(tmp_path):
+    dia1 = [_obs("2026-07-01", "1.0"), _obs("2026-09-30", "2.0"), _obs("2026-10-01", ".")]
+    cli1, _ = _cliente(tmp_path, {("series/observations", "XINC"): {"observations": dia1}}, hoy="2026-10-01")
+    assert f.descargar_vigente(cli1, "XINC")["modo"] == "completa"
+    # Día siguiente: FRED rellena el '.', añade un dato y ya no sirve la fecha más antigua (ventana móvil).
+    dia2 = [_obs("2026-09-30", "2.0"), _obs("2026-10-01", "2.5"), _obs("2026-10-02", "3.0")]
+    cli2, falso2 = _cliente(tmp_path, {("series/observations", "XINC"): {"observations": dia2}}, hoy="2026-10-02")
+    r = f.descargar_vigente(cli2, "XINC")
+    desde = (pd.Timestamp("2026-09-30") - pd.Timedelta(days=f.SOLAPE_DIAS)).date().isoformat()
+    assert r["modo"] == "incremental" and r["desde"] == desde       # desde el último dato con valor, no el '.'
+    assert falso2.llamadas[0][1]["observation_start"] == desde
+    u = f.unir_archivo([(d, o) for d, _, o in cli2.descargas_vigentes("XINC")])
+    assert u["fecha_referencia"].dt.strftime("%Y-%m-%d").tolist() == ["2026-07-01", "2026-09-30", "2026-10-01",
+                                                                      "2026-10-02"]
+    assert u["valor"].tolist() == [1.0, 2.0, 2.5, 3.0]
+    assert f.descargar_vigente(cli2, "XINC")["modo"] == "cache" and len(falso2.llamadas) == 1
+    assert f.descargar_vigente(cli2, "XINC", completa=True)["modo"] == "completa"      # forzada: sin observation_start
+    assert "observation_start" not in falso2.llamadas[-1][1]
+    # Las peticiones con realtime u output_type (ALFRED, excepciones) no son lo vigente.
+    cli2.observaciones("XINC", realtime_start=f.INICIO_ALFRED, realtime_end=f.FIN_ALFRED, output_type=4)
+    assert len(cli2.descargas_vigentes("XINC")) == 3
+
+
+def test_t1_fred_descargar_vivo_por_tandas_y_errores(tmp_path, cat_real):
+    resp = {("series/observations", "DGS10"): {"observations": [_obs("2026-10-08", "4.10")]},
+            ("series/observations", "DFF"): {"observations": [_obs("2026-10-08", "3.90")]}}
+    falso = Falso(resp)
+
+    def transporte(url, params):
+        if params["series_id"] == "DFF":
+            raise RuntimeError(f"500 en {url}?api_key={params['api_key']}")
+        return falso(url, params)
+
+    cli = f.ClienteFred(SECRETO, transporte=transporte, carpeta=tmp_path, hoy="2026-10-12")
+    ids = ["fred:DGS10", "fred:DFF"]
+    tanda = f.descargar_fred_vivo(ids, cliente=cli, cat=cat_real, max_segundos=-1)   # sin tiempo: todo pendiente
+    assert tanda["pendientes"] == ids and tanda["peticiones"] == 0 and not falso.llamadas
+    rep = f.descargar_fred_vivo(ids, cliente=cli, cat=cat_real)
+    assert rep["hechas"] == ["fred:DGS10"] and list(rep["errores"]) == ["fred:DFF"]
+    assert SECRETO not in rep["errores"]["fred:DFF"]
+    assert f.descargar_fred_vivo(ids, cliente=cli, cat=cat_real)["cache"] == ["fred:DGS10"]   # reanudable
+    with pytest.raises(f.ErrorFred, match="fred:DFF") as e:
+        f.tabla_fred_vivo(ids, cliente=cli, cat=cat_real, excepciones=SIN_EXC)
+    assert SECRETO not in str(e.value)
+    t = f.tabla_fred_vivo(ids, cliente=cli, cat=cat_real, excepciones=SIN_EXC, estricto=False)
+    assert set(t["serie"]) == {"fred:DGS10"}                            # DFF sin archivo: no aparece
+
+
+def test_t1_fred_tabla_vivo_reglas_excepciones_y_sin_red(tmp_path, cat_real):
+    dias = {"2026-10-05": "4.10", "2026-10-06": "4.12", "2026-10-07": "4.15", "2026-10-08": "."}
+    resp = {("series/observations", "DGS10"): {"observations": [_obs(d, v) for d, v in dias.items()]},
+            ("series/observations", "VIXCLS"): {"observations": [_obs("2026-10-08", "17.5")]},
+            ("series/observations", "GS10"): {"observations": [_obs("2026-08-01", "4.2"), _obs("2026-09-01", "4.1")]}}
+    cli, falso = _cliente(tmp_path, resp)
+    exc = pd.DataFrame({"serie": ["fred:DGS10"], "fecha_referencia": [pd.Timestamp("2026-10-06")],
+                        "fecha_publicacion": [pd.Timestamp("2026-10-09")]})
+    ids = ["fred:DGS10", "fred:VIXCLS", "fred:GS10"]
+    t = f.tabla_fred_vivo(ids, cliente=cli, cat=cat_real, excepciones=exc)
+    assert set(t["serie"]) == set(ids) and len(falso.llamadas) == 3
+    dgs = t[t["serie"] == "fred:DGS10"].set_index("fecha_referencia")
+    assert len(dgs) == 3                                                    # el '.' final se descarta
+    assert dgs.loc[pd.Timestamp("2026-10-05"), "fecha_publicacion"] == pd.Timestamp("2026-10-06")   # H.15: D+1
+    assert dgs.loc[pd.Timestamp("2026-10-06"), "fecha_publicacion"] == pd.Timestamp("2026-10-09")   # excepción medida
+    assert catalogo.NOTA_EXCEPCION in dgs.loc[pd.Timestamp("2026-10-06"), "nota"]
+    assert (t.loc[t["serie"] == "fred:VIXCLS", "metodo_publicacion"] == "cierre_mercado").all()
+    gs10 = t[t["serie"] == "fred:GS10"]
+    assert (gs10["metodo_publicacion"] == "lag_fijo").all() and gs10["disponible_utc"].isna().all()
+    assert (t["vintage"] == "unico").all() and (t["fuente"] == "fred_alfred").all()
+    # Sin red: lo mismo desde el archivo crudo.
+    sin_red = f.ClienteFred(SECRETO, transporte=lambda u, p: pytest.fail("no debe pedir"), carpeta=tmp_path,
+                            hoy="2026-10-13")
+    t2 = f.tabla_fred_vivo(ids, sin_red=True, cliente=sin_red, cat=cat_real, excepciones=exc)
+    pd.testing.assert_frame_equal(t, t2)
+
+
+# --- Bloque 3: derivadas ------------------------------------------------------------------------
+def test_t1_fred_pares_derivadas(cat_real):
+    assert f.pares_derivadas(cat_real) == {"deriv:DBAA-DGS10": "fred:BAA10Y", "deriv:DCPF3M-DFF": "fred:CPFF",
+                                           "deriv:DGS10-DFF": "fred:T10YFF", "deriv:DGS5-DFF": "fred:T5YFF"}
+    for d, s in f.pares_derivadas(cat_real).items():
+        assert cat_real[d]["metodo"] == "derivada" and cat_real[s]["duplicado_de"] == d
+        a, b = cat_real[d]["componentes"]
+        assert {a, b} <= set(f.ids_fred_vivo(cat_real))                   # sus componentes son de la fuente viva
+
+
+def test_t1_fred_derivada_fecha_maxima_de_componentes(cat_real):
+    dbaa = _vivo("fred:DBAA", cat_real, {"2026-10-05": "5.80", "2026-10-06": "5.82", "2026-10-07": "5.79",
+                                         "2026-10-08": "5.81"})
+    dgs10 = _vivo("fred:DGS10", cat_real, {"2026-10-05": "4.10", "2026-10-06": "4.12", "2026-10-07": "4.15",
+                                           "2026-10-09": "4.20"})
+    exc = pd.DataFrame({"serie": ["fred:DBAA"], "fecha_referencia": [pd.Timestamp("2026-10-07")],
+                        "fecha_publicacion": [pd.Timestamp("2026-10-13")]})
+    comp, n = catalogo.aplicar_excepciones(pd.concat([dbaa, dgs10], ignore_index=True), exc, catalogo=cat_real)
+    comp = validar_series(comp)
+    assert n == 1
+    d = f.tabla_derivadas(comp, ["deriv:DBAA-DGS10"], cat=cat_real).set_index("fecha_referencia")
+    assert d.index.strftime("%Y-%m-%d").tolist() == ["2026-10-05", "2026-10-06", "2026-10-07"]   # solo fechas comunes
+    for ref, fila in d.iterrows():
+        pubs = comp[comp["fecha_referencia"] == ref]
+        assert fila["fecha_publicacion"] == pubs["fecha_publicacion"].max()
+        assert fila["disponible_utc"] == pubs["disponible_utc"].max()
+    assert d.loc[pd.Timestamp("2026-10-07"), "fecha_publicacion"] == pd.Timestamp("2026-10-13")   # hereda la excepción
+    assert d["valor"].tolist() == pytest.approx([1.70, 1.70, 1.64])
+    assert (d["metodo_publicacion"] == "derivada").all() and (d["vintage"] == "unico").all()
+    assert (d["fuente"] == "calculo_propio").all() and d["nota"].isna().all()
+    assert (d["unidad"] == cat_real["deriv:DBAA-DGS10"]["unidad"]).all()
+
+
+def test_t1_fred_derivadas_errores(cat_real):
+    dgs10 = validar_series(_vivo("fred:DGS10", cat_real, {"2026-10-05": "4.10"}))
+    with pytest.raises(KeyError, match="fred:DBAA"):
+        f.tabla_derivadas(dgs10, ["deriv:DBAA-DGS10"], cat=cat_real)
+    assert f.tabla_derivadas(dgs10, ["deriv:DBAA-DGS10"], cat=cat_real, omitir_incompletas=True).empty
+    with pytest.raises(ValueError, match="diferencia"):
+        f.tabla_derivadas(dgs10, ["deriv:VOLREAL21_GSPC"], cat=cat_real)
+
+
+def test_t1_fred_medir_derivadas_contra_fred(cat_real):
+    dbaa = _vivo("fred:DBAA", cat_real, {"2026-10-05": "5.80", "2026-10-06": "5.82", "2026-10-07": "5.79"})
+    dgs10 = _vivo("fred:DGS10", cat_real, {"2026-10-05": "4.10", "2026-10-06": "4.12", "2026-10-07": "4.15"})
+    # Serie de FRED: igual salvo una fecha con 0,02 de diferencia y una fecha que no tiene la derivada.
+    baa10y = _vivo("fred:BAA10Y", cat_real, {"2026-10-02": "1.60", "2026-10-05": "1.70", "2026-10-06": "1.72",
+                                             "2026-10-07": "1.64"})
+    tabla = validar_series(pd.concat([dbaa, dgs10, baa10y], ignore_index=True))
+    m = f.medir_derivadas(tabla, cat=cat_real)
+    assert m["derivada"].tolist() == ["deriv:DBAA-DGS10"]                 # las demás no tienen componentes
+    fila = m.iloc[0]
+    assert fila["serie_fred"] == "fred:BAA10Y" and fila["fechas_comunes"] == 3
+    assert fila["valores_distintos"] == 1 and fila["dif_max"] == pytest.approx(0.02)
+    assert fila["fecha_dif_max"] == "2026-10-06" and fila["solo_fred"] == 1 and fila["solo_derivada"] == 0
+    assert fila["adelanto_mediano_dias"] == 1 and fila["derivada_posterior"] == 0     # FRED la calcula en D+1 17:05
+    assert "valor" not in m.columns
+
+
+def test_t1_fred_contrastar_fase1(cat_real):
+    vivo = validar_series(_vivo("fred:DGS10", cat_real, {"2026-10-05": "4.10", "2026-10-06": "4.12",
+                                                         "2026-10-07": "4.15"}))
+    copia = validar_series(_vivo("fred:DGS10", cat_real, {"2026-10-02": "4.00", "2026-10-05": "4.10",
+                                                          "2026-10-06": "4.13"}))
+    c = f.contrastar_fase1(vivo, copia)
+    fila = c.iloc[0]
+    assert fila["serie"] == "fred:DGS10" and fila["fechas_comunes"] == 2 and fila["valores_distintos"] == 1
+    assert fila["solo_fred"] == 1 and fila["solo_fase1"] == 1 and fila["fin_fred"] == "2026-10-07"
+    assert fila["inicio_fase1"] == "2026-10-02" and fila["dif_max"] == pytest.approx(0.01)
+    assert f.contrastar_fase1(vivo, copia.iloc[0:0]).empty
+
+
+def test_t1_fred_fichas_vivo_sin_guardar(tmp_path, cat_real):
+    resp = {("series/observations", "DGS10"): {"observations": [_obs("2026-10-05", "4.10", rs="2026-10-06"),
+                                                                 _obs("2026-10-06", "4.12", rs="2026-10-07")]},
+            ("series/observations", "DFF"): {"observations": [_obs("2026-10-05", "3.90", rs="2026-10-06"),
+                                                               _obs("2026-10-06", "3.91", rs="2026-10-07")]},
+            ("series/observations", "T10YFF"): {"observations": [_obs("2026-10-05", "0.20", rs="2026-10-06"),
+                                                                  _obs("2026-10-06", "0.21", rs="2026-10-07")]}}
+    for s in ("DGS10", "DFF", "T10YFF"):
+        resp[("series", s)] = {"seriess": [{"id": s, "observation_start": "1962-01-02",
+                                            "observation_end": "2026-10-06", "last_updated": "2026-10-07 15:20:01-05"}]}
+    cli, _ = _cliente(tmp_path, resp)
+    t = f.tabla_fred_vivo(["fred:DGS10", "fred:DFF", "fred:T10YFF"], cliente=cli, cat=cat_real, excepciones=SIN_EXC)
+    deriv = f.medir_derivadas(t, cat=cat_real)
+    assert deriv["valores_distintos"].tolist() == [0]
+    r = f.fichas_fred(cli, t, series_lag=("DGS10",), medir_oas=False, derivadas=deriv, cat=cat_real, guardar=False)
+    ficha, oas = r["fichas"]
+    assert r["rutas"] == {} and ficha.fuente == "fred_alfred" and oas.fuente == "ice_bofa_oas"
+    assert ficha.cobertura_inicio == "2026-10-05" and ficha.cobertura_fin == "2026-10-06"
+    assert set(ficha.mediciones["series"]) == {"fred:DGS10", "fred:DFF", "fred:T10YFF"}
+    assert ficha.mediciones["existen_en_fred"]["fred:DGS10"]["last_updated_ny"] == "2026-10-07 16:20"
+    assert ficha.mediciones["derivadas"][0]["derivada"] == "deriv:DGS10-DFF" and "diaria 3" in ficha.frecuencia
+    assert "valor" not in r["lags"].columns and SECRETO not in json.dumps(ficha.mediciones)
+
+
 # --- Archivo crudo local y red ------------------------------------------------------------------
 def _hay_crudo() -> bool:
     try:
@@ -351,3 +600,17 @@ def test_t1_fred_live_serie_corta(tmp_path):
     assert cli.serie("DBAA")["id"] == "DBAA"
     textos = "".join(p.read_text(encoding="utf-8") for p in tmp_path.rglob("*.json"))
     assert "api_key" not in textos
+
+
+@pytest.mark.live
+def test_t1_fred_live_vivo_sonda(tmp_path):
+    """Sonda de la fuente viva: DGS10, DFF y T10YFF completas; la derivada reproduce la serie de FRED."""
+    cat = catalogo.cargar_catalogo()
+    cli = f.ClienteFred(carpeta=tmp_path)
+    ids = ["fred:DGS10", "fred:DFF", "fred:T10YFF"]
+    t = f.tabla_fred_vivo(ids, cliente=cli, cat=cat)
+    assert set(t["serie"]) == set(ids) and t["fecha_referencia"].max() > pd.Timestamp("2026-07-17")
+    m = f.medir_derivadas(t, cat=cat).set_index("derivada").loc["deriv:DGS10-DFF"]
+    assert m["fechas_comunes"] > 15000 and m["valores_distintos"] <= 5 and m["derivada_posterior"] == 0
+    assert f.descargar_fred_vivo(ids, cliente=cli, cat=cat)["cache"] == ids     # lo de hoy no se repite
+    assert "api_key" not in "".join(p.read_text(encoding="utf-8") for p in tmp_path.rglob("*.json"))

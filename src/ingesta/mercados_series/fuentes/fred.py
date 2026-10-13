@@ -1,4 +1,4 @@
-"""Extractor de FRED/ALFRED del Tema 1 (bloque 2): cliente mínimo y sustitutos que no están en data/raw.
+"""Extractor de FRED/ALFRED del Tema 1 (bloques 2 y 3): cliente, FRED como fuente viva y derivadas.
 
 Cliente (``ClienteFred``):
 
@@ -25,9 +25,26 @@ Conversión (``tabla_fred_sustitutos``): cada serie según su entrada del catál
 - ``cierre_mercado`` y ``lag_fijo`` también se admiten (reutilizable por otros extractores).
 - Valor ``'.'`` de FRED → ``valor`` nulo con ``NOTA_PUNTO``.
 
+Fuente viva (bloque 3, ``tabla_fred_vivo``): todas las series del catálogo cuyo origen es FRED y que
+NO van por ALFRED (``ids_fred_vivo``: ``catalogo.origenes`` con ``fred``; tipos diarios de H.15,
+H.10, Moody's, NY Fed, papel comercial, cierres de Cboe/NASDAQ en FRED, mensuales de mercado...).
+Se fechan con su regla (calendario, cierre o lag) y las excepciones medidas
+(``catalogo.aplicar_excepciones``). Descarga reanudable (``descargar_fred_vivo``): una serie ya
+descargada entera hoy no se pide otra vez; la primera descarga es completa y las siguientes
+incrementales (desde ``SOLAPE_DIAS`` antes del último dato archivado); la tabla une todas las
+descargas completas archivadas (``ClienteFred.descargas_vigentes``; las páginas de una descarga
+interrumpida no cuentan hasta que se completa). ``data/raw`` queda para la Fase 1.
+
+Derivadas (``tabla_derivadas``): diferencias ``A − B`` del catálogo (BAA10Y = DBAA − DGS10, T10YFF =
+DGS10 − DFF, T5YFF = DGS5 − DFF, CPFF = DCPF3M − DFF) con ``contrato.fecha_publicacion_derivada``
+(máxima de los componentes); ``medir_derivadas`` mide cuánto se separan de la serie que publica
+FRED (su duplicada) y ``contrastar_fase1`` compara la fuente viva con ``data/raw``.
+
 Datos solo en local (términos de FRED; ICE, Moody's: copyright). Al repositorio solo van código,
 fichas y tablas de fechas, nunca valores.
-CLI: ``python -m ingesta.mercados_series.fuentes.fred [--sin-red] [--fichas] [--escribir]``.
+CLI: ``python -m ingesta.mercados_series.fuentes.fred [--sin-red] [--fichas] [--escribir]`` (sustitutos
+del bloque 2) y ``... --vivo [--ids ...] [--max-minutos N] [--completa] [--sin-red] [--fichas]``
+(fuente viva por tandas: repetir la orden sigue donde se quedó).
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
 """
 from __future__ import annotations
@@ -51,6 +68,7 @@ from ingesta.mercados_series.contrato import (
     FECHA,
     HUSO_DECISION,
     UTC,
+    fecha_publicacion_derivada,
     primera_decision_vec,
     vacio_series,
     validar_series,
@@ -88,6 +106,16 @@ OAS_ICE = ("BAMLH0A0HYM2", "BAMLC0A0CM", "BAMLH0A0HYM2EY", "BAMLC0A0CMEY", "BAML
 METODOS_ADMITIDOS = ("calendario", "vintage_exacto", "cierre_mercado", "lag_fijo")
 # Estados del catálogo que este extractor carga; pendiente_alfred solo con vintage_exacto (sus vintages).
 ESTADOS_EXTRACTOR = (*catalogo.ESTADOS_CARGABLES, "pendiente_alfred")
+# Fuente viva (bloque 3): métodos de las series de FRED que no van por ALFRED.
+METODOS_VIVO = ("calendario", "cierre_mercado", "lag_fijo")
+# Descarga incremental: desde este margen antes del último dato archivado (un '.' que FRED rellena
+# tarde, un dato de Moody's con retraso, la última mensual).
+SOLAPE_DIAS = 62
+# Parámetros que admite una descarga de lo vigente (sin realtime, vintage_dates ni output_type).
+PARAMS_VIGENTE = frozenset({"series_id", "observation_start", "observation_end"})
+# Derivada propia frente a la serie de FRED: valores distintos más allá del error de coma flotante.
+TOLERANCIA_DERIVADA = 1e-6
+SERIES_LAG_VIVO = ("DGS10", "DFF", "SOFR", "DBAA", "DCPF3M", "DEXUSEU", "VIXCLS", "BAMLH0A0HYM2", "BAMLC0A0CM")
 
 Transporte = Callable[[str, dict[str, Any]], dict[str, Any]]
 
@@ -96,6 +124,8 @@ __all__ = [
     "ruta_crudo", "trozos", "parsear_observaciones", "ids_sustitutos", "tabla_serie", "tabla_fred_sustitutos",
     "medir_publicacion", "historial_vintage", "last_updated_ny", "fichas_fred", "ids_excepciones",
     "primeras_publicaciones", "medir_excepciones",
+    "METODOS_VIVO", "SOLAPE_DIAS", "ids_fred_vivo", "descargar_vigente", "descargar_fred_vivo", "tabla_fred_vivo",
+    "pares_derivadas", "tabla_derivadas", "medir_derivadas", "contrastar_fase1",
 ]
 
 
@@ -291,6 +321,48 @@ class ClienteFred:
         return [(dia, [o for _, lote in sorted(paginas, key=lambda x: x[0]) for o in lote])
                 for dia, paginas in sorted(por_dia.items())]
 
+    def ficheros_vigentes(self, series_id: str) -> list[tuple[Path, dict[str, Any]]]:
+        """``[(fichero, envoltorio)]`` de las páginas archivadas de lo vigente de ``series_id``.
+
+        Lo vigente: ``series/observations`` sin ``realtime_*``, ``vintage_dates`` ni ``output_type``
+        (solo ``observation_start``/``observation_end`` además del id). Sin red.
+        """
+        carpeta = self.carpeta_peticion("series/observations", {"series_id": series_id})
+        out = []
+        for f in sorted(carpeta.glob("*.json")) if carpeta.exists() else []:
+            env_ = json.loads(f.read_text(encoding="utf-8"))
+            p = {k: v for k, v in env_["params"].items() if k not in ("offset", "limit")}
+            if p.get("series_id") == series_id and set(p) <= PARAMS_VIGENTE:
+                out.append((f, env_))
+        return out
+
+    def descargas_vigentes(self, series_id: str) -> list[tuple[str, dict[str, str], list[dict[str, Any]]]]:
+        """Descargas COMPLETAS archivadas de lo vigente: ``[(AAAAMMDD, params, observaciones)]`` por día.
+
+        Junta las páginas de cada petición (mismo día y parámetros salvo ``offset``); una petición
+        cuyas páginas no empiezan en 0, tienen saltos o no llegan al ``count`` de la API (descarga
+        interrumpida) no se devuelve hasta que se completa. Completas e incrementales
+        (``observation_start``). Sin red.
+        """
+        grupos: dict[tuple[str, str], dict[str, Any]] = {}
+        for f, env_ in self.ficheros_vigentes(series_id):
+            p = {k: v for k, v in env_["params"].items() if k not in ("offset", "limit")}
+            g = grupos.setdefault((f.name[:8], json.dumps(p, sort_keys=True)), {"params": p, "paginas": {}, "count": 0})
+            resp = env_["respuesta"]
+            lote = resp.get("observations") or []
+            g["paginas"][int(env_["params"].get("offset", 0))] = lote
+            g["count"] = max(g["count"], int(resp.get("count", len(lote))))
+        out = []
+        for (dia, _), g in sorted(grupos.items()):
+            n = 0
+            for off, lote in sorted(g["paginas"].items()):
+                if off != n:
+                    break
+                n += len(lote)
+            if n >= g["count"]:
+                out.append((dia, g["params"], [o for _, lote in sorted(g["paginas"].items()) for o in lote]))
+        return out
+
 
 # --- Parseo -------------------------------------------------------------------------------------
 def _fecha_fred(texto: Any) -> pd.Timestamp:
@@ -346,22 +418,28 @@ def _id_origen(sid: str, entrada: dict[str, Any]) -> str:
     return entrada.get("id_origen") or sid.split(":", 1)[1]
 
 
-def ids_sustitutos(cat: dict[str, dict] | None = None) -> list[str]:
-    """Series del catálogo de fuente FRED que NO están en data/raw y este extractor carga.
+def ids_fred_vivo(cat: dict[str, dict] | None = None) -> list[str]:
+    """Series que FRED sirve como fuente viva y NO van por ALFRED (bloque 3).
 
-    Fuente ``fred_alfred``, sin ``fichero_fase1``, método admitido y estado cargable
-    (``pendiente_alfred`` solo con ``vintage_exacto``). Hoy: Moody's diarios, H.10 (DEXUSEU,
-    DTWEXBGS, DTWEXAFEGS), financiación (TEDRATE, DCPF3M, CPFF), las OAS de ICE BofA y WEI.
+    Estado cargable, ``fred`` entre sus ``catalogo.origenes`` (``fuente_viva: fred`` y método
+    distinto de ``vintage_exacto``) y método de ``METODOS_VIVO``. Incluye las ``duplicada`` de FRED
+    (BAA10Y, T10YFF, T5YFF, CPFF: contraste de las derivadas propias) y las retiradas que FRED
+    aún sirve. Las ``vintage_exacto`` (macro revisable, WEI) las carga ALFRED.
     """
     cat = cat if cat is not None else catalogo.cargar_catalogo()
-    out = []
-    for sid, e in cat.items():
-        if e["fuente"] != FUENTE or e["fichero_fase1"] or e["metodo"] not in METODOS_ADMITIDOS:
-            continue
-        if e["estado"] in catalogo.ESTADOS_CARGABLES or (e["estado"] == "pendiente_alfred"
-                                                          and e["metodo"] == "vintage_exacto"):
-            out.append(sid)
-    return sorted(out)
+    return sorted(sid for sid, e in cat.items()
+                  if e["estado"] in catalogo.ESTADOS_CARGABLES and e["metodo"] in METODOS_VIVO
+                  and "fred" in catalogo.origenes(e))
+
+
+def ids_sustitutos(cat: dict[str, dict] | None = None) -> list[str]:
+    """Series de la fuente viva de FRED que NO están en data/raw (``ids_fred_vivo`` sin ``fichero_fase1``).
+
+    Hoy: Moody's diarios, H.10 (DEXUSEU, DTWEXBGS, DTWEXAFEGS), financiación (TEDRATE, DCPF3M, CPFF)
+    y las OAS de ICE BofA. Desde el bloque 3 WEI (``vintage_exacto``) ya no está: va por ALFRED.
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    return [sid for sid in ids_fred_vivo(cat) if not cat[sid]["fichero_fase1"]]
 
 
 _cache_publicador: dict[tuple[str, pd.Timestamp, int], pd.Timestamp] = {}
@@ -483,8 +561,8 @@ def _observaciones_serie(cliente: ClienteFred, sid: str, entrada: dict[str, Any]
         archivo = cliente.archivadas(origen, **rt)
         return parsear_observaciones(archivo[-1][1] if archivo else [])
     if descargar:
-        cliente.observaciones(origen)
-    return unir_archivo(cliente.archivadas(origen))
+        descargar_vigente(cliente, origen)
+    return unir_archivo([(dia, obs) for dia, _, obs in cliente.descargas_vigentes(origen)])
 
 
 def tabla_fred_sustitutos(ids: Iterable[str] | None = None, *, cliente: ClienteFred | None = None,
@@ -513,6 +591,251 @@ def tabla_fred_sustitutos(ids: Iterable[str] | None = None, *, cliente: ClienteF
                       and e["metodo"] == "vintage_exacto" else e) for sid, e in cat.items()}
     catalogo.validar_contra_catalogo(tabla, efectivo)
     return tabla
+
+
+# --- Fuente viva (bloque 3) ---------------------------------------------------------------------
+def _ultimo_dato(descargas: Sequence[tuple[str, dict[str, str], list[dict[str, Any]]]]) -> pd.Timestamp | None:
+    fechas = [o["date"] for _, _, obs in descargas for o in obs if str(o.get("value", ".")).strip() not in (".", "")]
+    return pd.Timestamp(max(fechas)) if fechas else None
+
+
+def descargar_vigente(cliente: ClienteFred, series_id: str, *, completa: bool = False,
+                      solape_dias: int = SOLAPE_DIAS) -> dict[str, Any]:
+    """Descarga lo vigente de ``series_id`` si hace falta; devuelve qué hizo (sin valores).
+
+    - ``cache``: ya hay hoy una descarga completa archivada (con ``completa=True``, una sin
+      ``observation_start``); no sale ninguna petición. Con ``cliente.cache=False`` siempre se pide.
+    - ``completa``: sin archivo previo (o ``completa=True``): toda la serie.
+    - ``incremental``: desde ``solape_dias`` antes del último dato con valor archivado.
+
+    Reanudable: una descarga paginada interrumpida deja sus páginas en la caché del día y, al
+    repetirla, solo se piden las que faltan (los parámetros son los mismos porque la descarga
+    incompleta no cuenta para el último dato). ``ErrorFred`` si falla la red.
+    """
+    previas = cliente.descargas_vigentes(series_id)
+    hoy = f"{cliente.hoy:%Y%m%d}"
+    de_hoy = [p for d, p, _ in previas if d == hoy and (not completa or set(p) == {"series_id"})]
+    p0 = cliente.peticiones
+    if cliente.cache and de_hoy:
+        return {"serie": series_id, "modo": "cache", "desde": None, "n_obs": None, "peticiones": 0}
+    ultimo = None if completa else _ultimo_dato([x for x in previas if x[0] != hoy] or previas)
+    if ultimo is None:
+        obs = cliente.observaciones(series_id)
+        modo, desde = "completa", None
+    else:
+        desde = (ultimo - pd.Timedelta(days=solape_dias)).date().isoformat()
+        obs = cliente.observaciones(series_id, observation_start=desde)
+        modo = "incremental"
+    return {"serie": series_id, "modo": modo, "desde": desde, "n_obs": len(obs), "peticiones": cliente.peticiones - p0}
+
+
+def descargar_fred_vivo(ids: Iterable[str] | None = None, *, cliente: ClienteFred | None = None,
+                        cat: dict[str, dict] | None = None, completa: bool = False,
+                        max_segundos: float | None = None,
+                        registro: Callable[[str], None] | None = None) -> dict[str, Any]:
+    """Descarga por tandas la fuente viva (``ids``: por defecto ``ids_fred_vivo``).
+
+    Serie a serie con ``descargar_vigente``; un fallo de red queda en ``errores`` y se sigue. Con
+    ``max_segundos``, al agotarse el tiempo las series que faltan quedan en ``pendientes`` (repetir
+    la llamada sigue donde se quedó: lo de hoy sale de la caché). Devuelve ``{hechas, cache,
+    errores, pendientes, peticiones, segundos, detalle}`` (solo recuentos y fechas).
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    lista = [catalogo.resolver(s, cat) for s in (ids if ids is not None else ids_fred_vivo(cat))]
+    cliente = cliente or ClienteFred()
+    log = registro or (lambda _m: None)
+    t0, p0 = time.monotonic(), cliente.peticiones
+    hechas, en_cache, pendientes, detalle = [], [], [], []
+    errores: dict[str, str] = {}
+    for sid in lista:
+        if max_segundos is not None and time.monotonic() - t0 > max_segundos:
+            pendientes.append(sid)
+            continue
+        try:
+            r = descargar_vigente(cliente, _id_origen(sid, cat[sid]), completa=completa)
+        except ErrorFred as e:
+            errores[sid] = str(e)[:200]
+            log(f"  {sid}: error {str(e)[:120]}")
+            continue
+        detalle.append({"id": sid, **r})
+        (en_cache if r["modo"] == "cache" else hechas).append(sid)
+        if r["modo"] != "cache":
+            log(f"  {sid}: {r['modo']}" + (f" desde {r['desde']}" if r["desde"] else "")
+                + f", {r['n_obs']} obs, {r['peticiones']} peticiones")
+    return {"hechas": hechas, "cache": en_cache, "errores": errores, "pendientes": pendientes,
+            "peticiones": cliente.peticiones - p0, "segundos": round(time.monotonic() - t0, 1), "detalle": detalle}
+
+
+def tabla_fred_vivo(ids: Iterable[str] | None = None, sin_red: bool = False, *, cliente: ClienteFred | None = None,
+                    cat: dict[str, dict] | None = None, publicaciones: dict[str, Any] | None = None,
+                    excepciones: pd.DataFrame | None = None, estricto: bool = True,
+                    registro: Callable[[str], None] | None = None) -> pd.DataFrame:
+    """Tabla del contrato (validada) de la fuente viva de FRED, con las excepciones medidas aplicadas.
+
+    ``ids``: por defecto ``ids_fred_vivo()``; una serie que no es de la fuente viva (``vintage_exacto``,
+    otra fuente) es ``ValueError``. Sin ``sin_red``, primero ``descargar_fred_vivo`` (lo de hoy sale
+    de la caché); con ``estricto`` un fallo de red es ``ErrorFred`` (sin la clave), y sin él la
+    serie se carga con lo que haya archivado. Cada serie: unión de sus descargas completas
+    archivadas (primer valor visto por fecha), ``tabla_serie`` con su regla y después
+    ``catalogo.aplicar_excepciones`` (``excepciones``: por defecto ``config/excepciones_publicacion.csv``).
+    Una serie sin nada archivado no aparece (la base la cuenta en ``sin_datos``).
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    vivas = set(ids_fred_vivo(cat))
+    lista = [catalogo.resolver(s, cat) for s in (ids if ids is not None else sorted(vivas))]
+    ajenas = [s for s in lista if s not in vivas]
+    if ajenas:
+        raise ValueError(f"no son de la fuente viva de FRED (ids_fred_vivo): {ajenas[:10]}")
+    cliente = cliente or ClienteFred()
+    log = registro or (lambda _m: None)
+    if not sin_red:
+        rep = descargar_fred_vivo(lista, cliente=cliente, cat=cat, registro=log)
+        log(f"FRED vivo: {len(rep['hechas'])} descargadas, {len(rep['cache'])} de la caché, "
+            f"{len(rep['errores'])} con error ({rep['peticiones']} peticiones, {rep['segundos']} s)")
+        if rep["errores"] and estricto:
+            sid, err = next(iter(rep["errores"].items()))
+            raise ErrorFred(f"{len(rep['errores'])} series sin descargar ({sorted(rep['errores'])[:10]}); {sid}: {err}")
+    tabla = tabla_fred_sustitutos(lista, cliente=cliente, descargar=False, cat=cat, publicaciones=publicaciones)
+    tabla, n = catalogo.aplicar_excepciones(tabla, excepciones, publicaciones=publicaciones, catalogo=cat)
+    log(f"FRED vivo: {tabla['serie'].nunique()} series, {len(tabla)} filas, {n} con excepción medida")
+    return validar_series(tabla)
+
+
+# --- Derivadas de diferencia (bloque 3) ---------------------------------------------------------
+def _es_diferencia(entrada: dict[str, Any]) -> bool:
+    comp = entrada.get("componentes") or []
+    return (entrada["metodo"] == "derivada" and len(comp) == 2
+            and str(entrada.get("id_origen", "")).replace(" ", "") == f"{comp[0]}-{comp[1]}")
+
+
+def pares_derivadas(cat: dict[str, dict] | None = None) -> dict[str, str]:
+    """``{derivada propia: serie de FRED que publica la misma diferencia}``.
+
+    Las ``fred:`` en estado ``duplicada`` cuyo ``duplicado_de`` es una derivada ``A − B`` del catálogo:
+    hoy ``deriv:DBAA-DGS10`` ↔ ``fred:BAA10Y``, ``deriv:DGS10-DFF`` ↔ ``fred:T10YFF``,
+    ``deriv:DGS5-DFF`` ↔ ``fred:T5YFF`` y ``deriv:DCPF3M-DFF`` ↔ ``fred:CPFF``.
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    out = {}
+    for sid, e in sorted(cat.items()):
+        d = e.get("duplicado_de")
+        if sid.startswith("fred:") and e["estado"] == "duplicada" and d in cat and _es_diferencia(cat[d]):
+            out[d] = sid
+    return out
+
+
+def tabla_derivadas(tabla: pd.DataFrame, ids: Iterable[str] | None = None, *, cat: dict[str, dict] | None = None,
+                    omitir_incompletas: bool = False) -> pd.DataFrame:
+    """Filas del contrato (validadas) de las derivadas ``A − B`` calculadas con los componentes de ``tabla``.
+
+    ``ids``: por defecto las de ``pares_derivadas``. Valor ``A − B`` en las fechas en que los dos
+    componentes tienen valor; ``fecha_publicacion`` y ``disponible_utc`` con
+    ``contrato.fecha_publicacion_derivada`` (la máxima de las primeras publicaciones de los
+    componentes, ya con sus excepciones medidas). Igual que ``base.derivar_diferencias``.
+    Componente sin datos: ``KeyError`` (o se omite la derivada con ``omitir_incompletas``);
+    componentes con vintages que no son ``unico``: ``ValueError``.
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    lista = list(ids) if ids is not None else list(pares_derivadas(cat))
+    partes = []
+    for sid in lista:
+        e = cat[sid]
+        if not _es_diferencia(e):
+            raise ValueError(f"{sid}: no es una derivada de diferencia 'A - B' del catálogo")
+        a, b = e["componentes"]
+        comp = tabla[tabla["serie"].isin([a, b]) & tabla["valor"].notna()]
+        faltan = sorted({a, b} - set(comp["serie"]))
+        if faltan:
+            if omitir_incompletas:
+                continue
+            raise KeyError(f"{sid}: componentes sin datos {faltan}")
+        if (comp["vintage"] != "unico").any():
+            raise ValueError(f"{sid}: componentes con vintages (la derivada por vintage no se calcula aquí)")
+        fechado = fecha_publicacion_derivada(comp, [a, b]).set_index("fecha_referencia")
+        va = comp[comp["serie"] == a].set_index("fecha_referencia")["valor"].reindex(fechado.index)
+        vb = comp[comp["serie"] == b].set_index("fecha_referencia")["valor"].reindex(fechado.index)
+        partes.append(pd.DataFrame({
+            "serie": sid, "fecha_referencia": fechado.index, "fecha_publicacion": fechado["fecha_publicacion"].to_numpy(),
+            "disponible_utc": fechado["disponible_utc"].to_numpy(), "vintage": "unico", "valor": (va - vb).to_numpy(),
+            "unidad": e["unidad"], "divisa": e["divisa"], "fuente": e["fuente"], "metodo_publicacion": e["metodo"],
+            "nota": catalogo.nota_revisable(e) if e["revisable"] else None,
+        })[list(COLUMNAS_SERIES)])
+    out = validar_series(pd.concat(partes, ignore_index=True)) if partes else vacio_series()
+    catalogo.validar_contra_catalogo(out, cat)
+    return out
+
+
+def _comparar(x: pd.DataFrame, y: pd.DataFrame) -> dict[str, Any]:
+    """Compara dos series del contrato (vintage ``unico``) por fecha: recuentos y diferencia máxima."""
+    cx = x[x["valor"].notna()].drop_duplicates("fecha_referencia").set_index("fecha_referencia")
+    cy = y[y["valor"].notna()].drop_duplicates("fecha_referencia").set_index("fecha_referencia")
+    comunes = cx.index.intersection(cy.index)
+    dif = (cx.loc[comunes, "valor"] - cy.loc[comunes, "valor"]).abs()
+    adelanto = (cy.loc[comunes, "fecha_publicacion"] - cx.loc[comunes, "fecha_publicacion"]).dt.days
+    return {"fechas_comunes": int(len(comunes)), "valores_distintos": int((dif > TOLERANCIA_DERIVADA).sum()),
+            "dif_max": round(float(dif.max()), 10) if len(dif) else None,
+            "fecha_dif_max": dif.idxmax().date().isoformat() if len(dif) and dif.max() > TOLERANCIA_DERIVADA else None,
+            "solo_x": int(len(cx.index.difference(cy.index))), "solo_y": int(len(cy.index.difference(cx.index))),
+            "publicacion_distinta": int((adelanto != 0).sum()),
+            "adelanto_mediano_dias": float(adelanto.median()) if len(adelanto) else None,
+            "x_posterior": int((adelanto < 0).sum())}
+
+
+def medir_derivadas(tabla: pd.DataFrame, derivadas: pd.DataFrame | None = None, *,
+                    cat: dict[str, dict] | None = None) -> pd.DataFrame:
+    """Contraste de cada derivada propia con la serie de FRED (``pares_derivadas``): solo recuentos.
+
+    ``tabla``: con los componentes y la serie de FRED (fuente viva); ``derivadas``: por defecto
+    ``tabla_derivadas(tabla)`` (las que tengan componentes). Columnas: ``derivada, serie_fred,
+    fechas_comunes, valores_distintos`` (más de ``TOLERANCIA_DERIVADA``), ``dif_max``,
+    ``fecha_dif_max``, ``solo_derivada``, ``solo_fred``, ``publicacion_distinta``,
+    ``adelanto_mediano_dias`` (fecha de FRED − fecha de la derivada) y ``derivada_posterior`` (fechas
+    en que la derivada se vería DESPUÉS que la de FRED).
+    """
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
+    pares = pares_derivadas(cat)
+    if derivadas is None:
+        derivadas = tabla_derivadas(tabla, cat=cat, omitir_incompletas=True)
+    filas = []
+    for d, f in pares.items():
+        x, y = derivadas[derivadas["serie"] == d], tabla[tabla["serie"] == f]
+        if x.empty or y.empty:
+            continue
+        m = _comparar(x, y)
+        filas.append({"derivada": d, "serie_fred": f, "fechas_comunes": m["fechas_comunes"],
+                      "valores_distintos": m["valores_distintos"], "dif_max": m["dif_max"],
+                      "fecha_dif_max": m["fecha_dif_max"], "solo_derivada": m["solo_x"], "solo_fred": m["solo_y"],
+                      "publicacion_distinta": m["publicacion_distinta"],
+                      "adelanto_mediano_dias": m["adelanto_mediano_dias"], "derivada_posterior": m["x_posterior"]})
+    return pd.DataFrame(filas, columns=["derivada", "serie_fred", "fechas_comunes", "valores_distintos", "dif_max",
+                                        "fecha_dif_max", "solo_derivada", "solo_fred", "publicacion_distinta",
+                                        "adelanto_mediano_dias", "derivada_posterior"])
+
+
+def contrastar_fase1(vivo: pd.DataFrame, fase1: pd.DataFrame) -> pd.DataFrame:
+    """Fuente viva de FRED frente a la copia de ``data/raw`` (``fuentes.fase1.tabla_fase1``), por serie.
+
+    Solo metadatos: inicio y fin de cada una, fechas comunes, valores distintos (más de
+    ``TOLERANCIA_DERIVADA``), diferencia máxima y su fecha, fechas solo en FRED o solo en ``data/raw``
+    y fechas de publicación distintas en las comunes.
+    """
+    filas = []
+    for sid in sorted(set(vivo["serie"]) & set(fase1["serie"])):
+        x, y = vivo[vivo["serie"] == sid], fase1[fase1["serie"] == sid]
+        m = _comparar(x, y)
+        vx, vy = x[x["valor"].notna()]["fecha_referencia"], y[y["valor"].notna()]["fecha_referencia"]
+        filas.append({"serie": sid, "inicio_fred": _iso(vx.min()), "fin_fred": _iso(vx.max()),
+                      "inicio_fase1": _iso(vy.min()), "fin_fase1": _iso(vy.max()),
+                      "fechas_comunes": m["fechas_comunes"], "valores_distintos": m["valores_distintos"],
+                      "dif_max": m["dif_max"], "fecha_dif_max": m["fecha_dif_max"], "solo_fred": m["solo_x"],
+                      "solo_fase1": m["solo_y"], "publicacion_distinta": m["publicacion_distinta"]})
+    return pd.DataFrame(filas, columns=["serie", "inicio_fred", "fin_fred", "inicio_fase1", "fin_fase1", "fechas_comunes",
+                                        "valores_distintos", "dif_max", "fecha_dif_max", "solo_fred", "solo_fase1",
+                                        "publicacion_distinta"])
+
+
+def _iso(valor: Any) -> str | None:
+    return None if pd.isna(valor) else pd.Timestamp(valor).date().isoformat()
 
 
 # --- Excepciones de publicación medidas en ALFRED (solo fechas) ---------------------------------
@@ -774,20 +1097,36 @@ def _resumen_lags(lags: pd.DataFrame) -> dict[str, dict[str, int]]:
             for sid, g in lags.groupby("serie")}
 
 
-def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str = "2026-03-31",
-                oas_previos: Sequence[str] = ("2019-01-02",),
-                series_lag: Sequence[str] = ("BAMLH0A0HYM2", "BAMLC0A0CM", "DBAA", "DCPF3M", "DEXUSEU", "WEI"),
-                guardar: bool = True) -> dict[str, Any]:
-    """Mide y escribe las fichas ``fred_alfred`` e ``ice_bofa_oas`` (y la tabla de retrasos medidos).
+def _bytes_vigentes(cliente: ClienteFred, series_ids: Iterable[str]) -> tuple[int, list[str]]:
+    """Bytes en disco de las descargas archivadas de lo vigente de ``series_ids`` y días de descarga."""
+    total, dias = 0, set()
+    for s in series_ids:
+        for f, _ in cliente.ficheros_vigentes(s):
+            total += f.stat().st_size
+            dias.add(f.name[:8])
+    return total, sorted(dias)
 
-    Mide en ALFRED la primera vintage de las últimas observaciones (``medir_publicacion``), las
-    vintages de WEI, la cobertura de cada serie de ``tabla`` y el historial de las OAS en
-    ``oas_vintage``, en vintages anteriores a la ventana (``oas_previos``) y en su primer vintage
-    conservado. Solo fechas y recuentos.
+
+def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str = "2026-03-31",
+                oas_previos: Sequence[str] = ("2019-01-02",), series_lag: Sequence[str] = SERIES_LAG_VIVO,
+                derivadas: pd.DataFrame | None = None, contraste_fase1: pd.DataFrame | None = None,
+                descarga: dict[str, Any] | None = None, medir_oas: bool = True, cat: dict[str, dict] | None = None,
+                guardar: bool = True) -> dict[str, Any]:
+    """Mide y escribe las fichas ``fred_alfred`` (fuente viva) e ``ice_bofa_oas`` (y sus tablas).
+
+    ``tabla``: la de ``tabla_fred_vivo`` (cobertura medida por serie). Mide en ALFRED la primera
+    vintage de las últimas observaciones de ``series_lag`` (``medir_publicacion``), la hora de
+    carga de cada serie (``fred/series`` ``last_updated`` en NY) y, con ``medir_oas``, el historial
+    de las OAS en ``oas_vintage``, en vintages anteriores a la ventana (``oas_previos``) y en su
+    primer vintage conservado. ``derivadas`` (``medir_derivadas``), ``contraste_fase1``
+    (``contrastar_fase1``) y ``descarga`` (``descargar_fred_vivo``) se guardan en las mediciones y,
+    con ``guardar``, en ``tablas/derivadas_fred_medida.csv`` y ``tablas/fred_vivo_contraste_fase1.csv``.
+    Solo fechas y recuentos (la diferencia máxima de las derivadas es una medida, no un valor).
     """
     from ingesta.comun.esquema import FichaFuente
     from ingesta.comun.fichas import guardar_ficha
 
+    cat = cat if cat is not None else catalogo.cargar_catalogo()
     t0 = time.monotonic()
     p0 = cliente.peticiones
     cobertura = _cobertura(tabla)
@@ -795,21 +1134,15 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
     resumen_lags = _resumen_lags(lags)
     existen = {}
     for sid in sorted(set(tabla["serie"])):
-        info = cliente.serie(sid.split(":", 1)[1])
+        info = cliente.serie(_id_origen(sid, cat.get(sid, {})))
         existen[sid] = {"observation_start": info.get("observation_start"),
                         "observation_end": info.get("observation_end"), "last_updated": info.get("last_updated"),
                         "last_updated_ny": last_updated_ny(info.get("last_updated"))}
-    horas_oas = sorted({v["last_updated_ny"] for s, v in existen.items()
-                        if s.split(":", 1)[1] in OAS_ICE and v["last_updated_ny"]})
-    fin_oas = sorted({v["observation_end"] for s, v in existen.items()
-                      if s.split(":", 1)[1] in OAS_ICE and v["observation_end"]})
-    wei_v = cliente.vintages("WEI")
-    wei = pd.Series(pd.to_datetime(wei_v))
-    medicion_wei = {"n_vintages": len(wei_v), "primera": wei_v[0] if wei_v else None,
-                    "ultima": wei_v[-1] if wei_v else None,
-                    "dia_semana": {k: int(n) for k, n in wei.dt.day_name().value_counts().items()}}
+    es_oas = {s: s.split(":", 1)[1] in OAS_ICE for s in cobertura}
+    horas_oas = sorted({v["last_updated_ny"] for s, v in existen.items() if es_oas.get(s) and v["last_updated_ny"]})
+    fin_oas = sorted({v["observation_end"] for s, v in existen.items() if es_oas.get(s) and v["observation_end"]})
     oas: dict[str, Any] = {}
-    for s in ("BAMLH0A0HYM2", "BAMLC0A0CM"):
+    for s in (("BAMLH0A0HYM2", "BAMLC0A0CM") if medir_oas else ()):
         vint = cliente.vintages(s)
         oas[s] = {"n_vintages": len(vint), "primer_vintage": vint[0] if vint else None,
                   f"vintage_{oas_vintage}": historial_vintage(cliente, s, oas_vintage)}
@@ -817,8 +1150,7 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
             oas[s][f"vintage_{v}"] = historial_vintage(cliente, s, v)
         if vint:
             oas[s]["en_primer_vintage"] = historial_vintage(cliente, s, vint[0])
-        # Todas las vintages en una llamada (primera publicación de cada observación).
-        try:
+        try:   # todas las vintages en una llamada (primera publicación de cada observación)
             todo = parsear_observaciones(cliente.observaciones(s, realtime_start=INICIO_ALFRED, realtime_end=FIN_ALFRED,
                                                                output_type=4, reintentos=1))
             todo = todo[~todo["ausente"]]
@@ -829,22 +1161,33 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
             oas[s]["realtime_1776_9999_output_type_4"] = {"error": str(e)[:160]}
     mediciones_red = {"peticiones": cliente.peticiones - p0, "segundos": round(time.monotonic() - t0, 1)}
     hoy = cliente.hoy.date().isoformat()
-    sids_fred = [s for s in cobertura if s.split(":", 1)[1] not in OAS_ICE]
-    sids_oas = [s for s in cobertura if s.split(":", 1)[1] in OAS_ICE]
-    # Volumen medido: tamaño del archivo crudo en disco (todas las descargas conservadas).
-    raiz_crudo = cliente._carpeta()
-    bytes_oas = sum(p.stat().st_size for s in OAS_ICE for p in (raiz_crudo / "series_observations" / s).glob("*.json"))
-    bytes_todo = sum(p.stat().st_size for p in raiz_crudo.rglob("*.json"))
-    dias_oas = sorted({p.name[:8] for s in OAS_ICE for p in (raiz_crudo / "series_observations" / s).glob("*.json")})
+    sids_fred = [s for s in cobertura if not es_oas[s]]
+    sids_oas = [s for s in cobertura if es_oas[s]]
+    bytes_fred, dias_fred = _bytes_vigentes(cliente, [_id_origen(s, cat.get(s, {})) for s in sids_fred])
+    bytes_oas, dias_oas = _bytes_vigentes(cliente, [s.split(":", 1)[1] for s in sids_oas])
     carpeta = resultados_dir(TEMA) / "tablas"
     carpeta.mkdir(parents=True, exist_ok=True)
     ruta_lags = carpeta / "publicacion_fred_sustitutos.csv"
+    ruta_deriv = carpeta / "derivadas_fred_medida.csv"
+    ruta_contraste = carpeta / "fred_vivo_contraste_fase1.csv"
 
     def _rango(sids: list[str]) -> tuple[str | None, str | None]:
         ini = [cobertura[s]["inicio"] for s in sids if cobertura[s]["inicio"]]
         fin = [cobertura[s]["fin"] for s in sids if cobertura[s]["fin"]]
         return (min(ini) if ini else None, max(fin) if fin else None)
 
+    def _registros(df: pd.DataFrame | None) -> list[dict[str, Any]] | None:
+        return None if df is None else json.loads(df.to_json(orient="records", force_ascii=False))
+
+    frecuencias = {k: int(n) for k, n in pd.Series([cat[s]["frecuencia"] for s in sids_fred if s in cat],
+                                                   dtype=object).value_counts().items()}
+    metodos = {k: int(n) for k, n in pd.Series([cat[s]["metodo"] for s in sids_fred if s in cat],
+                                               dtype=object).value_counts().items()}
+    texto_deriv = ""
+    if derivadas is not None and len(derivadas):
+        texto_deriv = (". Derivadas propias frente a la serie de FRED (fechas comunes / distintas / dif. máx.): "
+                       + "; ".join(f"{r.derivada} vs {r.serie_fred.split(':', 1)[1]} {r.fechas_comunes} / "
+                                   f"{r.valores_distintos} / {r.dif_max}" for r in derivadas.itertuples(index=False)))
     ini_f, fin_f = _rango(sids_fred)
     ficha_fred = FichaFuente(
         fuente=FUENTE, nombre="FRED / ALFRED (Federal Reserve Bank of St. Louis)", tema=TEMA,
@@ -852,34 +1195,48 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
         acceso="api", autenticacion="clave gratuita", coste="0 €",
         licencia_y_terminos=("Términos de uso de la API de FRED: datos solo en local, sin redistribuir; cada serie "
                              "conserva el copyright de su titular (ICE, Moody's, Cboe...). " + AVISO_FRED),
-        cobertura_inicio=ini_f, cobertura_fin=fin_f, frecuencia="diaria y semanal (sustitutos del bloque 2)",
+        cobertura_inicio=ini_f, cobertura_fin=fin_f,
+        frecuencia=("fuente viva (bloque 3), sin las OAS de ICE: "
+                    + ", ".join(f"{k} {n}" for k, n in frecuencias.items()) + " series"),
         retraso_publicacion=("medido en ALFRED (primera vintage de cada observación, días hábiles de EE. UU., "
                              "últimos 35 días): " + "; ".join(f"{s} {r}" for s, r in resumen_lags.items()
                                                               if s not in OAS_ICE)
-                             + ". Hora (FRED last_updated en NY): "
+                             + ". Hora de carga en FRED (last_updated en NY): "
                              + "; ".join(f"{s.split(':', 1)[1]} {v['last_updated_ny']}" for s, v in existen.items()
-                                         if s.split(":", 1)[1] not in OAS_ICE and v["last_updated_ny"])
-                             + ". OAS de ICE: ver la ficha ice_bofa_oas"),
-        formato="json", volumen_estimado=(f"{(bytes_todo - bytes_oas) / 1e6:.1f} MB de JSON crudo en disco (todas las "
-                                          f"peticiones archivadas, sin las OAS de ICE)"),
+                                         if not es_oas.get(s) and v["last_updated_ny"])
+                             + ". Se fecha con la regla del catálogo (publicador, cierre o lag) y las excepciones "
+                               "medidas; OAS de ICE: ver la ficha ice_bofa_oas" + texto_deriv),
+        formato="json", volumen_estimado=(f"{bytes_fred / 1e6:.1f} MB de JSON crudo en disco (descargas de lo vigente "
+                                          f"archivadas de {len(sids_fred)} series, {len(dias_fred)} día(s); sin las "
+                                          f"OAS de ICE ni las vintages de ALFRED)"),
         limites=("120 peticiones/min por clave (aquí 1/s); series/observations hasta 100000 filas por página "
                  "(offset); vintage_dates hasta 2000 por petición según la API, pero con 2000 la URL (~26 KB) "
                  "da HTTP 400 en el CDN (medido): se trocea en grupos de 500; vintagedates y release/dates "
                  "hasta 10000 por página"),
         estado_sonda="ok",
         mediciones={"series": cobertura, "existen_en_fred": existen, "retrasos_habiles": resumen_lags,
-                    "wei_vintages": medicion_wei, "red": mediciones_red,
+                    "por_metodo": metodos, "por_frecuencia": frecuencias, "red": mediciones_red,
+                    "descarga": ({k: v for k, v in descarga.items() if k != "detalle"} if descarga else None),
+                    "derivadas": _registros(derivadas), "contraste_fase1": _registros(contraste_fase1),
                     "tabla_retrasos": ruta_lags.relative_to(ROOT).as_posix()},
         notas=[AVISO_FRED,
-               "Caché cruda: un JSON por petición en <corpus>/mercados_series/crudo/fred/ (fecha de descarga en "
-               "el nombre); la clave nunca se guarda",
+               "Fuente viva (bloque 3): las series de FRED que no van por ALFRED se descargan de la API y FRED pasa "
+               "a ser su fuente; data/raw queda solo para la Fase 1 (y para lo que no está en FRED). Prioridad en la "
+               "base: alfred (vintage_exacto) > fred vivo > fase1",
+               "Descarga reanudable: la primera de cada serie es completa y las siguientes incrementales (desde "
+               f"{SOLAPE_DIAS} días antes del último dato); la tabla une todas las descargas completas archivadas "
+               "(primer valor visto por fecha). Caché cruda: un JSON por página en <corpus>/mercados_series/crudo/"
+               "fred/ (fecha de descarga en el nombre); la clave nunca se guarda",
                "Valores '.' de FRED: en las diarias, los sueltos (festivos) se descartan y cada racha de más de 31 "
                "días deja una fila nula con nota; en las demás frecuencias, valor nulo con nota",
                "Fechas de publicación de Moody's, diferenciales calculados por FRED, SOFR/EFFR/OBFR, papel comercial y "
-               "la macro lag_fijo contrastadas con la primera vintage de ALFRED (output_type=4): "
-               "tablas/publicacion_alfred_medida.csv y config/excepciones_publicacion.csv",
-               "WEI se carga con todas sus vintages de ALFRED (vintage_exacto); el resto, vintage 'unico' "
-               "(no revisables según el catálogo)"],
+               "las mensuales lag_fijo contrastadas con la primera vintage de ALFRED (output_type=4): "
+               "tablas/publicacion_alfred_medida.csv y config/excepciones_publicacion.csv (se aplican al cargar)",
+               "BAA10Y, T10YFF, T5YFF y CPFF: la serie principal es la derivada propia de sus componentes (fecha = "
+               "máxima de los componentes, D+1); la de FRED (D+2) queda como duplicada para contrastar: "
+               "tablas/derivadas_fred_medida.csv",
+               "Las series revisables de FRED (vintage_exacto) se cargan con sus vintages de ALFRED en "
+               "fuentes.alfred (ficha alfred_vintages; caché propia en crudo/alfred/)"],
         fecha_sonda=hoy)
     ini_o, fin_o = _rango(sids_oas)
     ficha_oas = FichaFuente(
@@ -895,17 +1252,18 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
                                                                           if s in OAS_ICE)
                              + "), antes de la carga real: realtime_start no sirve para medir la hora de ICE"),
         formato="json", volumen_estimado=(f"{bytes_oas / 1e6:.1f} MB de JSON crudo en disco ({len(sids_oas)} series, "
-                                          f"{len(dias_oas)} día(s) de descarga archivados)"),
-        limites=("FRED solo sirve desde el 2023-10-10 (unos 3 años); que sea una ventana móvil y no un corte fijo "
-                 "está sin confirmar (se verá con la descarga siguiente). ALFRED no conserva el historial anterior: "
-                 "archivo propio desde la primera descarga; para no perder historia basta una descarga dentro de "
-                 "cada ventana, la diaria solo hace falta para tener el dato al día"),
+                                          f"{len(dias_oas)} día(s) de descarga archivados: {', '.join(dias_oas)})"),
+        limites=("FRED solo sirve unos 3 años (ventana móvil). ALFRED no conserva el historial anterior: archivo "
+                 "propio desde la primera descarga (2026-10-12); para no perder historia basta una descarga "
+                 "(incremental) dentro de cada ventana, la diaria solo hace falta para tener el dato al día. El "
+                 "archivo periódico está pendiente de programar"),
         estado_sonda="parcial",
         mediciones={"series": {s: cobertura[s] for s in sids_oas}, "historial_alfred": oas,
                     "last_updated_ny": {s: existen[s]["last_updated_ny"] for s in sids_oas},
-                    "primera_descarga_archivo": hoy},
-        notas=["Capada: la historia propia empieza en la primera descarga del archivo; cada descarga diaria "
-               "se conserva y tabla_fred_sustitutos une todas (primer valor visto por fecha)",
+                    "dias_archivados": dias_oas},
+        notas=["Capada: la historia propia empieza en la primera descarga del archivo; cada descarga se conserva y "
+               "tabla_fred_vivo une todas (primer valor visto por fecha); las siguientes a la primera son "
+               "incrementales",
                f"Historial anterior: ALFRED en el vintage {oas_vintage} (por vintage_dates y por "
                "realtime_start/realtime_end) también empieza en el primer vintage conservado; los vintages "
                "anteriores dan error (ver mediciones.historial_alfred). Variante con todas las vintages en una "
@@ -922,18 +1280,69 @@ def fichas_fred(cliente: ClienteFred, tabla: pd.DataFrame, *, oas_vintage: str =
         lags.to_csv(ruta_lags, index=False, encoding="utf-8")
         rutas = {"fred_alfred": guardar_ficha(ficha_fred), "ice_bofa_oas": guardar_ficha(ficha_oas),
                  "tabla_retrasos": ruta_lags}
+        if derivadas is not None:
+            derivadas.to_csv(ruta_deriv, index=False, encoding="utf-8")
+            rutas["derivadas"] = ruta_deriv
+        if contraste_fase1 is not None:
+            contraste_fase1.to_csv(ruta_contraste, index=False, encoding="utf-8")
+            rutas["contraste_fase1"] = ruta_contraste
     return {"fichas": (ficha_fred, ficha_oas), "lags": lags, "rutas": rutas}
 
 
 # --- CLI ----------------------------------------------------------------------------------------
-def main(argv: Sequence[str] | None = None) -> None:
-    ap = argparse.ArgumentParser(description="Sustitutos de FRED del Tema 1 (bloque 2). " + AVISO_FRED)
-    ap.add_argument("--ids", nargs="*", help="ids del catálogo (por defecto, ids_sustitutos())")
+def _vivo(a: argparse.Namespace, cliente: ClienteFred) -> int:
+    """``--vivo``: descarga por tandas, tabla, derivadas y (``--fichas``) contraste con data/raw y fichas."""
+    cat = catalogo.cargar_catalogo()
+    rep = None
+    if not a.sin_red:
+        rep = descargar_fred_vivo(a.ids, cliente=cliente, cat=cat, completa=a.completa,
+                                  max_segundos=a.max_minutos * 60 if a.max_minutos else None, registro=print)
+        print(f"descarga: {len(rep['hechas'])} hechas, {len(rep['cache'])} ya de hoy, {len(rep['errores'])} con error, "
+              f"{len(rep['pendientes'])} pendientes ({rep['peticiones']} peticiones, {rep['segundos']} s)")
+        if rep["errores"]:
+            print("errores (repetir la orden los reintenta):", rep["errores"])
+            return 1
+        if rep["pendientes"]:
+            print(f"quedan {len(rep['pendientes'])} series: repite la orden para seguir (lo de hoy sale de la caché)")
+            return 2
+    tabla = tabla_fred_vivo(a.ids, sin_red=True, cliente=cliente, cat=cat, registro=print)
+    for sid, c in _cobertura(tabla).items():
+        print(f"  {sid}: {c['n_obs']} obs ({c['inicio']} a {c['fin']}), {c['nulos_punto']} nulos")
+    deriv = medir_derivadas(tabla, cat=cat)
+    if len(deriv):
+        print("derivadas propias frente a FRED:")
+        print(deriv.to_string(index=False))
+    if a.fichas:
+        from ingesta.mercados_series.fuentes import fase1
+
+        sub = {s: cat[s] for s in set(tabla["serie"]) if cat[s]["fichero_fase1"]}
+        contraste = contrastar_fase1(tabla, fase1.tabla_fase1(catalogo=sub)) if sub else None
+        r = fichas_fred(cliente, tabla, derivadas=deriv, contraste_fase1=contraste, descarga=rep, cat=cat)
+        print("fichas:", {k: str(v) for k, v in r["rutas"].items()})
+    return 0
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="FRED del Tema 1: sustitutos (bloque 2) y fuente viva (--vivo, "
+                                             "bloque 3). " + AVISO_FRED)
+    ap.add_argument("--ids", nargs="*", help="ids del catálogo (por defecto ids_sustitutos(), o ids_fred_vivo() con "
+                                             "--vivo)")
     ap.add_argument("--sin-red", action="store_true", help="solo el archivo crudo, sin descargar")
     ap.add_argument("--fichas", action="store_true", help="mide en ALFRED y escribe las fichas")
-    ap.add_argument("--escribir", action="store_true", help="escribe la tabla en el almacén (un solo escritor)")
+    ap.add_argument("--escribir", action="store_true", help="escribe la tabla en el almacén (un solo escritor; no "
+                                                            "con --vivo: la base la escribe construir-base)")
+    ap.add_argument("--vivo", action="store_true", help="fuente viva: todas las series de FRED que no van por ALFRED")
+    ap.add_argument("--max-minutos", type=float, default=None,
+                    help="--vivo: corta la descarga tras N minutos (repetir la orden sigue donde se quedó)")
+    ap.add_argument("--completa", action="store_true", help="--vivo: descarga completa aunque haya archivo previo")
     a = ap.parse_args(argv)
+    if a.vivo and a.escribir:
+        ap.error("--escribir no vale con --vivo: la base la escribe 'python -m ingesta.mercados_series construir-base'")
     cliente = ClienteFred()
+    if a.vivo:
+        codigo = _vivo(a, cliente)
+        print(AVISO_FRED)
+        return codigo
     t0 = time.monotonic()
     tabla = tabla_fred_sustitutos(a.ids, cliente=cliente, descargar=not a.sin_red)
     print(f"{len(tabla)} filas, {tabla['serie'].nunique()} series, {cliente.peticiones} peticiones, "
@@ -951,7 +1360,8 @@ def main(argv: Sequence[str] | None = None) -> None:
         tabla, _ = catalogo.aplicar_excepciones(tabla)
         print("almacén:", almacen.escribir_series(tabla))
     print(AVISO_FRED)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
