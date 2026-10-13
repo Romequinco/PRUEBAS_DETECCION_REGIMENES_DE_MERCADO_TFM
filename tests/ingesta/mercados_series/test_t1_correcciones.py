@@ -26,9 +26,11 @@ from ingesta.mercados_series.fuentes import fase1, fred
 NOTEBOOK = ROOT / "notebooks" / "fase2" / "mercados_series" / "02_base_fase1.ipynb"
 
 
+# Bloque 3: las revisables de ALFRED (vintage_exacto) en su forma del bloque 2 (regla previa, lag_fijo):
+# estos tests ejercitan las reglas de publicación con entradas reales del catálogo.
 @pytest.fixture(scope="module")
 def cat():
-    return c.cargar_catalogo()
+    return c.vista_regla_previa()
 
 
 def _filas(sid: str, e: dict, fechas, pub, *, disp=None, valores=None, nota=None) -> pd.DataFrame:

@@ -1,36 +1,43 @@
-"""Base de series del Tema 1 (bloque 2): une los cargadores, resuelve conflictos y la escribe.
+"""Base de series del Tema 1 (bloques 2 y 3): une los cargadores, resuelve conflictos y la escribe.
 
 Cargadores (``CARGADORES``), cada uno ya validado contra el contrato y el catálogo:
 
-- ``fase1``       ``data/raw`` de la Fase 1 (``fuentes.fase1.tabla_fase1``).
-- ``fred``        sustitutos y componentes de FRED/ALFRED (``fuentes.fred.tabla_fred_sustitutos``).
-- ``academicos``  Ken French, Shiller, Goyal-Welch y OFR FSI (``fuentes.academicos.tabla_academicos``).
+- ``fase1``       ``data/raw`` de la Fase 1 (``fuentes.fase1.tabla_fase1``): lo que FRED no sirve
+                  (yfinance, datahub) y respaldo de las series de FRED.
+- ``fred``        FRED como fuente viva (``fuentes.fred.tabla_fred_vivo``): todas las series de FRED del
+                  catálogo que no van por ALFRED, con su regla y las excepciones medidas.
+- ``academicos``  Ken French, Shiller y Goyal-Welch con vintage por edición ``AAAA-MM`` y la OFR FSI
+                  (``fuentes.academicos.tabla_academicos``).
+- ``alfred``      vintages exactos de ALFRED de las series ``vintage_exacto`` (``fuentes.alfred.tabla_alfred``).
 
 Una serie, una fuente: si dos cargadores traen el mismo id gana el de mayor ``PRIORIDAD``
-(``academicos`` > ``fred`` > ``fase1``: los académicos ya usan la copia de ``data/raw`` como
-edición antigua y añaden las ediciones nuevas). Las copias con otro id de fuente (estado
-``duplicada``) entran con su propio id. Derivadas propias de diferencia (``deriv:A-B`` con
-``id_origen`` ``'A - B'``): si sus dos componentes están en la base se recalculan con ellos
-(valor ``A − B`` en las fechas con los dos valores; ``fecha_publicacion`` =
+(``alfred`` > ``academicos`` > ``fred`` > ``fase1``, el orden de ``catalogo.PRIORIDAD_ORIGENES``; las
+derivadas propias se recalculan después). ``data/raw`` solo sirve una serie de FRED si FRED no trae
+filas (``ResumenBase.respaldo`` cuenta las fechas que solo tenía la copia descartada). Las copias con
+otro id de fuente (estado ``duplicada``) entran con su propio id. Derivadas propias de diferencia
+(``deriv:A-B`` con ``id_origen`` ``'A - B'``): si sus dos componentes están en la base se recalculan
+con ellos (valor ``A − B`` en las fechas con los dos valores; ``fecha_publicacion`` =
 ``contrato.fecha_publicacion_derivada``), y se compara con la copia de ``data/raw`` si la hay. Las
 demás derivadas (volatilidad realizada) quedan como las fecha su cargador.
 
 Antes de derivar: ``catalogo.aplicar_excepciones`` (fecha = max(regla, primera vintage de ALFRED),
-``config/excepciones_publicacion.csv``), así las derivadas heredan las fechas medidas. Después:
-``catalogo.anotar_reconstruidas`` (índices publicados desde ``publicado_desde``) y
-``anotar_anomalias`` (picos aislados que se revierten, cierres en fin de semana y rachas planas:
-solo se anota la ``nota``, nunca se tocan valores).
+``config/excepciones_publicacion.csv``; solo filas ``unico``, idempotente), así las derivadas heredan
+las fechas medidas. Después: ``catalogo.anotar_reconstruidas`` (índices publicados desde
+``publicado_desde``) y ``anotar_anomalias`` (picos aislados que se revierten, cierres en fin de semana y
+rachas planas: solo se anota la ``nota``, nunca se tocan valores).
 
 ``construir_base`` valida la unión (``contrato.validar_series`` + ``catalogo.validar_contra_catalogo``)
 y la escribe con ``almacen.escribir_series``: base que solo crece, salvo el ``valor`` de las
-revisables con vintage ``unico`` (ediciones académicas nuevas: ``revisables``) y, con
-``permitir_perdidas``, correcciones propias. Las series guardadas que ya no se construyen
-(huérfanas) son un ``ErrorContrato`` salvo ``purgar=True``. ``cobertura`` resume la base por
-serie (solo metadatos). CLI: ``python -m ingesta.mercados_series construir-base [--sin-red]``.
+revisables con vintage ``unico`` (``revisables``) y, con ``permitir_perdidas``, correcciones propias.
+Las series guardadas que ya no se construyen (huérfanas) son un ``ErrorContrato`` salvo
+``purgar=True``. ``desde_cero=True`` (cambio de reglas o fuentes, bloque 3) copia antes la base
+guardada a ``RESPALDO`` y la sustituye entera. ``cobertura`` resume la base por serie (solo
+metadatos). CLI: ``python -m ingesta.mercados_series construir-base [--sin-red] [--desde-cero]``.
 This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.
 """
 from __future__ import annotations
 
+import shutil
 import time
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
@@ -53,15 +60,19 @@ from ingesta.mercados_series.contrato import (
 )
 
 TEMA = "mercados_series"
-CARGADORES = ("fase1", "fred", "academicos")
-PRIORIDAD = {"fase1": 0, "fred": 1, "academicos": 2}
+CARGADORES = ("fase1", "fred", "academicos", "alfred")
+# Orden de catalogo.PRIORIDAD_ORIGENES (sin 'derivadas', que no es un cargador: se recalculan tras unir).
+PRIORIDAD = {c: i for i, c in enumerate(reversed([o for o in cat_mod.PRIORIDAD_ORIGENES if o in CARGADORES]))}
 CARGADOR_DERIVADAS = "derivadas"
+RESPALDO = "respaldo_bloque2.parquet"   # copia de la base guardada antes de una reconstrucción desde cero
+SUFIJO_PREVIA = "_previa.parquet"     # si RESPALDO ya existe: copia (rotatoria) de la base vigente
 TOLERANCIA_DERIVADA = 1e-9
 AVISO_FRED = ("This product uses the FRED® API but is not endorsed or certified by the Federal Reserve "
               "Bank of St. Louis.")
 
 __all__ = [
-    "CARGADORES", "PRIORIDAD", "ResumenBase", "tablas_fuentes", "unir", "derivar_diferencias",
+    "CARGADORES", "PRIORIDAD", "RESPALDO", "ResumenBase", "tablas_fuentes", "unir", "fechas_solo_respaldo",
+    "derivar_diferencias",
     "catalogo_efectivo", "construir_base", "cobertura", "escribir_cobertura", "resumen_base",
     "anotar_anomalias", "NOTA_PICO", "NOTA_FIN_DE_SEMANA", "NOTA_RACHA",
 ]
@@ -102,6 +113,11 @@ class ResumenBase:
     por_estado: dict[str, int] = field(default_factory=dict)
     por_metodo: dict[str, int] = field(default_factory=dict)
     por_fuente: dict[str, int] = field(default_factory=dict)
+    respaldo: dict[str, int] = field(default_factory=dict)
+    alfred: dict[str, Any] = field(default_factory=dict)
+    desde_cero: bool = False
+    copia_previa: str | None = None
+    bytes_disco: int | None = None
 
     def como_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -111,15 +127,19 @@ class ResumenBase:
 def tablas_fuentes(*, sin_red: bool = False, cargadores: Iterable[str] = CARGADORES,
                    catalogo: dict[str, dict] | None = None, raiz_fase1: Path | None = None,
                    raiz_crudo_academicos: Path | None = None, cliente_fred: Any = None,
+                   cliente_alfred: Any = None, informe_alfred: dict[str, dict] | None = None,
                    registro: Callable[[str], None] | None = None) -> dict[str, pd.DataFrame]:
     """``{cargador: tabla validada}`` de los ``cargadores`` pedidos.
 
-    ``sin_red=True``: FRED solo desde su archivo crudo y los académicos solo con los crudos ya
-    descargados (y ``data/raw``). Sin ``sin_red``, FRED descarga lo que no tenga hoy en caché y
-    los académicos bajan la edición del día si no está archivada (un fallo de red en un académico
-    no para la construcción: queda en su ``.meta.json`` y se usa el último crudo).
+    ``sin_red=True``: FRED y ALFRED solo desde su archivo crudo y los académicos solo con los crudos
+    ya descargados (y ``data/raw``). Sin ``sin_red``, FRED vivo baja lo que no tenga hoy en caché
+    (incremental), ALFRED las series sin descarga completa archivada y los académicos la edición del
+    día si no está archivada (un fallo de red en un académico no para la construcción: queda en su
+    ``.meta.json`` y se usa el último crudo). Las descargas largas van antes y por tandas
+    (``descargar-alfred``, ``descargar-fred-vivo``). ``informe_alfred``: se rellena con el informe
+    por serie de ``fuentes.alfred.tabla_alfred``.
     """
-    from ingesta.mercados_series.fuentes import academicos, fase1, fred
+    from ingesta.mercados_series.fuentes import academicos, alfred, fase1, fred
 
     log = registro or (lambda _m: None)
     pedidos = list(cargadores)
@@ -133,7 +153,10 @@ def tablas_fuentes(*, sin_red: bool = False, cargadores: Iterable[str] = CARGADO
         if nombre == "fase1":
             out[nombre] = fase1.tabla_fase1(raiz_fase1, cat)
         elif nombre == "fred":
-            out[nombre] = fred.tabla_fred_sustitutos(cliente=cliente_fred, descargar=not sin_red, cat=cat)
+            out[nombre] = fred.tabla_fred_vivo(sin_red=sin_red, cliente=cliente_fred, cat=cat, registro=log)
+        elif nombre == "alfred":
+            out[nombre] = alfred.tabla_alfred(cliente=cliente_alfred, descargar=not sin_red, cat=cat,
+                                              informe=informe_alfred if informe_alfred is not None else {})
         else:
             if not sin_red:
                 for f in academicos.FUENTES_CATALOGO:
@@ -171,6 +194,27 @@ def unir(tablas: Mapping[str, pd.DataFrame]) -> tuple[pd.DataFrame, dict[str, st
             partes.append(t[t["serie"].isin(propias)])
     tabla = pd.concat(partes, ignore_index=True)[list(COLUMNAS_SERIES)] if partes else vacio_series()
     return tabla, dict(sorted(elegido.items())), conflictos
+
+
+def fechas_solo_respaldo(tablas: Mapping[str, pd.DataFrame], elegido: Mapping[str, str]) -> dict[str, int]:
+    """Por serie servida por varios cargadores: fechas con valor que solo traía un cargador descartado.
+
+    Mide lo que se pierde al servir una serie desde una sola fuente (p. ej. una fecha de ``data/raw``
+    que FRED ya no sirve). Solo las series con alguna; sin valores.
+    """
+    out: dict[str, int] = {}
+    grupos = {n: t.loc[t["valor"].notna()].groupby("serie")["fecha_referencia"] for n, t in tablas.items() if len(t)}
+    for sid, ganador in elegido.items():
+        if ganador not in grupos or sid not in grupos[ganador].groups:
+            continue
+        propias = set(grupos[ganador].get_group(sid))
+        perdidas: set = set()
+        for n, g in grupos.items():
+            if n != ganador and sid in g.groups:
+                perdidas |= set(g.get_group(sid)) - propias
+        if perdidas:
+            out[sid] = len(perdidas)
+    return dict(sorted(out.items()))
 
 
 def _es_diferencia(sid: str, entrada: dict[str, Any]) -> bool:
@@ -333,9 +377,10 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
                    permitir_perdidas: bool = False, purgar: bool = False, catalogo: dict[str, dict] | None = None,
                    tablas: Mapping[str, pd.DataFrame] | None = None, raiz_fase1: Path | None = None,
                    raiz_crudo_academicos: Path | None = None, cliente_fred: Any = None,
-                   excepciones: pd.DataFrame | None = None,
+                   excepciones: pd.DataFrame | None = None, cliente_alfred: Any = None,
+                   desde_cero: bool = False, respaldo: str = RESPALDO,
                    registro: Callable[[str], None] | None = None) -> tuple[ResumenBase, pd.DataFrame]:
-    """Une fase1 + FRED + académicos, resuelve conflictos, valida y (si ``escribir``) guarda la base.
+    """Une ALFRED + FRED vivo + académicos + fase1, resuelve conflictos, valida y (si ``escribir``) guarda.
 
     ``tablas``: tablas ya cargadas por cargador (tests; sin ellas, ``tablas_fuentes``).
     ``ruta``: parquet de destino (por defecto ``almacen.ruta_series()``, es decir
@@ -344,18 +389,24 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
     nuevas); ``permitir_perdidas`` (correcciones propias) deja cambiar cualquier fila. Series
     guardadas que ya no se construyen: ``ErrorContrato`` salvo ``purgar=True`` (se quitan y se
     enumeran en ``resumen.purgadas``). ``excepciones``: tabla de ``catalogo.cargar_excepciones``
-    (por defecto, el CSV de config). Devuelve ``(resumen, tabla validada)``. ``ErrorContrato`` si
-    la unión no cumple el contrato o el catálogo, o si la escritura perdería o cambiaría filas
-    guardadas.
+    (por defecto, el CSV de config). ``desde_cero`` (reconstrucción tras cambiar reglas o fuentes):
+    antes de escribir copia la base guardada a ``<carpeta>/<respaldo>`` (si esa copia ya existe, se
+    conserva y la base vigente va a ``<stem>_previa.parquet``, que rota) y la sustituye entera, sin
+    comprobar pérdidas ni huérfanas; se niega (``ErrorContrato``) si alguna serie de ALFRED no tiene
+    descarga completa archivada, salvo ``permitir_perdidas``.
+    Devuelve ``(resumen, tabla validada)``. ``ErrorContrato`` si la unión no cumple el contrato o el
+    catálogo, o si la escritura perdería o cambiaría filas guardadas.
     """
     t0 = time.monotonic()
     log = registro or (lambda _m: None)
     cat = catalogo if catalogo is not None else cat_mod.cargar_catalogo()
+    informe_alfred: dict[str, dict] = {}
     if tablas is None:
         tablas = tablas_fuentes(sin_red=sin_red, catalogo=cat, raiz_fase1=raiz_fase1,
                                 raiz_crudo_academicos=raiz_crudo_academicos, cliente_fred=cliente_fred,
-                                registro=log)
+                                cliente_alfred=cliente_alfred, informe_alfred=informe_alfred, registro=log)
     union, elegido, conflictos = unir(tablas)
+    respaldo_fechas = fechas_solo_respaldo(tablas, elegido)
     union, n_exc = cat_mod.aplicar_excepciones(union, excepciones, catalogo=cat)
     log(f"excepciones de publicación (ALFRED) aplicadas: {n_exc} filas")
     union, derivadas = derivar_diferencias(union, cat)
@@ -377,7 +428,27 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
     guardadas = (set(almacen.leer_series(ruta=ruta_guardada)["serie"])
                  if ruta_guardada is not None and ruta_guardada.exists() else set())
     huerfanas = sorted(guardadas - servidas)
-    if huerfanas and escribir and not purgar:
+    from ingesta.mercados_series.fuentes.alfred import AVISO_SIN_ARCHIVO
+
+    sin_archivo = sorted(sid for sid, i in informe_alfred.items()
+                         if AVISO_SIN_ARCHIVO in (i.get("avisos") or []))
+    if desde_cero and escribir and sin_archivo and not permitir_perdidas:
+        # Con un crudo parcial (disco desmontado, descarga a medias) desde cero perdería esas series.
+        raise ErrorContrato("series", [f"{len(sin_archivo)} series de ALFRED sin descarga completa archivada: "
+                                       f"{sin_archivo[:10]}; desde cero las quitaría de la base. Descárgalas "
+                                       f"(descargar-alfred) o fuerza con permitir_perdidas (--reemplazar)"])
+    copia_previa = None
+    if desde_cero and escribir and ruta_guardada is not None and ruta_guardada.exists():
+        copia = ruta_guardada.with_name(respaldo)
+        if copia.exists():
+            # El respaldo fijo (bloque 2) se conserva; la base vigente va a una copia que rota.
+            copia = ruta_guardada.with_name(f"{ruta_guardada.stem}{SUFIJO_PREVIA}")
+            log(f"respaldo {respaldo} ya existente, se conserva; la base vigente se copia a {copia}")
+        else:
+            log(f"respaldo de la base guardada: {copia}")
+        shutil.copy2(ruta_guardada, copia)
+        copia_previa = str(copia)
+    if huerfanas and escribir and not purgar and copia_previa is None:
         raise ErrorContrato("series", [f"{len(huerfanas)} series guardadas ya no se construyen (huérfanas): "
                                        f"{huerfanas[:10]}; get_serie las seguiría sirviendo. Revisa el catálogo "
                                        f"o quítalas con purgar=True (--purgar)"])
@@ -385,8 +456,10 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
                         and (tabla.loc[tabla["serie"] == sid, "vintage"] == "unico").all())
     escrita = None
     if escribir:
-        escrita = almacen.escribir_series(tabla, destino, permitir_perdidas=permitir_perdidas,
-                                          revisables=revisables, purgar=huerfanas if purgar else ())
+        # Desde cero: se quitan todas las series guardadas y se escribe la tabla nueva entera.
+        quitar = sorted(guardadas) if copia_previa else (huerfanas if purgar else ())
+        escrita = almacen.escribir_series(tabla, destino, permitir_perdidas=permitir_perdidas or bool(copia_previa),
+                                          revisables=revisables, purgar=quitar)
         log(f"base escrita en {escrita}" + (f"; purgadas {huerfanas}" if purgar and huerfanas else ""))
     cargables = [sid for sid, e in efectivo.items() if e["estado"] in cat_mod.ESTADOS_CARGABLES]
     por_serie = {sid: cat[sid] for sid in servidas if sid in cat}
@@ -400,7 +473,8 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
             tabla["serie"].map(elegido).value_counts().items())},
         conflictos=conflictos, derivadas=derivadas,
         sin_datos=sorted(set(cargables) - servidas),
-        excepciones_aplicadas=n_exc, huerfanas=huerfanas, purgadas=huerfanas if (purgar and escribir) else [],
+        excepciones_aplicadas=n_exc, huerfanas=huerfanas,
+        purgadas=huerfanas if (escribir and (purgar or copia_previa)) else [],
         revisables=len(revisables),
         anomalias={k: int(v) for k, v in anomalias["tipo"].value_counts().sort_index().items()},
         detalle_anomalias=[{"serie": r.serie, "fecha_referencia": _iso(r.fecha_referencia), "tipo": r.tipo}
@@ -408,8 +482,24 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
         por_estado=dict(sorted(Counter(e["estado"] for e in por_serie.values()).items())),
         por_metodo=dict(sorted(Counter(e["metodo"] for e in por_serie.values()).items())),
         por_fuente=dict(sorted(Counter(e["fuente"] for e in por_serie.values()).items())),
+        respaldo=respaldo_fechas, alfred=_resumen_alfred(informe_alfred), desde_cero=copia_previa is not None,
+        copia_previa=copia_previa, bytes_disco=Path(escrita).stat().st_size if escrita is not None else None,
     )
     return resumen, tabla
+
+
+def _resumen_alfred(informe: dict[str, dict]) -> dict[str, Any]:
+    """Recuentos del informe por serie de ``fuentes.alfred.tabla_alfred`` (sin valores) y sus avisos
+    relevantes (sin archivo, primer vintage distinto del catálogo, filas publicadas antes de su periodo)."""
+    if not informe:
+        return {}
+    suma = {k: int(sum(int(i.get(k) or 0) for i in informe.values()))
+            for k in ("filas_alfred", "filas", "previas", "puntos", "retiradas", "fundidas",
+                      "proyecciones_visibles", "proyecciones_descartadas")}
+    claves = ("sin ", "primer vintage medido")
+    avisos = {sid: [a for a in i.get("avisos", []) if a.startswith(claves) or "antes de su fecha" in a]
+              for sid, i in sorted(informe.items())}
+    return {"series": len(informe), **suma, "avisos": {k: v for k, v in avisos.items() if v}}
 
 
 # --- Cobertura (solo metadatos) -----------------------------------------------------------------

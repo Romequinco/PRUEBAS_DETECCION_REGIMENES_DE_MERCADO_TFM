@@ -81,9 +81,11 @@ def raw(tmp_path):
     return raiz
 
 
+# Bloque 3: las revisables de ALFRED (vintage_exacto) en su forma del bloque 2 (regla previa, lag_fijo):
+# estos tests ejercitan las reglas de publicación con entradas reales del catálogo.
 @pytest.fixture(scope="module")
 def cat():
-    real = c.cargar_catalogo()
+    real = c.vista_regla_previa()
     return {k: real[k] for k in IDS}
 
 
@@ -294,7 +296,7 @@ def test_t1_fase1_ficha(raw, cat, tmp_path):
 def tabla_real():
     if not (RAW / "provenance.json").exists():
         pytest.skip("falta data/raw (gitignored)")
-    return fase1.tabla_fase1()
+    return fase1.tabla_fase1(catalogo=c.vista_regla_previa())
 
 
 @pytest.mark.datos
@@ -302,7 +304,7 @@ def test_t1_fase1_datos_reales(tabla_real):
     t = tabla_real
     assert validar_series(t).equals(t)
     assert not t.duplicated(["serie", "fecha_referencia", "vintage"]).any()
-    cat = c.cargar_catalogo()
+    cat = c.vista_regla_previa()
     esperadas = {sid for sid, e in cat.items() if e["fichero_fase1"] and e["estado"] in c.ESTADOS_CARGABLES
                  and e["fase1_utilizable"]}
     assert set(t["serie"]) == esperadas

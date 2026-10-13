@@ -18,8 +18,9 @@ Mapa de módulos:
 - ``catalogo``     catálogo de series (``config/catalogo_series.yaml`` + ``config/lags.yaml``): una
                    entrada por serie, alias de la Fase 1 y ``fecha_publicacion_lag``.
 - ``sonda_horas``  sondas de horas de publicación (ALFRED, releases de FRED, páginas oficiales).
-- ``base``         base de series (bloque 2): une ``fuentes.fase1``, ``fuentes.fred`` y
-                   ``fuentes.academicos``; CLI ``python -m ingesta.mercados_series construir-base``.
+- ``base``         base de series (bloques 2 y 3): une ``fuentes.alfred`` (vintages exactos),
+                   ``fuentes.fred`` (fuente viva), ``fuentes.academicos`` y ``fuentes.fase1``; CLI
+                   ``python -m ingesta.mercados_series construir-base``.
 
 Un módulo por fuente (extractores). Alcance, fuentes y entregables: README.md de esta carpeta.
 """

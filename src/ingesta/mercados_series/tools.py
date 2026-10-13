@@ -26,8 +26,15 @@ import pandas as pd
 
 from ingesta.mercados_series import almacen, divisas, timegate, visibilidad
 from ingesta.mercados_series import catalogo as cat_mod
-from ingesta.mercados_series.catalogo import NOTA_EXCEPCION, NOTA_RECONSTRUIDA, es_nota_revisable
+from ingesta.mercados_series.catalogo import (
+    NOTA_EXCEPCION,
+    NOTA_PREVIA_ALFRED,
+    NOTA_PRIMERA_EDICION,
+    NOTA_RECONSTRUIDA,
+    es_nota_revisable,
+)
 from ingesta.mercados_series.contrato import FECHA, REAL, TEXTO, vacio_series
+from ingesta.mercados_series.fuentes.alfred import NOTA_REESTIMADA, NOTA_UNIDAD_VINTAGE
 
 FechaLike = date | str | pd.Timestamp
 Ajuste = Literal["ninguno", "splits", "total"]
@@ -216,15 +223,28 @@ class RespuestaPrecios:
 MAX_HUECOS_DETALLADOS = 3
 
 
+# Notas que tienen su propio aviso (no se repiten en el de huecos).
+_NOTAS_CON_AVISO = (NOTA_EXCEPCION, NOTA_RECONSTRUIDA, NOTA_PREVIA_ALFRED, NOTA_REESTIMADA, NOTA_UNIDAD_VINTAGE)
+
+
 def _sin_notas_comunes(nota: Any) -> str:
-    """Nota de un hueco sin las notas que ya avisan aparte (revisables, excepción, reconstruida)."""
+    """Nota de un hueco sin las notas que ya avisan aparte (revisables, excepción, ALFRED...)."""
     partes = [p for p in str(nota or "").split("; ")
-              if p and not es_nota_revisable(p) and not p.startswith((NOTA_EXCEPCION, NOTA_RECONSTRUIDA))]
+              if p and not es_nota_revisable(p) and not p.startswith(_NOTAS_CON_AVISO)]
     return "; ".join(partes) or "sin nota"
 
 
+def _contiene(nota: pd.Series, texto: str) -> pd.Series:
+    return nota.str.contains(texto, regex=False)
+
+
 def _avisos_serie(datos: pd.DataFrame) -> list[str]:
-    """Avisos de una respuesta, agregados: como mucho uno por tipo (huecos, fechas, revisiones...)."""
+    """Avisos de una respuesta, agregados: como mucho uno por tipo (huecos, fechas, revisiones...).
+
+    Bloque 3: una fila ``vintage_exacto`` (ALFRED) no avisa; sí las filas anteriores a ALFRED
+    (valor del primer vintage con la fecha de la regla previa), los índices re-estimados enteros,
+    la unidad por vintage y las ediciones de los ficheros académicos (vintage ``AAAA-MM``).
+    """
     avisos = []
     nulos = datos[datos["valor"].isna()]
     if len(nulos) <= MAX_HUECOS_DETALLADOS:
@@ -237,8 +257,15 @@ def _avisos_serie(datos: pd.DataFrame) -> list[str]:
         avisos.append(f"{len(nulos)} periodos con valor nulo (huecos declarados) entre "
                       f"{_iso(nulos['fecha_referencia'].min())} y {_iso(nulos['fecha_referencia'].max())}: {detalle}")
     nota = datos["nota"].fillna("").astype(str)
-    lag = datos["metodo_publicacion"] == "lag_fijo"
-    medidas = nota.str.contains(NOTA_EXCEPCION, regex=False)
+    previas = _contiene(nota, NOTA_PREVIA_ALFRED)
+    lag = (datos["metodo_publicacion"] == "lag_fijo") & ~previas
+    medidas = _contiene(nota, NOTA_EXCEPCION)
+    if previas.any():
+        primera = nota[previas].iloc[0]
+        desde = primera[primera.index(NOTA_PREVIA_ALFRED) + len(NOTA_PREVIA_ALFRED):].split(";")[0].strip(" ()")
+        avisos.append(f"{int(previas.sum())} periodos anteriores a ALFRED (primer vintage {desde}): llevan el valor "
+                      f"de ese primer vintage, ya revisado, con la fecha de la regla previa (lag_fijo): posible "
+                      f"fuga de revisiones y fecha de publicación aproximada")
     if lag.any():
         avisos.append(f"fecha de publicación por regla en {int(lag.sum())} periodos (método lag_fijo: retraso "
                       f"declarado en lags.yaml, no la fecha real de cada publicación; corregido con la primera "
@@ -246,14 +273,34 @@ def _avisos_serie(datos: pd.DataFrame) -> list[str]:
     elif medidas.any():
         avisos.append(f"fecha de publicación retrasada a la primera vintage de ALFRED en {int(medidas.sum())} "
                       f"periodos (la regla de su publicador la adelantaba)")
-    reconstruidas = nota.str.contains(NOTA_RECONSTRUIDA, regex=False)
+    reconstruidas = _contiene(nota, NOTA_RECONSTRUIDA)
     if reconstruidas.any():
         primera = nota[reconstruidas].iloc[0]
         desde = primera[primera.index(NOTA_RECONSTRUIDA) + len(NOTA_RECONSTRUIDA):].split(";")[0].strip()
         avisos.append(f"{int(reconstruidas.sum())} periodos con fecha de publicación anterior a la creación del "
                       f"índice ({desde}): son valores reconstruidos hacia atrás que nadie conocía en su fecha")
-    # Series revisables cargadas con el último vintage (catálogo, bloque 2): lo dice la nota de la fila.
-    revisadas = es_nota_revisable(datos["nota"])
+    reestimada = _contiene(nota, NOTA_REESTIMADA)
+    if reestimada.any():
+        exactas = datos.loc[reestimada & (datos["metodo_publicacion"] == "vintage_exacto"), "vintage"]
+        ultimo = f" (último vintage visible: {exactas.max()})" if len(exactas) else ""
+        avisos.append(f"índice re-estimado entero en cada publicación: los {int(reestimada.sum())} periodos son los "
+                      f"del vintage vigente en la fecha{ultimo}; en otra fecha cambian también los valores antiguos")
+    if _contiene(nota, NOTA_UNIDAD_VINTAGE).any():
+        avisos.append("unidad del vintage vigente (año base o dólares encadenados): los niveles de vintages "
+                      "distintos no son comparables entre sí")
+    # Ediciones de los ficheros académicos (vintage AAAA-MM): una por descarga archivada.
+    vint = datos["vintage"].astype(str)
+    edicion = vint.str.fullmatch(r"\d{4}-\d{2}")
+    if edicion.any():
+        primera_ed = _contiene(nota, NOTA_PRIMERA_EDICION) & edicion
+        ediciones = sorted(set(vint[edicion]))
+        avisos.append(f"valores por edición del fichero (vintage AAAA-MM): {int(edicion.sum())} periodos de "
+                      f"{len(ediciones)} ediciones ({', '.join(ediciones)}); la última visible en la fecha es "
+                      f"{ediciones[-1]}" + (f"; {int(primera_ed.sum())} periodos con el valor de la primera edición "
+                                            f"archivada: posible fuga de revisiones anteriores a ella"
+                                            if primera_ed.any() else ""))
+    # Series revisables cargadas con el último vintage o edición (bloque 2): lo dice la nota de la fila.
+    revisadas = es_nota_revisable(datos["nota"]) & ~_contiene(nota, NOTA_PRIMERA_EDICION)
     if revisadas.any():
         avisos.append(f"serie revisable con los valores del último vintage o edición en {int(revisadas.sum())} "
                       f"periodos: posible fuga de revisiones (no son los valores que se conocían en su fecha)")
@@ -303,15 +350,19 @@ def get_serie(id: str, fecha: FechaLike, *, desde: FechaLike | None = None, divi
     más de ``MAX_HUECOS_DETALLADOS``, uno solo con el recuento, el primero, el último y las notas
     distintas); el método ``lag_fijo`` añade el aviso «fecha de publicación por regla»; una fecha
     retrasada a la primera vintage de ALFRED, una serie reconstruida hacia atrás y una revisable
-    cargada con el último vintage o edición (``catalogo.NOTAS_REVISABLE``) añaden el suyo. Como
-    mucho un aviso por tipo. Un id sin alias se resuelve sin distinguir mayúsculas si es único.
+    cargada con el último vintage o edición (``catalogo.NOTAS_REVISABLE``) añaden el suyo. Bloque 3:
+    las filas ``vintage_exacto`` de ALFRED no avisan; sí las anteriores a ALFRED (valor del primer
+    vintage con la fecha de la regla previa), los índices re-estimados enteros, la unidad por
+    vintage y las ediciones de los ficheros académicos (vintage ``AAAA-MM``). Como mucho un aviso
+    por tipo. Un id sin alias se resuelve sin distinguir mayúsculas si es único.
     """
     f = timegate.fecha_decision(fecha)
     _validar_opcion(divisa, DIVISAS_SALIDA, "divisa")
     canonico = resolver_id(id, alias)
     _comprobar_excluida(canonico, id)
     corte = timegate.fecha_decision(desde) if desde is not None else None
-    tabla = base if base is not None else almacen.leer_series(canonico)
+    # Del almacén: solo la serie, lo publicado hasta f y la última fila por periodo (resuelto en Arrow).
+    tabla = base if base is not None else almacen.leer_ultimas(canonico, f)
     visibles = timegate.as_of_series(tabla, canonico, f)
     if visibles.empty:
         nombre = repr(canonico) if canonico == id else f"{canonico!r} (alias {id!r})"

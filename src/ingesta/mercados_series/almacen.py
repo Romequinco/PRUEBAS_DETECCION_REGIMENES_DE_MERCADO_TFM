@@ -22,6 +22,7 @@ import time
 import uuid
 from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -48,6 +49,9 @@ from ingesta.mercados_series.contrato import (
 TEMA = "mercados_series"
 # Nombre del parquet de la base de series (bloque 2: ``base.construir_base`` lo escribe entero).
 FICHERO_SERIES = "base_series.parquet"
+# Row groups de la base de series (bloque 3: millones de filas con los vintages de ALFRED). Ordenada por
+# serie, una consulta de una serie lee solo sus grupos (``leer_series`` filtra al leer).
+FILAS_POR_GRUPO_SERIES = 65_536
 
 # Caracteres permitidos tal cual en el nombre de fichero de un ticker; el resto se codifica
 # como ``~XX`` (hexadecimal del byte UTF-8): '^GSPC' → '~5EGSPC', 'ES=F' → 'ES~3DF', 'BTC/USD' →
@@ -169,17 +173,20 @@ ESQUEMA_SERIES = _esquema(COLUMNAS_SERIES)
 ESQUEMA_PRECIOS = _esquema(COLUMNAS_PRECIOS)
 
 
-def _escribir_atomico(df: pd.DataFrame, esquema: pa.Schema, ruta: Path) -> Path:
+def _escribir_atomico(df: pd.DataFrame, esquema: pa.Schema, ruta: Path, *,
+                      filas_por_grupo: int | None = None) -> Path:
     """Escribe ``df`` en un temporal de la misma carpeta y lo mueve sobre ``ruta`` (``os.replace``).
 
-    Si algo falla, ``ruta`` queda como estaba y el temporal se borra.
+    ``filas_por_grupo``: tamaño de los row groups (con la tabla ordenada por serie, la lectura
+    filtrada salta los grupos de otras series por sus estadísticas). Si algo falla, ``ruta`` queda
+    como estaba y el temporal se borra.
     """
     ruta = Path(ruta)
     ruta.parent.mkdir(parents=True, exist_ok=True)
     tmp = ruta.with_name(f"{ruta.name}.{uuid.uuid4().hex[:12]}.tmp")
     try:
         tabla = pa.Table.from_pandas(df, schema=esquema, preserve_index=False)
-        pq.write_table(tabla, tmp)
+        pq.write_table(tabla, tmp, row_group_size=filas_por_grupo)
         for intento in range(_REINTENTOS_REPLACE):
             try:
                 os.replace(tmp, ruta)
@@ -296,24 +303,57 @@ def escribir_series(df: pd.DataFrame, ruta: Path | None = None, *, permitir_perd
         if problemas:
             raise ErrorContrato("series", problemas)
     total = validar_series(pd.concat([guardado[~afectado], nuevo], ignore_index=True))
-    return _escribir_atomico(total, ESQUEMA_SERIES, ruta)
+    return _escribir_atomico(total, ESQUEMA_SERIES, ruta, filas_por_grupo=FILAS_POR_GRUPO_SERIES)
 
 
-def leer_series(series: Iterable[str] | str | None = None, ruta: Path | None = None) -> pd.DataFrame:
-    """Tabla larga validada (todas las series o solo ``series``). Sin fichero: tabla vacía del contrato.
+def leer_series(series: Iterable[str] | str | None = None, ruta: Path | None = None, *,
+                hasta: Any = None, validar: bool = True) -> pd.DataFrame:
+    """Tabla larga (todas las series o solo ``series``). Sin fichero: tabla vacía del contrato.
 
-    El filtro por ``series`` se aplica al leer el parquet (``filters`` de pyarrow).
+    Los filtros se aplican al leer el parquet (``filters`` de pyarrow: con la base ordenada por serie
+    y en row groups, solo se leen los grupos de las series pedidas). ``hasta``: solo filas con
+    ``fecha_publicacion <= hasta`` (truncado al leer: lo publicado después ni se lee).
+    ``validar=False`` (consultas de ``tools``): sin ``contrato.validar_series``, solo los dtypes
+    del contrato; el parquet propio ya se validó entero al escribirlo (``escribir_series``) y
+    validar un índice re-estimado de un millón de filas cuesta segundos.
     """
     ruta = Path(ruta) if ruta is not None else ruta_series()
     if not ruta.exists():
         return vacio_series()
-    filtros = None
+    filtros = []
     if series is not None:
         lista = [series] if isinstance(series, str) else list(series)
         if not lista:
             return vacio_series()
-        filtros = [("serie", "in", lista)]
-    return validar_series(_leer_parquet(ruta, filtros))
+        filtros.append(("serie", "in", lista))
+    if hasta is not None:
+        filtros.append(("fecha_publicacion", "<=", pd.Timestamp(hasta).to_datetime64()))
+    df = _leer_parquet(ruta, filtros or None)
+    if validar:
+        return validar_series(df)
+    return df[list(COLUMNAS_SERIES)].astype(COLUMNAS_SERIES).reset_index(drop=True)
+
+
+def leer_ultimas(serie: str, hasta: Any, ruta: Path | None = None) -> pd.DataFrame:
+    """Por ``fecha_referencia``, la fila de ``serie`` con mayor ``(fecha_publicacion, vintage)`` entre
+    las publicadas hasta ``hasta`` (la regla de ``timegate.as_of_series``), resuelta en Arrow.
+
+    Para las consultas de ``tools.get_serie`` sobre series de un millón de filas (índices
+    re-estimados de ALFRED): solo pasa a pandas una fila por periodo. Sin validar (ver ``leer_series``).
+    """
+    ruta = Path(ruta) if ruta is not None else ruta_series()
+    if not ruta.exists():
+        return vacio_series()
+    filtros = [("serie", "==", serie), ("fecha_publicacion", "<=", pd.Timestamp(hasta).to_datetime64())]
+    tabla = pq.read_table(ruta, filters=filtros)
+    if tabla.num_rows == 0:
+        return vacio_series()
+    tabla = tabla.sort_by([("fecha_referencia", "ascending"), ("fecha_publicacion", "ascending"),
+                           ("vintage", "ascending")])
+    ref = tabla.column("fecha_referencia").to_numpy()
+    ultima = np.r_[ref[1:] != ref[:-1], True]
+    df = tabla.take(pa.array(np.flatnonzero(ultima))).to_pandas()
+    return df[list(COLUMNAS_SERIES)].astype(COLUMNAS_SERIES).reset_index(drop=True)
 
 
 # --- Precios ------------------------------------------------------------------------------------
