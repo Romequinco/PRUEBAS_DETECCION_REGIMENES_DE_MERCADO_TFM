@@ -1,0 +1,53 @@
+id,clave_sdmx,nombre,frecuencia,unidad,divisa,metodo,publicador,revisable,estado,inicio,fin,n_obs,n_filas
+ecb:DFR,FM/B.U2.EUR.4F.KR.DFR.LEV,Tipo de la facilidad de depósito del BCE (fecha de efecto),diaria,% anual,,calendario,ecb_tipos_oficiales,False,activa,1999-01-01,2026-09-16,69,69
+ecb:EONIA,EON/D.EONIA_TO.RATE,EONIA (euro overnight index average),diaria,% anual,,calendario,ecb_estr,False,retirada,1999-01-04,2021-12-31,5890,5890
+ecb:ESTR,EST/B.EU000A2X2A25.WT,"€STR (euro short-term rate), media recortada",diaria,% anual,,calendario,ecb_estr,False,activa,2019-10-01,2026-10-12,1801,1801
+ecb:EXR.D.ARS.EUR,EXR/D.ARS.EUR.SP00.A,Argentine peso/Euro (ARS por 1 EUR),diaria,ARS por 1 EUR,ARS,calendario,ecb_fx,False,retirada,2000-01-13,2020-10-30,5296,5296
+ecb:EXR.D.AUD.EUR,EXR/D.AUD.EUR.SP00.A,Australian dollar/Euro ECB reference exchange rate (AUD por 1 EUR),diaria,AUD por 1 EUR,AUD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.BGN.EUR,EXR/D.BGN.EUR.SP00.A,Euro/Bulgarian lev (BGN por 1 EUR),diaria,BGN por 1 EUR,BGN,calendario,ecb_fx,False,retirada,2000-07-19,2025-12-31,6515,6515
+ecb:EXR.D.BRL.EUR,EXR/D.BRL.EUR.SP00.A,Brazilian real/Euro ECB reference exchange rate (BRL por 1 EUR),diaria,BRL por 1 EUR,BRL,calendario,ecb_fx,False,activa,2000-01-13,2026-10-12,6845,6845
+ecb:EXR.D.CAD.EUR,EXR/D.CAD.EUR.SP00.A,Canadian dollar/Euro ECB reference exchange rate (CAD por 1 EUR),diaria,CAD por 1 EUR,CAD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.CHF.EUR,EXR/D.CHF.EUR.SP00.A,Swiss franc/Euro ECB reference exchange rate (CHF por 1 EUR),diaria,CHF por 1 EUR,CHF,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.CNY.EUR,EXR/D.CNY.EUR.SP00.A,Chinese yuan renminbi/Euro ECB reference exchange rate (CNY por 1 EUR),diaria,CNY por 1 EUR,CNY,calendario,ecb_fx,False,activa,2000-01-13,2026-10-12,6845,6845
+ecb:EXR.D.CYP.EUR,EXR/D.CYP.EUR.SP00.A,Euro/Cyprus pound (CYP por 1 EUR),diaria,CYP por 1 EUR,CYP,calendario,ecb_fx,False,retirada,1999-01-04,2007-12-31,2304,2304
+ecb:EXR.D.CZK.EUR,EXR/D.CZK.EUR.SP00.A,Czech koruna/Euro ECB reference exchange rate (CZK por 1 EUR),diaria,CZK por 1 EUR,CZK,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.DKK.EUR,EXR/D.DKK.EUR.SP00.A,Danish krone/Euro ECB reference exchange rate (DKK por 1 EUR),diaria,DKK por 1 EUR,DKK,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.DZD.EUR,EXR/D.DZD.EUR.SP00.A,Algerian dinar/Euro (DZD por 1 EUR),diaria,DZD por 1 EUR,DZD,calendario,ecb_fx,False,retirada,2000-01-13,2020-10-30,5321,5321
+ecb:EXR.D.EEK.EUR,EXR/D.EEK.EUR.SP00.A,Euro/Estonian kroon (EEK por 1 EUR),diaria,EEK por 1 EUR,EEK,calendario,ecb_fx,False,retirada,1999-01-04,2010-12-31,3074,3074
+ecb:EXR.D.GBP.EUR,EXR/D.GBP.EUR.SP00.A,Pound sterling/Euro ECB reference exchange rate (GBP por 1 EUR),diaria,GBP por 1 EUR,GBP,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.GRD.EUR,EXR/D.GRD.EUR.SP00.A,Euro/Greek drachma (GRD por 1 EUR),diaria,GRD por 1 EUR,GRD,calendario,ecb_fx,False,retirada,1999-01-04,2000-12-29,514,514
+ecb:EXR.D.HKD.EUR,EXR/D.HKD.EUR.SP00.A,Hong Kong dollar/Euro ECB reference exchange rate (HKD por 1 EUR),diaria,HKD por 1 EUR,HKD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.HRK.EUR,EXR/D.HRK.EUR.SP00.A,Euro/Croatian kuna (HRK por 1 EUR),diaria,HRK por 1 EUR,HRK,calendario,ecb_fx,False,retirada,2000-01-13,2022-12-30,5880,5880
+ecb:EXR.D.HUF.EUR,EXR/D.HUF.EUR.SP00.A,Hungarian forint/Euro ECB reference exchange rate (HUF por 1 EUR),diaria,HUF por 1 EUR,HUF,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.IDR.EUR,EXR/D.IDR.EUR.SP00.A,Indonesian rupiah/Euro ECB reference exchange rate (IDR por 1 EUR),diaria,IDR por 1 EUR,IDR,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.ILS.EUR,EXR/D.ILS.EUR.SP00.A,Israeli shekel/Euro ECB reference exchange rate (ILS por 1 EUR),diaria,ILS por 1 EUR,ILS,calendario,ecb_fx,False,activa,2000-01-13,2026-10-12,6844,6844
+ecb:EXR.D.INR.EUR,EXR/D.INR.EUR.SP00.A,Indian rupee/Euro ECB reference exchange rate (INR por 1 EUR),diaria,INR por 1 EUR,INR,calendario,ecb_fx,False,activa,2000-01-13,2026-10-12,6845,6845
+ecb:EXR.D.ISK.EUR,EXR/D.ISK.EUR.SP00.A,Icelandic krona/Euro ECB reference exchange rate (ISK por 1 EUR),diaria,ISK por 1 EUR,ISK,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,4767,4767
+ecb:EXR.D.JPY.EUR,EXR/D.JPY.EUR.SP00.A,Japanese yen/Euro ECB reference exchange rate (JPY por 1 EUR),diaria,JPY por 1 EUR,JPY,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.KRW.EUR,EXR/D.KRW.EUR.SP00.A,South Korean won/Euro ECB reference exchange rate (KRW por 1 EUR),diaria,KRW por 1 EUR,KRW,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.LTL.EUR,EXR/D.LTL.EUR.SP00.A,Euro/Lithuanian litas (LTL por 1 EUR),diaria,LTL por 1 EUR,LTL,calendario,ecb_fx,False,retirada,1999-01-04,2014-12-31,4097,4097
+ecb:EXR.D.LVL.EUR,EXR/D.LVL.EUR.SP00.A,Euro/Latvian lats (LVL por 1 EUR),diaria,LVL por 1 EUR,LVL,calendario,ecb_fx,False,retirada,1999-01-04,2013-12-31,3842,3842
+ecb:EXR.D.MAD.EUR,EXR/D.MAD.EUR.SP00.A,Moroccan dirham/Euro (MAD por 1 EUR),diaria,MAD por 1 EUR,MAD,calendario,ecb_fx,False,retirada,2000-01-13,2020-10-30,5320,5320
+ecb:EXR.D.MTL.EUR,EXR/D.MTL.EUR.SP00.A,Euro/Maltese lira (MTL por 1 EUR),diaria,MTL por 1 EUR,MTL,calendario,ecb_fx,False,retirada,1999-01-04,2007-12-31,2304,2304
+ecb:EXR.D.MXN.EUR,EXR/D.MXN.EUR.SP00.A,Mexican peso/Euro ECB reference exchange rate (MXN por 1 EUR),diaria,MXN por 1 EUR,MXN,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.MYR.EUR,EXR/D.MYR.EUR.SP00.A,Malaysian ringgit/Euro ECB reference exchange rate (MYR por 1 EUR),diaria,MYR por 1 EUR,MYR,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.NOK.EUR,EXR/D.NOK.EUR.SP00.A,Norwegian krone/Euro ECB reference exchange rate (NOK por 1 EUR),diaria,NOK por 1 EUR,NOK,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.NZD.EUR,EXR/D.NZD.EUR.SP00.A,New Zealand dollar/Euro ECB reference exchange rate (NZD por 1 EUR),diaria,NZD por 1 EUR,NZD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.PHP.EUR,EXR/D.PHP.EUR.SP00.A,Philippine peso/Euro ECB reference exchange rate (PHP por 1 EUR),diaria,PHP por 1 EUR,PHP,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.PLN.EUR,EXR/D.PLN.EUR.SP00.A,Polish zloty/Euro ECB reference exchange rate (PLN por 1 EUR),diaria,PLN por 1 EUR,PLN,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.RON.EUR,EXR/D.RON.EUR.SP00.A,Romanian leu/Euro ECB reference exchange rate (RON por 1 EUR),diaria,RON por 1 EUR,RON,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.RUB.EUR,EXR/D.RUB.EUR.SP00.A,Russian rouble/Euro (RUB por 1 EUR),diaria,RUB por 1 EUR,RUB,calendario,ecb_fx,False,retirada,1999-01-04,2022-03-01,5932,5932
+ecb:EXR.D.SEK.EUR,EXR/D.SEK.EUR.SP00.A,Swedish krona/Euro ECB reference exchange rate (SEK por 1 EUR),diaria,SEK por 1 EUR,SEK,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.SGD.EUR,EXR/D.SGD.EUR.SP00.A,Singapore dollar/Euro ECB reference exchange rate (SGD por 1 EUR),diaria,SGD por 1 EUR,SGD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.SIT.EUR,EXR/D.SIT.EUR.SP00.A,Euro/Slovenian tolar (SIT por 1 EUR),diaria,SIT por 1 EUR,SIT,calendario,ecb_fx,False,retirada,1999-01-04,2006-12-29,2049,2049
+ecb:EXR.D.SKK.EUR,EXR/D.SKK.EUR.SP00.A,Euro/Slovak koruna (SKK por 1 EUR),diaria,SKK por 1 EUR,SKK,calendario,ecb_fx,False,retirada,1999-01-04,2008-12-31,2560,2560
+ecb:EXR.D.THB.EUR,EXR/D.THB.EUR.SP00.A,Thai baht/Euro ECB reference exchange rate (THB por 1 EUR),diaria,THB por 1 EUR,THB,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.TRY.EUR,EXR/D.TRY.EUR.SP00.A,Turkish lira/Euro ECB reference exchange rate (TRY por 1 EUR),diaria,TRY por 1 EUR,TRY,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.TWD.EUR,EXR/D.TWD.EUR.SP00.A,New Taiwan dollar/Euro (TWD por 1 EUR),diaria,TWD por 1 EUR,TWD,calendario,ecb_fx,False,retirada,2000-01-13,2020-10-30,5322,5322
+ecb:EXR.D.USD.EUR,EXR/D.USD.EUR.SP00.A,US dollar/Euro ECB reference exchange rate (USD por 1 EUR),diaria,USD por 1 EUR,USD,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:EXR.D.ZAR.EUR,EXR/D.ZAR.EUR.SP00.A,South African rand/Euro ECB reference exchange rate (ZAR por 1 EUR),diaria,ZAR por 1 EUR,ZAR,calendario,ecb_fx,False,activa,1999-01-04,2026-10-12,7112,7112
+ecb:HICP.M.U2.N.000000.4D0.ANR,HICP/M.U2.N.000000.4D0.ANR,"HICP zona euro (composición cambiante), general, tasa anual",mensual,% interanual,,vintage_exacto,eurostat,True,activa,1997-01-01,2026-09-01,357,357
+ecb:HICP.M.U2.N.XEF000.4D0.ANR,HICP/M.U2.N.XEF000.4D0.ANR,"HICP zona euro (composición cambiante) sin energía, alimentos, alcohol ni tabaco, tasa anual",mensual,% interanual,,vintage_exacto,eurostat,True,activa,1997-01-01,2026-09-01,357,357
+ecb:LFSI.M.U2.S.UNEHRT.TOTAL0.15_74.T,LFSI/M.U2.S.UNEHRT.TOTAL0.15_74.T,"Tasa de paro de la zona euro (composición cambiante), 15-74 años, desestacionalizada",mensual,% población activa,,vintage_exacto,eurostat,True,activa,1995-01-01,2026-08-01,380,380
+ecb:MNA.Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY,MNA/Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY,"PIB real de la zona euro 21 (composición fija), tasa interanual",trimestral,% interanual,,vintage_exacto,eurostat,True,activa,1996-01-01,2026-04-01,122,122
+ecb:MRO,FM/B.U2.EUR.4F.KR.MRR_FR.LEV,Tipo de las operaciones principales de financiación del BCE (fecha de efecto),diaria,% anual,,calendario,ecb_tipos_oficiales,False,activa,1999-01-01,2026-09-16,48,48

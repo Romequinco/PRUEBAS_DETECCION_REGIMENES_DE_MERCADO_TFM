@@ -1,0 +1,35 @@
+{
+  "fuente": "boe",
+  "nombre": "Banco de Inglaterra (Interactive Database, IADB)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.bankofengland.co.uk/boeapps/database/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Banco de Inglaterra: términos de uso del sitio",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "diaria",
+  "retraso_publicacion": "no medido (fuente vetada por robots.txt)",
+  "formato": "csv",
+  "volumen_estimado": "0 (no descargado)",
+  "limites": "robots.txt: Disallow /boeapps/iadb y /boeapps/database/_iadb-FromShowColumns.asp (la ruta CSV) y ShowChart.asp: no se rastrea ni se buscan rutas alternativas",
+  "estado_sonda": "fallo",
+  "mediciones": {
+    "robots": {
+      "url": "https://www.bankofengland.co.uk/boeapps/database/_iadb-FromShowColumns.asp?csv.x=yes&SeriesCodes=IUDBEDR",
+      "robots_permite": false,
+      "robots_permite_iadb": false
+    }
+  },
+  "notas": [
+    "Vetado por robots.txt (comprobado en la sonda); no se esquiva",
+    "Alternativas: Bank Rate y gilts del Reino Unido vía FRED (p. ej. IRLTLT01GBM156N, mensual, OCDE) o la OCDE; decisión del integrador"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

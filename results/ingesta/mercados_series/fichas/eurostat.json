@@ -1,0 +1,165 @@
+{
+  "fuente": "eurostat",
+  "nombre": "Eurostat: HICP (prc_hicp_minr / prc_hicp_manr), paro (une_rt_m), ESI, PIB (namq_10_gdp)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://ec.europa.eu/eurostat/web/main/data/web-services",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)",
+  "cobertura_inicio": "1975-01-01",
+  "cobertura_fin": "2026-09-01",
+  "frecuencia": "mensual (HICP, paro, ESI), trimestral (PIB)",
+  "retraso_publicacion": "publicación a las 11:00 Europe/Luxembourg (calendario de Euro indicators); sin vintages: lag_fijo conservador (HICP y paro 1M1D desde fin de mes, ESI 1D, PIB 1M1D desde fin de trimestre) y nota de revisables; LAST UPDATE medido por conjunto en mediciones",
+  "formato": "csv (SDMX-CSV 2.1)",
+  "volumen_estimado": "4.8 MB de CSV por descarga completa (5 peticiones)",
+  "limites": "sin clave; 1 petición/s por host; claves inválidas → HTTP 400; robots.txt permite la API",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_series": 39,
+    "n_filas": 13476,
+    "conjuntos": {
+      "prc_hicp_minr": {
+        "geos": [
+          "DE",
+          "EA",
+          "EA20",
+          "EA21",
+          "EU27_2020",
+          "FR",
+          "IT",
+          "UK",
+          "US"
+        ],
+        "ultima_actualizacion": "2026-10-02T11:00:00"
+      },
+      "prc_hicp_manr": {
+        "geos": [
+          "DE",
+          "EA",
+          "EA20",
+          "EU27_2020",
+          "FR",
+          "IT",
+          "UK",
+          "US"
+        ],
+        "ultima_actualizacion": "2026-02-06T23:00:00"
+      },
+      "une_rt_m": {
+        "geos": [
+          "DE",
+          "EA21",
+          "EU27_2020",
+          "FR",
+          "IT",
+          "JP",
+          "UK",
+          "US"
+        ],
+        "ultima_actualizacion": "2026-10-08T11:00:00"
+      },
+      "ei_bssi_m_r2": {
+        "geos": [
+          "DE",
+          "EA20",
+          "EA21",
+          "EU27_2020",
+          "FR",
+          "IT"
+        ],
+        "ultima_actualizacion": "2026-09-29T11:00:00"
+      },
+      "namq_10_gdp": {
+        "geos": [
+          "DE",
+          "EA",
+          "EA20",
+          "EA21",
+          "EU27_2020",
+          "FR",
+          "IT",
+          "UK"
+        ],
+        "ultima_actualizacion": "2026-10-09T23:00:00"
+      },
+      "ruptura_hicp": {
+        "DE": {
+          "meses_comunes": 348,
+          "inicio": "1997-01",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0353,
+          "dif_abs_max": 0.1,
+          "meses_distintos": 123
+        },
+        "EA": {
+          "meses_comunes": 348,
+          "inicio": "1997-01",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0069,
+          "dif_abs_max": 0.1,
+          "meses_distintos": 24
+        },
+        "EA20": {
+          "meses_comunes": 301,
+          "inicio": "2000-12",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0037,
+          "dif_abs_max": 0.1,
+          "meses_distintos": 11
+        },
+        "EU27_2020": {
+          "meses_comunes": 301,
+          "inicio": "2000-12",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0053,
+          "dif_abs_max": 0.1,
+          "meses_distintos": 16
+        },
+        "FR": {
+          "meses_comunes": 348,
+          "inicio": "1997-01",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0052,
+          "dif_abs_max": 0.1,
+          "meses_distintos": 18
+        },
+        "IT": {
+          "meses_comunes": 348,
+          "inicio": "1997-01",
+          "fin": "2025-12",
+          "dif_abs_media": 0.0601,
+          "dif_abs_max": 0.2,
+          "meses_distintos": 181
+        },
+        "UK": {
+          "meses_comunes": 287,
+          "inicio": "1997-01",
+          "fin": "2020-11",
+          "dif_abs_media": 0.0,
+          "dif_abs_max": 0.0,
+          "meses_distintos": 0
+        },
+        "US": {
+          "meses_comunes": 265,
+          "inicio": "2002-12",
+          "fin": "2024-12",
+          "dif_abs_media": 0.0,
+          "dif_abs_max": 0.0,
+          "meses_distintos": 0
+        }
+      }
+    }
+  },
+  "notas": [
+    "ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de 2026",
+    "La zona euro de composición cambiante ('EA') no está en todos los conjuntos: se guarda la que haya (EA, EA21, EA20) y la UE-27",
+    "Revisables sin vintages: valor del último fichero descargado (posible fuga de revisiones)",
+    "Las banderas OBS_FLAG (p, e, b, d...) se conservan en la nota de cada fila"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

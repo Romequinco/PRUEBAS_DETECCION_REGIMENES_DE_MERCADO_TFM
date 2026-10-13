@@ -1,0 +1,298 @@
+{
+  "fuente": "imf_weo",
+  "nombre": "FMI World Economic Outlook por edición (DBnomics + API SDMX del FMI)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://api.db.nomics.world/v22/series/IMF",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "FMI: reutilización con cita (copyright IMF); DBnomics redistribuye sin cambios",
+  "cobertura_inicio": "1980-01-01",
+  "cobertura_fin": "2026-01-01",
+  "frecuencia": "anual; dos ediciones al año (abril y octubre)",
+  "retraso_publicacion": "vintage exacto por edición: día de publicación documentado a las 09:00 de Washington; año en curso como estimación; proyecciones descartadas",
+  "formato": "json (DBnomics) y SDMX-JSON 3.0 (api.imf.org)",
+  "volumen_estimado": "1 ediciones, 1745 filas, 40 series",
+  "limites": "sin clave; DBnomics 1 petición/s; la API del FMI solo sirve las versiones vigentes del flujo",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "cobertura_inicio": "1980-01-01",
+    "cobertura_fin": "2026-01-01",
+    "series": 40,
+    "observaciones": 1745,
+    "ediciones": [
+      "2026-10"
+    ],
+    "ediciones_pendientes": [
+      "2008-04",
+      "2008-10",
+      "2009-04",
+      "2009-10",
+      "2010-04",
+      "2010-10",
+      "2011-04",
+      "2011-09",
+      "2012-04",
+      "2012-10",
+      "2013-04",
+      "2013-10",
+      "2014-04",
+      "2014-10",
+      "2015-04",
+      "2015-10",
+      "2016-04",
+      "2016-10",
+      "2017-04",
+      "2017-10",
+      "2018-04",
+      "2018-10",
+      "2019-04",
+      "2019-10",
+      "2020-04",
+      "2020-10",
+      "2021-04",
+      "2021-10",
+      "2022-04",
+      "2022-10",
+      "2023-04",
+      "2023-10",
+      "2024-04",
+      "2024-10",
+      "2025-04",
+      "2025-10",
+      "2026-04"
+    ],
+    "errores": {
+      "2008-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2008-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2009-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2009-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2010-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2010-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2011-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2012-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2012-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2013-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2013-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2014-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2014-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2015-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2015-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2016-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2016-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2017-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2017-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2018-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2018-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2019-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2019-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2020-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2020-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2021-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2021-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2022-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2022-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2023-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2023-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2024-04": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2024-10": "robots.txt no permite la descarga con nuestro User-Agent",
+      "2025-04": "robots.txt no permite la descarga con nuestro User-Agent"
+    },
+    "ediciones_indexadas_antes_de_la_fecha_documentada": [],
+    "proyecciones_descartadas": 200,
+    "por_edicion": {
+      "2008-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2008-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2009-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2009-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2010-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2010-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2011-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2012-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2012-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2013-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2013-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2014-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2014-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2015-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2015-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2016-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2016-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2017-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2017-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2018-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2018-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2019-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2019-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2020-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2020-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2021-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2021-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2022-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2022-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2023-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2023-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2024-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2024-10": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2025-04": {
+        "origen": "dbnomics",
+        "error": "robots.txt no permite la descarga con nuestro User-Agent",
+        "bytes": null
+      },
+      "2026-10": {
+        "origen": "sdmx 9.0.0",
+        "bytes": 46993,
+        "filas": 1745,
+        "proyecciones_descartadas": 200
+      },
+      "sdmx_6.0.0": {
+        "origen": "sdmx",
+        "edicion": null,
+        "descartada": "repetida o sin fecha"
+      }
+    }
+  },
+  "notas": [
+    "DBnomics: robots.txt de api.db.nomics.world es 'Disallow: /' (medido 20261013): 34 ediciones no descargadas; no se esquiva (pedir permiso a DBnomics o ficheros del archivo del FMI)",
+    "fechas de publicación de FECHAS_EDICION documentadas, no medidas contra la API (verificado: false)",
+    "zona euro pendiente (WEO de agregados, WEOAGG en DBnomics)",
+    "ediciones fuera de DBnomics y de las versiones vigentes de la API SDMX: ver ediciones_pendientes"
+  ],
+  "fecha_sonda": "2026-10-13"
+}
