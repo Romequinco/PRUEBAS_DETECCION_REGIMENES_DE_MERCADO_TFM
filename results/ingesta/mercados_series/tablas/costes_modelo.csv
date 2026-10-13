@@ -1,0 +1,59 @@
+tipo,broker,clave,fija_eur,pct,por_accion_usd,minimo_eur,maximo_pct,valor,verificado,fuente,nota
+comision,degiro,US,2.0,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,FONDO_US,2.0,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,ES,3.9,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,EU,3.9,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,UK,3.9,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,CH,3.9,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,CA,2.0,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,ASIA,5.0,0.0005,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,ETF_SELECCION,1.0,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,CRIPTO,0.0,0.0,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+comision,degiro,OTROS,5.0,0.0005,0.0,0.0,,,False,https://www.degiro.es/tarifas,"tarifa pública de cuenta Básica (España), incluidos los gastos de tramitación; pendiente de verificar; AutoFX 0,25 % si la divisa no es EUR; gasto anual de conectividad por bolsa no incluido; ETF de EE. UU. no comprables por un minorista de la UE (PRIIPs/KID): solo como referencia"
+fx,degiro,divisa != EUR,,,,,,0.0025,False,https://www.degiro.es/tarifas,fracción del importe
+comision,ibkr,US,0.0,0.0,0.005,0.9,0.01,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,FONDO_US,0.0,0.0,0.0,0.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,ES,0.0,0.0005,0.0,3.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,EU,0.0,0.0005,0.0,3.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,UK,0.0,0.0005,0.0,3.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,CH,0.0,0.0005,0.0,9.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,CA,0.0,0.0,0.01,0.9,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,ASIA,0.0,0.0008,0.0,5.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,ETF_SELECCION,0.0,0.0005,0.0,3.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,CRIPTO,0.0,0.0018,0.0,1.6,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+comision,ibkr,OTROS,0.0,0.0008,0.0,5.0,,,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,"tarifa fija IBKR Pro (0,005 USD/acción, mín. 1 USD, máx. 1 %; Europa 0,05 % mín. 3 €); pendiente de verificar; FX: conversión manual (≈0,002 % + horquilla); se toma 0,03 % como supuesto"
+fx,ibkr,divisa != EUR,,,,,,0.0003,False,https://www.interactivebrokers.ie/es/pricing/commissions-stocks.php,fracción del importe
+spread_base,todos,ETF,,,,,,0.0005,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,ETF_UCITS,,,,,,0.0015,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,EQUITY,,,,,,0.0005,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,MUTUALFUND,,,,,,0.0,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,CRYPTO,,,,,,0.001,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,FUTURE,,,,,,0.0002,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,INDEX,,,,,,0.0,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+spread_base,todos,CURRENCY,,,,,,0.0001,False,supuesto del bloque 8,spread completo; se cobra la mitad por operación
+multiplicador,todos,ventana_chl,,,,,,21,True,"Abdi y Ranaldo (2017), RFS 30(12)",media de s² en 21 sesiones y raíz
+multiplicador,todos,limites,,,,,,"(1.0, 10.0)",True,decisión cerrada del Tema 1,"m = clip(CHL/mediana en calma, 1, 10)"
+multiplicador,todos,min_sesiones_calma,,,,,,252,True,supuesto del bloque 8,calma = vol 21d <= su mediana expansiva
+patrimonio,degiro,capital_inicial_eur,,,,,,10000.0,True,decisión cerrada del Tema 1,IBKR como sensibilidad
+grupo_mercado,todos,XASX,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XHKG,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XKRX,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XSHG,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XTAI,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XTKS,,,,,,ASIA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XTSE,,,,,,CA,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XSWX,,,,,,CH,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,CRYPTO,,,,,,CRIPTO,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XMAD,,,,,,ES,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XAMS,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XBRU,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XETR,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XLIS,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XMIL,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XPAR,,,,,,EU,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,NAV_US,,,,,,FONDO_US,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XLON,,,,,,UK,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,ARCX,,,,,,US,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,BATS,,,,,,US,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XNAS,,,,,,US,True,config/mercados.yaml,grupo de comisión
+grupo_mercado,todos,XNYS,,,,,,US,True,config/mercados.yaml,grupo de comisión
