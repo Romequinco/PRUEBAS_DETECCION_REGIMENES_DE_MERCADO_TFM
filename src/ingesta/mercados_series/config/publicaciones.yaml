@@ -630,19 +630,121 @@ publicadores:
     notas:
       - "Supplemental Estimates del BEA (ventas de vehículos, ventas reales de manufacturas y comercio): hora oficial sin contrastar; muestras de FRED last_updated (TOTALSA 2026-10-02 14:19 NY, CMRMTSPL 2026-09-30 08:50 NY): la mayor, redondeada"
 
-series:   # las del Tema 1 están en catalogo_series.yaml
-  "ecb:EXR.D.*.EUR":
-    fuente: ecb_exr
-    metodo: calendario
-    publicador: ecb_fx
-    hora_local: "16:00"
+  # --- Bloque 4 y 6 (fundido desde config/fragmentos/) ---
+  ecb_tipos_oficiales:
+    hora: 00:00
     huso: Europe/Berlin
-    margen_min: 0
-    calendario: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/
-    notas:
-      - "Unidades de X por 1 EUR; días TARGET2"
+    dia: mismo
+    fuente: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/
     verificado: false
-    revisable: false
+    notas:
+    - 'Tipos oficiales del BCE: la fila es la fecha de efecto; visible ese día (la decisión se anuncia días antes: conservador)'
+  imf_weo:
+    hora: 09:00
+    huso: America/New_York
+    dia: mismo
+    fuente: https://www.imf.org/en/Publications/WEO
+    verificado: false
+    notas:
+    - la fecha de cada edición está en fuentes.imf.FECHAS_EDICION (notas de prensa)
+  oecd_edicion:
+    hora: '23:59'
+    huso: Europe/Paris
+    dia: mismo
+    verificado: false
+    fuente: https://sdmx.oecd.org/public/rest/dataflow/OECD.SDD.STES/DSD_STES_REVISIONS@DF_STES_REVISIONS/4.0
+    notas:
+    - 'Fecha dada = último día del mes de la edición (EDITION AAAAMM de DF_STES_REVISIONS): conservadora; la OCDE publica el
+      CLI hacia la segunda semana del mes'
+  philly_rtdsm:
+    hora: '23:59'
+    huso: America/New_York
+    dia: mismo
+    verificado: false
+    fuente: https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/real-time-data-set-for-macroeconomists
+    notas:
+    - 'Fecha dada = último día del mes del vintage (trimestrales: mes central del trimestre, vintage a mediados de ese mes):
+      conservadora'
+  boc_valet:
+    hora: '12:00'
+    huso: America/Toronto
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.bankofcanada.ca/valet/docs
+    verificado: false
+    notas:
+    - 'Conservador: el dato del día D se da por visible el hábil siguiente a las 12:00 de Toronto'
+  boj_diario:
+    hora: '12:00'
+    huso: Asia/Tokyo
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.stat-search.boj.or.jp/info/api_manual_en.pdf
+    verificado: false
+    notas:
+    - 'Tipo call: la cifra definitiva del día D sale el hábil siguiente por la mañana (Tokio); conservador 12:00'
+  bundesbank_diario:
+    hora: '12:00'
+    huso: Europe/Berlin
+    dia: siguiente_habil
+    habiles: target
+    fuente: https://api.statistiken.bundesbank.de/doc/index.html
+    verificado: false
+    notas:
+    - 'Medido 2026-10-13: la curva Svensson del día D aparece ya el día D (Stand vom 13.10.2026 12:15); se usa D+1 12:00 Berlín,
+      conservador'
+  rba_diario:
+    hora: '12:00'
+    huso: Australia/Sydney
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.rba.gov.au/statistics/tables/
+    verificado: false
+    notas:
+    - 'Tablas F1/F2 diarias en CSV; conservador: hábil siguiente a las 12:00 de Sídney'
+  ecb_yc:
+    hora: '12:00'
+    huso: Europe/Berlin
+    dia: siguiente_habil
+    habiles: target
+    fuente: https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_area_yield_curves/html/index.en.html
+    verificado: false
+    notas:
+    - Last-Modified de la API 2026-10-13 10:00 UTC (12:00 Berlín) con el dato del 12
+  mof_jgb:
+    hora: 08:30
+    huso: Asia/Tokyo
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/index.htm
+    verificado: false
+    notas:
+    - Last-Modified de jgbcme.csv 2026-10-12 23:30 UTC (08:30 JST del 13) con el dato del 9
+    - 'festivos japoneses fuera del calendario ''semana'': el cargador usa como hábil siguiente la siguiente fecha con dato
+      del CSV'
+  boc_bonos:
+    hora: '18:00'
+    huso: America/Toronto
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.bankofcanada.ca/rates/interest-rates/canadian-bonds/
+    verificado: false
+    notas:
+    - 'Conservador: el 2026-10-13 a las 07:44 Toronto el último dato era el del 8 (festivo el 12)'
+    - 'festivos canadienses: el cargador usa la siguiente fecha con dato'
+  boe_yc:
+    hora: '12:00'
+    huso: Europe/London
+    dia: siguiente_habil
+    habiles: semana
+    fuente: https://www.bankofengland.co.uk/statistics/yield-curves
+    verificado: false
+    notas:
+    - Last-Modified del zip 2026-10-13 10:04 UTC (11:04 Londres) con el dato del 12
+    - 'festivos británicos: el cargador usa la siguiente fecha con dato'
+
+# FX del BCE: una entrada por divisa (ecb:EXR.D.<X>.EUR, fuente bce) en catalogo_series.yaml (bloque 4).
+series:   # las del Tema 1 están en catalogo_series.yaml
 
 # Cierres no programados (sin contrastar con la fuente oficial: verificado pendiente). Los federales
 # salen de órdenes ejecutivas (lutos nacionales, Nochebuena o 26-dic concedidos) y emergencias;

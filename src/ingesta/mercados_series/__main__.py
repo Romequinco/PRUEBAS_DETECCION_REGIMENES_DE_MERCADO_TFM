@@ -6,8 +6,14 @@
   alguna sigue con error. Cada tanda deja una fila en ``<corpus>/mercados_series/logs/descargas.csv``.
 - ``descargar-fred-vivo [--ids ...] [--max-minutos N] [--completa]``: ídem con la fuente viva de FRED
   (``fuentes.fred.descargar_fred_vivo``: completa la primera vez, incremental después).
-- ``construir-base [--sin-red] [--desde-cero] [--reemplazar] [--purgar] [--sin-escribir]``: une ALFRED +
-  FRED vivo + académicos + fase1 (``base.construir_base``), escribe
+- ``descargar-<fuente> [argumentos del módulo]`` (bloques 4 a 6): delega en la CLI de cada extractor
+  (``FUENTES_CLI``: bce, eurostat, bis, imf, worldbank, oecd, philly, bancos, curvas, cripto). Sin
+  argumentos usa los de ``FUENTES_CLI`` (descarga del día + fichas); los argumentos van tal cual.
+- ``descargar-precios --nivel nucleo|ampliado [--fichero CSV] [--etiqueta E]``: precios as-traded de
+  Yahoo (``proveedores.yahoo``; reanudable, <= 0,5 tickers/s).
+- ``construir-base [--sin-red] [--desde-cero] [--respaldo F] [--reemplazar] [--purgar] [--sin-escribir]``:
+  une ALFRED > académicos > FRED vivo > fuentes oficiales (BCE, Eurostat, BIS, FMI, Banco Mundial, OCDE,
+  bancos centrales, curvas) > Philadelphia Fed (antes de ALFRED) > fase1 (``base.construir_base``), escribe
   ``<corpus>/mercados_series/series/base_series.parquet`` y
   ``results/ingesta/mercados_series/tablas/cobertura_series.csv``. ``--sin-red``: solo crudos ya
   descargados y ``data/raw``. ``--desde-cero``: copia la base guardada a
@@ -152,7 +158,7 @@ def _construir(a: argparse.Namespace) -> int:
 
     resumen, tabla = base.construir_base(sin_red=a.sin_red, escribir=not a.sin_escribir,
                                          permitir_perdidas=a.reemplazar, purgar=a.purgar,
-                                         desde_cero=a.desde_cero, registro=print)
+                                         desde_cero=a.desde_cero, respaldo=a.respaldo, registro=print)
     if a.sin_escribir:
         print("ensayo (--sin-escribir): no se escribe ni la base ni la cobertura")
     else:
@@ -214,13 +220,49 @@ def _excepciones(a: argparse.Namespace) -> int:
     return 1 if errores else 0
 
 
+# Orden → (módulo, argumentos por defecto). Las descargas largas son reanudables en cada módulo.
+FUENTES_CLI = {
+    "bce": ("ingesta.mercados_series.fuentes.bce", ["--fichas"]),
+    "eurostat": ("ingesta.mercados_series.fuentes.eurostat", ["--fichas"]),
+    "bis": ("ingesta.mercados_series.fuentes.bis", []),
+    "imf": ("ingesta.mercados_series.fuentes.imf", []),
+    "worldbank": ("ingesta.mercados_series.fuentes.worldbank", []),
+    "oecd": ("ingesta.mercados_series.fuentes.oecd", ["--descargar", "--ficha"]),
+    "philly": ("ingesta.mercados_series.fuentes.philly_rtdsm", ["--descargar", "--ficha"]),
+    "bancos": ("ingesta.mercados_series.fuentes.bancos_centrales", ["--descargar", "--fichas"]),
+    "curvas": ("ingesta.mercados_series.fuentes.curvas", ["--descargar", "--fichas", "--escribir"]),
+    "cripto": ("ingesta.mercados_series.fuentes.cripto", ["--coinbase", "--binance", "--comparar", "--fichas"]),
+}
+
+
+def _descargar_fuente(a: argparse.Namespace) -> int:
+    import importlib
+
+    modulo, defecto = FUENTES_CLI[a.fuente]
+    argumentos = list(a.argumentos) or list(defecto)
+    print(f"python -m {modulo} {' '.join(argumentos)}")
+    r = importlib.import_module(modulo).main(argumentos)
+    return int(r or 0)
+
+
+def _descargar_precios(a: argparse.Namespace) -> int:
+    from ingesta.mercados_series.proveedores import yahoo
+
+    argumentos = [a.nivel]
+    if a.fichero:
+        argumentos += ["--fichero", str(a.fichero)]
+    if a.etiqueta:
+        argumentos += ["--etiqueta", a.etiqueta]
+    return int(yahoo.main(argumentos) or 0)
+
+
 def _sin_red(url: str, params: dict) -> dict:
     raise RuntimeError("sin red (--sin-red): falta en la caché de hoy")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="python -m ingesta.mercados_series",
-                                description="Tema 1 · base de series (bloques 2 y 3)")
+                                description="Tema 1 · base de series y precios (bloques 2 a 6)")
     sub = p.add_subparsers(dest="orden", required=True)
     da = sub.add_parser("descargar-alfred", help="una tanda de vintages de ALFRED (reanudable)")
     da.add_argument("--ids", nargs="*", help="ids del catálogo (por defecto fuentes.alfred.ids_alfred())")
@@ -236,7 +278,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     c = sub.add_parser("construir-base", help="une ALFRED + FRED vivo + académicos + fase1 y escribe la base")
     c.add_argument("--sin-red", action="store_true", help="solo crudos ya descargados y data/raw")
     c.add_argument("--desde-cero", action="store_true",
-                   help="copia la base guardada a series/respaldo_bloque2.parquet y la sustituye entera")
+                   help="copia la base guardada a series/<respaldo> y la sustituye entera")
+    c.add_argument("--respaldo", default="respaldo_bloque2.parquet",
+                   help="nombre de la copia previa con --desde-cero (p. ej. respaldo_bloque3.parquet)")
     c.add_argument("--reemplazar", action="store_true",
                    help="permite cambiar filas guardadas (revisiones del último vintage, errores propios)")
     c.add_argument("--purgar", action="store_true",
@@ -253,7 +297,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     x.set_defaults(func=_excepciones)
     ia = sub.add_parser("informe-alfred", help="tablas de revisiones y de adelantos de la regla previa (ALFRED)")
     ia.set_defaults(func=_informe_alfred)
-    a = p.parse_args(argv)
+    for fuente, (modulo, defecto) in FUENTES_CLI.items():
+        df = sub.add_parser(f"descargar-{fuente}", help=f"delega en {modulo} (por defecto: {' '.join(defecto) or '-'})")
+        df.add_argument("argumentos", nargs="*", help="argumentos del módulo (las opciones van tal cual)")
+        df.set_defaults(func=_descargar_fuente, fuente=fuente)
+    dp = sub.add_parser("descargar-precios", help="precios as-traded de Yahoo (núcleo o ampliado; reanudable)")
+    dp.add_argument("--nivel", choices=["nucleo", "ampliado"], default="nucleo")
+    dp.add_argument("--fichero", type=Path, default=None, help="CSV con columna 'ticker' (nivel ampliado)")
+    dp.add_argument("--etiqueta", default=None)
+    dp.set_defaults(func=_descargar_precios)
+    a, resto = p.parse_known_args(argv)
+    if resto:
+        if a.func is not _descargar_fuente:
+            p.error(f"argumentos no reconocidos: {' '.join(resto)}")
+        a.argumentos = [*a.argumentos, *resto]
     return a.func(a)
 
 

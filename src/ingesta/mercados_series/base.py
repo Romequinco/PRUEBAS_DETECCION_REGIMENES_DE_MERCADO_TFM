@@ -60,7 +60,13 @@ from ingesta.mercados_series.contrato import (
 )
 
 TEMA = "mercados_series"
-CARGADORES = ("fase1", "fred", "academicos", "alfred")
+CARGADORES = ("fase1", "philly_rtdsm", "curvas", "bancos_centrales", "oecd", "worldbank", "imf", "bis", "eurostat",
+              "bce", "fred", "academicos", "alfred")
+# Bloques 4 y 6: cargadores de fuentes oficiales (``catalogo.CARGADOR_POR_FUENTE``). Leen los crudos o las
+# tablas ya descargadas en el corpus; las descargas van por la CLI (``descargar-<fuente>``).
+CARGADORES_OFICIALES = ("bce", "eurostat", "bis", "imf", "worldbank", "oecd", "bancos_centrales", "curvas",
+                        "philly_rtdsm")
+_BLOQUE4 = {"bis": "bis", "imf": "imf_weo", "worldbank": "worldbank"}
 # Orden de catalogo.PRIORIDAD_ORIGENES (sin 'derivadas', que no es un cargador: se recalculan tras unir).
 PRIORIDAD = {c: i for i, c in enumerate(reversed([o for o in cat_mod.PRIORIDAD_ORIGENES if o in CARGADORES]))}
 CARGADOR_DERIVADAS = "derivadas"
@@ -71,7 +77,7 @@ AVISO_FRED = ("This product uses the FRED® API but is not endorsed or certified
               "Bank of St. Louis.")
 
 __all__ = [
-    "CARGADORES", "PRIORIDAD", "RESPALDO", "ResumenBase", "tablas_fuentes", "unir", "fechas_solo_respaldo",
+    "CARGADORES", "CARGADORES_OFICIALES", "tabla_oficial", "PRIORIDAD", "RESPALDO", "ResumenBase", "tablas_fuentes", "unir", "fechas_solo_respaldo",
     "derivar_diferencias",
     "catalogo_efectivo", "construir_base", "cobertura", "escribir_cobertura", "resumen_base",
     "anotar_anomalias", "NOTA_PICO", "NOTA_FIN_DE_SEMANA", "NOTA_RACHA",
@@ -85,7 +91,9 @@ UMBRAL_PICO = 0.4            # |Δlog| de ida y de vuelta
 UMBRAL_REVERSION = 0.1       # |log(siguiente / anterior)|: el pico no cambia el nivel
 MIN_RACHA = 120              # observaciones diarias seguidas con el mismo valor
 # Tipos administrados (constantes entre reuniones del FOMC): una racha plana es normal.
-SIN_RACHAS = ("fred:IORB", "fred:DPCREDIT", "fred:DFF", "fred:EFFR", "fred:OBFR", "fred:FEDFUNDS")
+SIN_RACHAS = ("fred:IORB", "fred:DPCREDIT", "fred:DFF", "fred:EFFR", "fred:OBFR", "fred:FEDFUNDS",
+              # Bloque 4: tipos oficiales del BCE, del Banco de Canadá y del RBA (fecha de efecto).
+              "ecb:DFR", "ecb:MRO", "boc:V39079", "rba:FIRMMCRTD")
 
 
 @dataclass
@@ -154,6 +162,8 @@ def tablas_fuentes(*, sin_red: bool = False, cargadores: Iterable[str] = CARGADO
             out[nombre] = fase1.tabla_fase1(raiz_fase1, cat)
         elif nombre == "fred":
             out[nombre] = fred.tabla_fred_vivo(sin_red=sin_red, cliente=cliente_fred, cat=cat, registro=log)
+        elif nombre in CARGADORES_OFICIALES:
+            out[nombre] = tabla_oficial(nombre, sin_red=sin_red, registro=log)
         elif nombre == "alfred":
             out[nombre] = alfred.tabla_alfred(cliente=cliente_alfred, descargar=not sin_red, cat=cat,
                                               informe=informe_alfred if informe_alfred is not None else {})
@@ -168,6 +178,70 @@ def tablas_fuentes(*, sin_red: bool = False, cargadores: Iterable[str] = CARGADO
         log(f"{nombre}: {len(out[nombre])} filas, {out[nombre]['serie'].nunique()} series "
             f"({time.monotonic() - t0:.0f} s)")
     return out
+
+
+def tabla_oficial(nombre: str, *, sin_red: bool = True, registro: Callable[[str], None] | None = None) -> pd.DataFrame:
+    """Tabla validada de un cargador de ``CARGADORES_OFICIALES`` (bloques 4 y 6) desde el corpus.
+
+    ``bce``/``eurostat``: crudos archivados (``sin_red``) o descarga del día. ``bis``/``imf``/``worldbank``:
+    ``<corpus>/mercados_series/bloque4/<fuente>.parquet``. ``oecd``: CSV de ediciones archivados.
+    ``bancos_centrales``: crudo de cada serie. ``curvas``: ``series/curvas_b6.parquet`` o los crudos.
+    ``philly_rtdsm``: matrices xlsx (solo vintages anteriores al primero de ALFRED). Lo que falta en
+    el corpus se omite con aviso (una fuente sin descargar no para la construcción).
+    """
+    log = registro or (lambda _m: None)
+    corpus = almacen.corpus_dir(TEMA)
+    partes: list[pd.DataFrame] = []
+    if nombre == "bce":
+        from ingesta.mercados_series.fuentes import bce
+        partes.append(bce.tabla_bce(sin_red=sin_red)[0])
+    elif nombre == "eurostat":
+        from ingesta.mercados_series.fuentes import eurostat
+        partes.append(eurostat.tabla_eurostat(sin_red=sin_red)[0])
+    elif nombre in _BLOQUE4:
+        ruta = corpus / "bloque4" / f"{_BLOQUE4[nombre]}.parquet"
+        if ruta.exists():
+            partes.append(pd.read_parquet(ruta))
+        else:
+            log(f"  aviso: {nombre}: falta {ruta} (python -m ingesta.mercados_series descargar-{nombre})")
+    elif nombre == "oecd":
+        from ingesta.mercados_series.fuentes import oecd
+        for area in oecd.AREAS:
+            for medida in oecd.MEDIDAS:
+                crudo = oecd.cargar_crudo(area, medida)
+                if crudo is not None and len(crudo):
+                    t = oecd.tabla_oecd(area, medida, crudo)
+                    if len(t):
+                        partes.append(t)
+    elif nombre == "bancos_centrales":
+        from ingesta.mercados_series.fuentes import b4_comun, bancos_centrales as bc
+        for sid, info in bc.SERIES.items():
+            ruta = b4_comun.ruta_crudo(info["fuente"]) / bc._nombre_crudo(sid)
+            if ruta.exists():
+                partes.append(bc.tabla_banco(sid, bc.leer(sid, ruta.read_bytes())))
+            else:
+                log(f"  aviso: bancos_centrales: {sid} sin crudo")
+    elif nombre == "curvas":
+        ruta = corpus / "series" / "curvas_b6.parquet"
+        if ruta.exists():
+            partes.append(pd.read_parquet(ruta))
+        else:
+            from ingesta.mercados_series.fuentes import curvas
+            partes.append(curvas.tabla_curvas())
+    elif nombre == "philly_rtdsm":
+        from ingesta.mercados_series.fuentes import philly_rtdsm as ph
+        for v in ph.MAPEO:
+            ruta = ph._ruta_local(v)
+            if ruta.exists():
+                t = ph.tabla_philly(v, ruta)
+                if len(t):
+                    partes.append(t)
+    else:
+        raise ValueError(f"cargador oficial desconocido {nombre!r}; válidos: {list(CARGADORES_OFICIALES)}")
+    partes = [p for p in partes if len(p)]
+    if not partes:
+        return vacio_series()
+    return validar_series(pd.concat(partes, ignore_index=True)[list(COLUMNAS_SERIES)])
 
 
 # --- Unión --------------------------------------------------------------------------------------
@@ -340,7 +414,7 @@ def anotar_anomalias(base: pd.DataFrame, catalogo: dict[str, dict]) -> tuple[pd.
             tipos["pico"] = pd.Series(pico, index=g.index)
         if catalogo[sid]["metodo"] == "cierre_mercado":
             tipos["fin_de_semana"] = g["fecha_referencia"].dt.weekday >= 5
-        if sid not in SIN_RACHAS and catalogo[sid].get("publicador") != "fed_h10":   # H.10: paridades fijas
+        if sid not in SIN_RACHAS and catalogo[sid].get("publicador") not in ("fed_h10", "ecb_fx"):   # paridades fijas
             grupo = (v != v.shift()).cumsum()
             largo = grupo.map(grupo.value_counts())
             tipos["racha"] = largo >= MIN_RACHA

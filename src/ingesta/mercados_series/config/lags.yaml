@@ -801,3 +801,59 @@ adicionales:
     tipo: trimestral
     justificacion: "CBO Budget and Economic Outlook (enero-febrero) y su actualización (verano): la estimación de un trimestre se conoce en el informe siguiente; 6 fines de mes + 1 día (conservador). Los valores previos al primer vintage son estimaciones posteriores."
     verificado: false
+
+  # --- Bloque 4 (BIS y Banco Mundial; fundido desde config/fragmentos/b4_bis_fmi_bm.yaml) ---
+  BIS_WS_CBPOL:
+    lag: 7D
+    fin_periodo: mes
+    verificado: false
+    justificacion: 'el tipo se conoce el día de la decisión; el BIS lo recopila con retraso de días: 7 días tras el fin de mes
+      (conservador)'
+  BIS_WS_CREDIT_GAP:
+    lag: 6M
+    fin_periodo: trimestre
+    verificado: false
+    justificacion: 'publicación trimestral del BIS (crédito total) con 3-6 meses de retraso: 6 fines de mes tras el trimestre
+      (conservador)'
+  BIS_WS_DSR:
+    lag: 6M
+    fin_periodo: trimestre
+    verificado: false
+    justificacion: 'se publica con el crédito total: 6 fines de mes tras el trimestre'
+  BIS_WS_EER:
+    lag: 1M
+    fin_periodo: mes
+    verificado: false
+    justificacion: 'publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+  WB_ANUAL:
+    lag: 12M
+    fin_periodo: anio
+    verificado: false
+    justificacion: 'WDI: el año t sale entre abril y julio de t+1; fin de t+1 (conservador)'
+
+  # --- Corrección (paro y PIB de Eurostat/BCE: antes reutilizaban UNRATE y GDPC1, que adelantaban la publicación) ---
+  EUROSTAT_PARO:
+    lag: 2M
+    fin_periodo: mes
+    tipo: macro
+    verificado: false
+    justificacion: 'Paro mensual de Eurostat (une_rt_m, BCE LFSI U2): hoy sale el día 1-4 de M+2 y antes de ~2012
+      a t+30-40 días (noviembre de 2009 salió el 2010-01-08; la ronda de enero de 2026 el 2026-03-04, VALID_FROM
+      del BCE). La regla de UNRATE (1M1D) lo veía antes de publicarse: fin de M+2 en todo el histórico
+      (conservador; deuda: tramos por época, 1M5D desde 2012).'
+  EUROSTAT_PARO_UK:
+    lag: 3M
+    fin_periodo: mes
+    tipo: macro
+    verificado: false
+    justificacion: 'Reino Unido en une_rt_m: LFS de la ONS (media móvil de 3 meses) publicada a mediados de M+2 (julio a
+      septiembre de 2020 salió el 2020-11-10) y Eurostat la incorporaba 1-2 meses más tarde: fin de M+3.'
+  EUROSTAT_PIB:
+    lag: 2M10D
+    fin_periodo: trimestre
+    tipo: trimestral
+    verificado: false
+    justificacion: 'PIB trimestral de Eurostat (namq_10_gdp) y BCE MNA I10: flash t+30 solo desde 2016, t+45 entre
+      2003 y 2015 y primera estimación hacia t+60-70 antes de 2003; Destatis a t+45 hasta 2020; ONS t+40/45
+      antes de 2018. La regla de GDPC1 (1M1D = t+31) adelantaba la publicación: 2 fines de mes + 10 días (t+71)
+      en todo el histórico (conservador; deuda: tramos por época).'

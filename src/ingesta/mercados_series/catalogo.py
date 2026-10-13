@@ -69,7 +69,15 @@ PROYECCIONES = ("recortar", "conservar")
 FUENTES_VIVAS = ("fred",)
 # Orígenes (cargadores) de una serie por prioridad (bloque 3): vintages de ALFRED > ediciones académicas >
 # derivadas recalculadas > FRED vivo > data/raw de la Fase 1. Una serie solo tiene algunos (``origenes``).
-PRIORIDAD_ORIGENES = ("alfred", "academicos", "derivadas", "fred", "fase1")
+PRIORIDAD_ORIGENES = ("alfred", "academicos", "derivadas", "fred", "bce", "eurostat", "bis", "imf", "worldbank",
+                      "oecd", "bancos_centrales", "curvas", "philly_rtdsm", "fase1")
+# Bloques 4 y 6: cargador de cada fuente oficial (``fuente`` del catálogo → cargador de ``base``). Philly
+# (vintages anteriores a ALFRED) va detrás de las fuentes vivas y antes de la Fase 1.
+CARGADOR_POR_FUENTE = {
+    "bce": "bce", "eurostat": "eurostat", "bis": "bis", "imf_weo": "imf", "worldbank": "worldbank",
+    "oecd": "oecd", "philly_rtdsm": "philly_rtdsm", "boc": "bancos_centrales", "boj": "bancos_centrales",
+    "bundesbank": "bancos_centrales", "rba": "bancos_centrales", "ust_curva": "curvas", "bce_curvas": "curvas",
+    "mof_jgb": "curvas", "boc_curva": "curvas", "boe_curvas": "curvas"}
 # Fuentes con archivo de ediciones propio (fuentes.academicos): la copia de data/raw es su edición previa.
 FUENTES_EDICION = ("ken_french", "shiller", "goyal_welch", "ofr_fsi")
 NOTA_PREVIA_ALFRED = "anterior a ALFRED: valor del primer vintage"
@@ -77,7 +85,9 @@ NOTA_PREVIA_ALFRED = "anterior a ALFRED: valor del primer vintage"
 ESTADOS_CARGABLES = ("activa", "retirada", "capada", "duplicada")
 FRECUENCIAS = ("diaria", "semanal", "mensual", "trimestral", "anual")
 FINES_PERIODO = ("fecha", "mes", "trimestre", "anio")
-PREFIJOS = ("fred", "yf", "ff", "gw", "shiller", "datahub", "ofr", "deriv")
+PREFIJOS = ("fred", "yf", "ff", "gw", "shiller", "datahub", "ofr", "deriv",
+            # Bloques 4 y 6: organismos, bancos centrales y curvas oficiales.
+            "ecb", "eurostat", "bis", "imf", "wb", "oecd", "philly", "boc", "boj", "bbk", "rba", "ust", "mof", "boe")
 ROLES_FASE1 = ("spine", "core", "enricher", "fallback", "validation")
 METODOS_CON_LAG = ("lag_fijo", "fichero")
 
@@ -110,7 +120,7 @@ __all__ = [
     "NOTA_PRIMERA_EDICION",
     "NOTAS_REVISABLE", "NOTA_RECONSTRUIDA", "NOTA_EXCEPCION", "NOTA_PREVIA_ALFRED", "ESTADOS", "ESTADOS_CARGABLES",
     "FRECUENCIAS", "GRUPOS", "AGENTES", "PROYECCIONES", "FUENTES_VIVAS", "FUENTES_EDICION", "PRIORIDAD_ORIGENES",
-    "origenes", "metodos_admitidos", "nota_previa_alfred", "entrada_previa", "vista_regla_previa",
+    "origenes", "metodos_admitidos", "expandir_patrones", "CARGADOR_POR_FUENTE", "nota_previa_alfred", "entrada_previa", "vista_regla_previa",
     "FINES_PERIODO", "PREFIJOS", "cargar_lags", "fin_de_periodo", "fecha_publicacion_lag",
     "fecha_publicacion_regla", "nota_revisable", "es_nota_revisable", "cargar_excepciones",
     "aplicar_excepciones", "anotar_reconstruidas", "resolver_caja",
@@ -497,7 +507,10 @@ def _coherencia(cat: dict[str, dict], origen: str) -> None:
 
 def _fecha_iso(valor: Any, donde: str, campo: str) -> str:
     try:
-        return pd.Timestamp(str(valor)).date().isoformat()
+        ts = pd.Timestamp(str(valor))
+        if pd.isna(ts):
+            raise ValueError
+        return ts.date().isoformat()
     except ValueError:
         raise ValueError(f"{donde}: {campo} {valor!r} no es AAAA-MM-DD") from None
 
@@ -555,13 +568,39 @@ def _validar_bloque3(sid: str, e: dict[str, Any], out: dict[str, Any], lags: dic
     out["fuente_viva"] = viva
 
 
+def expandir_patrones(patrones: Any, origen: str = "catalogo", *, existentes: Any = ()) -> dict[str, dict[str, Any]]:
+    """Sección ``patrones`` (bloque 4, Banco Mundial): ``{'wb:*.<indicador>': {..., paises: [ISO3...]}}``.
+
+    Cada patrón se expande a una entrada por país (``*`` → ISO3) con el resto de campos del patrón y el
+    nombre terminado en `` - <ISO3>`` (en vez de `` - todos los países``). Un id ya declarado en
+    ``series`` o repetido es un error.
+    """
+    out: dict[str, dict[str, Any]] = {}
+    for pid, e in (patrones or {}).items():
+        donde = f"{origen}: patrón {pid!r}"
+        if not isinstance(e, dict) or str(pid).count("*") != 1:
+            raise ValueError(f"{donde}: un patrón es un id con un solo '*' y una entrada con 'paises'")
+        paises = e.get("paises")
+        if not (isinstance(paises, list) and paises and all(isinstance(x, str) and x for x in paises)):
+            raise ValueError(f"{donde}: 'paises' debe ser una lista no vacía de códigos")
+        base = {k: v for k, v in e.items() if k != "paises"}
+        for iso in paises:
+            sid = str(pid).replace("*", iso)
+            if sid in out or sid in existentes:
+                raise ValueError(f"{donde}: id {sid!r} repetido")
+            nombre = str(base.get("nombre", "")).replace(" - todos los países", "")
+            out[sid] = {**copy.deepcopy(base), "nombre": f"{nombre} - {iso}"}
+    return out
+
+
 def _validar_catalogo(crudo: Any, origen: str, lags: dict, publicadores: dict) -> dict[str, dict[str, Any]]:
     if not isinstance(crudo, dict):
         raise ValueError(f"{origen}: se esperaba un diccionario")
-    visibilidad._claves(crudo, {"version", "series"}, set(), origen)
+    visibilidad._claves(crudo, {"version", "series"}, {"patrones"}, origen)
     series = crudo["series"]
     if not isinstance(series, dict) or not series:
         raise ValueError(f"{origen}: 'series' debe ser un diccionario no vacío {{id: entrada}}")
+    series = {**series, **expandir_patrones(crudo.get("patrones"), origen, existentes=series)}
     cat = {str(sid): _validar_entrada(str(sid), e, lags, publicadores, origen) for sid, e in series.items()}
     _coherencia(cat, origen)
     return cat
@@ -623,6 +662,8 @@ def origenes(entrada: dict[str, Any]) -> tuple[str, ...]:
         return ("academicos", *fase1)
     if entrada["metodo"] == "derivada":
         return ("derivadas", *fase1)
+    if entrada["fuente"] in CARGADOR_POR_FUENTE:
+        return (CARGADOR_POR_FUENTE[entrada["fuente"]], *fase1)
     return fase1
 
 

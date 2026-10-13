@@ -8524,3 +8524,6257 @@ series:
     - 'medido (bloque 3; data/raw de la Fase 1 y caché de FRED del bloque 2): el cálculo reproduce CPFF de FRED salvo redondeo
       a 2 decimales: 6720 fechas comunes 1997-01-02..2026-07-16, todas iguales; 1 fecha solo en el cálculo (1999-01-18)'
     verificado: true
+
+  # --- Bloque 4 y 6 (fundido por el integrador desde config/fragmentos/: BCE, Eurostat, BIS, FMI WEO,
+  # OCDE, Philadelphia Fed, bancos centrales y curvas oficiales) ---
+  ecb:DFR:
+    alias: null
+    nombre: Tipo de la facilidad de depósito del BCE (fecha de efecto)
+    fuente: bce
+    id_origen: FM/B.U2.EUR.4F.KR.DFR.LEV
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_tipos_oficiales
+  ecb:EONIA:
+    alias: null
+    nombre: EONIA (euro overnight index average)
+    fuente: bce
+    id_origen: EON/D.EONIA_TO.RATE
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'EMMI/EBF vía BCE: solo local, sin redistribuir'
+    estado: retirada
+    verificado: false
+    publicador: ecb_estr
+    sucesor: ecb:ESTR
+  ecb:ESTR:
+    alias: null
+    nombre: €STR (euro short-term rate), media recortada
+    fuente: bce
+    id_origen: EST/B.EU000A2X2A25.WT
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_estr
+  ecb:EXR.D.ARS.EUR:
+    alias: null
+    nombre: Argentine peso/Euro (ARS por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.ARS.EUR.SP00.A
+    frecuencia: diaria
+    unidad: ARS por 1 EUR
+    divisa: ARS
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.AUD.EUR:
+    alias: null
+    nombre: Australian dollar/Euro ECB reference exchange rate (AUD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.AUD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: AUD por 1 EUR
+    divisa: AUD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.BGN.EUR:
+    alias: null
+    nombre: Euro/Bulgarian lev (BGN por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.BGN.EUR.SP00.A
+    frecuencia: diaria
+    unidad: BGN por 1 EUR
+    divisa: BGN
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.BRL.EUR:
+    alias: null
+    nombre: Brazilian real/Euro ECB reference exchange rate (BRL por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.BRL.EUR.SP00.A
+    frecuencia: diaria
+    unidad: BRL por 1 EUR
+    divisa: BRL
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.CAD.EUR:
+    alias: null
+    nombre: Canadian dollar/Euro ECB reference exchange rate (CAD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.CAD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: CAD por 1 EUR
+    divisa: CAD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.CHF.EUR:
+    alias: null
+    nombre: Swiss franc/Euro ECB reference exchange rate (CHF por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.CHF.EUR.SP00.A
+    frecuencia: diaria
+    unidad: CHF por 1 EUR
+    divisa: CHF
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.CNY.EUR:
+    alias: null
+    nombre: Chinese yuan renminbi/Euro ECB reference exchange rate (CNY por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.CNY.EUR.SP00.A
+    frecuencia: diaria
+    unidad: CNY por 1 EUR
+    divisa: CNY
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.CYP.EUR:
+    alias: null
+    nombre: Euro/Cyprus pound (CYP por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.CYP.EUR.SP00.A
+    frecuencia: diaria
+    unidad: CYP por 1 EUR
+    divisa: CYP
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.CZK.EUR:
+    alias: null
+    nombre: Czech koruna/Euro ECB reference exchange rate (CZK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.CZK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: CZK por 1 EUR
+    divisa: CZK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.DKK.EUR:
+    alias: null
+    nombre: Danish krone/Euro ECB reference exchange rate (DKK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.DKK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: DKK por 1 EUR
+    divisa: DKK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.DZD.EUR:
+    alias: null
+    nombre: Algerian dinar/Euro (DZD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.DZD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: DZD por 1 EUR
+    divisa: DZD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.EEK.EUR:
+    alias: null
+    nombre: Euro/Estonian kroon (EEK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.EEK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: EEK por 1 EUR
+    divisa: EEK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.GBP.EUR:
+    alias: null
+    nombre: Pound sterling/Euro ECB reference exchange rate (GBP por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.GBP.EUR.SP00.A
+    frecuencia: diaria
+    unidad: GBP por 1 EUR
+    divisa: GBP
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.GRD.EUR:
+    alias: null
+    nombre: Euro/Greek drachma (GRD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.GRD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: GRD por 1 EUR
+    divisa: GRD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.HKD.EUR:
+    alias: null
+    nombre: Hong Kong dollar/Euro ECB reference exchange rate (HKD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.HKD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: HKD por 1 EUR
+    divisa: HKD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.HRK.EUR:
+    alias: null
+    nombre: Euro/Croatian kuna (HRK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.HRK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: HRK por 1 EUR
+    divisa: HRK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.HUF.EUR:
+    alias: null
+    nombre: Hungarian forint/Euro ECB reference exchange rate (HUF por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.HUF.EUR.SP00.A
+    frecuencia: diaria
+    unidad: HUF por 1 EUR
+    divisa: HUF
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.IDR.EUR:
+    alias: null
+    nombre: Indonesian rupiah/Euro ECB reference exchange rate (IDR por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.IDR.EUR.SP00.A
+    frecuencia: diaria
+    unidad: IDR por 1 EUR
+    divisa: IDR
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.ILS.EUR:
+    alias: null
+    nombre: Israeli shekel/Euro ECB reference exchange rate (ILS por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.ILS.EUR.SP00.A
+    frecuencia: diaria
+    unidad: ILS por 1 EUR
+    divisa: ILS
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.INR.EUR:
+    alias: null
+    nombre: Indian rupee/Euro ECB reference exchange rate (INR por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.INR.EUR.SP00.A
+    frecuencia: diaria
+    unidad: INR por 1 EUR
+    divisa: INR
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.ISK.EUR:
+    alias: null
+    nombre: Icelandic krona/Euro ECB reference exchange rate (ISK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.ISK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: ISK por 1 EUR
+    divisa: ISK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.JPY.EUR:
+    alias: null
+    nombre: Japanese yen/Euro ECB reference exchange rate (JPY por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.JPY.EUR.SP00.A
+    frecuencia: diaria
+    unidad: JPY por 1 EUR
+    divisa: JPY
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.KRW.EUR:
+    alias: null
+    nombre: South Korean won/Euro ECB reference exchange rate (KRW por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.KRW.EUR.SP00.A
+    frecuencia: diaria
+    unidad: KRW por 1 EUR
+    divisa: KRW
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.LTL.EUR:
+    alias: null
+    nombre: Euro/Lithuanian litas (LTL por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.LTL.EUR.SP00.A
+    frecuencia: diaria
+    unidad: LTL por 1 EUR
+    divisa: LTL
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.LVL.EUR:
+    alias: null
+    nombre: Euro/Latvian lats (LVL por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.LVL.EUR.SP00.A
+    frecuencia: diaria
+    unidad: LVL por 1 EUR
+    divisa: LVL
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.MAD.EUR:
+    alias: null
+    nombre: Moroccan dirham/Euro (MAD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.MAD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: MAD por 1 EUR
+    divisa: MAD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.MTL.EUR:
+    alias: null
+    nombre: Euro/Maltese lira (MTL por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.MTL.EUR.SP00.A
+    frecuencia: diaria
+    unidad: MTL por 1 EUR
+    divisa: MTL
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.MXN.EUR:
+    alias: null
+    nombre: Mexican peso/Euro ECB reference exchange rate (MXN por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.MXN.EUR.SP00.A
+    frecuencia: diaria
+    unidad: MXN por 1 EUR
+    divisa: MXN
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.MYR.EUR:
+    alias: null
+    nombre: Malaysian ringgit/Euro ECB reference exchange rate (MYR por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.MYR.EUR.SP00.A
+    frecuencia: diaria
+    unidad: MYR por 1 EUR
+    divisa: MYR
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.NOK.EUR:
+    alias: null
+    nombre: Norwegian krone/Euro ECB reference exchange rate (NOK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.NOK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: NOK por 1 EUR
+    divisa: NOK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.NZD.EUR:
+    alias: null
+    nombre: New Zealand dollar/Euro ECB reference exchange rate (NZD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.NZD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: NZD por 1 EUR
+    divisa: NZD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.PHP.EUR:
+    alias: null
+    nombre: Philippine peso/Euro ECB reference exchange rate (PHP por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.PHP.EUR.SP00.A
+    frecuencia: diaria
+    unidad: PHP por 1 EUR
+    divisa: PHP
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.PLN.EUR:
+    alias: null
+    nombre: Polish zloty/Euro ECB reference exchange rate (PLN por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.PLN.EUR.SP00.A
+    frecuencia: diaria
+    unidad: PLN por 1 EUR
+    divisa: PLN
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.RON.EUR:
+    alias: null
+    nombre: Romanian leu/Euro ECB reference exchange rate (RON por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.RON.EUR.SP00.A
+    frecuencia: diaria
+    unidad: RON por 1 EUR
+    divisa: RON
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.RUB.EUR:
+    alias: null
+    nombre: Russian rouble/Euro (RUB por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.RUB.EUR.SP00.A
+    frecuencia: diaria
+    unidad: RUB por 1 EUR
+    divisa: RUB
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.SEK.EUR:
+    alias: null
+    nombre: Swedish krona/Euro ECB reference exchange rate (SEK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.SEK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: SEK por 1 EUR
+    divisa: SEK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.SGD.EUR:
+    alias: null
+    nombre: Singapore dollar/Euro ECB reference exchange rate (SGD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.SGD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: SGD por 1 EUR
+    divisa: SGD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.SIT.EUR:
+    alias: null
+    nombre: Euro/Slovenian tolar (SIT por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.SIT.EUR.SP00.A
+    frecuencia: diaria
+    unidad: SIT por 1 EUR
+    divisa: SIT
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.SKK.EUR:
+    alias: null
+    nombre: Euro/Slovak koruna (SKK por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.SKK.EUR.SP00.A
+    frecuencia: diaria
+    unidad: SKK por 1 EUR
+    divisa: SKK
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.THB.EUR:
+    alias: null
+    nombre: Thai baht/Euro ECB reference exchange rate (THB por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.THB.EUR.SP00.A
+    frecuencia: diaria
+    unidad: THB por 1 EUR
+    divisa: THB
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.TRY.EUR:
+    alias: null
+    nombre: Turkish lira/Euro ECB reference exchange rate (TRY por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.TRY.EUR.SP00.A
+    frecuencia: diaria
+    unidad: TRY por 1 EUR
+    divisa: TRY
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.TWD.EUR:
+    alias: null
+    nombre: New Taiwan dollar/Euro (TWD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.TWD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: TWD por 1 EUR
+    divisa: TWD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: retirada
+    verificado: false
+    publicador: ecb_fx
+    notas:
+    - divisa retirada del fijado de referencia del BCE (sin datos posteriores)
+  ecb:EXR.D.USD.EUR:
+    alias: null
+    nombre: US dollar/Euro ECB reference exchange rate (USD por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.USD.EUR.SP00.A
+    frecuencia: diaria
+    unidad: USD por 1 EUR
+    divisa: USD
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:EXR.D.ZAR.EUR:
+    alias: null
+    nombre: South African rand/Euro ECB reference exchange rate (ZAR por 1 EUR)
+    fuente: bce
+    id_origen: EXR/D.ZAR.EUR.SP00.A
+    frecuencia: diaria
+    unidad: ZAR por 1 EUR
+    divisa: ZAR
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_fx
+  ecb:HICP.M.U2.N.000000.4D0.ANR:
+    alias: null
+    nombre: HICP zona euro (composición cambiante), general, tasa anual
+    fuente: bce
+    id_origen: HICP/M.U2.N.000000.4D0.ANR
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: vintage_exacto
+    revisable: true
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: eurostat
+    regla_previa_alfred:
+      lag_clave: CPIAUCSL
+      primer_vintage: '2026-02-04'
+  ecb:HICP.M.U2.N.XEF000.4D0.ANR:
+    alias: null
+    nombre: HICP zona euro (composición cambiante) sin energía, alimentos, alcohol ni tabaco, tasa anual
+    fuente: bce
+    id_origen: HICP/M.U2.N.XEF000.4D0.ANR
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: vintage_exacto
+    revisable: true
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: eurostat
+    regla_previa_alfred:
+      lag_clave: CPILFESL
+      primer_vintage: '2026-01-28'
+  ecb:LFSI.M.U2.S.UNEHRT.TOTAL0.15_74.T:
+    alias: null
+    nombre: Tasa de paro de la zona euro (composición cambiante), 15-74 años, desestacionalizada
+    fuente: bce
+    id_origen: LFSI/M.U2.S.UNEHRT.TOTAL0.15_74.T
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: vintage_exacto
+    revisable: true
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: eurostat
+    regla_previa_alfred:
+      lag_clave: UNRATE
+      primer_vintage: '2026-09-01'
+  ecb:MNA.Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY:
+    alias: null
+    nombre: PIB real de la zona euro 21 (composición fija), tasa interanual
+    fuente: bce
+    id_origen: MNA/Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: vintage_exacto
+    revisable: true
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: eurostat
+    regla_previa_alfred:
+      lag_clave: GDPC1
+      primer_vintage: '2026-09-07'
+    notas:
+    - 'MNA no tiene la zona euro de composición cambiante (U2): se usa I10 (EA21 fija desde 2026)'
+  ecb:MRO:
+    alias: null
+    nombre: Tipo de las operaciones principales de financiación del BCE (fecha de efecto)
+    fuente: bce
+    id_origen: FM/B.U2.EUR.4F.KR.MRR_FR.LEV
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    revisable: false
+    rol_fase1: null
+    licencia: 'BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF,
+      solo local'
+    estado: activa
+    verificado: false
+    publicador: ecb_tipos_oficiales
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.DE:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (DE)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.DE
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EA20:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (EA20)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.EA20
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EA21:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (EA21)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.EA21
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EU27_2020:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (EU27_2020)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.EU27_2020
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.FR:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (FR)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.FR
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.IT:
+    alias: null
+    nombre: Indicador de sentimiento económico (ESI), desestacionalizado (IT)
+    fuente: eurostat
+    id_origen: ei_bssi_m_r2/M.BS-ESI-I.SA.IT
+    frecuencia: mensual
+    unidad: índice (media de largo plazo = 100)
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UMCSENT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.DE:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (DE)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.DE
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (EA)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA20:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (EA20)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA20
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA21:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (EA21)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA21
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EU27_2020:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (EU27_2020)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EU27_2020
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.FR:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (FR)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.FR
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.IT:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (IT)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.IT
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.UK:
+    alias: null
+    nombre: PIB real, tasa interanual (desestacionalizado) (UK)
+    fuente: eurostat
+    id_origen: namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.UK
+    frecuencia: trimestral
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: GDPC1
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.DE:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (DE)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.DE
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.DE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.EA:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (EA)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.EA
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.EA20:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (EA20)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.EA20
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA20
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.EU27_2020:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (EU27_2020)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.EU27_2020
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EU27_2020
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.FR:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (FR)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.FR
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.FR
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.IT:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (IT)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.IT
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.IT
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.UK:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (UK)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.UK
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.UK
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_manr.M.RCH_A.CP00.US:
+    alias: null
+    nombre: HICP general (ECOICOP v1, serie antigua), tasa anual (US)
+    fuente: eurostat
+    id_origen: prc_hicp_manr/M.RCH_A.CP00.US
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: retirada
+    verificado: false
+    lag_clave: CPIAUCSL
+    sucesor: eurostat:prc_hicp_minr.M.RCH_A.TOTAL.US
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.DE:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (DE)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.DE
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (EA)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.EA
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA20:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (EA20)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.EA20
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA21:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (EA21)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.EA21
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EU27_2020:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (EU27_2020)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.EU27_2020
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.FR:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (FR)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.FR
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.IT:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (IT)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.IT
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.UK:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (UK)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.UK
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:prc_hicp_minr.M.RCH_A.TOTAL.US:
+    alias: null
+    nombre: HICP general (ECOICOP v2), tasa anual (US)
+    fuente: eurostat
+    id_origen: prc_hicp_minr/M.RCH_A.TOTAL.US
+    frecuencia: mensual
+    unidad: '% interanual'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: CPIAUCSL
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de
+      2026'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.DE:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (DE)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.DE
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.EA21:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (EA21)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.EA21
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.EU27_2020:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (EU27_2020)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.EU27_2020
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.FR:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (FR)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.FR
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.IT:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (IT)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.IT
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.JP:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (JP)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.JP
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.UK:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (UK)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.UK
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.US:
+    alias: null
+    nombre: Tasa de paro 15-74, desestacionalizada (US)
+    fuente: eurostat
+    id_origen: une_rt_m/M.SA.TOTAL.PC_ACT.T.US
+    frecuencia: mensual
+    unidad: '% población activa'
+    divisa: null
+    metodo: lag_fijo
+    revisable: true
+    rol_fase1: null
+    licencia: 'Eurostat: reutilización libre con cita (Decisión 2011/833/UE; © Unión Europea)'
+    estado: activa
+    verificado: false
+    lag_clave: UNRATE
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+  bis:WS_CBPOL.M.CA:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Canadá
+    fuente: bis
+    id_origen: WS_CBPOL/M.CA
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.CN:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - China
+    fuente: bis
+    id_origen: WS_CBPOL/M.CN
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.DE:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Alemania
+    fuente: bis
+    id_origen: WS_CBPOL/M.DE
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.FR:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Francia
+    fuente: bis
+    id_origen: WS_CBPOL/M.FR
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.GB:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Reino Unido
+    fuente: bis
+    id_origen: WS_CBPOL/M.GB
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.IT:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Italia
+    fuente: bis
+    id_origen: WS_CBPOL/M.IT
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.JP:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - Japón
+    fuente: bis
+    id_origen: WS_CBPOL/M.JP
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.US:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - EE. UU.
+    fuente: bis
+    id_origen: WS_CBPOL/M.US
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CBPOL.M.XM:
+    alias: null
+    nombre: Tipo oficial del banco central (BIS, fin de mes) - zona euro
+    fuente: bis
+    id_origen: WS_CBPOL/M.XM
+    frecuencia: mensual
+    unidad: '% anual (fin de mes)'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CBPOL
+    revisable: false
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'retraso conservador 7D desde el fin del periodo: el tipo se conoce el día de la decisión; el BIS lo recopila con retraso
+      de días: 7 días tras el fin de mes (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.CA.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Canadá
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.CA.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.CN.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - China
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.CN.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.DE.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Alemania
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.DE.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.FR.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Francia
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.FR.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.GB.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Reino Unido
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.GB.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.IT.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Italia
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.IT.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.JP.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - Japón
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.JP.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.US.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - EE. UU.
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.US.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_CREDIT_GAP.Q.XM.P.A.C:
+    alias: null
+    nombre: Brecha crédito/PIB, sector privado no financiero (BIS) - zona euro
+    fuente: bis
+    id_origen: WS_CREDIT_GAP/Q.XM.P.A.C
+    frecuencia: trimestral
+    unidad: puntos porcentuales del PIB
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_CREDIT_GAP
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: publicación trimestral del BIS (crédito total) con 3-6 meses de retraso:
+      6 fines de mes tras el trimestre (conservador)'
+    verificado: false
+  bis:WS_DSR.Q.CA.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Canadá
+    fuente: bis
+    id_origen: WS_DSR/Q.CA.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.CN.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - China
+    fuente: bis
+    id_origen: WS_DSR/Q.CN.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.DE.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Alemania
+    fuente: bis
+    id_origen: WS_DSR/Q.DE.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.FR.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Francia
+    fuente: bis
+    id_origen: WS_DSR/Q.FR.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.GB.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Reino Unido
+    fuente: bis
+    id_origen: WS_DSR/Q.GB.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.IT.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Italia
+    fuente: bis
+    id_origen: WS_DSR/Q.IT.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.JP.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - Japón
+    fuente: bis
+    id_origen: WS_DSR/Q.JP.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_DSR.Q.US.P:
+    alias: null
+    nombre: Ratio de servicio de la deuda, sector privado no financiero (BIS) - EE. UU.
+    fuente: bis
+    id_origen: WS_DSR/Q.US.P
+    frecuencia: trimestral
+    unidad: '% de la renta disponible'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_DSR
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 6M desde el fin del periodo: se publica con el crédito total: 6 fines de mes tras el trimestre'
+    verificado: false
+  bis:WS_EER.M.R.B.CA:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Canadá
+    fuente: bis
+    id_origen: WS_EER/M.R.B.CA
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.CN:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - China
+    fuente: bis
+    id_origen: WS_EER/M.R.B.CN
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.DE:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Alemania
+    fuente: bis
+    id_origen: WS_EER/M.R.B.DE
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.FR:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Francia
+    fuente: bis
+    id_origen: WS_EER/M.R.B.FR
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.GB:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Reino Unido
+    fuente: bis
+    id_origen: WS_EER/M.R.B.GB
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.IT:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Italia
+    fuente: bis
+    id_origen: WS_EER/M.R.B.IT
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.JP:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - Japón
+    fuente: bis
+    id_origen: WS_EER/M.R.B.JP
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.US:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - EE. UU.
+    fuente: bis
+    id_origen: WS_EER/M.R.B.US
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  bis:WS_EER.M.R.B.XM:
+    alias: null
+    nombre: Tipo de cambio efectivo real, cesta amplia (BIS) - zona euro
+    fuente: bis
+    id_origen: WS_EER/M.R.B.XM
+    frecuencia: mensual
+    unidad: índice (2020 = 100)
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: BIS_WS_EER
+    revisable: true
+    rol_fase1: null
+    licencia: 'BIS: uso libre con cita (términos de stats.bis.org)'
+    estado: activa
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - 'retraso conservador 1M desde el fin del periodo: publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+    verificado: false
+  imf:WEO.CAN.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - CAN'
+    fuente: imf_weo
+    id_origen: WEO/CAN.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CAN.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - CAN'
+    fuente: imf_weo
+    id_origen: WEO/CAN.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CAN.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - CAN'
+    fuente: imf_weo
+    id_origen: WEO/CAN.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CAN.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - CAN'
+    fuente: imf_weo
+    id_origen: WEO/CAN.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CAN.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - CAN'
+    fuente: imf_weo
+    id_origen: WEO/CAN.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CHN.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - CHN'
+    fuente: imf_weo
+    id_origen: WEO/CHN.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CHN.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - CHN'
+    fuente: imf_weo
+    id_origen: WEO/CHN.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CHN.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - CHN'
+    fuente: imf_weo
+    id_origen: WEO/CHN.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CHN.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - CHN'
+    fuente: imf_weo
+    id_origen: WEO/CHN.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.CHN.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - CHN'
+    fuente: imf_weo
+    id_origen: WEO/CHN.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.DEU.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - DEU'
+    fuente: imf_weo
+    id_origen: WEO/DEU.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.DEU.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - DEU'
+    fuente: imf_weo
+    id_origen: WEO/DEU.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.DEU.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - DEU'
+    fuente: imf_weo
+    id_origen: WEO/DEU.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.DEU.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - DEU'
+    fuente: imf_weo
+    id_origen: WEO/DEU.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.DEU.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - DEU'
+    fuente: imf_weo
+    id_origen: WEO/DEU.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.FRA.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - FRA'
+    fuente: imf_weo
+    id_origen: WEO/FRA.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.FRA.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - FRA'
+    fuente: imf_weo
+    id_origen: WEO/FRA.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.FRA.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - FRA'
+    fuente: imf_weo
+    id_origen: WEO/FRA.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.FRA.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - FRA'
+    fuente: imf_weo
+    id_origen: WEO/FRA.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.FRA.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - FRA'
+    fuente: imf_weo
+    id_origen: WEO/FRA.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.GBR.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - GBR'
+    fuente: imf_weo
+    id_origen: WEO/GBR.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.GBR.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - GBR'
+    fuente: imf_weo
+    id_origen: WEO/GBR.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.GBR.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - GBR'
+    fuente: imf_weo
+    id_origen: WEO/GBR.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.GBR.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - GBR'
+    fuente: imf_weo
+    id_origen: WEO/GBR.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.GBR.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - GBR'
+    fuente: imf_weo
+    id_origen: WEO/GBR.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.ITA.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - ITA'
+    fuente: imf_weo
+    id_origen: WEO/ITA.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.ITA.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - ITA'
+    fuente: imf_weo
+    id_origen: WEO/ITA.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.ITA.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - ITA'
+    fuente: imf_weo
+    id_origen: WEO/ITA.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.ITA.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - ITA'
+    fuente: imf_weo
+    id_origen: WEO/ITA.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.ITA.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - ITA'
+    fuente: imf_weo
+    id_origen: WEO/ITA.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.JPN.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - JPN'
+    fuente: imf_weo
+    id_origen: WEO/JPN.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.JPN.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - JPN'
+    fuente: imf_weo
+    id_origen: WEO/JPN.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.JPN.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - JPN'
+    fuente: imf_weo
+    id_origen: WEO/JPN.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.JPN.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - JPN'
+    fuente: imf_weo
+    id_origen: WEO/JPN.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.JPN.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - JPN'
+    fuente: imf_weo
+    id_origen: WEO/JPN.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.USA.GGXCNL_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Saldo de las AA. PP. (capacidad/necesidad de financiación) - USA'
+    fuente: imf_weo
+    id_origen: WEO/USA.GGXCNL_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.USA.GGXWDG_NGDP:
+    alias: null
+    nombre: 'WEO del FMI: Deuda bruta de las AA. PP. - USA'
+    fuente: imf_weo
+    id_origen: WEO/USA.GGXWDG_NGDP
+    frecuencia: anual
+    unidad: '% del PIB'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.USA.LUR:
+    alias: null
+    nombre: 'WEO del FMI: Tasa de paro - USA'
+    fuente: imf_weo
+    id_origen: WEO/USA.LUR
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.USA.NGDP_RPCH:
+    alias: null
+    nombre: 'WEO del FMI: PIB real, variación anual - USA'
+    fuente: imf_weo
+    id_origen: WEO/USA.NGDP_RPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  imf:WEO.USA.PCPIPCH:
+    alias: null
+    nombre: 'WEO del FMI: Inflación (IPC medio), variación anual - USA'
+    fuente: imf_weo
+    id_origen: WEO/USA.PCPIPCH
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: imf_weo
+    revisable: true
+    rol_fase1: null
+    licencia: 'FMI: uso libre con cita (términos de imf.org); DBnomics como espejo'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición descartadas (contrato)
+    - falta la edición de 2011-09 (DBnomics no la tiene)
+    verificado: false
+  oecd:LI_AA.USA:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), EE. UU. (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/USA.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.EA20:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), zona euro (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/EA20.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.DEU:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Alemania (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/DEU.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.FRA:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Francia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/FRA.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.ITA:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Italia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/ITA.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.GBR:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Reino Unido (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/GBR.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.JPN:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Japón (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/JPN.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.CAN:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), Canadá (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CAN.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:LI_AA.CHN:
+    alias: null
+    nombre: Indicador compuesto adelantado (CLI, amplitud ajustada), China (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CHN.M.LI_AA...
+    frecuencia: mensual
+    unidad: índice (100 = tendencia de largo plazo)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: actividad
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.USA:
+    alias: null
+    nombre: Índice de precios al consumo, EE. UU. (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/USA.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.EA20:
+    alias: null
+    nombre: Índice de precios al consumo, zona euro (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/EA20.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.DEU:
+    alias: null
+    nombre: Índice de precios al consumo, Alemania (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/DEU.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.FRA:
+    alias: null
+    nombre: Índice de precios al consumo, Francia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/FRA.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.ITA:
+    alias: null
+    nombre: Índice de precios al consumo, Italia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/ITA.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.GBR:
+    alias: null
+    nombre: Índice de precios al consumo, Reino Unido (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/GBR.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.JPN:
+    alias: null
+    nombre: Índice de precios al consumo, Japón (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/JPN.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.CAN:
+    alias: null
+    nombre: Índice de precios al consumo, Canadá (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CAN.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:CP.CHN:
+    alias: null
+    nombre: Índice de precios al consumo, China (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CHN.M.CP...
+    frecuencia: mensual
+    unidad: índice (año base de la edición)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.USA:
+    alias: null
+    nombre: Tasa de paro, EE. UU. (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/USA.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.EA20:
+    alias: null
+    nombre: Tasa de paro, zona euro (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/EA20.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.DEU:
+    alias: null
+    nombre: Tasa de paro, Alemania (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/DEU.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.FRA:
+    alias: null
+    nombre: Tasa de paro, Francia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/FRA.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.ITA:
+    alias: null
+    nombre: Tasa de paro, Italia (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/ITA.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.GBR:
+    alias: null
+    nombre: Tasa de paro, Reino Unido (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/GBR.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.JPN:
+    alias: null
+    nombre: Tasa de paro, Japón (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/JPN.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.CAN:
+    alias: null
+    nombre: Tasa de paro, Canadá (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CAN.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  oecd:UNEMP.CHN:
+    alias: null
+    nombre: Tasa de paro, China (OCDE, ediciones de DF_STES_REVISIONS)
+    fuente: oecd
+    id_origen: OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/CHN.M.UNEMP...
+    frecuencia: mensual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: oecd_edicion
+    revisable: true
+    rol_fase1: null
+    licencia: 'OCDE: CC BY 4.0 (términos de la OCDE); citar ''OECD, Short-term economic statistics revisions'''
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    notas:
+    - vintage = edición AAAA-MM de la OCDE; fecha de publicación conservadora = fin del mes de la edición (23:59 París)
+    - solo valores nuevos o revisados entre ediciones consecutivas
+    - 'área sin datos en DF_STES_REVISIONS: queda sin filas (ver ficha oecd)'
+  philly:ROUTPUT:
+    alias: null
+    nombre: PIB real de EE. UU. (PNB antes de 1992), matriz de vintages RTDSM
+    fuente: philly_rtdsm
+    id_origen: ROUTPUT
+    frecuencia: trimestral
+    unidad: miles de millones de dólares constantes (base del vintage), tasa anual desestacionalizada
+    divisa: USD
+    metodo: vintage_exacto
+    publicador: philly_rtdsm
+    revisable: true
+    rol_fase1: null
+    licencia: 'Federal Reserve Bank of Philadelphia: uso libre citando la fuente (Real-Time Data Set for Macroeconomists)'
+    estado: activa
+    verificado: false
+    grupo: pib
+    agentes:
+    - macro
+    unidad_por_vintage: true
+    coherente_con:
+    - fred:GDPC1
+    notas:
+    - 'equivale a fred:GDPC1: solo vintages ANTERIORES al primer vintage de ALFRED de fred:GDPC1 (el resto lo da ALFRED)'
+    - vintage AAAA-MM; fecha de publicación conservadora = fin del mes del vintage (23:59 Nueva York)
+    - siglo del vintage por orden de columnas (EMPLOY64M12 es 1964, no 2064)
+  philly:PCPI:
+    alias: null
+    nombre: IPC de EE. UU. (RTDSM)
+    fuente: philly_rtdsm
+    id_origen: PCPI
+    frecuencia: mensual
+    unidad: índice 1982-84=100 (desestacionalizado)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: philly_rtdsm
+    revisable: true
+    rol_fase1: null
+    licencia: 'Federal Reserve Bank of Philadelphia: uso libre citando la fuente (Real-Time Data Set for Macroeconomists)'
+    estado: activa
+    verificado: false
+    grupo: precios
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    coherente_con:
+    - fred:CPIAUCSL
+    notas:
+    - 'equivale a fred:CPIAUCSL: solo vintages ANTERIORES al primer vintage de ALFRED de fred:CPIAUCSL (el resto lo da ALFRED)'
+    - vintage AAAA-MM; fecha de publicación conservadora = fin del mes del vintage (23:59 Nueva York)
+    - siglo del vintage por orden de columnas (EMPLOY64M12 es 1964, no 2064)
+  philly:EMPLOY:
+    alias: null
+    nombre: Empleo no agrícola de EE. UU. (RTDSM)
+    fuente: philly_rtdsm
+    id_origen: EMPLOY
+    frecuencia: mensual
+    unidad: miles de personas (desestacionalizado)
+    divisa: null
+    metodo: vintage_exacto
+    publicador: philly_rtdsm
+    revisable: true
+    rol_fase1: null
+    licencia: 'Federal Reserve Bank of Philadelphia: uso libre citando la fuente (Real-Time Data Set for Macroeconomists)'
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    coherente_con:
+    - fred:PAYEMS
+    notas:
+    - 'equivale a fred:PAYEMS: solo vintages ANTERIORES al primer vintage de ALFRED de fred:PAYEMS (el resto lo da ALFRED)'
+    - vintage AAAA-MM; fecha de publicación conservadora = fin del mes del vintage (23:59 Nueva York)
+    - siglo del vintage por orden de columnas (EMPLOY64M12 es 1964, no 2064)
+  philly:RUC:
+    alias: null
+    nombre: Tasa de paro civil de EE. UU. (RTDSM)
+    fuente: philly_rtdsm
+    id_origen: RUC
+    frecuencia: mensual
+    unidad: '% (desestacionalizado)'
+    divisa: null
+    metodo: vintage_exacto
+    publicador: philly_rtdsm
+    revisable: true
+    rol_fase1: null
+    licencia: 'Federal Reserve Bank of Philadelphia: uso libre citando la fuente (Real-Time Data Set for Macroeconomists)'
+    estado: activa
+    verificado: false
+    grupo: empleo
+    agentes:
+    - macro
+    unidad_por_vintage: false
+    coherente_con:
+    - fred:UNRATE
+    notas:
+    - 'equivale a fred:UNRATE: solo vintages ANTERIORES al primer vintage de ALFRED de fred:UNRATE (el resto lo da ALFRED)'
+    - vintage AAAA-MM; fecha de publicación conservadora = fin del mes del vintage (23:59 Nueva York)
+    - siglo del vintage por orden de columnas (EMPLOY64M12 es 1964, no 2064)
+  boc:V39079:
+    alias: null
+    nombre: Objetivo del tipo a un día (Banco de Canadá)
+    fuente: boc
+    id_origen: V39079
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_valet
+    revisable: false
+    rol_fase1: null
+    licencia: 'Banco de Canadá: términos de uso (https://www.bankofcanada.ca/terms/), uso libre citando la fuente'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  boc:BD.CDN.10YR.DQ.YLD:
+    alias: null
+    nombre: Rendimiento del bono del Gobierno de Canadá a 10 años (referencia)
+    fuente: boc
+    id_origen: BD.CDN.10YR.DQ.YLD
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_valet
+    revisable: false
+    rol_fase1: null
+    licencia: 'Banco de Canadá: términos de uso (https://www.bankofcanada.ca/terms/), uso libre citando la fuente'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  boj:FM01.STRDCLUCON:
+    alias: null
+    nombre: Tipo call sin garantía a un día, media diaria (Banco de Japón)
+    fuente: boj
+    id_origen: FM01/STRDCLUCON
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boj_diario
+    revisable: false
+    rol_fase1: null
+    licencia: 'Banco de Japón: uso libre citando la fuente (términos de stat-search)'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  bbk:BBSIS.D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A:
+    alias: null
+    nombre: Rendimiento de la deuda federal alemana a 10 años (curva Svensson, Bundesbank)
+    fuente: bundesbank
+    id_origen: BBSIS/D.I.ZST.ZI.EUR.S1311.B.A604.R10XX.R.A.A._Z._Z.A
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: bundesbank_diario
+    revisable: false
+    rol_fase1: null
+    licencia: 'Deutsche Bundesbank: uso libre citando la fuente (términos de la base estadística)'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  rba:FIRMMCRTD:
+    alias: null
+    nombre: Objetivo del cash rate (Reserve Bank of Australia)
+    fuente: rba
+    id_origen: f1-data.csv:FIRMMCRTD
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: rba_diario
+    revisable: false
+    rol_fase1: null
+    licencia: 'Reserve Bank of Australia: CC BY 4.0'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  rba:FCMYGBAG10D:
+    alias: null
+    nombre: Rendimiento del bono del Gobierno australiano a 10 años (RBA)
+    fuente: rba
+    id_origen: f2-data.csv:FCMYGBAG10D
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: rba_diario
+    revisable: false
+    rol_fase1: null
+    licencia: 'Reserve Bank of Australia: CC BY 4.0'
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    notas:
+    - 'publicación conservadora: hábil siguiente al dato a las 12:00 locales (publicador del fragmento)'
+  ust:PAR.1M:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 1 mes
+    fuente: ust_curva
+    id_origen: PAR.1M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - plazo publicado desde 2001-07-31
+  ust:PAR.6W:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 6 semanas (1.5 Month)
+    fuente: ust_curva
+    id_origen: PAR.6W
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - plazo publicado desde 2025-02-18
+  ust:PAR.2M:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 2 meses
+    fuente: ust_curva
+    id_origen: PAR.2M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - plazo publicado desde 2018-10-16
+  ust:PAR.3M:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 3 meses
+    fuente: ust_curva
+    id_origen: PAR.3M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.4M:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 4 meses
+    fuente: ust_curva
+    id_origen: PAR.4M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - plazo publicado desde 2022-10-19
+  ust:PAR.6M:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 6 meses
+    fuente: ust_curva
+    id_origen: PAR.6M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.1Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 1 año
+    fuente: ust_curva
+    id_origen: PAR.1Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.2Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 2 años
+    fuente: ust_curva
+    id_origen: PAR.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.3Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 3 años
+    fuente: ust_curva
+    id_origen: PAR.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.5Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 5 años
+    fuente: ust_curva
+    id_origen: PAR.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.7Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 7 años
+    fuente: ust_curva
+    id_origen: PAR.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.10Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 10 años
+    fuente: ust_curva
+    id_origen: PAR.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+  ust:PAR.20Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 20 años
+    fuente: ust_curva
+    id_origen: PAR.20Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - plazo publicado desde 1993-10-01
+  ust:PAR.30Y:
+    alias: null
+    nombre: Curva par del Tesoro de EE. UU., 30 años
+    fuente: ust_curva
+    id_origen: PAR.30Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: treasury_curva
+    revisable: false
+    rol_fase1: null
+    licencia: dominio público (Gobierno de EE. UU.)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - 'origen: CSV anual daily_treasury_yield_curve, columna por cabecera; vintage ''unico'''
+    - 'sin publicar entre 2002-02-19 y 2006-02-08: nulos con nota'
+  ecb:YC.AAA.3M:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 3M
+    fuente: bce_curvas
+    id_origen: YC.AAA.3M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_3M; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.6M:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 6M
+    fuente: bce_curvas
+    id_origen: YC.AAA.6M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_6M; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.1Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 1Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.1Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_1Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.2Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 2Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_2Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.3Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 3Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_3Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.5Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 5Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_5Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.7Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 7Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_7Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.10Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 10Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_10Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.15Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 15Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.15Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_15Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.20Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 20Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.20Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_20Y; zona euro de composición cambiante (U2)
+  ecb:YC.AAA.30Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (bonos AAA), tipo al contado a 30Y
+    fuente: bce_curvas
+    id_origen: YC.AAA.30Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_A.SV_C_YM.SR_30Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.3M:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 3M
+    fuente: bce_curvas
+    id_origen: YC.ALL.3M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_3M; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.6M:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 6M
+    fuente: bce_curvas
+    id_origen: YC.ALL.6M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_6M; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.1Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 1Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.1Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_1Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.2Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 2Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_2Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.3Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 3Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_3Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.5Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 5Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_5Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.7Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 7Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_7Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.10Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 10Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_10Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.15Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 15Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.15Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_15Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.20Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 20Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.20Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_20Y; zona euro de composición cambiante (U2)
+  ecb:YC.ALL.30Y:
+    alias: null
+    nombre: Curva Svensson de la zona euro (todos los emisores), tipo al contado a 30Y
+    fuente: bce_curvas
+    id_origen: YC.ALL.30Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: ecb_yc
+    revisable: false
+    rol_fase1: null
+    licencia: reutilización libre citando la fuente (condiciones de uso del BCE)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - SDMX YC/B.U2.EUR.4F.G_N_C.SV_C_YM.SR_30Y; zona euro de composición cambiante (U2)
+  mof:JGB.1Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 1Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.1Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 1Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.2Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 2Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 2Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.3Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 3Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 3Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.4Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 4Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.4Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 4Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.5Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 5Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 5Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.6Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 6Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.6Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 6Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.7Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 7Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 7Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.8Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 8Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.8Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 8Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.9Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 9Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.9Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 9Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.10Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 10Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 10Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.15Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 15Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.15Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 15Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.20Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 20Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.20Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 20Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.25Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 25Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.25Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 25Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.30Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 30Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.30Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 30Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  mof:JGB.40Y:
+    alias: null
+    nombre: Rendimiento de referencia del JGB a 40Y (MoF de Japón)
+    fuente: mof_jgb
+    id_origen: JGB.40Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: mof_jgb
+    revisable: false
+    rol_fase1: null
+    licencia: condiciones de uso del sitio del MoF de Japón (reutilización citando la fuente)
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - jgbcme_all.csv + jgbcme.csv, columna 40Y; '-' = plazo aún no emitido (sin filas antes del primer valor)
+  boc:BOND.2Y:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, 2Y
+    fuente: boc_curva
+    id_origen: BOND.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.2YR.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.3Y:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, 3Y
+    fuente: boc_curva
+    id_origen: BOND.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.3YR.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.5Y:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, 5Y
+    fuente: boc_curva
+    id_origen: BOND.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.5YR.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.7Y:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, 7Y
+    fuente: boc_curva
+    id_origen: BOND.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.7YR.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.10Y:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, 10Y
+    fuente: boc_curva
+    id_origen: BOND.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.10YR.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.LONG:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, LONG
+    fuente: boc_curva
+    id_origen: BOND.LONG
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.LONG.DQ.YLD (grupo bond_yields_benchmark)
+  boc:BOND.RRB:
+    alias: null
+    nombre: Rendimiento del bono de referencia del Gobierno de Canadá, RRB
+    fuente: boc_curva
+    id_origen: BOND.RRB
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boc_bonos
+    revisable: false
+    rol_fase1: null
+    licencia: términos del Banco de Canadá (https://www.bankofcanada.ca/terms/), citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - Valet BD.CDN.RRB.DQ.YLD (grupo bond_yields_benchmark)
+    - 'bono real (Real Return Bond): rendimiento real'
+  boe:NOM.6M:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 6M
+    fuente: boe_curvas
+    id_origen: NOM.6M
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.1Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 1Y
+    fuente: boe_curvas
+    id_origen: NOM.1Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.2Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 2Y
+    fuente: boe_curvas
+    id_origen: NOM.2Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.3Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 3Y
+    fuente: boe_curvas
+    id_origen: NOM.3Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.5Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 5Y
+    fuente: boe_curvas
+    id_origen: NOM.5Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.7Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 7Y
+    fuente: boe_curvas
+    id_origen: NOM.7Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.10Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 10Y
+    fuente: boe_curvas
+    id_origen: NOM.10Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.15Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 15Y
+    fuente: boe_curvas
+    id_origen: NOM.15Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.20Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 20Y
+    fuente: boe_curvas
+    id_origen: NOM.20Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.25Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 25Y
+    fuente: boe_curvas
+    id_origen: NOM.25Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.30Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 30Y
+    fuente: boe_curvas
+    id_origen: NOM.30Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+  boe:NOM.40Y:
+    alias: null
+    nombre: Curva nominal del gilt (BoE, spot) a 40Y
+    fuente: boe_curvas
+    id_origen: NOM.40Y
+    frecuencia: diaria
+    unidad: '% anual'
+    divisa: null
+    metodo: calendario
+    publicador: boe_yc
+    revisable: false
+    rol_fase1: null
+    licencia: © Bank of England; uso permitido citando la fuente
+    estado: activa
+    verificado: false
+    grupo: dinero_credito
+    agentes:
+    - macro
+    - risk
+    - portfolio
+    notas:
+    - hoja '4. spot curve' del xlsx GLC Nominal; histórico en glcnominalddata.zip (CLI --historico-boe)
+
+# Patrones (Banco Mundial): una entrada por indicador con id 'wb:*.<indicador>' y la lista 'paises' (ISO3);
+# catalogo.cargar_catalogo la expande a 'wb:<ISO3>.<indicador>' (nombre con el país al final).
+patrones:
+  wb:*.NY.GDP.MKTP.KD.ZG:
+    alias: null
+    nombre: 'Banco Mundial (WDI): Crecimiento del PIB real - todos los países'
+    fuente: worldbank
+    id_origen: NY.GDP.MKTP.KD.ZG
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: WB_ANUAL
+    revisable: true
+    rol_fase1: null
+    licencia: 'Banco Mundial: CC BY 4.0'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - lag conservador 12M desde el fin del año (WDI publica t en abril-julio de t+1)
+    - solo países (los agregados regionales y por renta se descartan)
+    verificado: false
+    paises:
+    - ABW
+    - AFG
+    - AGO
+    - ALB
+    - AND
+    - ARE
+    - ARG
+    - ARM
+    - ASM
+    - ATG
+    - AUS
+    - AUT
+    - AZE
+    - BDI
+    - BEL
+    - BEN
+    - BFA
+    - BGD
+    - BGR
+    - BHR
+    - BHS
+    - BIH
+    - BLR
+    - BLZ
+    - BMU
+    - BOL
+    - BRA
+    - BRB
+    - BRN
+    - BTN
+    - BWA
+    - CAF
+    - CAN
+    - CHE
+    - CHI
+    - CHL
+    - CHN
+    - CIV
+    - CMR
+    - COD
+    - COG
+    - COL
+    - COM
+    - CPV
+    - CRI
+    - CUB
+    - CUW
+    - CYM
+    - CYP
+    - CZE
+    - DEU
+    - DJI
+    - DMA
+    - DNK
+    - DOM
+    - DZA
+    - ECU
+    - EGY
+    - ERI
+    - ESP
+    - EST
+    - ETH
+    - FIN
+    - FJI
+    - FRA
+    - FRO
+    - FSM
+    - GAB
+    - GBR
+    - GEO
+    - GHA
+    - GIN
+    - GMB
+    - GNB
+    - GNQ
+    - GRC
+    - GRD
+    - GRL
+    - GTM
+    - GUM
+    - GUY
+    - HKG
+    - HND
+    - HRV
+    - HTI
+    - HUN
+    - IDN
+    - IMN
+    - IND
+    - IRL
+    - IRN
+    - IRQ
+    - ISL
+    - ISR
+    - ITA
+    - JAM
+    - JOR
+    - JPN
+    - KAZ
+    - KEN
+    - KGZ
+    - KHM
+    - KIR
+    - KNA
+    - KOR
+    - KWT
+    - LAO
+    - LBN
+    - LBR
+    - LBY
+    - LCA
+    - LIE
+    - LKA
+    - LSO
+    - LTU
+    - LUX
+    - LVA
+    - MAC
+    - MAF
+    - MAR
+    - MCO
+    - MDA
+    - MDG
+    - MDV
+    - MEX
+    - MHL
+    - MKD
+    - MLI
+    - MLT
+    - MMR
+    - MNE
+    - MNG
+    - MNP
+    - MOZ
+    - MRT
+    - MUS
+    - MWI
+    - MYS
+    - NAM
+    - NCL
+    - NER
+    - NGA
+    - NIC
+    - NLD
+    - NOR
+    - NPL
+    - NRU
+    - NZL
+    - OMN
+    - PAK
+    - PAN
+    - PER
+    - PHL
+    - PLW
+    - PNG
+    - POL
+    - PRI
+    - PRT
+    - PRY
+    - PSE
+    - PYF
+    - QAT
+    - ROU
+    - RUS
+    - RWA
+    - SAU
+    - SDN
+    - SEN
+    - SGP
+    - SLB
+    - SLE
+    - SLV
+    - SMR
+    - SOM
+    - SRB
+    - SSD
+    - STP
+    - SUR
+    - SVK
+    - SVN
+    - SWE
+    - SWZ
+    - SXM
+    - SYC
+    - SYR
+    - TCA
+    - TCD
+    - TGO
+    - THA
+    - TJK
+    - TKM
+    - TLS
+    - TON
+    - TTO
+    - TUN
+    - TUR
+    - TUV
+    - TZA
+    - UGA
+    - UKR
+    - URY
+    - USA
+    - UZB
+    - VCT
+    - VEN
+    - VIR
+    - VNM
+    - VUT
+    - WSM
+    - XKX
+    - YEM
+    - ZAF
+    - ZMB
+    - ZWE
+  wb:*.FP.CPI.TOTL.ZG:
+    alias: null
+    nombre: 'Banco Mundial (WDI): Inflación (IPC), variación anual - todos los países'
+    fuente: worldbank
+    id_origen: FP.CPI.TOTL.ZG
+    frecuencia: anual
+    unidad: '% anual'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: WB_ANUAL
+    revisable: true
+    rol_fase1: null
+    licencia: 'Banco Mundial: CC BY 4.0'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - lag conservador 12M desde el fin del año (WDI publica t en abril-julio de t+1)
+    - solo países (los agregados regionales y por renta se descartan)
+    verificado: false
+    paises:
+    - ABW
+    - AFG
+    - AGO
+    - ALB
+    - ARE
+    - ARG
+    - ARM
+    - ATG
+    - AUS
+    - AUT
+    - AZE
+    - BDI
+    - BEL
+    - BEN
+    - BFA
+    - BGD
+    - BGR
+    - BHR
+    - BHS
+    - BIH
+    - BLR
+    - BLZ
+    - BOL
+    - BRA
+    - BRB
+    - BRN
+    - BTN
+    - BWA
+    - CAF
+    - CAN
+    - CHE
+    - CHL
+    - CHN
+    - CIV
+    - CMR
+    - COD
+    - COG
+    - COL
+    - COM
+    - CPV
+    - CRI
+    - CUW
+    - CYM
+    - CYP
+    - CZE
+    - DEU
+    - DJI
+    - DMA
+    - DNK
+    - DOM
+    - DZA
+    - ECU
+    - EGY
+    - ESP
+    - EST
+    - ETH
+    - FIN
+    - FJI
+    - FRA
+    - FSM
+    - GAB
+    - GBR
+    - GEO
+    - GHA
+    - GIN
+    - GMB
+    - GNB
+    - GNQ
+    - GRC
+    - GRD
+    - GTM
+    - GUY
+    - HKG
+    - HND
+    - HRV
+    - HTI
+    - HUN
+    - IDN
+    - IND
+    - IRL
+    - IRN
+    - IRQ
+    - ISL
+    - ISR
+    - ITA
+    - JAM
+    - JOR
+    - JPN
+    - KAZ
+    - KEN
+    - KGZ
+    - KHM
+    - KIR
+    - KNA
+    - KOR
+    - KWT
+    - LAO
+    - LBN
+    - LBR
+    - LBY
+    - LCA
+    - LKA
+    - LSO
+    - LTU
+    - LUX
+    - LVA
+    - MAC
+    - MAR
+    - MDA
+    - MDG
+    - MDV
+    - MEX
+    - MKD
+    - MLI
+    - MLT
+    - MMR
+    - MNE
+    - MNG
+    - MOZ
+    - MRT
+    - MUS
+    - MWI
+    - MYS
+    - NAM
+    - NCL
+    - NER
+    - NGA
+    - NIC
+    - NLD
+    - NOR
+    - NPL
+    - NRU
+    - NZL
+    - OMN
+    - PAK
+    - PAN
+    - PER
+    - PHL
+    - PLW
+    - PNG
+    - POL
+    - PRT
+    - PRY
+    - PSE
+    - QAT
+    - ROU
+    - RUS
+    - RWA
+    - SAU
+    - SDN
+    - SEN
+    - SGP
+    - SLB
+    - SLE
+    - SLV
+    - SMR
+    - SRB
+    - SSD
+    - STP
+    - SUR
+    - SVK
+    - SVN
+    - SWE
+    - SWZ
+    - SXM
+    - SYC
+    - SYR
+    - TCD
+    - TGO
+    - THA
+    - TJK
+    - TLS
+    - TON
+    - TTO
+    - TUN
+    - TUR
+    - TUV
+    - TZA
+    - UGA
+    - UKR
+    - URY
+    - USA
+    - UZB
+    - VCT
+    - VEN
+    - VNM
+    - VUT
+    - WSM
+    - XKX
+    - YEM
+    - ZAF
+    - ZMB
+    - ZWE
+  wb:*.SL.UEM.TOTL.ZS:
+    alias: null
+    nombre: 'Banco Mundial (WDI): Tasa de paro (estimación modelizada OIT) - todos los países'
+    fuente: worldbank
+    id_origen: SL.UEM.TOTL.ZS
+    frecuencia: anual
+    unidad: '% de la población activa'
+    divisa: null
+    metodo: lag_fijo
+    lag_clave: WB_ANUAL
+    revisable: true
+    rol_fase1: null
+    licencia: 'Banco Mundial: CC BY 4.0'
+    estado: activa
+    agentes:
+    - macro
+    notas:
+    - 'valores de la última edición del fichero: posible fuga de revisiones (archivo de ediciones propio desde 2026-10-12; ALFRED
+      no tiene esta fuente)'
+    - lag conservador 12M desde el fin del año (WDI publica t en abril-julio de t+1)
+    - solo países (los agregados regionales y por renta se descartan)
+    verificado: false
+    paises:
+    - AFG
+    - AGO
+    - ALB
+    - ARE
+    - ARG
+    - ARM
+    - AUS
+    - AUT
+    - AZE
+    - BDI
+    - BEL
+    - BEN
+    - BFA
+    - BGD
+    - BGR
+    - BHR
+    - BHS
+    - BIH
+    - BLR
+    - BLZ
+    - BOL
+    - BRA
+    - BRB
+    - BRN
+    - BTN
+    - BWA
+    - CAF
+    - CAN
+    - CHE
+    - CHI
+    - CHL
+    - CHN
+    - CIV
+    - CMR
+    - COD
+    - COG
+    - COL
+    - COM
+    - CPV
+    - CRI
+    - CUB
+    - CYP
+    - CZE
+    - DEU
+    - DJI
+    - DNK
+    - DOM
+    - DZA
+    - ECU
+    - EGY
+    - ERI
+    - ESP
+    - EST
+    - ETH
+    - FIN
+    - FJI
+    - FRA
+    - GAB
+    - GBR
+    - GEO
+    - GHA
+    - GIN
+    - GMB
+    - GNB
+    - GNQ
+    - GRC
+    - GTM
+    - GUM
+    - GUY
+    - HKG
+    - HND
+    - HRV
+    - HTI
+    - HUN
+    - IDN
+    - IND
+    - IRL
+    - IRN
+    - IRQ
+    - ISL
+    - ISR
+    - ITA
+    - JAM
+    - JOR
+    - JPN
+    - KAZ
+    - KEN
+    - KGZ
+    - KHM
+    - KOR
+    - KWT
+    - LAO
+    - LBN
+    - LBR
+    - LBY
+    - LCA
+    - LKA
+    - LSO
+    - LTU
+    - LUX
+    - LVA
+    - MAC
+    - MAR
+    - MDA
+    - MDG
+    - MDV
+    - MEX
+    - MKD
+    - MLI
+    - MLT
+    - MMR
+    - MNE
+    - MNG
+    - MOZ
+    - MRT
+    - MUS
+    - MWI
+    - MYS
+    - NAM
+    - NCL
+    - NER
+    - NGA
+    - NIC
+    - NLD
+    - NOR
+    - NPL
+    - NZL
+    - OMN
+    - PAK
+    - PAN
+    - PER
+    - PHL
+    - PNG
+    - POL
+    - PRI
+    - PRK
+    - PRT
+    - PRY
+    - PSE
+    - PYF
+    - QAT
+    - ROU
+    - RUS
+    - RWA
+    - SAU
+    - SDN
+    - SEN
+    - SGP
+    - SLB
+    - SLE
+    - SLV
+    - SOM
+    - SRB
+    - SSD
+    - STP
+    - SUR
+    - SVK
+    - SVN
+    - SWE
+    - SWZ
+    - SYR
+    - TCD
+    - TGO
+    - THA
+    - TJK
+    - TKM
+    - TLS
+    - TON
+    - TTO
+    - TUN
+    - TUR
+    - TZA
+    - UGA
+    - UKR
+    - URY
+    - USA
+    - UZB
+    - VCT
+    - VEN
+    - VIR
+    - VNM
+    - VUT
+    - WSM
+    - YEM
+    - ZAF
+    - ZMB
+    - ZWE

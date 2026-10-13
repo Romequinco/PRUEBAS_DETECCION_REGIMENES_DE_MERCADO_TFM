@@ -532,7 +532,9 @@ def test_t1_base_real_valida_contra_catalogo(ruta_real):
     ids = set(real["serie"])
     assert not any(cat[s]["estado"] == "excluida_ajustada" for s in ids)
     cargables = {s for s, e in base.catalogo_efectivo(cat).items() if e["estado"] in c.ESTADOS_CARGABLES}
-    assert ids == cargables
+    # Bloque 4: series del catálogo sin filas en la fuente (huecos documentados en sus fichas).
+    sin_filas = {"oecd:LI_AA.EA20", "oecd:UNEMP.CHN", "philly:EMPLOY", "philly:PCPI", "philly:RUC"}
+    assert ids == cargables - sin_filas
     assert (real["fecha_publicacion"] >= real["fecha_referencia"]).all()
     # Las 161 de ALFRED solo con vintage_exacto o su regla previa; las de la fuente viva de FRED, sin data/raw.
     alf = real[real["serie"].isin(alfred.ids_alfred(cat))]

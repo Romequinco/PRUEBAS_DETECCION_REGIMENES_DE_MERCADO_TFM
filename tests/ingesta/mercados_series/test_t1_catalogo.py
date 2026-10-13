@@ -205,7 +205,7 @@ def test_t1_fecha_publicacion_lag_propiedad():
 # --- Fusión con publicaciones.yaml --------------------------------------------------------------
 def test_t1_publicaciones_fusiona_el_catalogo():
     p = v.cargar_publicaciones()
-    assert "fred:DGS10" in p["series"] and "ecb:EXR.D.*.EUR" in p["series"]
+    assert "fred:DGS10" in p["series"] and "ecb:EXR.D.USD.EUR" in p["series"]
     assert p["alias"]["VIX"] == "fred:VIXCLS" and p["alias"]["EURUSD"] == "ecb:EXR.D.USD.EUR"
     assert p["series"]["fred:UNRATE"]["metodo"] == "vintage_exacto" and "lag" not in p["series"]["fred:UNRATE"]
     assert c.por_id("UNRATE")["regla_previa_alfred"]["lag"] == "1M1D"   # periodos anteriores al primer vintage
@@ -478,7 +478,8 @@ PRIMER_VINTAGE_MEDIDO = {"fred:USREC": "2011-05-02"}
 def test_t1_catalogo_lista_alfred_completa(lista_alfred):
     cat = c.cargar_catalogo()
     assert len(lista_alfred) == 161 and (lista_alfred["en_catalogo"] == "False").sum() == 128
-    assert set(c.filtrar(cat, metodo="vintage_exacto")) == {f"fred:{i}" for i in lista_alfred["id"]}
+    # Las vintage_exacto de ALFRED (las de los bloques 4-6 tienen su propio prefijo: ecb:, oecd:, imf:...).
+    assert {s for s in c.filtrar(cat, metodo="vintage_exacto") if s.startswith("fred:")}         == {f"fred:{i}" for i in lista_alfred["id"]}
     pubs = v.cargar_publicaciones(catalogo=False)["publicadores"]
     for f in lista_alfred.itertuples(index=False):
         sid = f"fred:{f.id}"
@@ -542,7 +543,8 @@ def test_t1_publicadores_del_bloque3(clave, fecha, decision):
 
 def test_t1_publicadores_del_bloque3_conservadores_sin_verificar():
     pubs = v.cargar_publicaciones(catalogo=False)["publicadores"]
-    usados = {e["publicador"] for e in c.cargar_catalogo().values() if e["metodo"] == "vintage_exacto"}
+    usados = {e["publicador"] for e in c.cargar_catalogo().values()
+              if e["metodo"] == "vintage_exacto" and e["fuente"] == "fred_alfred"}
     assert usados <= set(pubs)
     for clave in usados:
         p = pubs[clave]

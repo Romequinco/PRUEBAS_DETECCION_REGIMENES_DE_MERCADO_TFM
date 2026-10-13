@@ -268,3 +268,55 @@ CRYPTO:
   verificado: false
   notas:
     - "La vela de la sesión t cierra a las 00:00 UTC de t+1: visible en la decisión de t+1"
+
+# --- Bloque 5 (universo; fundido desde config/fragmentos/b5_universo.yaml) ---
+ARCX:
+  nombre: NYSE Arca (ETF cotizados en EE. UU.)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.nyse.com/markets/nyse-arca
+  verificado: false
+  notas:
+    - "Sesión principal hasta las 16:00 NY (la sesión ampliada hasta las 20:00 no fija el cierre oficial)"
+
+NAV_US:
+  nombre: Valor liquidativo diario de fondos de inversión de EE. UU. (mutual funds)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "18:00"}
+  fuente: https://www.sec.gov/rules/final/ic-26288.htm
+  verificado: false
+  notas:
+    - "El NAV se calcula con los cierres de las 16:00 NY y se difunde (NASDAQ MFQS) hacia las 18:00: visible en la decisión de t+1"
+
+STOXX_IDX:
+  nombre: Índices STOXX (EURO STOXX 50, STOXX Europe 600, VSTOXX)
+  huso: Europe/Berlin
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:50"}
+  fuente: https://www.stoxx.com/rulebooks
+  verificado: false
+  notas:
+    - "El valor de cierre se fija tras la subasta de cierre de Xetra (17:30-17:35); 17:50 cubre el retraso del cálculo"
+
+ICE_MOVE:
+  nombre: ICE BofA MOVE Index (volatilidad implícita del Tesoro de EE. UU.)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.theice.com/market-data/indices/fixed-income-indices
+  verificado: false
+  notas:
+    - "Calculado con opciones sobre futuros del Tesoro (cierre CBOT 14:00 Chicago = 15:00 NY); 16:00 es conservador"
+
+FX_YAHOO:
+  nombre: Vela diaria de divisas de Yahoo Finance (EURUSD=X...)
+  huso: Europe/London
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "24:00"}
+  fuente: https://finance.yahoo.com/markets/currencies/
+  verificado: false
+  notas:
+    - "Yahoo cierra la vela diaria de FX a medianoche de Londres: la vela del día t se ve en la decisión de t+1"
+    - "Solo contexto: la conversión a USD usa el FX del BCE (divisas.SERIE_FX)"
