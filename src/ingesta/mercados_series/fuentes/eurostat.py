@@ -18,10 +18,18 @@ Conjuntos (``CONJUNTOS``):
 - ``namq_10_gdp``: PIB real, tasa interanual (``CLV_PCH_SM``, desestacionalizado y de calendario).
 
 Publicación: Eurostat publica a las 11:00 Europe/Luxembourg (publicador ``eurostat``), pero no da
-vintages: todo es revisable y se carga con ``lag_fijo`` (regla de ``lags.yaml``: HICP y paro
-``1M1D`` desde el fin de mes, ESI ``1D`` (sale a final del propio mes), PIB ``1M1D`` desde el fin
-de trimestre) y la nota obligatoria de revisables (último valor publicado). Las banderas
-(``OBS_FLAG``: p provisional, e estimado, b ruptura, d definición distinta) van a la nota.
+vintages: todo es revisable y se carga con ``lag_fijo`` (regla de ``lags.yaml`` con tramos por época,
+``catalogo.fecha_publicacion_clave``: HICP ``CPIAUCSL``, ESI ``UMCSENT``, paro ``EUROSTAT_PARO`` (fin
+de M+2 antes de 2012; 1M10D + hábil TARGET desde 2012), PIB de agregados ``EUROSTAT_PIB`` (t+71 antes
+de 2003, t+45 hasta 2015, t+30 desde 2016) y por país ``EUROSTAT_PIB_PAISES``) y la nota obligatoria de
+revisables (último valor publicado). Las banderas (``OBS_FLAG``: p provisional, e estimado, b ruptura,
+d definición distinta) van a la nota.
+
+Serie empalmada para los agentes (``empalmar_hicp``): ``eurostat:HICP_EMP.<geo>`` = ECOICOP v1
+(``prc_hicp_manr``) en los periodos publicados antes de la primera versión de v2 y v2
+(``prc_hicp_minr``) en los demás, con ``NOTA_EMPALME_HICP``. Alias por defecto de la zona euro de
+composición cambiante: ``HICP_EA`` (``eurostat:HICP_EMP.EA``), ``PIB_EA`` (``namq_10_gdp`` ``EA``) y
+``PARO_EA`` (BCE ``LFSI`` ``U2``: ``une_rt_m`` no trae ``EA``).
 
 CLI: ``python -m ingesta.mercados_series.fuentes.eurostat [--sin-red] [--fichas] [--escribir]``.
 """
@@ -48,8 +56,12 @@ BANDERAS = {"p": "provisional", "e": "estimado", "b": "ruptura de serie", "d": "
 NOTA_RUPTURA_HICP = ("ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de "
                      "actualizarse en febrero de 2026")
 
-# Agregados que no existían antes de esa fecha (primera publicación de Eurostat, aproximación conservadora):
-# sus valores retropolados no son visibles antes de su creación.
+# Agregados que no existían antes de esa fecha (primera publicación de Eurostat): sus valores retropolados no
+# son visibles antes de su creación. Croacia entra en el euro el 2023-01-01 y la primera publicación con EA20 es
+# la flash del HICP de enero de 2023 (2023-02-01); Bulgaria entra el 2026-01-01 y EA21 aparece con la flash de
+# enero de 2026 (2026-02-04). No verificado con el registro de cambios de Eurostat (el agregado pudo cargarse
+# en la base de datos algo después de la nota de prensa): se fija el PRIMERO DEL MES SIGUIENTE a la primera
+# publicación (2023-03-01 y 2026-03-01), más tarde que la nota de prensa, luego conservador.
 CREACION_GEO = {"EA20": "2023-03-01", "EA21": "2026-03-01"}
 NOTA_POSTERIOR = ("serie o agregado creado después del periodo (retropolación): visible solo desde su creación; "
                   "para el pasado usar la versión vigente entonces (EA cambiante, prc_hicp_manr)")
@@ -69,11 +81,22 @@ CONJUNTOS: dict[str, dict[str, Any]] = {
                      "frecuencia": "mensual", "unidad": "índice (media de largo plazo = 100)", "lag_clave": "UMCSENT",
                      "estado": "activa"},
     "namq_10_gdp": {"clave": "Q.CLV_PCH_SM.SCA.B1GQ.", "nombre": "PIB real, tasa interanual (desestacionalizado)",
-                    "frecuencia": "trimestral", "unidad": "% interanual", "lag_clave": "EUROSTAT_PIB", "estado": "activa"},
+                    "frecuencia": "trimestral", "unidad": "% interanual", "lag_clave": "EUROSTAT_PIB", "estado": "activa",
+                    "lag_clave_geo": {g: "EUROSTAT_PIB_PAISES" for g in ("DE", "FR", "IT", "UK")}},
 }
+
+# Empalme del HICP por fecha de publicación (serie por defecto para los agentes).
+PREFIJO_EMPALME = "eurostat:HICP_EMP."
+NOTA_EMPALME_HICP = ("HICP empalmado por fecha de publicación: ECOICOP v1 (prc_hicp_manr) en los periodos publicados "
+                     "antes de la primera versión de v2 (prc_hicp_minr) y v2 en los demás; diferencias v2-v1 en los "
+                     "meses comunes de hasta 0,1-0,2 puntos (mediciones de la ficha)")
+ALIAS_ZONA_EURO = {"HICP_EA": f"{PREFIJO_EMPALME}EA",
+                   "PIB_EA": "eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA",
+                   "PARO_EA": "ecb:LFSI.M.U2.S.UNEHRT.TOTAL0.15_74.T"}
 
 __all__ = ["API_EUROSTAT", "CONJUNTOS", "GEOS", "ClienteEurostat", "parsear_sdmx_csv", "id_eurostat",
            "tabla_conjunto", "tabla_eurostat", "no_antes_de", "CREACION_GEO", "medir_ruptura_hicp",
+           "PREFIJO_EMPALME", "NOTA_EMPALME_HICP", "ALIAS_ZONA_EURO", "empalmar_hicp", "entradas_empalme",
            "entradas_eurostat", "ficha_eurostat", "main"]
 
 
@@ -148,8 +171,7 @@ def tabla_conjunto(sid: str, obs: pd.DataFrame, espec: dict[str, Any]) -> pd.Dat
     if df.empty:
         return vacio_series()
     ref = fecha_periodo(df["TIME_PERIOD"])
-    lag = catalogo.cargar_lags()[espec["lag_clave"]]
-    pub = catalogo.fecha_publicacion_lag(ref, lag["lag"], lag["fin_periodo"], habiles=lag.get("habiles"))
+    pub = catalogo.fecha_publicacion_clave(pd.Series(ref.to_numpy()), espec["lag_clave"])
     pub = pd.Series(pub.to_numpy(), index=df.index)
     creacion = no_antes_de(espec["clave"])
     posterior = pd.Series(False, index=df.index)
@@ -199,7 +221,59 @@ def tabla_eurostat(cliente: ClienteEurostat | None = None, *, sin_red: bool = Fa
     df = validar_series(pd.concat([p for p in partes if len(p)], ignore_index=True))
     if {"prc_hicp_minr", "prc_hicp_manr"} <= set(crudos):
         med["ruptura_hicp"] = medir_ruptura_hicp(crudos["prc_hicp_minr"], crudos["prc_hicp_manr"])
+        emp = empalmar_hicp(df)
+        if len(emp):
+            df = validar_series(pd.concat([df, emp], ignore_index=True))
+            espec.update(entradas_empalme(sorted(s[len(PREFIJO_EMPALME):] for s in emp["serie"].unique())))
+            for sid, g in emp.groupby("serie"):
+                med[sid] = {"n_obs": int(len(g)), "inicio": g["fecha_referencia"].min().date().isoformat(),
+                            "fin": g["fecha_referencia"].max().date().isoformat(),
+                            "n_v1": int(g["nota"].str.contains("tramo v1", regex=False).sum())}
     return df, {"conjuntos": med, "peticiones": cli.peticiones, "bytes": cli.bytes, "espec": espec}
+
+
+def empalmar_hicp(df: pd.DataFrame, frontera: Any = None) -> pd.DataFrame:
+    """Serie empalmada ``eurostat:HICP_EMP.<geo>`` por fecha de publicación.
+
+    Por zona con las dos versiones: los periodos publicados con ECOICOP v1 llevan el valor y la fecha
+    de v1 (``prc_hicp_manr`` dejó de actualizarse al salir v2: todos sus periodos se publicaron antes
+    de la primera versión de v2); el resto, los de v2 (fecha ya acotada por su creación). Con
+    ``frontera`` (fecha de decisión) solo cuentan como v1 los periodos cuya fila v1 es anterior a
+    ella. Una fila por periodo (vintage ``unico``), nota de revisable + ``NOTA_EMPALME_HICP`` + tramo.
+    """
+    fr = pd.Timestamp(frontera) if frontera is not None else None
+    v1 = id_eurostat("prc_hicp_manr", CONJUNTOS["prc_hicp_manr"]["clave"], "")
+    v2 = id_eurostat("prc_hicp_minr", CONJUNTOS["prc_hicp_minr"]["clave"], "")
+    partes = []
+    for geo in sorted({s[len(v1):] for s in df["serie"].unique() if s.startswith(v1)}):
+        a = df[df["serie"] == v1 + geo]
+        b = df[df["serie"] == v2 + geo]
+        if a.empty or b.empty:
+            continue
+        if fr is not None:
+            a = a[a["fecha_publicacion"] < fr]
+        a = a.assign(_tramo="tramo v1 (prc_hicp_manr)")
+        b = b[~b["fecha_referencia"].isin(a["fecha_referencia"])].assign(_tramo="tramo v2 (prc_hicp_minr)")
+        t = pd.concat([a, b], ignore_index=True).sort_values("fecha_referencia")
+        t["serie"] = PREFIJO_EMPALME + geo
+        t["nota"] = t["nota"].fillna(catalogo.NOTA_REVISABLE_EDICION) + "; " + NOTA_EMPALME_HICP + "; " + t["_tramo"]
+        partes.append(t.drop(columns="_tramo"))
+    if not partes:
+        return vacio_series()
+    return validar_series(pd.concat(partes, ignore_index=True)[list(COLUMNAS_SERIES)])
+
+
+def entradas_empalme(geos: list[str]) -> dict[str, dict[str, Any]]:
+    """Especificación (esquema del catálogo) de las series empalmadas del HICP."""
+    out = {}
+    for geo in geos:
+        sid = PREFIJO_EMPALME + geo
+        out[sid] = {"clave": f"HICP_EMP/{geo}", "nombre": f"HICP general empalmado v1→v2 por fecha de publicación ({geo})",
+                    "frecuencia": "mensual", "unidad": "% interanual", "divisa": None, "metodo": "lag_fijo",
+                    "lag_clave": "CPIAUCSL", "revisable": True, "fuente": FUENTE, "estado": "activa",
+                    "alias": [a for a, s in ALIAS_ZONA_EURO.items() if s == sid],
+                    "notas": [catalogo.NOTA_REVISABLE_EDICION, NOTA_EMPALME_HICP]}
+    return out
 
 
 def medir_ruptura_hicp(nuevo: pd.DataFrame, antiguo: pd.DataFrame) -> dict[str, Any]:
@@ -229,8 +303,9 @@ def ficha_eurostat(df: pd.DataFrame, med: dict[str, Any]):
         cobertura_fin=df["fecha_referencia"].max().date().isoformat(),
         frecuencia="mensual (HICP, paro, ESI), trimestral (PIB)",
         retraso_publicacion=("publicación a las 11:00 Europe/Luxembourg (calendario de Euro indicators); sin vintages: "
-                             "lag_fijo conservador (HICP y paro 1M1D desde fin de mes, ESI 1D, PIB 1M1D desde fin de "
-                             "trimestre) y nota de revisables; LAST UPDATE medido por conjunto en mediciones"),
+                             "lag_fijo por tramos (HICP 1M1D desde fin de mes, ESI 1D, paro fin de M+2 antes de 2012 y "
+                             "1M10D + hábil TARGET desde 2012, PIB de agregados t+71/1M18D/1M5D según época y por país "
+                             "t+71/1M18D) y nota de revisables; LAST UPDATE medido por conjunto en mediciones"),
         formato="csv (SDMX-CSV 2.1)",
         volumen_estimado=f"{med.get('bytes', 0) / 1e6:.1f} MB de CSV por descarga completa ({len(CONJUNTOS)} peticiones)",
         limites="sin clave; 1 petición/s por host; claves inválidas → HTTP 400; robots.txt permite la API",
@@ -240,7 +315,17 @@ def ficha_eurostat(df: pd.DataFrame, med: dict[str, Any]):
                "La zona euro de composición cambiante ('EA') no está en todos los conjuntos: se guarda la que haya "
                "(EA, EA21, EA20) y la UE-27",
                "Revisables sin vintages: valor del último fichero descargado (posible fuga de revisiones)",
-               "Las banderas OBS_FLAG (p, e, b, d...) se conservan en la nota de cada fila"],
+               "Las banderas OBS_FLAG (p, e, b, d...) se conservan en la nota de cada fila",
+               NOTA_EMPALME_HICP + " (eurostat:HICP_EMP.<geo>)",
+               "Alias por defecto de la zona euro de composición cambiante: "
+               + ", ".join(f"{a} = {s}" for a, s in ALIAS_ZONA_EURO.items()),
+               "Fechas por tramos (lags.yaml): paro EUROSTAT_PARO (fin de M+2 antes de 2012, 1M10D + hábil TARGET "
+               "desde 2012), PIB EUROSTAT_PIB (agregados: t+71 antes de 2003, 1M18D 2003-2015, 1M5D desde 2016) y "
+               "EUROSTAT_PIB_PAISES (DE, FR, IT, UK: t+71 antes de 2003, 1M18D después); muestras de notas de prensa "
+               "archivadas en lags.yaml",
+               "CREACION_GEO (EA20 2023-03-01, EA21 2026-03-01): primero del mes siguiente a la primera nota de "
+               "prensa con el agregado (flash del HICP de enero de 2023 y de 2026); conservador, sin el registro "
+               "de cambios de la base de datos"],
     )
     return guardar_ficha(ficha)
 

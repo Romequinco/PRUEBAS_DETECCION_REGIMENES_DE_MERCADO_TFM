@@ -172,7 +172,8 @@ def test_t1_b4_eurostat_lag_banderas_y_huecos():
     t = validar_series(eurostat.tabla_conjunto(sid, obs[obs["geo"] == "DE"], e[sid]))
     assert len(t) == 3
     ago = t[t["fecha_referencia"] == "2026-08-01"].iloc[0]
-    assert ago["fecha_publicacion"] == pd.Timestamp("2026-10-31")  # EUROSTAT_PARO: 2M desde el fin de mes
+    # EUROSTAT_PARO, tramo desde 2012: 1M10D (sábado 2026-10-10) + hábil TARGET -> lunes 2026-10-12
+    assert ago["fecha_publicacion"] == pd.Timestamp("2026-10-12")
     assert "provisional" in ago["nota"] and cat_mod.es_nota_revisable(ago["nota"])
     sep = t[t["fecha_referencia"] == "2026-09-01"].iloc[0]
     assert pd.isna(sep["valor"]) and "hueco" in sep["nota"]

@@ -655,7 +655,7 @@ def test_t1_catalogo_bloque3_minimo_valido(tmp_path):
     e = cat["fred:CCC1"]
     assert e["regla_previa_alfred"] == {"metodo": "lag_fijo", "lag_clave": "UNRATE", "lag": "1M1D",
                                         "fin_periodo": "mes", "lag_habiles": None, "lag_n_habiles": None,
-                                        "primer_vintage": "2010-01-08"}
+                                        "lag_tramos": None, "primer_vintage": "2010-01-08"}
     assert (e["fuente_viva"], e["grupo"], e["agentes"], e["reestimada"]) == ("fred", "empleo", ["macro", "risk"], True)
     assert cat["deriv:A-B"]["fuente_viva"] is None and cat["fred:AAA1"]["fuente_viva"] == "fred"
     assert e["cobertura_variable"] is False and e["unidad_por_vintage"] is False

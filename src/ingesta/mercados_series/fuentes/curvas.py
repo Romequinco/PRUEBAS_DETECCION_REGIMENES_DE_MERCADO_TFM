@@ -27,8 +27,11 @@ de publicación de cada dato:
 
 Hábiles: el dato de D sale el HÁBIL SIGUIENTE DEL PROPIO PUBLICADOR. La siguiente fecha con dato en
 la propia serie es ese hábil (las fuentes solo publican en sus días hábiles: festivos japoneses,
-canadienses, británicos o TARGET incluidos); para la última fila, el siguiente día de lunes a
-viernes (puede adelantar un día si el siguiente es festivo: se anota en la ficha).
+canadienses, británicos o TARGET incluidos); para la última fila, el hábil siguiente con los
+festivos reales del publicador (``habil_siguiente``): TARGET (``visibilidad.es_habil``) para el BCE y,
+con ``exchange_calendars``, las sesiones de Tokio (XTKS) para el MoF, Toronto (XTSE) para el BoC y
+Londres (XLON) para el BoE. Un día sin sesión que no es festivo bancario solo retrasa (conservador).
+Sin ``exchange_calendars``, lunes a viernes (puede adelantar un día si es festivo: aviso).
 Huecos dentro del tramo publicado de un plazo (celda vacía o ``-``): valor nulo con
 ``NOTA_HUECO``. Vintage ``unico``: ninguna de estas curvas se revisa tras publicarse.
 
@@ -38,16 +41,18 @@ Red solo con ``ingesta.comun.http.get`` tras ``robots_permite``; un 403 o un ret
 ``<corpus>/mercados_series/series/curvas_b6.parquet`` (``almacen.escribir_series``).
 
 CLI: ``python -m ingesta.mercados_series.fuentes.curvas [--descargar] [--desde-anio N]
-[--historico-boe] [--fichas] [--escribir]``.
+[--historico-boe] [--fichas] [--escribir [--corregir-fechas]]``.
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import functools
 import hashlib
 import io
 import json
 import re
+import warnings
 import zipfile
 from collections.abc import Iterable
 from datetime import datetime
@@ -112,6 +117,9 @@ PUBLICADORES: dict[str, dict[str, Any]] = {
     "boe_curvas": {"clave": "boe_yc", "hora": "12:00", "huso": "Europe/London"},
 }
 PUBLICADOR_UST = "treasury_curva"
+# Calendario de hábiles de cada publicador para la última fila: 'target' (visibilidad) o un código de
+# exchange_calendars (sesiones de la bolsa local como aproximación de los festivos bancarios).
+CALENDARIO_HABILES = {"bce_curvas": "target", "mof_jgb": "XTKS", "boc_curva": "XTSE", "boe_curvas": "XLON"}
 
 
 # --- Plazos ------------------------------------------------------------------------------------
@@ -372,18 +380,46 @@ def leer_boe_zip(fuente: Path | bytes, hoja: str = HOJA_BOE) -> pd.DataFrame:
 
 
 # --- Fechado ------------------------------------------------------------------------------------
-def disponible_habil_siguiente(fechas: pd.DatetimeIndex, hora: str, huso: str) -> pd.Series:
+@functools.lru_cache(maxsize=8)
+def _calendario_bolsa(codigo: str):
+    import exchange_calendars as xc
+
+    return xc.get_calendar(codigo)
+
+
+def habil_siguiente(fecha: Any, calendario: str | None) -> pd.Timestamp:
+    """Primer hábil POSTERIOR a ``fecha`` en ``calendario`` (``target``, ``semana`` o código de
+    ``exchange_calendars`` como ``XTKS``). Sin el paquete (o fuera de su rango), lunes a viernes."""
+    d = pd.Timestamp(fecha).normalize()
+    if calendario in (None, "semana"):
+        return d + pd.offsets.BDay(1)
+    if calendario in visibilidad.CALENDARIOS_HABILES:
+        x = d + pd.Timedelta(days=1)
+        while not visibilidad.es_habil(x, calendario):
+            x += pd.Timedelta(days=1)
+        return x
+    try:
+        cal = _calendario_bolsa(calendario)
+        if not (cal.first_session <= d < cal.last_session):
+            raise ValueError("fuera del rango del calendario")
+        return pd.Timestamp(cal.next_session(d) if cal.is_session(d) else cal.date_to_session(d, "next")).tz_localize(None)
+    except (ImportError, ValueError) as e:
+        warnings.warn(f"calendario {calendario!r} no disponible ({e}): hábil siguiente de lunes a viernes", stacklevel=2)
+        return d + pd.offsets.BDay(1)
+
+
+def disponible_habil_siguiente(fechas: pd.DatetimeIndex, hora: str, huso: str,
+                               calendario: str | None = None) -> pd.Series:
     """Instante UTC de publicación: ``hora`` (``huso``) del hábil del publicador siguiente a cada fecha.
 
     El hábil siguiente es la siguiente fecha de ``fechas`` (las fechas con dato son los hábiles de
-    la fuente); para la última, el siguiente día de lunes a viernes.
+    la fuente); para la última, ``habil_siguiente`` con los festivos de ``calendario``.
     """
     f = pd.DatetimeIndex(pd.to_datetime(fechas)).normalize()
     unicas = f.unique().sort_values()
     sig = pd.Series(unicas[1:].append(pd.DatetimeIndex([pd.NaT])), index=unicas)
     if len(unicas):
-        ultima = unicas[-1] + pd.offsets.BDay(1)
-        sig.iloc[-1] = ultima
+        sig.iloc[-1] = habil_siguiente(unicas[-1], calendario)
     h, m = (int(x) for x in hora.split(":"))
     local = pd.DatetimeIndex(sig.reindex(f).to_numpy()) + pd.Timedelta(hours=h, minutes=m)
     return pd.Series(local.tz_localize(huso, ambiguous="raise", nonexistent="raise").tz_convert("UTC"),
@@ -452,26 +488,29 @@ def tabla_ust(ancho: pd.DataFrame) -> pd.DataFrame:
 def tabla_bce(ancho: pd.DataFrame) -> pd.DataFrame:
     ancho = _con_dato(ancho)
     p = PUBLICADORES["bce_curvas"]
-    disp = disponible_habil_siguiente(ancho.index, p["hora"], p["huso"])
+    disp = disponible_habil_siguiente(ancho.index, p["hora"], p["huso"], CALENDARIO_HABILES["bce_curvas"])
     return _larga(ancho, "ecb:YC.", "bce_curvas", disp)
 
 
 def tabla_mof(ancho: pd.DataFrame) -> pd.DataFrame:
     ancho = _con_dato(ancho)
     p = PUBLICADORES["mof_jgb"]
-    return _larga(ancho, "mof:JGB.", "mof_jgb", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"]))
+    cal = CALENDARIO_HABILES["mof_jgb"]
+    return _larga(ancho, "mof:JGB.", "mof_jgb", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"], cal))
 
 
 def tabla_boc(ancho: pd.DataFrame) -> pd.DataFrame:
     ancho = _con_dato(ancho)
     p = PUBLICADORES["boc_curva"]
-    return _larga(ancho, "boc:BOND.", "boc_curva", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"]))
+    cal = CALENDARIO_HABILES["boc_curva"]
+    return _larga(ancho, "boc:BOND.", "boc_curva", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"], cal))
 
 
 def tabla_boe(ancho: pd.DataFrame) -> pd.DataFrame:
     ancho = _con_dato(ancho)
     p = PUBLICADORES["boe_curvas"]
-    return _larga(ancho, "boe:NOM.", "boe_curvas", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"]))
+    cal = CALENDARIO_HABILES["boe_curvas"]
+    return _larga(ancho, "boe:NOM.", "boe_curvas", disponible_habil_siguiente(ancho.index, p["hora"], p["huso"], cal))
 
 
 # --- Desde los crudos ---------------------------------------------------------------------------
@@ -508,12 +547,14 @@ def tabla_curvas(fuentes: Iterable[str] = FUENTES, *, raiz: Path | None = None) 
     return validar_series(pd.concat(partes, ignore_index=True)) if partes else vacio_series()
 
 
-def escribir(tabla: pd.DataFrame, ruta: Path | None = None) -> Path:
+def escribir(tabla: pd.DataFrame, ruta: Path | None = None, *, permitir_perdidas: bool = False) -> Path:
+    """Guarda la tabla de curvas. ``permitir_perdidas``: solo para corregir fechas propias (p. ej. el
+    hábil siguiente con los festivos reales), porque la base solo crece."""
     from ingesta.mercados_series import almacen
 
     ruta = Path(ruta) if ruta is not None else corpus_dir(TEMA) / "series" / FICHERO_TABLA
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    return almacen.escribir_series(tabla, ruta)
+    return almacen.escribir_series(tabla, ruta, permitir_perdidas=permitir_perdidas)
 
 
 # --- Mediciones y fichas ------------------------------------------------------------------------
@@ -696,6 +737,8 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--historico-boe", action="store_true")
     ap.add_argument("--fichas", action="store_true")
     ap.add_argument("--escribir", action="store_true")
+    ap.add_argument("--corregir-fechas", action="store_true",
+                    help="con --escribir: acepta cambios de fecha de filas ya guardadas (corrección propia)")
     a = ap.parse_args(argv)
     if a.descargar:
         for f in a.fuentes:
@@ -704,7 +747,7 @@ def main(argv: list[str] | None = None) -> None:
     tabla = tabla_curvas(a.fuentes)
     print(f"filas: {len(tabla)}; series: {tabla['serie'].nunique()}")
     if a.escribir:
-        print("escrita:", escribir(tabla))
+        print("escrita:", escribir(tabla, permitir_perdidas=a.corregir_fechas))
     if a.fichas:
         extra = {f: {"notas": NOTAS_FICHA[f]} for f in FUENTES}
         extra["bce_curvas"]["mediciones"] = {"sondas": sondas_bloqueo()}

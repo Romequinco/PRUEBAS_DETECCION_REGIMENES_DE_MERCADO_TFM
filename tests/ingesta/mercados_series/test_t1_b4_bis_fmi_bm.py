@@ -86,17 +86,35 @@ def test_bis_url_y_pais():
 
 
 # --- FMI ------------------------------------------------------------------------------------------
-def test_weo_edicion_descarta_proyecciones():
+def test_weo_edicion_separa_dato_y_proyecciones():
     datos, meta = imf.leer_dbnomics(json.dumps(_dbnomics()))
     assert meta["indexed_at_min"] == "2019-10-16T02:00:00Z"
     t, cuenta = imf.tabla_edicion(datos, "2019-10")
     validar_series(t)
-    assert set(t["serie"]) == {"imf:WEO.USA.NGDP_RPCH", "imf:WEO.USA.LUR"}      # ESP fuera del alcance
-    assert t["fecha_referencia"].dt.year.max() == 2019 and cuenta["proyecciones_descartadas"] == 2
+    dato = t[~t["serie"].map(imf.es_proyeccion)]
+    proy = t[t["serie"].map(imf.es_proyeccion)]
+    # Las series de dato solo traen años ANTERIORES al de la edición (ESP fuera del alcance).
+    assert set(dato["serie"]) == {"imf:WEO.USA.NGDP_RPCH", "imf:WEO.USA.LUR"}
+    assert dato["fecha_referencia"].dt.year.max() == 2018 and dato["nota"].isna().all()
+    # Año en curso (H0) y proyecciones (H1...) en series propias, fechadas en el año de la edición.
+    assert {"imf:WEO.USA.NGDP_RPCH.PROY.H0", "imf:WEO.USA.NGDP_RPCH.PROY.H1"} <= set(proy["serie"])
+    assert (proy["fecha_referencia"] == pd.Timestamp("2019-01-01")).all()
+    assert proy["nota"].str.startswith("proyección del WEO (no es un dato)").all()
+    assert proy.loc[proy["serie"].str.endswith(".H0"), "nota"].str.contains(imf.NOTA_ESTIMACION, regex=False).all()
+    assert cuenta["proyecciones"] == len(proy) and cuenta["filas"] == len(dato)
     assert (t["vintage"] == "2019-10").all() and (t["fecha_publicacion"] == pd.Timestamp("2019-10-15")).all()
-    assert t.loc[t["fecha_referencia"].dt.year == 2019, "nota"].eq(imf.NOTA_ESTIMACION).all()
-    assert len(t[t["serie"] == "imf:WEO.USA.LUR"]) == 2                          # 'NA' de 2019 descartado
     assert imf.disponible("2019-10") == pd.Timestamp("2019-10-15 13:00", tz="UTC")
+
+
+def test_weo_hora_medida_2026_10_y_fechas():
+    # La versión 9.0.0 ya estaba en la API a las 07:46 de Nueva York: nunca después de lo observado.
+    assert imf.disponible("2026-10") == pd.Timestamp("2026-10-13 11:46", tz="UTC")
+    assert imf.FECHAS_EDICION["2026-04"] == "2026-04-14" and imf.FECHAS_EDICION["2026-10"] == "2026-10-13"
+    assert imf.id_proyeccion("USA", "LUR", 3) == "imf:WEO.USA.LUR.PROY.H3"
+    ids = imf.ids_proyeccion(["imf:WEO.USA.LUR"])
+    assert len(ids) == imf.HORIZONTE_MAX + 1 and all(imf.es_proyeccion(i) for i in ids)
+    frag = imf.fragmento(["imf:WEO.USA.LUR", *ids])
+    assert "PROYECCIÓN, no dato" in frag["imf:WEO.USA.LUR.PROY.H3"]["notas"][0]
 
 
 def test_weo_sdmx_edicion_por_fecha():
@@ -104,7 +122,8 @@ def test_weo_sdmx_edicion_por_fecha():
     assert ed == "2026-10" and len(datos) == 3
     assert imf.edicion_de_fecha("3/20/2026") == "2026-04"
     t, cuenta = imf.tabla_edicion(datos, ed)
-    assert cuenta == {"filas": 2, "proyecciones_descartadas": 1}
+    assert cuenta["filas"] + cuenta["proyecciones"] + cuenta["proyecciones_descartadas"] == 3
+    assert t["fecha_referencia"].max() <= t["fecha_publicacion"].min()
     with pytest.raises(ValueError):
         imf.disponible("2030-04")
 

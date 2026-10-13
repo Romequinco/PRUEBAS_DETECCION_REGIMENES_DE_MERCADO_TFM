@@ -20,6 +20,12 @@ con ellos (valor ``A − B`` en las fechas con los dos valores; ``fecha_publicac
 ``contrato.fecha_publicacion_derivada``), y se compara con la copia de ``data/raw`` si la hay. Las
 demás derivadas (volatilidad realizada) quedan como las fecha su cargador.
 
+Empalme del PIB real de EE. UU. por vintage (``empalmar_pib_real_usa``, id ``EMPALME_PIB_USA``): los
+vintages del RTDSM (``philly:ROUTPUT``, PNB real hasta el vintage de 1991-11) hasta el primer vintage de
+ALFRED de ``fred:GDPC1`` (1991-12-04, primer vintage con PIB real) y los de ALFRED desde ahí. Cada fila
+lleva ``NOTA_EMPALME_PIB_USA`` y el tramo (PNB o PIB): nunca se mezclan sin nota. Unidad: dólares
+constantes de la base de CADA vintage (``unidad_por_vintage``): comparar tasas, no niveles.
+
 Antes de derivar: ``catalogo.aplicar_excepciones`` (fecha = max(regla, primera vintage de ALFRED),
 ``config/excepciones_publicacion.csv``; solo filas ``unico``, idempotente), así las derivadas heredan
 las fechas medidas. Después: ``catalogo.anotar_reconstruidas`` (índices publicados desde
@@ -70,6 +76,11 @@ _BLOQUE4 = {"bis": "bis", "imf": "imf_weo", "worldbank": "worldbank"}
 # Orden de catalogo.PRIORIDAD_ORIGENES (sin 'derivadas', que no es un cargador: se recalculan tras unir).
 PRIORIDAD = {c: i for i, c in enumerate(reversed([o for o in cat_mod.PRIORIDAD_ORIGENES if o in CARGADORES]))}
 CARGADOR_DERIVADAS = "derivadas"
+EMPALME_PIB_USA = "deriv:PIB_REAL_USA_VINTAGES"
+NOTA_EMPALME_PIB_USA = ("empalme por vintage: RTDSM (philly:ROUTPUT) antes del primer vintage de ALFRED de fred:GDPC1 "
+                        "y ALFRED desde él; nivel en dólares constantes de la base de cada vintage (comparar tasas)")
+TRAMO_PNB = "tramo PNB real (GNP, vintages RTDSM anteriores a 1991-12)"
+TRAMO_PIB = "tramo PIB real (GDP, vintages de ALFRED)"
 RESPALDO = "respaldo_bloque2.parquet"   # copia de la base guardada antes de una reconstrucción desde cero
 SUFIJO_PREVIA = "_previa.parquet"     # si RESPALDO ya existe: copia (rotatoria) de la base vigente
 TOLERANCIA_DERIVADA = 1e-9
@@ -77,7 +88,7 @@ AVISO_FRED = ("This product uses the FRED® API but is not endorsed or certified
               "Bank of St. Louis.")
 
 __all__ = [
-    "CARGADORES", "CARGADORES_OFICIALES", "tabla_oficial", "PRIORIDAD", "RESPALDO", "ResumenBase", "tablas_fuentes", "unir", "fechas_solo_respaldo",
+    "CARGADORES", "CARGADORES_OFICIALES", "EMPALME_PIB_USA", "empalmar_pib_real_usa", "tabla_oficial", "PRIORIDAD", "RESPALDO", "ResumenBase", "tablas_fuentes", "unir", "fechas_solo_respaldo",
     "derivar_diferencias",
     "catalogo_efectivo", "construir_base", "cobertura", "escribir_cobertura", "resumen_base",
     "anotar_anomalias", "NOTA_PICO", "NOTA_FIN_DE_SEMANA", "NOTA_RACHA",
@@ -375,6 +386,33 @@ def _anotar(df: pd.DataFrame, mascara: pd.Series, texto: str | pd.Series) -> Non
     df.loc[mascara, "nota"] = nueva.where(~ya, previa)
 
 
+def empalmar_pib_real_usa(base: pd.DataFrame, catalogo: dict[str, dict]) -> tuple[pd.DataFrame, int]:
+    """Añade ``EMPALME_PIB_USA`` (si está en el catálogo y están sus dos tramos): RTDSM antes del primer
+    vintage de ALFRED de ``fred:GDPC1`` y ALFRED desde él (solo filas ``vintage_exacto``; los periodos
+    previos a ALFRED fechados con la regla quedan fuera: los cubre el RTDSM). Devuelve (base, filas)."""
+    e = catalogo.get(EMPALME_PIB_USA)
+    if e is None:
+        return base, 0
+    base = base[base["serie"] != EMPALME_PIB_USA]
+    rt = base[(base["serie"] == "philly:ROUTPUT") & (base["metodo_publicacion"] == "vintage_exacto")]
+    al = base[(base["serie"] == "fred:GDPC1") & (base["metodo_publicacion"] == "vintage_exacto")]
+    if rt.empty or al.empty:
+        return base, 0
+    previa = (catalogo.get("fred:GDPC1") or {}).get("regla_previa_alfred") or {}
+    corte = pd.Timestamp(previa.get("primer_vintage") or al["fecha_publicacion"].min())
+    rt = rt[rt["fecha_publicacion"] <= corte].assign(_tramo=TRAMO_PNB)
+    # Un solo formato de vintage por serie (contrato): AAAA-MM del RTDSM -> último día de ese mes (su fecha).
+    rt["vintage"] = pd.PeriodIndex(rt["vintage"], freq="M").end_time.strftime("%Y-%m-%d")
+    al = al[al["fecha_publicacion"] >= corte].assign(_tramo=TRAMO_PIB)
+    emp = pd.concat([rt, al], ignore_index=True)
+    previa_nota = emp["nota"].where(emp["nota"].notna(), None)
+    emp["nota"] = [f"{NOTA_EMPALME_PIB_USA}; {t}" + (f"; {n}" if isinstance(n, str) and n else "")
+                   for t, n in zip(emp["_tramo"], previa_nota)]
+    emp = emp.drop(columns="_tramo").assign(serie=EMPALME_PIB_USA, unidad=e["unidad"], divisa=e["divisa"],
+                                            fuente=e["fuente"])
+    return pd.concat([base, emp[list(COLUMNAS_SERIES)]], ignore_index=True), int(len(emp))
+
+
 def anotar_anomalias(base: pd.DataFrame, catalogo: dict[str, dict]) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Anota en ``nota`` las anomalías de las diarias de mercado sin tocar valores ni fechas.
 
@@ -484,6 +522,10 @@ def construir_base(*, sin_red: bool = False, escribir: bool = True, ruta: Path |
     union, n_exc = cat_mod.aplicar_excepciones(union, excepciones, catalogo=cat)
     log(f"excepciones de publicación (ALFRED) aplicadas: {n_exc} filas")
     union, derivadas = derivar_diferencias(union, cat)
+    union, n_emp = empalmar_pib_real_usa(union, cat)
+    if n_emp:
+        log(f"empalme del PIB real de EE. UU. por vintage: {n_emp} filas")
+        elegido[EMPALME_PIB_USA] = CARGADOR_DERIVADAS  # sin esto, el resumen falla tras escribir la base
     union = cat_mod.anotar_reconstruidas(union, cat)
     union, anomalias = anotar_anomalias(union, cat)
     for sid, d in derivadas.items():

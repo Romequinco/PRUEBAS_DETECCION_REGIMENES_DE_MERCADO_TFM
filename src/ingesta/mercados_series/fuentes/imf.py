@@ -18,11 +18,21 @@ Conceptos: PIB real (``NGDP_RPCH``), inflación media (``PCPIPCH``), paro (``LUR
 ``fecha_referencia`` = 1 de enero del año.
 
 Publicación: ``vintage`` = edición; ``fecha_publicacion`` = día de publicación de la edición
-(``FECHAS_EDICION``, documentadas por las notas de prensa del FMI; ``verificado: false``) a las
-09:00 de Washington (``disponible_utc``). Medición: ``indexed_at`` de DBnomics (cuándo la indexó)
-debe ser posterior; si no, la ficha lo señala. Cada edición conserva todos sus años: las
-proyecciones (años posteriores al de publicación) se descartan porque el contrato no admite filas
-publicadas antes de su periodo; el año en curso (estimación) sí se conserva con nota.
+(``FECHAS_EDICION``, contrastadas con las páginas de cada edición y las notas de prensa del FMI) a las
+09:00 de Washington (``disponible_utc``), salvo las horas de ``HORAS_EDICION`` (la de 2026-10, en las
+Reuniones Anuales de Bangkok, se midió en la API a las 07:46 de Nueva York: antes de las 09:00
+declaradas). Las ediciones de octubre de 2012 (Tokio), 2018 (Bali) y 2023 (Marrakech) se presentaron
+en la sede de las Reuniones Anuales: la mañana local cae ANTES de las 09:00 de Washington del mismo día,
+pero la fecha de decisión (16:30 de Nueva York) es la misma, así que la regla no adelanta ningún dato.
+Medición: ``indexed_at`` de DBnomics (cuándo la indexó) debe ser posterior; si no, la ficha lo señala.
+
+Dato frente a proyección (los agentes no deben confundirlos): ``imf:WEO.<ISO3>.<concepto>`` solo trae
+años ANTERIORES al de la edición (en la de abril el año anterior aún puede ser estimación de algunos
+países: va en la nota del concepto). La estimación del año en curso y las proyecciones van a series
+propias por horizonte ``imf:WEO.<ISO3>.<concepto>.PROY.H<h>`` (``h`` = años desde el de la edición,
+0..``HORIZONTE_MAX``), todas con ``fecha_referencia`` = 1 de enero del AÑO DE LA EDICIÓN (el contrato no
+admite filas publicadas antes de su periodo) y la nota ``NOTA_PROYECCION`` con el año objetivo. Más
+allá de ``HORIZONTE_MAX``, descartadas.
 
 CLI: ``python -m ingesta.mercados_series.fuentes.imf [--ediciones 2019-10 2020-04] [--sin-sdmx]``.
 """
@@ -55,7 +65,14 @@ CONCEPTOS = {
 HORA_PUBLICACION = "09:00"
 HUSO_PUBLICACION = "America/New_York"
 NOTA_ESTIMACION = "estimación del año en curso en la edición (no dato cerrado)"
-# Día de publicación de cada edición (notas de prensa del FMI). verificado: false.
+NOTA_PROYECCION = "proyección del WEO (no es un dato): valor para el año {anio}, horizonte {h} desde el año de la edición"
+SUFIJO_PROYECCION = ".PROY.H"
+HORIZONTE_MAX = 5
+# Hora medida o de la sede cuando no es la de Washington (solo cambia disponible_utc, no la fecha de decisión).
+HORAS_EDICION = {"2026-10": ("07:46", "America/New_York")}   # primera descarga de la versión 9.0.0 (medida)
+# Día de publicación de cada edición (páginas de la edición en imf.org/en/Publications/WEO/Issues/<AAAA>/<MM>/<DD> y
+# notas de prensa). 2026-04 (14-abr) y 2026-10 (13-oct, Bangkok) contrastadas el 2026-10-13; el resto, con las
+# fechas de las páginas de cada edición (no se pudo abrir cada nota de prensa: verificado false en el publicador).
 FECHAS_EDICION = {
     "2008-04": "2008-04-09", "2008-10": "2008-10-08", "2009-04": "2009-04-22", "2009-10": "2009-10-01",
     "2010-04": "2010-04-21", "2010-10": "2010-10-06", "2011-04": "2011-04-11", "2011-09": "2011-09-20",
@@ -79,7 +96,8 @@ def disponible(edicion: str) -> pd.Timestamp:
     """Instante UTC de publicación de la edición (09:00 de Washington del día documentado)."""
     if edicion not in FECHAS_EDICION:
         raise ValueError(f"edición {edicion!r} sin fecha de publicación documentada")
-    local = pd.Timestamp(f"{FECHAS_EDICION[edicion]} {HORA_PUBLICACION}").tz_localize(HUSO_PUBLICACION)
+    hora, huso = HORAS_EDICION.get(edicion, (HORA_PUBLICACION, HUSO_PUBLICACION))
+    local = pd.Timestamp(f"{FECHAS_EDICION[edicion]} {hora}").tz_localize(huso)
     return local.tz_convert("UTC")
 
 
@@ -132,21 +150,40 @@ def leer_sdmx(contenido: bytes | str | dict) -> tuple[pd.DataFrame, str | None]:
     return df, edicion
 
 
+def id_proyeccion(pais: str, concepto: str, h: int) -> str:
+    """``imf:WEO.<ISO3>.<concepto>.PROY.H<h>``: estimación (h=0) o proyección a h años de la edición."""
+    return f"{id_serie(pais, concepto)}{SUFIJO_PROYECCION}{h}"
+
+
+def es_proyeccion(sid: str) -> bool:
+    return SUFIJO_PROYECCION in sid
+
+
 def tabla_edicion(datos: pd.DataFrame, edicion: str) -> tuple[pd.DataFrame, dict[str, int]]:
-    """Filas del contrato de una edición: años <= año de publicación; el año en curso con nota."""
+    """Filas del contrato de una edición: datos (años anteriores al de la edición) en ``imf:WEO.<P>.<C>``;
+    estimación del año en curso y proyecciones en ``...PROY.H<h>`` (fecha de referencia = año de la edición)."""
     disp = disponible(edicion)
     dia_pub = pd.Timestamp(FECHAS_EDICION[edicion])
+    anio_ed = dia_pub.year
     d = datos[datos["concepto"].isin(CONCEPTOS) & datos["pais"].isin(PAISES) & datos["valor"].notna()]
     d = d.drop_duplicates(["pais", "concepto", "anio"], keep="first")
-    proyecciones = d["anio"] > dia_pub.year
+    h = d["anio"] - anio_ed
+    dato, proy, fuera = h < 0, (h >= 0) & (h <= HORIZONTE_MAX), h > HORIZONTE_MAX
     trozos = []
-    for (pais, concepto), g in d[~proyecciones].groupby(["pais", "concepto"], sort=True):
+    comun = {"vintage": edicion, "divisa": None, "fuente": FUENTE, "metodo": "vintage_exacto"}
+    for (pais, concepto), g in d[dato].groupby(["pais", "concepto"], sort=True):
         fechas = pd.to_datetime(g["anio"].astype(str) + "-01-01")
-        nota = [NOTA_ESTIMACION if a == dia_pub.year else None for a in g["anio"]]
         trozos.append(org.filas(id_serie(pais, concepto), fechas.values, [dia_pub] * len(g), g["valor"].values,
-                                vintage=edicion, unidad=CONCEPTOS[concepto][1], divisa=None, fuente=FUENTE,
-                                metodo="vintage_exacto", nota=nota, disponible_utc=[disp] * len(g)))
-    return org.unir(trozos), {"filas": int((~proyecciones).sum()), "proyecciones_descartadas": int(proyecciones.sum())}
+                                unidad=CONCEPTOS[concepto][1], disponible_utc=[disp] * len(g), **comun))
+    ref_ed = pd.Timestamp(f"{anio_ed}-01-01")
+    for (pais, concepto, hh), g in d[proy].assign(h=h[proy]).groupby(["pais", "concepto", "h"], sort=True):
+        nota = [NOTA_PROYECCION.format(anio=int(a), h=int(hh)) + ("; " + NOTA_ESTIMACION if hh == 0 else "")
+                for a in g["anio"]]
+        trozos.append(org.filas(id_proyeccion(pais, concepto, int(hh)), [ref_ed] * len(g), [dia_pub] * len(g),
+                                g["valor"].values, unidad=CONCEPTOS[concepto][1], nota=nota,
+                                disponible_utc=[disp] * len(g), **comun))
+    return org.unir(trozos), {"filas": int(dato.sum()), "proyecciones": int(proy.sum()),
+                              "proyecciones_descartadas": int(fuera.sum())}
 
 
 # --- Descarga ------------------------------------------------------------------------------------
@@ -197,6 +234,17 @@ def tabla_weo(ediciones: Iterable[str] = EDICIONES_DBNOMICS, *, sdmx: bool = Tru
     return org.unir(trozos), informe
 
 
+def ids_proyeccion(ids: Iterable[str]) -> list[str]:
+    """Todas las series de proyección (H0..HORIZONTE_MAX) de unas series base del WEO."""
+    out = []
+    for sid in ids:
+        if es_proyeccion(sid):
+            continue
+        _, pais, concepto = sid.split(":", 1)[1].split(".")
+        out += [id_proyeccion(pais, concepto, h) for h in range(HORIZONTE_MAX + 1)]
+    return out
+
+
 def frecuencias(tabla: pd.DataFrame) -> dict[str, str]:
     return {sid: "anual" for sid in tabla["serie"].unique()}
 
@@ -205,15 +253,27 @@ def fragmento(ids: Sequence[str]) -> dict[str, dict[str, Any]]:
     """Entradas del catálogo de las series del WEO (vintage por edición)."""
     out = {}
     for sid in sorted(ids):
-        _, pais, concepto = sid.split(":", 1)[1].split(".")
+        partes = sid.split(":", 1)[1].split(".")
+        pais, concepto = partes[1], partes[2]
         nombre, unidad = CONCEPTOS[concepto]
-        out[sid] = {"alias": None, "nombre": f"WEO del FMI: {nombre} - {pais}", "fuente": FUENTE,
+        if es_proyeccion(sid):
+            h = int(sid.rsplit(SUFIJO_PROYECCION, 1)[1])
+            nombre = (f"WEO del FMI: {'estimación del año en curso' if h == 0 else f'proyección a {h} años'} "
+                      f"de {nombre.lower()} - {pais}")
+            notas = ["PROYECCIÓN, no dato: vintage = edición del WEO (AAAA-MM); fecha_referencia = 1 de enero del "
+                     f"año de la edición; el valor es el del año de la edición + {h}"]
+        else:
+            nombre = f"WEO del FMI: {nombre} - {pais}"
+            notas = ["vintage = edición del WEO (AAAA-MM); solo años anteriores al de la edición (la estimación del "
+                     "año en curso y las proyecciones van a .PROY.H<h>); en la edición de abril el año anterior "
+                     "aún puede ser estimación en algunos países"]
+        out[sid] = {"alias": None, "nombre": nombre, "fuente": FUENTE,
                     "id_origen": f"WEO/{pais}.{concepto}", "frecuencia": "anual", "unidad": unidad, "divisa": None,
                     "metodo": "vintage_exacto", "publicador": "imf_weo", "revisable": True, "rol_fase1": None,
                     "licencia": "FMI: uso libre con cita (términos de imf.org); DBnomics como espejo",
                     "estado": "activa", "agentes": ["macro"],
-                    "notas": ["vintage = edición del WEO (AAAA-MM); proyecciones posteriores al año de la edición "
-                              "descartadas (contrato)", "falta la edición de 2011-09 (DBnomics no la tiene)"],
+                    "notas": [*notas, "faltan las ediciones 2008-2025 (robots.txt de DBnomics: Disallow) y la de "
+                              "2011-09 (DBnomics no la tiene)"],
                     "verificado": False}
     return out
 
@@ -241,8 +301,9 @@ def ficha_weo(tabla: pd.DataFrame, informe: dict[str, Any], meta: pd.DataFrame) 
         licencia_y_terminos="FMI: reutilización con cita (copyright IMF); DBnomics redistribuye sin cambios",
         cobertura_inicio=med.get("cobertura_inicio"), cobertura_fin=med.get("cobertura_fin"),
         frecuencia="anual; dos ediciones al año (abril y octubre)",
-        retraso_publicacion=("vintage exacto por edición: día de publicación documentado a las 09:00 de Washington; "
-                             "año en curso como estimación; proyecciones descartadas"),
+        retraso_publicacion=("vintage exacto por edición: día de publicación documentado a las 09:00 de Washington "
+                             "(2026-10: 07:46 de Nueva York, medida); el año en curso y las proyecciones a 1-5 años "
+                             "en series .PROY.H<h> aparte"),
         formato="json (DBnomics) y SDMX-JSON 3.0 (api.imf.org)",
         volumen_estimado=f"{len(ediciones)} ediciones, {med.get('observaciones', 0)} filas, {med.get('series', 0)} series",
         limites="sin clave; DBnomics 1 petición/s; la API del FMI solo sirve las versiones vigentes del flujo",
@@ -250,11 +311,15 @@ def ficha_weo(tabla: pd.DataFrame, informe: dict[str, Any], meta: pd.DataFrame) 
         mediciones={**med, "ediciones": ediciones, "ediciones_pendientes": faltan, "errores": errores,
                     "ediciones_indexadas_antes_de_la_fecha_documentada": sospechas,
                     "proyecciones_descartadas": int(sum(i.get("proyecciones_descartadas", 0) for i in informe.values())),
+                    "proyecciones_separadas": int(sum(i.get("proyecciones", 0) for i in informe.values())),
                     "por_edicion": informe},
         notas=[*([f"DBnomics: robots.txt de api.db.nomics.world es 'Disallow: /' (medido {org.hoy_ny()}): "
                   f"{len(robots)} ediciones no descargadas; no se esquiva (pedir permiso a DBnomics o ficheros "
                   "del archivo del FMI)"] if robots else []),
-               "fechas de publicación de FECHAS_EDICION documentadas, no medidas contra la API (verificado: false)",
+               "FECHAS_EDICION: 2026-04-14 y 2026-10-13 (Bangkok) contrastadas con imf.org; el resto, fechas de las "
+               "páginas de cada edición; la versión 9.0.0 (edición 2026-10) ya estaba en la API a las 07:46 de "
+               "Nueva York: disponible_utc = esa hora medida (HORAS_EDICION); fecha de decisión sin cambios",
+               "Estimación del año en curso y proyecciones en series .PROY.H0-H5 (no se mezclan con los datos)",
                "zona euro pendiente (WEO de agregados, WEOAGG en DBnomics)",
                "ediciones fuera de DBnomics y de las versiones vigentes de la API SDMX: ver ediciones_pendientes"])
     return guardar_ficha(ficha)

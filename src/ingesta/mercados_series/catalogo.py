@@ -107,8 +107,13 @@ _PATRON_ID = re.compile(rf"(?:{'|'.join(PREFIJOS)}):\S+")
 _PATRON_FICHERO = re.compile(r"(?:fred|yfinance|academico|github|ofr)/[^/:]+\.parquet:.+")
 _PATRON_LAG_PARTES = re.compile(r"(?:(\d+)M)?(?:(\d+)D)?")
 _CLAVES_LAG = {"lag", "fin_periodo", "verificado"}
-_CLAVES_LAG_OPC = {"meses", "dias", "tipo", "fuente", "justificacion", "habiles", "n_habiles", "correccion"}
-CALENDARIOS_LAG = ("semana", "us_federal")
+_CLAVES_LAG_OPC = {"meses", "dias", "tipo", "fuente", "justificacion", "habiles", "n_habiles", "correccion",
+                   "tramos"}
+CALENDARIOS_LAG = ("semana", "us_federal", "target")
+# Tramos por época (lags.yaml, opcional): la regla cambia con la fecha de referencia del periodo.
+_CLAVES_TRAMO = {"lag", "verificado", "fuente"}
+_CLAVES_TRAMO_OPC = {"desde", "hasta", "habiles", "n_habiles", "muestras"}
+_CLAVES_MUESTRA = {"periodo", "publicado", "fuente"}
 RUTA_EXCEPCIONES = Path(__file__).resolve().parent / "config" / "excepciones_publicacion.csv"
 # Columnas del CSV de config (solo fechas). La medición completa (regla, origen, holguras) va a
 # results/ingesta/mercados_series/tablas/publicacion_alfred_medida.csv.
@@ -122,6 +127,7 @@ __all__ = [
     "FRECUENCIAS", "GRUPOS", "AGENTES", "PROYECCIONES", "FUENTES_VIVAS", "FUENTES_EDICION", "PRIORIDAD_ORIGENES",
     "origenes", "metodos_admitidos", "expandir_patrones", "CARGADOR_POR_FUENTE", "nota_previa_alfred", "entrada_previa", "vista_regla_previa",
     "FINES_PERIODO", "PREFIJOS", "cargar_lags", "fin_de_periodo", "fecha_publicacion_lag",
+    "fecha_publicacion_tramos", "fecha_publicacion_clave", "validar_muestras_tramos",
     "fecha_publicacion_regla", "nota_revisable", "es_nota_revisable", "cargar_excepciones",
     "aplicar_excepciones", "anotar_reconstruidas", "resolver_caja",
     "cargar_catalogo", "parte_publicacion", "por_id", "alias", "resolver", "filtrar", "tabla",
@@ -159,18 +165,72 @@ def _validar_lags(crudo: Any, origen: str) -> dict[str, dict[str, Any]]:
                 raise ValueError(f"{donde}: un lag en meses necesita fin_periodo mes, trimestre o anio")
             if not isinstance(e["verificado"], bool):
                 raise ValueError(f"{donde}: 'verificado' debe ser true o false")
-            hab, n_hab = e.get("habiles"), e.get("n_habiles")
-            if hab is not None and hab not in CALENDARIOS_LAG:
-                raise ValueError(f"{donde}: habiles {hab!r} no es uno de {list(CALENDARIOS_LAG)}")
-            if n_hab is not None and (hab is None or not isinstance(n_hab, int) or isinstance(n_hab, bool)
-                                      or n_hab < 1):
-                raise ValueError(f"{donde}: 'n_habiles' debe ser un entero >= 1 y necesita 'habiles'")
+            _validar_habiles(e.get("habiles"), e.get("n_habiles"), donde)
+            if e.get("tramos") is not None:
+                _validar_tramos(e["tramos"], e["fin_periodo"], donde)
             if seccion == "lag_publicacion_fase1" and not {"meses", "dias", "tipo", "fuente"} <= set(e):
                 raise ValueError(f"{donde}: la copia de LAG_PUBLICACION necesita meses, dias, tipo y fuente")
             if seccion == "adicionales" and not str(e.get("justificacion") or "").strip():
                 raise ValueError(f"{donde}: falta 'justificacion'")
             out[str(clave)] = {**e, "seccion": seccion}
     return out
+
+
+def _validar_habiles(hab: Any, n_hab: Any, donde: str) -> None:
+    if hab is not None and hab not in CALENDARIOS_LAG:
+        raise ValueError(f"{donde}: habiles {hab!r} no es uno de {list(CALENDARIOS_LAG)}")
+    if n_hab is not None and (hab is None or not isinstance(n_hab, int) or isinstance(n_hab, bool) or n_hab < 1):
+        raise ValueError(f"{donde}: 'n_habiles' debe ser un entero >= 1 y necesita 'habiles'")
+
+
+def _fecha_tramo(valor: Any, donde: str) -> pd.Timestamp | None:
+    if valor is None:
+        return None
+    try:
+        return pd.Timestamp(str(valor)).normalize()
+    except ValueError:
+        raise ValueError(f"{donde}: {valor!r} no es AAAA-MM-DD") from None
+
+
+def _validar_tramos(tramos: Any, fin_periodo: str, donde: str) -> None:
+    """``tramos``: lista ordenada de ``{desde, hasta, lag, habiles?, n_habiles?, verificado, fuente,
+    muestras?}`` sin solapes. ``desde``/``hasta`` (inclusivos, ausentes = abiertos) son FECHAS DE
+    REFERENCIA (inicio del periodo); fuera de todo tramo rige la regla general de la entrada.
+    ``muestras``: publicaciones reales comprobadas (``{periodo, publicado, fuente}``); la regla nunca
+    puede caer antes de ``publicado`` (``validar_muestras_tramos``, con test)."""
+    if not isinstance(tramos, list) or not tramos:
+        raise ValueError(f"{donde}: 'tramos' debe ser una lista no vacía")
+    previo: pd.Timestamp | None = None
+    for i, t in enumerate(tramos):
+        dt = f"{donde}, tramo {i}"
+        visibilidad._claves(t, _CLAVES_TRAMO, _CLAVES_TRAMO_OPC, dt)
+        try:
+            meses, _ = _partes_lag(t["lag"])
+        except ValueError as err:
+            raise ValueError(f"{dt}: {err}") from None
+        if meses and fin_periodo == "fecha":
+            raise ValueError(f"{dt}: un lag en meses necesita fin_periodo mes, trimestre o anio")
+        if not isinstance(t["verificado"], bool):
+            raise ValueError(f"{dt}: 'verificado' debe ser true o false")
+        if not str(t["fuente"] or "").strip():
+            raise ValueError(f"{dt}: falta 'fuente'")
+        _validar_habiles(t.get("habiles"), t.get("n_habiles"), dt)
+        desde, hasta = _fecha_tramo(t.get("desde"), dt), _fecha_tramo(t.get("hasta"), dt)
+        if desde is None and hasta is None:
+            raise ValueError(f"{dt}: necesita 'desde' o 'hasta'")
+        if desde is not None and hasta is not None and hasta < desde:
+            raise ValueError(f"{dt}: 'hasta' anterior a 'desde'")
+        if i and (previo is None or desde is None or desde <= previo):
+            raise ValueError(f"{dt}: los tramos deben ir ordenados y sin solaparse")
+        previo = hasta
+        for j, m in enumerate(t.get("muestras") or []):
+            dm = f"{dt}, muestra {j}"
+            visibilidad._claves(m, _CLAVES_MUESTRA, set(), dm)
+            ref, pub = _fecha_tramo(m["periodo"], dm), _fecha_tramo(m["publicado"], dm)
+            if ref is None or pub is None:
+                raise ValueError(f"{dm}: faltan 'periodo' o 'publicado'")
+            if (desde is not None and ref < desde) or (hasta is not None and ref > hasta):
+                raise ValueError(f"{dm}: periodo {ref.date()} fuera del tramo")
 
 
 @lru_cache(maxsize=4)
@@ -247,10 +307,67 @@ def fecha_publicacion_lag(fechas: Any, lag: str, fin_periodo: str, *, habiles: s
     return pd.Series(out, index=pub.index, dtype="datetime64[ns]")
 
 
+def fecha_publicacion_tramos(fechas: Any, lag: str, fin_periodo: str, *, habiles: str | None = None,
+                             n_habiles: int | None = None, tramos: list[dict[str, Any]] | None = None) -> pd.Series:
+    """``fecha_publicacion_lag`` con tramos por época (``tramos`` de lags.yaml).
+
+    Cada periodo usa el tramo que contiene su fecha de referencia (``desde``/``hasta`` inclusivos);
+    fuera de todo tramo, la regla general (``lag``, ``habiles``, ``n_habiles``). Sin tramos es
+    exactamente ``fecha_publicacion_lag`` (mismo índice).
+    """
+    if not tramos:
+        return fecha_publicacion_lag(fechas, lag, fin_periodo, habiles=habiles, n_habiles=n_habiles)
+    s = pd.Series(pd.to_datetime(fechas)).reset_index(drop=True).dt.normalize()
+    out = fecha_publicacion_lag(s, lag, fin_periodo, habiles=habiles, n_habiles=n_habiles).reset_index(drop=True)
+    for t in tramos:
+        desde, hasta = _fecha_tramo(t.get("desde"), "tramo"), _fecha_tramo(t.get("hasta"), "tramo")
+        sel = s.notna()
+        if desde is not None:
+            sel &= s >= desde
+        if hasta is not None:
+            sel &= s <= hasta
+        if sel.any():
+            out[sel] = fecha_publicacion_lag(s[sel], t["lag"], fin_periodo, habiles=t.get("habiles"),
+                                             n_habiles=t.get("n_habiles")).to_numpy()
+    idx = fechas.index if isinstance(fechas, pd.Series) else out.index
+    return pd.Series(out.to_numpy(), index=idx, dtype="datetime64[ns]")
+
+
+def fecha_publicacion_clave(fechas: Any, clave: str | dict[str, Any],
+                            lags: dict[str, dict[str, Any]] | None = None) -> pd.Series:
+    """Fecha de publicación con la regla completa de una clave de lags.yaml (o su entrada), tramos incluidos."""
+    e = clave if isinstance(clave, dict) else (lags if lags is not None else cargar_lags())[clave]
+    return fecha_publicacion_tramos(fechas, e["lag"], e["fin_periodo"], habiles=e.get("habiles"),
+                                    n_habiles=e.get("n_habiles"), tramos=e.get("tramos"))
+
+
+def validar_muestras_tramos(lags: dict[str, dict[str, Any]] | None = None) -> list[dict[str, Any]]:
+    """Comprueba que la regla nunca cae antes de las publicaciones reales anotadas (``muestras``).
+
+    Devuelve una fila por muestra (clave, periodo, publicado, regla y holgura en días); ``ValueError``
+    si alguna regla adelanta la publicación real (fuga).
+    """
+    lags = lags if lags is not None else cargar_lags()
+    filas = []
+    for clave, e in lags.items():
+        for t in e.get("tramos") or []:
+            for m in t.get("muestras") or []:
+                regla = fecha_publicacion_clave(pd.Series([pd.Timestamp(str(m["periodo"]))]), e).iloc[0]
+                pub = pd.Timestamp(str(m["publicado"]))
+                filas.append({"clave": clave, "periodo": str(m["periodo"]), "publicado": pub.date().isoformat(),
+                              "regla": regla.date().isoformat(), "holgura_dias": int((regla - pub).days),
+                              "fuente": m["fuente"]})
+    malas = [f for f in filas if f["holgura_dias"] < 0]
+    if malas:
+        raise ValueError(f"reglas de lags.yaml anteriores a la publicación real: {malas}")
+    return filas
+
+
 def fecha_publicacion_regla(fechas: Any, entrada: dict[str, Any]) -> pd.Series:
-    """``fecha_publicacion_lag`` con la regla completa de una entrada del catálogo (lag, fin, hábiles)."""
-    return fecha_publicacion_lag(fechas, entrada["lag"], entrada["fin_periodo"],
-                                 habiles=entrada.get("lag_habiles"), n_habiles=entrada.get("lag_n_habiles"))
+    """``fecha_publicacion_lag`` con la regla completa de una entrada del catálogo (lag, fin, hábiles, tramos)."""
+    return fecha_publicacion_tramos(fechas, entrada["lag"], entrada["fin_periodo"],
+                                    habiles=entrada.get("lag_habiles"), n_habiles=entrada.get("lag_n_habiles"),
+                                    tramos=entrada.get("lag_tramos"))
 
 
 # --- Notas de revisables ------------------------------------------------------------------------
@@ -440,10 +557,12 @@ def _validar_entrada(sid: str, e: Any, lags: dict[str, dict], publicadores: dict
         out["fin_periodo"] = lags[clave_lag]["fin_periodo"]
         out["lag_habiles"] = lags[clave_lag].get("habiles")
         out["lag_n_habiles"] = lags[clave_lag].get("n_habiles")
+        out["lag_tramos"] = copy.deepcopy(lags[clave_lag].get("tramos"))
     elif clave_lag is not None:
         raise ValueError(f"{donde}: 'lag_clave' solo vale con metodo {list(METODOS_CON_LAG)}")
     else:
         out["lag"] = out["fin_periodo"] = out["lag_habiles"] = out["lag_n_habiles"] = None
+        out["lag_tramos"] = None
     if e.get("publicado_desde") is not None:
         try:
             out["publicado_desde"] = pd.Timestamp(str(e["publicado_desde"])).date().isoformat()
@@ -553,7 +672,7 @@ def _validar_bloque3(sid: str, e: dict[str, Any], out: dict[str, Any], lags: dic
         out["regla_previa_alfred"] = {
             "metodo": "lag_fijo", "lag_clave": clave, "lag": lags[clave]["lag"],
             "fin_periodo": lags[clave]["fin_periodo"], "lag_habiles": lags[clave].get("habiles"),
-            "lag_n_habiles": lags[clave].get("n_habiles"),
+            "lag_n_habiles": lags[clave].get("n_habiles"), "lag_tramos": copy.deepcopy(lags[clave].get("tramos")),
             "primer_vintage": _fecha_iso(previa["primer_vintage"], donde, "regla_previa_alfred.primer_vintage")}
     else:
         out["regla_previa_alfred"] = None
@@ -686,7 +805,8 @@ def entrada_previa(entrada: dict[str, Any]) -> dict[str, Any]:
     out = copy.deepcopy(entrada)
     out.update(metodo=previa["metodo"], lag_clave=previa["lag_clave"], lag=previa["lag"],
                fin_periodo=previa["fin_periodo"], lag_habiles=previa["lag_habiles"],
-               lag_n_habiles=previa["lag_n_habiles"], regla_previa_alfred=None)
+               lag_n_habiles=previa["lag_n_habiles"], lag_tramos=previa.get("lag_tramos"),
+               regla_previa_alfred=None)
     return out
 
 

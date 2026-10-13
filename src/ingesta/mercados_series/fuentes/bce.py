@@ -25,7 +25,7 @@ Series (``SERIES_BCE`` + todos los tipos de cambio de referencia):
   ``disponible_utc`` = ``VALID_FROM`` (instante real de carga en el Data Portal) y vintage = su día en
   Berlín. Medido (2026-10-13): en estos flujos ``includeHistory`` devuelve UNA versión por
   observación (la vigente, con su ``VALID_FROM``), no la historia de revisiones. Por eso cada
-  observación cuya regla de publicación (``previa``: clave de lags.yaml, ``catalogo.fecha_publicacion_lag``)
+  observación cuya regla de publicación (``previa``: clave de lags.yaml con sus tramos, ``catalogo.fecha_publicacion_clave``)
   cae antes de su primera versión guardada se fecha con la regla (``lag_fijo``) y la nota
   ``NOTA_PREVIA`` (valor revisado: posible fuga de revisiones); el resto, con su ``VALID_FROM``.
 
@@ -333,8 +333,7 @@ def tabla_versiones(sid: str, hist: pd.DataFrame, espec: dict[str, Any]) -> pd.D
     metodo = pd.Series("vintage_exacto", index=df.index, dtype=object)
     nota = pd.Series(None, index=df.index, dtype=object)
     if espec.get("previa"):
-        lag = catalogo.cargar_lags()[espec["previa"]]
-        regla = catalogo.fecha_publicacion_lag(df["ref"], lag["lag"], lag["fin_periodo"], habiles=lag.get("habiles"))
+        regla = catalogo.fecha_publicacion_clave(df["ref"], espec["previa"])
         # Por observación: la regla cae antes que su primera versión guardada (carga en bloque o revisión
         # posterior): la primera versión se fecha con la regla (nunca después de lo que ya se veía).
         primera = ~df.duplicated("ref", keep="first")

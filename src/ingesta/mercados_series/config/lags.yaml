@@ -22,7 +22,11 @@
 #     (meses_del_periodo: 1 mensual, 3 trimestral). Ejemplos: k=1 → "1D"; k=2 → "1M1D";
 #     WTI (k=1, d=10) → "11D"; PIB trimestral (k=4) → "1M1D"; semanales (k=0, d) → "<d>D".
 #     Lo comprueba un test contra LAG_PUBLICACION para todas las entradas.
-#   habiles (opcional: semana | us_federal): la fecha se lleva al primer hábil >= ella.
+#   habiles (opcional: semana | us_federal | target): la fecha se lleva al primer hábil >= ella.
+#   tramos (opcional): lista ordenada de {desde, hasta, lag, habiles, n_habiles, verificado, fuente, muestras}:
+#     la regla cambia con la FECHA DE REFERENCIA del periodo (desde/hasta inclusivos); fuera de todo tramo rige
+#     la regla general. muestras = publicaciones reales {periodo, publicado, fuente}: un test exige regla >=
+#     publicado (catalogo.fecha_publicacion_tramos / fecha_publicacion_clave / validar_muestras_tramos).
 #   n_habiles (opcional, con habiles): nunca antes del n-ésimo hábil tras el fin del periodo.
 #   correccion: por qué el bloque 2 añade habiles/n_habiles a una entrada (el lag no cambia).
 #   (catalogo.fecha_publicacion_regla aplica lag + habiles + n_habiles.)
@@ -832,15 +836,35 @@ adicionales:
     justificacion: 'WDI: el año t sale entre abril y julio de t+1; fin de t+1 (conservador)'
 
   # --- Corrección (paro y PIB de Eurostat/BCE: antes reutilizaban UNRATE y GDPC1, que adelantaban la publicación) ---
+  # Tramos por época (catalogo.fecha_publicacion_tramos): 'desde'/'hasta' son fechas de REFERENCIA; fuera de todo
+  # tramo rige el lag general (el conservador). 'muestras' = publicaciones reales comprobadas en las notas de prensa
+  # archivadas de Eurostat (ec.europa.eu/eurostat/documents/2995521/..., el nombre del PDF lleva la fecha); un test
+  # (catalogo.validar_muestras_tramos) exige regla >= publicación real en todas, incluidas las fronteras de tramo.
   EUROSTAT_PARO:
     lag: 2M
     fin_periodo: mes
     tipo: macro
     verificado: false
-    justificacion: 'Paro mensual de Eurostat (une_rt_m, BCE LFSI U2): hoy sale el día 1-4 de M+2 y antes de ~2012
-      a t+30-40 días (noviembre de 2009 salió el 2010-01-08; la ronda de enero de 2026 el 2026-03-04, VALID_FROM
-      del BCE). La regla de UNRATE (1M1D) lo veía antes de publicarse: fin de M+2 en todo el histórico
-      (conservador; deuda: tramos por época, 1M5D desde 2012).'
+    justificacion: 'Paro mensual de Eurostat (une_rt_m, BCE LFSI U2). Antes de 2012 (sin muestra suficiente): fin de
+      M+2 (conservador; noviembre de 2009 salió el 2010-01-08). Desde 2012 sale entre t+30 y t+40: el día 30-31 de M+1
+      o los primeros días de M+2, y el dato de noviembre en la segunda semana de enero (2014-01-08, 2019-01-09,
+      2024-01-09). El "1M5D" que se anotó como deuda adelantaba esos eneros (5 de enero): tramo 1M10D + hábil TARGET.
+      La regla de UNRATE (1M1D) lo veía antes de publicarse.'
+    tramos:
+    - desde: '2012-01-01'
+      lag: 1M10D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (euro indicators, paro): muestras abajo; noviembre es el mes más tardío'
+      muestras:
+      - {periodo: '2012-11-01', publicado: '2013-01-08', fuente: 'Eurostat, nota de 8-ene-2013 (paro de noviembre de 2012)'}
+      - {periodo: '2013-11-01', publicado: '2014-01-08', fuente: 'Eurostat 3-08012014-BP-EN.PDF'}
+      - {periodo: '2018-10-01', publicado: '2018-11-30', fuente: 'Eurostat 3-30112018-BP-EN.pdf'}
+      - {periodo: '2018-11-01', publicado: '2019-01-09', fuente: 'Eurostat 3-09012019-AP-DE.pdf'}
+      - {periodo: '2018-12-01', publicado: '2019-01-31', fuente: 'Eurostat 3-31012019-BP-EN.pdf'}
+      - {periodo: '2023-09-01', publicado: '2023-11-03', fuente: 'Eurostat 3-03112023-AP-EN.pdf'}
+      - {periodo: '2023-11-01', publicado: '2024-01-09', fuente: 'Eurostat 3-09012024-AP-EN.pdf'}
+      - {periodo: '2026-01-01', publicado: '2026-03-04', fuente: 'BCE LFSI U2, VALID_FROM de la ronda de enero de 2026'}
   EUROSTAT_PARO_UK:
     lag: 3M
     fin_periodo: mes
@@ -853,7 +877,45 @@ adicionales:
     fin_periodo: trimestre
     tipo: trimestral
     verificado: false
-    justificacion: 'PIB trimestral de Eurostat (namq_10_gdp) y BCE MNA I10: flash t+30 solo desde 2016, t+45 entre
-      2003 y 2015 y primera estimación hacia t+60-70 antes de 2003; Destatis a t+45 hasta 2020; ONS t+40/45
-      antes de 2018. La regla de GDPC1 (1M1D = t+31) adelantaba la publicación: 2 fines de mes + 10 días (t+71)
-      en todo el histórico (conservador; deuda: tramos por época).'
+    justificacion: 'PIB trimestral de los AGREGADOS de Eurostat (namq_10_gdp EA/EU/EA20/EA21) y BCE MNA I10. Antes
+      de 2003 (sin flash; primera estimación hacia t+60-70, sin muestra): 2 fines de mes + 10 días (t+71,
+      conservador). 2003-2015: flash a t+45 (la primera, del primer trimestre de 2003, el 2003-05-15): tramo 1M18D +
+      hábil TARGET. Desde 2016: flash preliminar a t+30 (la primera, del primer trimestre de 2016, el 2016-04-29;
+      la del cuarto trimestre de 2020 salió el 2021-02-02, t+33): tramo 1M5D + hábil TARGET. El "t+31" anotado
+      como deuda adelantaba ese febrero de 2021. La regla de GDPC1 (1M1D) adelantaba la publicación.'
+    tramos:
+    - desde: '2003-01-01'
+      hasta: '2015-12-31'
+      lag: 1M18D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (flash estimate t+45): muestras abajo'
+      muestras:
+      - {periodo: '2003-01-01', publicado: '2003-05-15', fuente: 'Eurostat: primera flash de la zona euro (t+45), 15-may-2003'}
+      - {periodo: '2007-04-01', publicado: '2007-08-14', fuente: 'Eurostat flash del segundo trimestre de 2007 (Haver, 14-ago-2007)'}
+      - {periodo: '2008-10-01', publicado: '2009-02-13', fuente: 'Eurostat 2-13022009-AP-DE.PDF'}
+      - {periodo: '2015-10-01', publicado: '2016-02-12', fuente: 'Eurostat nota 32/2016 (flash del cuarto trimestre de 2015)'}
+    - desde: '2016-01-01'
+      lag: 1M5D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (preliminary flash t+30): muestras abajo'
+      muestras:
+      - {periodo: '2016-01-01', publicado: '2016-04-29', fuente: 'Eurostat 2-29042016-CP-EN.pdf (primera flash preliminar t+30)'}
+      - {periodo: '2020-10-01', publicado: '2021-02-02', fuente: 'Eurostat 2-02022021-AP-EN.pdf'}
+  EUROSTAT_PIB_PAISES:
+    lag: 2M10D
+    fin_periodo: trimestre
+    tipo: trimestral
+    verificado: false
+    justificacion: 'PIB trimestral de Eurostat por PAÍS (namq_10_gdp DE, FR, IT, UK): lo publica antes el instituto
+      nacional (Destatis flash t+45 desde 2003 y t+30 desde 2020; INSEE e Istat t+30 desde 2016; ONS preliminar t+25
+      hasta 2018 y t+40/45 después). Antes de 2003 (sin muestra): t+71 (conservador). Desde 2003: tramo 1M18D + hábil
+      TARGET (t+45-50), que cubre el más lento de los cuatro; no aprovecha los t+30 recientes (conservador). Sin
+      muestras propias por país: verificado false.'
+    tramos:
+    - desde: '2003-01-01'
+      lag: 1M18D
+      habiles: target
+      verificado: false
+      fuente: 'Calendarios nacionales (Destatis, INSEE, Istat, ONS) resumidos en la justificación; sin muestra archivada'

@@ -68,7 +68,8 @@ def test_t1_agregados_ea20_ea21_y_hicp_v2_no_antes_de_existir():
     viejo = t[t["fecha_referencia"] == pd.Timestamp("1999-01-01")].iloc[0]
     assert viejo["fecha_publicacion"] >= pd.Timestamp(eurostat.CREACION_GEO["EA21"])
     assert eurostat.NOTA_POSTERIOR in viejo["nota"]
-    assert _pub(t, "2026-06-01") == pd.Timestamp("2026-08-31")  # después de la creación: la regla
+    # Después de la creación rige la regla: EUROSTAT_PARO desde 2012 = 1M10D (+ hábil TARGET)
+    assert _pub(t, "2026-06-01") == pd.Timestamp("2026-08-10")
     t = _tabla("prc_hicp_minr", "DE", ["2005-03"])
     assert _pub(t, "2005-03-01") >= pd.Timestamp("2026-01-28")
     t = _tabla("prc_hicp_manr", "DE", ["2005-03"])  # v1: existía en su época

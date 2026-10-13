@@ -7,6 +7,14 @@ UNIT_MEASURE.ACTIVITY.EDITION`` (p. ej. ``USA.M.LI_AA...``). Medidas usadas (``M
 (CLI con amplitud ajustada), ``CP`` (IPC) y ``UNEMP`` (paro). Áreas (``AREAS``): EE. UU., zona euro
 (``EA20``, composición cambiante de la OCDE), G7 y China.
 
+CLI de la zona euro (medido el 2026-10-13): ``DF_STES_REVISIONS`` no tiene ``LI_AA`` de ``EA19``, ``EA20``
+ni ``EA`` (404) y ``DF_CLI`` (4.1) tampoco: la OCDE ya no publica el CLI de la zona euro. El agregado
+europeo que queda es ``G4E`` = "Major four European countries" (Alemania, Francia, Italia y Reino Unido,
+según el ``CL_AREA`` de la OCDE): se descarga como ``oecd:LI_AA.G4E`` con ``NOTA_G4E`` (no es la zona
+euro). Re-estimación (medida en USA y DEU, 304 ediciones): cada edición revisa de mediana el 44-48 % de los
+periodos comunes con la anterior (p10 17-19 %), no el índice entero: ``reestimada`` queda en false y
+se anota (``NOTA_REVISIONES_CLI``).
+
 Vintage y fecha (conservadoras): ``vintage`` = ``AAAA-MM`` de la edición; el dato se da por público
 el ÚLTIMO día del mes de la edición a las 23:59 de París (publicador ``oecd_edicion`` del
 fragmento): la OCDE publica a mitad de mes, así que nunca se adelanta. Solo valores nuevos o
@@ -47,7 +55,11 @@ PUBLICADOR = "oecd_edicion"
 URL_SDMX = ("https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES_REVISIONS@DF_STES_REVISIONS,4.0/"
             "{area}.M.{medida}...")
 URL_DBNOMICS = "https://api.db.nomics.world/v22/series/OECD/DSD_STES@DF_CLI"
-AREAS = ("USA", "EA20", "DEU", "FRA", "ITA", "GBR", "JPN", "CAN", "CHN")
+AREAS = ("USA", "EA20", "DEU", "FRA", "ITA", "GBR", "JPN", "CAN", "CHN", "G4E")
+NOTA_G4E = ("G4E = 'Major four European countries' de la OCDE (Alemania, Francia, Italia y Reino Unido): NO es la "
+            "zona euro; la OCDE no publica el CLI de EA19/EA20 (404 en DF_STES_REVISIONS y DF_CLI, 2026-10-13)")
+NOTA_REVISIONES_CLI = ("CLI revisado en parte en cada edición (mediana 44-48 % de los periodos comunes, USA y DEU): "
+                       "usar siempre el vintage de la fecha; no es un índice re-estimado entero")
 MEDIDAS = {"LI_AA": "índice (100 = tendencia de largo plazo)", "CP": "índice (año base de la edición)",
            "UNEMP": "% de la población activa"}
 NOTA_EDICION = "OCDE, edición {edicion}: fecha conservadora = fin del mes de la edición"
@@ -246,6 +258,7 @@ def ficha_oecd(areas: Iterable[str] = AREAS, medidas: Iterable[str] = tuple(MEDI
         notas=["vintage = edición AAAA-MM; fecha_publicacion = primera decisión tras el fin del mes de la edición",
                "Solo valores nuevos o revisados entre ediciones consecutivas",
                "EA20: composición cambiante según la OCDE (zona euro a 21 en 2026: comprobar el código del área)",
+               NOTA_G4E, NOTA_REVISIONES_CLI,
                "IPC de Japón: se toma de aquí (el Banco de Japón no publica el IPC; lo hace el MIC)",
                "Crudo en <corpus>/mercados_series/crudo/oecd/"])
     ruta = guardar_ficha(ficha) if guardar else None
