@@ -1,4 +1,4 @@
-"""Catálogo de series del Tema 1 (bloque 2): una entrada por serie de la base.
+"""Catálogo de series del Tema 1 (bloques 2 y 3): una entrada por serie de la base.
 
 ``config/catalogo_series.yaml`` es la ÚNICA fuente de verdad de las series del tema: metadatos
 (nombre, unidad, divisa, licencia, estado, duplicados...) y su parte de publicación (método,
@@ -11,6 +11,23 @@ Ids canónicos con prefijo de fuente (``fred:DGS10``, ``yf:^GSPC``, ``ff:F3D.SMB
 ``shiller:CAPE``, ``datahub:US10Y_MENSUAL``, ``ofr:FSI``, ``deriv:DBAA-DAAA``); ``alias`` = nombres
 internos de la Fase 1 (``VIX``, ``SP500``...). CLI: ``python -m ingesta.mercados_series.catalogo``
 escribe la tabla de metadatos con la cobertura medida en ``data/raw`` (sin valores).
+
+Bloque 3 (ALFRED y FRED como fuente viva):
+
+- ``vintage_exacto`` de ALFRED: cada fila es un valor nuevo o revisado con su ``realtime_start``.
+  ``regla_previa_alfred`` (``{lag_clave, primer_vintage}``) fecha las observaciones anteriores al
+  primer vintage (cargadas con el valor de ese vintage, ``lag_fijo`` y ``nota_previa_alfred``); sin
+  ella, esas observaciones solo son visibles desde el primer vintage (WEI, GDPNow).
+- ``fuente_viva``: ``fred`` (por defecto en las ``fred:`` de ``fred_alfred``; ``null`` si FRED ya
+  no la sirve). Orígenes por prioridad (``origenes``, ``PRIORIDAD_ORIGENES``): ``alfred``
+  (vintage_exacto) > ``academicos`` > ``derivadas`` > ``fred`` vivo > ``fase1`` (``data/raw``: lo
+  que FRED no sirve e historia de las capadas).
+- Metadatos de la lista de ALFRED: ``grupo``, ``agentes``, ``release``, ``proyecciones``
+  (``recortar``: quitar las observaciones posteriores al vintage; ``conservar``: la serie es una
+  previsión), ``reestimada`` (índice re-estimado entero en cada vintage), ``cobertura_variable``
+  (el inicio cambia según el vintage), ``unidad_por_vintage`` (año base o dólares encadenados de
+  cada vintage; ``unidad`` es la del vintage vigente) y ``coherente_con`` (series de las que FRED
+  la deriva: test de coherencia dentro del mismo vintage).
 """
 from __future__ import annotations
 
@@ -35,12 +52,27 @@ NOTA_REVISABLE = "valores del último vintage: posible fuga de revisiones (ALFRE
 # la da el archivo propio de crudos (cada descarga se conserva desde el bloque 2).
 NOTA_REVISABLE_EDICION = ("valores de la última edición del fichero: posible fuga de revisiones (archivo de "
                           "ediciones propio desde 2026-10-12; ALFRED no tiene esta fuente)")
-NOTAS_REVISABLE = (NOTA_REVISABLE, NOTA_REVISABLE_EDICION)
+# Bloque 3: primera edición archivada de French, Shiller y Goyal-Welch (vintage por edición ``AAAA-MM``).
+NOTA_PRIMERA_EDICION = ("valor de la primera edición archivada: posible fuga de revisiones anteriores a ella "
+                        "(el archivo de ediciones empieza ahí)")
+NOTAS_REVISABLE = (NOTA_REVISABLE, NOTA_REVISABLE_EDICION, NOTA_PRIMERA_EDICION)
 # Fuentes del catálogo cuyas revisables se resolverán con ALFRED (las demás, con el archivo propio).
 FUENTES_ALFRED = ("fred_alfred", "calculo_propio")
 NOTA_RECONSTRUIDA = "serie reconstruida hacia atrás: el índice no se publicaba antes de"
 NOTA_EXCEPCION = "fecha de publicación medida (primera vintage de ALFRED); la regla daba"
 ESTADOS = ("activa", "retirada", "capada", "excluida_ajustada", "pendiente_alfred", "duplicada")
+# Bloque 3: grupos y agentes de la lista de ALFRED (results/.../tablas/alfred_lista_propuesta.csv).
+GRUPOS = ("actividad", "comercio", "consumo", "dinero_credito", "empleo", "encuestas", "estres_financiero",
+          "otros", "pib", "precios", "recesion", "vivienda")
+AGENTES = ("macro", "risk", "equity", "portfolio")
+PROYECCIONES = ("recortar", "conservar")
+FUENTES_VIVAS = ("fred",)
+# Orígenes (cargadores) de una serie por prioridad (bloque 3): vintages de ALFRED > ediciones académicas >
+# derivadas recalculadas > FRED vivo > data/raw de la Fase 1. Una serie solo tiene algunos (``origenes``).
+PRIORIDAD_ORIGENES = ("alfred", "academicos", "derivadas", "fred", "fase1")
+# Fuentes con archivo de ediciones propio (fuentes.academicos): la copia de data/raw es su edición previa.
+FUENTES_EDICION = ("ken_french", "shiller", "goyal_welch", "ofr_fsi")
+NOTA_PREVIA_ALFRED = "anterior a ALFRED: valor del primer vintage"
 # Estados que entran en la base de series (con datos de data/raw o de los extractores).
 ESTADOS_CARGABLES = ("activa", "retirada", "capada", "duplicada")
 FRECUENCIAS = ("diaria", "semanal", "mensual", "trimestral", "anual")
@@ -55,7 +87,9 @@ CAMPOS_OBLIGATORIOS = frozenset({
 CAMPOS_OPCIONALES = frozenset({
     "fichero_fase1", "fase1_utilizable", "sucesor", "duplicado_de", "notas", "lag_clave",
     "publicador", "mercado", "componentes", "hora_local", "huso", "margen_min", "calendario",
-    "publicado_desde"})
+    "publicado_desde", "grupo", "agentes", "release", "regla_previa_alfred", "proyecciones", "fuente_viva",
+    "reestimada", "cobertura_variable", "unidad_por_vintage", "coherente_con"})
+_CLAVES_PREVIA = {"lag_clave", "primer_vintage"}
 # Claves que pasan a la sección 'series' de publicaciones (el resto son metadatos del catálogo).
 CLAVES_PUBLICACION = frozenset(visibilidad._CLAVES_SERIE | visibilidad._CLAVES_SERIE_OPC)
 
@@ -73,7 +107,10 @@ COLUMNAS_EXCEPCIONES_DETALLE = (*COLUMNAS_EXCEPCIONES, "fecha_regla", "origen")
 
 __all__ = [
     "RUTA_CATALOGO", "RUTA_LAGS", "RUTA_EXCEPCIONES", "NOTA_REVISABLE", "NOTA_REVISABLE_EDICION",
-    "NOTAS_REVISABLE", "NOTA_RECONSTRUIDA", "NOTA_EXCEPCION", "ESTADOS", "ESTADOS_CARGABLES", "FRECUENCIAS",
+    "NOTA_PRIMERA_EDICION",
+    "NOTAS_REVISABLE", "NOTA_RECONSTRUIDA", "NOTA_EXCEPCION", "NOTA_PREVIA_ALFRED", "ESTADOS", "ESTADOS_CARGABLES",
+    "FRECUENCIAS", "GRUPOS", "AGENTES", "PROYECCIONES", "FUENTES_VIVAS", "FUENTES_EDICION", "PRIORIDAD_ORIGENES",
+    "origenes", "metodos_admitidos", "nota_previa_alfred", "entrada_previa", "vista_regla_previa",
     "FINES_PERIODO", "PREFIJOS", "cargar_lags", "fin_de_periodo", "fecha_publicacion_lag",
     "fecha_publicacion_regla", "nota_revisable", "es_nota_revisable", "cargar_excepciones",
     "aplicar_excepciones", "anotar_reconstruidas", "resolver_caja",
@@ -216,7 +253,10 @@ def es_nota_revisable(nota: Any) -> Any:
     """True si ``nota`` (texto o Series) lleva alguna de las ``NOTAS_REVISABLE``."""
     if isinstance(nota, pd.Series):
         t = nota.fillna("").astype(str)
-        return t.str.contains(NOTA_REVISABLE, regex=False) | t.str.contains(NOTA_REVISABLE_EDICION, regex=False)
+        out = pd.Series(False, index=nota.index)
+        for n in NOTAS_REVISABLE:
+            out |= t.str.contains(n, regex=False)
+        return out
     return isinstance(nota, str) and any(n in nota for n in NOTAS_REVISABLE)
 
 
@@ -403,6 +443,7 @@ def _validar_entrada(sid: str, e: Any, lags: dict[str, dict], publicadores: dict
         out["publicado_desde"] = None
     if metodo != "derivada" and e.get("componentes"):
         raise ValueError(f"{donde}: 'componentes' solo vale con metodo derivada")
+    _validar_bloque3(sid, e, out, lags, donde)
 
     # Revisables: vintages exactos, salvo la excepción declarada del bloque 2 (último vintage + nota).
     if e["revisable"] and metodo != "vintage_exacto":
@@ -439,6 +480,9 @@ def _coherencia(cat: dict[str, dict], origen: str) -> None:
         for c in e.get("componentes") or []:
             if c not in cat or c == sid:
                 raise ValueError(f"{donde}: componente {c!r} no es otra serie del catálogo")
+        for c in e.get("coherente_con") or []:
+            if c not in cat or c == sid:
+                raise ValueError(f"{donde}: coherente_con {c!r} no es otra serie del catálogo")
         for a in e["alias"]:
             if a in cat:
                 raise ValueError(f"{donde}: el alias {a!r} coincide con un id")
@@ -449,6 +493,66 @@ def _coherencia(cat: dict[str, dict], origen: str) -> None:
             if f in vistos_fichero:
                 raise ValueError(f"{donde}: fichero_fase1 {f!r} repetido (también en {vistos_fichero[f]!r})")
             vistos_fichero[f] = sid
+
+
+def _fecha_iso(valor: Any, donde: str, campo: str) -> str:
+    try:
+        return pd.Timestamp(str(valor)).date().isoformat()
+    except ValueError:
+        raise ValueError(f"{donde}: {campo} {valor!r} no es AAAA-MM-DD") from None
+
+
+def _validar_bloque3(sid: str, e: dict[str, Any], out: dict[str, Any], lags: dict[str, dict], donde: str) -> None:
+    """Campos del bloque 3 (ALFRED, fuente viva y metadatos de la lista); normaliza ``out`` in situ."""
+    metodo = e["metodo"]
+    grupo = e.get("grupo")
+    if grupo is not None and grupo not in GRUPOS:
+        raise ValueError(f"{donde}: grupo {grupo!r} no es uno de {list(GRUPOS)}")
+    out["grupo"] = grupo
+    out["agentes"] = _lista(e.get("agentes"), donde, "agentes")
+    malos = [a for a in out["agentes"] if a not in AGENTES]
+    if malos or len(set(out["agentes"])) != len(out["agentes"]):
+        raise ValueError(f"{donde}: agentes {out['agentes']} deben ser distintos y de {list(AGENTES)}")
+    if e.get("release") is not None:
+        _texto(e, "release", donde)
+    out["release"] = e.get("release")
+    for campo in ("reestimada", "cobertura_variable", "unidad_por_vintage"):
+        if campo in e and not isinstance(e[campo], bool):
+            raise ValueError(f"{donde}: '{campo}' debe ser true o false")
+        out[campo] = bool(e.get(campo, False))
+    out["coherente_con"] = _lista(e.get("coherente_con"), donde, "coherente_con")
+
+    # vintage_exacto: hora del publicador en cada vintage; regla previa y proyecciones solo aquí.
+    if metodo == "vintage_exacto" and not e.get("publicador"):
+        raise ValueError(f"{donde}: vintage_exacto necesita 'publicador' (hora de cada vintage)")
+    for campo in ("regla_previa_alfred", "proyecciones"):
+        if e.get(campo) is not None and metodo != "vintage_exacto":
+            raise ValueError(f"{donde}: '{campo}' solo vale con metodo vintage_exacto")
+    if e.get("proyecciones") is not None and e["proyecciones"] not in PROYECCIONES:
+        raise ValueError(f"{donde}: proyecciones {e['proyecciones']!r} no es una de {list(PROYECCIONES)}")
+    out["proyecciones"] = e.get("proyecciones")
+    previa = e.get("regla_previa_alfred")
+    if previa is not None:
+        visibilidad._claves(previa, _CLAVES_PREVIA, set(), f"{donde}, regla_previa_alfred")
+        clave = previa["lag_clave"]
+        if clave not in lags:
+            raise ValueError(f"{donde}: regla_previa_alfred necesita 'lag_clave' de lags.yaml (encontrado {clave!r})")
+        out["regla_previa_alfred"] = {
+            "metodo": "lag_fijo", "lag_clave": clave, "lag": lags[clave]["lag"],
+            "fin_periodo": lags[clave]["fin_periodo"], "lag_habiles": lags[clave].get("habiles"),
+            "lag_n_habiles": lags[clave].get("n_habiles"),
+            "primer_vintage": _fecha_iso(previa["primer_vintage"], donde, "regla_previa_alfred.primer_vintage")}
+    else:
+        out["regla_previa_alfred"] = None
+
+    # Fuente viva: por defecto FRED en las fred: de fred_alfred; null explícito si FRED ya no la sirve.
+    es_fred = sid.split(":", 1)[0] == "fred" and e["fuente"] == "fred_alfred"
+    viva = e["fuente_viva"] if "fuente_viva" in e else ("fred" if es_fred else None)
+    if viva is not None and (viva not in FUENTES_VIVAS or not es_fred):
+        raise ValueError(f"{donde}: fuente_viva {viva!r}: solo {list(FUENTES_VIVAS)} en series fred: de fred_alfred")
+    if metodo == "vintage_exacto" and e["fuente"] == "fred_alfred" and viva != "fred":
+        raise ValueError(f"{donde}: vintage_exacto de ALFRED necesita fuente_viva 'fred'")
+    out["fuente_viva"] = viva
 
 
 def _validar_catalogo(crudo: Any, origen: str, lags: dict, publicadores: dict) -> dict[str, dict[str, Any]]:
@@ -480,7 +584,11 @@ def cargar_catalogo(ruta: Path | None = None, *, lags: Path | None = None,
     ``lags.yaml``, la regla de revisables (vintage_exacto, o lag_fijo/fichero con
     ``nota_revisable``: ALFRED o archivo de ediciones), referencias (componentes, sucesor, duplicado_de), alias y ficheros
     únicos, y la parte de publicación con los validadores de ``visibilidad`` (publicador de
-    ``publicaciones.yaml``, mercado de ``mercados.yaml``). ``ValueError`` con el id culpable.
+    ``publicaciones.yaml``, mercado de ``mercados.yaml``). Bloque 3: ``vintage_exacto`` con
+    publicador, ``regla_previa_alfred`` (``lag_clave`` de ``lags.yaml`` y ``primer_vintage``) y
+    ``proyecciones`` solo en vintage_exacto, ``fuente_viva`` (``fred`` por defecto en las ``fred:``
+    de ``fred_alfred``), ``grupo``, ``agentes``, avisos booleanos y ``coherente_con`` (ids del
+    catálogo); se normalizan aunque falten. ``ValueError`` con el id culpable.
     ``publicaciones``: configuración cuyos ``publicadores`` se usan (por defecto
     ``publicaciones.yaml`` sin fusionar el catálogo). Devuelve una copia.
     """
@@ -497,6 +605,70 @@ def _cat(catalogo: dict[str, dict] | None) -> dict[str, dict]:
         return catalogo
     return _catalogo_cache(str(RUTA_CATALOGO), RUTA_CATALOGO.stat().st_mtime_ns,
                            str(RUTA_LAGS), RUTA_LAGS.stat().st_mtime_ns)
+
+
+def origenes(entrada: dict[str, Any]) -> tuple[str, ...]:
+    """Cargadores que sirven la serie, en el orden de ``PRIORIDAD_ORIGENES`` (bloque 3).
+
+    ``vintage_exacto`` con fuente viva: solo ``alfred`` (los periodos anteriores al primer vintage
+    salen del propio ALFRED con ``regla_previa_alfred``). Otra con ``fuente_viva`` ``fred``: ``fred``
+    y, si tiene ``fichero_fase1`` utilizable, ``fase1`` (historia que FRED ya no sirve: capadas).
+    ``FUENTES_EDICION``: ``academicos`` (+ ``fase1``, su edición previa). ``derivada``: ``derivadas``
+    (+ la copia de ``fase1`` si la hay, que se contrasta). El resto: ``fase1`` si tiene fichero.
+    """
+    fase1 = ("fase1",) if entrada.get("fichero_fase1") and entrada.get("fase1_utilizable") is not False else ()
+    if entrada.get("fuente_viva") == "fred":
+        return ("alfred",) if entrada["metodo"] == "vintage_exacto" else ("fred", *fase1)
+    if entrada["fuente"] in FUENTES_EDICION:
+        return ("academicos", *fase1)
+    if entrada["metodo"] == "derivada":
+        return ("derivadas", *fase1)
+    return fase1
+
+
+def metodos_admitidos(entrada: dict[str, Any]) -> frozenset[str]:
+    """``metodo_publicacion`` válidos en las filas de la serie: el suyo y el de ``regla_previa_alfred``."""
+    previa = entrada.get("regla_previa_alfred")
+    return frozenset({entrada["metodo"], *([previa["metodo"]] if previa else [])})
+
+
+def entrada_previa(entrada: dict[str, Any]) -> dict[str, Any]:
+    """Copia de la entrada con su ``regla_previa_alfred`` como método (``lag_fijo`` con su lag).
+
+    Sirve para fechar con ``fecha_publicacion_regla`` las observaciones anteriores al primer
+    vintage (y para reproducir la carga del bloque 2, con el último vintage y ``nota_revisable``).
+    ``ValueError`` si la entrada no tiene regla previa.
+    """
+    previa = entrada.get("regla_previa_alfred")
+    if not previa:
+        raise ValueError("la serie no tiene regla_previa_alfred")
+    out = copy.deepcopy(entrada)
+    out.update(metodo=previa["metodo"], lag_clave=previa["lag_clave"], lag=previa["lag"],
+               fin_periodo=previa["fin_periodo"], lag_habiles=previa["lag_habiles"],
+               lag_n_habiles=previa["lag_n_habiles"], regla_previa_alfred=None)
+    return out
+
+
+def vista_regla_previa(catalogo: dict[str, dict] | None = None, ids: Any = None) -> dict[str, dict]:
+    """Copia del catálogo con las series ``ids`` (por defecto, todas las que tienen regla previa) en
+    la forma del bloque 2: ``entrada_previa`` (``lag_fijo`` con el último vintage y ``nota_revisable``).
+
+    Para fechar los periodos anteriores a ALFRED en bloque y para los tests de las reglas de
+    publicación (``lag_fijo``, excepciones, ``publicado_desde``) con entradas reales.
+    """
+    cat = copy.deepcopy(_cat(catalogo))
+    elegidas = [s for s, e in cat.items() if e.get("regla_previa_alfred")] if ids is None else list(ids)
+    for sid in elegidas:
+        cat[sid] = entrada_previa(cat[sid])
+    return cat
+
+
+def nota_previa_alfred(entrada: dict[str, Any]) -> str:
+    """Nota de las observaciones anteriores al primer vintage: ``NOTA_PREVIA_ALFRED (AAAA-MM-DD)``."""
+    previa = entrada.get("regla_previa_alfred")
+    if not previa:
+        raise ValueError("la serie no tiene regla_previa_alfred")
+    return f"{NOTA_PREVIA_ALFRED} ({previa['primer_vintage']})"
 
 
 def parte_publicacion(entrada: dict[str, Any]) -> dict[str, Any]:
@@ -558,7 +730,8 @@ def filtrar(catalogo: dict[str, dict] | None = None, **criterios: Any) -> list[s
 _COLUMNAS_TABLA = ("id", "alias", "nombre", "fuente", "id_origen", "fichero_fase1", "fase1_utilizable",
                    "frecuencia", "unidad", "divisa", "metodo", "publicador", "mercado", "lag", "fin_periodo",
                    "componentes", "revisable", "rol_fase1", "licencia", "estado", "sucesor", "duplicado_de",
-                   "verificado", "notas")
+                   "verificado", "fuente_viva", "grupo", "agentes", "release", "proyecciones", "reestimada",
+                   "lag_previo_alfred", "primer_vintage_alfred", "notas")
 
 
 def tabla(catalogo: dict[str, dict] | None = None) -> pd.DataFrame:
@@ -566,18 +739,20 @@ def tabla(catalogo: dict[str, dict] | None = None) -> pd.DataFrame:
     filas = []
     for sid, e in sorted(_cat(catalogo).items()):
         fila = {"id": sid}
+        previa = e.get("regla_previa_alfred") or {}
+        extra = {"lag_previo_alfred": previa.get("lag"), "primer_vintage_alfred": previa.get("primer_vintage")}
         for c in _COLUMNAS_TABLA[1:]:
-            v = e.get(c)
+            v = extra[c] if c in extra else e.get(c)
             fila[c] = " | ".join(v) if isinstance(v, list) else v
         filas.append(fila)
     return pd.DataFrame(filas, columns=list(_COLUMNAS_TABLA))
 
 
 def resumen(catalogo: dict[str, dict] | None = None) -> dict[str, dict[str, int]]:
-    """Recuentos por estado, método, fuente y revisable (para informes)."""
+    """Recuentos por estado, método, fuente, revisable, frecuencia y fuente viva (para informes)."""
     cat = _cat(catalogo).values()
     return {campo: dict(sorted(Counter(str(e[campo]) for e in cat).items()))
-            for campo in ("estado", "metodo", "fuente", "revisable", "frecuencia")}
+            for campo in ("estado", "metodo", "fuente", "revisable", "frecuencia", "fuente_viva")}
 
 
 def validar_contra_catalogo(df: pd.DataFrame, catalogo: dict[str, dict] | None = None, *,
@@ -585,7 +760,8 @@ def validar_contra_catalogo(df: pd.DataFrame, catalogo: dict[str, dict] | None =
     """Coherencia de una tabla del contrato de series con el catálogo; ``ErrorContrato`` si falla.
 
     Por serie: que esté catalogada (salvo ``solo_catalogadas=False``) y en un estado cargable,
-    que ``unidad``, ``divisa``, ``fuente`` y ``metodo_publicacion`` coincidan con el catálogo, y
+    que ``unidad``, ``divisa`` y ``fuente`` coincidan con el catálogo, que ``metodo_publicacion``
+    sea el suyo (o el de su ``regla_previa_alfred``: filas anteriores al primer vintage), y
     que una serie revisable con vintage ``unico`` lleve ``nota_revisable`` en la nota de todas
     sus filas (paso de los cargadores antes de ``almacen.escribir_series``).
     """
@@ -599,11 +775,15 @@ def validar_contra_catalogo(df: pd.DataFrame, catalogo: dict[str, dict] | None =
             continue
         if e["estado"] not in ESTADOS_CARGABLES:
             problemas.append(f"{sid}: estado {e['estado']!r} no entra en la base de series")
-        for col, esperado in (("unidad", e["unidad"]), ("divisa", e["divisa"]), ("fuente", e["fuente"]),
-                              ("metodo_publicacion", e["metodo"])):
+        for col, esperado in (("unidad", e["unidad"]), ("divisa", e["divisa"]), ("fuente", e["fuente"])):
             valores = set(g[col].where(g[col].notna(), None))
             if valores != {esperado}:
                 problemas.append(f"{sid}: {col} {sorted(map(str, valores))} distinta de la del catálogo {esperado!r}")
+        metodos = set(g["metodo_publicacion"].where(g["metodo_publicacion"].notna(), None))
+        if not metodos <= metodos_admitidos(e):
+            previa = " (o el de su regla_previa_alfred)" if e.get("regla_previa_alfred") else ""
+            problemas.append(f"{sid}: metodo_publicacion {sorted(map(str, metodos))} distinta de la del catálogo "
+                             f"{e['metodo']!r}{previa}")
         if e["revisable"]:
             unico = g["vintage"] == "unico"
             sin_nota = unico & ~g["nota"].fillna("").str.contains(nota_revisable(e), regex=False)

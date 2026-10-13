@@ -563,3 +563,241 @@ adicionales:
     justificacion: 'Cleveland Fed FSI diario (retirado en 2016); sin calendario conservado: mismo criterio que el
       OFR FSI (conservador).'
     verificado: false
+  # Bloque 3: reglas previas a ALFRED (regla_previa_alfred del catálogo): fechan las observaciones
+  # anteriores al primer vintage de cada serie, cargadas con el valor de ese vintage. Por release.
+  CLAIMS_CONTINUADAS:
+    fin_periodo: fecha
+    lag: 13D
+    tipo: semanal
+    justificacion: "DOL: las peticiones continuadas de la semana que acaba el sábado S salen el jueves S+12 (una semana después que las iniciales); 13 días cubren el retraso a viernes por festivo."
+    verificado: false
+  JOLTS:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "BLS JOLTS: el mes M sale hacia el quinto-sexto martes tras su fin (julio -> 3 de septiembre); día 1 de M+3 (conservador)."
+    verificado: false
+  ECI:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "BLS Employment Cost Index: el último día del mes siguiente al trimestre (con retrasos por cierres del gobierno); 2 fines de mes + 1 día (conservador)."
+    verificado: false
+  PRODUCTIVIDAD_COSTES:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "BLS Productivity and Costs: preliminar a principios del segundo mes tras el trimestre; 2 fines de mes + 1 día (conservador)."
+    verificado: false
+  PRECIOS_IMPORTACION:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BLS Import/Export Price Indexes: mitad de M+1; día 1 de M+2."
+    verificado: false
+  BEA_RENTA_GASTO:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BEA Personal Income and Outlays (y medidas derivadas el mismo día, como la PCE media recortada de Dallas): última semana de M+1 (cierres del gobierno: más tarde); día 1 de M+2 (mismo criterio que el PIB de la Fase 1)."
+    verificado: false
+  BEA_PIB_SEGUNDA:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "BEA: la renta interior (GDI) y los beneficios empresariales salen con la segunda estimación del PIB (la tercera en el cuarto trimestre, finales de marzo); 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  COMERCIO_EXTERIOR:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "BEA/Census U.S. International Trade in Goods and Services: hacia el día 5 de M+2; día 1 de M+3 (conservador)."
+    verificado: false
+  TRANSACCIONES_INTERNACIONALES:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "BEA U.S. International Transactions: hacia el día 20-25 del tercer mes tras el trimestre; 3 fines de mes + 1 día."
+    verificado: false
+  BEA_VEHICULOS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BEA Supplemental Estimates (Motor Vehicles): primeros días de M+1; día 1 de M+2 (conservador)."
+    verificado: false
+  BEA_MTIS_REAL:
+    fin_periodo: mes
+    lag: 3M1D
+    tipo: macro
+    justificacion: "BEA ventas reales de manufacturas y comercio (deflacta el MTIS del Census, que sale hacia la mitad de M+2): día 1 de M+4 (conservador)."
+    verificado: false
+  CENSUS_M3:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census M3: informe completo en los primeros hábiles de M+2 (avance de duraderos hacia el día 25 de M+1); día 1 de M+3 (conservador)."
+    verificado: false
+  CENSUS_MTIS:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census Manufacturing and Trade Inventories and Sales: mitad de M+2; día 1 de M+3."
+    verificado: false
+  CENSUS_VENTAS_MINORISTAS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Census Advance Monthly Retail Sales: hacia el día 15 de M+1; día 1 de M+2."
+    verificado: false
+  CENSUS_VIVIENDA_NUEVA:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Census New Residential Sales: hacia el día 25 de M+1; día 1 de M+2."
+    verificado: false
+  CENSUS_VIVIENDA_NUEVA_TRIMESTRAL:
+    fin_periodo: trimestre
+    lag: 1M1D
+    tipo: trimestral
+    justificacion: "Census New Residential Sales (precio mediano trimestral): con el dato del último mes del trimestre, hacia el día 25 del mes siguiente; 1 fin de mes + 1 día."
+    verificado: false
+  CENSUS_CONSTRUCCION:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census Construction Spending: primer hábil de M+2 (si el día 1 es festivo, después); día 1 de M+3 (conservador)."
+    verificado: false
+  FHFA_HPI:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "FHFA HPI mensual: último martes de M+2; día 1 de M+3."
+    verificado: false
+  FHFA_HPI_TRIMESTRAL:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "FHFA HPI trimestral: último martes del segundo mes tras el trimestre; 2 fines de mes + 1 día."
+    verificado: false
+  CASE_SHILLER:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "S&P Cotality Case-Shiller: último martes de M+2; día 1 de M+3."
+    verificado: false
+  FED_H6:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Fed H.6: cuarto martes de M+1 (antes de 2021, semanal los jueves); día 1 de M+2."
+    verificado: false
+  FED_H8_MENSUAL:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Fed H.8: las medias mensuales de M salen con la edición semanal de mediados de M+1; día 1 de M+2 (conservador)."
+    verificado: false
+  FED_H8_SEMANAL:
+    fin_periodo: fecha
+    lag: 13D
+    tipo: semanal
+    justificacion: "Fed H.8 semanal: semana que acaba el miércoles W, publicada el viernes W+9 a las 16:15 NY (visible el sábado); 13 días y primer hábil cubren el viernes festivo."
+    verificado: false
+    habiles: us_federal
+  FED_H41:
+    fin_periodo: fecha
+    lag: 3D
+    tipo: semanal
+    justificacion: "Fed H.4.1: nivel del miércoles W publicado el jueves W+1 a las 16:30 NY (visible el viernes); 3 días y primer hábil (el lunes) cubren el jueves festivo."
+    verificado: false
+    habiles: us_federal
+  FED_G19:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Fed G.19: quinto hábil de M+2; día 1 de M+3 (conservador)."
+    verificado: false
+  FED_Z1:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Fed Z.1: hacia la segunda semana del tercer mes tras el trimestre; 3 fines de mes + 1 día."
+    verificado: false
+  FED_MOROSIDAD:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Fed Charge-Off and Delinquency Rates: hacia el final del segundo mes tras el trimestre; 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  FED_DSR:
+    fin_periodo: trimestre
+    lag: 6M1D
+    tipo: trimestral
+    justificacion: "Fed Household Debt Service Ratios: sin calendario fijo (se publica con un trimestre o más de retraso); 6 fines de mes + 1 día (conservador)."
+    verificado: false
+  CHICAGO_BBK:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Brave-Butters-Kelley (Fed de Chicago): mensual, sin calendario conservado; día 1 de M+3 (conservador)."
+    verificado: false
+  KC_LMCI:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Kansas City Fed LMCI: tras la Employment Situation de M (primer viernes de M+1 o más tarde); día 1 de M+2."
+    verificado: false
+  PHILLY_COINCIDENTES:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Philadelphia Fed State Coincident Indexes: tras el empleo por estados (tercera-cuarta semana de M+1); día 1 de M+3 (conservador)."
+    verificado: false
+  EMPIRE:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "NY Fed Empire State Manufacturing Survey: hacia el día 15 de M; día 1 de M+1."
+    verificado: false
+  DALLAS_TMOS:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "Dallas Fed Texas Manufacturing Outlook Survey: último lunes de M; día 1 de M+1."
+    verificado: false
+  IPC_DERIVADOS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Medidas del IPC de las Feds de Cleveland (mediana, media recortada) y Atlanta (precios rígidos): el día del IPC (mitad de M+1); día 1 de M+2."
+    verificado: false
+  CLEVELAND_EXPINF:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "Cleveland Fed Inflation Expectations: la estimación de M sale a mediados de M (medido: septiembre-2026 el 2026-09-11); día 1 de M+1."
+    verificado: false
+  TESORO_MTS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Monthly Treasury Statement: octavo hábil de M+1; día 1 de M+2."
+    verificado: false
+  TESORO_DEUDA:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Deuda pública federal total (Tesoro, trimestral): sin calendario conservado; 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  OCDE_CLI:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "OCDE Composite Leading Indicators: hacia la segunda semana de M+1 (en verano, julio y agosto juntos en septiembre); día 1 de M+3 (conservador)."
+    verificado: false
+  CBO:
+    fin_periodo: trimestre
+    lag: 6M1D
+    tipo: trimestral
+    justificacion: "CBO Budget and Economic Outlook (enero-febrero) y su actualización (verano): la estimación de un trimestre se conoce en el informe siguiente; 6 fines de mes + 1 día (conservador). Los valores previos al primer vintage son estimaciones posteriores."
+    verificado: false

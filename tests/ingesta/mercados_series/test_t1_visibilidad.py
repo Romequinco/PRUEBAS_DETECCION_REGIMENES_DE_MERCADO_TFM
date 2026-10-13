@@ -469,3 +469,13 @@ def test_t1_cargar_publicaciones_metodos_validos_y_cierres(tmp_path):
     fechas = {e["fecha"] for e in real["cierres_extraordinarios"]["us_federal"]}
     assert {date(2025, 1, 9), date(2018, 12, 5)} <= fechas
     assert real["series"]["fred:UNRATE"]["revisable"] is True
+
+
+def test_t1_h6_semanal_hasta_2021_se_ve_al_dia_siguiente():
+    """Regresión: el H.6/H.3 semanal salía los jueves a las 16:30 NY (no a las 13:00 de hoy)."""
+    jueves = v.disponible_publicador("fed_h6", pd.Timestamp("2020-02-27"))
+    assert jueves == _ny("2020-02-27 16:35")
+    assert primera_decision_vec(pd.Series([jueves]))[0] == pd.Timestamp("2020-02-28")
+    hoy = v.disponible_publicador("fed_h6", pd.Timestamp("2026-09-22"))
+    assert primera_decision_vec(pd.Series([hoy]))[0] == pd.Timestamp("2026-09-22")
+
