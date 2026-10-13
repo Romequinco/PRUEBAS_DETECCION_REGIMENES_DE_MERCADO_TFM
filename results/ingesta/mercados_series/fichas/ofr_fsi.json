@@ -15,7 +15,7 @@
   "cobertura_inicio": "2000-01-03",
   "cobertura_fin": "2026-10-08",
   "frecuencia": "diaria; fichero actualizado cada día hábil",
-  "retraso_publicacion": "medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no está medido): la primera edición conocida con el último periodo sale 4-4 días tras su fin (series vigentes); reglas del catálogo: 5D desde el fin de fecha (5 series) (regla - primera decisión tras esa edición: 1 a 1 días)",
+  "retraso_publicacion": "medido con las ediciones archivadas (data/raw de la Fase 1 y descargas desde el bloque 2; las anteriores no están medidas): la primera edición conocida con el último periodo sale 4-4 días tras su fin (series vigentes); reglas del catálogo: 5D desde el fin de fecha (5 series) (regla - primera decisión tras esa edición: 1 a 1 días)",
   "formato": "csv",
   "volumen_estimado": "0.52 MB por edición (1 fichero(s))",
   "limites": "1 petición/s por host; robots.txt permite la descarga",
@@ -24,6 +24,7 @@
     "ediciones": {
       "fsi.csv": [
         {
+          "etiqueta": "2026-10",
           "fecha_edicion": "2026-10-12T14:00:18+00:00",
           "fuente_fecha": "last_modified",
           "visto": "2026-10-12T16:05:20.250549+00:00",
@@ -53,7 +54,13 @@
         "filas_con_cota": 0,
         "fase1_comunes": 6716.0,
         "fase1_distintos": 0.0,
-        "fase1_max_abs": 0.0
+        "fase1_max_abs": 0.0,
+        "n_periodos": 6776,
+        "n_vintages": 1,
+        "vintages": "unico",
+        "filas_revisadas": null,
+        "filas_nuevas": null,
+        "revision_max_abs": null
       },
       "ofr:FSI_CREDIT": {
         "origen": "crudo",
@@ -67,7 +74,13 @@
         "filas_con_cota": 0,
         "fase1_comunes": 6716.0,
         "fase1_distintos": 0.0,
-        "fase1_max_abs": 0.0
+        "fase1_max_abs": 0.0,
+        "n_periodos": 6776,
+        "n_vintages": 1,
+        "vintages": "unico",
+        "filas_revisadas": null,
+        "filas_nuevas": null,
+        "revision_max_abs": null
       },
       "ofr:FSI_FUNDING": {
         "origen": "crudo",
@@ -81,7 +94,13 @@
         "filas_con_cota": 0,
         "fase1_comunes": 6716.0,
         "fase1_distintos": 0.0,
-        "fase1_max_abs": 0.0
+        "fase1_max_abs": 0.0,
+        "n_periodos": 6776,
+        "n_vintages": 1,
+        "vintages": "unico",
+        "filas_revisadas": null,
+        "filas_nuevas": null,
+        "revision_max_abs": null
       },
       "ofr:FSI_US": {
         "origen": "crudo",
@@ -95,7 +114,13 @@
         "filas_con_cota": 0,
         "fase1_comunes": 6716.0,
         "fase1_distintos": 0.0,
-        "fase1_max_abs": 0.0
+        "fase1_max_abs": 0.0,
+        "n_periodos": 6776,
+        "n_vintages": 1,
+        "vintages": "unico",
+        "filas_revisadas": null,
+        "filas_nuevas": null,
+        "revision_max_abs": null
       },
       "ofr:FSI_VOLATILITY": {
         "origen": "crudo",
@@ -109,7 +134,13 @@
         "filas_con_cota": 0,
         "fase1_comunes": 6716.0,
         "fase1_distintos": 0.0,
-        "fase1_max_abs": 0.0
+        "fase1_max_abs": 0.0,
+        "n_periodos": 6776,
+        "n_vintages": 1,
+        "vintages": "unico",
+        "filas_revisadas": null,
+        "filas_nuevas": null,
+        "revision_max_abs": null
       }
     },
     "copias_data_raw": {
@@ -146,5 +177,5 @@
     "Descarga con el User-Agent identificable de ingesta.comun.http: HTTP 200 (sin 403); si la OFR bloquea, se usa la copia de data/raw con su regla",
     "metodo lag_fijo (catálogo): 5D desde la fecha"
   ],
-  "fecha_sonda": "2026-10-12"
+  "fecha_sonda": "2026-10-13"
 }

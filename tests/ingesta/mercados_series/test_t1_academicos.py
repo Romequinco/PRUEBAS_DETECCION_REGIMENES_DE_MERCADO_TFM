@@ -2,6 +2,8 @@
 
 Sin red: ficheros SINTÉTICOS con el formato real, generados en ``tmp_path`` (zip CSV de French con
 cabecera y pie, rejilla de Shiller con fechas ``1871.1``, xlsx de Goyal-Welch y JST, ``fsi.csv``).
+Vintage por edición: dos ediciones sintéticas de French (la segunda revisa meses antiguos y añade
+uno) consultadas con ``get_serie`` antes y después, y el archivo ``ediciones/<AAAA-MM>/``.
 Ningún valor real de las fuentes. ``@pytest.mark.datos``: ``data/raw`` o los crudos locales.
 ``@pytest.mark.live``: descarga real (``INGESTA_LIVE=1``).
 """
@@ -27,8 +29,11 @@ ROOT = Path(__file__).resolve().parents[3]
 # --- Generadores de ficheros sintéticos ---------------------------------------------------------
 def _zip_french(nombre: str = "F-F_Research_Data_Factors_daily", *, mensual: bool = False,
                 columnas: tuple[str, ...] = ("Mkt-RF", "SMB", "HML", "RF"), dias: int = 6,
-                crsp: str = "202608", faltante: bool = True) -> bytes:
-    """Zip con un CSV como los de la Data Library: cabecera de texto, bloque, bloque anual y pie."""
+                crsp: str = "202608", faltante: bool = True, revisar: dict[int, float] | None = None) -> bytes:
+    """Zip con un CSV como los de la Data Library: cabecera de texto, bloque, bloque anual y pie.
+
+    ``revisar``: ``{fila: valor}`` de la primera columna (una edición que revisa valores antiguos).
+    """
     lineas = [f"This file was created by using the {crsp} CRSP database.",
               "The Tbill return is the simple daily rate (texto sintético).", "",
               "," + ",".join(columnas)]
@@ -38,6 +43,8 @@ def _zip_french(nombre: str = "F-F_Research_Data_Factors_daily", *, mensual: boo
         vals = [0.01 * (k + 1) * (j + 1) for j in range(len(columnas))]
         if faltante and k == 1:
             vals[1] = -99.99
+        if revisar and k in revisar:
+            vals[0] = revisar[k]
         etiqueta = f.strftime("%Y%m") if mensual else f.strftime("%Y%m%d")
         lineas.append(f"{etiqueta}," + ",".join(f"{v:8.2f}" for v in vals))
     lineas += ["", " Annual Factors: January-December ", "," + ",".join(columnas),
@@ -254,32 +261,32 @@ def test_t1_regla_fichero_french_45_dias():
     s = _serie(pd.bdate_range("2026-08-03", "2026-08-31"))
     t = validar_series(ac.tabla_serie("ff:X", _entrada(), [(_ed("2026-09-25 21:55"), s)]))
     assert (t["fecha_publicacion"] == pd.Timestamp("2026-10-15")).all()     # 31-ago + 45 días
-    assert t["disponible_utc"].isna().all() and (t["vintage"] == "unico").all()
-    assert t["nota"].str.contains(cat_mod.NOTA_REVISABLE_EDICION, regex=False).all()
+    assert t["disponible_utc"].isna().all() and (t["vintage"] == "2026-09").all()   # vintage = edición
+    assert t["nota"].str.contains(ac.NOTA_PRIMERA_EDICION + " (2026-09)", regex=False).all()
     assert t["nota"].str.contains("CRSP").all()
 
 
 def test_t1_cota_inferior_de_edicion_vista_sin_el_periodo():
-    """Shiller: una edición vista el 12-oct sin septiembre cerrado -> septiembre no antes del 12-oct."""
-    e = _entrada(lag="1D", frecuencia="mensual", fuente="shiller")
+    """Vintage 'unico' (OFR): una edición vista el 12-oct sin septiembre -> septiembre no antes del 12-oct."""
+    e = _entrada(lag="1D", frecuencia="mensual", fuente="ofr_fsi")
     vieja = _serie(["2026-07-01", "2026-08-01", "2026-09-01"])        # septiembre provisional (día 1)
     nueva = _serie(["2026-07-01", "2026-08-01", "2026-09-01", "2026-10-01"])
-    info = ac._Info("shiller:X", "shiller", "ie_data.xls", "CAPE")
-    t = ac.tabla_serie("shiller:X", e, [(_ed("2026-09-02 17:51", "2026-10-12 16:05"), vieja),
+    info = ac._Info("ofr:X", "ofr_fsi", "fsi.csv", "X")
+    t = ac.tabla_serie("ofr:X", e, [(_ed("2026-09-02 17:51", "2026-10-12 16:05"), vieja),
                                         (_ed("2026-10-14 15:00"), nueva)], info)
     pub = t.set_index("fecha_referencia")["fecha_publicacion"]
     assert pub["2026-08-01"] == pd.Timestamp("2026-09-01")        # regla (la vieja ya lo tenía)
     assert pub["2026-09-01"] == pd.Timestamp("2026-10-12")        # cota: vista sin él el 12-oct 12:05 NY
     assert "2026-10-01" not in pub.index.strftime("%Y-%m-%d")     # octubre no cerrado el 14-oct
     assert info.con_cota == 1 and info.provisionales == 1 and info.ediciones == 2
-    assert info.ultimo_por_edicion[0]["ultimo"] == "2026-08-01"
+    assert info.ultimo_por_edicion[0]["ultimo"] == "2026-08-01" and (t["vintage"] == "unico").all()
 
 
 def test_t1_cota_no_adelanta_la_regla():
-    """La copia de data/raw vista el 20-jul sin junio no cambia la regla de 45 días (más tardía)."""
+    """Vintage 'unico': la copia de data/raw vista el 20-jul sin junio no cambia la regla (más tardía)."""
     vieja = _serie(pd.bdate_range("2026-05-01", "2026-05-29"))
     nueva = _serie(pd.bdate_range("2026-05-01", "2026-08-31"))
-    t = ac.tabla_serie("ff:X", _entrada(), [(_ed("2026-07-20 19:37", origen="fase1"), vieja),
+    t = ac.tabla_serie("ofr:X", _entrada(fuente="ofr_fsi"), [(_ed("2026-07-20 19:37", origen="fase1"), vieja),
                                             (_ed("2026-09-25 21:55"), nueva)])
     pub = t.set_index("fecha_referencia")["fecha_publicacion"]
     assert pub["2026-06-15"] == pd.Timestamp("2026-08-14") and pub["2026-05-29"] == pd.Timestamp("2026-07-15")
@@ -288,11 +295,17 @@ def test_t1_cota_no_adelanta_la_regla():
 def test_t1_valores_de_la_edicion_vista_mas_reciente():
     vieja = _serie(["2025-06-01", "2025-07-01"], [1.0, 2.0])
     nueva = _serie(["2025-06-01", "2025-07-01"], [1.5, 2.0])
-    # data/raw (mtime posterior al Last-Modified) vista antes que el crudo: manda el crudo.
+    # data/raw (descarga posterior al Last-Modified) vista antes que el crudo: manda el crudo, que no
+    # pudo salir antes de que se dejara de servir data/raw (fecha efectiva 20-jul, misma etiqueta).
+    info = ac._Info("gw:X", "goyal_welch", "gw", "X")
     t = ac.tabla_serie("gw:X", _entrada("7M1D", "anio", "mensual", fuente="goyal_welch"),
-                       [(_ed("2026-07-20 19:00", origen="fase1"), vieja), (_ed("2026-07-01", "2026-10-12"), nueva)])
-    assert t["valor"].tolist() == [1.5, 2.0]
-    assert (t["fecha_publicacion"] == pd.Timestamp("2026-08-01")).all()
+                       [(_ed("2026-07-20 19:00", origen="fase1"), vieja), (_ed("2026-07-01", "2026-10-12"), nueva)],
+                       info)
+    assert t["valor"].tolist() == [1.5, 2.0] and (t["vintage"] == "2026-07").all()
+    assert (t["fecha_publicacion"] == pd.Timestamp("2026-08-01")).all()   # nunca antes que la fila que sustituye
+    assert "revisa el valor de la edición 2026-07" in t["nota"].iloc[0]
+    assert info.cambios[0]["revisados"] == 1 and info.cambios[0]["fecha_efectiva"].startswith("2026-07-20")
+    assert info.cambios[0]["fecha_edicion"].startswith("2026-07-01")
 
 
 def test_t1_huecos_mensuales_con_nota_y_no_revisable():
@@ -302,6 +315,7 @@ def test_t1_huecos_mensuales_con_nota_y_no_revisable():
     hueco = t[t["valor"].isna()]
     assert len(t) == 4 and hueco["fecha_referencia"].tolist() == [pd.Timestamp("2025-03-01")]
     assert hueco["nota"].iloc[0] == ac.NOTA_HUECO and t["nota"].isna().sum() == 3
+    assert (t["vintage"] == "2026-01").all()
 
 
 def test_t1_sin_lag_o_sin_versiones_es_error():
@@ -348,7 +362,13 @@ def test_t1_tabla_academicos_sintetica(tmp_path):
     assert (cape["fecha_referencia"].dt.month == 10).sum() == 2             # 1871.1 y 1872.1 son octubres
     gw = t[t["serie"] == "gw:M.tbl"]
     assert gw["fecha_publicacion"].max() == pd.Timestamp("2026-08-01")      # GW_ANUAL: 1-ago del año siguiente
-    assert (t["vintage"] == "unico").all() and t["disponible_utc"].isna().all()
+    assert t["disponible_utc"].isna().all()
+    # Vintage por edición (AAAA-MM) en French, Shiller y Goyal-Welch; 'unico' en la OFR.
+    edicion = t["fuente"].isin(ac.FUENTES_VINTAGE)
+    assert (t.loc[~edicion, "vintage"] == "unico").all()
+    assert t.loc[edicion, "vintage"].str.fullmatch(r"\d{4}-\d{2}").all()
+    assert set(t.loc[t["serie"] == "ff:F3D.Mkt-RF", "vintage"]) == {"2026-09"}
+    assert set(cape["vintage"]) == {"1872-12"}
     res = ac.resumen_academicos(catalogo=cat, raiz_crudo=raiz, raiz_fase1=tmp_path / "sin_raw")
     fila = res.set_index("id").loc["shiller:CAPE"]
     assert fila["provisionales_descartados"] == 1 and fila["origen"] == "crudo"
@@ -464,6 +484,185 @@ def test_t1_fichas_sinteticas(tmp_path):
     assert json.loads(ruta.read_text(encoding="utf-8"))["fuente"] == "shiller"
 
 
+# --- Vintage por edición (bloque 3): dos ediciones sintéticas ------------------------------------------
+F3M = "ff:F3M.Mkt-RF"
+ZIP_F3M = "F-F_Research_Data_Factors_CSV.zip"
+
+
+def _monotona(t: pd.DataFrame) -> None:
+    """En cada periodo, la fecha de publicación no baja de una vintage a la siguiente (as-of coherente)."""
+    g = t.sort_values(["serie", "fecha_referencia", "vintage"], kind="mergesort")
+    d = g.groupby(["serie", "fecha_referencia"])["fecha_publicacion"].diff().dropna()
+    assert (d >= pd.Timedelta(0)).all()
+
+
+def _dos_ediciones_f3m(raiz: Path) -> None:
+    """Agosto (CRSP 202607, enero-julio) y septiembre (CRSP 202608): revisa feb y mar y añade agosto."""
+    _crudo(raiz, "ken_french", ZIP_F3M, _zip_french("F-F_Research_Data_Factors", mensual=True, dias=7, crsp="202607",
+                                                    faltante=False),
+           dia="20260826", last_modified="Tue, 25 Aug 2026 21:00:00 GMT", descargado="2026-08-26T15:00:00+00:00")
+    _crudo(raiz, "ken_french", ZIP_F3M, _zip_french("F-F_Research_Data_Factors", mensual=True, dias=8, crsp="202608",
+                                                    faltante=False, revisar={1: 9.99, 2: 8.88}),
+           dia="20261012", last_modified="Fri, 25 Sep 2026 21:55:02 GMT", descargado="2026-10-12T16:00:00+00:00")
+
+
+def test_t1_etiqueta_edicion_mes_de_nueva_york():
+    assert ac.etiqueta_edicion(pd.Timestamp("2026-10-01 02:00", tz="UTC")) == "2026-09"    # 22:00 NY del 30-sep
+    assert ac.etiqueta_edicion(pd.Timestamp("2026-10-01 05:00", tz="UTC")) == "2026-10"
+    assert _ed("2026-09-25 21:55").etiqueta == "2026-09"
+
+
+def test_t1_dos_ediciones_get_serie_antes_y_despues(tmp_path):
+    from ingesta.mercados_series import timegate
+    from ingesta.mercados_series.tools import get_serie
+
+    raiz = tmp_path / "crudo"
+    _dos_ediciones_f3m(raiz)
+    cat = _catalogo((F3M,))
+    t = ac.tabla_academicos(catalogo=cat, raiz_crudo=raiz, raiz_fase1=tmp_path / "sin_raw")
+    assert t["vintage"].value_counts().to_dict() == {"2026-08": 7, "2026-09": 3}   # crece sin perder valores
+    _monotona(t)
+    nuevas = t[t["vintage"] == "2026-09"].set_index("fecha_referencia")
+    assert (nuevas["fecha_publicacion"] == pd.Timestamp("2026-09-26")).all()      # 21:55 UTC = 17:55 NY
+    assert nuevas.loc["2026-02-01", "nota"] == "edición 2026-09: revisa el valor de la edición 2026-08"
+    assert nuevas.loc["2026-08-01", "nota"] == "edición 2026-09: periodo nuevo"
+    viejas = t[t["vintage"] == "2026-08"]
+    assert viejas["nota"].str.contains(ac.NOTA_PRIMERA_EDICION, regex=False).all()
+    assert viejas["fecha_publicacion"].max() == pd.Timestamp("2026-09-14")        # regla: 31-jul + 45 días
+
+    antes = get_serie(F3M, "2026-09-25", base=t)
+    v = antes.datos.set_index("fecha_referencia")["valor"]
+    assert v["2026-02-01"] == pytest.approx(0.02) and v["2026-03-01"] == pytest.approx(0.03)
+    assert v.index.max() == pd.Timestamp("2026-07-01") and len(v) == 7            # agosto aún no existe
+    assert set(antes.datos["vintage"]) == {"2026-08"}
+    despues = get_serie(F3M, "2026-09-26", base=t)
+    w = despues.datos.set_index("fecha_referencia")["valor"]
+    assert w["2026-02-01"] == pytest.approx(9.99) and w["2026-03-01"] == pytest.approx(8.88)
+    assert w["2026-08-01"] == pytest.approx(0.08) and w["2026-01-01"] == pytest.approx(0.01) and len(w) == 8
+    # Truncado: al principio solo lo publicado por la regla; antes, nada.
+    assert len(timegate.as_of_series(t, F3M, "2026-03-17")) == 1
+    with pytest.raises(KeyError, match="sin datos publicados"):
+        get_serie(F3M, "2026-03-16", base=t)
+    res = ac.resumen_academicos(catalogo=cat, raiz_crudo=raiz, raiz_fase1=tmp_path / "sin_raw").iloc[0]
+    assert res["n_vintages"] == 2 and res["vintages"] == "2026-08 2026-09" and res["n_periodos"] == 8
+    assert res["filas_revisadas"] == 2 and res["filas_nuevas"] == 1
+    assert res["revision_max_abs"] == pytest.approx(9.97)
+    c = ac.cambios_ediciones(catalogo=cat, raiz_crudo=raiz, raiz_fase1=tmp_path / "sin_raw")
+    assert c[["previa", "etiqueta", "comunes", "revisados", "nuevos", "retirados"]].iloc[0].tolist() == [
+        "2026-08", "2026-09", 7, 2, 1, 0]
+
+
+def test_t1_misma_etiqueta_gana_la_edicion_posterior(tmp_path):
+    """Dos ediciones de septiembre: una sola vintage; el valor revisado se ve desde la segunda."""
+    from ingesta.mercados_series import timegate
+
+    raiz = tmp_path / "crudo"
+    _crudo(raiz, "ken_french", ZIP_F3M, _zip_french("F-F_Research_Data_Factors", mensual=True, dias=8, faltante=False),
+           dia="20260903", last_modified="Wed, 02 Sep 2026 12:00:00 GMT", descargado="2026-09-03T15:00:00+00:00")
+    _crudo(raiz, "ken_french", ZIP_F3M, _zip_french("F-F_Research_Data_Factors", mensual=True, dias=8, faltante=False,
+                                                    revisar={1: 7.77}),
+           dia="20260926", last_modified="Fri, 25 Sep 2026 21:55:02 GMT", descargado="2026-09-26T15:00:00+00:00")
+    t = ac.tabla_academicos(catalogo=_catalogo((F3M,)), raiz_crudo=raiz, raiz_fase1=tmp_path / "sin_raw")
+    assert len(t) == 8 and set(t["vintage"]) == {"2026-09"}
+    feb = t.set_index("fecha_referencia").loc["2026-02-01"]
+    assert feb["valor"] == pytest.approx(7.77) and feb["fecha_publicacion"] == pd.Timestamp("2026-09-26")
+    # Entre las dos, febrero no se ve (nunca el valor revisado antes de su edición).
+    assert pd.Timestamp("2026-02-01") not in set(timegate.as_of_series(t, F3M, "2026-09-20")["fecha_referencia"])
+
+
+def test_t1_edicion_rellena_hueco_retira_valor_y_anade_mes():
+    e = _entrada("7M1D", "anio", "mensual", fuente="goyal_welch")
+    vieja = _serie(pd.date_range("2025-01-01", periods=5, freq="MS"), [1.0, 2.0, np.nan, 4.0, 5.0])
+    nueva = _serie(pd.date_range("2025-01-01", periods=6, freq="MS"), [1.0, 2.0, 3.0, 4.0, np.nan, 6.0])
+    info = ac._Info("gw:X", "goyal_welch", "gw", "X")
+    t = validar_series(ac.tabla_serie("gw:X", e, [(_ed("2026-02-10 15:00"), vieja), (_ed("2026-03-10 15:00"), nueva)],
+                                      info))
+    _monotona(t)
+    assert t["vintage"].value_counts().to_dict() == {"2026-02": 5, "2026-03": 3}
+    n = t[t["vintage"] == "2026-03"].set_index("fecha_referencia")
+    assert n.loc["2025-03-01", "nota"] == "edición 2026-03: dato de un periodo que era hueco"
+    assert np.isnan(n.loc["2025-05-01", "valor"]) and "ya no publica" in n.loc["2025-05-01", "nota"]
+    assert n.loc["2025-06-01", "fecha_publicacion"] == pd.Timestamp("2026-03-10")  # periodo nuevo: su edición
+    assert n.loc["2025-05-01", "fecha_publicacion"] == pd.Timestamp("2026-08-01")  # no antes que la fila previa
+    assert info.cambios[0] | {"fecha_edicion": None, "fecha_efectiva": None} == {
+        "etiqueta": "2026-03", "previa": "2026-02", "origen": "crudo", "fecha_edicion": None, "fecha_efectiva": None,
+        "fuente_fecha": "last_modified", "comunes": 3, "revisados": 0, "nuevos": 2, "retirados": 1,
+        "huecos_nuevos": 0, "max_abs": None}
+    # Diaria: un faltante sin valor previo no es fila; una edición idéntica no añade nada.
+    d = _serie(pd.bdate_range("2026-08-03", "2026-08-07"), [1.0, np.nan, 3.0, 4.0, 5.0])
+    t2 = ac.tabla_serie("ff:X", _entrada(), [(_ed("2026-09-25"), d), (_ed("2026-10-23"), d.copy())])
+    assert len(t2) == 4 and set(t2["vintage"]) == {"2026-09"}
+
+
+def _raw_f3m(raiz_raw: Path, valores: list[float], descarga: str) -> Path:
+    import os
+
+    pytest.importorskip("pyarrow")
+    ruta = raiz_raw / "academico" / "FF_FACTORS_3_MONTHLY.parquet"
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    idx = pd.date_range("2026-01-01", periods=len(valores), freq="MS")
+    pd.DataFrame({"FF_FACTORS_3_MONTHLY": valores}, index=idx).to_parquet(ruta)
+    t = pd.Timestamp(descarga, tz="UTC").timestamp()
+    os.utime(ruta, (t, t))
+    return ruta
+
+
+def test_t1_archivar_ediciones_y_leer_solo_del_archivo(tmp_path):
+    """data/raw (CRSP 202605, 20-jul) + crudo del bloque 2: se archivan y la tabla sale igual sin ellos."""
+    import shutil
+
+    raiz, raw = tmp_path / "crudo", tmp_path / "raw"
+    _raw_f3m(raw, [0.01, 0.5, 0.03, 0.04, 0.05], "2026-07-20 19:37")
+    _crudo(raiz, "ken_french", ZIP_F3M, _zip_french("F-F_Research_Data_Factors", mensual=True, dias=8, faltante=False),
+           last_modified="Fri, 25 Sep 2026 21:55:02 GMT")
+    cat = _catalogo((F3M,))
+    t1 = ac.tabla_academicos(catalogo=cat, raiz_crudo=raiz, raiz_fase1=raw)
+    assert t1["vintage"].value_counts().to_dict() == {"2026-07": 5, "2026-09": 4}    # feb revisado + jun-ago
+    a = ac.archivar_ediciones(["ken_french"], catalogo=cat, raiz_crudo=raiz, raiz_fase1=raw)
+    assert sorted(zip(a["origen"], a["etiqueta"], a["accion"], strict=True)) == [
+        ("crudo", "2026-09", "copiado"), ("fase1", "2026-07", "copiado")]
+    arch = raiz / "ken_french" / ac.CARPETA_EDICIONES
+    meta = json.loads((arch / "2026-07" / "fase1_FF_FACTORS_3_MONTHLY.parquet.meta.json").read_text(encoding="utf-8"))
+    assert meta["edicion"]["crsp"] == "202605" and meta["ruta_fase1"] == "academico/FF_FACTORS_3_MONTHLY.parquet"
+    meta = json.loads((arch / "2026-09" / f"20261012_{ZIP_F3M}.meta.json").read_text(encoding="utf-8"))
+    assert meta["edicion"]["etiqueta"] == "2026-09" and meta["edicion"]["crsp"] == "202608"
+    otra = ac.archivar_ediciones(["ken_french"], catalogo=cat, raiz_crudo=raiz, raiz_fase1=raw)
+    assert set(otra["accion"]) == {"ya_estaba"}                                       # idempotente
+    shutil.rmtree(raw)
+    for p in (raiz / "ken_french").glob("2026*"):
+        p.unlink()
+    t2 = ac.tabla_academicos(catalogo=cat, raiz_crudo=raiz, raiz_fase1=raw)
+    pd.testing.assert_frame_equal(t1, t2)
+    (tmp_path / "x").write_bytes(b"otro contenido")
+    with pytest.raises(ValueError, match="no se sobrescribe"):
+        ac._copiar(tmp_path / "x", arch / "2026-07" / "fase1_FF_FACTORS_3_MONTHLY.parquet", "0" * 64, {})
+    with pytest.raises(ValueError, match="vintage por edición"):
+        ac.archivar_ediciones(["ofr_fsi"], catalogo=cat, raiz_crudo=raiz)
+
+
+def test_t1_data_raw_misma_edicion_por_cabecera_crsp(tmp_path):
+    """data/raw descargado el 29-sep con el mismo último mes (CRSP 202608) que un crudo: es esa edición."""
+    pytest.importorskip("pyarrow")
+    import os
+
+    ruta = tmp_path / "raw" / "academico" / "FF_FACTORS_3_DAILY.parquet"
+    ruta.parent.mkdir(parents=True)
+    idx = pd.bdate_range("2026-08-24", "2026-08-31")
+    pd.DataFrame({"Mkt-RF": np.arange(len(idx), dtype=float)}, index=idx).to_parquet(ruta)
+    t = pd.Timestamp("2026-09-29 08:21", tz="UTC").timestamp()
+    os.utime(ruta, (t, t))
+    e = _catalogo(("ff:F3D.Mkt-RF",))["ff:F3D.Mkt-RF"] | {
+        "fichero_fase1": ["academico/FF_FACTORS_3_DAILY.parquet:Mkt-RF"]}
+    cruda = _ed("2026-09-25 21:55", "2026-10-12 16:05")
+    cruda.extra["crsp"] = "202608"
+    ed, s = ac._edicion_fase1(e, tmp_path / "raw", tmp_path / "crudo", [cruda])
+    assert ed.fuente_fecha == "crsp_last_modified" and ed.fecha_edicion == cruda.fecha_edicion
+    assert ed.visto == pd.Timestamp("2026-09-29 08:21", tz="UTC") and ed.etiqueta == "2026-09" and len(s) == 6
+    cruda.extra["crsp"] = "202607"
+    ed, _ = ac._edicion_fase1(e, tmp_path / "raw", tmp_path / "crudo", [cruda])
+    assert ed.fuente_fecha == "descarga_fase1" and ed.extra["crsp"] == "202608"
+
+
 # --- Datos locales ----------------------------------------------------------------------------------------
 @pytest.mark.datos
 def test_t1_bug_shiller_longrate_en_data_raw():
@@ -485,6 +684,31 @@ def test_t1_tabla_academicos_crudos_locales():
     cape = t[t["serie"] == "shiller:CAPE"]
     assert not cape["fecha_referencia"].duplicated().any()
     assert (t["fecha_publicacion"] >= t["fecha_referencia"]).all()
+    edicion = t["fuente"].isin(ac.FUENTES_VINTAGE)
+    assert t.loc[edicion, "vintage"].str.fullmatch(r"\d{4}-\d{2}").all()
+    assert (t.loc[~edicion, "vintage"] == "unico").all()
+    _monotona(t[edicion])
+
+
+@pytest.mark.datos
+def test_t1_cambios_entre_ediciones_locales():
+    """Las ediciones reales (data/raw y bloque 2): una serie revisada se ve con la edición vieja antes."""
+    from ingesta.mercados_series import timegate
+
+    if not (ROOT / "data" / "raw" / "academico").exists() or not any(
+            ac.crudos("ken_french", "F-F_Momentum_Factor_daily")):
+        pytest.skip("faltan data/raw/academico o los crudos de Ken French")
+    c = ac.cambios_ediciones(["ken_french"])
+    if c.empty or not (c["revisados"] > 0).any():
+        pytest.skip("una sola edición distinta por serie: nada que comparar")
+    fila = c[c["revisados"] > 0].iloc[0]
+    t = ac.tabla_academicos(["ken_french"])
+    serie = t[t["serie"] == fila["id"]]
+    dec = serie.loc[serie["vintage"] == fila["etiqueta"], "fecha_publicacion"].min()
+    antes = timegate.as_of_series(t, fila["id"], dec - pd.Timedelta(days=1))
+    despues = timegate.as_of_series(t, fila["id"], dec)
+    assert fila["etiqueta"] not in set(antes["vintage"]) and fila["etiqueta"] in set(despues["vintage"])
+    assert (despues["vintage"] == fila["etiqueta"]).sum() >= fila["revisados"]
 
 
 # --- Red (INGESTA_LIVE=1) ----------------------------------------------------------------------------------

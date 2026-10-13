@@ -22,22 +22,37 @@ con su regla si no hay crudo). Crudos en ``<corpus>/mercados_series/crudo/<fuent
 ``<AAAAMMDD>_<fichero>`` (día de descarga en Nueva York) y su ``.meta.json`` (URL, estado,
 cabeceras, bytes, sha256); la misma descarga el mismo día se sirve del archivo.
 
-Fechado (``metodo`` del catálogo: ``fichero``, o ``lag_fijo`` en la OFR; vintage ``unico``):
+Ediciones: cada fichero archivado es una edición con ``fecha_edicion`` (``Last-Modified``; si no
+hay, la fecha de modificación interna del xlsx o la descarga) y ``visto`` (última descarga con ese
+contenido). La copia de ``data/raw`` cuenta como una edición descargada en el instante declarado en
+``config/descargas_fase1.yaml``; en Ken French, si su último mes (la cabecera CRSP) coincide con el
+de un crudo, es esa misma edición y toma su ``Last-Modified``. Etiqueta de la edición: el mes
+(Nueva York) de ``fecha_edicion``, ``AAAA-MM``. ``archivar_ediciones`` copia cada edición en
+``crudo/<fuente>/ediciones/<AAAA-MM>/`` (los crudos con su nombre y ``.meta.json``; la copia de
+``data/raw`` como ``fase1_<fichero>.parquet``); los crudos de ese archivo también se leen.
 
-- Regla: fin del periodo + ``lag`` de ``config/lags.yaml`` (``catalogo.fecha_publicacion_lag``).
-- Edición: cada fichero archivado es una edición con ``fecha_edicion`` (``Last-Modified``; si no
-  hay, la fecha de modificación interna del xlsx o la descarga) y ``visto`` (última descarga con ese
-  contenido). La copia de ``data/raw`` cuenta como una edición vista en su mtime. Un periodo que una
-  edición vista en ``t`` aún no tenía no puede ser visible antes de ``t``:
-  ``fecha_publicacion = max(regla, primera_decision(t))`` (cota inferior PROBADA).
+Fechado (``metodo`` del catálogo: ``fichero``, o ``lag_fijo`` en la OFR):
+
+- Ken French, Shiller y Goyal-Welch (``FUENTES_VINTAGE``): VINTAGE POR EDICIÓN. La primera edición
+  da todos sus periodos con la regla (fin del periodo + ``lag`` de ``config/lags.yaml``,
+  ``catalogo.fecha_publicacion_regla``) y ``vintage`` = su etiqueta. Cada edición posterior añade
+  SOLO los periodos nuevos o con valor cambiado (``vintage`` = su etiqueta; ``fecha_publicacion`` =
+  primera decisión tras su ``fecha_edicion``, nunca antes que la fila que revisa): la base crece
+  sin perder valores y ``get_serie`` ve en cada fecha la edición vigente. Dos ediciones distintas en
+  el mismo mes comparten etiqueta: la posterior sustituye a la anterior en los periodos que cambia
+  (sus valores se ven desde la fecha de la posterior; antes, los de la edición previa).
+- OFR: vintage ``unico`` con los valores de la última edición vista y
+  ``fecha_publicacion = max(regla, primera_decision(t))``, siendo ``t`` la última vez que se vio
+  una edición sin ese periodo (cota inferior PROBADA); revisable con ``catalogo.NOTA_REVISABLE_EDICION``.
 - Periodo no cerrado en la fecha de edición (Shiller pone el mes en curso con el cierre del día 1):
   provisional, se descarta (como la barra intradía de yfinance).
-- Revisables (todas): ``catalogo.NOTA_REVISABLE_EDICION`` (no están en ALFRED) + la causa (French recalcula con cada base CRSP;
-  Shiller revisa E, D, CPI y E10). Huecos dentro de una serie mensual: valor nulo con nota.
+- Notas: la primera edición de una revisable lleva ``NOTA_PRIMERA_EDICION`` + la causa (French
+  recalcula con cada base CRSP; Shiller revisa E, D, CPI y E10); las filas posteriores dicen si el
+  periodo es nuevo o qué edición revisan. Huecos dentro de una serie mensual: valor nulo con nota.
 
 ``tabla_academicos`` devuelve la tabla validada (``validar_series`` + ``validar_contra_catalogo``)
 con las entradas del catálogo de estas fuentes. CLI:
-``python -m ingesta.mercados_series.fuentes.academicos [--descargar] [--fichas] [--escribir]``.
+``python -m ingesta.mercados_series.fuentes.academicos [--descargar] [--archivar] [--fichas] [--escribir]``.
 Datos solo en local (copyright CRSP, S&P, ICE...; JST CC BY-NC-SA 4.0): al repositorio solo van
 código, fichas y tablas de metadatos sin valores.
 """
@@ -76,6 +91,12 @@ VINTAGE = "unico"
 RAIZ_FASE1 = ROOT / "data" / "raw"
 FUENTES = ("ken_french", "shiller", "goyal_welch", "ofr_fsi", "jst_macrohistory")
 FUENTES_CATALOGO = ("ken_french", "shiller", "goyal_welch", "ofr_fsi")
+# Fuentes con vintage por edición (AAAA-MM); la OFR sigue con vintage 'unico' y la última edición.
+FUENTES_VINTAGE = ("ken_french", "shiller", "goyal_welch")
+CARPETA_EDICIONES = "ediciones"
+PREFIJO_FASE1 = "fase1_"
+# Dos valores son iguales entre ediciones si difieren menos que esto (ruido de coma flotante).
+TOLERANCIA_ABS, TOLERANCIA_REL = 1e-9, 1e-12
 
 URL_FRENCH = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/{}_CSV.zip"
 FICHEROS_FRENCH = ("F-F_Research_Data_Factors_daily", "F-F_Research_Data_Factors",
@@ -102,6 +123,10 @@ CABECERAS = ("Last-Modified", "ETag", "Content-Type", "Content-Length", "Content
 FALTANTES_FRENCH = (-99.99, -999.0)
 COLUMNAS_SHILLER = {"Long Interest Rate": "Rate GS10"}  # id_origen del catálogo -> cabecera real
 NOTA_HUECO = "hueco permanente: la fuente no publica dato de este periodo"
+# Si el catálogo la declara (para que get_serie la reconozca como nota de revisable), se usa la suya.
+NOTA_PRIMERA_EDICION = getattr(cat_mod, "NOTA_PRIMERA_EDICION",
+                               "valor de la primera edición archivada: posible fuga de revisiones anteriores a "
+                               "ella (el archivo de ediciones empieza ahí)")
 NOTA_FUENTE = {
     "ken_french": "Ken French recalcula toda la historia con cada base CRSP",
     "shiller": "Shiller revisa E, D, CPI y E10 entre ediciones",
@@ -126,9 +151,10 @@ _PATRON_FILA_FRENCH = re.compile(r"^\s*(\d{8}|\d{6})\s*,")
 _PATRON_SHILLER = re.compile(r"\s*(\d{4})\.(\d{1,2})\s*")
 
 __all__ = [
-    "FUENTES", "FICHEROS", "NOTA_HUECO", "Edicion", "ruta_crudo", "descargar", "crudos", "ediciones",
-    "leer_french", "fechas_shiller", "leer_shiller", "leer_goyal_welch", "leer_ofr", "leer_jst",
-    "leer_fichero", "localizar", "tabla_serie", "tabla_academicos", "resumen_academicos", "tabla_jst",
+    "FUENTES", "FUENTES_VINTAGE", "FICHEROS", "NOTA_HUECO", "NOTA_PRIMERA_EDICION", "Edicion", "ruta_crudo",
+    "descargar", "crudos", "ediciones", "etiqueta_edicion", "archivar_ediciones", "leer_french",
+    "fechas_shiller", "leer_shiller", "leer_goyal_welch", "leer_ofr", "leer_jst", "leer_fichero", "localizar",
+    "tabla_serie", "tabla_academicos", "resumen_academicos", "cambios_ediciones", "tabla_jst",
     "fichas_academicos",
 ]
 
@@ -212,11 +238,16 @@ def descargar(fuente: str, *, claves: Iterable[str] | None = None, forzar: bool 
 
 
 def crudos(fuente: str, clave: str, raiz: Path | None = None) -> list[tuple[Path, dict[str, Any]]]:
-    """Crudos archivados de un fichero (con su meta), del más antiguo al más reciente."""
+    """Crudos de un fichero (con su meta), del más antiguo al más reciente por día de descarga.
+
+    Incluye los del archivo de ediciones (``ediciones/<AAAA-MM>/``); una misma descarga en la
+    carpeta y en el archivo sale dos veces (``ediciones`` las une por sha256).
+    """
     nombre = FICHEROS[fuente][clave][0]
     carpeta = ruta_crudo(fuente, raiz)
+    candidatos = [*carpeta.glob(f"[0-9]*_{nombre}"), *carpeta.glob(f"{CARPETA_EDICIONES}/*/[0-9]*_{nombre}")]
     out = []
-    for p in sorted(carpeta.glob(f"[0-9]*_{nombre}")):
+    for p in sorted(candidatos, key=lambda p: (p.name, len(p.parts))):
         if p.name.endswith(".meta.json") or not re.fullmatch(rf"\d{{8}}_{re.escape(nombre)}", p.name):
             continue
         ruta_meta = p.with_name(p.name + ".meta.json")
@@ -237,6 +268,16 @@ class Edicion:
     visto: pd.Timestamp             # UTC: última descarga con este contenido (mtime en data/raw)
     sha256: str | None = None
     extra: dict[str, Any] = field(default_factory=dict)
+
+    @property
+    def etiqueta(self) -> str:
+        """Vintage de la edición: ``AAAA-MM`` (mes de ``fecha_edicion`` en Nueva York)."""
+        return etiqueta_edicion(self.fecha_edicion)
+
+
+def etiqueta_edicion(t: pd.Timestamp) -> str:
+    """``AAAA-MM`` del instante ``t`` (UTC) en Nueva York: el vintage de una edición."""
+    return pd.Timestamp(t).tz_convert(HUSO_DECISION).strftime("%Y-%m")
 
 
 def _utc(texto: Any) -> pd.Timestamp | None:
@@ -262,7 +303,10 @@ def _mtime_utc(ruta: Path) -> pd.Timestamp:
 
 
 def ediciones(fuente: str, clave: str, raiz: Path | None = None) -> list[Edicion]:
-    """Ediciones distintas (por sha256) de los crudos archivados de un fichero, por ``fecha_edicion``."""
+    """Ediciones distintas (por sha256) de los crudos archivados de un fichero, por ``fecha_edicion``.
+
+    En Ken French, ``extra['crsp']`` es el ``AAAAMM`` de la cabecera (``created using the AAAAMM CRSP``).
+    """
     por_sha: dict[str, Edicion] = {}
     for ruta, meta in crudos(fuente, clave, raiz):
         contenido = ruta.read_bytes()
@@ -285,6 +329,12 @@ def ediciones(fuente: str, clave: str, raiz: Path | None = None) -> list[Edicion
                 e.fecha_edicion, e.fuente_fecha = lm, fuente_fecha
             if descarga >= e.visto:
                 e.ruta = ruta
+    if fuente == "ken_french":
+        for e in por_sha.values():
+            try:
+                e.extra["crsp"] = leer_french(e.ruta)[1]["crsp"]
+            except (ValueError, zipfile.BadZipFile, OSError):
+                e.extra["crsp"] = None
     return sorted(por_sha.values(), key=lambda e: e.fecha_edicion)
 
 
@@ -510,16 +560,10 @@ class _Info:
     n_huecos: int = 0
     revision: dict[str, Any] = field(default_factory=dict)
     ultimo_por_edicion: list[dict[str, Any]] = field(default_factory=list)
+    cambios: list[dict[str, Any]] = field(default_factory=list)   # una entrada por edición posterior
 
 
-def _edicion_fase1(entrada: dict[str, Any], raiz_fase1: Path) -> tuple[Edicion, pd.Series] | None:
-    """Copia de ``data/raw`` de una serie (edición vista en su descarga) o None si no hay o no es fiable."""
-    if not entrada["fichero_fase1"] or entrada.get("fase1_utilizable") is False:
-        return None
-    rel, col = entrada["fichero_fase1"][0].split(":", 1)
-    ruta = Path(raiz_fase1) / rel
-    if not ruta.exists():
-        return None
+def _leer_parquet_fase1(ruta: Path, col: str) -> pd.Series | None:
     df = pd.read_parquet(ruta)
     if col not in df.columns:
         return None
@@ -527,28 +571,104 @@ def _edicion_fase1(entrada: dict[str, Any], raiz_fase1: Path) -> tuple[Edicion, 
     if idx.tz is not None:
         idx = idx.tz_localize(None)
     s = pd.Series(pd.to_numeric(df[col], errors="coerce").to_numpy(dtype=float), index=idx)
-    s = s[~s.index.duplicated(keep="first")]
-    from ingesta.mercados_series.fuentes.fase1 import instante_descarga
+    return s[~s.index.duplicated(keep="first")]
 
-    # Instante declarado en config/descargas_fase1.yaml (contrastado con el mtime) para data/raw.
-    t = instante_descarga(ruta, Path(raiz_fase1))
-    return Edicion("fase1", ruta, t, "mtime", t), s
+
+def _copia_archivada(fuente: str, rel: str, raiz_crudo: Path | None) -> tuple[Path, dict[str, Any]] | None:
+    """Copia más reciente de ``data/raw/<rel>`` en el archivo de ediciones (con su meta) o None."""
+    carpeta = ruta_crudo(fuente, raiz_crudo) / CARPETA_EDICIONES
+    for p in sorted(carpeta.glob(f"*/{PREFIJO_FASE1}{Path(rel).name}"), reverse=True):
+        ruta_meta = p.with_name(p.name + ".meta.json")
+        if ruta_meta.exists():
+            meta = json.loads(ruta_meta.read_text(encoding="utf-8"))
+            if meta.get("ruta_fase1") == rel and meta.get("descargado_utc"):
+                return p, meta
+    return None
+
+
+def _edicion_fase1(entrada: dict[str, Any], raiz_fase1: Path, raiz_crudo: Path | None = None,
+                   crudas: Sequence[Edicion] = ()) -> tuple[Edicion, pd.Series] | None:
+    """Copia de ``data/raw`` de una serie como edición, o None si no hay o no es fiable.
+
+    Instante: el declarado en ``config/descargas_fase1.yaml`` (``fase1.instante_descarga``). Si
+    ``data/raw`` ya no está, se usa su copia del archivo de ediciones. En Ken French el último mes
+    de la copia es la cabecera CRSP de su edición: si coincide con el ``crsp`` de un crudo de
+    ``crudas`` anterior a la descarga, es esa edición y toma su ``fecha_edicion`` (Last-Modified).
+    """
+    if not entrada["fichero_fase1"] or entrada.get("fase1_utilizable") is False:
+        return None
+    rel, col = entrada["fichero_fase1"][0].split(":", 1)
+    ruta = Path(raiz_fase1) / rel
+    if ruta.exists():
+        from ingesta.mercados_series.fuentes.fase1 import instante_descarga
+
+        t = instante_descarga(ruta, Path(raiz_fase1))
+    else:
+        copia = _copia_archivada(entrada["fuente"], rel, raiz_crudo)
+        if copia is None:
+            return None
+        ruta, meta = copia
+        t = _utc(meta["descargado_utc"])
+    s = _leer_parquet_fase1(ruta, col)
+    if s is None:
+        return None
+    validos = s.dropna()
+    ultimo = validos.index.max().strftime("%Y%m") if len(validos) else None
+    ed = Edicion("fase1", ruta, t, "descarga_fase1", t, extra={"ruta_fase1": rel, "ultimo_mes": ultimo})
+    if entrada["fuente"] == "ken_french":
+        ed.extra["crsp"] = ultimo
+        misma = [c for c in crudas if ultimo and c.extra.get("crsp") == ultimo and c.fecha_edicion < t]
+        if misma:
+            c = min(misma, key=lambda c: c.fecha_edicion)
+            ed.fecha_edicion, ed.fuente_fecha = c.fecha_edicion, f"crsp_{c.fuente_fecha}"
+    return ed, s
 
 
 def tabla_serie(sid: str, entrada: dict[str, Any], versiones: Sequence[tuple[Edicion, pd.Series]],
                 info: _Info | None = None) -> pd.DataFrame:
     """Filas del contrato de una serie a partir de sus versiones ``(edición, valores)``.
 
-    Valores de la edición vista más recientemente (``visto``), sin los periodos no cerrados en su
-    fecha de edición. ``fecha_publicacion = max(regla del catálogo, primera decisión tras la última
-    vez que se vio una edición sin ese periodo)``. Mensuales: huecos internos con ``NOTA_HUECO``.
+    ``FUENTES_VINTAGE``: vintage por edición (``_tabla_ediciones``). OFR: vintage ``unico`` con la
+    edición vista más recientemente (``_tabla_unica``).
     """
     if not versiones:
         raise ValueError(f"{sid}: sin versiones del fichero")
     info = info or _Info(sid, entrada["fuente"], "", "")
-    frecuencia, fin_periodo = entrada["frecuencia"], entrada["fin_periodo"]
     if entrada["metodo"] not in cat_mod.METODOS_CON_LAG or entrada["lag"] is None:
         raise ValueError(f"{sid}: metodo {entrada['metodo']!r} sin lag: no se fecha como fichero")
+    if entrada["fuente"] in FUENTES_VINTAGE:
+        return _tabla_ediciones(sid, entrada, versiones, info)
+    return _tabla_unica(sid, entrada, versiones, info)
+
+
+def _filas(sid: str, entrada: dict[str, Any], fechas: Any, pub: Any, vintage: Any, valores: Any,
+           notas: Any) -> pd.DataFrame:
+    n = len(fechas)
+    nota = pd.Series(notas, dtype=object) if n else pd.Series([], dtype=object)
+    return pd.DataFrame({
+        "serie": sid,
+        "fecha_referencia": pd.Series(fechas, dtype=FECHA).to_numpy(),
+        "fecha_publicacion": pd.Series(pub, dtype=FECHA).to_numpy(),
+        "disponible_utc": pd.Series(pd.NaT, index=range(n), dtype=UTC).array,
+        "vintage": pd.Series(vintage, index=range(n), dtype=object).to_numpy(),
+        "valor": np.asarray(valores, dtype=float),
+        "unidad": entrada["unidad"],
+        "divisa": entrada["divisa"],
+        "fuente": entrada["fuente"],
+        "metodo_publicacion": entrada["metodo"],
+        "nota": nota.where(nota.notna(), None).to_numpy(),
+    }, index=range(n))
+
+
+def _tabla_unica(sid: str, entrada: dict[str, Any], versiones: Sequence[tuple[Edicion, pd.Series]],
+                 info: _Info) -> pd.DataFrame:
+    """Vintage ``unico`` (OFR): valores de la edición vista más recientemente (``visto``).
+
+    Sin los periodos no cerrados en su fecha de edición. ``fecha_publicacion = max(regla del
+    catálogo, primera decisión tras la última vez que se vio una edición sin ese periodo)``.
+    Mensuales: huecos internos con ``NOTA_HUECO``.
+    """
+    frecuencia, fin_periodo = entrada["frecuencia"], entrada["fin_periodo"]
     ordenadas = sorted(versiones, key=lambda v: (v[0].visto, v[0].fecha_edicion))
     cerradas = [(e, _cerrados(_normalizar(s, frecuencia), fin_periodo, e.fecha_edicion)) for e, s in ordenadas]
     ed, ultima = ordenadas[-1][0], cerradas[-1][1]
@@ -578,19 +698,122 @@ def tabla_serie(sid: str, entrada: dict[str, Any], versiones: Sequence[tuple[Edi
     nulo = s.isna().to_numpy()
     hueco = f"{NOTA_HUECO}; {nota_base}" if nota_base else NOTA_HUECO
     nota = np.where(nulo, hueco, nota_base if nota_base else None)
-    return pd.DataFrame({
-        "serie": sid,
-        "fecha_referencia": fechas.to_numpy(),
-        "fecha_publicacion": pub.to_numpy(),
-        "disponible_utc": pd.Series(pd.NaT, index=fechas.index, dtype=UTC).array,
-        "vintage": VINTAGE,
-        "valor": s.to_numpy(dtype=float),
-        "unidad": entrada["unidad"],
-        "divisa": entrada["divisa"],
-        "fuente": entrada["fuente"],
-        "metodo_publicacion": entrada["metodo"],
-        "nota": pd.Series(nota, dtype=object).where(pd.notna(nota), None).to_numpy(),
-    })
+    return _filas(sid, entrada, fechas, pub, VINTAGE, s.to_numpy(dtype=float), nota)
+
+
+def _version(s: pd.Series, frecuencia: str, fin_periodo: str, edicion: pd.Timestamp) -> tuple[pd.Series, int]:
+    """Periodos cerrados de una edición (con sus nulos, en la rejilla si es periódica) y provisionales."""
+    s = _normalizar(s, frecuencia)
+    fin = cat_mod.fin_de_periodo(pd.Series(s.index), fin_periodo)
+    cerrado = (fin < _dia_ny(edicion)).to_numpy()
+    provisionales = int((~cerrado & s.notna().to_numpy()).sum())
+    s = s[cerrado]
+    validos = s.dropna()
+    if validos.empty:
+        return validos, provisionales
+    s = s.loc[validos.index[0]:validos.index[-1]]
+    if frecuencia in _REJILLA and len(validos) >= 2:
+        s = s.reindex(pd.date_range(validos.index[0], validos.index[-1], freq=_REJILLA[frecuencia]))
+    return s, provisionales
+
+
+def _iguales(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """Igualdad entre ediciones: los dos nulos o a menos de la tolerancia (ruido de coma flotante)."""
+    return (np.isnan(a) & np.isnan(b)) | np.isclose(a, b, rtol=TOLERANCIA_REL, atol=TOLERANCIA_ABS)
+
+
+def _sustituir(viejo: pd.Series, nuevo: pd.Series) -> pd.Series:
+    """``viejo`` con los periodos de ``nuevo`` sustituidos o añadidos."""
+    resto = viejo[~viejo.index.isin(nuevo.index)]
+    return pd.concat([resto, nuevo]).sort_index() if len(resto) else nuevo.sort_index()
+
+
+def _tabla_ediciones(sid: str, entrada: dict[str, Any], versiones: Sequence[tuple[Edicion, pd.Series]],
+                     info: _Info) -> pd.DataFrame:
+    """Vintage por edición: la primera con la regla; cada posterior, solo lo nuevo o cambiado.
+
+    Orden de las ediciones: ``visto`` (la que se sirvió más tarde es la vigente), luego
+    ``fecha_edicion``. Fecha efectiva de una edición: ``max(fecha_edicion, visto de la anterior,
+    fecha efectiva de la anterior)`` (si la anterior aún se servía, esta no existía); su mes en NY es
+    el vintage (coincide con ``Edicion.etiqueta`` salvo fechas contradictorias). La primera da todos
+    sus periodos cerrados (diaria: sin faltantes; periódica: huecos internos con ``NOTA_HUECO``) con
+    ``fecha_publicacion`` = regla del catálogo. Una posterior da los periodos que no estaban (o eran
+    hueco), los de valor distinto (``_iguales``) y los que deja sin valor (fila nula con nota), con
+    ``fecha_publicacion`` = primera decisión tras su fecha efectiva, nunca antes que la fila que
+    sustituye. Misma etiqueta: gana la posterior.
+    """
+    frecuencia, fin_periodo = entrada["frecuencia"], entrada["fin_periodo"]
+    rejilla = frecuencia in _REJILLA
+    prep = []
+    for e, s in versiones:
+        v, prov = _version(s, frecuencia, fin_periodo, e.fecha_edicion)
+        ult = v.dropna().index.max() if v.notna().any() else pd.Timestamp.min
+        prep.append((e, v, prov, ult))
+    prep.sort(key=lambda x: (x[0].visto, x[0].fecha_edicion, x[3]))
+    efectivas: list[pd.Timestamp] = []
+    for k, (e, *_r) in enumerate(prep):
+        efectivas.append(e.fecha_edicion if k == 0 else max(e.fecha_edicion, prep[k - 1][0].visto, efectivas[-1]))
+    etiquetas = [etiqueta_edicion(t) for t in efectivas]
+    info.edicion, info.ediciones, info.provisionales = prep[-1][0], len(prep), prep[-1][2]
+    info.ultimo_por_edicion = [
+        {"origen": e.origen, "etiqueta": lab, "fecha_edicion": e.fecha_edicion.isoformat(),
+         "fecha_efectiva": t.isoformat(), "fuente_fecha": e.fuente_fecha, "visto": e.visto.isoformat(),
+         "ultimo": u.date().isoformat() if v.notna().any() else None}
+        for (e, v, _, u), t, lab in zip(prep, efectivas, etiquetas, strict=True)]
+    info.cambios = []
+    valor = fecha = vint = None
+    bloques = []
+    for k, (e, s, _, _) in enumerate(prep):
+        lab = etiquetas[k]
+        dec = primera_decision_vec(pd.Series([efectivas[k]], dtype=UTC)).iloc[0]
+        if valor is None:
+            sel = s if rejilla else s.dropna()
+            pub = cat_mod.fecha_publicacion_regla(pd.Series(sel.index, dtype=FECHA), entrada)
+            base = f"{NOTA_PRIMERA_EDICION} ({lab}); {NOTA_FUENTE[entrada['fuente']]}" if entrada["revisable"] else None
+            hueco = f"{NOTA_HUECO}; {base}" if base else NOTA_HUECO
+            notas = np.where(sel.isna().to_numpy(), hueco, base if base else None)
+            pub = pd.Series(pub.to_numpy(), index=sel.index, dtype=FECHA)
+        else:
+            previo = valor.reindex(s.index).to_numpy()
+            actual = s.to_numpy(dtype=float)
+            tiene = s.index.isin(valor.index)
+            presente, prev_nulo = ~np.isnan(actual), np.isnan(previo)
+            nuevo = ~tiene & (presente | rejilla)
+            cambia = tiene & ~_iguales(actual, previo)
+            revisado = cambia & presente & ~prev_nulo
+            retirado = cambia & ~presente
+            dif = np.abs(actual - previo)[revisado]
+            info.cambios.append({
+                "etiqueta": lab, "previa": etiquetas[k - 1], "origen": e.origen,
+                "fecha_edicion": e.fecha_edicion.isoformat(), "fecha_efectiva": efectivas[k].isoformat(),
+                "fuente_fecha": e.fuente_fecha,
+                "comunes": int((tiene & presente & ~prev_nulo).sum()), "revisados": int(revisado.sum()),
+                "nuevos": int(((nuevo | cambia) & presente & ~revisado).sum()), "retirados": int(retirado.sum()),
+                "huecos_nuevos": int((nuevo & ~presente).sum()),
+                "max_abs": float(dif.max()) if len(dif) else None})
+            m = nuevo | cambia
+            if not m.any():
+                continue
+            sel = s[m]
+            previa = fecha.reindex(sel.index)
+            pub = previa.where(previa > dec, dec).astype(FECHA)
+            plab = vint.reindex(sel.index).to_numpy()
+            notas = np.full(len(sel), f"edición {lab}: periodo nuevo", dtype=object)
+            notas[(cambia & presente & prev_nulo)[m]] = f"edición {lab}: dato de un periodo que era hueco"
+            notas[(nuevo & ~presente)[m]] = f"{NOTA_HUECO}; edición {lab}"
+            for mascara, texto in ((revisado[m], "edición {e}: revisa el valor de la edición {p}"),
+                                   (retirado[m], "edición {e}: la fuente ya no publica este periodo "
+                                                 "(retira el valor de la edición {p})")):
+                notas[mascara] = [texto.format(e=lab, p=p) for p in plab[mascara]]
+        bloques.append(_filas(sid, entrada, sel.index, pub.to_numpy(), lab, sel.to_numpy(dtype=float), notas))
+        val = pd.Series(sel.to_numpy(dtype=float), index=sel.index)
+        etq = pd.Series(lab, index=sel.index, dtype=object)
+        valor = val if valor is None else _sustituir(valor, val)
+        fecha = pub if fecha is None else _sustituir(fecha, pub)
+        vint = etq if vint is None else _sustituir(vint, etq)
+    tabla = pd.concat(bloques, ignore_index=True).drop_duplicates(["fecha_referencia", "vintage"], keep="last")
+    info.n_huecos = int(tabla["valor"].isna().sum())
+    return tabla.sort_values(["fecha_referencia", "vintage"], kind="mergesort").reset_index(drop=True)
 
 
 def _revision(fase1: pd.Series | None, nueva: pd.Series, frecuencia: str) -> dict[str, Any]:
@@ -633,7 +856,7 @@ def _cargar(fuentes: Iterable[str] | None, catalogo: dict[str, dict] | None, rai
             if col not in cache_df[k].columns:
                 raise KeyError(f"{sid}: la columna {col!r} no está en {ed.ruta.name} ({list(cache_df[k].columns)})")
             versiones.append((ed, cache_df[k][col]))
-        f1 = _edicion_fase1(e, raiz_fase1)
+        f1 = _edicion_fase1(e, raiz_fase1, raiz_crudo, cache_ed[(e["fuente"], clave)])
         if f1 is not None:
             if versiones:
                 reciente = max(versiones, key=lambda v: v[0].visto)[1]
@@ -654,9 +877,11 @@ def tabla_academicos(fuentes: Iterable[str] | None = None, *, catalogo: dict[str
                      raiz_crudo: Path | None = None, raiz_fase1: Path | None = None) -> pd.DataFrame:
     """Tabla larga validada de las series académicas del catálogo (estados cargables).
 
-    ``fuentes``: subconjunto de ``ken_french``, ``shiller``, ``goyal_welch`` y ``ofr_fsi``.
-    Usa los crudos archivados (``descargar`` antes para tener la última edición) y la copia de
-    ``data/raw`` como edición antigua (o como única si no hay crudo). No toca la red.
+    ``fuentes``: subconjunto de ``ken_french``, ``shiller``, ``goyal_welch`` y ``ofr_fsi``. Ediciones:
+    los crudos (carpeta y archivo ``ediciones/``) y la copia de ``data/raw``. French, Shiller y
+    Goyal-Welch con vintage por edición ``AAAA-MM`` (la primera edición con la regla; las
+    posteriores, solo lo nuevo o revisado, fechado con su edición); la OFR, vintage ``unico``. No
+    toca la red (``descargar`` antes para tener la última edición).
     """
     tabla, _, cat = _cargar(fuentes, catalogo, raiz_crudo, raiz_fase1)
     out = validar_series(tabla)
@@ -664,12 +889,106 @@ def tabla_academicos(fuentes: Iterable[str] | None = None, *, catalogo: dict[str
     return out
 
 
+# --- Archivo de ediciones ---------------------------------------------------------------------------
+def _copiar(origen: Path, destino: Path, sha: str, meta: dict[str, Any]) -> str:
+    """Copia ``origen`` y su meta en ``destino`` salvo que ya esté (mismo sha256): ``copiado`` | ``ya_estaba``."""
+    ruta_meta = destino.with_name(destino.name + ".meta.json")
+    if destino.exists():
+        if hashlib.sha256(destino.read_bytes()).hexdigest() != sha:
+            raise ValueError(f"{destino}: ya hay en el archivo un fichero distinto con ese nombre (no se sobrescribe)")
+        if not ruta_meta.exists():
+            ruta_meta.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
+        return "ya_estaba"
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    destino.write_bytes(Path(origen).read_bytes())
+    ruta_meta.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
+    return "copiado"
+
+
+def _meta_edicion(ed: Edicion) -> dict[str, Any]:
+    return {"etiqueta": ed.etiqueta, "origen": ed.origen, "fecha_edicion": ed.fecha_edicion.isoformat(),
+            "fuente_fecha": ed.fuente_fecha, "visto": ed.visto.isoformat(),
+            **{k: v for k, v in ed.extra.items() if k in ("crsp", "ultimo_mes", "ruta_fase1")}}
+
+
+def archivar_ediciones(fuentes: Iterable[str] = FUENTES_VINTAGE, *, catalogo: dict[str, dict] | None = None,
+                       raiz_crudo: Path | None = None, raiz_fase1: Path | None = None) -> pd.DataFrame:
+    """Copia cada edición en ``crudo/<fuente>/ediciones/<AAAA-MM>/`` sin descargar nada (idempotente).
+
+    Crudos: ``<AAAAMMDD>_<fichero>`` con su ``.meta.json`` más ``edicion`` (etiqueta, fecha y su
+    origen, visto; ``crsp`` en French). Copias de ``data/raw`` de las series del catálogo:
+    ``fase1_<fichero>.parquet`` con un ``.meta.json`` (``ruta_fase1``, instante de descarga
+    declarado, último mes). Devuelve una fila por fichero (solo metadatos): ``fuente, clave,
+    etiqueta, origen, fecha_edicion, fuente_fecha, fichero, accion`` (``copiado`` | ``ya_estaba``).
+    """
+    cat = catalogo if catalogo is not None else cat_mod.cargar_catalogo()
+    raiz_fase1 = Path(raiz_fase1) if raiz_fase1 is not None else RAIZ_FASE1
+    filas = []
+    for fuente in fuentes:
+        if fuente not in FUENTES_VINTAGE:
+            raise ValueError(f"{fuente!r} no tiene vintage por edición ({list(FUENTES_VINTAGE)})")
+        carpeta = ruta_crudo(fuente, raiz_crudo) / CARPETA_EDICIONES
+        crudas: dict[str, list[Edicion]] = {}
+        for clave in FICHEROS[fuente]:
+            crudas[clave] = ediciones(fuente, clave, raiz_crudo)
+            for ed in crudas[clave]:
+                ruta_meta = ed.ruta.with_name(ed.ruta.name + ".meta.json")
+                meta = json.loads(ruta_meta.read_text(encoding="utf-8")) if ruta_meta.exists() else {}
+                meta |= {"fuente": fuente, "clave": clave, "edicion": _meta_edicion(ed)}
+                sha = ed.sha256 or hashlib.sha256(ed.ruta.read_bytes()).hexdigest()
+                destino = carpeta / ed.etiqueta / ed.ruta.name
+                filas.append({"fuente": fuente, "clave": clave, "etiqueta": ed.etiqueta, "origen": ed.origen,
+                              "fecha_edicion": ed.fecha_edicion.isoformat(), "fuente_fecha": ed.fuente_fecha,
+                              "fichero": destino.name, "accion": _copiar(ed.ruta, destino, sha, meta)})
+        vistos: set[str] = set()
+        for sid in _entradas(cat, [fuente]):
+            e = cat[sid]
+            if not e["fichero_fase1"] or e.get("fase1_utilizable") is False:
+                continue
+            rel = e["fichero_fase1"][0].split(":", 1)[0]
+            if rel in vistos or not (raiz_fase1 / rel).exists():
+                continue
+            vistos.add(rel)
+            clave = localizar(e)[0]
+            f1 = _edicion_fase1(e, raiz_fase1, raiz_crudo, crudas.get(clave, ()))
+            if f1 is None:
+                continue
+            ed = f1[0]
+            contenido = ed.ruta.read_bytes()
+            sha = hashlib.sha256(contenido).hexdigest()
+            destino = carpeta / ed.etiqueta / f"{PREFIJO_FASE1}{ed.ruta.name}"
+            meta = {"fuente": fuente, "clave": clave, "origen": "fase1", "ruta_fase1": rel,
+                    "descargado_utc": ed.visto.isoformat(), "bytes": len(contenido), "sha256": sha,
+                    "edicion": _meta_edicion(ed)}
+            filas.append({"fuente": fuente, "clave": clave, "etiqueta": ed.etiqueta, "origen": "fase1",
+                          "fecha_edicion": ed.fecha_edicion.isoformat(), "fuente_fecha": ed.fuente_fecha,
+                          "fichero": destino.name, "accion": _copiar(ed.ruta, destino, sha, meta)})
+    return pd.DataFrame(filas, columns=["fuente", "clave", "etiqueta", "origen", "fecha_edicion", "fuente_fecha",
+                                        "fichero", "accion"])
+
+
+def cambios_ediciones(fuentes: Iterable[str] | None = None, *, catalogo: dict[str, dict] | None = None,
+                      raiz_crudo: Path | None = None, raiz_fase1: Path | None = None) -> pd.DataFrame:
+    """Cuántos valores cambia cada edición respecto a la anterior, por serie (solo recuentos).
+
+    Una fila por serie y edición posterior a la primera: ``id, fuente, previa, etiqueta, origen,
+    fecha_edicion, fecha_efectiva, fuente_fecha, comunes, revisados, nuevos, retirados,
+    huecos_nuevos, max_abs`` (``fecha_efectiva``: la que fecha sus filas, ver ``_tabla_ediciones``).
+    """
+    _, infos, _ = _cargar(fuentes if fuentes is not None else FUENTES_VINTAGE, catalogo, raiz_crudo, raiz_fase1)
+    filas = [{"id": sid, "fuente": info.fuente, **c} for sid, info in sorted(infos.items()) for c in info.cambios]
+    columnas = ["id", "fuente", "previa", "etiqueta", "origen", "fecha_edicion", "fecha_efectiva", "fuente_fecha",
+                "comunes", "revisados", "nuevos", "retirados", "huecos_nuevos", "max_abs"]
+    return pd.DataFrame(filas).reindex(columns=columnas)
+
+
 _COLUMNAS_RESUMEN = ("id", "fuente", "fichero", "columna", "origen", "frecuencia", "metodo", "regla", "estado",
                      "n_filas", "n_obs", "n_huecos", "inicio", "fin", "ediciones", "fecha_edicion",
                      "fuente_fecha", "retraso_edicion_dias", "decision_edicion", "regla_ultimo",
                      "regla_vs_edicion_dias", "provisionales_descartados", "filas_con_cota",
                      "lag_mediano_dias", "lag_min_dias", "lag_max_dias", "fase1_comunes",
-                     "fase1_distintos", "fase1_max_abs")
+                     "fase1_distintos", "fase1_max_abs", "n_periodos", "n_vintages", "vintages",
+                     "filas_revisadas", "filas_nuevas", "revision_max_abs")
 
 
 def _resumen(tabla: pd.DataFrame, infos: dict[str, _Info], cat: dict[str, dict]) -> pd.DataFrame:
@@ -684,6 +1003,11 @@ def _resumen(tabla: pd.DataFrame, infos: dict[str, _Info], cat: dict[str, dict])
             "ediciones": info.ediciones, "provisionales_descartados": info.provisionales,
             "filas_con_cota": info.con_cota, "fase1_comunes": info.revision.get("comunes"),
             "fase1_distintos": info.revision.get("distintos"), "fase1_max_abs": info.revision.get("max_abs")}
+        if info.cambios:
+            difs = [c["max_abs"] for c in info.cambios if c["max_abs"] is not None]
+            fila |= {"filas_revisadas": sum(c["revisados"] for c in info.cambios),
+                     "filas_nuevas": sum(c["nuevos"] for c in info.cambios),
+                     "revision_max_abs": max(difs) if difs else None}
         g = grupos.get(sid)
         if g is not None and len(g):
             obs = g[g["valor"].notna()]
@@ -692,7 +1016,8 @@ def _resumen(tabla: pd.DataFrame, infos: dict[str, _Info], cat: dict[str, dict])
             fila |= {"n_filas": len(g), "n_obs": len(obs), "n_huecos": int(g["valor"].isna().sum()),
                      "inicio": obs["fecha_referencia"].min().date().isoformat(), "fin": fin.date().isoformat(),
                      "lag_mediano_dias": float(lag.median()), "lag_min_dias": int(lag.min()),
-                     "lag_max_dias": int(lag.max())}
+                     "lag_max_dias": int(lag.max()), "n_periodos": int(g["fecha_referencia"].nunique()),
+                     "n_vintages": int(g["vintage"].nunique()), "vintages": " ".join(sorted(set(g["vintage"])))}
             # Primera edición conocida (crudo o data/raw) que ya tenía el último periodo.
             con_ult = [(pd.Timestamp(u["fecha_edicion"]), u) for u in info.ultimo_por_edicion
                        if u["ultimo"] is not None and pd.Timestamp(u["ultimo"]) >= fin]
@@ -708,8 +1033,10 @@ def _resumen(tabla: pd.DataFrame, infos: dict[str, _Info], cat: dict[str, dict])
                          "regla_vs_edicion_dias": int((regla_ult - dec).days)}
         filas.append(fila)
     out = pd.DataFrame(filas).reindex(columns=list(_COLUMNAS_RESUMEN))
-    for c in ("n_filas", "n_obs", "n_huecos"):
+    for c in ("n_filas", "n_obs", "n_huecos", "n_periodos", "n_vintages"):
         out[c] = out[c].fillna(0).astype(int)
+    for c in ("filas_revisadas", "filas_nuevas"):
+        out[c] = out[c].astype("Int64")
     return out
 
 
@@ -721,6 +1048,8 @@ def resumen_academicos(fuentes: Iterable[str] | None = None, *, catalogo: dict[s
     edición. ``regla_vs_edicion_dias``: regla del último periodo menos la primera decisión tras la
     edición (negativo = la regla lo daría visible antes de que existiera el fichero, si esa edición
     fue la primera con ese periodo). ``fase1_distintos``: valores de ``data/raw`` cambiados.
+    ``n_filas``/``n_obs`` cuentan filas (todas las vintages); ``n_periodos``, fechas de referencia;
+    ``filas_revisadas``/``filas_nuevas``: filas de las ediciones posteriores a la primera.
     """
     tabla, infos, cat = _cargar(fuentes, catalogo, raiz_crudo, raiz_fase1)
     return _resumen(tabla, infos, cat)
@@ -796,8 +1125,9 @@ def _ediciones_medidas(fuente: str, raiz: Path | None) -> dict[str, Any]:
             continue
         lista = []
         for e in eds:
-            d: dict[str, Any] = {"fecha_edicion": e.fecha_edicion.isoformat(), "fuente_fecha": e.fuente_fecha,
-                                 "visto": e.visto.isoformat(), "bytes": e.ruta.stat().st_size}
+            d: dict[str, Any] = {"etiqueta": e.etiqueta, "fecha_edicion": e.fecha_edicion.isoformat(),
+                                 "fuente_fecha": e.fuente_fecha, "visto": e.visto.isoformat(),
+                                 "bytes": e.ruta.stat().st_size}
             if fuente == "ken_french":
                 _, info = leer_french(e.ruta)
                 d |= {"crsp": info["crsp"], "creado_zip": info["creado_zip"]}
@@ -807,6 +1137,15 @@ def _ediciones_medidas(fuente: str, raiz: Path | None) -> dict[str, Any]:
             lista.append(d)
         out[clave] = lista
     return out
+
+
+def _archivo_medido(fuente: str, raiz: Path | None) -> dict[str, list[str]]:
+    """Ficheros del archivo de ediciones por etiqueta (``ediciones/<AAAA-MM>/``), sin los .meta.json."""
+    carpeta = ruta_crudo(fuente, raiz) / CARPETA_EDICIONES
+    if not carpeta.exists():
+        return {}
+    return {d.name: sorted(p.name for p in d.iterdir() if not p.name.endswith(".meta.json"))
+            for d in sorted(carpeta.iterdir()) if d.is_dir()}
 
 
 def _py(v: Any) -> Any:
@@ -826,12 +1165,15 @@ def _ficha(fuente: str, res: pd.DataFrame, raiz: Path | None, extra: dict[str, A
     eds = _ediciones_medidas(fuente, raiz)
     mediciones: dict[str, Any] = {"ediciones": eds, "descargas": [
         {k: m.get(k) for k in ("clave", "estado", "bytes", "descargado_utc", "error")} for m in metas]}
+    if fuente in FUENTES_VINTAGE:
+        mediciones["archivo_ediciones"] = _archivo_medido(fuente, raiz)
     if len(r):
         mediciones["series"] = {
             row.id: {k: _py(v) for k, v in row._asdict().items()
                      if k in ("n_obs", "n_huecos", "inicio", "fin", "retraso_edicion_dias", "regla_vs_edicion_dias",
                               "provisionales_descartados", "filas_con_cota", "fase1_comunes", "fase1_distintos",
-                              "fase1_max_abs", "origen")}
+                              "fase1_max_abs", "origen", "n_periodos", "n_vintages", "vintages",
+                              "filas_revisadas", "filas_nuevas", "revision_max_abs")}
             for row in r.itertuples(index=False)}
     mediciones |= extra.get("mediciones", {})
     if len(r):
@@ -839,8 +1181,8 @@ def _ficha(fuente: str, res: pd.DataFrame, raiz: Path | None, extra: dict[str, A
         ret = vigentes["retraso_edicion_dias"].dropna()
         regla = vigentes["regla_vs_edicion_dias"].dropna()
         reglas = " y ".join(f"{x} ({int((r['regla'] == x).sum())} series)" for x in sorted(set(r["regla"])))
-        retraso = (f"medido con las ediciones archivadas (una sola edición reciente por fichero: el histórico no "
-                   f"está medido): la primera edición conocida con el último periodo sale {int(ret.min())}-"
+        retraso = (f"medido con las ediciones archivadas (data/raw de la Fase 1 y descargas desde el bloque 2; "
+                   f"las anteriores no están medidas): la primera edición conocida con el último periodo sale {int(ret.min())}-"
                    f"{int(ret.max())} días tras su fin (series vigentes); reglas del catálogo: {reglas} (regla - "
                    f"primera decisión tras esa edición: {int(regla.min())} a {int(regla.max())} días)"
                    ) if len(ret) else "sin edición medida"
@@ -895,24 +1237,33 @@ def fichas_academicos(res: pd.DataFrame, *, raiz_crudo: Path | None = None, cata
     """
     nota_ed = ("fecha_publicacion = max(regla del catálogo, primera decisión tras la última vez que se vio una "
                "edición sin ese periodo); periodos no cerrados en la fecha de edición: provisionales, fuera")
+    nota_vintage = ("Vintage por edición AAAA-MM (mes NY de la fecha de edición): la primera edición archivada con "
+                    "la regla del catálogo; cada edición posterior solo con los periodos nuevos o revisados, "
+                    "fechados con su edición (Last-Modified, xlsx o descarga). Archivo en <corpus>/mercados_series/"
+                    "crudo/<fuente>/ediciones/<AAAA-MM>/ (archivar_ediciones); periodos no cerrados en la fecha "
+                    "de edición: provisionales, fuera")
     extra: dict[str, dict[str, Any]] = {
-        "ken_french": {"notas": [nota_ed, "Primer bloque de cada CSV (industrias: ponderadas por valor); -99.99 y "
+        "ken_french": {"notas": [nota_vintage, "Primer bloque de cada CSV (industrias: ponderadas por valor); -99.99 y "
                                  "-999 son faltantes; retornos en %",
                                  "La cabecera 'created using the AAAAMM CRSP database' da el último mes; el zip "
                                  "lleva la fecha interna de creación",
                                  "Revisión completa del momentum diario entre ediciones: data/raw (2026-07-20) y la "
                                  "edición del 2026-09-25 difieren en 14699 de 26152 días comunes (máx. 3,79 pp, "
                                  "correlación 0,994, sin desfase de fechas); el resto de ficheros, 0 diferencias "
-                                 "salvo 1 de 0,01 en F3M. La base guarda la última edición (nota de revisables)",
+                                 "salvo 1 de 0,01 en F3M. Con vintage por edición la base guarda las dos: "
+                                 "data/raw (vintage 2026-07, primera) y las filas revisadas o nuevas de 2026-09",
+                                 "data/raw de los diarios de 3 y 5 factores y de las 5 industrias (descarga del "
+                                 "2026-09-29) tiene el mismo último mes (CRSP 202608) que el crudo del bloque 2: es "
+                                 "la misma edición (Last-Modified 2026-09-25) y no cambia ningún valor",
                                  "Regla +45 días medida con una sola edición (agosto-2026, Last-Modified a 25 días); "
                                  "las ediciones históricas (p. ej. el cambio de CRSP a CIZ en 2023) no se pudieron "
                                  "medir: la Wayback Machine respondió 429. Pendiente con más calma"]},
-        "shiller": {"notas": [nota_ed, "Fechas AAAA.MM: 1871.1 es octubre (regresión del bug de la Fase 1: 153 "
+        "shiller": {"notas": [nota_vintage, "Fechas AAAA.MM: 1871.1 es octubre (regresión del bug de la Fase 1: 153 "
                                        "octubres leídos como enero en SHILLER_LONGRATE)",
                               "La última fila es el mes en curso con el cierre del día 1 (nota al pie de la hoja): "
                               "se descarta; CPI de los últimos meses estimado por Shiller",
                               "El espejo de Yale (econ.yale.edu) está congelado en 2024-09: no se usa"]},
-        "goyal_welch": {"notas": [nota_ed, "Sin Last-Modified (Google): fecha de edición = dcterms:modified del xlsx",
+        "goyal_welch": {"notas": [nota_vintage, "Sin Last-Modified (Google): fecha de edición = dcterms:modified del xlsx",
                                   "Regla 7M1D (1 de agosto del año siguiente) sin ediciones antiguas medidas",
                                   "Series retiradas (gw:M.csp acaba en 2002): fuera de las métricas de retraso de "
                                   "la edición (no miden la edición actual)",
@@ -954,8 +1305,11 @@ def main(argv: Sequence[str] | None = None) -> None:
 
     p = argparse.ArgumentParser(description="Fuentes académicas -> tabla larga del contrato de series")
     p.add_argument("--descargar", action="store_true", help="descarga la edición de hoy (si no está archivada)")
+    p.add_argument("--archivar", action="store_true",
+                   help="copia las ediciones (crudos y data/raw) en crudo/<fuente>/ediciones/<AAAA-MM>/")
     p.add_argument("--fuentes", nargs="*", default=None, help=f"subconjunto de {list(FUENTES)}")
-    p.add_argument("--fichas", action="store_true", help="escribe fichas y tablas/academicos_resumen.csv")
+    p.add_argument("--fichas", action="store_true",
+                   help="escribe fichas y tablas/academicos_resumen.csv y academicos_ediciones.csv")
     p.add_argument("--escribir", action="store_true", help="vuelca la tabla en el almacén del tema")
     p.add_argument("--reemplazar", action="store_true",
                    help="con --escribir: permite cambiar filas guardadas (revisiones del último vintage)")
@@ -966,6 +1320,10 @@ def main(argv: Sequence[str] | None = None) -> None:
         for f in fuentes:
             for m in descargar(f):
                 print(f"{f:16s} {m['clave']:40s} {m.get('estado')} {m.get('bytes')} {m.get('error') or ''}")
+    if a.archivar:
+        arch = archivar_ediciones([f for f in fuentes if f in FUENTES_VINTAGE])
+        for r in arch.itertuples(index=False):
+            print(f"{r.fuente:12s} {r.etiqueta} {r.origen:6s} {r.fichero:50s} {r.accion}")
     cat_f = [f for f in fuentes if f in FUENTES_CATALOGO]
     tabla, infos, cat = _cargar(cat_f, None, None, None)
     tabla = validar_series(tabla)
@@ -978,6 +1336,11 @@ def main(argv: Sequence[str] | None = None) -> None:
         ruta_csv = carpeta / "academicos_resumen.csv"
         res.to_csv(ruta_csv, index=False, encoding="utf-8")
         print(f"resumen -> {ruta_csv}")
+        cambios = pd.DataFrame([{"id": sid, "fuente": i.fuente, **c} for sid, i in sorted(infos.items())
+                                for c in i.cambios])
+        ruta_ed = carpeta / "academicos_ediciones.csv"
+        cambios.to_csv(ruta_ed, index=False, encoding="utf-8")
+        print(f"cambios entre ediciones -> {ruta_ed}")
         for ficha in fichas_academicos(res):
             if ficha.fuente in fuentes:
                 print(f"ficha   -> {guardar_ficha(ficha)}")
