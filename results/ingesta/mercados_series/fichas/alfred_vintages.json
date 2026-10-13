@@ -1,0 +1,3329 @@
+{
+  "fuente": "alfred_vintages",
+  "nombre": "ALFRED: vintages exactos de FRED (Federal Reserve Bank of St. Louis)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://alfred.stlouisfed.org/",
+  "acceso": "api",
+  "autenticacion": "clave gratuita (FRED)",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de uso de la API de FRED: datos solo en local, sin redistribuir; cada serie conserva los términos de su publicador (BLS, BEA, Fed: dominio público; Chicago Fed, OCDE, S&P CoreLogic...: los suyos). This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+  "cobertura_inicio": "1854-12-01",
+  "cobertura_fin": "2026-10-07",
+  "frecuencia": "mensual, trimestral, semanal, anual y diaria (una fila por valor nuevo o revisado)",
+  "retraso_publicacion": "medido en ALFRED: días naturales del fin del periodo a la primera publicación real (mediana por serie): A191RL1Q225SBEA 28; A261RX1Q020SBEA 60; AHETPI 5; AMTMNO 34; ANFCI 5; AWHAETP 5; AWHMAN 5; BACTSAMFRBDAL -3; BBKMGDP 64.5; BBKMLEIX 33; BCNSDODNS 70; BOGMBASE 13; BOPGSTB 40; BOPTEXP 36; BOPTIMP 36; BUSINV 45; BUSLOANS 13; CBIC1 28; CCSA 12; CE16OV 5; CES0500000003 5; CFNAI 23; CFNAIMA3 23; CFSI 2; CIVPART 5; CLF16OV 5; CMDEBT 70; CMRMTSPL 60; CONSUMER 13; CORCCACBS 50; CORESTICKM159SFRBATL 13; CP 59; CPATAX 59; CPIAUCSL 17; CPIENGSL 15; CPILFESL 15; CPIUFDSL 15; CSUSHPISA 58; CUSR0000SACL1E 13; CUSR0000SAH1 13; CUSR0000SASLE 13; CUSR0000SEHA 13; CUSR0000SEHC 13; CUSR0000SETA02 13; DGORDER 26; DPSACBW027SBOG 10; DRALACBS 50; DRCCLACBS 50; DRSFRMACBS 50; DSPIC96 30; ECIALLCIV 30; EMRATIO 5; EXPGSC1 29; EXPINF10YR -17; EXPINF1YR -17; FINSLC1 27; FRBKCLMCILA 10; FRBKCLMCIM 10; GACDFSA066MSFRBPHI -12; GACDISA066MSFRBNY -15; GAFDFSA066MSFRBPHI -12; GCEC1 28; GDP 29; GDPC1 29; GDPDEF 29; GDPNOW -61; GFDEBTN 67; GPDIC1 28; HOUST 17; HPIPONM226S 56; HSN1F 25; ICSA 5; IEABC 81; IMPGSC1 29; INDPRO 16; IPMAN 16; IQ 14; IR 14; ISRATIO 45; JHDUSRGDPBR 120; JHGDPBRINDX 120; JTSHIR 39; JTSJOL 39; JTSLDL 39; JTSQUR 39; KCFSI 9; LNS12300060 5; M2SL 13; MANEMP 5; MCUMFN 16; MEDCPIM158SFRBCLE 13; MICH -3; MSACSR 25; MSPUS 26; MTSDS133FMS 12; NCBEILQ027S 71; NETEXC 29; NEWORDER 26; NFCI 5; NFCICREDIT 5; NFCILEVERAGE 5; NFCIRISK 5; NNUSBIS 18; NOCDFSA066MSFRBPHI -12; OPHNFB 35; PAYEMS 5; PCE 29; PCEC96 30; PCECC96 28; PCEPI 30; PCEPILFE 30; PCETRIM12M159SFRBDAL 29; PERMIT 18; PI 27; PNFIC1 27; PPIACO 14; PPICOR 13; PPIFIS 13; PRFIC1 27; PSAVERT 30; REALLN 13; RECPROUSM156N 35; REVOLSL 38; RNUSBIS 18; RRSFS 17; RSAFS 14; SAHMCURRENT 6; SAHMREALTIME 6; STLFSI4 6; TCU 16; TDSP 84; TEMPHELPS 5; TNWBSHNO 70; TOTALSA 5; TOTALSL 38; TOTBKCR 10; TOTLL 10; TRMMEANCPIM158SFRBCLE 13; TTLCONS 32; U6RATE 5; UEMP27OV 5; ULCNFB 35; UMCSENT -3; UNRATE 5; USALOLITOAASTSAM 16; USCONS 5; USPHCI 25; USPRIV 5; USREC 3; USSTHPI 56; W875RX1 29; WALCL 2; WEI 5; WPSFD49207 13; WPU0561 13; WPU102301 13. Hora de cada vintage = la de su release (publicador): atlanta_fed_gdpnow 12:15; atlanta_fed_ipc 13:15; bea 08:30; bea_suplementarias 14:30; bis 12:15; bls 08:30; cbo 23:59 (día siguiente); census 08:30; census_10 10:00; chauvet_piger 23:59 (día siguiente); chicago_fed 08:30; chicago_fed_bbk 08:45; cleveland_fed_expinf 23:59 (día siguiente); cleveland_fed_ipc 11:15; cleveland_fsi 23:59 (día siguiente); dallas_fed 10:30; dallas_fed_pce 12:15; dol_claims 08:30; fed_dsr 23:59 (día siguiente); fed_g17 09:15; fed_g19 15:00; fed_h41 16:30 (día siguiente); fed_h6 13:00; fed_h8 16:15 (día siguiente); fed_morosidad 15:30; fed_sep 14:00; fed_z1 12:00; fhfa 09:00; fred_calculo 23:59 (día siguiente); hamilton 23:59 (día siguiente); jolts 10:00; kc_fed 13:30; nyfed_empire 08:30; nyfed_wei 12:00; oecd_mei 23:59 (día siguiente); philly_fed 08:30; philly_fed_coincidentes 10:15; sp_cotality 09:00; stlouis_fed_fsi 11:30; tesoro_deuda 10:30; treasury_mts 14:00; umich 10:00",
+  "formato": "json",
+  "volumen_estimado": "764.4 MB de JSON crudo en disco para 161 series (7192649 filas de tiempo real); extrapolado a la lista completa (7192649 filas de tiempo real): 764 MB",
+  "limites": "120 peticiones/min por clave (aquí 1/s); output_type=1 con tiempo real completo: hasta 100000 filas por página (offset); los índices re-estimados (NFCI, ANFCI) pasan del millón de filas",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "series": {
+      "fred:A191RL1Q225SBEA": {
+        "inicio": "1947-04-01",
+        "fin": "2026-04-01",
+        "n_obs": 317,
+        "filas": 926,
+        "n_vintages": 127,
+        "primer_vintage": "2014-09-26",
+        "filas_previas_alfred": 269,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 48,
+          "mediana_dias": 28.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:A261RX1Q020SBEA": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 2334,
+        "n_vintages": 120,
+        "primer_vintage": "2013-02-28",
+        "filas_previas_alfred": 263,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 55,
+          "mediana_dias": 60.0,
+          "min_dias": 55,
+          "max_dias": 99
+        }
+      },
+      "fred:AHETPI": {
+        "inicio": "1964-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 753,
+        "filas": 3990,
+        "n_vintages": 328,
+        "primer_vintage": "1999-08-06",
+        "filas_previas_alfred": 426,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 326,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:AMTMNO": {
+        "inicio": "1992-02-01",
+        "fin": "2026-08-01",
+        "n_obs": 415,
+        "filas": 3279,
+        "n_vintages": 190,
+        "primer_vintage": "2011-06-24",
+        "filas_previas_alfred": 230,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 34.0,
+          "min_dias": 31,
+          "max_dias": 79
+        }
+      },
+      "fred:ANFCI": {
+        "inicio": "1971-01-08",
+        "fin": "2026-10-02",
+        "n_obs": 2909,
+        "filas": 1041516,
+        "n_vintages": 799,
+        "primer_vintage": "2011-05-25",
+        "filas_previas_alfred": 2002,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 802,
+          "mediana_dias": 5.0,
+          "min_dias": 5,
+          "max_dias": 20
+        }
+      },
+      "fred:AWHAETP": {
+        "inicio": "2006-03-01",
+        "fin": "2026-09-01",
+        "n_obs": 247,
+        "filas": 667,
+        "n_vintages": 196,
+        "primer_vintage": "2010-06-04",
+        "filas_previas_alfred": 50,
+        "puntos": 36,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 196,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:AWHMAN": {
+        "inicio": "1932-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 1137,
+        "filas": 4102,
+        "n_vintages": 779,
+        "primer_vintage": "1961-11-03",
+        "filas_previas_alfred": 357,
+        "puntos": 84,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 779,
+          "mediana_dias": 5.0,
+          "min_dias": 0,
+          "max_dias": 51
+        }
+      },
+      "fred:BACTSAMFRBDAL": {
+        "inicio": "2004-06-01",
+        "fin": "2026-09-01",
+        "n_obs": 268,
+        "filas": 2234,
+        "n_vintages": 128,
+        "primer_vintage": "2016-01-25",
+        "filas_previas_alfred": 139,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "dallas_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 128,
+          "mediana_dias": -3.0,
+          "min_dias": -6,
+          "max_dias": 31
+        }
+      },
+      "fred:BBKMGDP": {
+        "inicio": "1960-01-01",
+        "fin": "2026-06-01",
+        "n_obs": 798,
+        "filas": 49782,
+        "n_vintages": 65,
+        "primer_vintage": "2021-04-01",
+        "filas_previas_alfred": 732,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed_bbk",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 66,
+          "mediana_dias": 64.5,
+          "min_dias": 29,
+          "max_dias": 158
+        }
+      },
+      "fred:BBKMLEIX": {
+        "inicio": "1960-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 800,
+        "filas": 49848,
+        "n_vintages": 65,
+        "primer_vintage": "2021-04-01",
+        "filas_previas_alfred": 732,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed_bbk",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 66,
+          "mediana_dias": 33.0,
+          "min_dias": 23,
+          "max_dias": 97
+        }
+      },
+      "fred:BCNSDODNS": {
+        "inicio": "1945-10-01",
+        "fin": "2026-04-01",
+        "n_obs": 305,
+        "filas": 6899,
+        "n_vintages": 66,
+        "primer_vintage": "2010-06-10",
+        "filas_previas_alfred": 241,
+        "puntos": 18,
+        "retiradas": 0,
+        "publicador": "fed_z1",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 65,
+          "mediana_dias": 70.0,
+          "min_dias": 65,
+          "max_dias": 101
+        }
+      },
+      "fred:BOGMBASE": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 2627,
+        "n_vintages": 235,
+        "primer_vintage": "2013-07-11",
+        "filas_previas_alfred": 653,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_h6",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 158,
+          "mediana_dias": 13.0,
+          "min_dias": 1,
+          "max_dias": 52
+        }
+      },
+      "fred:BOPGSTB": {
+        "inicio": "1992-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 416,
+        "filas": 4911,
+        "n_vintages": 358,
+        "primer_vintage": "1997-01-17",
+        "filas_previas_alfred": 58,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 357,
+          "mediana_dias": 40.0,
+          "min_dias": 32,
+          "max_dias": 80
+        }
+      },
+      "fred:BOPTEXP": {
+        "inicio": "1992-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 416,
+        "filas": 2990,
+        "n_vintages": 198,
+        "primer_vintage": "2010-04-13",
+        "filas_previas_alfred": 217,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 198,
+          "mediana_dias": 36.0,
+          "min_dias": 32,
+          "max_dias": 80
+        }
+      },
+      "fred:BOPTIMP": {
+        "inicio": "1992-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 416,
+        "filas": 3010,
+        "n_vintages": 198,
+        "primer_vintage": "2010-04-13",
+        "filas_previas_alfred": 217,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 198,
+          "mediana_dias": 36.0,
+          "min_dias": 32,
+          "max_dias": 80
+        }
+      },
+      "fred:BUSINV": {
+        "inicio": "1980-12-01",
+        "fin": "2026-07-01",
+        "n_obs": 548,
+        "filas": 12844,
+        "n_vintages": 361,
+        "primer_vintage": "1996-11-15",
+        "filas_previas_alfred": 189,
+        "puntos": 133,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 45.0,
+          "min_dias": 39,
+          "max_dias": 86
+        }
+      },
+      "fred:BUSLOANS": {
+        "inicio": "1947-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 957,
+        "filas": 38351,
+        "n_vintages": 1497,
+        "primer_vintage": "1996-12-13",
+        "filas_previas_alfred": 288,
+        "puntos": 182,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 16
+        }
+      },
+      "fred:CBIC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4771,
+        "n_vintages": 706,
+        "primer_vintage": "1958-12-21",
+        "filas_previas_alfred": 35,
+        "puntos": 479,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 271,
+          "mediana_dias": 28.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:CCSA": {
+        "inicio": "1967-01-07",
+        "fin": "2026-09-26",
+        "n_obs": 3117,
+        "filas": 8375,
+        "n_vintages": 882,
+        "primer_vintage": "2009-09-10",
+        "filas_previas_alfred": 2225,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "dol_claims",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 891,
+          "mediana_dias": 12.0,
+          "min_dias": 11,
+          "max_dias": 61
+        }
+      },
+      "fred:CE16OV": {
+        "inicio": "1947-07-01",
+        "fin": "2026-09-01",
+        "n_obs": 950,
+        "filas": 5816,
+        "n_vintages": 788,
+        "primer_vintage": "1961-02-09",
+        "filas_previas_alfred": 162,
+        "puntos": 31,
+        "retiradas": 6,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 787,
+          "mediana_dias": 5.0,
+          "min_dias": -2,
+          "max_dias": 51
+        }
+      },
+      "fred:CES0500000003": {
+        "inicio": "2006-03-01",
+        "fin": "2026-09-01",
+        "n_obs": 247,
+        "filas": 1587,
+        "n_vintages": 187,
+        "primer_vintage": "2011-03-04",
+        "filas_previas_alfred": 59,
+        "puntos": 36,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 187,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:CFNAI": {
+        "inicio": "1967-03-01",
+        "fin": "2026-08-01",
+        "n_obs": 714,
+        "filas": 24410,
+        "n_vintages": 182,
+        "primer_vintage": "2011-05-23",
+        "filas_previas_alfred": 529,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 23.0,
+          "min_dias": 19,
+          "max_dias": 87
+        }
+      },
+      "fred:CFNAIMA3": {
+        "inicio": "1967-05-01",
+        "fin": "2026-08-01",
+        "n_obs": 712,
+        "filas": 18875,
+        "n_vintages": 182,
+        "primer_vintage": "2011-05-23",
+        "filas_previas_alfred": 527,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 23.0,
+          "min_dias": 19,
+          "max_dias": 87
+        }
+      },
+      "fred:CFSI": {
+        "inicio": "1991-09-25",
+        "fin": "2016-05-05",
+        "n_obs": 8990,
+        "filas": 235420,
+        "n_vintages": 551,
+        "primer_vintage": "2014-02-17",
+        "filas_previas_alfred": 8177,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "cleveland_fsi",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 811,
+          "mediana_dias": 2.0,
+          "min_dias": 1,
+          "max_dias": 7
+        }
+      },
+      "fred:CIVPART": {
+        "inicio": "1948-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 944,
+        "filas": 1326,
+        "n_vintages": 357,
+        "primer_vintage": "1997-02-07",
+        "filas_previas_alfred": 588,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 355,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:CLF16OV": {
+        "inicio": "1947-07-01",
+        "fin": "2026-09-01",
+        "n_obs": 950,
+        "filas": 5859,
+        "n_vintages": 789,
+        "primer_vintage": "1961-02-09",
+        "filas_previas_alfred": 162,
+        "puntos": 19,
+        "retiradas": 6,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 787,
+          "mediana_dias": 5.0,
+          "min_dias": -2,
+          "max_dias": 51
+        }
+      },
+      "fred:CMDEBT": {
+        "inicio": "1945-10-01",
+        "fin": "2026-04-01",
+        "n_obs": 305,
+        "filas": 8999,
+        "n_vintages": 111,
+        "primer_vintage": "1999-06-11",
+        "filas_previas_alfred": 184,
+        "puntos": 18,
+        "retiradas": 0,
+        "publicador": "fed_z1",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 109,
+          "mediana_dias": 70.0,
+          "min_dias": 64,
+          "max_dias": 107
+        }
+      },
+      "fred:CMRMTSPL": {
+        "inicio": "1967-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 715,
+        "filas": 4080,
+        "n_vintages": 158,
+        "primer_vintage": "2013-06-14",
+        "filas_previas_alfred": 554,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea_suplementarias",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 161,
+          "mediana_dias": 60.0,
+          "min_dias": 50,
+          "max_dias": 114
+        }
+      },
+      "fred:CONSUMER": {
+        "inicio": "1947-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 957,
+        "filas": 28055,
+        "n_vintages": 1361,
+        "primer_vintage": "1996-12-13",
+        "filas_previas_alfred": 288,
+        "puntos": 313,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 16
+        }
+      },
+      "fred:CORCCACBS": {
+        "inicio": "1985-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 166,
+        "filas": 2499,
+        "n_vintages": 62,
+        "primer_vintage": "2011-05-24",
+        "filas_previas_alfred": 104,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_morosidad",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 61,
+          "mediana_dias": 50.0,
+          "min_dias": 46,
+          "max_dias": 76
+        }
+      },
+      "fred:CORESTICKM159SFRBATL": {
+        "inicio": "1967-12-01",
+        "fin": "2026-08-01",
+        "n_obs": 705,
+        "filas": 5948,
+        "n_vintages": 150,
+        "primer_vintage": "2014-03-07",
+        "filas_previas_alfred": 554,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "atlanta_fed_ipc",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 151,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 48
+        }
+      },
+      "fred:CP": {
+        "inicio": "1946-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 322,
+        "filas": 3817,
+        "n_vintages": 445,
+        "primer_vintage": "1972-07-21",
+        "filas_previas_alfred": 105,
+        "puntos": 353,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 217,
+          "mediana_dias": 59.0,
+          "min_dias": 46,
+          "max_dias": 111
+        }
+      },
+      "fred:CPATAX": {
+        "inicio": "1946-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 322,
+        "filas": 4316,
+        "n_vintages": 378,
+        "primer_vintage": "1980-12-23",
+        "filas_previas_alfred": 138,
+        "puntos": 697,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 183,
+          "mediana_dias": 59.0,
+          "min_dias": 48,
+          "max_dias": 111
+        }
+      },
+      "fred:CPIAUCSL": {
+        "inicio": "1947-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 955,
+        "filas": 3362,
+        "n_vintages": 669,
+        "primer_vintage": "1972-07-21",
+        "filas_previas_alfred": 18,
+        "puntos": 259,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 649,
+          "mediana_dias": 17.0,
+          "min_dias": 9,
+          "max_dias": 32
+        }
+      },
+      "fred:CPIENGSL": {
+        "inicio": "1957-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 835,
+        "filas": 2687,
+        "n_vintages": 375,
+        "primer_vintage": "1996-12-12",
+        "filas_previas_alfred": 478,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 356,
+          "mediana_dias": 15.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CPILFESL": {
+        "inicio": "1957-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 835,
+        "filas": 2260,
+        "n_vintages": 376,
+        "primer_vintage": "1996-12-12",
+        "filas_previas_alfred": 478,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 356,
+          "mediana_dias": 15.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CPIUFDSL": {
+        "inicio": "1947-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 955,
+        "filas": 2536,
+        "n_vintages": 375,
+        "primer_vintage": "1996-12-12",
+        "filas_previas_alfred": 598,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 356,
+          "mediana_dias": 15.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CSUSHPISA": {
+        "inicio": "1975-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 619,
+        "filas": 23565,
+        "n_vintages": 143,
+        "primer_vintage": "2014-11-25",
+        "filas_previas_alfred": 476,
+        "puntos": 144,
+        "retiradas": 2,
+        "publicador": "sp_cotality",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 142,
+          "mediana_dias": 58.0,
+          "min_dias": 53,
+          "max_dias": 62
+        }
+      },
+      "fred:CUSR0000SACL1E": {
+        "inicio": "1957-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 835,
+        "filas": 1737,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 650,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CUSR0000SAH1": {
+        "inicio": "1953-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 883,
+        "filas": 1775,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 698,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CUSR0000SASLE": {
+        "inicio": "1967-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 715,
+        "filas": 1615,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 530,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CUSR0000SEHA": {
+        "inicio": "1981-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 547,
+        "filas": 1440,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 362,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CUSR0000SEHC": {
+        "inicio": "1983-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 523,
+        "filas": 1410,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 338,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 30
+        }
+      },
+      "fred:CUSR0000SETA02": {
+        "inicio": "1953-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 884,
+        "filas": 1697,
+        "n_vintages": 196,
+        "primer_vintage": "2011-04-15",
+        "filas_previas_alfred": 698,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 185,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 48
+        }
+      },
+      "fred:DGORDER": {
+        "inicio": "1958-02-01",
+        "fin": "2026-08-01",
+        "n_obs": 823,
+        "filas": 7144,
+        "n_vintages": 671,
+        "primer_vintage": "1999-08-04",
+        "filas_previas_alfred": 496,
+        "puntos": 408,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 326,
+          "mediana_dias": 26.0,
+          "min_dias": 21,
+          "max_dias": 57
+        }
+      },
+      "fred:DPSACBW027SBOG": {
+        "inicio": "1973-01-03",
+        "fin": "2026-09-30",
+        "n_obs": 2805,
+        "filas": 95179,
+        "n_vintages": 738,
+        "primer_vintage": "2012-08-17",
+        "filas_previas_alfred": 2066,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 738,
+          "mediana_dias": 10.0,
+          "min_dias": 9,
+          "max_dias": 17
+        }
+      },
+      "fred:DRALACBS": {
+        "inicio": "1985-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 166,
+        "filas": 1062,
+        "n_vintages": 62,
+        "primer_vintage": "2011-05-24",
+        "filas_previas_alfred": 104,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_morosidad",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 61,
+          "mediana_dias": 50.0,
+          "min_dias": 46,
+          "max_dias": 76
+        }
+      },
+      "fred:DRCCLACBS": {
+        "inicio": "1991-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 142,
+        "filas": 1264,
+        "n_vintages": 62,
+        "primer_vintage": "2011-05-24",
+        "filas_previas_alfred": 80,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_morosidad",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 61,
+          "mediana_dias": 50.0,
+          "min_dias": 46,
+          "max_dias": 76
+        }
+      },
+      "fred:DRSFRMACBS": {
+        "inicio": "1991-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 142,
+        "filas": 1513,
+        "n_vintages": 62,
+        "primer_vintage": "2011-05-24",
+        "filas_previas_alfred": 80,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_morosidad",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 61,
+          "mediana_dias": 50.0,
+          "min_dias": 46,
+          "max_dias": 76
+        }
+      },
+      "fred:DSPIC96": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 13417,
+        "n_vintages": 567,
+        "primer_vintage": "1979-12-18",
+        "filas_previas_alfred": 250,
+        "puntos": 963,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 562,
+          "mediana_dias": 30.0,
+          "min_dias": 20,
+          "max_dias": 84
+        }
+      },
+      "fred:ECIALLCIV": {
+        "inicio": "2001-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 102,
+        "filas": 148,
+        "n_vintages": 55,
+        "primer_vintage": "2013-07-31",
+        "filas_previas_alfred": 49,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 52,
+          "mediana_dias": 30.0,
+          "min_dias": 27,
+          "max_dias": 71
+        }
+      },
+      "fred:EMRATIO": {
+        "inicio": "1948-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 944,
+        "filas": 1325,
+        "n_vintages": 358,
+        "primer_vintage": "1996-12-06",
+        "filas_previas_alfred": 586,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 357,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:EXPGSC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4169,
+        "n_vintages": 415,
+        "primer_vintage": "1991-12-04",
+        "filas_previas_alfred": 131,
+        "puntos": 239,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 139,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:EXPINF10YR": {
+        "inicio": "1982-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 537,
+        "filas": 593,
+        "n_vintages": 56,
+        "primer_vintage": "2021-10-13",
+        "filas_previas_alfred": 477,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "cleveland_fed_expinf",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 59,
+          "mediana_dias": -17.0,
+          "min_dias": -20,
+          "max_dias": 72
+        }
+      },
+      "fred:EXPINF1YR": {
+        "inicio": "1982-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 537,
+        "filas": 593,
+        "n_vintages": 56,
+        "primer_vintage": "2021-10-13",
+        "filas_previas_alfred": 477,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "cleveland_fed_expinf",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 59,
+          "mediana_dias": -17.0,
+          "min_dias": -20,
+          "max_dias": 72
+        }
+      },
+      "fred:FEDTARMD": {
+        "inicio": "2015-01-01",
+        "fin": "2026-01-01",
+        "n_obs": 12,
+        "filas": 32,
+        "n_vintages": 23,
+        "primer_vintage": "2015-12-16",
+        "filas_previas_alfred": 0,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_sep",
+        "proyecciones": "conservar",
+        "retraso_primera_publicacion": {}
+      },
+      "fred:FINSLC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 5764,
+        "n_vintages": 690,
+        "primer_vintage": "1965-08-19",
+        "filas_previas_alfred": 74,
+        "puntos": 683,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 244,
+          "mediana_dias": 27.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:FRBKCLMCILA": {
+        "inicio": "1992-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 417,
+        "filas": 47376,
+        "n_vintages": 138,
+        "primer_vintage": "2014-11-14",
+        "filas_previas_alfred": 273,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "kc_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 142,
+          "mediana_dias": 10.0,
+          "min_dias": 5,
+          "max_dias": 105
+        }
+      },
+      "fred:FRBKCLMCIM": {
+        "inicio": "1992-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 417,
+        "filas": 47377,
+        "n_vintages": 138,
+        "primer_vintage": "2014-11-14",
+        "filas_previas_alfred": 273,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "kc_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 142,
+          "mediana_dias": 10.0,
+          "min_dias": 5,
+          "max_dias": 105
+        }
+      },
+      "fred:GACDFSA066MSFRBPHI": {
+        "inicio": "1968-05-01",
+        "fin": "2026-09-01",
+        "n_obs": 701,
+        "filas": 2316,
+        "n_vintages": 146,
+        "primer_vintage": "2015-04-16",
+        "filas_previas_alfred": 563,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "philly_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 137,
+          "mediana_dias": -12.0,
+          "min_dias": -16,
+          "max_dias": 18
+        }
+      },
+      "fred:GACDISA066MSFRBNY": {
+        "inicio": "2001-07-01",
+        "fin": "2026-09-01",
+        "n_obs": 303,
+        "filas": 1592,
+        "n_vintages": 151,
+        "primer_vintage": "2014-03-17",
+        "filas_previas_alfred": 152,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "nyfed_empire",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 150,
+          "mediana_dias": -15.0,
+          "min_dias": -16,
+          "max_dias": -10
+        }
+      },
+      "fred:GAFDFSA066MSFRBPHI": {
+        "inicio": "1968-05-01",
+        "fin": "2026-09-01",
+        "n_obs": 701,
+        "filas": 2256,
+        "n_vintages": 146,
+        "primer_vintage": "2015-04-16",
+        "filas_previas_alfred": 563,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "philly_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 137,
+          "mediana_dias": -12.0,
+          "min_dias": -16,
+          "max_dias": 18
+        }
+      },
+      "fred:GCEC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4988,
+        "n_vintages": 695,
+        "primer_vintage": "1958-12-21",
+        "filas_previas_alfred": 35,
+        "puntos": 287,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 271,
+          "mediana_dias": 28.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:GDP": {
+        "inicio": "1946-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 322,
+        "filas": 3263,
+        "n_vintages": 415,
+        "primer_vintage": "1991-12-04",
+        "filas_previas_alfred": 131,
+        "puntos": 245,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 139,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:GDPC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4425,
+        "n_vintages": 419,
+        "primer_vintage": "1991-12-04",
+        "filas_previas_alfred": 131,
+        "puntos": 239,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 139,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:GDPDEF": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4015,
+        "n_vintages": 385,
+        "primer_vintage": "1991-12-04",
+        "filas_previas_alfred": 131,
+        "puntos": 237,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 139,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:GDPNOW": {
+        "inicio": "2011-07-01",
+        "fin": "2026-07-01",
+        "n_obs": 61,
+        "filas": 837,
+        "n_vintages": 816,
+        "primer_vintage": "2016-05-17",
+        "filas_previas_alfred": 0,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "atlanta_fed_gdpnow",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 41,
+          "mediana_dias": -61.0,
+          "min_dias": -66,
+          "max_dias": 7
+        }
+      },
+      "fred:GDPPOT": {
+        "inicio": "1949-01-01",
+        "fin": "2026-10-01",
+        "n_obs": 312,
+        "filas": 14389,
+        "n_vintages": 60,
+        "primer_vintage": "1991-01-30",
+        "filas_previas_alfred": 146,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "cbo",
+        "proyecciones": "recortar",
+        "retraso_primera_publicacion": {}
+      },
+      "fred:GFDEBTN": {
+        "inicio": "1966-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 242,
+        "filas": 265,
+        "n_vintages": 119,
+        "primer_vintage": "1996-12-31",
+        "filas_previas_alfred": 122,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "tesoro_deuda",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 119,
+          "mediana_dias": 67.0,
+          "min_dias": 53,
+          "max_dias": 168
+        }
+      },
+      "fred:GPDIC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4890,
+        "n_vintages": 705,
+        "primer_vintage": "1958-12-21",
+        "filas_previas_alfred": 35,
+        "puntos": 287,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 271,
+          "mediana_dias": 28.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:HOUST": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 4602,
+        "n_vintages": 790,
+        "primer_vintage": "1960-07-21",
+        "filas_previas_alfred": 17,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 794,
+          "mediana_dias": 17.0,
+          "min_dias": 14,
+          "max_dias": 101
+        }
+      },
+      "fred:HPIPONM226S": {
+        "inicio": "1991-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 427,
+        "filas": 42547,
+        "n_vintages": 173,
+        "primer_vintage": "2012-05-23",
+        "filas_previas_alfred": 254,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fhfa",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 172,
+          "mediana_dias": 56.0,
+          "min_dias": 49,
+          "max_dias": 91
+        }
+      },
+      "fred:HSN1F": {
+        "inicio": "1963-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 764,
+        "filas": 2669,
+        "n_vintages": 323,
+        "primer_vintage": "1999-07-30",
+        "filas_previas_alfred": 437,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 326,
+          "mediana_dias": 25.0,
+          "min_dias": 22,
+          "max_dias": 105
+        }
+      },
+      "fred:ICSA": {
+        "inicio": "1967-01-07",
+        "fin": "2026-10-03",
+        "n_obs": 3118,
+        "filas": 7799,
+        "n_vintages": 901,
+        "primer_vintage": "2009-05-28",
+        "filas_previas_alfred": 2211,
+        "puntos": 2,
+        "retiradas": 0,
+        "publicador": "dol_claims",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 906,
+          "mediana_dias": 5.0,
+          "min_dias": 4,
+          "max_dias": 54
+        }
+      },
+      "fred:IEABC": {
+        "inicio": "1999-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 110,
+        "filas": 675,
+        "n_vintages": 50,
+        "primer_vintage": "2014-06-18",
+        "filas_previas_alfred": 60,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 49,
+          "mediana_dias": 81.0,
+          "min_dias": 76,
+          "max_dias": 106
+        }
+      },
+      "fred:IMPGSC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 4018,
+        "n_vintages": 412,
+        "primer_vintage": "1991-12-04",
+        "filas_previas_alfred": 131,
+        "puntos": 239,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 139,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:INDPRO": {
+        "inicio": "1919-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 1292,
+        "filas": 39362,
+        "n_vintages": 1223,
+        "primer_vintage": "1927-01-26",
+        "filas_previas_alfred": 95,
+        "puntos": 600,
+        "retiradas": 0,
+        "publicador": "fed_g17",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 1196,
+          "mediana_dias": 16.0,
+          "min_dias": 12,
+          "max_dias": 64
+        }
+      },
+      "fred:IPMAN": {
+        "inicio": "1972-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 656,
+        "filas": 10841,
+        "n_vintages": 241,
+        "primer_vintage": "2007-12-14",
+        "filas_previas_alfred": 430,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_g17",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 225,
+          "mediana_dias": 16.0,
+          "min_dias": 14,
+          "max_dias": 64
+        }
+      },
+      "fred:IQ": {
+        "inicio": "1983-09-01",
+        "fin": "2026-08-01",
+        "n_obs": 473,
+        "filas": 819,
+        "n_vintages": 198,
+        "primer_vintage": "2010-03-16",
+        "filas_previas_alfred": 317,
+        "puntos": 43,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 197,
+          "mediana_dias": 14.0,
+          "min_dias": 9,
+          "max_dias": 64
+        }
+      },
+      "fred:IR": {
+        "inicio": "1982-09-01",
+        "fin": "2026-08-01",
+        "n_obs": 477,
+        "filas": 894,
+        "n_vintages": 198,
+        "primer_vintage": "2010-03-16",
+        "filas_previas_alfred": 329,
+        "puntos": 51,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 197,
+          "mediana_dias": 14.0,
+          "min_dias": 9,
+          "max_dias": 64
+        }
+      },
+      "fred:ISRATIO": {
+        "inicio": "1948-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 943,
+        "filas": 3560,
+        "n_vintages": 356,
+        "primer_vintage": "1997-03-14",
+        "filas_previas_alfred": 588,
+        "puntos": 528,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 354,
+          "mediana_dias": 45.0,
+          "min_dias": 39,
+          "max_dias": 86
+        }
+      },
+      "fred:JHDUSRGDPBR": {
+        "inicio": "1967-10-01",
+        "fin": "2026-01-01",
+        "n_obs": 234,
+        "filas": 237,
+        "n_vintages": 43,
+        "primer_vintage": "2016-01-29",
+        "filas_previas_alfred": 191,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "hamilton",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 42,
+          "mediana_dias": 120.0,
+          "min_dias": 117,
+          "max_dias": 177
+        }
+      },
+      "fred:JHGDPBRINDX": {
+        "inicio": "1967-10-01",
+        "fin": "2026-01-01",
+        "n_obs": 234,
+        "filas": 558,
+        "n_vintages": 43,
+        "primer_vintage": "2016-01-29",
+        "filas_previas_alfred": 191,
+        "puntos": 0,
+        "retiradas": 12,
+        "publicador": "hamilton",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 42,
+          "mediana_dias": 120.0,
+          "min_dias": 117,
+          "max_dias": 177
+        }
+      },
+      "fred:JTSHIR": {
+        "inicio": "2000-12-01",
+        "fin": "2026-08-01",
+        "n_obs": 309,
+        "filas": 881,
+        "n_vintages": 194,
+        "primer_vintage": "2010-08-11",
+        "filas_previas_alfred": 114,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "jolts",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 194,
+          "mediana_dias": 39.0,
+          "min_dias": 29,
+          "max_dias": 70
+        }
+      },
+      "fred:JTSJOL": {
+        "inicio": "2000-12-01",
+        "fin": "2026-08-01",
+        "n_obs": 309,
+        "filas": 2150,
+        "n_vintages": 194,
+        "primer_vintage": "2010-08-11",
+        "filas_previas_alfred": 114,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "jolts",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 194,
+          "mediana_dias": 39.0,
+          "min_dias": 29,
+          "max_dias": 70
+        }
+      },
+      "fred:JTSLDL": {
+        "inicio": "2000-12-01",
+        "fin": "2026-08-01",
+        "n_obs": 309,
+        "filas": 2142,
+        "n_vintages": 194,
+        "primer_vintage": "2010-08-11",
+        "filas_previas_alfred": 114,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "jolts",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 194,
+          "mediana_dias": 39.0,
+          "min_dias": 29,
+          "max_dias": 70
+        }
+      },
+      "fred:JTSQUR": {
+        "inicio": "2000-12-01",
+        "fin": "2026-08-01",
+        "n_obs": 309,
+        "filas": 702,
+        "n_vintages": 194,
+        "primer_vintage": "2010-08-11",
+        "filas_previas_alfred": 114,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "jolts",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 194,
+          "mediana_dias": 39.0,
+          "min_dias": 29,
+          "max_dias": 70
+        }
+      },
+      "fred:KCFSI": {
+        "inicio": "1990-02-01",
+        "fin": "2026-09-01",
+        "n_obs": 440,
+        "filas": 41311,
+        "n_vintages": 188,
+        "primer_vintage": "2010-11-08",
+        "filas_previas_alfred": 248,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "kc_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 191,
+          "mediana_dias": 9.0,
+          "min_dias": 5,
+          "max_dias": 42
+        }
+      },
+      "fred:LNS12300060": {
+        "inicio": "1948-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 944,
+        "filas": 1123,
+        "n_vintages": 142,
+        "primer_vintage": "2014-12-05",
+        "filas_previas_alfred": 802,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 141,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:M2SL": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 28591,
+        "n_vintages": 1931,
+        "primer_vintage": "1980-02-08",
+        "filas_previas_alfred": 252,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_h6",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 560,
+          "mediana_dias": 13.0,
+          "min_dias": 9,
+          "max_dias": 28
+        }
+      },
+      "fred:MANEMP": {
+        "inicio": "1939-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 1053,
+        "filas": 8900,
+        "n_vintages": 780,
+        "primer_vintage": "1961-11-03",
+        "filas_previas_alfred": 273,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 779,
+          "mediana_dias": 5.0,
+          "min_dias": 0,
+          "max_dias": 51
+        }
+      },
+      "fred:MCUMFN": {
+        "inicio": "1972-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 656,
+        "filas": 9802,
+        "n_vintages": 305,
+        "primer_vintage": "2002-12-05",
+        "filas_previas_alfred": 370,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_g17",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 286,
+          "mediana_dias": 16.0,
+          "min_dias": 14,
+          "max_dias": 64
+        }
+      },
+      "fred:MEDCPIM158SFRBCLE": {
+        "inicio": "1983-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 524,
+        "filas": 4518,
+        "n_vintages": 152,
+        "primer_vintage": "2014-02-19",
+        "filas_previas_alfred": 372,
+        "puntos": 0,
+        "retiradas": 41,
+        "publicador": "cleveland_fed_ipc",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 152,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 48
+        }
+      },
+      "fred:MICH": {
+        "inicio": "1978-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 584,
+        "filas": 588,
+        "n_vintages": 330,
+        "primer_vintage": "1999-02-26",
+        "filas_previas_alfred": 253,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "umich",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 330,
+          "mediana_dias": -3.0,
+          "min_dias": -12,
+          "max_dias": 27
+        }
+      },
+      "fred:MSACSR": {
+        "inicio": "1963-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 764,
+        "filas": 1592,
+        "n_vintages": 181,
+        "primer_vintage": "2011-05-24",
+        "filas_previas_alfred": 579,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 184,
+          "mediana_dias": 25.0,
+          "min_dias": 22,
+          "max_dias": 105
+        }
+      },
+      "fred:MSPUS": {
+        "inicio": "1963-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 254,
+        "filas": 332,
+        "n_vintages": 59,
+        "primer_vintage": "2011-04-25",
+        "filas_previas_alfred": 192,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 61,
+          "mediana_dias": 26.0,
+          "min_dias": -7,
+          "max_dias": 176
+        }
+      },
+      "fred:MTSDS133FMS": {
+        "inicio": "1980-10-01",
+        "fin": "2026-08-01",
+        "n_obs": 551,
+        "filas": 777,
+        "n_vintages": 132,
+        "primer_vintage": "2015-09-11",
+        "filas_previas_alfred": 418,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "treasury_mts",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 132,
+          "mediana_dias": 12.0,
+          "min_dias": 10,
+          "max_dias": 44
+        }
+      },
+      "fred:NCBEILQ027S": {
+        "inicio": "1945-10-01",
+        "fin": "2026-04-01",
+        "n_obs": 305,
+        "filas": 3173,
+        "n_vintages": 54,
+        "primer_vintage": "2013-06-06",
+        "filas_previas_alfred": 269,
+        "puntos": 18,
+        "retiradas": 0,
+        "publicador": "fed_z1",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 53,
+          "mediana_dias": 71.0,
+          "min_dias": 65,
+          "max_dias": 101
+        }
+      },
+      "fred:NETEXC": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 2780,
+        "n_vintages": 358,
+        "primer_vintage": "1996-11-27",
+        "filas_previas_alfred": 149,
+        "puntos": 521,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 119,
+          "mediana_dias": 29.0,
+          "min_dias": 25,
+          "max_dias": 84
+        }
+      },
+      "fred:NEWORDER": {
+        "inicio": "1968-02-01",
+        "fin": "2026-08-01",
+        "n_obs": 703,
+        "filas": 7027,
+        "n_vintages": 718,
+        "primer_vintage": "1997-03-06",
+        "filas_previas_alfred": 347,
+        "puntos": 288,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 355,
+          "mediana_dias": 26.0,
+          "min_dias": 21,
+          "max_dias": 57
+        }
+      },
+      "fred:NFCI": {
+        "inicio": "1971-01-08",
+        "fin": "2026-10-02",
+        "n_obs": 2909,
+        "filas": 928189,
+        "n_vintages": 799,
+        "primer_vintage": "2011-05-25",
+        "filas_previas_alfred": 2002,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 802,
+          "mediana_dias": 5.0,
+          "min_dias": 5,
+          "max_dias": 20
+        }
+      },
+      "fred:NFCICREDIT": {
+        "inicio": "1971-01-08",
+        "fin": "2026-10-02",
+        "n_obs": 2909,
+        "filas": 923693,
+        "n_vintages": 741,
+        "primer_vintage": "2012-07-05",
+        "filas_previas_alfred": 2060,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 744,
+          "mediana_dias": 5.0,
+          "min_dias": 5,
+          "max_dias": 20
+        }
+      },
+      "fred:NFCILEVERAGE": {
+        "inicio": "1971-01-08",
+        "fin": "2026-10-02",
+        "n_obs": 2909,
+        "filas": 1034980,
+        "n_vintages": 739,
+        "primer_vintage": "2012-07-05",
+        "filas_previas_alfred": 2060,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 744,
+          "mediana_dias": 5.0,
+          "min_dias": 5,
+          "max_dias": 20
+        }
+      },
+      "fred:NFCIRISK": {
+        "inicio": "1971-01-08",
+        "fin": "2026-10-02",
+        "n_obs": 2909,
+        "filas": 915356,
+        "n_vintages": 741,
+        "primer_vintage": "2012-07-05",
+        "filas_previas_alfred": 2060,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "chicago_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 744,
+          "mediana_dias": 5.0,
+          "min_dias": 5,
+          "max_dias": 20
+        }
+      },
+      "fred:NNUSBIS": {
+        "inicio": "1964-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 751,
+        "filas": 4643,
+        "n_vintages": 149,
+        "primer_vintage": "2014-02-18",
+        "filas_previas_alfred": 600,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bis",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 150,
+          "mediana_dias": 18.0,
+          "min_dias": 15,
+          "max_dias": 47
+        }
+      },
+      "fred:NOCDFSA066MSFRBPHI": {
+        "inicio": "1968-05-01",
+        "fin": "2026-09-01",
+        "n_obs": 701,
+        "filas": 3924,
+        "n_vintages": 146,
+        "primer_vintage": "2015-04-16",
+        "filas_previas_alfred": 563,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "philly_fed",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 137,
+          "mediana_dias": -12.0,
+          "min_dias": -16,
+          "max_dias": 18
+        }
+      },
+      "fred:NROU": {
+        "inicio": "1949-01-01",
+        "fin": "2026-10-01",
+        "n_obs": 312,
+        "filas": 2727,
+        "n_vintages": 24,
+        "primer_vintage": "2011-02-02",
+        "filas_previas_alfred": 246,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "cbo",
+        "proyecciones": "recortar",
+        "retraso_primera_publicacion": {}
+      },
+      "fred:OPHNFB": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 13100,
+        "n_vintages": 433,
+        "primer_vintage": "1968-05-27",
+        "filas_previas_alfred": 84,
+        "puntos": 596,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 233,
+          "mediana_dias": 35.0,
+          "min_dias": 23,
+          "max_dias": 100
+        }
+      },
+      "fred:PAYEMS": {
+        "inicio": "1939-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 1053,
+        "filas": 13691,
+        "n_vintages": 860,
+        "primer_vintage": "1955-05-06",
+        "filas_previas_alfred": 51,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 857,
+          "mediana_dias": 5.0,
+          "min_dias": -2,
+          "max_dias": 51
+        }
+      },
+      "fred:PCE": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 9892,
+        "n_vintages": 564,
+        "primer_vintage": "1979-11-19",
+        "filas_previas_alfred": 249,
+        "puntos": 963,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 562,
+          "mediana_dias": 29.0,
+          "min_dias": 16,
+          "max_dias": 84
+        }
+      },
+      "fred:PCEC96": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 8588,
+        "n_vintages": 564,
+        "primer_vintage": "1979-11-19",
+        "filas_previas_alfred": 249,
+        "puntos": 1035,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 563,
+          "mediana_dias": 30.0,
+          "min_dias": 20,
+          "max_dias": 84
+        }
+      },
+      "fred:PCECC96": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 5370,
+        "n_vintages": 702,
+        "primer_vintage": "1958-12-21",
+        "filas_previas_alfred": 35,
+        "puntos": 287,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 271,
+          "mediana_dias": 28.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:PCECTPIMD": {
+        "inicio": "2015-01-01",
+        "fin": "2026-01-01",
+        "n_obs": 12,
+        "filas": 48,
+        "n_vintages": 36,
+        "primer_vintage": "2015-12-16",
+        "filas_previas_alfred": 0,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_sep",
+        "proyecciones": "conservar",
+        "retraso_primera_publicacion": {}
+      },
+      "fred:PCEPI": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 9127,
+        "n_vintages": 316,
+        "primer_vintage": "2000-08-01",
+        "filas_previas_alfred": 497,
+        "puntos": 963,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 314,
+          "mediana_dias": 30.0,
+          "min_dias": 20,
+          "max_dias": 83
+        }
+      },
+      "fred:PCEPILFE": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 9167,
+        "n_vintages": 316,
+        "primer_vintage": "2000-08-01",
+        "filas_previas_alfred": 497,
+        "puntos": 963,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 314,
+          "mediana_dias": 30.0,
+          "min_dias": 20,
+          "max_dias": 83
+        }
+      },
+      "fred:PCETRIM12M159SFRBDAL": {
+        "inicio": "1978-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 584,
+        "filas": 3927,
+        "n_vintages": 253,
+        "primer_vintage": "2005-08-02",
+        "filas_previas_alfred": 330,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "dallas_fed_pce",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 254,
+          "mediana_dias": 29.0,
+          "min_dias": 20,
+          "max_dias": 90
+        }
+      },
+      "fred:PERMIT": {
+        "inicio": "1960-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 800,
+        "filas": 2372,
+        "n_vintages": 623,
+        "primer_vintage": "1999-08-17",
+        "filas_previas_alfred": 474,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 325,
+          "mediana_dias": 18.0,
+          "min_dias": 16,
+          "max_dias": 101
+        }
+      },
+      "fred:PI": {
+        "inicio": "1946-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 968,
+        "filas": 13613,
+        "n_vintages": 731,
+        "primer_vintage": "1966-01-18",
+        "filas_previas_alfred": 239,
+        "puntos": 1275,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 728,
+          "mediana_dias": 27.0,
+          "min_dias": 11,
+          "max_dias": 84
+        }
+      },
+      "fred:PNFIC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 3589,
+        "n_vintages": 667,
+        "primer_vintage": "1965-08-19",
+        "filas_previas_alfred": 74,
+        "puntos": 639,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 244,
+          "mediana_dias": 27.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:PPIACO": {
+        "inicio": "1913-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 1364,
+        "filas": 1830,
+        "n_vintages": 367,
+        "primer_vintage": "1996-12-11",
+        "filas_previas_alfred": 610,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 357,
+          "mediana_dias": 14.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      },
+      "fred:PPICOR": {
+        "inicio": "2010-04-01",
+        "fin": "2026-08-01",
+        "n_obs": 197,
+        "filas": 499,
+        "n_vintages": 152,
+        "primer_vintage": "2014-02-19",
+        "filas_previas_alfred": 45,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 151,
+          "mediana_dias": 13.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      },
+      "fred:PPIFIS": {
+        "inicio": "2009-11-01",
+        "fin": "2026-08-01",
+        "n_obs": 202,
+        "filas": 802,
+        "n_vintages": 157,
+        "primer_vintage": "2014-02-19",
+        "filas_previas_alfred": 50,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 151,
+          "mediana_dias": 13.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      },
+      "fred:PRFIC1": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 3521,
+        "n_vintages": 652,
+        "primer_vintage": "1965-08-19",
+        "filas_previas_alfred": 74,
+        "puntos": 639,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 244,
+          "mediana_dias": 27.0,
+          "min_dias": 13,
+          "max_dias": 84
+        }
+      },
+      "fred:PSAVERT": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 8181,
+        "n_vintages": 363,
+        "primer_vintage": "1997-02-03",
+        "filas_previas_alfred": 456,
+        "puntos": 963,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 356,
+          "mediana_dias": 30.0,
+          "min_dias": 20,
+          "max_dias": 83
+        }
+      },
+      "fred:REALLN": {
+        "inicio": "1947-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 957,
+        "filas": 40365,
+        "n_vintages": 1508,
+        "primer_vintage": "1996-12-13",
+        "filas_previas_alfred": 288,
+        "puntos": 182,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 16
+        }
+      },
+      "fred:RECPROUSM156N": {
+        "inicio": "1967-02-01",
+        "fin": "2026-08-01",
+        "n_obs": 715,
+        "filas": 90572,
+        "n_vintages": 167,
+        "primer_vintage": "2012-09-04",
+        "filas_previas_alfred": 541,
+        "puntos": 4,
+        "retiradas": 0,
+        "publicador": "chauvet_piger",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 170,
+          "mediana_dias": 35.0,
+          "min_dias": 30,
+          "max_dias": 92
+        }
+      },
+      "fred:REVOLSL": {
+        "inicio": "1968-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 704,
+        "filas": 10085,
+        "n_vintages": 359,
+        "primer_vintage": "1996-12-06",
+        "filas_previas_alfred": 345,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_g19",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 38.0,
+          "min_dias": 33,
+          "max_dias": 68
+        }
+      },
+      "fred:RNUSBIS": {
+        "inicio": "1964-01-01",
+        "fin": "2026-07-01",
+        "n_obs": 751,
+        "filas": 8059,
+        "n_vintages": 149,
+        "primer_vintage": "2014-02-18",
+        "filas_previas_alfred": 600,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bis",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 150,
+          "mediana_dias": 18.0,
+          "min_dias": 15,
+          "max_dias": 47
+        }
+      },
+      "fred:RRSFS": {
+        "inicio": "1992-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 415,
+        "filas": 6718,
+        "n_vintages": 494,
+        "primer_vintage": "2001-06-15",
+        "filas_previas_alfred": 112,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "fred_calculo",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 302,
+          "mediana_dias": 17.0,
+          "min_dias": 13,
+          "max_dias": 57
+        }
+      },
+      "fred:RSAFS": {
+        "inicio": "1992-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 416,
+        "filas": 5561,
+        "n_vintages": 325,
+        "primer_vintage": "2001-06-13",
+        "filas_previas_alfred": 112,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 303,
+          "mediana_dias": 14.0,
+          "min_dias": 11,
+          "max_dias": 56
+        }
+      },
+      "fred:SAHMCURRENT": {
+        "inicio": "1949-03-01",
+        "fin": "2026-09-01",
+        "n_obs": 931,
+        "filas": 1076,
+        "n_vintages": 85,
+        "primer_vintage": "2019-09-06",
+        "filas_previas_alfred": 845,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fred_calculo",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 85,
+          "mediana_dias": 6.0,
+          "min_dias": 2,
+          "max_dias": 52
+        }
+      },
+      "fred:SAHMREALTIME": {
+        "inicio": "1959-12-01",
+        "fin": "2026-09-01",
+        "n_obs": 801,
+        "filas": 802,
+        "n_vintages": 85,
+        "primer_vintage": "2019-09-06",
+        "filas_previas_alfred": 716,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "fred_calculo",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 84,
+          "mediana_dias": 6.0,
+          "min_dias": 2,
+          "max_dias": 52
+        }
+      },
+      "fred:STLFSI4": {
+        "inicio": "1993-12-31",
+        "fin": "2026-10-02",
+        "n_obs": 1710,
+        "filas": 313457,
+        "n_vintages": 205,
+        "primer_vintage": "2022-11-10",
+        "filas_previas_alfred": 1505,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "stlouis_fed_fsi",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 204,
+          "mediana_dias": 6.0,
+          "min_dias": 5,
+          "max_dias": 6
+        }
+      },
+      "fred:TCU": {
+        "inicio": "1967-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 716,
+        "filas": 11538,
+        "n_vintages": 385,
+        "primer_vintage": "1996-11-15",
+        "filas_previas_alfred": 357,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_g17",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 16.0,
+          "min_dias": 14,
+          "max_dias": 64
+        }
+      },
+      "fred:TDSP": {
+        "inicio": "1980-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 186,
+        "filas": 5563,
+        "n_vintages": 109,
+        "primer_vintage": "1999-11-09",
+        "filas_previas_alfred": 77,
+        "puntos": 100,
+        "retiradas": 0,
+        "publicador": "fed_dsr",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 108,
+          "mediana_dias": 84.0,
+          "min_dias": 69,
+          "max_dias": 154
+        }
+      },
+      "fred:TEMPHELPS": {
+        "inicio": "1990-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 441,
+        "filas": 2014,
+        "n_vintages": 189,
+        "primer_vintage": "2011-01-07",
+        "filas_previas_alfred": 251,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 189,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:TNWBSHNO": {
+        "inicio": "1945-10-01",
+        "fin": "2026-04-01",
+        "n_obs": 305,
+        "filas": 12996,
+        "n_vintages": 68,
+        "primer_vintage": "2010-06-10",
+        "filas_previas_alfred": 241,
+        "puntos": 18,
+        "retiradas": 0,
+        "publicador": "fed_z1",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 65,
+          "mediana_dias": 70.0,
+          "min_dias": 65,
+          "max_dias": 101
+        }
+      },
+      "fred:TOTALSA": {
+        "inicio": "1976-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 609,
+        "filas": 2744,
+        "n_vintages": 258,
+        "primer_vintage": "2013-01-31",
+        "filas_previas_alfred": 443,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea_suplementarias",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 165,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 66
+        }
+      },
+      "fred:TOTALSL": {
+        "inicio": "1943-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 1004,
+        "filas": 13551,
+        "n_vintages": 359,
+        "primer_vintage": "1996-12-06",
+        "filas_previas_alfred": 645,
+        "puntos": 120,
+        "retiradas": 0,
+        "publicador": "fed_g19",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 358,
+          "mediana_dias": 38.0,
+          "min_dias": 33,
+          "max_dias": 68
+        }
+      },
+      "fred:TOTBKCR": {
+        "inicio": "1973-01-03",
+        "fin": "2026-09-30",
+        "n_obs": 2805,
+        "filas": 206576,
+        "n_vintages": 1556,
+        "primer_vintage": "1996-12-06",
+        "filas_previas_alfred": 804,
+        "puntos": 340,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 1557,
+          "mediana_dias": 10.0,
+          "min_dias": 9,
+          "max_dias": 17
+        }
+      },
+      "fred:TOTLL": {
+        "inicio": "1973-01-03",
+        "fin": "2026-09-30",
+        "n_obs": 2805,
+        "filas": 192662,
+        "n_vintages": 1557,
+        "primer_vintage": "1996-12-06",
+        "filas_previas_alfred": 804,
+        "puntos": 340,
+        "retiradas": 0,
+        "publicador": "fed_h8",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 1557,
+          "mediana_dias": 10.0,
+          "min_dias": 9,
+          "max_dias": 17
+        }
+      },
+      "fred:TRMMEANCPIM158SFRBCLE": {
+        "inicio": "1983-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 524,
+        "filas": 4506,
+        "n_vintages": 152,
+        "primer_vintage": "2014-02-19",
+        "filas_previas_alfred": 372,
+        "puntos": 0,
+        "retiradas": 49,
+        "publicador": "cleveland_fed_ipc",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 152,
+          "mediana_dias": 13.0,
+          "min_dias": 10,
+          "max_dias": 48
+        }
+      },
+      "fred:TTLCONS": {
+        "inicio": "1993-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 404,
+        "filas": 2050,
+        "n_vintages": 180,
+        "primer_vintage": "2011-07-01",
+        "filas_previas_alfred": 219,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "census_10",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 183,
+          "mediana_dias": 32.0,
+          "min_dias": 29,
+          "max_dias": 113
+        }
+      },
+      "fred:U6RATE": {
+        "inicio": "1994-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 392,
+        "filas": 727,
+        "n_vintages": 188,
+        "primer_vintage": "2011-03-04",
+        "filas_previas_alfred": 205,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 186,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:UEMP27OV": {
+        "inicio": "1948-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 944,
+        "filas": 4489,
+        "n_vintages": 728,
+        "primer_vintage": "1966-02-08",
+        "filas_previas_alfred": 216,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 727,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:ULCNFB": {
+        "inicio": "1947-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 318,
+        "filas": 10601,
+        "n_vintages": 434,
+        "primer_vintage": "1968-05-27",
+        "filas_previas_alfred": 8,
+        "puntos": 611,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 233,
+          "mediana_dias": 35.0,
+          "min_dias": 23,
+          "max_dias": 100
+        }
+      },
+      "fred:UMCSENT": {
+        "inicio": "1952-11-01",
+        "fin": "2026-08-01",
+        "n_obs": 676,
+        "filas": 1083,
+        "n_vintages": 337,
+        "primer_vintage": "1998-07-31",
+        "filas_previas_alfred": 338,
+        "puntos": 302,
+        "retiradas": 0,
+        "publicador": "umich",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 337,
+          "mediana_dias": -3.0,
+          "min_dias": -12,
+          "max_dias": 27
+        }
+      },
+      "fred:UNRATE": {
+        "inicio": "1948-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 944,
+        "filas": 2199,
+        "n_vintages": 800,
+        "primer_vintage": "1960-03-15",
+        "filas_previas_alfred": 145,
+        "puntos": 1,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 798,
+          "mediana_dias": 5.0,
+          "min_dias": -2,
+          "max_dias": 51
+        }
+      },
+      "fred:UNRATEMD": {
+        "inicio": "2015-01-01",
+        "fin": "2026-01-01",
+        "n_obs": 12,
+        "filas": 45,
+        "n_vintages": 32,
+        "primer_vintage": "2015-12-16",
+        "filas_previas_alfred": 0,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_sep",
+        "proyecciones": "conservar",
+        "retraso_primera_publicacion": {}
+      },
+      "fred:USALOLITOAASTSAM": {
+        "inicio": "1955-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 860,
+        "filas": 67758,
+        "n_vintages": 88,
+        "primer_vintage": "2018-07-17",
+        "filas_previas_alfred": 760,
+        "puntos": 60,
+        "retiradas": 0,
+        "publicador": "oecd_mei",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 99,
+          "mediana_dias": 16.0,
+          "min_dias": 8,
+          "max_dias": 74
+        }
+      },
+      "fred:USCONS": {
+        "inicio": "1939-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 1053,
+        "filas": 7869,
+        "n_vintages": 779,
+        "primer_vintage": "1961-11-03",
+        "filas_previas_alfred": 273,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 779,
+          "mediana_dias": 5.0,
+          "min_dias": 0,
+          "max_dias": 51
+        }
+      },
+      "fred:USPHCI": {
+        "inicio": "1979-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 572,
+        "filas": 52361,
+        "n_vintages": 191,
+        "primer_vintage": "2010-10-26",
+        "filas_previas_alfred": 379,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "philly_fed_coincidentes",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 191,
+          "mediana_dias": 25.0,
+          "min_dias": 19,
+          "max_dias": 80
+        }
+      },
+      "fred:USPRIV": {
+        "inicio": "1939-01-01",
+        "fin": "2026-09-01",
+        "n_obs": 1053,
+        "filas": 11475,
+        "n_vintages": 664,
+        "primer_vintage": "1971-09-03",
+        "filas_previas_alfred": 391,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 661,
+          "mediana_dias": 5.0,
+          "min_dias": 1,
+          "max_dias": 51
+        }
+      },
+      "fred:USREC": {
+        "inicio": "1854-12-01",
+        "fin": "2026-09-01",
+        "n_obs": 2062,
+        "filas": 2079,
+        "n_vintages": 149,
+        "primer_vintage": "2011-05-02",
+        "filas_previas_alfred": 1060,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fred_calculo",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 185,
+          "mediana_dias": 3.0,
+          "min_dias": 2,
+          "max_dias": 861
+        }
+      },
+      "fred:USSTHPI": {
+        "inicio": "1975-01-01",
+        "fin": "2026-04-01",
+        "n_obs": 206,
+        "filas": 9549,
+        "n_vintages": 65,
+        "primer_vintage": "2010-08-25",
+        "filas_previas_alfred": 141,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fhfa",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 64,
+          "mediana_dias": 56.0,
+          "min_dias": 53,
+          "max_dias": 62
+        }
+      },
+      "fred:W875RX1": {
+        "inicio": "1959-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 812,
+        "filas": 6282,
+        "n_vintages": 196,
+        "primer_vintage": "2010-05-28",
+        "filas_previas_alfred": 615,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bea",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 196,
+          "mediana_dias": 29.0,
+          "min_dias": 20,
+          "max_dias": 83
+        }
+      },
+      "fred:WALCL": {
+        "inicio": "2002-12-18",
+        "fin": "2026-10-07",
+        "n_obs": 1243,
+        "filas": 1782,
+        "n_vintages": 796,
+        "primer_vintage": "2011-07-07",
+        "filas_previas_alfred": 446,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "fed_h41",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 796,
+          "mediana_dias": 2.0,
+          "min_dias": 2,
+          "max_dias": 9
+        }
+      },
+      "fred:WEI": {
+        "inicio": "2008-01-05",
+        "fin": "2026-10-03",
+        "n_obs": 979,
+        "filas": 11648,
+        "n_vintages": 428,
+        "primer_vintage": "2020-04-16",
+        "filas_previas_alfred": 0,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "nyfed_wei",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 338,
+          "mediana_dias": 5.0,
+          "min_dias": 3,
+          "max_dias": 5
+        }
+      },
+      "fred:WPSFD49207": {
+        "inicio": "1947-04-01",
+        "fin": "2026-08-01",
+        "n_obs": 953,
+        "filas": 1789,
+        "n_vintages": 144,
+        "primer_vintage": "2015-03-13",
+        "filas_previas_alfred": 814,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 138,
+          "mediana_dias": 13.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      },
+      "fred:WPU0561": {
+        "inicio": "1947-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 956,
+        "filas": 1194,
+        "n_vintages": 141,
+        "primer_vintage": "2015-03-13",
+        "filas_previas_alfred": 817,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 138,
+          "mediana_dias": 13.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      },
+      "fred:WPU102301": {
+        "inicio": "1957-01-01",
+        "fin": "2026-08-01",
+        "n_obs": 836,
+        "filas": 1003,
+        "n_vintages": 140,
+        "primer_vintage": "2015-03-13",
+        "filas_previas_alfred": 697,
+        "puntos": 0,
+        "retiradas": 0,
+        "publicador": "bls",
+        "proyecciones": null,
+        "retraso_primera_publicacion": {
+          "n": 138,
+          "mediana_dias": 13.0,
+          "min_dias": 8,
+          "max_dias": 75
+        }
+      }
+    },
+    "horas_release": {
+      "bea": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "bls": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "census_10": {
+        "hora": "10:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "chicago_fed": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "dallas_fed": {
+        "hora": "10:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "chicago_fed_bbk": {
+        "hora": "08:45",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_z1": {
+        "hora": "12:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_h6": {
+        "hora": "13:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_h8": {
+        "hora": "16:15",
+        "huso": "America/New_York",
+        "margen_min": 30,
+        "mismo_dia": false
+      },
+      "dol_claims": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "cleveland_fsi": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "bea_suplementarias": {
+        "hora": "14:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_morosidad": {
+        "hora": "15:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "atlanta_fed_ipc": {
+        "hora": "13:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "sp_cotality": {
+        "hora": "09:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "cleveland_fed_expinf": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "fed_sep": {
+        "hora": "14:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "kc_fed": {
+        "hora": "13:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "philly_fed": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "nyfed_empire": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "atlanta_fed_gdpnow": {
+        "hora": "12:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "cbo": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "tesoro_deuda": {
+        "hora": "10:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "census": {
+        "hora": "08:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fhfa": {
+        "hora": "09:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_g17": {
+        "hora": "09:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "hamilton": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "jolts": {
+        "hora": "10:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "cleveland_fed_ipc": {
+        "hora": "11:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "umich": {
+        "hora": "10:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "treasury_mts": {
+        "hora": "14:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "bis": {
+        "hora": "12:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "dallas_fed_pce": {
+        "hora": "12:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "chauvet_piger": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "fed_g19": {
+        "hora": "15:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fred_calculo": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "stlouis_fed_fsi": {
+        "hora": "11:30",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_dsr": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "oecd_mei": {
+        "hora": "23:59",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": false
+      },
+      "philly_fed_coincidentes": {
+        "hora": "10:15",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      },
+      "fed_h41": {
+        "hora": "16:30",
+        "huso": "America/New_York",
+        "margen_min": 5,
+        "mismo_dia": false
+      },
+      "nyfed_wei": {
+        "hora": "12:00",
+        "huso": "America/New_York",
+        "margen_min": 0,
+        "mismo_dia": true
+      }
+    },
+    "n_series": 161,
+    "n_series_lista": 161,
+    "bytes_crudo": 764399398,
+    "filas_tiempo_real": 7192649
+  },
+  "notas": [
+    "This product uses the FRED® API but is not endorsed or certified by the Federal Reserve Bank of St. Louis.",
+    "Caché cruda: un JSON por página en <corpus>/mercados_series/crudo/alfred/; la clave nunca se guarda",
+    "fecha_publicacion = primera decisión de las 16:30 NY tras la hora del release el día realtime_start; vintage = realtime_start",
+    "Observaciones anteriores al primer vintage: valor del primer vintage, lag_fijo con la regla previa del catálogo y nota 'anterior a ALFRED'",
+    "'.' de ALFRED: valor nulo con nota; observación que desaparece de un vintage: fila nula con nota",
+    "Proyecciones (SEP, CBO): visibles desde su fecha de referencia (el contrato no admite previsiones)"
+  ],
+  "fecha_sonda": "2026-10-13"
+}
