@@ -1,0 +1,31 @@
+{
+  "fuente": "sec_8k_resultados",
+  "nombre": "SEC EDGAR · 8-K de resultados (Item 2.02, anexo 99.1)",
+  "tema": "empresas",
+  "agentes": [
+    "equity"
+  ],
+  "rag": "cajon",
+  "url": "https://www.sec.gov/edgar",
+  "acceso": "api",
+  "autenticacion": "ninguna (User-Agent con email)",
+  "coste": "0 €",
+  "licencia_y_terminos": "Documentos oficiales de dominio público; acceso según las normas de acceso justo de la SEC (≤10 peticiones/s)",
+  "cobertura_inicio": "2003-07-31",
+  "cobertura_fin": "2026-08-20",
+  "frecuencia": "trimestral",
+  "retraso_publicacion": "0 d (mismo día del anuncio; suele aceptarse tras el cierre)",
+  "formato": "html",
+  "volumen_estimado": "0.7 GB crudo / 0.0 GB gzip para 500 empresas",
+  "limites": "10 peticiones/s por IP; User-Agent obligatorio",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_filings": 27,
+    "pct_ok": 1.0
+  },
+  "notas": [
+    "Item 2.02 existe desde agosto de 2004 (antes, Item 12 desde marzo de 2003)",
+    "Sustituto legal de las transcripciones de calls"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

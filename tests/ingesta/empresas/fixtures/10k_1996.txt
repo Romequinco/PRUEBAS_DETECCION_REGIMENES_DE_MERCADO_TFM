@@ -1,0 +1,45 @@
+<SEC-DOCUMENT>0000320193-96-000023.txt : 19961219
+<SEC-HEADER>0000320193-96-000023.hdr.sgml : 19961219
+ACCESSION NUMBER:		0000320193-96-000023
+</SEC-HEADER>
+<DOCUMENT>
+<TYPE>10-K
+<SEQUENCE>1
+<TEXT>
+                             UNITED STATES
+                   SECURITIES AND EXCHANGE COMMISSION
+                               FORM 10-K
+
+                                PART I
+
+Item 1.  Business
+
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+
+Item 2.  Properties
+
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. The Company designs and sells personal computers and related software in a competitive market with uncertain demand. 
+
+                                PART II
+
+Item 7.  Management's Discussion and Analysis of Financial Condition and Results of Operations
+
+     The information required by this item is incorporated herein by reference to pages 10 through 25 of
+     the Registrant's 1996 Annual Report to Shareholders (Exhibit 13), which pages are filed with this report.
+
+Item 8.  Financial Statements and Supplementary Data
+
+     Incorporated by reference to the 1996 Annual Report.
+</TEXT>
+</DOCUMENT>
+<DOCUMENT>
+<TYPE>EX-13
+<TEXT>
+Item 7 should not be read from here.
+</TEXT>
+</DOCUMENT>
+</SEC-DOCUMENT>
