@@ -1,0 +1,5 @@
+par_coinbase,simbolo_binance,columna,sesiones_comunes,desde,hasta,solo_coinbase,solo_binance,mediana_abs_pb,p95_abs_pb,mediana_pb,max_abs_pb,sesion_max,sesiones_mas_de_100_pb,mediana_abs_pb_desde_2020,p95_abs_pb_desde_2020
+BTC-USD,BTCUSDT,close,3332,2017-08-17,2026-09-30,0,0,5.53,93.65,-1.46,1177.97,2017-12-23,157,4.12,17.12
+BTC-USD,BTCUSDT,open,3332,2017-08-17,2026-09-30,0,0,5.58,95.49,-1.41,1177.97,2017-12-24,155,4.11,17.12
+ETH-USD,ETHUSDT,close,3332,2017-08-17,2026-09-30,0,0,5.67,98.31,-1.15,1261.74,2017-12-23,161,3.92,17.0
+ETH-USD,ETHUSDT,open,3332,2017-08-17,2026-09-30,0,0,5.57,99.01,-1.11,1261.4,2017-12-24,164,4.02,17.0

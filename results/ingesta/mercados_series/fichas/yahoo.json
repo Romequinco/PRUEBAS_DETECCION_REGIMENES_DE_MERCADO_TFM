@@ -1,0 +1,279 @@
+{
+  "fuente": "yahoo",
+  "nombre": "Yahoo Finance vía yfinance 0.2.66 (OHLCV diario, dividendos y splits)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "risk",
+    "portfolio",
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://finance.yahoo.com/",
+  "acceso": "libreria",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de Yahoo: uso personal, no comercial; prohibida la redistribución. robots.txt de query1/query2.finance.yahoo.com (la API de gráficos que usa yfinance, no pública ni documentada) con 'User-agent: * / Disallow: /' (medido: {'https://query2.finance.yahoo.com/v8/finance/chart/AAPL': False, 'https://finance.yahoo.com/quote/AAPL/history/': True}). Riesgo DECLARADO: solo local, sin redistribuir; alternativa de pago para la descarga final (EODHD).",
+  "cobertura_inicio": "1927-12-30",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (sesiones del mercado de cotización)",
+  "retraso_publicacion": "cierre local + 30 min (visibilidad por mercado): Europa y Asia y EE. UU. (16:00) el mismo día de decisión; VIX (16:15), futuros CME, FX y fondos (NAV) en D+1; medido en mediciones.retraso_fecha_publicacion_dias_por_mercado",
+  "formato": "parquet (as-traded, un fichero por ticker)",
+  "volumen_estimado": "92 tickers del núcleo; ~1.700 en el universo ampliado",
+  "limites": "sin límite publicado; <= 0.5 tickers/s, timeout 90 s, 3 reintentos",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "tickers_ok": 92,
+    "tickers_error": 0,
+    "por_mercado": {
+      "ARCX": {
+        "n": 39,
+        "inicio_min": "1993-01-29",
+        "inicio_mediana": "2003-04-14",
+        "fin_max": "2026-10-12"
+      },
+      "BVMF": {
+        "n": 1,
+        "inicio_min": "1993-04-27",
+        "inicio_mediana": "1993-04-27",
+        "fin_max": "2026-10-09"
+      },
+      "CBOE_IDX": {
+        "n": 1,
+        "inicio_min": "1990-01-02",
+        "inicio_mediana": "1990-01-02",
+        "fin_max": "2026-10-12"
+      },
+      "CME": {
+        "n": 5,
+        "inicio_min": "2000-08-23",
+        "inicio_mediana": "2000-08-30",
+        "fin_max": "2026-10-12"
+      },
+      "FX_YAHOO": {
+        "n": 4,
+        "inicio_min": "1996-10-30",
+        "inicio_mediana": "2002-09-12",
+        "fin_max": "2026-10-09"
+      },
+      "NAV_US": {
+        "n": 1,
+        "inicio_min": "1986-12-11",
+        "inicio_mediana": "1986-12-11",
+        "fin_max": "2026-10-12"
+      },
+      "STOXX_IDX": {
+        "n": 1,
+        "inicio_min": "2007-03-30",
+        "inicio_mediana": "2007-03-30",
+        "fin_max": "2026-10-12"
+      },
+      "XAMS": {
+        "n": 1,
+        "inicio_min": "1998-07-20",
+        "inicio_mediana": "1998-07-20",
+        "fin_max": "2026-10-09"
+      },
+      "XETR": {
+        "n": 2,
+        "inicio_min": "1987-12-30",
+        "inicio_mediana": "1993-02-17",
+        "fin_max": "2026-10-12"
+      },
+      "XHKG": {
+        "n": 2,
+        "inicio_min": "1986-12-31",
+        "inicio_mediana": "1995-09-23",
+        "fin_max": "2026-10-13"
+      },
+      "XKRX": {
+        "n": 1,
+        "inicio_min": "1996-12-11",
+        "inicio_mediana": "1996-12-11",
+        "fin_max": "2026-10-13"
+      },
+      "XLON": {
+        "n": 3,
+        "inicio_min": "1984-01-03",
+        "inicio_mediana": "1988-10-25",
+        "fin_max": "2026-10-12"
+      },
+      "XMAD": {
+        "n": 3,
+        "inicio_min": "1993-07-12",
+        "inicio_mediana": "2000-01-03",
+        "fin_max": "2026-10-12"
+      },
+      "XNAS": {
+        "n": 13,
+        "inicio_min": "1980-12-12",
+        "inicio_mediana": "2002-07-30",
+        "fin_max": "2026-10-12"
+      },
+      "XNSE": {
+        "n": 1,
+        "inicio_min": "2007-09-17",
+        "inicio_mediana": "2007-09-17",
+        "fin_max": "2026-10-13"
+      },
+      "XNYS": {
+        "n": 5,
+        "inicio_min": "1927-12-30",
+        "inicio_mediana": "1962-01-02",
+        "fin_max": "2026-10-12"
+      },
+      "XPAR": {
+        "n": 2,
+        "inicio_min": "1990-03-01",
+        "inicio_mediana": "1995-01-31",
+        "fin_max": "2026-10-12"
+      },
+      "XSHG": {
+        "n": 1,
+        "inicio_min": "1997-07-02",
+        "inicio_mediana": "1997-07-02",
+        "fin_max": "2026-10-13"
+      },
+      "XSWX": {
+        "n": 1,
+        "inicio_min": "1990-01-03",
+        "inicio_mediana": "1990-01-03",
+        "fin_max": "2026-10-09"
+      },
+      "XTAI": {
+        "n": 2,
+        "inicio_min": "1997-07-02",
+        "inicio_mediana": "1998-10-03",
+        "fin_max": "2026-10-13"
+      },
+      "XTKS": {
+        "n": 3,
+        "inicio_min": "1965-01-05",
+        "inicio_mediana": "1999-05-06",
+        "fin_max": "2026-10-13"
+      }
+    },
+    "por_clase": {
+      "CURRENCY": {
+        "n": 4,
+        "inicio_min": "1996-10-30",
+        "inicio_mediana": "2002-09-12",
+        "fin_max": "2026-10-09"
+      },
+      "EQUITY": {
+        "n": 20,
+        "inicio_min": "1962-01-02",
+        "inicio_mediana": "1998-05-30",
+        "fin_max": "2026-10-13"
+      },
+      "ETF": {
+        "n": 46,
+        "inicio_min": "1993-01-29",
+        "inicio_mediana": "2002-12-06",
+        "fin_max": "2026-10-12"
+      },
+      "FUTURE": {
+        "n": 5,
+        "inicio_min": "2000-08-23",
+        "inicio_mediana": "2000-08-30",
+        "fin_max": "2026-10-12"
+      },
+      "INDEX": {
+        "n": 16,
+        "inicio_min": "1927-12-30",
+        "inicio_mediana": "1990-01-31",
+        "fin_max": "2026-10-13"
+      },
+      "MUTUALFUND": {
+        "n": 1,
+        "inicio_min": "1986-12-11",
+        "inicio_mediana": "1986-12-11",
+        "fin_max": "2026-10-12"
+      }
+    },
+    "retraso_fecha_publicacion_dias_por_mercado": {
+      "ARCX": {
+        "0": 8483
+      },
+      "BVMF": {
+        "0": 3290,
+        "1": 4998
+      },
+      "CBOE_IDX": {
+        "1": 9264
+      },
+      "CME": {
+        "1": 6581
+      },
+      "FX_YAHOO": {
+        "1": 5931
+      },
+      "NAV_US": {
+        "1": 10034
+      },
+      "STOXX_IDX": {
+        "0": 4897
+      },
+      "XAMS": {
+        "0": 7264
+      },
+      "XETR": {
+        "0": 9808
+      },
+      "XHKG": {
+        "0": 9818
+      },
+      "XKRX": {
+        "0": 7342
+      },
+      "XLON": {
+        "0": 10806
+      },
+      "XMAD": {
+        "0": 8427
+      },
+      "XNAS": {
+        "0": 6941
+      },
+      "XNSE": {
+        "0": 4679
+      },
+      "XNYS": {
+        "0": 24812
+      },
+      "XPAR": {
+        "0": 9300
+      },
+      "XSHG": {
+        "0": 7091
+      },
+      "XSWX": {
+        "0": 9403
+      },
+      "XTAI": {
+        "0": 7175
+      },
+      "XTKS": {
+        "0": 15184
+      }
+    },
+    "inicio_antes_2000": 43,
+    "errores": [],
+    "robots_permite": {
+      "https://query2.finance.yahoo.com/v8/finance/chart/AAPL": false,
+      "https://finance.yahoo.com/quote/AAPL/history/": true
+    },
+    "segundos_medios_por_ticker": 1.68,
+    "avisos_inicio": {}
+  },
+  "notas": [
+    "Proveedor: ingesta.mercados_series.proveedores.yahoo (auto_adjust=False, actions=True, period='max' con verificación del inicio contra firstTradeDate)",
+    "As-traded: se deshacen los splits de la vista de Yahoo (OHLC y dividendos × producto de splits posteriores, volumen ÷); Adj Close nunca se guarda; el ajuste a fecha lo hace timegate.ajustar_a_fecha",
+    "Mercados ARCX, NAV_US, STOXX_IDX y FX_YAHOO vienen del fragmento b5_universo: hasta que se integren en mercados.yaml, leer estos precios exige mercados_con_fragmentos()",
+    "Yahoo empieza hacia 1993-2000 en muchos índices y acciones no estadounidenses: ver inicio por mercado",
+    "Supervivencia: Yahoo solo sirve tickers vivos (o reutilizados); deslistados fuera (WRDS pendiente)",
+    "Dividendos de valores en GBp que Yahoo da en GBP se pasan a peniques; consolidaciones (VOD.L) y dividendos en acciones de Taiwán (splits fraccionarios) se anotan",
+    "Nivel AMPLIADO (S&P 500 histórico y constituyentes): pendiente; comando python -m ingesta.mercados_series.proveedores.yahoo ampliado --fichero <csv>"
+  ],
+  "fecha_sonda": "2026-10-13"
+}
