@@ -20,6 +20,11 @@
 #     previo:      (opcional) {hasta: AAAA-MM-DD, publicador: clave}: los datos hasta 'hasta' se
 #                  fechan con otro publicador (vigencias: la hora medida hoy no vale para el pasado)
 #     (visibilidad.disponible_publicador(clave, fecha) → instante UTC de publicación)
+#   Horas históricas (cierre, 2026-10-13): las horas se miden hoy y se aplican hacia atrás. Solo
+#   adelantan una fecha de decisión si en el pasado se publicaba DESPUÉS de las 16:30 NY (o otro
+#   día); un publicador de la mañana (BLS, BEA, Census, Fed regionales) solo puede adelantar
+#   disponible_utc unas horas. verificado: true en bls, fed_g17, fed_h8 (ediciones archivadas de
+#   2-3 años); el resto, con la hora de hoy y verificado: false (deudas del README).
 #   Las fechas de las series de Moody's, de los diferenciales que calcula FRED, de SOFR/EFFR y del
 #   papel comercial se contrastan además con la primera vintage de ALFRED, observación a
 #   observación: config/excepciones_publicacion.csv (fecha = max(regla, ALFRED)).
@@ -71,9 +76,10 @@ publicadores:
     huso: America/New_York
     dia: mismo
     fuente: https://www.bls.gov/schedule/
-    verificado: false
+    verificado: true
     notas:
       - "Empleo (Employment Situation), IPC, IPP... a las 08:30; JOLTS va aparte (10:00)"
+      - "Horas históricas (cierre, 2026-10-13), notas archivadas de bls.gov/news.release/archives: Employment Situation del 2010-01-08 y del 2017-01-06 'embargoed until 8:30 a.m. (EST)'; IPC del 2017-01-18 a las 8:30 a.m. (EST). Antes de 2010 no hay HTML archivado con ese nombre (404); la fecha la da ALFRED y cualquier hora de la mañana deja la misma fecha de decisión"
 
   jolts:
     hora: "10:00"
@@ -103,9 +109,10 @@ publicadores:
     huso: America/New_York
     dia: mismo
     fuente: https://www.federalreserve.gov/releases/g17/
-    verificado: false
+    verificado: true
     notas:
       - "Producción industrial y utilización de capacidad"
+      - "Horas históricas (cierre, 2026-10-13): la edición archivada del 1998-01-16 dice '9:15 AM' (la de 2012-01-18 no trae hora en el HTML); 09:15 hoy. Muy anterior a las 16:30: la fecha de decisión no depende de la hora"
 
   fed_h15:
     hora: "16:15"
@@ -122,6 +129,7 @@ publicadores:
       - "Histórico (sonda del bloque 2, sin reproducir): en mar-jun de 2012 ALFRED registra DGS10 y DTB3 con 1 a 3 días de retraso sobre el hábil siguiente en 8 de 86 días (DFF 10 de 122); en 2026, 0. Supuesto: es la carga de FRED, no la Fed, que publicaba el H.15 diario en su web; no se aplican excepciones a H.15 diario"
       - "Antes de 2005-06-28 (primera vintage de DGS10 en ALFRED) no se puede medir; antes de 2017 el H.15 impreso era semanal: la regla 'hábil siguiente' supone la edición diaria en la web (pendiente de contrastar en el bloque 3)"
       - "Sondas: results/ingesta/mercados_series/tablas/sondas_horas_bloque2.csv"
+      - "Horas históricas (cierre, 2026-10-13): el archivo de federalreserve.gov/releases/h15/ solo guarda la edición semanal (lunes: 1997-01-06, 2005-01-03 'For immediate release'; martes 2012-01-03 tras festivo) y da 404 en los demás días (1997-01-07, 2001-01-09, 2005-01-04, 2012-01-04). La actualización diaria de la web no está archivada: la regla diaria antes de 2005-06-28 sigue sin verificar (deuda; son cotizaciones de mercado públicas el mismo día)"
 
   fed_h10:
     hora: "16:15"
@@ -316,9 +324,10 @@ publicadores:
     dia: mismo
     margen_min: 30
     fuente: https://www.federalreserve.gov/releases/h8/
-    verificado: false
+    verificado: true
     notas:
       - "H.8 Assets and Liabilities of Commercial Banks: viernes a las 16:15 NY"
+      - "Horas históricas (cierre, 2026-10-13): las ediciones archivadas del 2001-01-05 y del 2008-01-04 dicen '4:15 p.m. Eastern Time' (la de 2015-01-02 no trae hora en el HTML); con el margen de 30 minutos, decisión del día siguiente en todas las épocas"
       - "Conservador: margen de 30 minutos (16:45 > 16:30) -> visible en la decisión del día siguiente. Muestra de FRED last_updated (bloque 3): BUSLOANS, CONSUMER, REALLN, TOTBKCR, TOTLL 2026-10-09 16:17-16:22 NY"
 
   fed_h41:
@@ -331,6 +340,7 @@ publicadores:
     notas:
       - "H.4.1 Factors Affecting Reserve Balances: jueves a las 16:30 NY (dato del miércoles)"
       - "Conservador: margen de 5 minutos (16:30 coincide con la hora de decisión) -> decisión del día siguiente. Muestra de FRED last_updated (bloque 3): WALCL 2026-10-08 16:32 NY"
+      - "Horas históricas (cierre, 2026-10-13): la edición archivada del 1999-01-07 dice 'for release each Thursday. The exact time of each release will be announced' (sin hora fija); las de 2005 y 2012 no traen hora en el HTML. Sin verificar; con el margen ya es decisión del día siguiente, así que solo una publicación posterior a las 16:30 del VIERNES adelantaría algo"
 
   fed_z1:
     hora: "12:00"
@@ -400,6 +410,7 @@ publicadores:
     notas:
       - "CFNAI (mensual) y NFCI con sus subíndices y el ANFCI (miércoles): a las 08:30 NY"
       - "Muestra de FRED last_updated (bloque 3): CFNAI 2026-09-21 08:35 NY; NFCI 2026-10-07 08:34-08:39 NY"
+      - "Horas históricas: la página actual dice '8:30 a.m. ET'; sin ediciones archivadas con hora. Cualquier hora de la mañana deja la misma fecha de decisión"
 
   chicago_fed_bbk:
     hora: "08:45"
@@ -419,6 +430,7 @@ publicadores:
     notas:
       - "Manufacturing Business Outlook Survey: tercer jueves del mes a las 08:30 NY"
       - "Muestra de FRED last_updated (bloque 3): 2026-09-17 08:47 NY"
+      - "Horas históricas sin verificar (la página actual dice 8:30 a.m.): en épocas pasadas pudo salir más tarde por la mañana; la fecha de decisión no cambia mientras salga antes de las 16:30, pero disponible_utc puede adelantar unas horas"
 
   philly_fed_coincidentes:
     hora: "10:15"

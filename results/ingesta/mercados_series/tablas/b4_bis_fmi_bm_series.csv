@@ -34,46 +34,286 @@ bis:WS_EER.M.R.B.IT,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (202
 bis:WS_EER.M.R.B.JP,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
 bis:WS_EER.M.R.B.US,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
 bis:WS_EER.M.R.B.XM,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
-imf:WEO.CAN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.CAN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.CAN.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.CAN.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.CAN.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.CHN.GGXCNL_NGDP,imf_weo,anual,1982-01-01,2026-01-01,45,1,-79,7956.0,% del PIB
-imf:WEO.CHN.GGXWDG_NGDP,imf_weo,anual,1995-01-01,2026-01-01,32,1,-79,5582.5,% del PIB
-imf:WEO.CHN.LUR,imf_weo,anual,2017-01-01,2026-01-01,10,1,-79,1564.5,% de la población activa
-imf:WEO.CHN.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.CHN.PCPIPCH,imf_weo,anual,1981-01-01,2026-01-01,46,1,-79,8139.0,% anual
-imf:WEO.DEU.GGXCNL_NGDP,imf_weo,anual,1991-01-01,2026-01-01,36,1,-79,6312.5,% del PIB
-imf:WEO.DEU.GGXWDG_NGDP,imf_weo,anual,1991-01-01,2026-01-01,36,1,-79,6312.5,% del PIB
-imf:WEO.DEU.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.DEU.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.DEU.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.FRA.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.FRA.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.FRA.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.FRA.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.FRA.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.GBR.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.GBR.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.GBR.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.GBR.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.GBR.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.ITA.GGXCNL_NGDP,imf_weo,anual,1988-01-01,2026-01-01,39,1,-79,6861.0,% del PIB
-imf:WEO.ITA.GGXWDG_NGDP,imf_weo,anual,1988-01-01,2026-01-01,39,1,-79,6861.0,% del PIB
-imf:WEO.ITA.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.ITA.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.ITA.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.JPN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.JPN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% del PIB
-imf:WEO.JPN.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.JPN.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.JPN.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.USA.GGXCNL_NGDP,imf_weo,anual,2001-01-01,2026-01-01,26,1,-79,4486.5,% del PIB
-imf:WEO.USA.GGXWDG_NGDP,imf_weo,anual,2001-01-01,2026-01-01,26,1,-79,4486.5,% del PIB
-imf:WEO.USA.LUR,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% de la población activa
-imf:WEO.USA.NGDP_RPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
-imf:WEO.USA.PCPIPCH,imf_weo,anual,1980-01-01,2026-01-01,47,1,-79,8322.0,% anual
+imf:WEO.CAN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.CAN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.GGXCNL_NGDP,imf_weo,anual,1982-01-01,2025-01-01,44,1,286,8139.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP,imf_weo,anual,1995-01-01,2025-01-01,31,1,286,5765.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.LUR,imf_weo,anual,2017-01-01,2025-01-01,9,1,286,1747.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH,imf_weo,anual,1981-01-01,2025-01-01,45,1,286,8322.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.GGXCNL_NGDP,imf_weo,anual,1991-01-01,2025-01-01,35,1,286,6495.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP,imf_weo,anual,1991-01-01,2025-01-01,35,1,286,6495.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.DEU.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.FRA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.GBR.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.GGXCNL_NGDP,imf_weo,anual,1988-01-01,2025-01-01,38,1,286,7043.5,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP,imf_weo,anual,1988-01-01,2025-01-01,38,1,286,7043.5,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.ITA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.JPN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.GGXCNL_NGDP,imf_weo,anual,2001-01-01,2025-01-01,25,1,286,4669.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP,imf_weo,anual,2001-01-01,2025-01-01,25,1,286,4669.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.USA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.USA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
 wb:ABW.FP.CPI.TOTL.ZG,worldbank,anual,1985-01-01,2019-01-01,35,1,2478,365.0,% anual
 wb:ABW.NY.GDP.MKTP.KD.ZG,worldbank,anual,1987-01-01,2024-01-01,38,1,651,365.0,% anual
 wb:AFG.FP.CPI.TOTL.ZG,worldbank,anual,2005-01-01,2024-01-01,20,1,651,365.0,% anual

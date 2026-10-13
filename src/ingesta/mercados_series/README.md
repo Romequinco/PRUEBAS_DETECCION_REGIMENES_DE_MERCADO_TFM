@@ -50,6 +50,37 @@ hay que evaluarlos y justificar si entran o no.
 7. **Hecho (bloque 9, cierre)**: calidad global, tabla de fichas y las dos tools en 2008-09-15 y 2020-03-16
    (notebook 09) y truncado real de `get_serie` y `get_precios` (`test_t1_cierre.py`, `@pytest.mark.datos`).
 
+## Cómo usarlo
+
+Datos solo en `<corpus>/mercados_series/` (por defecto `D:/tfm_corpus/mercados_series`); con `pip install -e .`:
+
+```bash
+# 1. Descargas (reanudables; cada fuente con robots.txt y ritmo por host)
+python -m ingesta.mercados_series descargar-alfred            # vintages de ALFRED (tandas de 8 min)
+python -m ingesta.mercados_series descargar-fred-vivo
+python -m ingesta.mercados_series descargar-bce     # ídem: eurostat, bis, imf, worldbank, oecd, philly, bancos, curvas, cripto
+python -m ingesta.mercados_series.fuentes.academicos --descargar   # French, Shiller, Goyal-Welch, OFR, JST
+python -m ingesta.mercados_series descargar-precios --nivel nucleo         # 92 tickers del universo
+python -m ingesta.mercados_series descargar-precios --nivel ampliado --fichero logs/tickers_ampliado.csv
+python -m ingesta.mercados_series.proveedores.yahoo posproceso              # cobertura y calidad del ampliado
+# 2. Base de series (une todas las fuentes; --desde-cero si cambian reglas de fechas, con respaldo)
+python -m ingesta.mercados_series construir-base --sin-red [--desde-cero --respaldo respaldo_X.parquet]
+python -m ingesta.mercados_series resumen
+```
+
+```python
+from ingesta.mercados_series.tools import get_serie, get_precios
+
+r = get_serie("DGS10", "2020-03-16")                 # alias o id canónico ('fred:DGS10')
+r.datos      # fecha_referencia, valor, fecha_publicacion, vintage, metodo_publicacion, nota
+r.avisos     # huecos, fechas por regla, re-estimadas...
+p = get_precios(["SPY", "SAP.DE"], "2020-03-16", ajuste="total", divisa="USD")
+p.datos      # sesiones visibles a las 16:30 NY, ajuste reconstruido con lo conocido en la fecha y FX del BCE visible
+```
+
+Las dos tools devuelven solo lo visible a las 16:30 America/New_York del día pedido: nada con `fecha_publicacion`
+posterior, ni sesiones sin cerrar (cierre local + 30 min), ni splits o dividendos futuros en el ajuste.
+
 ## Contrato (bloque 1)
 
 **Hora de decisión:** 16:30 America/New_York (con cambio de hora) de cada día natural. Un cierre de
@@ -274,8 +305,9 @@ de la fuente, con nota) y 116 observaciones retiradas. Crudo: 764 MB de JSON en 
   (WEI, GDPNow, SEP), solo se ven desde el primer vintage.
 - **Relleno de historia**: periodos antiguos que ALFRED añadió más tarde (USREC 1854-1920 el 2011-11-01, PPI o Z.1
   antiguos) se ven desde el vintage que los añadió (conservador); las medidas de retraso los excluyen.
-- **Índices re-estimados enteros** (NFCI y subíndices, STLFSI4, CFSI, KCFSI, RECPROUSM156N, CLI OCDE, BBK, USPHCI):
-  mismo método, cada vintage cambia toda la historia; nota y aviso «re-estimado entero».
+- **Índices re-estimados enteros** (NFCI y subíndices, STLFSI4, CFSI, KCFSI, RECPROUSM156N, BBK, USPHCI): mismo
+  método, cada vintage cambia toda la historia; nota y aviso «re-estimado entero». El CLI de la OCDE no lo es (medido:
+  cada edición revisa de mediana el 44-48 % de los periodos comunes): nota propia, sin la marca.
 - **Unidad por vintage** (dólares encadenados, años base: GDPC1, PCEC96, INDPRO...): `unidad` es la del vintage
   vigente; los niveles de vintages distintos no son comparables (nota y aviso).
 - **Proyecciones del SEP**: visibles desde su fecha de referencia si siguen vigentes (el contrato no admite previsiones).
@@ -337,16 +369,23 @@ IT, UK, JP, CA) y China; el resto del mundo, anual (Banco Mundial). Prefijos: `e
   las revisables quedan casi todas con la regla previa y nota (posible fuga de revisiones).
 - **Eurostat** ([`fuentes.eurostat`](fuentes/eurostat.py)): HICP en `prc_hicp_minr` (ECOICOP v2) y `prc_hicp_manr`
   (v1, retirada en 2025-12; ruptura medida: en EA, 24 de 348 meses distintos, máximo 0,1 puntos), paro, ESI y PIB a
-  las 11:00 de Luxemburgo. `une_rt_m` y ESI no traen `EA` de composición cambiante (solo EA20/EA21).
+  las 11:00 de Luxemburgo. `une_rt_m` y ESI no traen `EA` de composición cambiante (solo EA20/EA21). Serie
+  empalmada `eurostat:HICP_EMP.<geo>` (v1 en los periodos publicados con v1, v2 después; nota y tramo por fila) y
+  alias por defecto de la zona euro cambiante: `HICP_EA`, `PIB_EA` (`namq_10_gdp` `EA`) y `PARO_EA` (BCE `LFSI` `U2`).
+  Paro y PIB con **tramos por época** en `lags.yaml` (`tramos`, con muestras de notas de prensa y test de no fuga).
 - **BIS** ([`fuentes.bis`](fuentes/bis.py)): tipos oficiales, brecha de crédito, servicio de la deuda y tipos de cambio
   efectivos; lag fijo conservador. **Banco Mundial** ([`fuentes.worldbank`](fuentes/worldbank.py)): PIB, IPC y paro de
-  217 países, anual, fin de t+1. **FMI WEO** ([`fuentes.imf`](fuentes/imf.py)): solo la edición 2026-10 (las
-  proyecciones se descartan; el contrato no admite previsiones). Las ediciones 2008-2025 están en DBnomics, que prohíbe
-  el acceso por `robots.txt`.
+  217 países, anual, fin de t+1. **FMI WEO** ([`fuentes.imf`](fuentes/imf.py)): solo la edición 2026-10. Las series
+  `imf:WEO.<país>.<concepto>` solo traen años anteriores al de la edición; la estimación del año en curso y las
+  proyecciones a 1-5 años van a `...PROY.H<h>` (fecha de referencia = año de la edición, nota «proyección, no dato»).
+  Las ediciones 2008-2025 están en DBnomics, que prohíbe el acceso por `robots.txt`.
 - **OCDE** ([`fuentes.oecd`](fuentes/oecd.py)): `DF_STES_REVISIONS` da ediciones reales (`vintage` = `AAAA-MM`, fecha
-  conservadora a fin de mes): CLI desde 2001, IPC y paro desde 1999. Sin CLI de la zona euro ni paro de China.
+  conservadora a fin de mes): CLI desde 2001, IPC y paro desde 1999. La OCDE ya no publica el CLI de la zona euro
+  (EA19/EA20: 404 en `DF_STES_REVISIONS` y `DF_CLI`); `oecd:LI_AA.G4E` son los cuatro grandes europeos (DE, FR, IT,
+  UK), con nota. Sin paro de China.
 - **Philly RTDSM** ([`fuentes.philly_rtdsm`](fuentes/philly_rtdsm.py)): solo los vintages anteriores al primero de
-  ALFRED (ROUTPUT 1965-1991); PCPI, EMPLOY y RUC no aportan filas.
+  ALFRED (ROUTPUT 1965-1991, PNB real); PCPI, EMPLOY y RUC no aportan filas. Empalme por vintage con `fred:GDPC1`:
+  `deriv:PIB_REAL_USA_VINTAGES` (alias `PIB_REAL_USA`; `base.empalmar_pib_real_usa`, tramo PNB/PIB en la nota).
 - **Bancos centrales** ([`fuentes.bancos_centrales`](fuentes/bancos_centrales.py)): BoC (Valet, desde 2001), BoJ (desde
   1998), Bundesbank (Svensson a 10 años, desde 1997) y RBA (desde 2011). BoE (IADB) vetado por `robots.txt`; sus curvas
   salen de los ficheros publicados (bloque 6).
@@ -440,7 +479,7 @@ entera, **parcial** si falta una parte documentada en la ficha y **bloqueada** s
 | `boc`, `boj`, `bundesbank`, `rba` | ok | 1997 – 2026-10 | RBA desde 2011; BoC desde 2001 |
 | `boe` (IADB) | bloqueada | – | `robots.txt` prohíbe la ruta CSV |
 | `ust_curva`, `bce_curvas`, `boe_curvas`, `mof_jgb`, `boc_curva` | ok | 1974 – 2026-10 | curvas oficiales |
-| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado en descarga (posproceso parcial) |
+| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado en descarga (731 de 1.842 intentados, 599 con datos) |
 | `coinbase`, `binance_vision` | ok | 2015 – 2026-10 | Binance de control |
 | `universo` | ok | – | 202 instrumentos |
 | `sp500_constituyentes` | ok | 1996 – 2026-08 | fecha efectiva del cambio |
@@ -454,62 +493,67 @@ Calidad global, cobertura por fuente, método y época y las dos tools en 2008-0
 
 ## Deudas pendientes
 
-Precios y universo:
-- **Nivel ampliado de precios**: descarga en curso (1.842 tickers a 0,5 tickers/s, unas 2 horas; reanudable). Al
-  terminar: repetir `proveedores.yahoo posproceso` y reejecutar el notebook 06.
-- **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX; hasta entonces el sesgo se declara y se mide. **Tiingo**
-  como alternativa opcional (exige cuenta y clave del usuario; sin probar). Con el ampliado a medias (352 de 1.842) solo
-  10 de los 759 tramos salidos tienen ticker descargado: no mejora la muestra (122 tramos); recalcular al terminar.
-- VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente. ISIN: IUAA.L (IE00B44CGS96),
-  AIGA.L (GB00B15KYH63) y XLI (US81369Y7040) verificados; quedan NGAS.L (los ISIN probados en justETF son de otros
-  ETC de WisdomTree) y CPER, BITO, VIXY y VBMFX (las fichas del emisor no traen el ISIN en el HTML; son señal, no se
-  invierten). AIGA.L sigue `por_verificar`: Yahoo solo da una vela. `inicio_esperado` de los ETF de EE. UU. = primer
-  día medido en Yahoo (corregidos VTI, EFA, EZU, EDV, BWX y BITO).
-- S&P 500: 28 tramos llevan el ticker posterior con sufijo Q/QQ de quiebra (ENRNQ, AAMRQ...): anotados en la nota del
-  tramo y contados en la ficha. El fichero sin actualizar de fja05680 trae los mismos tickers Q con el mes de exclusión
-  (AAMRQ-201312), no el de la época: el mapeo exige CIK/PERMNO (WRDS). (Fechas de anuncio: cerrada; la fecha efectiva
-  es conservadora y sin fuga, ver la ficha `sp500_constituyentes`.)
-- Yahoo: el mercado declarado en `universo.yaml` manda sobre `exchangeName`; el respaldo por huso solo avisa (no
-  falla) para los tickers fuera del universo.
-- Baselines: el 60/40 europeo (CSPX.L/EUNA.DE) solo arranca en 2017-11 (lanzamiento de EUNA.DE); para alargarlo hace
-  falta un agregado UCITS más antiguo o el empalme con BNDX. (Señal frente a ejecución: cerrada; la señal solo ve
-  `sesion < fecha`, con test.)
+Solo lo que queda (2026-10-13, tras la auditoría de cierre). Las de *timegate* llevan severidad: **media** = puede
+adelantar una fecha de decisión en una época concreta; **baja** = solo afecta a `disponible_utc` o a una regla ya
+conservadora.
 
-Horas y calendarios:
-- **Horas históricas de publicación sin verificar**: las horas se midieron hoy (sondas) y se aplican hacia atrás; las
-  del Tesoro (18:00 NY), Ken French (+45 días), H.15 diario histórico, Goyal-Welch, NBER y OFR son reglas
-  (`verificado: false` en `lags.yaml` y en `mercados.yaml` para los mercados nuevos).
-- **Horizontes del SEP**: las proyecciones del SEP solo se ven desde su fecha de referencia (el contrato no admite
-  previsiones); falta decidir si van a una tabla aparte de proyecciones (igual que las del WEO).
-- EONIA se fecha con el publicador de €STR (hábil siguiente a las 08:00): conservador frente a la publicación real.
+Auditoría de cierre (sin fallos): 300 `get_serie` al azar (22 prefijos de fuente, 1990-2026, una de cada cinco en
+USD) y 100 `get_precios` (núcleo y ampliado ya descargado) sin `fecha_publicacion` posterior a la fecha ni
+`disponible_utc` posterior a las 16:30 NY; truncado real en 15 series × 4 fechas y 10 tickers × 4 fechas × 2 ajustes;
+coherencia `fecha_publicacion` ≥ primera decisión de `disponible_utc` en las 9,86 M filas con hora; splits futuros
+(AAPL 2020-08-28, NVDA 2024-06-07) sin efecto en el ajuste; cripto visible en D+1; HICP empalmado, WEO (dato y
+proyecciones) y DST; baselines con precios truncados idénticos. Corregido: la JGB del viernes anterior a un festivo
+japonés (2026-10-09) se veía en el festivo (15 filas; test de regresión) y el resumen de `construir-base` fallaba con
+el empalme del PIB de EE. UU. después de escribir la base (test de regresión).
+
+Precios y universo:
+- **Nivel ampliado de precios**: descarga en curso (último posproceso: 731 de 1.842 intentados, 599 con datos; los
+  fallidos son tickers deslistados del S&P 500). Al terminar: `proveedores.yahoo posproceso`, reejecutar el notebook
+  06 y borrar `crudo/yahoo/mercados_fusionados.yaml` (lo escribe aún el proceso en curso, con el código antiguo).
+- **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX (Tiingo, alternativa sin probar). Al terminar el
+  ampliado, contar los tramos salidos con parquet y, si mejora la muestra (hoy 122 tramos), leer esos parquet
+  as-traded en `supervivencia.py` en lugar de pedir otra vez a yfinance.
+- S&P 500: 28 tramos con el ticker posterior de quiebra (sufijo Q/QQ); el mapeo exige CIK/PERMNO (WRDS).
+- VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente. ISIN sin verificar: NGAS.L
+  y CPER, BITO, VIXY y VBMFX (señal, no se invierten). AIGA.L: Yahoo solo da una vela (otra línea o inactivo).
+- Baselines: el 60/40 europeo arranca en 2017-11 (EUNA.DE); alargarlo exige un agregado UCITS más antiguo o el
+  empalme con BNDX.
+
+Horas y calendarios (se miden hoy y se aplican hacia atrás; solo adelantan una fecha si en el pasado se publicaba
+después de las 16:30 NY o en otro día):
+- Verificadas con ediciones archivadas de 2-3 años: BLS (Employment Situation 2010 y 2017, IPC 2017: 8:30), G.17
+  (1998: 9:15) y H.8 (2001 y 2008: 16:15). Ver las notas de `publicaciones.yaml`.
+- **H.15 diario antes de 2005-06-28 (media)**: el archivo de la Fed solo guarda la edición semanal; si la web no
+  publicaba el dato diario, DGS*, DTB*, DFF y demás H.15 diarios se ven hasta una semana antes (son cotizaciones de
+  mercado públicas el mismo día, pero no la publicación oficial). Contrastar con un archivo de la página
+  `h15/update` o fechar con la edición semanal antes de esa fecha.
+- **Ken French antes de las ediciones archivadas (media)**: la regla «+45 días» supone ediciones mensuales desde 1926;
+  la biblioteca de datos es de finales de los noventa y se actualizaba con menos frecuencia. Ídem, reglas de
+  Goyal-Welch, NBER y OFR sin verificar.
+- H.4.1 (baja): el archivo de 1999 dice «the exact time of each release will be announced»; con el margen de 5 min
+  ya es decisión del día siguiente. Tesoro 18:00 (baja): ya es día siguiente; sin fuente de la hora histórica.
+- BEA, Census y Fed regionales (Chicago, Philadelphia, Kansas City, Dallas, Atlanta, Cleveland) (baja): hora de hoy
+  (mañana o mediodía) sin archivo; la fecha la da ALFRED y solo `disponible_utc` puede adelantar unas horas (p. ej.
+  la encuesta de Philadelphia salía antes al mediodía).
+- **Horizontes del SEP**: solo se ven desde su fecha de referencia; falta decidir si van a una tabla de proyecciones.
+- EONIA se fecha con el publicador de €STR (hábil siguiente a las 08:00): conservador.
 
 Macro internacional:
-- FMI WEO: ediciones 2008-2025 (pedir permiso a DBnomics o localizar el archivo del FMI), zona euro (WEO de agregados)
-  y verificar las fechas de edición.
-- OCDE: CLI de la zona euro (probar EA19, G4E o `DF_CLI`); valorar marcar `oecd:LI_AA.*` como re-estimadas enteras.
-- BCE, Eurostat, BIS y Banco Mundial sin historia de revisiones: valores de hoy con regla y nota de revisable.
-- Historia larga de RBA (antes de 2011) y BoC (antes de 2001); BoE IADB vetado (alternativa: series del Reino Unido de
-  la OCDE o de FRED).
-- Empalme de `philly:ROUTPUT` (PNB real hasta 1991) con `fred:GDPC1`.
-- Paro y PIB de Eurostat/BCE con claves propias (`EUROSTAT_PARO` 2M, `EUROSTAT_PARO_UK` 3M, `EUROSTAT_PIB` 2M10D),
-  conservadoras en todo el histórico: faltan tramos por época (paro 1M5D desde 2012; PIB t+31 desde 2016, t+46 en
-  2003-2015) y la fecha nacional de cada país; `lags.yaml` aún no admite tramos.
-- HICP ECOICOP v2, EA20, EA21 e I10 solo visibles desde su creación (retropolaciones): falta la serie empalmada por
-  fecha de publicación (v1 hasta la primera versión de v2, EA cambiante por defecto para los agentes). Las fechas de
-  creación de EA20 y EA21 (`fuentes.eurostat.CREACION_GEO`) son aproximaciones conservadoras sin verificar. Las
-  entradas del catálogo de estas series conservan `lag_clave: UNRATE`/`GDPC1`: actualizar al integrar.
-- FMI WEO: la versión 9.0.0 se descargó el 2026-10-13 a las 07:46 NY, antes de la publicación declarada (09:00 NY):
-  verificar `FECHAS_EDICION` con las notas de prensa y separar las estimaciones del año en curso (id o tabla aparte).
-- Curvas: el hábil siguiente de la última fila usa días laborables sin festivos (TARGET, Japón, Canadá, Reino Unido);
-  se corrige solo en la reconstrucción siguiente.
+- FMI WEO: ediciones 2008-2025 (DBnomics en `Disallow: /`, comprobado el 2026-10-13: pedir permiso o localizar el
+  archivo del FMI) y WEO de agregados de la zona euro; fechas de edición contrastadas solo las de 2026.
+- BCE, Eurostat, BIS y Banco Mundial sin historia de revisiones (valores de hoy con regla y nota de revisable).
+- Historia larga de RBA (antes de 2011) y BoC (antes de 2001); BoE IADB vetado por `robots.txt`.
+- Eurostat sin verificar (conservadoras): paro antes de 2012 (fin de M+2), PIB antes de 2003 (t+71) y PIB por país
+  (`EUROSTAT_PIB_PAISES`; no aprovecha los t+30 nacionales). `CREACION_GEO` de EA20 y EA21 sin el registro de cambios
+  de Eurostat. OCDE: no hay CLI de la zona euro (G4E es un sustituto con nota). Sin filas en la base:
+  `oecd:LI_AA.EA20`, `oecd:UNEMP.CHN`, `philly:EMPLOY`, `philly:PCPI` y `philly:RUC`.
 
-Mantenimiento:
-- **Archivo periódico de las OAS de ICE** (ventana móvil de 3 años en FRED): pendiente de programar.
-- Descarga periódica de las ediciones académicas (French mensual, Shiller, Goyal-Welch anual) para medir sus
-  revisiones futuras: hoy se archiva a mano (`fuentes.academicos --descargar` y `--archivar`).
-- **package-data** de los YAML de config en `pyproject.toml`: pendiente (PR común cuando haga falta empaquetar; hoy
-  funciona con `pip install -e`).
-- Comisiones de DEGIRO e IBKR de la tarifa pública sin verificar; 1/N con la lista estática del núcleo.
+Mantenimiento y pruebas:
+- **Archivo periódico de las OAS de ICE** (ventana móvil de 3 años en FRED) y de las ediciones académicas: a mano.
+- **package-data** de los YAML de config en `pyproject.toml` (PR común; hoy basta `pip install -e`).
+- Comisiones de DEGIRO e IBKR sin verificar; 1/N con la lista estática del núcleo.
+- Sin prueba `live` propia: `bce_curvas` (histórico entero, lento), `boe_curvas`, `jst_macrohistory`,
+  `indices_constituyentes`; OCDE y Philadelphia solo comprueban `robots.txt` y la página (`test_t1_c_live_fuentes.py`).
 
 ## Decididas
 
@@ -517,6 +561,8 @@ Mantenimiento:
 - Hora de decisión: 16:30 America/New_York de cada día natural (tras el cierre de Nueva York).
 - Supervivencia: se declara y se mide (bloque 7); la corrección con WRDS/CRSP depende de la licencia de MIAX.
 - Cripto: Coinbase (USD) principal y Binance Vision de control. Futuros, solo contexto. Fondos, fuera de la optimización.
+- Yahoo: el mercado declarado en `universo.yaml` manda sobre `exchangeName`; el respaldo por huso solo avisa para los
+  tickers fuera del universo.
 
 ## Preguntas abiertas
 

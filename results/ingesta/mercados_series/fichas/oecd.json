@@ -14,9 +14,9 @@
   "cobertura_inicio": "1949-01",
   "cobertura_fin": "2026-09",
   "frecuencia": "mensual (una edición al mes)",
-  "retraso_publicacion": "medido: meses de la edición al último periodo publicado (mediana): USA.LI_AA 2; USA.CP 2; USA.UNEMP 1; EA20.CP 2; EA20.UNEMP 2; DEU.LI_AA 2; DEU.CP 2; DEU.UNEMP 2; FRA.LI_AA 2; FRA.CP 2; FRA.UNEMP 2; ITA.LI_AA 2; ITA.CP 1; ITA.UNEMP 2; GBR.LI_AA 2; GBR.CP 2; GBR.UNEMP 4; JPN.LI_AA 2; JPN.CP 2; JPN.UNEMP 2; CAN.LI_AA 2; CAN.CP 2; CAN.UNEMP 2; CHN.LI_AA 2; CHN.CP 2. Fecha conservadora: fin del mes de la edición, 23:59 París",
+  "retraso_publicacion": "medido: meses de la edición al último periodo publicado (mediana): USA.LI_AA 2; USA.CP 2; USA.UNEMP 1; EA20.CP 2; EA20.UNEMP 2; DEU.LI_AA 2; DEU.CP 2; DEU.UNEMP 2; FRA.LI_AA 2; FRA.CP 2; FRA.UNEMP 2; ITA.LI_AA 2; ITA.CP 1; ITA.UNEMP 2; GBR.LI_AA 2; GBR.CP 2; GBR.UNEMP 4; JPN.LI_AA 2; JPN.CP 2; JPN.UNEMP 2; CAN.LI_AA 2; CAN.CP 2; CAN.UNEMP 2; CHN.LI_AA 2; CHN.CP 2; G4E.LI_AA 2. Fecha conservadora: fin del mes de la edición, 23:59 París",
   "formato": "csv (SDMX)",
-  "volumen_estimado": "423.4 MB de CSV crudo para 25 pares área-medida",
+  "volumen_estimado": "442.9 MB de CSV crudo para 26 pares área-medida",
   "limites": "sin clave; límite de peticiones por IP no documentado (aquí 1/s); sonda 2026-10-13: 200 sin Cloudflare. Plan B DBnomics (solo última edición) si devuelve 403",
   "estado_sonda": "parcial",
   "mediciones": {
@@ -276,15 +276,33 @@
       },
       "CHN.UNEMP": {
         "estado": "sin_datos"
+      },
+      "G4E.LI_AA": {
+        "primera_edicion": "2001-01",
+        "ultima_edicion": "2026-10",
+        "n_ediciones": 304,
+        "periodo_inicio": "1961-01",
+        "periodo_fin": "2026-09",
+        "meses_edicion_a_ultimo_periodo_mediana": 2.0,
+        "filas_crudo": 188186,
+        "filas_contrato": 104089
+      },
+      "G4E.CP": {
+        "estado": "sin_datos"
+      },
+      "G4E.UNEMP": {
+        "estado": "sin_datos"
       }
     },
     "descarga": {},
-    "bytes_crudo": 423426384
+    "bytes_crudo": 442879793
   },
   "notas": [
     "vintage = edición AAAA-MM; fecha_publicacion = primera decisión tras el fin del mes de la edición",
     "Solo valores nuevos o revisados entre ediciones consecutivas",
     "EA20: composición cambiante según la OCDE (zona euro a 21 en 2026: comprobar el código del área)",
+    "G4E = 'Major four European countries' de la OCDE (Alemania, Francia, Italia y Reino Unido): NO es la zona euro; la OCDE no publica el CLI de EA19/EA20 (404 en DF_STES_REVISIONS y DF_CLI, 2026-10-13)",
+    "CLI revisado en parte en cada edición (mediana 44-48 % de los periodos comunes, USA y DEU): usar siempre el vintage de la fecha; no es un índice re-estimado entero",
     "IPC de Japón: se toma de aquí (el Banco de Japón no publica el IPC; lo hace el MIC)",
     "Crudo en <corpus>/mercados_series/crudo/oecd/"
   ],

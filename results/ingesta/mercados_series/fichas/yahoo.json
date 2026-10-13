@@ -19,7 +19,7 @@
   "frecuencia": "diaria (sesiones del mercado de cotización)",
   "retraso_publicacion": "cierre local + 30 min (visibilidad por mercado): Europa y Asia y EE. UU. (16:00) el mismo día de decisión; VIX (16:15), futuros CME, FX y fondos (NAV) en D+1; medido en mediciones.retraso_fecha_publicacion_dias_por_mercado",
   "formato": "parquet (as-traded, un fichero por ticker)",
-  "volumen_estimado": "92 tickers del núcleo; ampliado: 364 con datos de 1842 (descarga en curso: 387 de 1842)",
+  "volumen_estimado": "92 tickers del núcleo; ampliado: 599 con datos de 1842 (descarga en curso: 731 de 1842)",
   "limites": "sin límite publicado; <= 0.5 tickers/s, timeout 90 s, 3 reintentos",
   "estado_sonda": "ok",
   "mediciones": {
@@ -266,10 +266,10 @@
     "segundos_medios_por_ticker": 1.68,
     "avisos_inicio": {},
     "ampliado": {
-      "estado": "descarga en curso: 387 de 1842",
+      "estado": "descarga en curso: 731 de 1842",
       "n_lista": 1842,
-      "n_intentados": 387,
-      "n_ok": 364,
+      "n_intentados": 731,
+      "n_ok": 599,
       "fallidos": {
         "AABA": "deslistado",
         "AAMRQ": "deslistado",
@@ -293,39 +293,148 @@
         "AMCC": "deslistado",
         "ANDV": "deslistado",
         "ANDW": "deslistado",
-        "ANRZQ": "deslistado"
+        "ANRZQ": "deslistado",
+        "ANSS": "deslistado",
+        "ANTM": "deslistado",
+        "APCC": "deslistado",
+        "APOL": "deslistado",
+        "ARC": "deslistado",
+        "ARG": "deslistado",
+        "ARNC": "deslistado",
+        "ASN": "deslistado",
+        "ATGE": "deslistado",
+        "ATVI": "deslistado",
+        "AVP": "deslistado",
+        "AW": "deslistado",
+        "AWE": "deslistado",
+        "AYE": "deslistado",
+        "AZA-A": "deslistado",
+        "BBI": "deslistado",
+        "BCR": "deslistado",
+        "BDK": "deslistado",
+        "BEV": "deslistado",
+        "BFI": "deslistado",
+        "BFO": "deslistado",
+        "BGEN": "deslistado",
+        "BGG": "deslistado",
+        "BHGE": "deslistado",
+        "BHMSQ": "deslistado",
+        "BIG": "deslistado",
+        "BJS": "deslistado",
+        "BK": "deslistado",
+        "BKB": "deslistado",
+        "BLL": "deslistado",
+        "BLS": "deslistado",
+        "BMC": "deslistado",
+        "BMET": "deslistado",
+        "BMGCA": "deslistado",
+        "BMS": "deslistado",
+        "BNI": "deslistado",
+        "BOL": "deslistado",
+        "BRCM": "deslistado",
+        "BRL": "deslistado",
+        "BSC": "deslistado",
+        "BT": "deslistado",
+        "BT.A": "deslistado",
+        "BTUUQ": "deslistado",
+        "BVSN": "deslistado",
+        "BXLT": "deslistado",
+        "CA": "deslistado",
+        "CBB": "deslistado",
+        "CBE": "deslistado",
+        "CBH": "deslistado",
+        "CBS": "deslistado",
+        "CBSS": "deslistado",
+        "CCE": "deslistado",
+        "CCTYQ": "deslistado",
+        "CDAY": "deslistado",
+        "CELG": "deslistado",
+        "CEN": "deslistado",
+        "CEPH": "deslistado",
+        "CERN": "deslistado",
+        "CFC": "deslistado",
+        "CFL": "deslistado",
+        "CFN": "deslistado",
+        "CGP": "deslistado",
+        "CHIR": "deslistado",
+        "CHK": "deslistado",
+        "CIN": "deslistado",
+        "CIT-A": "deslistado",
+        "CITGQ": "deslistado",
+        "CMA": "deslistado",
+        "CMB": "deslistado",
+        "CMCSK": "deslistado",
+        "CMVT": "deslistado",
+        "CMX": "deslistado",
+        "CNG": "deslistado",
+        "CNW": "deslistado",
+        "COC-B": "deslistado",
+        "COG": "deslistado",
+        "COL": "deslistado",
+        "COV": "deslistado",
+        "CPGX": "deslistado",
+        "CPNLQ": "deslistado",
+        "CPQ": "deslistado",
+        "CRR": "deslistado",
+        "CSE": "deslistado",
+        "CTB": "deslistado",
+        "CTL": "deslistado",
+        "CTLT": "deslistado",
+        "CTRA": "deslistado",
+        "CTX": "deslistado",
+        "CTXS": "deslistado",
+        "CVC": "deslistado",
+        "CVG": "deslistado",
+        "CVH": "deslistado",
+        "CXO": "deslistado",
+        "CYM": "deslistado",
+        "CYR": "deslistado",
+        "DALRQ": "deslistado",
+        "DAY": "deslistado",
+        "DCNAQ": "deslistado",
+        "DDR": "deslistado",
+        "DF": "deslistado",
+        "DFS": "deslistado",
+        "DGN": "deslistado",
+        "DI": "deslistado",
+        "DISCA": "deslistado",
+        "DISCK": "deslistado",
+        "DISH": "deslistado",
+        "DJ": "deslistado",
+        "DNB": "deslistado",
+        "DNR": "deslistado"
       },
-      "sin_cotizacion_reciente": 0,
+      "sin_cotizacion_reciente": 2,
       "por_indice": {
         "aex": {
           "lista": 25,
-          "intentados": 5,
-          "ok": 5,
-          "inicio_mediana": "2008-10-24"
+          "intentados": 9,
+          "ok": 9,
+          "inicio_mediana": "1999-01-06"
         },
         "cac40": {
           "lista": 40,
-          "intentados": 4,
-          "ok": 4,
-          "inicio_mediana": "2000-11-02"
+          "intentados": 11,
+          "ok": 11,
+          "inicio_mediana": "2000-01-03"
         },
         "dax": {
           "lista": 40,
-          "intentados": 3,
-          "ok": 3,
-          "inicio_mediana": "1998-06-24"
+          "intentados": 13,
+          "ok": 13,
+          "inicio_mediana": "1996-12-16"
         },
         "ftse100": {
           "lista": 100,
-          "intentados": 6,
-          "ok": 6,
-          "inicio_mediana": "2002-01-22"
+          "intentados": 32,
+          "ok": 31,
+          "inicio_mediana": "1995-01-03"
         },
         "ftse_mib": {
           "lista": 40,
-          "intentados": 2,
-          "ok": 2,
-          "inicio_mediana": "2000-11-16"
+          "intentados": 12,
+          "ok": 12,
+          "inicio_mediana": "2000-10-04"
         },
         "hang_seng": {
           "lista": 85,
@@ -335,9 +444,9 @@
         },
         "ibex35": {
           "lista": 35,
-          "intentados": 6,
-          "ok": 6,
-          "inicio_mediana": "2006-03-01"
+          "intentados": 11,
+          "ok": 11,
+          "inicio_mediana": "2002-05-15"
         },
         "kospi200": {
           "lista": 200,
@@ -347,31 +456,31 @@
         },
         "nifty50": {
           "lista": 50,
-          "intentados": 2,
-          "ok": 2,
-          "inicio_mediana": "2005-03-14"
+          "intentados": 13,
+          "ok": 13,
+          "inicio_mediana": "2002-07-01"
         },
         "smi": {
           "lista": 20,
-          "intentados": 3,
-          "ok": 3,
-          "inicio_mediana": "2019-04-08"
+          "intentados": 4,
+          "ok": 4,
+          "inicio_mediana": "2009-05-16"
         },
         "sp500": {
           "lista": 1209,
-          "intentados": 72,
-          "ok": 49,
-          "inicio_mediana": "1997-05-15"
+          "intentados": 342,
+          "ok": 211,
+          "inicio_mediana": "1997-06-18"
         }
       },
       "incidencias_calidad": {
-        "salto": 170,
-        "volumen_cero": 41958,
-        "cierre_repetido": 124173,
-        "dividendo_alto": 31
+        "salto": 780,
+        "volumen_cero": 77504,
+        "cierre_repetido": 217867,
+        "dividendo_alto": 74
       },
       "tabla": "results/ingesta/mercados_series/tablas/yahoo_ampliado_cobertura.csv",
-      "medido_utc": "2026-10-13T14:35:50+00:00"
+      "medido_utc": "2026-10-13T15:59:33+00:00"
     }
   },
   "notas": [
@@ -381,7 +490,7 @@
     "Yahoo empieza hacia 1993-2000 en muchos índices y acciones no estadounidenses: ver inicio por mercado",
     "Supervivencia: Yahoo solo sirve tickers vivos (o reutilizados); deslistados fuera (WRDS pendiente)",
     "Dividendos de valores en GBp que Yahoo da en GBP se pasan a peniques; consolidaciones (VOD.L) y dividendos en acciones de Taiwán (splits fraccionarios) se anotan",
-    "Nivel AMPLIADO (S&P 500 histórico y constituyentes actuales de 10 índices): descarga en curso: 387 de 1842; cobertura por índice y mercado en tablas/yahoo_ampliado_cobertura.csv (orden posproceso); un ticker del S&P 500 histórico reutilizado por otra empresa devuelve la empresa ACTUAL"
+    "Nivel AMPLIADO (S&P 500 histórico y constituyentes actuales de 10 índices): descarga en curso: 731 de 1842; cobertura por índice y mercado en tablas/yahoo_ampliado_cobertura.csv (orden posproceso); un ticker del S&P 500 histórico reutilizado por otra empresa devuelve la empresa ACTUAL"
   ],
   "fecha_sonda": "2026-10-13"
 }

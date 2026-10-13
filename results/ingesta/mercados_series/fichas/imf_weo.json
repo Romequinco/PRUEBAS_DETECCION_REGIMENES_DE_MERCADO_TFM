@@ -14,16 +14,16 @@
   "cobertura_inicio": "1980-01-01",
   "cobertura_fin": "2026-01-01",
   "frecuencia": "anual; dos ediciones al año (abril y octubre)",
-  "retraso_publicacion": "vintage exacto por edición: día de publicación documentado a las 09:00 de Washington; año en curso como estimación; proyecciones descartadas",
+  "retraso_publicacion": "vintage exacto por edición: día de publicación documentado a las 09:00 de Washington (2026-10: 07:46 de Nueva York, medida); el año en curso y las proyecciones a 1-5 años en series .PROY.H<h> aparte",
   "formato": "json (DBnomics) y SDMX-JSON 3.0 (api.imf.org)",
-  "volumen_estimado": "1 ediciones, 1745 filas, 40 series",
+  "volumen_estimado": "1 ediciones, 1945 filas, 280 series",
   "limites": "sin clave; DBnomics 1 petición/s; la API del FMI solo sirve las versiones vigentes del flujo",
   "estado_sonda": "parcial",
   "mediciones": {
     "cobertura_inicio": "1980-01-01",
     "cobertura_fin": "2026-01-01",
-    "series": 40,
-    "observaciones": 1745,
+    "series": 280,
+    "observaciones": 1945,
     "ediciones": [
       "2026-10"
     ],
@@ -103,7 +103,8 @@
       "2025-04": "robots.txt no permite la descarga con nuestro User-Agent"
     },
     "ediciones_indexadas_antes_de_la_fecha_documentada": [],
-    "proyecciones_descartadas": 200,
+    "proyecciones_descartadas": 0,
+    "proyecciones_separadas": 240,
     "por_edicion": {
       "2008-04": {
         "origen": "dbnomics",
@@ -278,8 +279,9 @@
       "2026-10": {
         "origen": "sdmx 9.0.0",
         "bytes": 46993,
-        "filas": 1745,
-        "proyecciones_descartadas": 200
+        "filas": 1705,
+        "proyecciones": 240,
+        "proyecciones_descartadas": 0
       },
       "sdmx_6.0.0": {
         "origen": "sdmx",
@@ -290,7 +292,8 @@
   },
   "notas": [
     "DBnomics: robots.txt de api.db.nomics.world es 'Disallow: /' (medido 20261013): 34 ediciones no descargadas; no se esquiva (pedir permiso a DBnomics o ficheros del archivo del FMI)",
-    "fechas de publicación de FECHAS_EDICION documentadas, no medidas contra la API (verificado: false)",
+    "FECHAS_EDICION: 2026-04-14 y 2026-10-13 (Bangkok) contrastadas con imf.org; el resto, fechas de las páginas de cada edición; la versión 9.0.0 (edición 2026-10) ya estaba en la API a las 07:46 de Nueva York: disponible_utc = esa hora medida (HORAS_EDICION); fecha de decisión sin cambios",
+    "Estimación del año en curso y proyecciones en series .PROY.H0-H5 (no se mezclan con los datos)",
     "zona euro pendiente (WEO de agregados, WEOAGG en DBnomics)",
     "ediciones fuera de DBnomics y de las versiones vigentes de la API SDMX: ver ediciones_pendientes"
   ],

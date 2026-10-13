@@ -14,14 +14,14 @@
   "cobertura_inicio": "1975-01-01",
   "cobertura_fin": "2026-09-01",
   "frecuencia": "mensual (HICP, paro, ESI), trimestral (PIB)",
-  "retraso_publicacion": "publicación a las 11:00 Europe/Luxembourg (calendario de Euro indicators); sin vintages: lag_fijo conservador (HICP y paro 1M1D desde fin de mes, ESI 1D, PIB 1M1D desde fin de trimestre) y nota de revisables; LAST UPDATE medido por conjunto en mediciones",
+  "retraso_publicacion": "publicación a las 11:00 Europe/Luxembourg (calendario de Euro indicators); sin vintages: lag_fijo por tramos (HICP 1M1D desde fin de mes, ESI 1D, paro fin de M+2 antes de 2012 y 1M10D + hábil TARGET desde 2012, PIB de agregados t+71/1M18D/1M5D según época y por país t+71/1M18D) y nota de revisables; LAST UPDATE medido por conjunto en mediciones",
   "formato": "csv (SDMX-CSV 2.1)",
   "volumen_estimado": "4.8 MB de CSV por descarga completa (5 peticiones)",
   "limites": "sin clave; 1 petición/s por host; claves inválidas → HTTP 400; robots.txt permite la API",
   "estado_sonda": "ok",
   "mediciones": {
-    "n_series": 39,
-    "n_filas": 13476,
+    "n_series": 47,
+    "n_filas": 16075,
     "conjuntos": {
       "prc_hicp_minr": {
         "geos": [
@@ -159,7 +159,11 @@
     "ruptura de 2026: HICP pasa a ECOICOP v2 (prc_hicp_minr); prc_hicp_manr (ECOICOP v1) deja de actualizarse en febrero de 2026",
     "La zona euro de composición cambiante ('EA') no está en todos los conjuntos: se guarda la que haya (EA, EA21, EA20) y la UE-27",
     "Revisables sin vintages: valor del último fichero descargado (posible fuga de revisiones)",
-    "Las banderas OBS_FLAG (p, e, b, d...) se conservan en la nota de cada fila"
+    "Las banderas OBS_FLAG (p, e, b, d...) se conservan en la nota de cada fila",
+    "HICP empalmado por fecha de publicación: ECOICOP v1 (prc_hicp_manr) en los periodos publicados antes de la primera versión de v2 (prc_hicp_minr) y v2 en los demás; diferencias v2-v1 en los meses comunes de hasta 0,1-0,2 puntos (mediciones de la ficha) (eurostat:HICP_EMP.<geo>)",
+    "Alias por defecto de la zona euro de composición cambiante: HICP_EA = eurostat:HICP_EMP.EA, PIB_EA = eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA, PARO_EA = ecb:LFSI.M.U2.S.UNEHRT.TOTAL0.15_74.T",
+    "Fechas por tramos (lags.yaml): paro EUROSTAT_PARO (fin de M+2 antes de 2012, 1M10D + hábil TARGET desde 2012), PIB EUROSTAT_PIB (agregados: t+71 antes de 2003, 1M18D 2003-2015, 1M5D desde 2016) y EUROSTAT_PIB_PAISES (DE, FR, IT, UK: t+71 antes de 2003, 1M18D después); muestras de notas de prensa archivadas en lags.yaml",
+    "CREACION_GEO (EA20 2023-03-01, EA21 2026-03-01): primero del mes siguiente a la primera nota de prensa con el agregado (flash del HICP de enero de 2023 y de 2026); conservador, sin el registro de cambios de la base de datos"
   ],
   "fecha_sonda": "2026-10-13"
 }
