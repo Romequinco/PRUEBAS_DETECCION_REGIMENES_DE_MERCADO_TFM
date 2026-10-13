@@ -1,0 +1,292 @@
+{
+  "fuente": "supervivencia",
+  "nombre": "Sesgo de supervivencia del S&P 500: cobertura de Yahoo para los miembros salidos",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://finance.yahoo.com/",
+  "acceso": "libreria",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Yahoo (yfinance): uso personal, sin redistribuir; composición del S&P 500 de fja05680/sp500 (MIT). Solo metadatos en el repositorio.",
+  "cobertura_inicio": "1996-01-02",
+  "cobertura_fin": "2026-08-05",
+  "frecuencia": "diaria (rentabilidad) → mensual (sesgo)",
+  "retraso_publicacion": "no aplica (medición); los precios de Yahoo, cierre local + 30 min (ficha yahoo)",
+  "formato": "parquet (rentabilidad diaria derivada) + csv de metadatos",
+  "volumen_estimado": "122 tramos muestreados; 759 tramos salidos en total (1996-2026)",
+  "limites": "<= 0.5 tickers/s, timeout 90 s; Yahoo no sirve la mayoría de deslistados",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "salidos_muestra": 62,
+    "actuales_muestra": 60,
+    "salidos_por_clase": {
+      "completa": 14,
+      "parcial": 1,
+      "fuera_de_tramo": 7,
+      "sin_datos": 40
+    },
+    "actuales_por_clase": {
+      "completa": 59,
+      "parcial": 1,
+      "fuera_de_tramo": 0,
+      "sin_datos": 0
+    },
+    "salidos_fraccion_media_sesiones": 0.226,
+    "salidos_por_periodo_de_salida": {
+      "1996-2000": {
+        "n": 10,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      "2001-2005": {
+        "n": 10,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      "2006-2010": {
+        "n": 10,
+        "completa": 2,
+        "fraccion_media": 0.2
+      },
+      "2011-2015": {
+        "n": 10,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      "2016-2020": {
+        "n": 10,
+        "completa": 6,
+        "fraccion_media": 0.6
+      },
+      "2021-2026": {
+        "n": 12,
+        "completa": 6,
+        "fraccion_media": 0.5
+      }
+    },
+    "salidos_por_anio": [
+      {
+        "anio_salida": 1996,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 1997,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 1998,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 1999,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2000,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2001,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2002,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2003,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2004,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2005,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2006,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2007,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2008,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      },
+      {
+        "anio_salida": 2009,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      },
+      {
+        "anio_salida": 2010,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2011,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2012,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2013,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2014,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2015,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2016,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2017,
+        "n": 2,
+        "completa": 2,
+        "fraccion_media": 1.0
+      },
+      {
+        "anio_salida": 2018,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      },
+      {
+        "anio_salida": 2019,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      },
+      {
+        "anio_salida": 2020,
+        "n": 2,
+        "completa": 2,
+        "fraccion_media": 1.0
+      },
+      {
+        "anio_salida": 2021,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2022,
+        "n": 2,
+        "completa": 0,
+        "fraccion_media": 0.0
+      },
+      {
+        "anio_salida": 2023,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      },
+      {
+        "anio_salida": 2024,
+        "n": 2,
+        "completa": 2,
+        "fraccion_media": 1.0
+      },
+      {
+        "anio_salida": 2025,
+        "n": 2,
+        "completa": 2,
+        "fraccion_media": 1.0
+      },
+      {
+        "anio_salida": 2026,
+        "n": 2,
+        "completa": 1,
+        "fraccion_media": 0.5
+      }
+    ],
+    "sesgo": {
+      "meses": 362,
+      "desde": "1996-02-29",
+      "hasta": "2026-03-31",
+      "pit_anual_pct": 11.7,
+      "supervivientes_anual_pct": 18.61,
+      "sesgo_anual_pct": 6.91,
+      "sesgo_t": 4.17,
+      "limitacion": "Cota inferior: los salidos sin precio en Yahoo (quiebras, compras, tickers reutilizados) no entran en la cartera PIT; son los de peor rentabilidad, así que el sesgo real es mayor."
+    },
+    "simbolos_sin_descargar": [],
+    "descargas": {
+      "simbolos": 121,
+      "por_estado": {
+        "ok": 81,
+        "sin_datos": 40
+      },
+      "segundos_medios": 0.43
+    }
+  },
+  "notas": [
+    "Módulo: ingesta.mercados_series.supervivencia (muestra estratificada por año de salida, semilla fija)",
+    "Salidos con precio completo en su tramo: 14 de 62",
+    "Cota inferior: los salidos sin precio en Yahoo (quiebras, compras, tickers reutilizados) no entran en la cartera PIT; son los de peor rentabilidad, así que el sesgo real es mayor.",
+    "La muestra de salidos está estratificada por año de salida, no por mes: la media de los salidos de cada mes es una estimación con pocos datos (ruido alto)",
+    "Un ticker con datos dentro del tramo puede ser otra empresa (sin PERMNO/CIK no se verifica)",
+    "Corrección 'wrds_crsp': CRSP vía WRDS: precios y rentabilidades de deslistados (PERMNO, DLRET); pendiente de la licencia de MIAX. Es la corrección completa.",
+    "Corrección 'alpha_vantage_listing_status': Alpha Vantage LISTING_STATUS (state=delisted): solo la LISTA de deslistados con fechas, sin precios. Sirve para identificar, no para corregir rentabilidades.",
+    "Corrección 'tiingo': Tiingo EOD incluye muchos deslistados, pero exige una cuenta (y clave) del usuario; plan gratuito con límites diarios. No se ha probado aquí.",
+    "Corrección 'imputacion_delisting': Sin precios: imputar la rentabilidad de salida (p. ej. -30 % en bajas por quiebra, Shumway 1997) solo como análisis de sensibilidad, declarado.",
+    "Decisión: WRDS pendiente de MIAX; mientras tanto el sesgo se DECLARA y se MIDE con esta cota"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

@@ -1,0 +1,123 @@
+grupo,ticker,ticker_yahoo,alta,baja,anio_salida,sesiones_esperadas,sesiones_con_precio,fraccion,clase,primera_yahoo,ultima_yahoo,nota
+salido,FBO,FBO,1996-01-02,1996-03-13,1996,50,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,USHC,USHC,1996-01-02,1996-07-19,1996,139,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,GIDL,GIDL,1996-01-02,1997-07-17,1997,390,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,SRR,SRR,1996-01-02,1997-10-07,1997,447,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,BNL,BNL,1996-01-02,1998-07-01,1998,631,0,0.0,fuera_de_tramo,2020-09-17,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada; Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,DI,DI,1996-01-02,1998-09-30,1998,694,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,KWP,KWP,1996-01-02,1999-11-16,1999,979,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,NLC,NLC,1996-01-02,1999-08-02,1999,904,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,AFS.A,AFS-A,1998-04-08,2000-12-01,2000,670,0,0.0,sin_datos,,,
+salido,PRD,PRD,1996-01-02,2000-12-12,2000,1250,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,ETS,ETS,1996-01-02,2001-08-06,2001,1412,0,0.0,fuera_de_tramo,2025-08-21,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada; Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,OAT,OAT,1996-01-02,2001-08-03,2001,1411,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,ABX,ABX,1996-01-02,2002-07-22,2002,1649,0,0.0,fuera_de_tramo,2020-09-14,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada; Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,VTSS,VTSS,2000-12-12,2002-08-21,2002,421,0,0.0,sin_datos,,,
+salido,MDR,MDR,1996-01-02,2003-08-20,2003,1922,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,RATL,RATL,2002-02-01,2003-02-21,2003,265,0,0.0,sin_datos,,,
+salido,TNB,TNB,1996-01-02,2004-08-03,2004,2161,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,WNDXQ,WNDXQ,1996-01-02,2004-12-03,2004,2247,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,CPNLQ,CPNLQ,2000-12-01,2005-12-02,2005,1256,0,0.0,sin_datos,,,
+salido,SDS,SDS,2002-07-22,2005-08-12,2005,772,0,0.0,fuera_de_tramo,2006-07-13,2026-10-12,Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,FSH,FSH,2004-08-03,2006-11-10,2006,575,0,0.0,sin_datos,,,
+salido,SFA,SFA,1996-01-02,2006-02-27,2006,2556,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,H,H,2006-08-01,2007-04-10,2007,172,0,0.0,fuera_de_tramo,2009-11-05,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,MXIM,MXIM,2000-05-10,2007-09-27,2007,1855,0,0.0,sin_datos,,,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)
+salido,HPC,HPC,1996-01-02,2008-11-14,2008,3242,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,MTG,MTG,1996-07-19,2008-10-31,2008,3093,3093,1.0,completa,1991-08-07,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,CIEN,CIEN,2001-08-30,2009-12-21,2009,2088,2088,1.0,completa,1997-02-07,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,EQ,EQ,2006-05-18,2009-07-01,2009,785,0,0.0,fuera_de_tramo,2018-10-12,2026-10-12,Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,BNI,BNI,1996-01-02,2010-02-16,2010,3555,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,PTV,PTV,1999-11-05,2010-11-17,2010,2775,0,0.0,sin_datos,,,
+salido,MDP,MDP,1996-01-02,2011-01-04,2011,3779,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,MFE,MFE,2008-12-23,2011-03-01,2011,549,0,0.0,sin_datos,,,
+salido,MHS,MHS,2003-08-20,2012-04-02,2012,2170,0,0.0,sin_datos,,,
+salido,TIE,TIE,2007-10-29,2012-12-24,2012,1298,0,0.0,sin_datos,,,
+salido,FII,FII,2003-04-16,2013-01-02,2013,2445,0,0.0,sin_datos,,,
+salido,HNZ,HNZ,1996-01-02,2013-06-07,2013,4388,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,IGT,IGT,2001-09-04,2014-06-20,2014,3217,0,0.0,sin_datos,,,
+salido,X,X,1996-01-02,2014-07-02,2014,4657,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,ALTR,ALTR,2000-04-18,2015-12-28,2015,3947,0,0.0,sin_datos,,,
+salido,PETM,PETM,2012-10-05,2015-03-12,2015,609,0,0.0,sin_datos,,,
+salido,PCP,PCP,2007-06-01,2016-02-01,2016,2182,0,0.0,sin_datos,,,
+salido,TE,TE,2001-10-10,2016-07-01,2016,3707,0,0.0,fuera_de_tramo,2020-01-10,2026-10-12,Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)
+salido,DD,DD,1996-01-02,2017-09-01,2017,5456,5456,1.0,completa,1972-06-01,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada; ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,RIG,RIG,2013-10-29,2017-07-26,2017,941,941,1.0,completa,1993-05-28,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,KDP,KDP,2008-10-07,2018-07-02,2018,2450,2450,1.0,completa,2008-05-07,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,PDCO,PDCO,2005-10-11,2018-03-19,2018,3129,0,0.0,sin_datos,,,
+salido,MAC,MAC,2013-05-09,2019-12-23,2019,1668,1668,1.0,completa,1994-03-10,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,TMK,TMK,1996-01-02,2019-08-08,2019,5941,0,0.0,sin_datos,,,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+salido,HOG,HOG,2000-01-31,2020-06-22,2020,5130,5130,1.0,completa,1986-07-08,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,KSS,KSS,1998-08-14,2020-09-21,2020,5561,5561,1.0,completa,1992-05-19,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,ALXN,ALXN,2012-05-25,2021-07-21,2021,2302,0,0.0,sin_datos,,,
+salido,HBI,HBI,2015-03-23,2021-12-20,2021,1700,0,0.0,sin_datos,,,
+salido,FBHS,FBHS,2016-06-24,2022-12-19,2022,1633,0,0.0,sin_datos,,,
+salido,WLTW,WLTW,2016-01-05,2022-01-10,2022,1515,0,0.0,sin_datos,,,
+salido,ATVI,ATVI,2015-08-31,2023-10-18,2023,2047,0,0.0,sin_datos,,,
+salido,LUMN,LUMN,2020-09-18,2023-03-20,2023,628,628,1.0,completa,1980-03-17,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,AAL,AAL,2015-03-23,2024-09-23,2024,2392,2392,1.0,completa,2005-09-27,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,RHI,RHI,2000-12-05,2024-06-24,2024,5922,5922,1.0,completa,1980-03-17,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,CE,CE,2018-12-24,2025-03-24,2025,1569,1569,1.0,completa,2005-01-21,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO); identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,CZR,CZR,2021-03-22,2025-09-22,2025,1131,1131,1.0,completa,2014-09-22,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,EA,EA,2002-07-22,2026-08-05,2026,6048,1,0.0002,parcial,2026-08-04,2026-08-04,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+salido,MTCH,MTCH,2021-09-20,2026-03-23,2026,1130,1130,1.0,completa,1993-01-19,2026-10-12,identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker
+actual,AEP,AEP,1996-01-02,,,7746,7745,0.9999,completa,1962-01-02,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,AFL,AFL,1999-05-28,,,6886,6885,0.9999,completa,1980-03-17,2026-10-12,
+actual,BLK,BLK,2011-04-04,,,3905,3904,0.9997,completa,1999-10-01,2026-10-12,
+actual,BMY,BMY,1996-01-02,,,7746,7745,0.9999,completa,1972-06-01,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,BSX,BSX,1996-01-02,,,7746,7745,0.9999,completa,1992-05-19,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,CASY,CASY,2026-04-09,,,130,129,0.9923,completa,1983-10-20,2026-10-12,
+actual,CBOE,CBOE,2017-03-01,,,2419,2418,0.9996,completa,2010-06-15,2026-10-12,
+actual,CCI,CCI,2012-03-13,,,3668,3667,0.9997,completa,1998-08-18,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)
+actual,CCL,CCL,1998-12-22,,,6994,6993,0.9999,completa,1987-07-24,2026-10-12,
+actual,CIEN,CIEN,2026-02-09,,,171,170,0.9942,completa,1997-02-07,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)
+actual,CVS,CVS,1996-01-02,,,7746,7745,0.9999,completa,1973-02-21,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,DELL,DELL,2024-09-23,,,516,515,0.9981,completa,2016-08-17,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)
+actual,DVA,DVA,2008-07-31,,,4579,4578,0.9998,completa,1995-10-31,2026-10-12,
+actual,ECL,ECL,1996-01-02,,,7746,7745,0.9999,completa,1973-02-21,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,EMR,EMR,1996-01-02,,,7746,7745,0.9999,completa,1972-06-01,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,ERIE,ERIE,2024-09-23,,,516,515,0.9981,completa,1995-10-02,2026-10-12,
+actual,ESS,ESS,2014-04-02,,,3152,3151,0.9997,completa,1994-06-07,2026-10-12,
+actual,ETN,ETN,1996-01-02,,,7746,7745,0.9999,completa,1972-06-01,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,FIX,FIX,2025-12-22,,,203,202,0.9951,completa,1997-06-27,2026-10-12,
+actual,FRT,FRT,2016-02-01,,,2691,2690,0.9996,completa,1973-05-03,2026-10-12,
+actual,GRMN,GRMN,2012-12-12,,,3479,3478,0.9997,completa,2000-12-08,2026-10-12,
+actual,HD,HD,1996-01-02,,,7746,7745,0.9999,completa,1981-09-22,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,ISRG,ISRG,2008-06-02,,,4621,4620,0.9998,completa,2000-06-16,2026-10-12,
+actual,JCI,JCI,1996-01-02,,,7746,7745,0.9999,completa,1987-09-28,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,JNJ,JNJ,1996-01-02,,,7746,7745,0.9999,completa,1962-01-02,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,KKR,KKR,2024-06-24,,,579,578,0.9983,completa,2010-07-15,2026-10-12,
+actual,LII,LII,2024-12-23,,,452,451,0.9978,completa,1999-07-29,2026-10-12,
+actual,LNT,LNT,2016-07-01,,,2585,2584,0.9996,completa,1973-02-21,2026-10-12,
+actual,LULU,LULU,2023-10-18,,,749,748,0.9987,completa,2007-07-27,2026-10-12,
+actual,MA,MA,2008-07-18,,,4588,4587,0.9998,completa,2006-05-25,2026-10-12,
+actual,MCO,MCO,1996-01-02,,,7746,7745,0.9999,completa,1994-10-31,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,MGM,MGM,2017-07-26,,,2317,2316,0.9996,completa,1988-05-02,2026-10-12,
+actual,MLM,MLM,2014-07-02,,,3089,3088,0.9997,completa,1994-02-17,2026-10-12,
+actual,MNST,MNST,2012-06-29,,,3592,3591,0.9997,completa,1985-12-09,2026-10-12,
+actual,MRK,MRK,1996-01-02,,,7746,7745,0.9999,completa,1962-01-02,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,MSFT,MSFT,1996-01-02,,,7746,7745,0.9999,completa,1986-03-13,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,NCLH,NCLH,2017-10-13,,,2261,2260,0.9996,completa,2013-01-18,2026-10-12,
+actual,NUE,NUE,1996-01-02,,,7746,7745,0.9999,completa,1980-03-17,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,O,O,2015-04-07,,,2898,2897,0.9997,completa,1994-10-18,2026-10-12,
+actual,PSA,PSA,2005-08-19,,,5320,5319,0.9998,completa,1980-11-18,2026-10-12,
+actual,PWR,PWR,2009-07-01,,,4348,4347,0.9998,completa,1998-02-12,2026-10-12,
+actual,REGN,REGN,2013-05-01,,,3384,3383,0.9997,completa,1991-04-02,2026-10-12,
+actual,ROL,ROL,2018-10-01,,,2019,2018,0.9995,completa,1980-03-17,2026-10-12,
+actual,RSG,RSG,2008-12-05,,,4490,4489,0.9998,completa,1998-07-01,2026-10-12,
+actual,SHW,SHW,1996-01-02,,,7746,7745,0.9999,completa,1980-03-17,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,SJM,SJM,2008-11-06,,,4510,4509,0.9998,completa,1994-10-31,2026-10-12,
+actual,SNDK,SNDK,2025-11-28,,,219,218,0.9954,completa,2025-02-13,2026-10-12,ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)
+actual,STE,STE,2019-12-23,,,1710,1709,0.9994,completa,1992-06-01,2026-10-12,
+actual,TECH,TECH,2021-08-30,,,1286,1285,0.9992,completa,1989-02-09,2026-10-12,
+actual,TGT,TGT,1996-01-02,,,7746,7745,0.9999,completa,1973-02-21,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,TJX,TJX,1996-01-02,,,7746,7745,0.9999,completa,1987-06-26,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,TMO,TMO,1997-01-02,,,7492,7491,0.9999,completa,1980-03-17,2026-10-12,
+actual,TTD,TTD,2025-07-18,,,312,311,0.9968,completa,2016-09-21,2026-10-12,
+actual,WAB,WAB,2019-02-27,,,1918,1917,0.9995,completa,1995-06-16,2026-10-12,
+actual,WBD,WBD,2022-04-11,,,1131,1,0.0009,parcial,2026-10-05,2026-10-05,
+actual,WDC,WDC,2009-07-01,,,4348,4347,0.9998,completa,1978-10-31,2026-10-12,
+actual,WMB,WMB,1996-01-02,,,7746,7745,0.9999,completa,1981-12-31,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,WYNN,WYNN,2008-11-14,,,4504,4503,0.9998,completa,2002-10-25,2026-10-12,
+actual,XEL,XEL,1996-01-02,,,7746,7745,0.9999,completa,1973-02-21,2026-10-12,en el índice antes de 1996-01-02 (inicio del fichero): alta truncada
+actual,YUM,YUM,1997-10-07,,,7299,7298,0.9999,completa,1997-09-17,2026-10-12,
