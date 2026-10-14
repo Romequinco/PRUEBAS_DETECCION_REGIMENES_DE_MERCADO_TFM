@@ -1,8 +1,10 @@
-# 05 — Modelos de volatilidad / econométricos (ARIMA, ARCH/GARCH, RS-GARCH)
+# F5 — Volatilidad y GARCH
 
-<!-- BEGIN nota_v2 -->
-> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F5_volatilidad_garch.bib`](F5_volatilidad_garch.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D06 `garch_t_vol`](../detectores/D06_garch_t_vol.md), [D11 `msgarch_regime`](../detectores/D11_msgarch_regime.md). Notebook v2: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
-<!-- END nota_v2 -->
+> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D06 `garch_t_vol`](#d06), [D11 `msgarch_regime`](#d11). Notebook de familia: [`notebooks/09_familia_F5_garch.ipynb`](../../notebooks/09_familia_F5_garch.ipynb). Bibliografía: claves `vol_*` y compartidas de [`docs/references.bib`](../references.bib).
+>
+> **Datos v1 en la teoría.** Las cifras del EDA que cita la sección 1 son de la Capa 1 (15 features, ventana 2007-04 → 2026-06, 4 crisis: 2008, 2011, 2020 y 2022), igual que los nombres de feature `credit_spread_z` o `yield_slope_z` y las referencias a la «tarea previa»; donde el dato importa se indica junto a él. El panel v2 tiene dos pistas (A: 1962-01-02 → 2026-05-29; B: 2007-04-11 → 2026-05-29) y el EDA vigente está en [`eda.md`](eda.md) (curtosis de exceso del S&P 500 = 18,7 en 1928-2026).
+
+## 1. Teoría
 
 > Familia de la FASE 2 centrada en la **modelización explícita de la varianza
 > condicional** (heteroscedasticidad) y su acoplamiento con regímenes de mercado.
@@ -13,13 +15,13 @@
 >
 > **Nota de frontera (solape declarado):** el Markov-Switching "puro" sobre la
 > *media/varianza* (Hamilton 1989, sin dinámica GARCH dentro del régimen) lo
-> trata la ficha F4. Aquí el foco es la **varianza condicional
+> trata la ficha [F4](F4_markov_switching.md). Aquí el foco es la **varianza condicional
 > heteroscedástica** y su combinación con regímenes (RS-GARCH / MS-GARCH). El
 > solape concreto está en los modelos de cambio de régimen: la diferencia es que
 > el MS "puro" asume varianza constante *dentro* de cada estado, mientras que
 > RS-GARCH deja que la varianza evolucione tipo GARCH *dentro* de cada estado.
 
-## Definición y supuestos
+### Definición y supuestos
 
 Los modelos de la familia ARCH descomponen el retorno en una **media
 condicional** y una **innovación con varianza condicional variable en el
@@ -50,7 +52,7 @@ r_t = μ_t + ε_t ,   ε_t = σ_t · z_t ,   z_t ~ iid D(0,1)
    (gaussiana por defecto; t-Student o GED para colas).
 4. Estacionariedad en covarianza: en GARCH(1,1), `α + β < 1`.
 
-## Variantes principales
+### Variantes principales
 
 | Modelo | Aporta | Ecuación de la varianza (esquema) | Referencia |
 |---|---|---|---|
@@ -80,7 +82,7 @@ colapsan esa dependencia:
   lleva su **propia** recursión de varianza independiente, de modo que el modelo
   es markoviano y analíticamente tratable (momentos, estacionariedad cerrados).
 
-## Fortalezas y debilidades
+### Fortalezas y debilidades
 
 **¿Detecta régimen o solo modela varianza?**
 - ARIMA/ARCH/GARCH y sus variantes asimétricas **no detectan régimen**: producen
@@ -129,15 +131,16 @@ identificación/label-switching**. Es bastante más caro y frágil de estimar qu
 GARCH(1,1) o que un HMM gaussiano. La formulación de Haas–Mittnik–Paolella alivia
 esto al ser markoviana, pero sigue siendo no trivial.
 
-## Idoneidad para este proyecto
+### Idoneidad para este proyecto
 
-Conexión directa con los hallazgos del EDA (`docs/historia/capa1/memoria/01_data_and_eda.md`):
+Conexión directa con los hallazgos del EDA de la Capa 1 (memoria v1, tag `capa1-final`; EDA vigente
+en [`eda.md`](eda.md)):
 
 1. **Clustering de volatilidad evidente** → es precisamente el fenómeno que
    ARCH/GARCH fueron diseñados para modelar. La feature `SP500_vol_z` (vol
    realizada 21d estandarizada) ya usada en el HMM es una versión *no
    paramétrica* de lo que GARCH estima de forma paramétrica y un paso por delante.
-2. **Fat tails muy fuertes** (kurtosis exceso S&P 500 ≈ 25.6, HYG ≈ 39.6) → el
+2. **Fat tails muy fuertes** (curtosis de exceso S&P 500 ≈ 25.6 y HYG ≈ 39.6 en la ventana v1 2007-2026; el EDA v2 da 18,7 para el S&P 500 en 1928-2026) → el
    GARCH gaussiano dejaría colas residuales; **motiva GARCH-t / GED** como
    distribución de error. Esto ataca de frente la limitación nº5 del detector
    anterior ("supuesto gaussiano subestima colas").
@@ -168,7 +171,7 @@ estimación. Ambos son univariantes sobre el S&P 500 (o crédito HYG); para el
 panel multi-activo del proyecto sirven como sensor focalizado de la vol de
 equity, complementando al HMM multivariante.
 
-## Aplicaciones documentadas a regímenes de mercado financiero
+### Aplicaciones documentadas a regímenes de mercado financiero
 
 - **Hamilton–Susmel (1994):** SWARCH aplicado a retornos semanales de la bolsa
   de EE.UU.; identifican regímenes de alta y baja volatilidad y muestran que
@@ -188,7 +191,7 @@ equity, complementando al HMM multivariante.
 - **Ardia et al. (2019):** documentan el paquete MSGARCH con aplicaciones de
   Value-at-Risk y previsión de volatilidad bajo cambio de régimen.
 
-## Coste de implementación y librería Python recomendada
+### Coste de implementación y librería Python recomendada
 
 - **GARCH y variantes (ARCH, GARCH, EGARCH, GJR/TARCH, GARCH-t/GED): `arch` de
   Kevin Sheppard** (`pip install arch`, repo `bashtage/arch`). Madura, bien
@@ -212,51 +215,143 @@ equity, complementando al HMM multivariante.
 trabajo a medida o dependencia de R, lo que choca con el stack Python del
 proyecto; conviene presupuestarlo o limitarse a GARCH-t univariante + capa de
 régimen. (2) GARCH es **univariante** por activo: no sustituye al HMM
-multivariante sobre las 15 features, lo complementa como sensor de vol de equity/
+multivariante sobre el panel de features, lo complementa como sensor de vol de equity/
 crédito. (3) En walk-forward, reestimar parámetros en cada ventana es caro; una
 alternativa causal barata es estimar en una ventana de calibración y solo
 **actualizar recursivamente** `σ_t` (los parámetros cambian despacio).
 
-## Referencias
+## 2. Detectores implementados
 
-- Engle, R. F. (1982). *Autoregressive Conditional Heteroscedasticity with
-  Estimates of the Variance of United Kingdom Inflation.* Econometrica 50(4),
-  987–1008. DOI: 10.2307/1912773
-- Bollerslev, T. (1986). *Generalized Autoregressive Conditional
-  Heteroskedasticity.* Journal of Econometrics 31(3), 307–327. DOI:
-  10.1016/0304-4076(86)90063-1
-- Bollerslev, T. (1987). *A Conditionally Heteroskedastic Time Series Model for
-  Speculative Prices and Rates of Return.* The Review of Economics and Statistics
-  69(3), 542–547. DOI: 10.2307/1925546
-- Nelson, D. B. (1991). *Conditional Heteroskedasticity in Asset Returns: A New
-  Approach.* Econometrica 59(2), 347–370. DOI: 10.2307/2938260
-- Glosten, L. R., Jagannathan, R. & Runkle, D. E. (1993). *On the Relation
-  between the Expected Value and the Volatility of the Nominal Excess Return on
-  Stocks.* The Journal of Finance 48(5), 1779–1801. DOI:
-  10.1111/j.1540-6261.1993.tb05128.x
-- Zakoian, J.-M. (1994). *Threshold Heteroskedastic Models.* Journal of Economic
-  Dynamics and Control 18(5), 931–955. DOI: 10.1016/0165-1889(94)90039-6
-- Hamilton, J. D. & Susmel, R. (1994). *Autoregressive Conditional
-  Heteroskedasticity and Changes in Regime.* Journal of Econometrics 64(1–2),
-  307–333. DOI: 10.1016/0304-4076(94)90067-1
-- Gray, S. F. (1996). *Modeling the Conditional Distribution of Interest Rates as
-  a Regime-Switching Process.* Journal of Financial Economics 42(1), 27–62. DOI:
-  10.1016/0304-405X(96)00875-6
-- Klaassen, F. (2002). *Improving GARCH Volatility Forecasts with Regime-Switching
-  GARCH.* Empirical Economics 27(2), 363–394. DOI: 10.1007/s001810100100
-- Haas, M., Mittnik, S. & Paolella, M. S. (2004). *A New Approach to
-  Markov-Switching GARCH Models.* Journal of Financial Econometrics 2(4),
-  493–530. DOI: 10.1093/jjfinec/nbh020
-- Marcucci, J. (2005). *Forecasting Stock Market Volatility with Regime-Switching
-  GARCH Models.* Studies in Nonlinear Dynamics & Econometrics 9(4), art. 6. DOI:
-  10.2202/1558-3708.1145
-- Ardia, D., Bluteau, K., Boudt, K., Catania, L. & Trottier, D.-A. (2019).
-  *Markov-Switching GARCH Models in R: The MSGARCH Package.* Journal of
-  Statistical Software 91(4), 1–38. DOI: 10.18637/jss.v091.i04
-- Sheppard, K. (s.f.). *arch: ARCH models in Python.* Software.
-  https://github.com/bashtage/arch
+Las tablas de resultados salen de `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` (benchmark completo 24/24, `results/benchmark/manifest.json` del 2026-09-29T12:41 UTC; cifras de [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) §4). Walk-forward causal y evaluación OOS por pista (17 crisis evaluables en la A y 9 en la B, según `configs/benchmark_spec.yaml`). Ranking de **detección**: un evento se detecta con ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre la precisión diaria (1 − FAR) y el recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Cada tabla va entre marcadores `resultados_v2`: tras un benchmark nuevo se regenera desde esos dos CSV, no se edita a mano.
 
-## Variantes no implementadas
+<a id="d06"></a>
+
+### D06 — `garch_t_vol` · GJR-GARCH(1,1)-t con umbral sobre la sigma condicional
+
+El GARCH no da estados tipados: da una **sigma condicional** causal. D06 ajusta un GJR-GARCH(1,1) con innovaciones t [`vol_glosten1993`; `vol_bollerslev1987`] sobre el retorno del S&P 500 y define el régimen **umbralizando la sigma** con percentiles del train, histéresis y permanencia mínima (la «vía A» de la teoría).
+
+**Configuración v2**
+
+- Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` (`GarchTVol`); registro, id `D06`.
+- Modelo: `arch_model(ret×100, mean='Constant', vol='GARCH', p=1, o=1, q=1, dist='t')`; parámetros estimados en el train y **congelados** (`.fix`); la sigma de cada bloque se reconstruye con burn-in del train.
+- Umbral: `q_in = 0.80`, `q_out = 0.60` (percentiles de la sigma in-sample del train), `min_dwell = 5`; `predict_proba` es una sigmoide monótona de `σ − τ_in`.
+- Feature: `SP500_ret` en ambas pistas. Walk-forward: refit cada 21 sesiones, ventana expanding.
+
+<!-- BEGIN resultados_v2 D06 -->
+**Resultados v2 (ADR-003)**
+
+| Métrica | Pista A | Pista B |
+|---|---:|---:|
+| Variante evaluada | `garch_t_vol` | `garch_t_vol` |
+| Puesto de detección | **7** / 12 | **2** / 12 |
+| Nivel de etiqueta | `elegible` | `elegible` |
+| `score_deteccion` | 0.540 | 0.597 |
+| Recall por evento | 1.000 (17/17) | 0.889 (8/9) |
+| Precisión diaria (lift vs base) | 0.370 (×1.91) | 0.449 (×2.60) |
+| Cobertura media de crisis | 0.786 | 0.512 |
+| Tasa de falsas alarmas (FAR) | 0.630 | 0.551 |
+| Activación media en trampas | 0.079 | 0.000 |
+| Switching rate | 0.0137 | 0.0133 |
+| Duración media de régimen (sesiones) | 72.9 | 73.8 |
+| Estabilidad de etiqueta | 0.998 | 0.999 |
+| Puesto legacy (`rank_medio`) | 5 (6.2) | 1 (3.4) |
+
+**Ventana OOS y eventos por pista**
+
+- **Pista A** · OOS 1970-05-12 → 2026-05-29 (n = 14133) · train inicial 2016 sesiones, refit cada 21 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (17): `bear_1969_70`, `oil_stagflation_1973`, `volcker_1980_82`, `black_monday_1987`, `gulf_war_sl_1990`, `ltcm_russia_1998`, `dotcom_2000_02`, `gfc_2007_09`, `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `covid_2020`, `inflation_bear_2022`, `svb_banking_2023`, `tariff_selloff_2025`.
+  - No detectados (0): ninguno.
+- **Pista B** · OOS 2010-04-12 → 2026-05-29 (n = 4059) · train inicial 756 sesiones, refit cada 21 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (8): `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `covid_2020`, `inflation_bear_2022`, `tariff_selloff_2025`.
+  - No detectados (1): `svb_banking_2023`.
+<!-- END resultados_v2 D06 -->
+
+Narrativa de la Capa 1 (implementación v1, hallazgos e hipótesis del CHECKPOINT 2): [`historia/fichas_v1.md`](../historia/fichas_v1.md#d06).
+
+<a id="d11"></a>
+
+### D11 — `msgarch_regime` · MS-GARCH de Haas, Mittnik y Paolella
+
+Markov-Switching GARCH en la especificación **paralela** de Haas, Mittnik y Paolella [`vol_haasmittnikpaolella2004`]: dos recursiones GARCH(1,1)-t, una por régimen, cada una alimentada solo por su propia varianza pasada, lo que evita la dependencia de la trayectoria y permite la verosimilitud exacta con el filtro de Hamilton (la «vía B» de la teoría). Implementado desde cero en numpy/scipy, sin R.
+
+**Configuración v2**
+
+- Código: `src/regimenes/detectores/f5_garch/msgarch_regime.py` (`MSGarchRegime`); registro, id `D11`.
+- Modelo: 2 regímenes GARCH(1,1)-t, media μ única y ν compartido; máxima verosimilitud con `n_init = 1`, `maxiter = 100`; posterior de crisis **filtrado** (Hamilton), diario y causal dentro de cada bloque.
+- Feature: `SP500_ret` en ambas pistas.
+- Walk-forward: refit cada **126** sesiones con ventana **rolling** (`expanding=False`, longitud = train inicial de la pista); detector lento.
+
+<!-- BEGIN resultados_v2 D11 -->
+**Resultados v2 (ADR-003)**
+
+| Métrica | Pista A | Pista B |
+|---|---:|---:|
+| Variante evaluada | `msgarch_regime` | `msgarch_regime` |
+| Puesto de detección | **11** / 12 | **8** / 12 |
+| Nivel de etiqueta | `elegible` | `elegible` |
+| `score_deteccion` | 0.443 | 0.394 |
+| Recall por evento | 0.765 (13/17) | 0.778 (7/9) |
+| Precisión diaria (lift vs base) | 0.312 (×1.61) | 0.264 (×1.53) |
+| Cobertura media de crisis | 0.437 | 0.392 |
+| Tasa de falsas alarmas (FAR) | 0.688 | 0.736 |
+| Activación media en trampas | 0.000 | 0.167 |
+| Switching rate | 0.0173 | 0.0719 |
+| Duración media de régimen (sesiones) | 57.7 | 13.9 |
+| Estabilidad de etiqueta | 0.897 | 0.872 |
+| Puesto legacy (`rank_medio`) | 12 (8.8) | 12 (9.6) |
+
+**Ventana OOS y eventos por pista**
+
+- **Pista A** · OOS 1970-05-12 → 2026-05-29 (n = 14133) · train inicial 2016 sesiones, refit cada 126 (rolling) · 1 feature(s): `SP500_ret`.
+  - Detectados (13): `oil_stagflation_1973`, `volcker_1980_82`, `black_monday_1987`, `gulf_war_sl_1990`, `ltcm_russia_1998`, `dotcom_2000_02`, `gfc_2007_09`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `covid_2020`, `tariff_selloff_2025`.
+  - No detectados (4): `bear_1969_70`, `flash_crash_euro1_2010`, `inflation_bear_2022`, `svb_banking_2023`.
+- **Pista B** · OOS 2010-04-12 → 2026-05-29 (n = 4059) · train inicial 756 sesiones, refit cada 126 (rolling) · 1 feature(s): `SP500_ret`.
+  - Detectados (7): `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `covid_2020`, `inflation_bear_2022`, `tariff_selloff_2025`.
+  - No detectados (2): `fed_tightening_2018q4`, `svb_banking_2023`.
+<!-- END resultados_v2 D11 -->
+
+Narrativa de la Capa 1 (implementación v1, hallazgos e hipótesis del CHECKPOINT 2): [`historia/fichas_v1.md`](../historia/fichas_v1.md#d11).
+
+## 3. Variantes no implementadas
 
 - **Volatilidad realizada / HAR (Corsi, 2009):** alternativa no paramétrica a GARCH, ligada a la feature `vol 21d`; pertenece a las features de volatilidad.
 - **DCC-GARCH (Engle):** extensión multivariante para la correlación condicional dinámica (feature `corr_spx_bond`); fuera de la familia univariante de esta ficha y no implementada.
+
+## 4. Referencias
+
+- Engle, R. F. (1982). *Autoregressive Conditional Heteroscedasticity with
+  Estimates of the Variance of United Kingdom Inflation.* Econometrica 50(4),
+  987–1008. DOI: 10.2307/1912773 [`vol_engle1982`]
+- Bollerslev, T. (1986). *Generalized Autoregressive Conditional
+  Heteroskedasticity.* Journal of Econometrics 31(3), 307–327. DOI:
+  10.1016/0304-4076(86)90063-1 [`vol_bollerslev1986`]
+- Bollerslev, T. (1987). *A Conditionally Heteroskedastic Time Series Model for
+  Speculative Prices and Rates of Return.* The Review of Economics and Statistics
+  69(3), 542–547. DOI: 10.2307/1925546 [`vol_bollerslev1987`]
+- Nelson, D. B. (1991). *Conditional Heteroskedasticity in Asset Returns: A New
+  Approach.* Econometrica 59(2), 347–370. DOI: 10.2307/2938260 [`vol_nelson1991`]
+- Glosten, L. R., Jagannathan, R. & Runkle, D. E. (1993). *On the Relation
+  between the Expected Value and the Volatility of the Nominal Excess Return on
+  Stocks.* The Journal of Finance 48(5), 1779–1801. DOI:
+  10.1111/j.1540-6261.1993.tb05128.x [`vol_glosten1993`]
+- Zakoian, J.-M. (1994). *Threshold Heteroskedastic Models.* Journal of Economic
+  Dynamics and Control 18(5), 931–955. DOI: 10.1016/0165-1889(94)90039-6 [`vol_zakoian1994`]
+- Hamilton, J. D. & Susmel, R. (1994). *Autoregressive Conditional
+  Heteroskedasticity and Changes in Regime.* Journal of Econometrics 64(1–2),
+  307–333. DOI: 10.1016/0304-4076(94)90067-1 [`vol_hamiltonsusmel1994`]
+- Gray, S. F. (1996). *Modeling the Conditional Distribution of Interest Rates as
+  a Regime-Switching Process.* Journal of Financial Economics 42(1), 27–62. DOI:
+  10.1016/0304-405X(96)00875-6 [`vol_gray1996`]
+- Klaassen, F. (2002). *Improving GARCH Volatility Forecasts with Regime-Switching
+  GARCH.* Empirical Economics 27(2), 363–394. DOI: 10.1007/s001810100100 [`vol_klaassen2002`]
+- Haas, M., Mittnik, S. & Paolella, M. S. (2004). *A New Approach to
+  Markov-Switching GARCH Models.* Journal of Financial Econometrics 2(4),
+  493–530. DOI: 10.1093/jjfinec/nbh020 [`vol_haasmittnikpaolella2004`]
+- Marcucci, J. (2005). *Forecasting Stock Market Volatility with Regime-Switching
+  GARCH Models.* Studies in Nonlinear Dynamics & Econometrics 9(4), art. 6. DOI:
+  10.2202/1558-3708.1145 [`vol_marcucci2005`]
+- Ardia, D., Bluteau, K., Boudt, K., Catania, L. & Trottier, D.-A. (2019).
+  *Markov-Switching GARCH Models in R: The MSGARCH Package.* Journal of
+  Statistical Software 91(4), 1–38. DOI: 10.18637/jss.v091.i04 [`vol_ardia2019`]
+- Sheppard, K. (s.f.). *arch: ARCH models in Python.* Software.
+  https://github.com/bashtage/arch [`vol_sheppard_arch`]

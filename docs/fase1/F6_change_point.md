@@ -1,14 +1,16 @@
-# 06 — Change-point detection
+# F6 — Change-point
 
-<!-- BEGIN nota_v2 -->
-> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F6_change_point.bib`](F6_change_point.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D07 `changepoint_online`](../detectores/D07_changepoint_online.md). Notebook v2: [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
-<!-- END nota_v2 -->
+> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D07 `changepoint_online`](#d07). Notebook de familia: [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb). Bibliografía: claves `cp_*` y compartidas de [`docs/references.bib`](../references.bib).
+>
+> **Datos v1 en la teoría.** Las cifras del EDA que cita la sección 1 son de la Capa 1 (15 features, ventana 2007-04 → 2026-06, 4 crisis: 2008, 2011, 2020 y 2022), igual que los nombres de feature `credit_spread_z` o `yield_slope_z` y las referencias a la «tarea previa»; donde el dato importa se indica junto a él. El panel v2 tiene dos pistas (A: 1962-01-02 → 2026-05-29; B: 2007-04-11 → 2026-05-29) y el EDA vigente está en [`eda.md`](eda.md) (curtosis de exceso del S&P 500 = 18,7 en 1928-2026).
+
+## 1. Teoría
 
 > Familia de la FASE 2 (estado del arte). Enfoque: detectar **instantes de cambio
 > estructural** que separan tramos homogéneos, en vez de modelar estados latentes
-> recurrentes. Referencias en `F6_change_point.bib`.
+> recurrentes. Referencias: claves `cp_*` de [`docs/references.bib`](../references.bib).
 
-## Definición y supuestos
+### Definición y supuestos
 
 El **change-point detection** (CPD) busca los instantes \(t_1 < t_2 < \dots < t_k\)
 en que las propiedades estadísticas de una serie temporal cambian de forma abrupta,
@@ -39,9 +41,9 @@ etiqueta estados recurrentes. No dice "esto es el régimen crisis que ya vimos e
 en la interfaz de detectores de este proyecto (estados `0..n-1`, crisis = el peor)
 hay que **post-etiquetar** cada segmento por criterio económico (ver §Idoneidad).
 
-## Variantes principales
+### Variantes principales
 
-### CUSUM (Page, 1954) — online, secuencial
+#### CUSUM (Page, 1954) — online, secuencial
 La suma acumulada de desviaciones respecto a un valor objetivo. Se mantiene un
 estadístico \(S_t = \max(0,\, S_{t-1} + (x_t - \mu_0 - k))\) y se declara cambio
 cuando \(S_t\) supera un umbral \(h\). Es el detector secuencial original de control
@@ -50,7 +52,7 @@ de calidad, **causal por construcción**: solo usa el pasado y dispara con ciert
 **ICSS** (Inclán & Tiao, 1994), suma acumulada de *cuadrados* para detectar cambios
 en la varianza incondicional —muy usado en finanzas para quiebres de volatilidad.
 
-### BOCPD — Bayesian Online Change Point Detection (Adams & MacKay, 2007) — online
+#### BOCPD — Bayesian Online Change Point Detection (Adams & MacKay, 2007) — online
 Estima en cada instante la distribución posterior del **run length** \(r_t\)
 (tiempo transcurrido desde el último cambio) mediante un *message-passing*
 recursivo: \(P(r_t \mid x_{1:t})\). Cada paso solo necesita el dato nuevo y el
@@ -61,7 +63,7 @@ fortaleza es que entrega **incertidumbre** (probabilidad de cambio) en tiempo re
 no solo un punto. Fearnhead & Liu (2007) proponen, en paralelo, filtrado online
 exacto para múltiples change-points con coste reducible a lineal vía partículas.
 
-### `ruptures` — métodos principalmente OFFLINE (Truong et al., 2020)
+#### `ruptures` — métodos principalmente OFFLINE (Truong et al., 2020)
 La librería de referencia en Python organiza los métodos como combinación de
 *(coste, método de búsqueda, restricción sobre nº de cambios)*:
 
@@ -82,14 +84,14 @@ La librería de referencia en Python organiza los métodos como combinación de
   (no solo media/varianza). Con un kernel RBF es **no paramétrico** y robusto, capaz
   de ver cambios donde media y varianza son constantes pero cambia la forma.
 
-### Coste / penalización del número de cambios
+#### Coste / penalización del número de cambios
 El número de breakpoints es un problema de **selección de modelo**: sin penalizar,
 el óptimo coloca un cambio en cada punto (sobreajuste). Se controla con
 penalización lineal \(\beta\) (PELT), BIC/AIC, o el coste por cambio en kernel CPD
 (Arlot et al., 2019). **La calibración de \(\beta\)/umbral es la decisión crítica**:
 gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
 
-### Online vs offline — distinción central para este proyecto
+#### Online vs offline — distinción central para este proyecto
 - **Online / secuencial (CAUSAL)**: CUSUM, ICSS secuencial, BOCPD, Fearnhead–Liu.
   Detectan el cambio **en cuanto va ocurriendo**, usando solo \(x_{1:t}\), con un
   **retardo de detección**. Son los apropiados para un marco walk-forward sin
@@ -105,7 +107,7 @@ gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
   de posición al añadir datos (inestabilidad retrospectiva). Es el camino para
   integrar PELT, pero hay que declarar el coste y el flickering que induce.
 
-## Fortalezas y debilidades
+### Fortalezas y debilidades
 
 **Fortalezas**
 - **Detección temprana de crisis rápidas**: su punto fuerte. Un crash o un salto de
@@ -121,8 +123,8 @@ gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
 
 **Debilidades**
 - **Supuesto gaussiano y fat tails**: CUSUM en media e ICSS en varianza asumen
-  normalidad/i.i.d. Con la **kurtosis de exceso ≈ 25.6** del S&P 500 (y ≈ 39.6 en
-  HYG) del EDA, un único outlier leptocúrtico puede superar el umbral y disparar un
+  normalidad/i.i.d. Con la **curtosis de exceso ≈ 25.6** del S&P 500 (y ≈ 39.6 en
+  HYG) del EDA v1 (2007-2026; 18,7 en 1928-2026 según el EDA v2), un único outlier leptocúrtico puede superar el umbral y disparar un
   **falso change-point**. Los métodos basados en momentos gaussianos son
   especialmente vulnerables; los **no paramétricos / kernel** (y costes robustos
   tipo Huber o sobre rangos) mitigan esto.
@@ -139,7 +141,7 @@ gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
 - **No reconoce regímenes recurrentes**: segmenta pero no etiqueta; requiere
   post-procesado económico (ver §Idoneidad).
 
-## Idoneidad para este proyecto
+### Idoneidad para este proyecto
 
 1. **Variante relevante = online/secuencial.** El proyecto es causal y walk-forward,
    así que las piezas de primera clase son **CUSUM/ICSS** y **BOCPD**. PELT y el
@@ -147,17 +149,18 @@ gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
    expanding*, declarando explícitamente que la versión "sobre toda la serie" es
    anti-causal y sirve únicamente de referencia/oráculo.
 
-2. **EDA → elegir métodos robustos.** Dado el perfil de **fat tails** (kurtosis
-   ≈ 25.6 en SP500), priorizar variantes **no paramétricas / kernel** o costes
+2. **EDA → elegir métodos robustos.** Dado el perfil de **fat tails** (curtosis
+   ≈ 25.6 en SP500 en v1; 18,7 en 1928-2026), priorizar variantes **no paramétricas / kernel** o costes
    robustos frente al CUSUM gaussiano puro, para no confundir outliers con cambios
    de régimen. Conviene además operar sobre **features ya causales y
    z-scoreadas** (`VIX_level_z`, `SP500_vol_z`, `credit_spread_z`,
    `SP500_drawdown`), que están más cerca de la i.i.d. por tramos que los precios
-   crudos.
+   crudos. D07 sigue esta recomendación: su coste por defecto es robusto (`log|r|`,
+   mediana/MAD y winsorización).
 
 3. **Métrica lead/lag — donde puede lucir.** La detección temprana es la ventaja
    natural del CPD: medir el **lead/lag respecto al suelo del drawdown**
-   (`DRAWDOWN_TROUGHS`: 2009-03-09, 2011-10-03, 2020-03-23, 2022-10-12) es la prueba
+   (`DRAWDOWN_TROUGHS` de la Capa 1: 2009-03-09, 2011-10-03, 2020-03-23, 2022-10-12) es la prueba
    reina para esta familia. Un CUSUM/BOCPD bien calibrado debería **anticipar** o
    acompañar de cerca la entrada en crisis.
 
@@ -173,14 +176,14 @@ gobierna directamente el *trade-off* entre detección temprana y falsas alarmas.
 5. **Control de flickering.** Calibrar \(\beta\)/umbral y `min_size` con la propia
    métrica de falsas alarmas/flickering del proyecto, evitando segmentaciones
    excesivas (especialmente alrededor de 2018/2013, las "trampas" / falsos positivos
-   del `evaluation.py`).
+   del `evaluation.py` de la Capa 1; hoy `regimenes.evaluacion`).
 
 **Veredicto**: familia **complementaria y valiosa como detector temprano** (sobre
 todo CUSUM/BOCPD online), no como clasificador de regímenes recurrentes. Encaja
 bien como *baseline causal* y como *fuente de la métrica lead/lag*, con la cautela
 de fat tails (preferir kernel/robusto) y el coste de post-etiquetado.
 
-## Aplicaciones documentadas a regímenes de mercado financiero
+### Aplicaciones documentadas a regímenes de mercado financiero
 
 - **Quiebres de varianza/volatilidad**: ICSS (Inclán & Tiao, 1994) es el estándar
   para detectar cambios en la varianza incondicional de retornos; ampliamente
@@ -199,7 +202,7 @@ de fat tails (preferir kernel/robusto) y el coste de post-etiquetado.
   detectar transiciones de régimen sin supuesto gaussiano (criterio del equipo:
   línea emergente, no madura como baseline).
 
-## Coste de implementación y librería Python recomendada
+### Coste de implementación y librería Python recomendada
 
 - **`ruptures`** (Truong et al., 2020) — librería de referencia, madura y bien
   documentada. Cubre PELT, BinSeg, Window, Dynp y kernel CPD con API uniforme
@@ -220,32 +223,80 @@ de fat tails (preferir kernel/robusto) y el coste de post-etiquetado.
   online** como detectores causales propios y **PELT (kernel `rbf`) de `ruptures`**
   como baseline offline/oráculo re-aplicado en ventana.
 
-## Referencias
+## 2. Detectores implementados
 
-- **Page (1954)** — *Continuous Inspection Schemes*. Biometrika 41(1/2):100-115.
-  DOI: 10.1093/biomet/41.1-2.100. (CUSUM seminal.)
-- **Inclán & Tiao (1994)** — *Use of Cumulative Sums of Squares for Retrospective
-  Detection of Changes of Variance*. JASA 89(427):913-923.
-  DOI: 10.1080/01621459.1994.10476824. (ICSS, cambios de varianza.)
-- **Adams & MacKay (2007)** — *Bayesian Online Changepoint Detection*. arXiv:0710.3742.
-  https://arxiv.org/abs/0710.3742. (BOCPD, online causal.)
-- **Fearnhead & Liu (2007)** — *On-line Inference for Multiple Changepoint Problems*.
-  JRSS-B 69(4):589-605. DOI: 10.1111/j.1467-9868.2007.00601.x. (Filtrado online.)
-- **Killick, Fearnhead & Eckley (2012)** — *Optimal Detection of Changepoints with a
-  Linear Computational Cost*. JASA 107(500):1590-1598.
-  DOI: 10.1080/01621459.2012.737745. (PELT.)
-- **Lavielle & Teyssière (2007)** — *Adaptive Detection of Multiple Change-Points in
-  Asset Price Volatility*. En *Long Memory in Economics* (Springer), pp. 129-156.
-  DOI: 10.1007/978-3-540-34625-8_5. (Aplicación financiera.)
-- **Arlot, Celisse & Harchaoui (2019)** — *A Kernel Multiple Change-point Algorithm
-  via Model Selection*. JMLR 20(162):1-56.
-  https://jmlr.org/papers/v20/16-155.html. (Kernel CPD no paramétrico.)
-- **Truong, Oudre & Vayatis (2020)** — *Selective Review of Offline Change Point
-  Detection Methods*. Signal Processing 167:107299.
-  DOI: 10.1016/j.sigpro.2019.107299. (Survey + librería `ruptures`.)
+Las tablas de resultados salen de `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` (benchmark completo 24/24, `results/benchmark/manifest.json` del 2026-09-29T12:41 UTC; cifras de [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) §4). Walk-forward causal y evaluación OOS por pista (17 crisis evaluables en la A y 9 en la B, según `configs/benchmark_spec.yaml`). Ranking de **detección**: un evento se detecta con ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre la precisión diaria (1 − FAR) y el recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Cada tabla va entre marcadores `resultados_v2`: tras un benchmark nuevo se regenera desde esos dos CSV, no se edita a mano.
 
-## Variantes no implementadas
+<a id="d07"></a>
+
+### D07 — `changepoint_online` · CUSUM online robusto
+
+Detector de cambio estructural **online y causal** sobre la volatilidad del retorno del S&P 500: dos CUSUM de una cara de Page [`cp_page1954`] forman un autómata de dos estados (en calma se vigila una subida de la volatilidad, `C⁺ > h`; en crisis, una bajada, `C⁻ > h`). El umbral `h` da persistencia por construcción. PELT [`cp_killick2012`] solo se usa en el notebook como oráculo in-sample, marcado no causal.
+
+**Configuración v2**
+
+- Código: `src/regimenes/detectores/f6_changepoint/changepoint_online.py` (`ChangepointOnline`); registro, id `D07`.
+- **Coste robusto** (`cost='robust'`, el que usa el registro): estadístico `log|r|`, estandarizado con la **mediana y 1.4826·MAD del train** y **winsorizado** a ±`clip`. La alternativa `cost='gaussian'` (`r²` con media/desviación) queda como contraste en el notebook.
+- Parámetros: `k = 0.5`, `h = 5.0`, `clip = 3.0`; `predict_proba` es una logística del z EWMA (vida media 10 sesiones). Burn-in del train en cada bloque.
+- Feature: `SP500_ret` en ambas pistas. Walk-forward: refit cada 21 sesiones, ventana expanding.
+
+<!-- BEGIN resultados_v2 D07 -->
+**Resultados v2 (ADR-003)**
+
+| Métrica | Pista A | Pista B |
+|---|---:|---:|
+| Variante evaluada | `changepoint_online` | `changepoint_online` |
+| Puesto de detección | **8** / 12 | **7** / 12 |
+| Nivel de etiqueta | `elegible` | `elegible` |
+| `score_deteccion` | 0.469 | 0.426 |
+| Recall por evento | 0.824 (14/17) | 0.556 (5/9) |
+| Precisión diaria (lift vs base) | 0.328 (×1.69) | 0.345 (×2.00) |
+| Cobertura media de crisis | 0.646 | 0.285 |
+| Tasa de falsas alarmas (FAR) | 0.672 | 0.655 |
+| Activación media en trampas | 0.000 | 0.000 |
+| Switching rate | 0.0022 | 0.0030 |
+| Duración media de régimen (sesiones) | 441.7 | 312.2 |
+| Estabilidad de etiqueta | 1.000 | 0.995 |
+| Puesto legacy (`rank_medio`) | 2 (3.8) | 5 (5.8) |
+
+**Ventana OOS y eventos por pista**
+
+- **Pista A** · OOS 1970-05-12 → 2026-05-29 (n = 14133) · train inicial 2016 sesiones, refit cada 21 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (14): `bear_1969_70`, `oil_stagflation_1973`, `volcker_1980_82`, `black_monday_1987`, `gulf_war_sl_1990`, `ltcm_russia_1998`, `dotcom_2000_02`, `gfc_2007_09`, `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `covid_2020`, `inflation_bear_2022`, `svb_banking_2023`.
+  - No detectados (3): `volmageddon_2018q1`, `fed_tightening_2018q4`, `tariff_selloff_2025`.
+- **Pista B** · OOS 2010-04-12 → 2026-05-29 (n = 4059) · train inicial 756 sesiones, refit cada 21 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (5): `us_downgrade_euro2_2011`, `china_oil_2015_16`, `covid_2020`, `inflation_bear_2022`, `svb_banking_2023`.
+  - No detectados (4): `flash_crash_euro1_2010`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `tariff_selloff_2025`.
+<!-- END resultados_v2 D07 -->
+
+Narrativa de la Capa 1 (implementación v1, hallazgos e hipótesis del CHECKPOINT 2): [`historia/fichas_v1.md`](../historia/fichas_v1.md#d07).
+
+## 3. Variantes no implementadas
 
 - **TDA / spectral-residual CPD:** transiciones por homología persistente, línea aún no madura como baseline.
-- **Costes robustos o no paramétricos** (CUSUM sobre rangos, coste Huber, RuLSIF / density-ratio), relevantes por las colas gordas del EDA; no implementados.
-- **`bayesian_changepoint_detection`** como implementación alternativa de BOCPD para la pieza online causal.
+- **Costes no paramétricos** (CUSUM sobre rangos, coste Huber, RuLSIF / density-ratio), relevantes por las colas gordas del EDA; no implementados. El coste robusto `log|r|` + mediana/MAD + winsorización **sí está implementado** en D07 (es su coste por defecto).
+- **BOCPD** [`cp_adamsmackay2007`] (p. ej. con `bayesian_changepoint_detection`) como pieza online causal alternativa al CUSUM; no implementado.
+
+## 4. Referencias
+
+- **Page (1954)** — *Continuous Inspection Schemes*. Biometrika 41(1/2):100-115.
+  DOI: 10.1093/biomet/41.1-2.100. (CUSUM seminal.) [`cp_page1954`]
+- **Inclán & Tiao (1994)** — *Use of Cumulative Sums of Squares for Retrospective
+  Detection of Changes of Variance*. JASA 89(427):913-923.
+  DOI: 10.1080/01621459.1994.10476824. (ICSS, cambios de varianza.) [`cp_inclantiao1994`]
+- **Adams & MacKay (2007)** — *Bayesian Online Changepoint Detection*. arXiv:0710.3742.
+  https://arxiv.org/abs/0710.3742. (BOCPD, online causal.) [`cp_adamsmackay2007`]
+- **Fearnhead & Liu (2007)** — *On-line Inference for Multiple Changepoint Problems*.
+  JRSS-B 69(4):589-605. DOI: 10.1111/j.1467-9868.2007.00601.x. (Filtrado online.) [`cp_fearnheadliu2007`]
+- **Killick, Fearnhead & Eckley (2012)** — *Optimal Detection of Changepoints with a
+  Linear Computational Cost*. JASA 107(500):1590-1598.
+  DOI: 10.1080/01621459.2012.737745. (PELT.) [`cp_killick2012`]
+- **Lavielle & Teyssière (2007)** — *Adaptive Detection of Multiple Change-Points in
+  Asset Price Volatility*. En *Long Memory in Economics* (Springer), pp. 129-156.
+  DOI: 10.1007/978-3-540-34625-8_5. (Aplicación financiera.) [`cp_lavielleteyssiere2007`]
+- **Arlot, Celisse & Harchaoui (2019)** — *A Kernel Multiple Change-point Algorithm
+  via Model Selection*. JMLR 20(162):1-56.
+  https://jmlr.org/papers/v20/16-155.html. (Kernel CPD no paramétrico.) [`cp_arlot2019`]
+- **Truong, Oudre & Vayatis (2020)** — *Selective Review of Offline Change Point
+  Detection Methods*. Signal Processing 167:107299.
+  DOI: 10.1016/j.sigpro.2019.107299. (Survey + librería `ruptures`.) [`cp_truong2020`]

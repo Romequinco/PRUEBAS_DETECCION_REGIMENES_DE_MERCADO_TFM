@@ -1,8 +1,10 @@
-# 04 — Markov-Switching econométrico
+# F4 — Markov-Switching econométrico
 
-<!-- BEGIN nota_v2 -->
-> **Origen y ubicación.** Ficha de familia redactada en la FASE 2 de la Capa 1 (v1; original en el tag `capa1-final`); el contenido es el de entonces salvo rutas. Bibliografía: [`F4_markov_switching.bib`](F4_markov_switching.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Detectores v2 de la familia: [D05 `markov_switching_var`](../detectores/D05_markov_switching_var.md). Notebook v2: [`notebooks/08_familia_F4_markov_switching.ipynb`](../../notebooks/08_familia_F4_markov_switching.ipynb). Las menciones a `src/features.py` o al EDA se refieren a la Capa 1 (15 features, ventana 2007-2026).
-<!-- END nota_v2 -->
+> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D05 `markov_switching_var`](#d05). Notebook de familia: [`notebooks/08_familia_F4_markov_switching.ipynb`](../../notebooks/08_familia_F4_markov_switching.ipynb). Bibliografía: claves `ms_*` y compartidas de [`docs/references.bib`](../references.bib).
+>
+> **Datos v1 en la teoría.** Las cifras del EDA que cita la sección 1 son de la Capa 1 (15 features, ventana 2007-04 → 2026-06, 4 crisis: 2008, 2011, 2020 y 2022), igual que los nombres de feature `credit_spread_z` o `yield_slope_z` y las referencias a la «tarea previa»; donde el dato importa se indica junto a él. El panel v2 tiene dos pistas (A: 1962-01-02 → 2026-05-29; B: 2007-04-11 → 2026-05-29) y el EDA vigente está en [`eda.md`](eda.md) (curtosis de exceso del S&P 500 = 18,7 en 1928-2026).
+
+## 1. Teoría
 
 > Familia: tradición ECONOMÉTRICA de series temporales con cambio de régimen
 > gobernado por una cadena de Markov oculta — Hamilton (1989), MS-AR, Markov-
@@ -11,7 +13,7 @@
 > emisiones (hmmlearn) y el RS-GARCH se tratan en otras fichas; aquí se señala el
 > solape con ellos.
 
-## Definición y supuestos
+### Definición y supuestos
 
 Un modelo Markov-Switching (MS) describe una serie temporal cuyos parámetros
 (media, términos autorregresivos y/o varianza del error) **conmutan entre un
@@ -43,7 +45,7 @@ tramos** (la dinámica es lineal *dentro* de cada régimen pero el proceso globa
 es no lineal) y permite cambios bruscos de comportamiento sin imponer una rotura
 estructural en una fecha fija conocida.
 
-## Variantes principales
+### Variantes principales
 
 **1. Hamilton MS / Markov-Switching de la media (MSM).** Versión original:
 conmutan la media (y opcionalmente la varianza) de un proceso. Hamilton (1989)
@@ -90,7 +92,7 @@ estándar; se usan tests específicos (Hansen, Garcia) o BIC. En la práctica
 financiera lo habitual es `K=2` (calma/crisis) o `K=3-4` (bull · normal · bear ·
 estanflación).
 
-## Fortalezas y debilidades
+### Fortalezas y debilidades
 
 **¿Capta crisis rápidas?** Parcialmente. El MS hereda el comportamiento del HMM:
 la **persistencia** impuesta por la diagonal alta de `P` favorece episodios
@@ -114,7 +116,8 @@ k-means/GMM que clasifican cada día independientemente. El riesgo opuesto es la
 de gaussianas con varianzas distintas genera una distribución incondicional
 **leptocúrtica y con colas más gordas** que una normal simple — es una de las
 razones por las que el MS ajusta retornos mejor que un AR homocedástico. Aun
-así, con kurtosis de exceso ≈ 25.6 (S&P 500) y ≈ 39.6 (HYG) en el EDA, la mezcla
+así, con curtosis de exceso ≈ 25.6 (S&P 500) y ≈ 39.6 (HYG) en el EDA v1 (2007-2026; 18,7
+para el S&P 500 en 1928-2026 según el EDA v2), la mezcla
 de 2-3 gaussianas **no basta** para reproducir las colas; los saltos extremos
 intra-régimen se infra-modelan. Extensiones documentadas: (i) **emisiones
 t-Student por régimen** (colas pesadas condicionales), (ii) **switching de
@@ -143,7 +146,7 @@ proyecto:
 fundamentalmente **univariante**: modela UNA serie (un retorno, el crecimiento
 del PIB). Existe el **MS-VAR** (Krolzig) para vectores, pero el número de
 parámetros crece rápidamente y la estimación se vuelve frágil con muchas series.
-Frente al panel de **15 features causales** del EDA, un MS-AR directo no es el
+Frente al panel multivariante de features causales (15 en la Capa 1; 9/14 por pista en v2), un MS-AR directo no es el
 vehículo natural: o se aplica a la serie de retornos del S&P 500 (univariante,
 interpretable) o se reduce el panel a pocas series. Aquí el **HMM multivariante
 gaussiano** (tarea previa, 7 features) tiene ventaja dimensional; el MS aporta
@@ -156,7 +159,7 @@ condicionada; sensibilidad a la especificación (media vs varianza switching);
 las etiquetas de régimen son intercambiables (label switching) y requieren
 ordenación post-hoc por criterio económico (igual que en HMM).
 
-## Idoneidad para este proyecto
+### Idoneidad para este proyecto
 
 **Encaje con el EDA.** El switching de **varianza** ataca directamente el
 hallazgo de fat tails y clústeres de volatilidad: un régimen de baja varianza y
@@ -191,10 +194,10 @@ Diferencias prácticas de tradición, no de fondo:
    Conviene tratarlos como **dos puntos del mismo continuo** y
    evitar contarlos como familias independientes: la decisión real es
    *univariante-AR-interpretable* (MS) vs *multivariante-emisiones-flexibles*
-   (HMM). Para el panel de 15 features, HMM; para una señal interpretable sobre
+   (HMM). Para el panel multivariante, HMM; para una señal interpretable sobre
    retornos del S&P 500, MS.
 
-## Aplicaciones documentadas a regímenes de mercado financiero
+### Aplicaciones documentadas a regímenes de mercado financiero
 
 - **Hamilton (1989)**: paper seminal; aunque aplicado al PIB, define el aparato
   que toda la literatura financiera reutiliza.
@@ -219,7 +222,7 @@ Diferencias prácticas de tradición, no de fondo:
 - **Kim & Nelson (1999)**: aplicaciones a ciclo económico, Great Moderation y
   series financieras con los filtros clásico y bayesiano.
 
-## Coste de implementación y librería Python recomendada
+### Coste de implementación y librería Python recomendada
 
 **Librería recomendada: `statsmodels.tsa.regime_switching`.**
    - `MarkovRegression`: MS sin componente AR (regresión dinámica con cambio de
@@ -255,37 +258,85 @@ Diferencias prácticas de tradición, no de fondo:
 **Veredicto de implementación**: barato e interpretable como **baseline
 econométrico univariante** (p. ej. MS de media+varianza sobre el retorno del
 S&P 500, `K=2-3`, usando probabilidades **filtradas** y reestimación
-walk-forward). No sustituye al HMM multivariante para explotar las 15 features,
+walk-forward). No sustituye al HMM multivariante para explotar el panel de features,
 sino que lo complementa con interpretabilidad y un marco de inferencia formal.
 
-## Referencias
+## 2. Detectores implementados
 
-- Hamilton, J. D. (1989). *A New Approach to the Economic Analysis of
-  Nonstationary Time Series and the Business Cycle*. Econometrica 57(2),
-  357–384. DOI 10.2307/1912559. (Clave existente `hamilton1989` — no duplicada.)
-- Kim, C.-J. (1994). *Dynamic Linear Models with Markov-Switching*. Journal of
-  Econometrics 60(1-2), 1–22. DOI 10.1016/0304-4076(94)90036-1. (Filtro/suavizador
-  de Kim.)
-- Kim, C.-J. & Nelson, C. R. (1999). *State-Space Models with Regime Switching:
-  Classical and Gibbs-Sampling Approaches with Applications*. MIT Press. ISBN
-  978-0-262-11238-2.
-- Guidolin, M. (2011). *Markov Switching Models in Empirical Finance*. En
-  Advances in Econometrics, vol. 27B (Missing Data Methods), Emerald, 1–86.
-  DOI 10.1108/S0731-9053(2011)000027B004.
-- Ang, A. & Timmermann, A. (2012). *Regime Changes and Financial Markets*.
-  Annual Review of Financial Economics 4, 313–337.
-  DOI 10.1146/annurev-financial-110311-101808.
-- Hardy, M. R. (2001). *A Regime-Switching Model of Long-Term Stock Returns*.
-  North American Actuarial Journal 5(2), 41–53.
-  DOI 10.1080/10920277.2001.10595984.
-- statsmodels developers. *Markov switching dynamic regression /
-  autoregression models* (`statsmodels.tsa.regime_switching`). Documentación
-  oficial. https://www.statsmodels.org/stable/generated/statsmodels.tsa.regime_switching.markov_autoregression.MarkovAutoregression.html
-- Ang, A. & Bekaert, G. (2002). (Clave existente `angbekaert2002`.)
-- Guidolin, M. & Timmermann, A. (2007). (Clave existente `guidolintimmermann2007`.)
+Las tablas de resultados salen de `results/benchmark/ranking_v2.csv` y `results/benchmark/metrics_master_v2.csv` (benchmark completo 24/24, `results/benchmark/manifest.json` del 2026-09-29T12:41 UTC; cifras de [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) §4). Walk-forward causal y evaluación OOS por pista (17 crisis evaluables en la A y 9 en la B, según `configs/benchmark_spec.yaml`). Ranking de **detección**: un evento se detecta con ≥ 3 sesiones OOS consecutivas en crisis dentro de [pico, suelo]; `score_deteccion` = F1 entre la precisión diaria (1 − FAR) y el recall por evento, con niveles previos (elegible › precisión ≤ azar › parpadeo › degenerado). Cada tabla va entre marcadores `resultados_v2`: tras un benchmark nuevo se regenera desde esos dos CSV, no se edita a mano.
 
-## Variantes no implementadas
+<a id="d05"></a>
+
+### D05 — `markov_switching_var` · Markov-Switching de media y varianza
+
+Modelo de Hamilton [`hamilton1989`] sobre el retorno del S&P 500: una cadena de Markov de dos estados gobierna a la vez la media y la varianza (`y_t = μ_{S_t} + ε_t`, `ε_t ~ N(0, σ²_{S_t})`). Crisis = régimen de alta varianza. Es el baseline econométrico interpretable de la familia y es **univariante** (el nombre «var» se refiere a la varianza, no a un VAR).
+
+**Configuración v2**
+
+- Código: `src/regimenes/detectores/f4_switching/markov_switching_var.py` (`MarkovSwitchingVar`); registro, id `D05`.
+- Modelo: `statsmodels` `MarkovRegression` con `k_regimes=2`, `trend='c'`, `switching_variance=True`, retorno ×100, `search_reps=0`. Ajuste en train y parámetros congelados; la predicción usa un **filtro forward gaussiano univariante propio** sobre burn-in del train + bloque (probabilidades filtradas, nunca suavizadas).
+- Feature: `SP500_ret` en ambas pistas.
+- Walk-forward: refit cada **63** sesiones (detector lento), ventana expanding.
+
+<!-- BEGIN resultados_v2 D05 -->
+**Resultados v2 (ADR-003)**
+
+| Métrica | Pista A | Pista B |
+|---|---:|---:|
+| Variante evaluada | `markov_switching_var_2s` | `markov_switching_var_2s` |
+| Puesto de detección | **5** / 12 | **1** / 12 |
+| Nivel de etiqueta | `elegible` | `elegible` |
+| `score_deteccion` | 0.546 | 0.647 |
+| Recall por evento | 1.000 (17/17) | 1.000 (9/9) |
+| Precisión diaria (lift vs base) | 0.375 (×1.94) | 0.478 (×2.77) |
+| Cobertura media de crisis | 0.731 | 0.499 |
+| Tasa de falsas alarmas (FAR) | 0.625 | 0.522 |
+| Activación media en trampas | 0.032 | 0.000 |
+| Switching rate | 0.0683 | 0.0434 |
+| Duración media de régimen (sesiones) | 14.6 | 22.9 |
+| Estabilidad de etiqueta | 0.995 | 0.997 |
+| Puesto legacy (`rank_medio`) | 6 (7.0) | 4 (4.6) |
+
+**Ventana OOS y eventos por pista**
+
+- **Pista A** · OOS 1970-05-12 → 2026-05-29 (n = 14133) · train inicial 2016 sesiones, refit cada 63 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (17): `bear_1969_70`, `oil_stagflation_1973`, `volcker_1980_82`, `black_monday_1987`, `gulf_war_sl_1990`, `ltcm_russia_1998`, `dotcom_2000_02`, `gfc_2007_09`, `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `covid_2020`, `inflation_bear_2022`, `svb_banking_2023`, `tariff_selloff_2025`.
+  - No detectados (0): ninguno.
+- **Pista B** · OOS 2010-04-12 → 2026-05-29 (n = 4059) · train inicial 756 sesiones, refit cada 63 (expanding) · 1 feature(s): `SP500_ret`.
+  - Detectados (9): `flash_crash_euro1_2010`, `us_downgrade_euro2_2011`, `china_oil_2015_16`, `volmageddon_2018q1`, `fed_tightening_2018q4`, `covid_2020`, `inflation_bear_2022`, `svb_banking_2023`, `tariff_selloff_2025`.
+  - No detectados (0): ninguno.
+<!-- END resultados_v2 D05 -->
+
+Narrativa de la Capa 1 (implementación v1, hallazgos e hipótesis del CHECKPOINT 2): [`historia/fichas_v1.md`](../historia/fichas_v1.md#d05).
+
+## 3. Variantes no implementadas
 
 - **MS-VAR (Krolzig):** versión multivariante del MS-AR; coste en parámetros alto. (Ojo: el «MS-VAR» D05 del repositorio es univariante, ver GLOSARIO.)
 - **TVTP** (Filardo; Diebold-Lee-Weinbach): probabilidades de transición dependientes de covariables como VIX o pendiente de la curva; no está en `statsmodels` nativo.
 - **Emisiones t-Student en MS** (colas del EDA) y **tests del número de regímenes** (Hansen 1992; Garcia 1998), útiles para justificar `K` más allá del BIC; ambos exigen implementación propia.
+
+## 4. Referencias
+
+- Hamilton, J. D. (1989). *A New Approach to the Economic Analysis of
+  Nonstationary Time Series and the Business Cycle*. Econometrica 57(2),
+  357–384. DOI 10.2307/1912559. [`hamilton1989`]
+- Kim, C.-J. (1994). *Dynamic Linear Models with Markov-Switching*. Journal of
+  Econometrics 60(1-2), 1–22. DOI 10.1016/0304-4076(94)90036-1. (Filtro/suavizador
+  de Kim.) [`ms_kim1994`]
+- Kim, C.-J. & Nelson, C. R. (1999). *State-Space Models with Regime Switching:
+  Classical and Gibbs-Sampling Approaches with Applications*. MIT Press. ISBN
+  978-0-262-11238-2. [`ms_kimnelson1999`]
+- Guidolin, M. (2011). *Markov Switching Models in Empirical Finance*. En
+  Advances in Econometrics, vol. 27B (Missing Data Methods), Emerald, 1–86.
+  DOI 10.1108/S0731-9053(2011)000027B004. [`ms_guidolin2011`]
+- Ang, A. & Timmermann, A. (2012). *Regime Changes and Financial Markets*.
+  Annual Review of Financial Economics 4, 313–337.
+  DOI 10.1146/annurev-financial-110311-101808. [`hmm_angtimmermann2012`]
+- Hardy, M. R. (2001). *A Regime-Switching Model of Long-Term Stock Returns*.
+  North American Actuarial Journal 5(2), 41–53.
+  DOI 10.1080/10920277.2001.10595984. [`hmm_hardy2001`]
+- statsmodels developers. *Markov switching dynamic regression /
+  autoregression models* (`statsmodels.tsa.regime_switching`). Documentación
+  oficial. https://www.statsmodels.org/stable/generated/statsmodels.tsa.regime_switching.markov_autoregression.MarkovAutoregression.html [`ms_statsmodels`]
+- Ang, A. & Bekaert, G. (2002). [`angbekaert2002`]
+- Guidolin, M. & Timmermann, A. (2007). [`guidolintimmermann2007`]

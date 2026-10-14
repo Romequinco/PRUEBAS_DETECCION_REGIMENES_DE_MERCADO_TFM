@@ -1,10 +1,8 @@
-# F8 — Generadores de datos sintéticos
+# Generadores sintéticos
 
-<!-- BEGIN nota_v2 -->
-> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: [`F8_generadores_sinteticos.bib`](F8_generadores_sinteticos.bib) (todas sus claves están ya fusionadas en `docs/references.bib`). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Notebook: [`notebooks/15_sinteticos_generadores.ipynb`](../../notebooks/15_sinteticos_generadores.ipynb). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados: las cifras de ajuste y de muestreo salen del notebook 15 y la validación, del 16.
-<!-- END nota_v2 -->
+> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados.
 
-> **Estado (2026-10-06).** Notebook 15 (generadores) y 16 (validación) hechos: **ningún generador resulta `apto_laboratorio`**; `apto_aumento` son, en la pista A, todos salvo `jitter` y `bootstrap_regimen`, y en la B `gaussiano`, `var`, `garch_regimen`, `rbig` y `flow_matching`. El notebook 17 (laboratorio) está hecho como **simulación controlada** con `gaussiano`, `var` y `garch_regimen` (18 celdas por pista, 4356 trabajos) y cuatro hipótesis: H1 (los detectores recuperan la señal sintética) se cumple (92 % en A, 100 % en B); H2, el score baja al acortar y atenuar los episodios (en parte por la prevalencia; el recall por evento pasa de 0,86 a 0,54 en A); H3, el ranking sintético se correlaciona con el real (ρ 0,87, p 0,001 en A; 0,48, p 0,16 en B); H4, hay indicio de circularidad para D03 (+0,23 relativa en B) y ninguna para GARCH. El 18 (aumento) sigue pendiente.
+> **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks [`15_sinteticos_generadores`](../../notebooks/15_sinteticos_generadores.ipynb), [`16_sinteticos_validacion`](../../notebooks/16_sinteticos_validacion.ipynb), [`17_sinteticos_laboratorio`](../../notebooks/17_sinteticos_laboratorio.ipynb) y [`18_sinteticos_aumento`](../../notebooks/18_sinteticos_aumento.ipynb), y sus salidas en [`results/sinteticos/`](../../results/sinteticos/).
 
 > Familia: generadores de trayectorias multivariantes de features **con la
 > secuencia de régimen conocida**. Núcleo: seis generadores paramétricos (jitter,
@@ -21,7 +19,7 @@
 
 Con 17 crisis evaluables en la pista A y 9 en la pista B, el banco de pruebas tiene
 poca potencia estadística para separar detectores (ver la limitación de
-significancia de la Capa 1 en `docs/historia/capa1/memoria/99_conclusions.md`).
+significancia de la Capa 1 en las conclusiones de su memoria, tag `capa1-final`).
 Los generadores sintéticos se usan para tres cosas, por este orden de fiabilidad:
 
 1. **Laboratorio con verdad conocida** (notebook `17`, hecho como simulación controlada): trayectorias cuya cadena de
