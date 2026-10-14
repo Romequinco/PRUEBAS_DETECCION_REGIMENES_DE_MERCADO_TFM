@@ -218,6 +218,19 @@ def test_t1_get_serie_a_usd(fx):
     assert list(paro.datos.columns) == list(usd.datos.columns) and paro.datos["fx_usd"].isna().all()
 
 
+def test_t1_get_serie_tipo_de_cambio_del_bce_no_se_convierte(fx):
+    """Regresión (revisión): ``ecb:EXR.D.<X>.EUR`` lleva divisa X; con ``divisa='USD'`` se convertía a
+    USD por EUR y se devolvía con la unidad «X por 1 EUR». Ahora, como fred:DEX*: sin convertir y con aviso."""
+    sid = sorted(sid for sid in fx["serie"].unique() if sid != divisas.SERIE_USD_EUR)[0]
+    orig = get_serie(sid, "2024-06-28", base=fx)
+    usd = get_serie(sid, "2024-06-28", base=fx, divisa="USD")
+    assert usd.divisa == orig.divisa != "USD" and usd.unidad == orig.unidad
+    np.testing.assert_array_equal(usd.datos["valor"], orig.datos["valor"])
+    assert usd.datos["fx_usd"].isna().all() and (usd.datos["divisa_original"] == orig.divisa).all()
+    assert any("tipo de cambio" in a for a in usd.avisos)
+    assert tools._es_tipo_de_cambio(divisas.SERIE_USD_EUR) and not tools._es_tipo_de_cambio("fred:DEXJPUS")
+
+
 def test_t1_get_serie_fx_fin_de_trimestre_y_serie_en_usd(fx):
     """Trimestral: fixing del fin de trimestre. Ya en USD: fx_usd = 1 y las mismas columnas que get_precios."""
     trim = _serie_lag_fijo().iloc[[0, 3]].assign(serie="sint:PIB_T")

@@ -17,7 +17,10 @@ from ingesta.mercados_series import visibilidad as v
 from ingesta.mercados_series.contrato import ErrorContrato, validar_series
 
 RAW = ROOT / "data" / "raw"
-requiere_raw = pytest.mark.skipif(not (RAW / "provenance.json").exists(), reason="falta data/raw (gitignored)")
+# provenance.json y coverage_report.csv están versionados (excepciones del .gitignore): solo un parquet real
+# indica que data/raw se ha descargado. En un clon limpio y en la CI estos tests se saltan.
+HAY_RAW = any(RAW.glob("*/*.parquet"))
+requiere_raw = pytest.mark.skipif(not HAY_RAW, reason="falta data/raw (gitignored)")
 ETF_AJUSTADOS = ("SPY", "RSP", "XLK", "XLF", "XLE", "XLV", "XLI", "XLY", "XLP", "XLU", "XLB", "XLRE", "XLC", "IWM",
                  "IWD", "IWF", "GLD", "HYG", "IEF", "LQD", "TLT", "SPHB", "SPLV", "MTUM")
 

@@ -199,6 +199,19 @@ def test_boe_hoja_antigua_y_festivos():
     assert list(ancho.columns) == ["1Y", "10Y"]
 
 
+def test_curvas_fuente_sin_crudos_se_omite_con_aviso(tmp_path):
+    """Regresión (revisión): con una fuente sin crudos, ``disponible_habil_siguiente`` recibía un índice
+    vacío y lanzaba ValueError; ``tabla_curvas`` fallaba entera en vez de omitir esa fuente."""
+    assert cv.disponible_habil_siguiente(pd.DatetimeIndex([]), "12:00", "Europe/Berlin", "target").empty
+    for f in ("bce_curvas", "mof_jgb", "boc_curva", "boe_curvas", "ust_curva"):
+        assert cv._TABLAS[f](pd.DataFrame()).empty, f
+    (cv.ruta_crudo("ust_curva", tmp_path) / "20261013_ust_1990.csv").write_text(_csv_ust_1990(), encoding="utf-8")
+    avisos: list[str] = []
+    tabla = cv.tabla_curvas(raiz=tmp_path, registro=avisos.append)
+    assert set(tabla["fuente"]) == {"ust_curva"}
+    assert sorted(a.split()[2] for a in avisos) == ["bce_curvas", "boc_curva", "boe_curvas", "mof_jgb"]
+
+
 def test_tabla_desde_crudos_y_fichas(tmp_path):
     (cv.ruta_crudo("ust_curva", tmp_path) / "20261013_ust_1990.csv").write_text(_csv_ust_1990(), encoding="utf-8")
     (cv.ruta_crudo("ust_curva", tmp_path) / "20261013_ust_2025.csv").write_text(_csv_ust_2025(), encoding="utf-8")

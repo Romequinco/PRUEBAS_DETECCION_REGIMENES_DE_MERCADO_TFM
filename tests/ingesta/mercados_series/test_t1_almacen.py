@@ -384,6 +384,35 @@ def test_t1_precios_correccion_tardia_es_error_y_no_cambia_el_pasado(tmp_path, c
     assert fila[cambio] == corr[cambio].iloc[0]
 
 
+def test_t1_precios_revision_tolerada_conserva_lo_guardado_y_la_apunta(tmp_path):
+    """Regresión (revisión): una revisión de Yahoo del volumen de la última sesión (MSFT, NVDA) o de un
+    dividendo antiguo (ITX.MC, MC.PA, VOD.L) rechazaba el ticker entero y lo congelaba en cada refresco.
+    Con ``revisiones_toleradas`` se añaden las sesiones nuevas, la vela guardada no cambia (sin fuga hacia
+    atrás) y la discrepancia queda en el registro. Otra columna sigue siendo error."""
+    carpeta = tmp_path / "yahoo"
+    accion = s.accion_con_eventos()
+    primera = accion[accion["sesion"] < "2024-07-01"]
+    escribir_precios(primera, "yahoo", carpeta)
+    antes = leer_precios(s.TICKER_ACCION, "yahoo", carpeta)
+    segunda = accion[accion["sesion"] >= "2024-06-03"].assign(descargado=pd.Timestamp("2025-02-01", tz="UTC"))
+    ultima_guardada = primera["sesion"].max()
+    segunda.loc[segunda["sesion"] == ultima_guardada, "volume"] += 12345.0
+    with pytest.raises(ErrorContrato, match="solo crece"):
+        escribir_precios(segunda, "yahoo", carpeta)
+    escribir_precios(segunda, "yahoo", carpeta, revisiones_toleradas=("volume", "dividendo"))
+    leido = leer_precios(s.TICKER_ACCION, "yahoo", carpeta)
+    assert len(leido) == len(accion)                                        # las sesiones nuevas entran
+    pd.testing.assert_frame_equal(leido[leido["sesion"] < "2024-07-01"].reset_index(drop=True),
+                                  antes.reset_index(drop=True))             # lo guardado, intacto
+    registro = pd.read_csv(almacen.ruta_revisiones_precios("yahoo", carpeta))
+    assert list(registro["columna"]) == ["volume"] and registro["ticker"].iloc[0] == s.TICKER_ACCION
+    assert pd.Timestamp(registro["sesion"].iloc[0]) == ultima_guardada
+    otra = segunda.copy()
+    otra.loc[otra["sesion"] == ultima_guardada, "close"] *= 1.01
+    with pytest.raises(ErrorContrato, match="close"):
+        escribir_precios(otra, "yahoo", carpeta, revisiones_toleradas=("volume", "dividendo"))
+
+
 def test_t1_precios_invalidos_no_se_escriben(tmp_path):
     carpeta = tmp_path / "yahoo"
     accion = s.accion_con_eventos()

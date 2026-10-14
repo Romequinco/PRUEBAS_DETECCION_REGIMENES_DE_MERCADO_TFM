@@ -340,9 +340,12 @@ def tabla_versiones(sid: str, hist: pd.DataFrame, espec: dict[str, Any]) -> pd.D
         previa = primera & (regla < pub)
         if espec.get("solo_desde_primer_vintage"):
             # Serie creada después (HICP ECOICOP v2, agregado I10 de composición fija): su retropolación
-            # no existía antes de su primera versión; nunca visible antes de ella.
+            # no existía antes de su primera versión; nunca visible antes de ella. Solo es retropolación lo
+            # que la regla daba por publicado antes de crear la serie; una observación posterior cuya
+            # primera versión guardada ya es una revisión lleva NOTA_PREVIA (posible fuga de revisiones).
+            retro = previa & (regla < pub.min())
             regla = regla.where(regla >= pub.min(), pub.min())
-            nota[previa] = NOTA_POSTERIOR_BCE
+            nota[retro] = NOTA_POSTERIOR_BCE
         pub = pub.where(~previa, regla)
         disp = disp.where(~previa, pd.NaT)
         metodo[previa] = "lag_fijo"

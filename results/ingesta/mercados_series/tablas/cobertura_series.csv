@@ -65,7 +65,7 @@ deriv:DCPF3M-DFF,,calculo_propio,diaria,derivada,activa,,,False,1997-01-02,2026-
 deriv:DED3-DTB3,EURODOLLAR_TBILL_SPREAD,calculo_propio,diaria,derivada,retirada,,fred:CPFF,False,1971-01-04,2016-10-07,11370,0,1,1.0,1,5
 deriv:DGS10-DFF,T10YFF,calculo_propio,diaria,derivada,activa,,,False,1962-01-02,2026-10-08,16178,0,1,1.0,1,6
 deriv:DGS5-DFF,T5YFF,calculo_propio,diaria,derivada,activa,,,False,1962-01-02,2026-10-08,16178,0,1,1.0,1,6
-deriv:PIB_REAL_USA_VINTAGES,PIB_REAL_USA,calculo_propio,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,523,151.0,114,6909
+deriv:PIB_REAL_USA_VINTAGES,PIB_REAL_USA,calculo_propio,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,524,151.0,114,6909
 deriv:SOFR-EFFR,,calculo_propio,diaria,derivada,activa,,,False,2018-04-03,2026-10-08,2128,0,1,1.0,1,6
 deriv:VOLREAL21_GSPC,REALIZED_VOL_SP500,calculo_propio,diaria,derivada,activa,,,False,1928-01-16,2026-07-17,24742,0,1,0.0,0,0
 ecb:DFR,,bce,diaria,calendario,activa,,,False,1999-01-01,2026-09-16,69,0,1,0.0,0,0
@@ -319,7 +319,7 @@ fred:GDP,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1946-01-01,2026-04
 fred:GDPC1,GDPC1,fred_alfred,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,549,122.0,114,16792
 fred:GDPDEF,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,515,122.0,114,16792
 fred:GDPNOW,,fred_alfred,trimestral,vintage_exacto,activa,,,True,2011-07-01,2026-07-01,61,0,816,30.0,25,1782
-fred:GDPPOT,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1949-01-01,2036-10-01,352,0,206,0.0,0,16463
+fred:GDPPOT,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1949-01-01,2026-01-01,309,0,206,273.0,1,16463
 fred:GFDEBTN,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1966-01-01,2026-04-01,242,0,241,181.0,143,258
 fred:GPDIC1,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,739,119.0,104,4432
 fred:GS1,GS1,fred_alfred,mensual,lag_fijo,activa,,,False,1953-04-01,2026-09-01,882,0,1,31.0,28,44
@@ -367,7 +367,7 @@ fred:NFCILEVERAGE,NFCI_LEVERAGE,fred_alfred,semanal,vintage_exacto,activa,,,True
 fred:NFCIRISK,NFCI_RISK,fred_alfred,semanal,vintage_exacto,activa,,,True,1971-01-08,2026-10-02,2909,0,2801,5.0,5,17044
 fred:NNUSBIS,NNUSBIS,fred_alfred,mensual,vintage_exacto,activa,,,True,1964-01-01,2026-07-01,751,0,749,61.0,43,77
 fred:NOCDFSA066MSFRBPHI,,fred_alfred,mensual,vintage_exacto,activa,,,True,1968-05-01,2026-09-01,701,0,709,30.0,14,48
-fred:NROU,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1949-01-01,2036-10-01,352,0,270,273.0,0,275
+fred:NROU,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1949-01-01,2026-01-01,309,0,271,274.0,9,421
 fred:OBFR,OBFR,fred_alfred,diaria,calendario,activa,,,False,2016-03-01,2026-10-08,2666,0,1,1.0,1,6
 fred:OPHNFB,,fred_alfred,trimestral,vintage_exacto,activa,,,True,1947-01-01,2026-04-01,318,0,517,128.0,112,191
 fred:OVXCLS,OVX,fred_alfred,diaria,cierre_mercado,activa,,,False,2007-05-10,2026-10-09,4888,0,1,1.0,1,1

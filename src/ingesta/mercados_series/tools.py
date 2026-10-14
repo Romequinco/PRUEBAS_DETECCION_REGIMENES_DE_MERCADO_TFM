@@ -389,6 +389,12 @@ def get_serie(id: str, fecha: FechaLike, *, desde: FechaLike | None = None, divi
         if divisa_serie is None:
             avisos.append(f"{canonico} no es monetaria (sin divisa): se devuelve sin convertir")
             datos = datos.assign(divisa_original=None, fx_usd=np.nan, fx_fecha=pd.NaT)
+        elif _es_tipo_de_cambio(canonico):
+            # Las cotizaciones del BCE (X por 1 EUR) llevan divisa X, pero son tipos de cambio, no importes:
+            # convertirlas daría USD por EUR con la unidad «X por 1 EUR». Mismo criterio que fred:DEX*.
+            avisos.append(f"{canonico} es un tipo de cambio (cotización, no un importe en {divisa_serie}): "
+                          "se devuelve sin convertir")
+            datos = datos.assign(divisa_original=divisa_serie, fx_usd=np.nan, fx_fecha=pd.NaT)
         else:
             fx = base_fx if base_fx is not None else (base if base is not None else _base_fx([divisa_serie]))
             ref = datos["fecha_referencia"]
@@ -403,6 +409,12 @@ def get_serie(id: str, fecha: FechaLike, *, desde: FechaLike | None = None, divi
     metodo = _texto(datos["metodo_publicacion"].iloc[-1]) if len(datos) else None
     return RespuestaSerie(serie=canonico, fecha=f, datos=datos, unidad=unidad, divisa=divisa_salida,
                           fuente=fuente, metodo_publicacion=metodo, avisos=avisos)
+
+
+def _es_tipo_de_cambio(serie: str) -> bool:
+    """True en las cotizaciones de divisas del BCE (``divisas.SERIE_FX``: ``ecb:EXR.D.<X>.EUR``)."""
+    prefijo, _, sufijo = divisas.SERIE_FX.partition("{divisa}")
+    return serie.startswith(prefijo) and serie.endswith(sufijo)
 
 
 def _base_fx(divisas_necesarias: Sequence[str]) -> pd.DataFrame:

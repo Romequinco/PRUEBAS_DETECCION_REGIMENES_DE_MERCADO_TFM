@@ -67,3 +67,20 @@ def test_cobertura_ampliado_sin_registro():
     tot = tabla.iloc[0]
     assert tot["n_lista"] == 1 and tot["n_intentados"] == 0 and tot["inicio_mediana"] is None
     assert set(f"inc_{t}" for t in calidad.TIPOS) <= set(tabla.columns)
+
+
+def test_fichero_relativo_se_busca_en_el_corpus(tmp_path, monkeypatch):
+    """Regresión (revisión): el ejemplo del README (``--fichero logs/tickers_ampliado.csv``) fallaba desde
+    la raíz del repo: la ruta relativa se leía contra el directorio actual y la lista vive en el corpus."""
+    corpus = tmp_path / "corpus"
+    (corpus / "logs").mkdir(parents=True)
+    (corpus / "logs" / y.FICHERO_LISTA_AMPLIADO).write_text("ticker\nAAPL\nMSFT\nAAPL\n", encoding="utf-8")
+    monkeypatch.setattr(y, "corpus_dir", lambda tema=None: corpus)
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    monkeypatch.chdir(repo)
+    assert y.resolver_fichero("logs/tickers_ampliado.csv") == corpus / "logs" / y.FICHERO_LISTA_AMPLIADO
+    assert y._tickers_de_fichero("logs/tickers_ampliado.csv") == ["AAPL", "MSFT"]
+    assert y._tickers_de_fichero(None) == ["AAPL", "MSFT"]                 # por defecto, la lista del corpus
+    (repo / "propia.csv").write_text("ticker\nNVDA\n", encoding="utf-8")
+    assert y._tickers_de_fichero("propia.csv") == ["NVDA"]                 # la del directorio actual manda

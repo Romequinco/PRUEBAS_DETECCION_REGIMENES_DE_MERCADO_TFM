@@ -29,9 +29,12 @@ Conversión (``tabla_serie_alfred``): cada fila de ALFRED es un periodo de valid
   ``vintage`` = esa fecha (el contrato no deja mezclar ``unico`` con fechas) y la nota
   ``anterior a ALFRED: valor del primer vintage (AAAA-MM-DD)``. Sin regla previa (WEI, GDPNow,
   SEP), solo son visibles desde el primer vintage.
-- Una fila publicada antes de su ``fecha_referencia`` (proyecciones: SEP, CBO) no cabe en el
-  contrato: si sigue vigente en su fecha de referencia se ve desde ella (``NOTA_PROYECCION``); si
-  ya la sustituyó otra, se descarta.
+- Una fila publicada antes de su ``fecha_referencia`` (proyecciones) no cabe en el contrato.
+  ``proyecciones: conservar`` (SEP, la serie es una previsión): si sigue vigente en su fecha de
+  referencia se ve desde ella (``NOTA_PROYECCION``); si ya la sustituyó otra, se descarta.
+  ``proyecciones: recortar`` (CBO: GDPPOT, NROU): fuera las observaciones posteriores al vintage;
+  de cada periodo solo queda lo que traen los vintages publicados desde su fecha de referencia
+  (``_recortar_proyecciones``), así que la serie nunca va más allá del último vintage.
 - Avisos por fila: ``NOTA_REESTIMADA`` (índices re-estimados enteros en cada vintage: NFCI,
   STLFSI4, CFSI, KCFSI, BBK...) y ``NOTA_UNIDAD_VINTAGE`` (año base o dólares encadenados del
   vintage vigente; los vintages antiguos pueden estar en otra base).
@@ -329,6 +332,31 @@ def _compactar(df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
     return out.reset_index(drop=True), int(funde.sum())
 
 
+def _recortar_proyecciones(df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
+    """``proyecciones: recortar`` (CBO): solo lo que cada vintage trae de periodos ya empezados.
+
+    Antes de fundir periodos: un valor publicado antes de su ``fecha_referencia`` (proyección) solo se
+    conserva si sigue vigente en algún vintage de la serie con fecha >= su referencia, y entonces su
+    ``realtime_start`` pasa a ser ese primer vintage (es el valor que ese vintage da al periodo). Lo que
+    solo existió como proyección se quita. Devuelve ``(df, filas quitadas)``.
+    """
+    if df.empty:
+        return df, 0
+    vintages = np.sort(pd.unique(df["realtime_start"].dropna().to_numpy("datetime64[ns]")))
+    ref = df["fecha_referencia"].to_numpy("datetime64[ns]")
+    k = np.searchsorted(vintages, ref, side="left")
+    primero = np.where(k < len(vintages), vintages[np.minimum(k, len(vintages) - 1)], np.datetime64("NaT"))
+    inicio = df["realtime_start"].to_numpy("datetime64[ns]")
+    fin = df["realtime_end"].to_numpy("datetime64[ns]")
+    proyeccion = inicio < ref
+    vigente = ~np.isnat(primero) & (np.isnat(fin) | (primero <= fin))
+    quitar = proyeccion & ~vigente
+    out = df.copy()
+    out["realtime_start"] = np.where(proyeccion & vigente, primero, inicio)
+    out["realtime_start"] = out["realtime_start"].astype(FECHA)
+    return out[~quitar].reset_index(drop=True), int(quitar.sum())
+
+
 def _retiradas(df: pd.DataFrame) -> pd.DataFrame:
     """Filas nulas al día siguiente de cada periodo cerrado sin sucesor contiguo."""
     siguiente = df.groupby("fecha_referencia")["realtime_start"].shift(-1)
@@ -372,7 +400,7 @@ def tabla_serie_alfred(sid: str, obs: pd.DataFrame, entrada: dict[str, Any], *,
                             "primer_vintage": None,
                             "primer_vintage_catalogo": previa.get("primer_vintage") if previa else None,
                             "previas": 0, "puntos": 0, "retiradas": 0, "fundidas": 0, "proyecciones_visibles": 0,
-                            "proyecciones_descartadas": 0, "avisos": []}
+                            "proyecciones_descartadas": 0, "proyecciones_recortadas": 0, "avisos": []}
     if obs.empty:
         info["avisos"].append("sin observaciones en ALFRED")
         return vacio_series(), info
@@ -383,6 +411,8 @@ def tabla_serie_alfred(sid: str, obs: pd.DataFrame, entrada: dict[str, Any], *,
     if proyecciones is not None:
         # En las proyecciones (SEP), '.' marca el año que sale del horizonte: no es un hueco.
         df = df[~df["ausente"]]
+    if proyecciones == "recortar":
+        df, info["proyecciones_recortadas"] = _recortar_proyecciones(df)
     df, info["fundidas"] = _compactar(df)
     df["_retirada"] = False
     if proyecciones is None:
@@ -897,7 +927,8 @@ def ficha_alfred(tabla: pd.DataFrame, informe: dict[str, dict], *, cliente: Clie
                "Observaciones anteriores al primer vintage: valor del primer vintage, lag_fijo con la regla previa "
                "del catálogo y nota 'anterior a ALFRED'",
                "'.' de ALFRED: valor nulo con nota; observación que desaparece de un vintage: fila nula con nota",
-               "Proyecciones (SEP, CBO): visibles desde su fecha de referencia (el contrato no admite previsiones)"],
+               "Proyecciones del SEP: visibles desde su fecha de referencia; de la CBO (GDPPOT, NROU): recortadas "
+               "a los vintages publicados desde su fecha de referencia (el contrato no admite previsiones)"],
         fecha_sonda=cliente.hoy.date().isoformat())
     ruta = guardar_ficha(ficha, destino) if guardar else None
     return ficha, ruta

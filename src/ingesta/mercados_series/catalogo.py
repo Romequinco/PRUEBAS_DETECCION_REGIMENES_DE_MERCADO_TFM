@@ -259,11 +259,15 @@ def fin_de_periodo(fechas: Any, fin_periodo: str) -> pd.Series:
     return s.dt.to_period(regla).dt.end_time.dt.normalize()
 
 
-def _primer_habil(d: pd.Timestamp, calendario: str, cache: dict) -> pd.Timestamp:
-    """Primer hábil >= ``d`` (``visibilidad.es_habil``, con los cierres extraordinarios)."""
+def _primer_habil(d: pd.Timestamp, calendario: str, cache: dict,
+                  publicaciones: dict | None = None) -> pd.Timestamp:
+    """Primer hábil >= ``d`` (``visibilidad.es_habil``, con los cierres extraordinarios).
+
+    ``publicaciones``: la configuración ya cargada (evita resolver la de por defecto en cada día).
+    """
     if d not in cache:
         x = d
-        while not visibilidad.es_habil(x, calendario):
+        while not visibilidad.es_habil(x, calendario, publicaciones=publicaciones):
             x += pd.Timedelta(days=1)
         cache[d] = x
     return cache[d]
@@ -293,6 +297,7 @@ def fecha_publicacion_lag(fechas: Any, lag: str, fin_periodo: str, *, habiles: s
     if habiles is None:
         return pub
     cache: dict = {}
+    cfg = visibilidad._publicaciones_defecto()   # una vez por llamada, no una por día
     out = []
     for p, f in zip(pub, fin):
         if pd.isna(p):
@@ -301,9 +306,9 @@ def fecha_publicacion_lag(fechas: Any, lag: str, fin_periodo: str, *, habiles: s
         if n_habiles:
             x = pd.Timestamp(f)
             for _ in range(n_habiles):
-                x = _primer_habil(x + pd.Timedelta(days=1), habiles, cache)
+                x = _primer_habil(x + pd.Timedelta(days=1), habiles, cache, cfg)
             p = max(pd.Timestamp(p), x)
-        out.append(_primer_habil(pd.Timestamp(p), habiles, cache))
+        out.append(_primer_habil(pd.Timestamp(p), habiles, cache, cfg))
     return pd.Series(out, index=pub.index, dtype="datetime64[ns]")
 
 

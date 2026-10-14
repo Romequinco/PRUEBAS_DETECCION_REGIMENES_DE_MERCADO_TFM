@@ -205,6 +205,7 @@ def tabla_weo(ediciones: Iterable[str] = EDICIONES_DBNOMICS, *, sdmx: bool = Tru
               raiz: Path | None = None) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Tabla del contrato con todas las ediciones (DBnomics + SDMX vigente) e informe por edición."""
     trozos, informe = [], {}
+    vistas: set[str] = set()   # ediciones con filas (una edición que DBnomics no pudo servir no cuenta)
     for ed in ediciones:
         contenido, meta = descargar_dbnomics(ed, forzar=forzar, raiz=raiz)
         info = {"origen": "dbnomics", "error": meta.get("error"), "bytes": meta.get("bytes")}
@@ -215,9 +216,10 @@ def tabla_weo(ediciones: Iterable[str] = EDICIONES_DBNOMICS, *, sdmx: bool = Tru
             if m.get("indexed_at_min"):
                 info["indexado_tras_publicacion"] = bool(pd.Timestamp(m["indexed_at_min"]) >= disponible(ed))
             trozos.append(t)
+            if len(t):
+                vistas.add(ed)
         informe[ed] = info
     if sdmx:
-        vistas = {e for e in informe}
         for v in VERSIONES_SDMX:
             contenido, meta = descargar_sdmx(v, forzar=forzar, raiz=raiz)
             if contenido is None:
@@ -228,7 +230,9 @@ def tabla_weo(ediciones: Iterable[str] = EDICIONES_DBNOMICS, *, sdmx: bool = Tru
                 informe[f"sdmx_{v}"] = {"origen": "sdmx", "edicion": ed, "descartada": "repetida o sin fecha"}
                 continue
             t, cuenta = tabla_edicion(datos, ed)
-            informe[ed] = {"origen": f"sdmx {v}", "bytes": meta.get("bytes"), **cuenta}
+            fallo = (informe.get(ed) or {}).get("error")
+            informe[ed] = {"origen": f"sdmx {v}", "bytes": meta.get("bytes"), **cuenta,
+                           **({"error_dbnomics": fallo} if fallo else {})}
             vistas.add(ed)
             trozos.append(t)
     return org.unir(trozos), informe

@@ -10,7 +10,7 @@ de la estrategia. Con esa respuesta (y solo con ella):
    ``V_prev · Σ w_i · P_i(d) / P_i(control anterior)``: un cociente de precios ajustados con la
    misma base, que no depende de los dividendos o splits posteriores;
 2. la estrategia decide los pesos nuevos (o ``None``: no se opera y los pesos derivan) con la
-   VISTA DE SEÑAL: solo las sesiones anteriores a la fecha de control (``sesion < fecha``);
+   VISTA DE SEÑAL: solo las sesiones anteriores al cierre con el que se ejecuta (``vista_senal``);
 3. se cobra el coste de la rotación (``ModeloCostes`` o ninguno) y se descuenta del valor.
 
 La base de cada ticker se recorta a la ventana que hace falta (``[control anterior o
@@ -21,7 +21,8 @@ Propiedad clave (test de truncado): la curva en ``t`` no cambia si se añaden pr
 Convención de ejecución: se opera al cierre de cada instrumento en la fecha de control (ese cierre
 es el ``P_i(control anterior)`` del tramo siguiente y el precio del coste). Para que la señal no use
 el mismo cierre con el que se ejecuta, ``estrategia.pesos`` recibe las vistas recortadas a
-``sesion < fecha`` (``vista_senal``): la señal de ``t`` usa como mucho el cierre de ``t − 1``. Lo
+``sesion < fecha`` y sin la fila de ejecución (``vista_senal``): la señal de ``t`` usa como mucho el
+cierre anterior al de ejecución, también en instrumentos D+1 y en controles que caen en festivo. Lo
 comprueba ``test_t1_a_baselines_senal_no_usa_cierre_de_ejecucion``.
 
 Todo en USD (los tickers en otra divisa se piden con ``divisa='USD'`` y el FX del BCE visible).
@@ -94,10 +95,20 @@ def precio_en(vista: pd.DataFrame, fechas: pd.DatetimeIndex | Sequence) -> np.nd
 
 
 def vista_senal(vista: pd.DataFrame | None, fecha: pd.Timestamp) -> pd.DataFrame | None:
-    """Vista para la señal de ``fecha``: sin la sesión de ``fecha`` ni posteriores (se ejecuta a ese cierre)."""
+    """Vista para la señal de ``fecha``: sin el cierre con el que se ejecuta ni nada posterior.
+
+    El cierre de ejecución es el de ``precio_en(vista, [fecha])``: la última sesión con
+    ``fecha_publicacion <= fecha``. No siempre es la sesión de ``fecha``: en un instrumento D+1 (NAV de
+    fondos) es la de la víspera, y si el control cae en festivo del mercado es la última sesión antes
+    del festivo. Se quita esa fila (por publicación, no por sesión) y cualquier sesión ``>= fecha``.
+    """
     if vista is None:
         return None
-    return vista[vista["sesion"] < pd.Timestamp(fecha).normalize()].reset_index(drop=True)
+    dia = pd.Timestamp(fecha).normalize()
+    pub = vista["fecha_publicacion"].to_numpy("datetime64[ns]")
+    ejecucion = int(np.searchsorted(pub, dia.to_datetime64(), side="right")) - 1
+    previa = np.arange(len(vista)) < ejecucion
+    return vista[previa & (vista["sesion"] < dia).to_numpy()].reset_index(drop=True)
 
 
 def vivo(vista: pd.DataFrame | None, fecha: pd.Timestamp, dias: int = DIAS_FRESCO) -> bool:

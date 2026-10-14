@@ -184,13 +184,58 @@ def test_t1_b_empalme_pib_real_usa_por_vintage():
     cat = c.cargar_catalogo()
     u, n = base.empalmar_pib_real_usa(b, cat)
     e = u[u["serie"] == base.EMPALME_PIB_USA]
-    assert n == 4 == len(e)                                     # la fila lag_fijo previa a ALFRED, fuera
+    # La fila lag_fijo sin nota de ALFRED no entra; 1991-04-01 (solo PNB, no está en el primer vintage
+    # de ALFRED) se retira en el corte con una fila nula.
+    assert n == 5 == len(e)
     assert set(e["vintage"]) == {"1991-08-31", "1991-11-30", "1991-12-04", "1992-01-31"}
-    assert e["nota"].str.contains("tramo PNB").sum() == 2 and e["nota"].str.contains("tramo PIB").sum() == 2
+    assert e["nota"].str.contains("tramo PNB").sum() == 2 and e["nota"].str.contains("tramo PIB").sum() == 3
+    retirada = e[e["valor"].isna()]
+    assert list(retirada["fecha_referencia"]) == [pd.Timestamp("1991-04-01")]
+    assert retirada["nota"].str.contains(base.NOTA_RETIRADA_EMPALME, regex=False).all()
     validar_series(e.reset_index(drop=True))
     c.validar_contra_catalogo(e.reset_index(drop=True), cat)
     # Sin uno de los tramos no se inventa nada.
     assert base.empalmar_pib_real_usa(b[b["serie"] != "fred:GDPC1"], cat)[1] == 0
+
+
+def test_t1_b_empalme_pib_un_solo_concepto_por_vintage():
+    """Regresión (revisión): el primer vintage de ALFRED se guarda como filas «anterior a ALFRED» (lag_fijo,
+    fechadas con la regla previa) y el empalme las descartaba; de 1992 a 1996 la vista as-of mezclaba PNB del
+    RTDSM (periodos que ALFRED no revisó) con PIB. Desde el corte, ningún periodo puede seguir siendo PNB."""
+    from ingesta.mercados_series import timegate
+    nota_pre = f"{c.NOTA_PREVIA_ALFRED} (1991-12-04)"
+    filas = [_fila("philly:ROUTPUT", "1950-01-01", "1991-09-01", "1991-08", 1100.0),
+             _fila("philly:ROUTPUT", "1975-01-01", "1991-09-01", "1991-08", 3200.0),
+             _fila("philly:ROUTPUT", "1991-04-01", "1991-09-01", "1991-08", 4800.0),
+             _fila("philly:ROUTPUT", "1991-07-01", "1991-12-01", "1991-11", 4820.0),
+             {**_fila("fred:GDPC1", "1975-01-01", "1975-05-01", "1975-05-01", 3300.0, "lag_fijo"), "nota": nota_pre},
+             {**_fila("fred:GDPC1", "1991-04-01", "1991-08-01", "1991-08-01", 4850.0, "lag_fijo"), "nota": nota_pre},
+             {**_fila("fred:GDPC1", "1991-07-01", "1991-11-01", "1991-11-01", 4870.0, "lag_fijo"), "nota": nota_pre},
+             _fila("fred:GDPC1", "1991-07-01", "1991-12-20", "1991-12-20", 4872.0),
+             _fila("fred:GDPC1", "1950-01-01", "1996-01-19", "1996-01-19", 1500.0)]
+    b = pd.DataFrame(filas)
+    b["disponible_utc"] = pd.to_datetime(b["disponible_utc"], utc=True)
+    cat = c.cargar_catalogo()
+    u, _ = base.empalmar_pib_real_usa(b, cat)
+    e = u[u["serie"] == base.EMPALME_PIB_USA].reset_index(drop=True)
+    validar_series(e)
+    c.validar_contra_catalogo(e, cat)
+    antes = timegate.as_of_series(e, base.EMPALME_PIB_USA, "1991-12-02")
+    assert antes["nota"].str.contains("tramo PNB").all() and len(antes) == 4
+    for dia in ("1991-12-04", "1992-01-01", "1993-06-01", "1995-11-30", "1996-03-01"):
+        vista = timegate.as_of_series(e, base.EMPALME_PIB_USA, dia)
+        assert not vista["nota"].str.contains("tramo PNB").any(), dia
+        assert set(vista["fecha_referencia"]) == set(pd.to_datetime(["1950-01-01", "1975-01-01", "1991-04-01",
+                                                                     "1991-07-01"])), dia
+    v92 = timegate.as_of_series(e, base.EMPALME_PIB_USA, "1992-01-01").set_index("fecha_referencia")
+    assert v92.loc["1975-01-01", "valor"] == 3300.0 and v92.loc["1991-07-01", "valor"] == 4872.0
+    assert pd.isna(v92.loc["1950-01-01", "valor"])              # solo PNB: retirado en el corte
+    assert c.NOTA_PREVIA_ALFRED not in " ".join(v92["nota"])     # ya no es «anterior a ALFRED»
+    v96 = timegate.as_of_series(e, base.EMPALME_PIB_USA, "1996-03-01").set_index("fecha_referencia")
+    assert v96.loc["1950-01-01", "valor"] == 1500.0             # un vintage posterior lo publica como PIB
+    # La publicación del primer vintage: la hora del publicador de GDPC1 (BEA) el 1991-12-04.
+    pre = e[e["vintage"] == "1991-12-04"]
+    assert (pre["fecha_publicacion"] == pd.Timestamp("1991-12-04")).all()
 
 
 # --- OCDE ---------------------------------------------------------------------------------------

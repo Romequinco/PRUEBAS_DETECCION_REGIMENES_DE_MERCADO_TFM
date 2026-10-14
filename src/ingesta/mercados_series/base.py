@@ -22,8 +22,10 @@ demás derivadas (volatilidad realizada) quedan como las fecha su cargador.
 
 Empalme del PIB real de EE. UU. por vintage (``empalmar_pib_real_usa``, id ``EMPALME_PIB_USA``): los
 vintages del RTDSM (``philly:ROUTPUT``, PNB real hasta el vintage de 1991-11) hasta el primer vintage de
-ALFRED de ``fred:GDPC1`` (1991-12-04, primer vintage con PIB real) y los de ALFRED desde ahí. Cada fila
-lleva ``NOTA_EMPALME_PIB_USA`` y el tramo (PNB o PIB): nunca se mezclan sin nota. Unidad: dólares
+ALFRED de ``fred:GDPC1`` (1991-12-04, primer vintage con PIB real) y los de ALFRED desde ahí. Un solo
+concepto por vintage: desde el corte, toda la vista as-of es PIB (el primer vintage entero se ve en su
+publicación y los periodos que solo tenía el PNB se retiran con una fila nula). Cada fila lleva
+``NOTA_EMPALME_PIB_USA`` y el tramo (PNB o PIB). Unidad: dólares
 constantes de la base de CADA vintage (``unidad_por_vintage``): comparar tasas, no niveles.
 
 Antes de derivar: ``catalogo.aplicar_excepciones`` (fecha = max(regla, primera vintage de ALFRED),
@@ -81,6 +83,8 @@ NOTA_EMPALME_PIB_USA = ("empalme por vintage: RTDSM (philly:ROUTPUT) antes del p
                         "y ALFRED desde él; nivel en dólares constantes de la base de cada vintage (comparar tasas)")
 TRAMO_PNB = "tramo PNB real (GNP, vintages RTDSM anteriores a 1991-12)"
 TRAMO_PIB = "tramo PIB real (GDP, vintages de ALFRED)"
+NOTA_RETIRADA_EMPALME = ("sin valor en el primer vintage de ALFRED: el periodo solo existía como PNB del RTDSM y "
+                         "se retira en el corte para no mezclar PNB y PIB en un mismo vintage")
 RESPALDO = "respaldo_bloque2.parquet"   # copia de la base guardada antes de una reconstrucción desde cero
 SUFIJO_PREVIA = "_previa.parquet"     # si RESPALDO ya existe: copia (rotatoria) de la base vigente
 TOLERANCIA_DERIVADA = 1e-9
@@ -203,12 +207,13 @@ def tabla_oficial(nombre: str, *, sin_red: bool = True, registro: Callable[[str]
     log = registro or (lambda _m: None)
     corpus = almacen.corpus_dir(TEMA)
     partes: list[pd.DataFrame] = []
-    if nombre == "bce":
-        from ingesta.mercados_series.fuentes import bce
-        partes.append(bce.tabla_bce(sin_red=sin_red)[0])
-    elif nombre == "eurostat":
-        from ingesta.mercados_series.fuentes import eurostat
-        partes.append(eurostat.tabla_eurostat(sin_red=sin_red)[0])
+    if nombre in ("bce", "eurostat"):
+        from ingesta.mercados_series.fuentes import bce, eurostat
+        tabla = bce.tabla_bce if nombre == "bce" else eurostat.tabla_eurostat
+        try:
+            partes.append(tabla(sin_red=sin_red)[0])
+        except FileNotFoundError as e:   # sin descarga archivada (sin_red): se omite, no para la construcción
+            log(f"  aviso: {nombre}: {e} (python -m ingesta.mercados_series descargar-{nombre})")
     elif nombre in _BLOQUE4:
         ruta = corpus / "bloque4" / f"{_BLOQUE4[nombre]}.parquet"
         if ruta.exists():
@@ -238,7 +243,7 @@ def tabla_oficial(nombre: str, *, sin_red: bool = True, registro: Callable[[str]
             partes.append(pd.read_parquet(ruta))
         else:
             from ingesta.mercados_series.fuentes import curvas
-            partes.append(curvas.tabla_curvas())
+            partes.append(curvas.tabla_curvas(registro=log))
     elif nombre == "philly_rtdsm":
         from ingesta.mercados_series.fuentes import philly_rtdsm as ph
         for v in ph.MAPEO:
@@ -387,24 +392,64 @@ def _anotar(df: pd.DataFrame, mascara: pd.Series, texto: str | pd.Series) -> Non
 
 
 def empalmar_pib_real_usa(base: pd.DataFrame, catalogo: dict[str, dict]) -> tuple[pd.DataFrame, int]:
-    """Añade ``EMPALME_PIB_USA`` (si está en el catálogo y están sus dos tramos): RTDSM antes del primer
-    vintage de ALFRED de ``fred:GDPC1`` y ALFRED desde él (solo filas ``vintage_exacto``; los periodos
-    previos a ALFRED fechados con la regla quedan fuera: los cubre el RTDSM). Devuelve (base, filas)."""
+    """Añade ``EMPALME_PIB_USA`` (si está en el catálogo y están sus dos tramos), con un solo concepto por vintage.
+
+    - Tramo PNB: vintages del RTDSM (``philly:ROUTPUT``) publicados hasta el primer vintage de ALFRED de
+      ``fred:GDPC1`` (``corte``, 1991-12-04).
+    - Tramo PIB: todo el primer vintage de ALFRED visible desde su publicación (las filas «anterior a
+      ALFRED» de ``fred:GDPC1``, que la base fecha con la regla previa, se refechan a la publicación del
+      primer vintage) y los vintages exactos posteriores.
+    - Los periodos del tramo PNB que el primer vintage de ALFRED no trae (1947-1958) quedan con una fila
+      nula (``NOTA_RETIRADA_EMPALME``) en esa misma fecha: desde el corte ninguna vista as-of mezcla PNB y
+      PIB; un vintage posterior que los publique como PIB los vuelve a llenar.
+
+    Devuelve ``(base, filas del empalme)``.
+    """
     e = catalogo.get(EMPALME_PIB_USA)
     if e is None:
         return base, 0
     base = base[base["serie"] != EMPALME_PIB_USA]
     rt = base[(base["serie"] == "philly:ROUTPUT") & (base["metodo_publicacion"] == "vintage_exacto")]
-    al = base[(base["serie"] == "fred:GDPC1") & (base["metodo_publicacion"] == "vintage_exacto")]
+    gdp = base[base["serie"] == "fred:GDPC1"]
+    al = gdp[gdp["metodo_publicacion"] == "vintage_exacto"]
     if rt.empty or al.empty:
         return base, 0
-    previa = (catalogo.get("fred:GDPC1") or {}).get("regla_previa_alfred") or {}
+    entrada_gdp = catalogo.get("fred:GDPC1") or {}
+    previa = entrada_gdp.get("regla_previa_alfred") or {}
     corte = pd.Timestamp(previa.get("primer_vintage") or al["fecha_publicacion"].min())
     rt = rt[rt["fecha_publicacion"] <= corte].assign(_tramo=TRAMO_PNB)
     # Un solo formato de vintage por serie (contrato): AAAA-MM del RTDSM -> último día de ese mes (su fecha).
     rt["vintage"] = pd.PeriodIndex(rt["vintage"], freq="M").end_time.strftime("%Y-%m-%d")
     al = al[al["fecha_publicacion"] >= corte].assign(_tramo=TRAMO_PIB)
-    emp = pd.concat([rt, al], ignore_index=True)
+    # Publicación del primer vintage de ALFRED: la de sus filas exactas si las hay; si no, la hora del publicador.
+    v0 = corte.strftime("%Y-%m-%d")
+    del_v0 = al[al["vintage"] == v0]
+    if len(del_v0):
+        pub0, disp0 = del_v0["fecha_publicacion"].min(), del_v0["disponible_utc"].min()
+    elif entrada_gdp.get("publicador"):
+        from ingesta.mercados_series import visibilidad
+        from ingesta.mercados_series.contrato import primera_decision_vec
+        disp0 = pd.Timestamp(visibilidad.disponible_publicador(entrada_gdp["publicador"], corte))
+        pub0 = primera_decision_vec(pd.Series([disp0], dtype="datetime64[ns, UTC]")).iloc[0]
+    else:
+        pub0, disp0 = corte, pd.NaT
+    # Filas «anterior a ALFRED» (valor del primer vintage fechado con la regla previa): al tramo PIB en pub0.
+    pre = gdp[(gdp["metodo_publicacion"] != "vintage_exacto")
+              & gdp["nota"].fillna("").astype(str).str.contains(cat_mod.NOTA_PREVIA_ALFRED, regex=False)]
+    pre = pre[~pre["fecha_referencia"].isin(del_v0["fecha_referencia"])].copy()
+    pre["nota"] = ["; ".join(x for x in str(n).split("; ") if not x.startswith(cat_mod.NOTA_PREVIA_ALFRED)) or None
+                   for n in pre["nota"]]
+    pre = pre.assign(fecha_publicacion=pub0, disponible_utc=disp0, vintage=v0, metodo_publicacion="vintage_exacto",
+                     _tramo=TRAMO_PIB)
+    # Periodos del PNB sin valor en el primer vintage de ALFRED: se retiran en pub0 (sin mezclar conceptos).
+    con_pib = set(pre["fecha_referencia"]) | set(del_v0["fecha_referencia"])
+    solo_pnb = sorted(set(rt["fecha_referencia"]) - con_pib)
+    ret = pd.DataFrame({"fecha_referencia": pd.to_datetime(solo_pnb), "fecha_publicacion": pub0,
+                        "disponible_utc": disp0, "vintage": v0, "valor": np.nan,
+                        "metodo_publicacion": "vintage_exacto", "nota": NOTA_RETIRADA_EMPALME, "_tramo": TRAMO_PIB})
+    emp = pd.concat([rt, pre, al, ret], ignore_index=True)
+    emp["fecha_publicacion"] = emp["fecha_publicacion"].astype("datetime64[ns]")
+    emp["disponible_utc"] = pd.to_datetime(emp["disponible_utc"], utc=True)
     previa_nota = emp["nota"].where(emp["nota"].notna(), None)
     emp["nota"] = [f"{NOTA_EMPALME_PIB_USA}; {t}" + (f"; {n}" if isinstance(n, str) and n else "")
                    for t, n in zip(emp["_tramo"], previa_nota)]

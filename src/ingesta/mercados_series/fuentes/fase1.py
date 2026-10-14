@@ -242,10 +242,13 @@ def _disponible_calendario(entrada: dict[str, Any], fechas: pd.Series,
     if pub is None:
         raise ValueError("metodo calendario sin 'publicador': no se puede fechar desde data/raw")
     unicas = pd.unique(fechas.dropna())
+    cfg = None
     for d in unicas:
         clave = (pub, pd.Timestamp(d))
         if clave not in cache:
-            cache[clave] = visibilidad.disponible_publicador(pub, clave[1])
+            # La configuración por defecto, una vez por serie (no una lectura de su firma por día).
+            cfg = cfg if cfg is not None else visibilidad._publicaciones_defecto()
+            cache[clave] = visibilidad.disponible_publicador(pub, clave[1], cfg)
     out = fechas.map(lambda d: cache[(pub, pd.Timestamp(d))])
     return pd.Series(pd.to_datetime(out, utc=True).to_numpy(), index=fechas.index, dtype=UTC)
 

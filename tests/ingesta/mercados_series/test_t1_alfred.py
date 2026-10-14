@@ -355,6 +355,26 @@ def test_t1_alfred_proyecciones_visibles_desde_su_referencia():
     assert t["nota"].str.contains("proyección publicada el 2024-12-18", regex=False).any()
 
 
+def test_t1_alfred_proyecciones_recortar_no_pasan_del_vintage():
+    """Regresión (revisión): ``proyecciones: recortar`` (GDPPOT, NROU de la CBO) se trataba como
+    ``conservar`` y la base llevaba proyecciones hasta 2036. Ahora de cada periodo solo queda lo que dan
+    los vintages publicados desde su fecha de referencia."""
+    sid = "fred:XCBO"
+    filas = [_obs("2020-01-01", "4.6", "2020-01-28", "2021-02-10"), _obs("2020-01-01", "4.5", "2021-02-11"),
+             # proyección de 2021-01 hecha en 2020: sigue vigente cuando sale el vintage de 2021-02-11
+             _obs("2021-01-01", "4.4", "2020-01-28"),
+             # proyección de 2022-01: sustituida antes de que exista un vintage posterior a su referencia
+             _obs("2022-01-01", "4.3", "2020-01-28", "2021-02-10"), _obs("2022-01-01", "4.2", "2021-02-11")]
+    e = _entrada(sid, frecuencia="anual", publicador="cbo", proyecciones="recortar")
+    t, info = _tabla(sid, filas, e)
+    assert t["fecha_referencia"].max() == pd.Timestamp("2021-01-01")       # nada más allá del último vintage
+    assert info["proyecciones_recortadas"] == 2 and info["proyecciones_visibles"] == 0
+    assert (t["fecha_publicacion"] >= t["fecha_referencia"]).all()
+    assert _valor(t, sid, "2021-01-31", "2021-01-01") is None              # no visible desde su referencia
+    assert _valor(t, sid, "2021-02-12", "2021-01-01") == pytest.approx(4.4)  # sí desde el vintage de 2021-02-11
+    assert set(t.loc[t["fecha_referencia"] == pd.Timestamp("2021-01-01"), "vintage"]) == {"2021-02-11"}
+
+
 def _truncar(filas: list[dict], corte: str) -> list[dict]:
     """Lo que ALFRED habría devuelto el día ``corte``: periodos empezados hasta entonces, abiertos si seguían."""
     out = []

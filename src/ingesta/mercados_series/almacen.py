@@ -8,7 +8,10 @@ Estructura::
 Toda escritura valida con ``contrato`` y es atómica (``.tmp`` + ``os.replace``). La base solo
 crece: reescribir una serie no puede perder ni cambiar filas ya guardadas, y una descarga de
 precios no puede cambiar una vela ya guardada (su ``fecha_publicacion`` es la de la sesión, así
-que una corrección tardía se vería hacia atrás), salvo que se pida para corregir errores propios.
+que una corrección tardía se vería hacia atrás), salvo que se pida para corregir errores propios. Las
+revisiones del proveedor en columnas declaradas tolerables (volumen provisional, dividendo corregido)
+no rechazan el ticker: se conserva la vela guardada y se apunta la discrepancia
+(``ruta_revisiones_precios``).
 Los nombres de fichero de ticker son seguros en Windows y reversibles (``nombre_fichero_ticker``).
 
 Los parquet llevan el esquema del contrato fijado (texto → ``string``, fechas → ``timestamp[ns]``,
@@ -370,8 +373,38 @@ def _choque_de_caja(carpeta: Path, nombres: Iterable[str]) -> list[str]:
     return problemas
 
 
+def _revisiones_precios(guardado: pd.DataFrame, nuevo: pd.DataFrame, columnas: Iterable[str]) -> pd.DataFrame:
+    """Sesiones guardadas cuya ``columna`` (de ``columnas``) trae otro valor en ``nuevo``.
+
+    Columnas ``ticker, sesion, columna, guardado, nuevo`` (los valores, solo para el registro local).
+    """
+    clave = list(CLAVE_PRECIOS)
+    cols = [c for c in columnas if c in VIGILADAS_PRECIOS]
+    cruce = guardado[clave + cols].merge(nuevo[clave + cols], on=clave, suffixes=("", "_nuevo"))
+    filas = []
+    for col in cols:
+        a, b = cruce[col], cruce[f"{col}_nuevo"]
+        iguales = _iguales(a, b)
+        if pd.api.types.is_float_dtype(a):
+            iguales |= pd.Series(np.isclose(a.to_numpy(float), b.to_numpy(float), rtol=TOLERANCIA_PRECIOS, atol=0.0),
+                                 index=a.index)
+        cambia = cruce[~iguales]
+        filas += [{"ticker": r["ticker"], "sesion": r["sesion"], "columna": col, "guardado": r[col],
+                   "nuevo": r[f"{col}_nuevo"]} for _, r in cambia.iterrows()]
+    return pd.DataFrame(filas, columns=["ticker", "sesion", "columna", "guardado", "nuevo"])
+
+
+def ruta_revisiones_precios(proveedor: str, ruta: Path | None = None) -> Path:
+    """Registro de revisiones toleradas: ``<corpus>/mercados_series/logs/revisiones_precios_<proveedor>.csv``
+    (con ``ruta``, la carpeta de precios de los tests: ``<ruta>/_revisiones_<proveedor>.csv``)."""
+    if ruta is not None:
+        return Path(ruta) / f"_revisiones_{proveedor}.csv"
+    return corpus_dir(TEMA) / "logs" / f"revisiones_precios_{proveedor}.csv"
+
+
 def escribir_precios(df: pd.DataFrame, proveedor: str, ruta: Path | None = None, *,
-                     permitir_correcciones: bool = False) -> list[Path]:
+                     permitir_correcciones: bool = False,
+                     revisiones_toleradas: Iterable[str] = ()) -> list[Path]:
     """Valida ``df`` (uno o varios tickers) y lo fusiona con lo guardado, un fichero por ticker.
 
     Base que solo crece: las sesiones nuevas se añaden y las ya guardadas se conservan tal cual
@@ -382,6 +415,11 @@ def escribir_precios(df: pd.DataFrame, proveedor: str, ruta: Path | None = None,
     añadido tarde se vería como conocido desde la sesión original (fuga hacia atrás).
     ``permitir_correcciones=True`` (solo para errores propios) deja ganar a la fila de ``df`` en
     esas sesiones, sabiendo que la corrección se presenta como conocida desde la sesión original.
+    ``revisiones_toleradas`` (p. ej. ``('volume', 'dividendo')``: revisiones del proveedor, como el
+    volumen provisional de la última sesión o un dividendo corregido): un cambio SOLO en esas columnas
+    no rechaza el ticker; la vela guardada se conserva tal cual (no hay fuga hacia atrás), las
+    sesiones nuevas se añaden y cada discrepancia se apunta en ``ruta_revisiones_precios`` (ticker,
+    sesión, columna, valor guardado y nuevo, detección). Un cambio en otra columna sigue siendo error.
     ``ruta`` sustituye a la carpeta ``precios/<proveedor>`` (tests). Escritura atómica por
     fichero. Devuelve las rutas.
     """
@@ -394,13 +432,18 @@ def escribir_precios(df: pd.DataFrame, proveedor: str, ruta: Path | None = None,
     if choques:
         raise ErrorContrato("precios", choques)
     clave = list(CLAVE_PRECIOS)
+    toleradas = tuple(c for c in revisiones_toleradas if c in VIGILADAS_PRECIOS)
+    estrictas = tuple(c for c in VIGILADAS_PRECIOS if c not in toleradas)
     totales = {}
+    revisiones = []
     for tk in tickers:
         guardado = leer_precios(tk, proveedor, ruta=carpeta)
         propio = nuevo[nuevo["ticker"] == tk]
         if not permitir_correcciones and len(guardado):
-            problemas = _cambios(guardado, propio, clave, VIGILADAS_PRECIOS, faltan_es_problema=False,
+            problemas = _cambios(guardado, propio, clave, estrictas, faltan_es_problema=False,
                                  rtol=TOLERANCIA_PRECIOS)
+            if not problemas and toleradas:
+                revisiones.append(_revisiones_precios(guardado, propio, toleradas))
             if problemas:
                 raise ErrorContrato("precios", [f"{tk}: {p}" for p in problemas] + [
                     "la base de precios solo crece: una vela guardada no se corrige con una descarga "
@@ -410,8 +453,18 @@ def escribir_precios(df: pd.DataFrame, proveedor: str, ruta: Path | None = None,
         total = pd.concat([t for t in orden if len(t)], ignore_index=True).drop_duplicates(clave, keep="first")
         totales[tk] = validar_precios(total if len(total) else vacio_precios())
     # Todo validado antes de escribir: un ticker con problemas no deja a los demás a medias.
-    return [_escribir_atomico(totales[tk], ESQUEMA_PRECIOS, carpeta / f"{nombres[tk]}.parquet")
-            for tk in tickers]
+    rutas = [_escribir_atomico(totales[tk], ESQUEMA_PRECIOS, carpeta / f"{nombres[tk]}.parquet")
+             for tk in tickers]
+    revisadas = pd.concat([r for r in revisiones if len(r)], ignore_index=True) if any(
+        len(r) for r in revisiones) else None
+    if revisadas is not None:
+        destino = ruta_revisiones_precios(proveedor, ruta)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        revisadas = revisadas.assign(proveedor=proveedor,
+                                     detectado=pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"))
+        revisadas.to_csv(destino, mode="a", header=not destino.exists(), index=False, encoding="utf-8",
+                         lineterminator="\n")
+    return rutas
 
 
 def leer_precios(ticker: str, proveedor: str = "yahoo", ruta: Path | None = None) -> pd.DataFrame:
@@ -442,5 +495,5 @@ def tickers_guardados(proveedor: str = "yahoo", ruta: Path | None = None) -> lis
 __all__ = [
     "CARACTERES_SEGUROS", "ESQUEMA_PRECIOS", "FICHERO_SERIES", "ESQUEMA_SERIES", "nombre_fichero_ticker",
     "ticker_de_fichero", "ruta_series", "ruta_precios", "escribir_series", "leer_series",
-    "escribir_precios", "leer_precios", "tickers_guardados",
+    "escribir_precios", "leer_precios", "tickers_guardados", "ruta_revisiones_precios",
 ]

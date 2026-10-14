@@ -479,3 +479,57 @@ def test_t1_h6_semanal_hasta_2021_se_ve_al_dia_siguiente():
     hoy = v.disponible_publicador("fed_h6", pd.Timestamp("2026-09-22"))
     assert primera_decision_vec(pd.Series([hoy]))[0] == pd.Timestamp("2026-09-22")
 
+
+
+# --- Firma de caché memorizada (revisión) --------------------------------------------------------
+def test_t1_firma_recien_escrito_se_rehashea_aunque_repita_mtime(tmp_path):
+    """Dos escrituras seguidas con el mismo mtime y tamaño (el fallo de Windows que corrigió la firma de
+    contenido): la memoria no puede devolver la firma anterior de un fichero recién escrito."""
+    import os
+
+    r = tmp_path / "cfg.yaml"
+    r.write_text("a: 1\n", encoding="utf-8")
+    f1 = v.firma(r)
+    st = r.stat()
+    r.write_text("a: 2\n", encoding="utf-8")
+    os.utime(r, ns=(st.st_atime_ns, st.st_mtime_ns))          # mismo mtime, mismo tamaño
+    f2 = v.firma(r)
+    assert f1[:2] == f2[:2] and f1[2] != f2[2]
+
+
+def test_t1_firma_memorizada_no_relee_un_fichero_estable(tmp_path, monkeypatch):
+    """Un fichero cuyo mtime es anterior al hash (más que el margen) no se vuelve a leer en cada llamada."""
+    import os
+    from pathlib import Path
+
+    r = tmp_path / "cfg.yaml"
+    r.write_text("a: 1\n", encoding="utf-8")
+    viejo = r.stat().st_mtime_ns - 10 * v.MARGEN_FIRMA_NS
+    os.utime(r, ns=(viejo, viejo))
+    f1 = v.firma(r)
+    lecturas = []
+    original = Path.read_bytes
+    monkeypatch.setattr(Path, "read_bytes", lambda self: lecturas.append(self) or original(self))
+    assert v.firma(r) == f1 and not lecturas
+    r.write_text("a: 22\n", encoding="utf-8")                 # cambia mtime y tamaño: se rehashea
+    assert v.firma(r) != f1 and lecturas
+
+
+def test_t1_cache_publicador_fred_usa_la_firma_de_contenido(monkeypatch):
+    """Regresión (revisión): la caché global de publicadores de FRED usaba solo el mtime de
+    publicaciones.yaml; ahora su clave es ``visibilidad.firma`` (contenido)."""
+    from ingesta.mercados_series.fuentes import fred
+
+    fechas = pd.Series(pd.to_datetime(["2024-03-05"]))
+    llamadas = []
+    real = v.disponible_publicador
+    monkeypatch.setattr(fred.visibilidad, "disponible_publicador",
+                        lambda *a, **k: llamadas.append(a) or real(*a, **k))
+    monkeypatch.setattr(fred, "_cache_publicador", {})
+    monkeypatch.setattr(fred.visibilidad, "firma", lambda r: (1, 2, "a"))
+    fred._disponible_publicador_vec("fed_h15", fechas, None)
+    fred._disponible_publicador_vec("fed_h15", fechas, None)
+    assert len(llamadas) == 1                                    # misma firma: de la caché
+    monkeypatch.setattr(fred.visibilidad, "firma", lambda r: (1, 2, "b"))   # mismo mtime, otro contenido
+    fred._disponible_publicador_vec("fed_h15", fechas, None)
+    assert len(llamadas) == 2

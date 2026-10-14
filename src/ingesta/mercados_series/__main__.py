@@ -303,7 +303,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         df.set_defaults(func=_descargar_fuente, fuente=fuente)
     dp = sub.add_parser("descargar-precios", help="precios as-traded de Yahoo (núcleo o ampliado; reanudable)")
     dp.add_argument("--nivel", choices=["nucleo", "ampliado"], default="nucleo")
-    dp.add_argument("--fichero", type=Path, default=None, help="CSV con columna 'ticker' (nivel ampliado)")
+    dp.add_argument("--fichero", type=Path, default=None,
+                    help="CSV con columna 'ticker' (nivel ampliado; por defecto <corpus>/mercados_series/logs/"
+                         "tickers_ampliado.csv; una ruta relativa también se busca en <corpus>/mercados_series)")
     dp.add_argument("--etiqueta", default=None)
     dp.set_defaults(func=_descargar_precios)
     a, resto = p.parse_known_args(argv)

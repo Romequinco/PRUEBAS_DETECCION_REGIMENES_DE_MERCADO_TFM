@@ -54,7 +54,7 @@ import json
 import re
 import warnings
 import zipfile
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -416,6 +416,8 @@ def disponible_habil_siguiente(fechas: pd.DatetimeIndex, hora: str, huso: str,
     la fuente); para la última, ``habil_siguiente`` con los festivos de ``calendario``.
     """
     f = pd.DatetimeIndex(pd.to_datetime(fechas)).normalize()
+    if len(f) == 0:                               # fuente sin crudos: nada que fechar
+        return pd.Series([], dtype="datetime64[ns, UTC]")
     unicas = f.unique().sort_values()
     sig = pd.Series(unicas[1:].append(pd.DatetimeIndex([pd.NaT])), index=unicas)
     if len(unicas):
@@ -540,9 +542,20 @@ _TABLAS = {"ust_curva": tabla_ust, "bce_curvas": tabla_bce, "mof_jgb": tabla_mof
            "boe_curvas": tabla_boe}
 
 
-def tabla_curvas(fuentes: Iterable[str] = FUENTES, *, raiz: Path | None = None) -> pd.DataFrame:
-    """Tabla larga validada de las curvas con los crudos locales."""
-    partes = [_TABLAS[f](ancho_desde_crudos(f, raiz)) for f in fuentes]
+def tabla_curvas(fuentes: Iterable[str] = FUENTES, *, raiz: Path | None = None,
+                 registro: Callable[[str], None] | None = None) -> pd.DataFrame:
+    """Tabla larga validada de las curvas con los crudos locales.
+
+    Una fuente sin crudos descargados se omite con aviso (``registro``) y no para el resto.
+    """
+    log = registro or (lambda _m: None)
+    partes = []
+    for f in fuentes:
+        ancho = ancho_desde_crudos(f, raiz)
+        if ancho.empty:
+            log(f"  aviso: curvas: {f} sin crudos (python -m ingesta.mercados_series descargar-curvas)")
+            continue
+        partes.append(_TABLAS[f](ancho))
     partes = [p for p in partes if len(p)]
     return validar_series(pd.concat(partes, ignore_index=True)) if partes else vacio_series()
 

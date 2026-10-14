@@ -644,3 +644,33 @@ def test_t1_base_real_h6_semanal_dia_siguiente(ruta_real):
     citado = pd.to_datetime(previas["nota"].str.extract(r"\((\d{4}-\d{2}-\d{2})\)")[0])
     assert (previas["fecha_publicacion"] < citado).all()
 
+
+
+def test_t1_tabla_oficial_omite_con_aviso_lo_que_falta(tmp_path, monkeypatch):
+    """Regresión (revisión): sobre un corpus nuevo, ``construir-base --sin-red`` se paraba con un
+    FileNotFoundError (bce, eurostat) o un ValueError de índice vacío (curvas sin crudos). El docstring
+    promete que una fuente sin descargar se omite con aviso."""
+    import importlib
+    import pkgutil
+
+    import ingesta.mercados_series as ms
+    import ingesta.mercados_series.fuentes as fu
+
+    def corpus_dir(tema=None):
+        p = tmp_path / "corpus" / tema if tema else tmp_path / "corpus"
+        p.mkdir(parents=True, exist_ok=True)
+        return p
+
+    modulos = [importlib.import_module(f"ingesta.mercados_series.{m.name}") for m in pkgutil.iter_modules(ms.__path__)
+               if m.name != "__main__"]
+    modulos += [importlib.import_module(f"ingesta.mercados_series.fuentes.{m.name}")
+                for m in pkgutil.iter_modules(fu.__path__)]
+    for m in modulos:
+        if hasattr(m, "corpus_dir"):
+            monkeypatch.setattr(m, "corpus_dir", corpus_dir)
+    for nombre in base.CARGADORES_OFICIALES:
+        avisos: list[str] = []
+        t = base.tabla_oficial(nombre, sin_red=True, registro=avisos.append)
+        assert t.empty, nombre
+        if nombre in ("bce", "eurostat", "curvas"):
+            assert any("aviso" in a and nombre in a for a in avisos), (nombre, avisos)

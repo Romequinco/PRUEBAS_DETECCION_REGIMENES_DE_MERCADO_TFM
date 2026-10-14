@@ -95,6 +95,24 @@ def test_t1_bce_v2_e_i10_solo_desde_su_primera_version():
     assert t["fecha_publicacion"].iloc[0] == pd.Timestamp("2010-01-31") and t["nota"].iloc[0] == bce.NOTA_PREVIA
 
 
+def test_t1_bce_v2_revision_posterior_a_la_creacion_lleva_nota_previa():
+    """Regresión (revisión): en una serie creada después (``solo_desde_primer_vintage``), una observación
+    POSTERIOR a la creación cuya primera versión guardada ya es una revisión llevaba la nota de
+    retropolación; debe llevar ``NOTA_PREVIA`` (posible fuga de revisiones)."""
+    clave = "HICP.M.U2.N.000000.4D0.ANR"
+    hist = bce.parsear_csv("\n".join([
+        CAB_HIST,
+        f"{clave},M,U2,2025-12,2.0,Replace,2026-02-25T11:00:00.000+01:00,",
+        f"{clave},M,U2,2026-03,2.2,Replace,2026-07-10T11:00:00.000+02:00,",
+    ]))
+    t = validar_series(bce.tabla_versiones("ecb:" + clave, hist, bce.SERIES_BCE["ecb:" + clave])).set_index(
+        "fecha_referencia")
+    assert t.loc["2025-12-01", "nota"] == bce.NOTA_POSTERIOR_BCE          # anterior a la creación
+    assert t.loc["2026-03-01", "nota"] == bce.NOTA_PREVIA                 # posterior: revisión, no retropolación
+    assert t.loc["2026-03-01", "metodo_publicacion"] == "lag_fijo"
+    assert t.loc["2026-03-01", "fecha_publicacion"] < pd.Timestamp("2026-07-10")
+
+
 # --- Yahoo: el mercado declarado en el universo manda --------------------------------------------------
 @pytest.mark.parametrize(("ticker", "esperado"), [("DX-Y.NYB", "ICE_DXY"), ("^MOVE", "ICE_MOVE")])
 def test_t1_yahoo_mercado_declarado_en_universo(ticker, esperado):

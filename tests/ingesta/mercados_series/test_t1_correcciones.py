@@ -403,7 +403,8 @@ def test_t1_get_serie_id_sin_distinguir_mayusculas(cat):
 def test_t1_cache_publicador_invalida_al_editar_yaml():
     fred._disponible_publicador_vec("fed_h15", pd.Series([pd.Timestamp("2024-01-05")]), None)
     claves = [k for k in fred._cache_publicador if k[0] == "fed_h15"]
-    assert claves and all(len(k) == 3 and k[2] == visibilidad.RUTA_PUBLICACIONES.stat().st_mtime_ns for k in claves)
+    # La clave lleva la firma de contenido (mtime, tamaño, sha1), no solo el mtime (revisión).
+    assert claves and all(len(k) == 3 and k[2] == visibilidad.firma(visibilidad.RUTA_PUBLICACIONES) for k in claves)
 
 
 # --- Notas de revisables --------------------------------------------------------------------------

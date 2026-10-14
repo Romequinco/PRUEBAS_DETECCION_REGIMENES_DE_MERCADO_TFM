@@ -128,6 +128,22 @@ def test_weo_sdmx_edicion_por_fecha():
         imf.disponible("2030-04")
 
 
+def test_weo_edicion_fallida_en_dbnomics_no_descarta_la_sdmx(monkeypatch):
+    """Regresión (revisión): una edición que DBnomics no pudo servir (robots.txt) contaba como «vista» y
+    la misma edición servida por la API SDMX se descartaba como repetida."""
+    monkeypatch.setattr(imf, "descargar_dbnomics", lambda ed, **k: (None, {"error": f"robots.txt no permite {ed}"}))
+    monkeypatch.setattr(imf, "descargar_sdmx",
+                        lambda v, **k: (_sdmx(), {"bytes": 1}) if v == imf.VERSIONES_SDMX[0] else (None, {"error": "x"}))
+    sin, _ = imf.tabla_weo([])
+    con, informe = imf.tabla_weo(["2026-10"])
+    assert len(sin) > 0 and len(con) == len(sin)
+    assert informe["2026-10"]["origen"].startswith("sdmx") and "robots" in informe["2026-10"]["error_dbnomics"]
+    # Una edición que DBnomics sí sirve sigue mandando: la SDMX de la misma edición se descarta.
+    monkeypatch.setattr(imf, "descargar_dbnomics", lambda ed, **k: (_dbnomics(), {"bytes": 1}))
+    _, informe2 = imf.tabla_weo(["2026-10"])
+    assert informe2["2026-10"]["origen"] == "dbnomics"
+
+
 # --- Banco Mundial --------------------------------------------------------------------------------
 def test_wb_paises_sin_agregados_y_lag():
     paises = wb.leer_paises(PAISES_WB)

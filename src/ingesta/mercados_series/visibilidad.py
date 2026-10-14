@@ -32,6 +32,7 @@ from collections.abc import Iterable
 from datetime import date, datetime, time, timedelta
 from functools import lru_cache
 from pathlib import Path
+from time import time_ns
 from typing import Any
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -235,15 +236,33 @@ def _validar_mercados(crudo: Any, origen: str) -> dict[str, dict[str, Any]]:
     return out
 
 
+# Firma memorizada por ruta: (mtime_ns, tamaño, ctime_ns, firma, instante en que se calculó).
+_memo_firma: dict[str, tuple[int, int, int, tuple[int, int, str], int]] = {}
+MARGEN_FIRMA_NS = 2_000_000_000   # resolución de mtime más gruesa que se espera (FAT: 2 s)
+
+
 def firma(ruta: Path) -> tuple[int, int, str]:
     """Clave de caché de un fichero de configuración: (mtime, tamaño, sha1 del contenido).
 
     El ``mtime`` solo no basta: en Windows dos escrituras seguidas pueden compartirlo y la caché
-    devolvería la versión anterior.
+    devolvería la versión anterior. Para no leer y hashear el fichero en cada llamada (es la clave de
+    las cachés de ``es_habil`` o ``get_serie``), la firma se memoriza por ruta y se reutiliza mientras
+    ``stat`` dé el mismo (mtime, tamaño, ctime) Y ese mtime sea anterior en más de ``MARGEN_FIRMA_NS``
+    al momento en que se hasheó: una escritura posterior a ese momento ya no puede compartir el mtime.
+    Un fichero recién escrito (mtime dentro del margen) se vuelve a hashear siempre.
     """
     r = Path(ruta)
+    st = r.stat()
+    clave = str(r)
+    memo = _memo_firma.get(clave)
+    if (memo is not None and memo[:3] == (st.st_mtime_ns, st.st_size, st.st_ctime_ns)
+            and st.st_mtime_ns < memo[4] - MARGEN_FIRMA_NS):
+        return memo[3]
+    ahora = time_ns()
     datos = r.read_bytes()
-    return (r.stat().st_mtime_ns, len(datos), hashlib.sha1(datos).hexdigest())
+    out = (st.st_mtime_ns, len(datos), hashlib.sha1(datos).hexdigest())
+    _memo_firma[clave] = (st.st_mtime_ns, st.st_size, st.st_ctime_ns, out, ahora)
+    return out
 
 
 @lru_cache(maxsize=8)

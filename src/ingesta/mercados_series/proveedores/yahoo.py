@@ -329,6 +329,13 @@ def leer_registro(etiqueta: str) -> pd.DataFrame:
     return pd.DataFrame(filas)
 
 
+# Revisiones de Yahoo que no rechazan el ticker al refrescar (almacen.escribir_precios): el volumen de la
+# última sesión (provisional cuando se descarga poco después del cierre: MSFT y NVDA del 2026-10-12) y
+# los dividendos corregidos (ITX.MC 2002-2008, MC.PA 2008-11-05, VOD.L 2026-06-04). Se conserva la vela
+# guardada y la discrepancia queda en <corpus>/mercados_series/logs/revisiones_precios_yahoo.csv.
+REVISIONES_TOLERADAS = ("volume", "dividendo")
+
+
 def descargar_lote(tickers: list[str] | tuple[str, ...], *, etiqueta: str = "nucleo", reanudar: bool = True,
                    escribir: bool = True, ritmo: float = RITMO) -> pd.DataFrame:
     """Descarga ``tickers`` uno a uno (<= ``ritmo`` por segundo) y los guarda en ``precios/yahoo``.
@@ -353,7 +360,7 @@ def descargar_lote(tickers: list[str] | tuple[str, ...], *, etiqueta: str = "nuc
         try:
             tabla, info = descargar(tk)
             if escribir:
-                almacen.escribir_precios(tabla, PROVEEDOR)
+                almacen.escribir_precios(tabla, PROVEEDOR, revisiones_toleradas=REVISIONES_TOLERADAS)
             fila.update(info, estado="ok", error=None)
         except Exception as e:   # noqa: BLE001 - se registra y se sigue con el lote
             fila.update(estado="error", error=f"{type(e).__name__}: {e}"[:500])
@@ -521,7 +528,7 @@ def posproceso(etiqueta: str = "ampliado", fichero: Path | None = None, *, con_c
     Escribe ``tablas/yahoo_ampliado_cobertura.csv`` (metadatos, sin precios) y devuelve el resumen
     para la ficha. Se puede ejecutar con la descarga en curso: el estado lo dice.
     """
-    lista = _tickers_de_fichero(fichero or corpus_dir(TEMA) / "logs" / FICHERO_LISTA_AMPLIADO)
+    lista = _tickers_de_fichero(fichero)
     reg = leer_registro(etiqueta)
     ultimo = reg.drop_duplicates("ticker", keep="last") if len(reg) else pd.DataFrame(columns=["ticker", "estado"])
     ok = ultimo[ultimo["estado"] == "ok"]
@@ -640,8 +647,24 @@ def guardar_ficha_yahoo(etiqueta: str = "nucleo", ampliado: dict[str, Any] | Non
     return guardar_ficha(ficha)
 
 
-def _tickers_de_fichero(ruta: Path) -> list[str]:
-    df = pd.read_csv(ruta)
+def resolver_fichero(ruta: Path | str | None) -> Path:
+    """Ruta de la lista de tickers: por defecto ``<corpus>/mercados_series/logs/tickers_ampliado.csv``.
+
+    Una ruta relativa que no existe desde el directorio actual se busca en ``<corpus>/mercados_series``
+    (``--fichero logs/tickers_ampliado.csv`` funciona desde la raíz del repo: la lista vive en el corpus).
+    """
+    if ruta is None:
+        return corpus_dir(TEMA) / "logs" / FICHERO_LISTA_AMPLIADO
+    r = Path(ruta)
+    if not r.is_absolute() and not r.exists():
+        en_corpus = corpus_dir(TEMA) / r
+        if en_corpus.exists():
+            return en_corpus
+    return r
+
+
+def _tickers_de_fichero(ruta: Path | str | None) -> list[str]:
+    df = pd.read_csv(resolver_fichero(ruta))
     col = "ticker" if "ticker" in df.columns else df.columns[0]
     return list(dict.fromkeys(df[col].dropna().astype(str).str.strip()))
 
@@ -649,7 +672,8 @@ def _tickers_de_fichero(ruta: Path) -> list[str]:
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(prog="python -m ingesta.mercados_series.proveedores.yahoo")
     ap.add_argument("orden", choices=["nucleo", "ampliado", "ficha", "posproceso"])
-    ap.add_argument("--fichero", type=Path, help="CSV con columna 'ticker' (nivel ampliado)")
+    ap.add_argument("--fichero", type=Path, help="CSV con columna 'ticker' (nivel ampliado; por defecto "
+                    "<corpus>/mercados_series/logs/tickers_ampliado.csv; una ruta relativa también se busca ahí)")
     ap.add_argument("--etiqueta", default=None)
     ap.add_argument("--sin-reanudar", action="store_true")
     a = ap.parse_args(argv)
@@ -679,4 +703,4 @@ if __name__ == "__main__":
 __all__ = ["NUCLEO", "ETF_PROPUESTA", "MAPA_EXCHANGE", "ProveedorYahoo", "mercado_de", "descargar_vista", "a_contrato", "descargar", "descargar_lote",
            "leer_registro", "guardar_metadatos", "medir_cobertura", "guardar_ficha_yahoo",
            "ticker_yahoo_constituyente", "indices_de_tickers", "clasificar_error", "calidad_por_ticker",
-           "cobertura_ampliado", "estado_descarga", "posproceso"]
+           "cobertura_ampliado", "estado_descarga", "posproceso", "resolver_fichero"]

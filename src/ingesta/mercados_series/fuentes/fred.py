@@ -442,15 +442,16 @@ def ids_sustitutos(cat: dict[str, dict] | None = None) -> list[str]:
     return [sid for sid in ids_fred_vivo(cat) if not cat[sid]["fichero_fase1"]]
 
 
-_cache_publicador: dict[tuple[str, pd.Timestamp, int], pd.Timestamp] = {}
+_cache_publicador: dict[tuple[str, pd.Timestamp, tuple[int, int, str]], pd.Timestamp] = {}
 
 
 def _disponible_publicador_vec(publicador: str, fechas: pd.Series,
                                publicaciones: dict[str, Any] | None) -> pd.Series:
     """``visibilidad.disponible_publicador`` por fecha distinta (cacheado si es la config por defecto)."""
     res = {}
-    # La clave lleva el mtime de publicaciones.yaml: editar el YAML invalida la caché (notebooks).
-    version = visibilidad.RUTA_PUBLICACIONES.stat().st_mtime_ns
+    # La clave lleva la firma de contenido de publicaciones.yaml (no solo el mtime, que en Windows puede
+    # repetirse en dos escrituras seguidas): editar el YAML invalida la caché (notebooks).
+    version = visibilidad.firma(visibilidad.RUTA_PUBLICACIONES)
     for d in pd.unique(fechas.dropna()):
         d = pd.Timestamp(d)
         k = (publicador, d, version)

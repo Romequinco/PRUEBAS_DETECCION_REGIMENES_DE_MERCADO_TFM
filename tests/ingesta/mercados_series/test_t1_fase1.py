@@ -294,7 +294,8 @@ def test_t1_fase1_ficha(raw, cat, tmp_path):
 # --- data/raw real ------------------------------------------------------------------------------
 @pytest.fixture(scope="module")
 def tabla_real():
-    if not (RAW / "provenance.json").exists():
+    # provenance.json está versionado: solo un parquet real indica que data/raw se ha descargado.
+    if not any(RAW.glob("*/*.parquet")):
         pytest.skip("falta data/raw (gitignored)")
     return fase1.tabla_fase1(catalogo=c.vista_regla_previa())
 
