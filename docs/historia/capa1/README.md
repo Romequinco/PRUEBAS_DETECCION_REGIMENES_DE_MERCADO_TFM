@@ -216,7 +216,10 @@ git worktree add ../capa1-v1 capa1-final                                      # 
 Solo viven en el tag: la memoria (`memory/`), el informe con su `.tex` y su bibliografía (`report/`), la procedencia
 de los datos v1 (`data/raw/`), el marco v1 (`data_loader.py`, `evaluation.py`, `features.py`, `viz.py`) y los 15
 notebooks v1. Hasta la reorganización de `docs/` la memoria, el informe y la procedencia tenían copia en esta carpeta
-(`memoria/`, `informe/`, `datos_v1/`); se retiraron porque eran idénticas a las del tag. El código v2 con la Capa 1 como árbol aparte está en el tag
+(`memoria/`, `informe/`, `datos_v1/`); se retiraron porque eran idénticas a las del tag, salvo `99_conclusions.md`,
+que llevaba una nota propia de 2026-10 (la recomendación v1 queda superada por el benchmark v2 y por ADR-005). Esa nota
+está recogida en la §5 de este README («Recomendación v1»), y la última versión de la copia con la nota se recupera con
+`git show e69ceed:docs/historia/capa1/memoria/99_conclusions.md`. El código v2 con la Capa 1 como árbol aparte está en el tag
 `v2-pre-unificacion`; la historia anterior al re-base, en la rama remota `backup-main-pre-datos-v2`.
 
 > Si re-ejecutas un notebook v1 desde un worktree del tag, hazlo **desde dentro de

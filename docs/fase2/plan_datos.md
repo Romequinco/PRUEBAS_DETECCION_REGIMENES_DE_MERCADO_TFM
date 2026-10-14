@@ -42,11 +42,16 @@ Hallazgos de las sondas que condicionan el plan:
 3. **Algunos metadatos de fecha mienten.** El BIS fecha todo el día 1; la hora de aceptación del JSON de EDGAR tiene
    desfases de horas; Yahoo reescribe hacia atrás el precio ajustado. Cada caso tiene su corrección.
 4. **La literatura llega tarde.** La mayoría de los papers sobre una crisis aparecen más de un año después de su
-   inicio: el TimeGate del conocimiento importa tanto como el de los datos.
+   inicio (solo 18 de 77 papers sobre la crisis financiera global eran visibles el 15-sep-2008; mediana, 1,6 años):
+   el TimeGate del conocimiento importa tanto como el de los datos.
 5. **Polymarket y EWS no sirven para el backtest largo** (volumen despreciable antes de 2024; histórico de EWS desde
    octubre de 2025 y con un z-score que mira el futuro).
 6. **El TimeGate cabe dentro de la base vectorial** como pre-filtro, sin fugas medidas; filtrar después de buscar
    hunde la recuperación (§5.4).
+
+Las cifras medidas que sostienen estos hallazgos (retrasos de publicación, recall, coste) están en el
+[anexo A](#anexo-a-cifras-de-las-sondas); los puntos abiertos de cada tema, en el
+[anexo B](#anexo-b-puntos-abiertos-por-tema).
 
 ## 2. Arquitectura de datos
 
@@ -123,8 +128,12 @@ Las reglas mínimas (TimeGate, `Documento`, tabla larga de series, fichas, acces
    (`LAG_PUBLICACION`). Si solo se conoce el mes o el año, se toma el último día del periodo. **[Tema 1 ✔]** para las
    series (`metodo_publicacion`: `vintage_exacto`, `calendario`, `lag_fijo`…).
 5. **Hora de decisión: después del cierre de Nueva York.** **[Tema 1 ✔]** fijada en las 16:30 America/New_York de
-   cada día natural; un cierre de mercado es visible a su hora local de cierre + 30 min. Para los filings, uno aceptado
-   a partir de las 16:00 ET cuenta el día hábil siguiente.
+   cada día natural; un cierre de mercado es visible a su hora local de cierre + 30 min. **[propuesta]** Esa misma
+   hora, las 16:30 America/New_York, es la hora de decisión del contrato común para todos los temas
+   ([`README.md`](README.md) §4). Una fuente puede aplicar una regla más conservadora, nunca menos: para los filings
+   de EDGAR, uno aceptado a partir de las 16:00 ET cuenta el día hábil siguiente, porque la hora de aceptación del JSON
+   trae desfases de 4–10 h y el corte de las 16:00 cubre ese margen. No es una segunda hora de decisión, sino una
+   regla de fecha de publicación que solo retrasa documentos.
 6. Hay un TimeGate que no se puede filtrar: el que llevan los pesos del LLM (§7).
 
 ### 3.2 Documentos
@@ -142,12 +151,39 @@ vintages, precios as-traded con ajuste reconstruido a fecha, conversión de divi
 [README del Tema 1](../../src/ingesta/mercados_series/README.md#contrato-bloque-1). Las series revisables se cargan
 siempre con sus vintages, nunca con el histórico de hoy.
 
+### 3.4 Acceso legal: fuentes excluidas
+
+Decisión del plan, vigente para los cuatro temas: se respetan robots.txt y los límites de cada API, y no se esquiva
+ningún CAPTCHA, muro de pago, login, puerta de términos ni anti-bot. Las sondas encontraron estas fuentes cerradas
+para un robot o vetadas por sus términos; **no se usan** (ni se intenta rodearlas) aunque parezcan útiles:
+
+| Fuente | Motivo | Alternativa legal |
+|---|---|---|
+| Google News | Su robots.txt no permite `/rss/search`; el mecanismo de decodificación no está documentado y las fechas vienen truncadas al día | RSS directos permitidos, Bing News y GDELT DOC en vivo (Tema 4) |
+| GFSR del FMI | El cortafuegos de aplicaciones web (WAF) del FMI bloquea a los clientes que no son navegador | Descarga manual desde el navegador, si se aprueba (pregunta Q5) |
+| SEDAR+ (Canadá) | Redirección anti-bot | Ninguna automática; las empresas canadienses que presentan en EE. UU., por EDGAR (Tema 3) |
+| BSE / NSE (India) y HKEX | Anti-bot (403 de Akamai) o términos que lo prohíben | Ninguna automática |
+| PBoC (Banco Popular de China) | robots.txt con `Disallow: /` para todos salvo el buscador Baidu | Discursos vía BIS y datasets abiertos con fecha estimada (Tema 2) |
+| Senado de EE. UU. (eFD) | Puerta de aceptación de términos más anti-bot: no se automatiza (aceptarla a mano es parte de Q8) | Informes PTR de la Cámara de Representantes, publicados por el House Clerk (Tema 4) |
+| CoinGecko | Exige clave de API y sus condiciones no encajan con el uso del plan | Coinbase y Binance (Tema 1) |
+| Motley Fool, Seeking Alpha | Sus términos de uso prohíben la descarga | Para resultados trimestrales, el 8-K Item 2.02 con su anexo 99.1 en EDGAR, que es la fuente legal (Tema 3) |
+
+Dos avisos más:
+
+- **Yahoo** (`query1/query2.finance.yahoo.com`, el endpoint de yfinance) tiene `Disallow: /` en su robots.txt y sus
+  términos limitan el uso a fines personales. Es la única fuente central en esa situación y sigue como pregunta
+  abierta (Q1).
+- **El `Last-Modified` de los PDF antiguos no vale como fecha de publicación:** cambia cada vez que el PDF se vuelve
+  a subir. Un PDF sin fecha propia se fecha con la página que lo publica o con una regla conservadora (que nunca
+  adelante la fecha real) y se marca `fecha_estimada`.
+
 ## 4. Qué entra por tema
 
 ### Tema 1 · Mercados y series numéricas — **completado**
 
 Tools `get_precios`, `get_serie`. Destino: base de series (no vectorial). Detalle, estado de cada fuente y deudas
-pendientes: [README del Tema 1](../../src/ingesta/mercados_series/README.md).
+pendientes: [README del Tema 1](../../src/ingesta/mercados_series/README.md). Los puntos abiertos de los cuatro temas
+están en el [anexo B](#anexo-b-puntos-abiertos-por-tema).
 
 | Bloque | Fuentes | Estado |
 |---|---|---|
@@ -163,23 +199,32 @@ Tools `buscar_macro`, `buscar_riesgo`. Destino: RAG base (documentos clave) + ca
 [README del Tema 2](../../src/ingesta/bancos_riesgo/README.md).
 
 - **Política monetaria.** Fed (comunicados, actas, ruedas de prensa, Beige Book, transcripciones), BCE, BoE y BoJ en la
-  base; discursos de todo el mundo vía BIS y bancos menores en el cajón. Retrasos medidos: actas FOMC ≈ +3 semanas,
-  *accounts* del BCE ≈ +4 semanas, transcripciones FOMC ≈ +6 años. Rastreo propio como fuente primaria (es el único
+  base; discursos de todo el mundo vía BIS y bancos menores en el cajón. Retrasos medidos: actas FOMC +21 días,
+  *accounts* del BCE +28 días, transcripciones FOMC ≈ +6 años. Rastreo propio como fuente primaria (es el único
   con fecha de publicación fiable); los datasets abiertos sirven de semilla, verificación y etiquetas, no de fuente.
-- **Estabilidad financiera.** BIS Quarterly, FSR del BCE, BoE y Fed, OFR y ESRB en la base; BIS WP, FSB y ESRB en el
-  cajón. TimeGate conservador: con fecha dudosa se retrasa el documento, nunca se adelanta.
+- **Estabilidad financiera.** BIS Quarterly (desde 1996), FSR del BCE (2004), del BoE (1996) y de la Fed (2018), OFR
+  (2012) y ESRB (2012) en la base; BIS WP, FSB y ESRB en el cajón. El hueco de EE. UU. de 2000 a 2017 lo cubren el
+  BIS, el FSOC y la literatura; el GFSR del FMI está bloqueado (§3.4). TimeGate conservador: con fecha dudosa se
+  retrasa el documento, nunca se adelanta.
 - **Papers de crisis y literatura de cartera.** Catálogo de metadatos versionado (sin texto); `fecha_publicacion` =
   primera versión pública fechable (working paper, no el número de la revista).
 - **Huellas de crisis** (indicadores antes y durante cada crisis), deterministas a partir de los datos de la Fase 1.
-- **Enriquecimiento:** diferencias entre comunicados consecutivos y tono *hawkish/dovish* (ayuda de lectura, no señal
-  de decisión: los clasificadores disponibles se entrenaron con etiquetas posteriores).
+- **Enriquecimiento:** diferencias entre comunicados consecutivos y tono *hawkish/dovish*. Modelo elegido:
+  `gtfintechlab/FOMC-RoBERTa` (entrenado sobre FOMC; licencia CC BY-NC 4.0, compatible con el uso académico y
+  pendiente de aceptar en Q10), en un entorno aparte. Es ayuda de lectura, no señal de decisión: se entrenó con frases
+  de 1996–2022 etiquetadas con conocimiento posterior.
+- **Multi-idioma:** se indexa la versión inglesa oficial siempre que el banco la publique (BCE, BoJ, Riksbank,
+  Norges, SNB, BCB, BoC), marcada `traduccion=True`; los documentos solo en español (Banxico, BdE) o en portugués se
+  indexan en su idioma con un modelo de embeddings multilingüe (`multilingual-e5-large`). No se traduce con un LLM al
+  ingerir: sería caro y metería errores sin cita verificable.
 
 ### Tema 3 · Empresas
 
 Tools `buscar_filings`, `get_fundamentales`. Detalle: [README del Tema 3](../../src/ingesta/empresas/README.md).
 
 - **SEC EDGAR** como fuente principal: `fecha_publicacion` = fecha de presentación, corregida al día hábil siguiente
-  si la aceptación es a partir de las 16:00 ET; nunca un lag fijo desde el cierre del ejercicio.
+  si la aceptación es a partir de las 16:00 ET (§3.1); nunca un lag fijo desde el cierre del ejercicio. Retrasos
+  medianos medidos desde el cierre del periodo: 10-K +58 días, 10-Q +34.
 - **Base:** 10-K del universo en cada año (incluidas las empresas que salieron del índice), secciones 1, 1A, 1C, 7 y 7A
   más las notas del Item 8, y el 20-F de las extranjeras. **Cajón:** 10-Q, 8-K, filings antiguos, empresas fuera del
   universo y documentos internacionales (ESEF con la fecha del registro nacional, CNMV, CVM).
@@ -202,6 +247,8 @@ Tools `buscar_noticias`, `get_polymarket` y las de alternativos. Detalle:
 - **Limpieza:** duplicados por URL, titular y SimHash, conservando la versión más antigua.
 - **Historia corta:** Polymarket (útil desde 2024), EWS (desde octubre de 2025) y los ETF del Congreso (desde 2023)
   solo en vivo o en la ventana reciente del backtest.
+- **Operaciones del Congreso:** el informe (PTR) se publica una mediana de +28 días después de la operación, y su
+  `fecha_publicacion` es la del informe.
 
 ## 5. Tratamiento RAG
 
@@ -227,8 +274,13 @@ troceado semántico no compensa su coste; la cabecera de contexto embebida no ay
 superó a todos los densos en las sondas y protege nombres propios, tickers y cifras). Las APIs comerciales son baratas,
 pero su modelo puede cambiar o retirarse (rompe la reproducibilidad) y sus vectores no se pueden publicar con garantías.
 
+Medido en las sondas (recall@5 medio sobre cinco tipos de documento, 1.114 consultas): e5-large-v2 es el mejor denso
+(0,76); BM25 solo llega a 0,83; el híbrido e5-large-v2 + BM25, a 0,84, y bge-small + BM25, a 0,82 con unas diez veces
+menos GPU.
+
 **[abierta]** Modelo: provisionalmente e5-large-v2 + BM25 para las bases (bancos centrales, 10-K y PDF) y bge-small +
-BM25 para el cajón de noticias (calidad parecida con una fracción de la GPU). Se fijará con las preguntas RAGAS
+BM25 para el cajón de noticias (calidad parecida con una fracción de la GPU). Para los textos solo en español o en
+portugués, `multilingual-e5-large` (§4, Tema 2). Se fijará con las preguntas RAGAS
 revisadas por el equipo, tras medir también bge-m3 y FinModernBERT. Criterio: recall@5 en la base de cada agente,
 coste de embebido acotado y licencia MIT o Apache.
 
@@ -260,7 +312,10 @@ como mucho, de lector puntual de formatos complejos.
 **[propuesta]** Corpus, índices y embeddings en local (coste cero); el LLM por API con *prompt caching*, Batch API para
 el backtest y un modelo por agente (medio para Macro, Equity y Risk; el mejor para el CIO). AWS solo si se despliega el
 modo en vivo. **[abierta]** Presupuesto de LLM: depende de la frecuencia del backtest, el número de ablaciones y el
-modelo por agente; se mide primero el consumo real del Macro Agent en unas pocas fechas.
+modelo por agente. La estimación de las sondas (precios públicos de octubre de 2026; unos 270k tokens de entrada y
+16k de salida por comité) es de unos **315 $** para un backtest semanal 2000–2024 (unos 1.300 comités) con el CIO en
+el mejor modelo, el resto en un modelo medio, caché y lotes; unos 73 $ si es mensual y unos 1.260 $ con cuatro
+variantes. Antes de comprometerlo se mide el consumo real del Macro Agent en unas diez fechas.
 
 ### 5.7 Publicación de vectores y metadatos
 
@@ -278,9 +333,10 @@ los datos:
 |---|---|---|
 | RAG base de Portfolio y CIO | Literatura abierta y legal de construcción de carteras e idoneidad; los papers **no** son atemporales (un resultado empírico sobre 2008 no se ve en 2007) | [propuesta] Tema 2 |
 | Perfil del cliente | Cuatro bloques tipo MiFID II; perfil 1–7 = mínimo (capacidad, tolerancia) traducido a límites numéricos; versionado con `vigente_desde`, fuera del TimeGate de mercado; en el backtest, clientes sintéticos por perfil | [propuesta] |
-| Divisa | Los datos se guardan en su divisa y se convierten al leer con el fixing del BCE visible en la fecha | [Tema 1 ✔] |
+| Divisa de los datos | Los datos se guardan en su divisa y se convierten al leer con el fixing del BCE visible en la fecha. Las tools del Tema 1 convierten a USD (`divisa='original'` o `'USD'`), la divisa base decidida en el Tema 1 | [Tema 1 ✔] |
+| Divisa del cliente | USD por defecto, como la base del Tema 1. EUR queda como opción del cliente (minorista español): el plan LaTeX lo proponía, con la cobertura FX simulada por paridad cubierta (Euribor 3M/€STR frente a DTB3); exigiría añadir la salida en EUR a las tools | [abierta] (Q2) |
 | Libre de riesgo y baselines | DTB3 para los agentes, French RF ex post; €STR (EONIA antes) en EUR; baselines con proxies para cubrir los primeros años | [Tema 1 ✔] |
-| Costes | Comisión pública de un bróker minorista + spread base por clase escalado en crisis por un estimador de spread | [Tema 1 ✔] (tarifas sin verificar) |
+| Costes | Comisión pública de un bróker minorista + spread base por clase escalado en crisis por un estimador de spread. Para un minorista con órdenes de 500–1.000 €, la comisión fija pesa 30–60 pb por orden, más que el spread | [Tema 1 ✔] (tarifas sin verificar) |
 | Universo invertible del minorista europeo | ETF de EE. UU. como proxy de sus equivalentes UCITS en el backtest, declarando la diferencia; UCITS en la demo | [Tema 1 ✔] mapeo UCITS y empalme |
 | Rebalanceo | Base mensual + rebalanceo obligatorio cuando el detector entra en crisis | [propuesta] |
 | Memo | La plantilla es una skill; memos de terceros al RAG base con su fecha; memos propios al cajón del CIO, visibles solo si son anteriores y de la misma ejecución | [propuesta] |
@@ -300,14 +356,15 @@ Protocolo de verificación (medir y acotar, no eliminar):
 
 | Prueba | Qué se hace | Indica fuga si… | Estado |
 |---|---|---|---|
-| P1 Sondas | Preguntas cuya respuesta solo se conoce después de la fecha simulada, con y sin instrucción TimeGate | acierta con la instrucción puesta | Probada con un LLM local pequeño |
-| P2 Datación | Pedir el año de un comunicado FOMC, original y anonimizado; control fuera del corte | data los textos de su ventana de entrenamiento y no los posteriores | Probada con un LLM local pequeño |
-| P3 Ablación | Mismas decisiones con entradas originales y anonimizadas | el rendimiento cae al anonimizar dentro de la ventana de entrenamiento y no fuera | Diseñada |
-| P4 Fuera del corte | Repetir el backtest después del corte del modelo | rendimiento dentro ≫ fuera | Diseñada |
-| P5 Modelo con corte | Nodo de control con un modelo cronológicamente consistente en tareas de clasificación | divergencia sistemática en fechas antiguas | Opcional |
+| L1 Sondas | Preguntas cuya respuesta solo se conoce después de la fecha simulada, con y sin instrucción TimeGate | acierta con la instrucción puesta | Probada con un LLM local pequeño |
+| L2 Datación | Pedir el año de un comunicado FOMC, original y anonimizado; control fuera del corte | data los textos de su ventana de entrenamiento y no los posteriores | Probada con un LLM local pequeño |
+| L3 Ablación | Mismas decisiones con entradas originales y anonimizadas | el rendimiento cae al anonimizar dentro de la ventana de entrenamiento y no fuera | Diseñada |
+| L4 Fuera del corte | Repetir el backtest después del corte del modelo | rendimiento dentro ≫ fuera | Diseñada |
+| L5 Modelo con corte | Nodo de control con un modelo cronológicamente consistente en tareas de clasificación | divergencia sistemática en fechas antiguas | Opcional |
 
 La mini-demostración con un modelo diminuto ya mostró fuga con la instrucción puesta y la huella de datación; la
-anonimización la reduce sin eliminarla. P1–P2 deben repetirse con el LLM elegido.
+anonimización la reduce sin eliminarla. L1–L2 deben repetirse con el LLM elegido. Las pruebas se numeran L1–L5 para
+no confundirlas con las fases P1–P5 ni con las preguntas Q1–Q11 ([GLOSARIO](../GLOSARIO.md)).
 
 **Mitigaciones [propuesta]:** anonimización opcional en las tools (fechas relativas, episodios enmascarados; empresas
 solo en tareas de sentimiento); instrucción TimeGate en cada agente (necesaria, no suficiente); el LLM no decide pesos
@@ -335,30 +392,31 @@ revisión** del equipo; se priorizan las bases de Macro y Risk.
 
 ## 8. Preguntas abiertas
 
-Las once preguntas del plan, con su estado a octubre de 2026.
+Las once preguntas del plan, con su estado a octubre de 2026. Se numeran Q1–Q11 (en el LaTeX local eran P1–P11).
 
 | # | Pregunta | Estado |
 |:---:|---|---|
-| P1 | **Yahoo y robots.txt.** El endpoint del que descarga yfinance lo prohíbe en `robots.txt`. ¿Se asume para el corpus de precios o se usa una fuente de pago (EODHD, Tiingo) o CRSP si llega la licencia? | **Abierta.** El Tema 1 usa Yahoo y deja la fuente de la versión final como pregunta abierta |
-| P2 | **Hora de decisión y divisa base.** ¿Después del cierre de EE. UU. o antes de la apertura? ¿Cliente en EUR o en USD? | **Resuelta en parte (Tema 1):** decisión a las 16:30 de Nueva York; datos en su divisa con conversión al leer. Queda la divisa de referencia del cliente (el plan propone EUR) |
-| P3 | **Universo del minorista europeo.** Por PRIIPs no puede comprar ETF domiciliados en EE. UU. ¿UCITS equivalentes en la cartera del cliente y los de EE. UU. solo para el análisis? | **Resuelta en datos (Tema 1):** universo con equivalentes UCITS mapeados y empalme con el proxy de EE. UU. Falta confirmarlo con el tutor |
-| P4 | **Claves gratuitas** (NYT, Guardian, EDINET, OpenDART, Alpha Vantage, BEA, BLS v2): ¿se registran? Abrirían noticias con texto anteriores a 2016, Japón, Corea y transcripciones | Abierta (Temas 3 y 4) |
-| P5 | **Descargas manuales** de PDF abiertos bloqueados para robots (SSRN, GFSR del FMI, EUR-Lex): ¿se bajan a mano desde el navegador? | Abierta (Tema 2) |
-| P6 | **Acceso universitario a WRDS** (CRSP, Compustat): resolvería supervivencia, fundamentales anteriores a 2009 y spreads reales | Abierta: pendiente de la licencia de MIAX (el Tema 1 mide el sesgo sin ella) |
-| P7 | **OCR** de papers antiguos escaneados y de parte de los informes del Congreso: ¿se instala Tesseract? | Abierta (Temas 2 y 4) |
-| P8 | **Licencias de datasets** de Hugging Face dudosas o con aceptación manual de términos: ¿se usan? | Abierta (Tema 4) |
-| P9 | **Fase 1 con vintages.** Con ALFRED disponible, ¿se reevalúa el detector con datos en tiempo real? Exigiría una ADR nueva sobre la limitación de ADR-003 | **Abierta, con los datos listos:** el Tema 1 ya sirve los vintages exactos de las series revisables |
-| P10 | **Clasificador hawkish/dovish:** el mejor disponible es CC BY-NC. ¿Se acepta por ser uso académico? | Abierta (Tema 2) |
-| P11 | **Cataclismo:** el z-score publicado por EWS mira el futuro. ¿Qué nivel publicado dispara la desinversión en vivo? | Abierta (Tema 4; propuesta: nivel máximo publicado en dos instantáneas seguidas) |
+| Q1 | **Yahoo y robots.txt.** El endpoint del que descarga yfinance lo prohíbe en `robots.txt`. ¿Se asume para el corpus de precios o se usa una fuente de pago (EODHD, unos 20 €/mes, y un mes basta para la descarga inicial; Tiingo) o CRSP si llega la licencia? | **Abierta.** El Tema 1 usa Yahoo y deja la fuente de la versión final como pregunta abierta |
+| Q2 | **Hora de decisión y divisa base.** ¿Después del cierre de EE. UU. o antes de la apertura? ¿Cliente en EUR, con cobertura FX simulada, o en USD? | **Resuelta en parte (Tema 1):** decisión a las 16:30 de Nueva York; datos en su divisa con conversión al leer, hoy a USD (divisa base del Tema 1). Queda la divisa de referencia del cliente: EUR es una opción (el plan LaTeX la proponía) que exigiría salida en EUR en las tools (§6) |
+| Q3 | **Universo del minorista europeo.** Por PRIIPs no puede comprar ETF domiciliados en EE. UU. ¿UCITS equivalentes en la cartera del cliente y los de EE. UU. solo para el análisis? | **Resuelta en datos (Tema 1):** universo con equivalentes UCITS mapeados y empalme con el proxy de EE. UU. Falta confirmarlo con el tutor |
+| Q4 | **Claves gratuitas** (NYT, Guardian, EDINET, OpenDART, Alpha Vantage, BEA, BLS v2): ¿se registran? Abrirían noticias con texto anteriores a 2016, Japón, Corea y transcripciones | Abierta (Temas 3 y 4) |
+| Q5 | **Descargas manuales** de unos 45 PDF abiertos bloqueados para robots (SSRN, GFSR del FMI, EUR-Lex): ¿se bajan a mano desde el navegador? Son legales y gratuitos; en el Tema 2, con los de la AEA, son unos 94 documentos | Abierta (Tema 2) |
+| Q6 | **Acceso universitario a WRDS** (CRSP, Compustat, TAQ): resolvería supervivencia, fundamentales anteriores a 2009 y spreads reales (TAQ) | Abierta: pendiente de la licencia de MIAX (el Tema 1 mide el sesgo sin ella) |
+| Q7 | **OCR** de papers antiguos escaneados (15 papers NBER anteriores a 1995) y de parte de los PTR del Congreso (del 11 al 61 % según el año): ¿se instala Tesseract? | Abierta (Temas 2 y 4) |
+| Q8 | **Licencias de datasets** de Hugging Face dudosas (corpus Bloomberg/Reuters 2006–2013) o con aceptación manual de términos (*Financial News Multisource*, 57 M filas desde 1990; la misma pregunta vale para la puerta del Senado eFD, §3.4): ¿se usan? | Abierta (Tema 4) |
+| Q9 | **Fase 1 con vintages.** Con ALFRED disponible, ¿se reevalúa el detector con datos en tiempo real? Exigiría una ADR nueva sobre la limitación de ADR-003 | **Abierta, con los datos listos:** el Tema 1 ya sirve los vintages exactos de las series revisables |
+| Q10 | **Clasificador hawkish/dovish:** el mejor disponible es CC BY-NC. ¿Se acepta por ser uso académico? | Abierta (Tema 2) |
+| Q11 | **Cataclismo:** el z-score publicado por EWS mira el futuro. ¿Qué nivel publicado dispara la desinversión en vivo? | Abierta (Tema 4; propuesta: nivel máximo publicado en dos instantáneas seguidas) |
 
 Decisiones transversales que siguen pendientes con el tutor:
 
 - **Ventana del backtest de los agentes.** El texto la acota: noticias con texto completo desde 2016, fundamentales
-  XBRL desde 2009, Polymarket útil desde 2024, bancos centrales y EDGAR desde 1993–1994. Opciones: (a) 2007–2026,
+  XBRL desde 2009, Polymarket útil desde 2024, FSR de la Fed desde 2018, Yahoo fuera de EE. UU. desde 2000, bancos
+  centrales y EDGAR desde 1993–1994. Opciones: (a) 2007–2026,
   alineada con la pista B de la Fase 1, aceptando noticias pobres antes de 2016; (b) 2016–2026, fuentes completas pero
   solo dos crisis grandes; (c) ventanas escalonadas por fuente, declarando qué ve el agente en cada época.
-- **Frecuencia de rebalanceo** (propuesta: mensual + crisis); su coste está en las llamadas al LLM y, en un
-  minorista, en las comisiones fijas.
+- **Frecuencia de rebalanceo** (propuesta: mensual + crisis); su coste está en las llamadas al LLM (§5.6) y, en un
+  minorista, en las comisiones fijas: 30–60 pb por orden, más que el spread.
 
 ## 9. Siguientes pasos
 
@@ -369,3 +427,156 @@ Decisiones transversales que siguen pendientes con el tutor:
 | 3 · Primer RAG completo | Macro: comunicados, actas y ruedas de prensa de FOMC y BCE en la base, discursos en el cajón, con troceado, embeddings y pre-filtro elegidos | Siguiente (Tema 2) |
 | 4 · Primer agente | Macro Agent sobre episodios concretos, con evaluación de la recuperación y prueba de look-ahead | Pendiente (Fase 3) |
 | 5 · Escalar | Equity (10-K por sección), Risk (BIS, FSR, papers) y News (CC-NEWS, GDELT); después Portfolio y CIO | Pendiente |
+
+---
+
+## Anexo A. Cifras de las sondas
+
+Medidas por los extractores-sonda en octubre de 2026 (plan LaTeX local, resumen ejecutivo y secciones por dominio).
+Valen como orden de magnitud: el código definitivo de cada tema vuelve a medirlas en su ficha.
+
+**Alcance.** 188 fuentes sondadas: 117 funcionan, 22 parciales, 12 bloqueadas y 37 con clave o de pago (el 62 % de
+las probadas funciona sin coste). 440 papers y libros catalogados. 166 series de la Fase 1 más 16 series revisables
+con vintages de ALFRED. Bancos centrales y EDGAR, desde 1993–1994. Gasto en datos: 0 €.
+
+**Retrasos de publicación medidos** (mediana):
+
+| Documento | Retraso | Desde |
+|---|---|---|
+| Actas del FOMC | +21 días | la reunión |
+| *Accounts* del BCE | +28 días | la reunión |
+| PDF de las ruedas de prensa de la Fed | +7 a +18 días (el vídeo, el mismo día) | la rueda |
+| 10-K | +58 días | el cierre del ejercicio |
+| 10-Q | +34 días | el cierre del trimestre |
+| PTR del Congreso | +28 días | la operación |
+| Transcripciones del FOMC | ≈ +6 años | la reunión |
+
+**Vintages y lags.**
+
+- La historia completa de vintages de las 16 series revisables ocupa 1,3 MB y se descarga en 7 minutos.
+- En 2008 el empleo de EE. UU. se publicaba en torno a −100k/mes; el dato revisado es −450k. La producción industrial
+  cambia de signo en el 22 % de las revisiones.
+- Los lags fijos de la Fase 1 dejan ver el PIB antes de publicarse en el 4,3 % de los trimestres (cierres del
+  gobierno federal); en el conjunto de series, las fugas medidas afectan al 0,2–4,5 % de los meses (Q9).
+
+**Metadatos de fecha que mienten.** El BIS fecha todas las Quarterly Review el día 1; la hora de aceptación del JSON
+de EDGAR tiene desfases de 4–10 h; Yahoo reescribe hacia atrás el `Adj Close`; el `Last-Modified` de los PDF antiguos
+cambia al volver a subirlos (§3.4).
+
+**Supervivencia y literatura.**
+
+- EDGAR conserva a las empresas deslistadas (Lehman, 6.341 filings; Enron). Yahoo solo cubre el 15 % de la etapa en
+  el índice de 40 valores que salieron del S&P 500 (la medición completa del Tema 1 está en su README).
+- Solo 18 de 77 papers sobre la crisis financiera global eran visibles el 15-sep-2008; la mediana de publicación
+  llega 1,6 años después del inicio de la crisis.
+
+**Noticias y alternativos.** CC-NEWS da texto completo y abierto desde 2016 (del orden de 900 M de artículos). El
+volumen de Polymarket anterior a 2024 es menos del 1 % del de 2025. El z-score publicado de EWS mira el futuro: una
+reconstrucción causal con un modelo simple dio 411 falsas alarmas.
+
+**Recuperación** (§5.1–5.4).
+
+| Medida | Resultado |
+|---|---|
+| Troceado padre-hijo (128/768), recall@5 por tipo | comunicados 0,70 · actas 0,76 · 10-K 0,86 · FSR 0,80, el mejor en los cuatro tipos largos (en noticias, todas las estrategias dan 0,95–0,96) |
+| Embeddings, recall@5 medio | e5-large-v2 0,76 (mejor denso) · BM25 0,83 · e5-large-v2 + BM25 0,84 · bge-small + BM25 0,82 |
+| Post-filtro temporal | el recall cae a 0,02 con el corte al inicio del backtest |
+| Pre-filtro temporal | 0 documentos posteriores a la fecha en las cinco bases probadas |
+| Embeber el corpus completo (unos 2.400 M de tokens) | unas 226 h de GPU local con e5-large frente a unas 23 h con bge-small; por API, 50–310 $ por pasada |
+| Publicar vectores en `float16` | el recall@5 cambia como máximo 0,004 |
+
+**Coste de LLM** (backtest 2000–2024, precios públicos de octubre de 2026, unos 270k tokens de entrada y 16k de salida
+por comité, 60 % de la entrada cacheable):
+
+| Escenario | Mensual (300 comités) | Semanal (1.300) | Semanal × 4 variantes |
+|---|---:|---:|---:|
+| Mejor modelo en todo, sin optimizar | 420 $ | 1.820 $ | 7.280 $ |
+| Mixto (CIO en el mejor modelo, resto en uno medio) + caché + lotes | 73 $ | **315 $** | 1.261 $ |
+| Modelo pequeño + caché + lotes | 31 $ | 133 $ | 530 $ |
+
+Un LLM abierto en local no es alternativa para el backtest: en la GPU disponible, un modelo de 7B en 4 bits genera
+unos 10 tokens/s (unas 650 h para 1.300 comités). Sí sirve para tareas mecánicas, como L1–L2 (§7.1).
+
+**Cartera y costes.** Spread estimado (Abdi y Ranaldo, 2017), calma 2017 frente a COVID 2020: SPY de 18 a 170 pb,
+AGG de 7 a 28, XLK de 27 a 201, EEM de 25 a 112, IEF de 11 a 31. Los estimadores de rango sobrestiman el nivel en un
+orden de magnitud (el spread cotizado de SPY ronda 1 pb), pero capturan el multiplicador de crisis (×3 a ×10). Para un
+minorista con 10.000 € y órdenes de 500–1.000 €, la comisión fija pesa 30–60 pb por orden, más que el spread.
+
+## Anexo B. Puntos abiertos por tema
+
+Lo que cada sección del plan dejaba por decidir o completar, con las preguntas Q1–Q11 (§8) a las que se liga. Lo ya
+resuelto por un tema no se repite aquí; las deudas propias del Tema 1 están en su
+[README](../../src/ingesta/mercados_series/README.md#deudas-pendientes).
+
+**Tema 1 · Mercados y series**
+
+- Fuente de precios de la versión final: Yahoo, EODHD o Tiingo, o WRDS/CRSP si llega la licencia (Q1, Q6).
+- Universo de emergentes: el top 200 por capitalización de la propuesta o índices nacionales.
+- Fechas de vintage aproximadas (OCDE: fin de mes de la edición; RTDSM: día 15): ¿bastan para el backtest o se
+  cruzan con calendarios oficiales?
+- Previsiones (WEO, Economic Outlook de la OCDE, SEP): el TimeGate filtra por edición, no por año de referencia; falta
+  decidir si van a una tabla de proyecciones aparte.
+- Cobertura de China y emergentes: la NBS no tiene API automatizable; FMI, OCDE y BIS (abiertos) o CEIC (de pago).
+- Licencias de redistribución: las series de Moody's, ICE y CBOE en FRED permiten el uso, no la redistribución; la
+  base de series vive solo en local.
+- Fase 1 con vintages (Q9).
+
+**Tema 2 · Bancos centrales, riesgo y literatura**
+
+- FMI y OCDE bloquean a los clientes que no son navegador: ¿descarga manual única de unos 40 WEO y unos 40 Economic
+  Outlook (2007–2026), solo los PDF y con su fecha de publicación, o se prescinde de ellos? Junto con el GFSR y los PDF
+  bloqueados de SSRN y la AEA (unos 94 documentos), es Q5.
+- Bancos inaccesibles (RBA, RBNZ, PBoC, RBI): propuesta, BIS más el dataset `aufklarer` con fechas estimadas, sin
+  pedir los datos a los bancos (son cola larga para un universo centrado en EE. UU. y Europa).
+- CSV de discursos del BCE y ZIP del BIS: descarga reanudable y lenta (12–70 KB/s); una sola pasada nocturna cacheada.
+- Fecha de los PDF de las ruedas de prensa de la Fed: el `Last-Modified` no sirve para los antiguos; ¿regla fija de
+  +7 días o la fecha de la página de la rueda?
+- Licencia del clasificador hawkish/dovish (CC BY-NC): compatible con el TFM académico, no con un uso comercial (Q10).
+- ¿Los unos 1.380 BIS Working Papers (unos 30 M de palabras) van a la base o al cajón?
+- Unas 42 entradas del catálogo de papers solo tienen fecha con precisión de año, lo que las retrasa hasta 12 meses:
+  ¿se completan a mano?
+- Huellas de crisis fuera de EE. UU. (Asia 1997, México 1994, SME 1992, deuda europea): ¿con series de qué países?
+- `robots_permite` del módulo común da falsos negativos con la Fed, el BoE y el FSB: lo decide quien mantiene
+  `src/ingesta/comun/`.
+- Por sondear con más detalle: Greenbook anterior a 1994 (Philadelphia Fed), Banco de Corea, SARB, Banco de Turquía y
+  testimonios ante el Congreso.
+
+**Tema 3 · Empresas**
+
+- Constituyentes históricos del STOXX 600 (los del S&P 500 ya los da el Tema 1).
+- Fundamentales anteriores a 2009: acceso a WRDS/Compustat (Q6).
+- Claves gratuitas de EDINET, OpenDART y Alpha Vantage, a nombre de un miembro del equipo (Q4).
+- STOXX 600 y MSCI EM: ESEF solo cubre desde el ejercicio 2020; ¿se reduce la Capa 2 a EE. UU. para el backtest largo?
+- Librerías candidatas en el entorno aparte: `edgartools` (MIT) y `sec-edgar-downloader`.
+- Validar el extractor a escala: unos 200 10-K del S&P 500 (2001–2025) contrastados con EDGAR-CORPUS hasta 2020, y
+  mejorar la detección del MD&A en el anexo EX-13 con títulos no estándar.
+
+**Tema 4 · Noticias y alternativos**
+
+- Claves gratuitas de Guardian y NYT, las únicas fuentes con fecha fiable para 2000–2016 con texto o resumen (Q4).
+  Sin ellas, 2008 se apoya en Wikipedia, GDELT y FNSPID.
+- Riesgo de licencia del corpus Bloomberg/Reuters 2006–2013 y aceptación manual de *Financial News Multisource* y del
+  Senado eFD (Q8).
+- OCR de los PTR escaneados, del 11 al 61 % según el año (Q7).
+- Lista definitiva de medios y países del filtro de CC-NEWS (propuesta: 300 dominios de 30 países).
+- Umbral del botón de cataclismo (propuesta: `emergencyLevel` publicado = 5 en dos instantáneas seguidas) y si anula
+  al CIO (Q11).
+- Fuente del ratio put/call después de octubre de 2019 (los CSV de CBOE se cortan ahí).
+
+**Cartera y cliente** (preguntas de [`tfm/cliente_y_carteras.md`](../tfm/cliente_y_carteras.md) §6 que dependen de
+datos)
+
+- Escalas del formulario y tabla perfil → límites: ¿Grable-Lytton traducida o preguntas propias validadas con ESMA?
+- Memoria de cartera: ¿se añade el memo previo (más tokens, riesgo de anclaje)? Evaluarlo exige dos ejecuciones
+  aisladas y el Sharpe deflactado.
+- Cambio de perfil en el tiempo: el esquema lo soporta; falta decidir si el backtest lo simula.
+- Rol de gestor: cambiaría el almacén de estado (Postgres) solo si entra en el alcance.
+- Comisiones históricas: solo hay tarifas vigentes y DEGIRO prohíbe el rastreo en robots.txt; ¿tarifa fija para todo
+  el backtest o reconstrucción con Wayback Machine?
+- Divisa del cliente (Q2, §6).
+
+**Transversales (RAG y LLM)**
+
+- Troceado semántico: no compensa en las sondas; se deja fuera salvo que las preguntas RAGAS lo justifiquen.
+- Modelo de embeddings (§5.2), presupuesto de LLM (§5.6) y ventana limpia del LLM (§7.1).
+- Ventana del backtest y frecuencia de rebalanceo (§8).

@@ -23,8 +23,10 @@ generadores sintéticos ([`../fase1/sinteticos.md`](../fase1/sinteticos.md)).
 
 Las referencias BibTeX de las 273 obras están en la bibliografía única del repo,
 [`../references.bib`](../references.bib), con clave autor-año (bloque «Estado del arte del
-TFM»). Las 19 obras que ya estaban con otra clave conservan su entrada antigua y la clave nueva
-es un alias; el mapa está en la cabecera del `.bib`.
+TFM»). 19 obras del dossier ya estaban en el `.bib`: 16 con otra clave, que conservan su entrada
+antigua como canónica y tienen la clave nueva como alias (campo `ids`), y 3 con la misma clave
+(hamilton1989, kritzman2010, kritzman2012). El mapa de alias está en la cabecera del `.bib`; con
+BibTeX clásico se cita la clave canónica.
 
 ## Catálogo navegable
 

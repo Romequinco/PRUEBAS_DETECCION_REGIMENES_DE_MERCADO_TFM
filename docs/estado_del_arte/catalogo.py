@@ -128,7 +128,7 @@ def main() -> None:
     if EXTRA.exists():
         for i, o in enumerate(json.loads(EXTRA.read_text(encoding="utf-8")), start=1):
             fichas.append(dict(
-                n=f"E{i}", titulo=o["titulo"], cabecera=f'{o["autores"]} ({o["fecha"][:30]})', url=o["url"],
+                n=f"E{i}", titulo=o["titulo"], cabecera=f'{o["autores"]} ({o["fecha"]})', url=o["url"],
                 bloque="9.bis Competidores jun–oct 2026", que_hace=o["que_hace"], diferencia=o.get("amenaza_al_hueco", ""),
                 fase="", rasgos=o, seminal=False, secciones=["9.bis Pasada extra de competidores (junio–octubre 2026)"],
                 adopta=[o.get("nota", "")], hitos=uso_hito(o["titulo"], o["autores"]), correcciones="", extra=True))

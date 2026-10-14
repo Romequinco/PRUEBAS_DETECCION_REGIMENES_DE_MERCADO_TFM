@@ -16,7 +16,8 @@ hay que evaluarlos y justificar si entran o no.
 
 ## Fuentes a investigar
 
-- [x] Precios: yfinance as-traded (núcleo de 92 tickers; nivel ampliado de 1.842 tickers en descarga, con posproceso)
+- [x] Precios: yfinance as-traded (núcleo de 92 tickers; nivel ampliado: descarga completa, 1.388 de 1.842 tickers con
+      datos, con posproceso)
       (`proveedores.yahoo`, ficha `yahoo`); Tiingo como alternativa opcional (sin probar: exige cuenta)
 - [x] Constituyentes históricos (S&P 500 point-in-time; composición actual de 10 índices más) y sesgo de
       supervivencia declarado y medido (`fuentes.constituyentes`, `supervivencia`; WRDS pendiente)
@@ -61,7 +62,7 @@ python -m ingesta.mercados_series descargar-fred-vivo
 python -m ingesta.mercados_series descargar-bce     # ídem: eurostat, bis, imf, worldbank, oecd, philly, bancos, curvas, cripto
 python -m ingesta.mercados_series.fuentes.academicos --descargar   # French, Shiller, Goyal-Welch, OFR, JST
 python -m ingesta.mercados_series descargar-precios --nivel nucleo         # 92 tickers del universo
-python -m ingesta.mercados_series descargar-precios --nivel ampliado --fichero logs/tickers_ampliado.csv
+python -m ingesta.mercados_series descargar-precios --nivel ampliado   # lista: <corpus>/mercados_series/logs/tickers_ampliado.csv (fuera del repo; otra con --fichero)
 python -m ingesta.mercados_series.proveedores.yahoo posproceso              # cobertura y calidad del ampliado
 # 2. Base de series (une todas las fuentes; --desde-cero si cambian reglas de fechas, con respaldo)
 python -m ingesta.mercados_series construir-base --sin-red [--desde-cero --respaldo respaldo_X.parquet]
@@ -170,7 +171,8 @@ conservan desde 2023-10-10), `excluida_ajustada` (ETF de yfinance con `auto_adju
 obligatoria y `get_serie` avisa de la posible fuga de revisiones: las de FRED, `catalogo.NOTA_REVISABLE`
 («ALFRED en el bloque 3»); las académicas y la OFR, que no están en ALFRED, `catalogo.NOTA_REVISABLE_EDICION`
 (archivo propio de ediciones desde el 2026-10-12). Los tipos de cambio (DEX*) llevan `divisa: null`: son
-cotizaciones, no importes convertibles. `publicado_desde` marca los índices construidos hacia atrás (NFCI y
+cotizaciones, no importes convertibles. Por el mismo motivo, `get_serie(divisa='USD')` tampoco convierte las
+cotizaciones del BCE (`ecb:EXR.D.<X>.EUR`, que sí llevan divisa X): las devuelve tal cual y con aviso. `publicado_desde` marca los índices construidos hacia atrás (NFCI y
 subíndices, STLFSI4, regla de Sahm): sus filas anteriores llevan `catalogo.NOTA_RECONSTRUIDA` y `get_serie`
 avisa.
 
@@ -194,7 +196,8 @@ copyright de sus series (campo `licencia` del catálogo).
 `<corpus>/mercados_series/series/base_series.parquet` (D:/tfm_corpus en esta máquina; fuera del repositorio)
 con `almacen.escribir_series`, y deja la cobertura por serie (solo metadatos) en
 `results/ingesta/mercados_series/tablas/cobertura_series.csv`. `--sin-red` usa solo los crudos ya archivados
-y `data/raw` (unos 7 minutos con las 161 series de ALFRED); sin él, FRED baja lo que no tenga hoy en caché, ALFRED
+y `data/raw` (unos 7 minutos con las 161 series de ALFRED); una fuente oficial sin crudos en el corpus (`bce`,
+`eurostat`, `curvas`, los parquet del bloque 4 o un banco central) se omite con aviso y no para la construcción; sin él, FRED baja lo que no tenga hoy en caché, ALFRED
 las series sin descarga completa y los académicos la edición del día. `--desde-cero` copia antes la base guardada a
 `series/respaldo_bloque2.parquet` (si ya existe, se conserva) y la sustituye entera: es lo que hace falta cuando
 cambian las reglas o las fuentes. Base que solo crece: las revisiones de valores de las revisables con vintage `unico`
@@ -310,7 +313,11 @@ de la fuente, con nota) y 116 observaciones retiradas. Crudo: 764 MB de JSON en 
   cada edición revisa de mediana el 44-48 % de los periodos comunes): nota propia, sin la marca.
 - **Unidad por vintage** (dólares encadenados, años base: GDPC1, PCEC96, INDPRO...): `unidad` es la del vintage
   vigente; los niveles de vintages distintos no son comparables (nota y aviso).
-- **Proyecciones del SEP**: visibles desde su fecha de referencia si siguen vigentes (el contrato no admite previsiones).
+- **Proyecciones del SEP** (`proyecciones: conservar`): visibles desde su fecha de referencia si siguen vigentes (el
+  contrato no admite previsiones); si ya las sustituyó otra edición, se descartan.
+- **Proyecciones de la CBO** (GDPPOT, NROU; `proyecciones: recortar`): fuera las observaciones posteriores al vintage;
+  de cada periodo solo queda lo que traen los vintages publicados desde su fecha de referencia
+  (`alfred._recortar_proyecciones`), así que la serie nunca va más allá del último vintage (en la base, las dos acaban en el periodo 2026-01-01).
 - **Derivadas de FRED** (CFNAIMA3, A191RL1Q225SBEA, SAHMCURRENT): coherentes con su origen dentro de cada vintage
   (`alfred.coherencia_derivada`; tolerancias medidas: 0,0101, 0,1 y 0,0051).
 
@@ -385,7 +392,10 @@ IT, UK, JP, CA) y China; el resto del mundo, anual (Banco Mundial). Prefijos: `e
   UK), con nota. Sin paro de China.
 - **Philly RTDSM** ([`fuentes.philly_rtdsm`](fuentes/philly_rtdsm.py)): solo los vintages anteriores al primero de
   ALFRED (ROUTPUT 1965-1991, PNB real); PCPI, EMPLOY y RUC no aportan filas. Empalme por vintage con `fred:GDPC1`:
-  `deriv:PIB_REAL_USA_VINTAGES` (alias `PIB_REAL_USA`; `base.empalmar_pib_real_usa`, tramo PNB/PIB en la nota).
+  `deriv:PIB_REAL_USA_VINTAGES` (alias `PIB_REAL_USA`; `base.empalmar_pib_real_usa`, tramo PNB/PIB en la nota). Un
+  solo concepto por vintage: desde el primer vintage de ALFRED (1991-12-04) todo es PIB (las filas «anterior a ALFRED»
+  se refechan a esa publicación) y los periodos que solo existían como PNB (1947-1958) se retiran con una fila nula
+  hasta que un vintage posterior los publica como PIB.
 - **Bancos centrales** ([`fuentes.bancos_centrales`](fuentes/bancos_centrales.py)): BoC (Valet, desde 2001), BoJ (desde
   1998), Bundesbank (Svensson a 10 años, desde 1997) y RBA (desde 2011). BoE (IADB) vetado por `robots.txt`; sus curvas
   salen de los ficheros publicados (bloque 6).
@@ -398,8 +408,9 @@ estratégicos y 5 baselines); 52 invertibles por un minorista de la UE con su UC
 proxy de EE. UU. (mediana de 4,5 años antes de cada UCITS). ISIN comprobados con el dígito de control; fechas de
 lanzamiento de justETF; divisas medidas en Yahoo (`GBp`, `GBP`, `CHF`, `USX`). Constituyentes
 ([`fuentes.constituyentes`](fuentes/constituyentes.py)): S&P 500 point-in-time 1996-2026 (fecha efectiva del cambio) y
-composición actual de 10 índices (Wikipedia; sin Nikkei 225 ni Ibovespa). El universo ampliado (~1.700 tickers) se
-define con los constituyentes. Futuros: solo contexto. Fondos: fuera de la optimización. Recorrido:
+composición actual de 10 índices (Wikipedia; sin Nikkei 225 ni Ibovespa). El universo ampliado (1.842 tickers, lista en
+`<corpus>/mercados_series/logs/tickers_ampliado.csv`) se define con los constituyentes. Futuros: solo contexto.
+Fondos: fuera de la optimización. Recorrido:
 [`05_universo.ipynb`](../../../notebooks/fase2/mercados_series/05_universo.ipynb).
 
 ## Precios (bloque 6)
@@ -419,9 +430,28 @@ cero, cierres repetidos, dividendos altos).
   reanudable con registro en `logs/yahoo_nucleo.jsonl`).
 - **Nivel ampliado** (1.842 tickers: S&P 500 histórico y constituyentes actuales de 10 índices): descarga
   completada el 2026-10-14 (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`, reanudable):
-  **1.388 tickers con datos y 454 fallidos** (deslistados que Yahoo ya no sirve). Un rechazo del almacén: Yahoo revisó
-  un dividendo ya guardado de VOD.L (2026-06-04) y la base de precios solo crece, así que se conserva el valor
-  original. `... proveedores.yahoo posproceso` escribe la cobertura por índice y mercado, los fallidos y las
+  **1.388 tickers con datos y 454 fallidos: 449 deslistados que Yahoo ya no sirve y 5 rechazos del almacén**. Los 5
+  rechazos de esa descarga (`ErrorContrato` en `logs/ampliado_stderr.log` y `logs/reintento_stderr.log`, y columna
+  `error` de `tablas/yahoo_ampliado.csv`) son tickers vivos que ya tenían parquet y cuya descarga nueva cambiaba filas
+  guardadas; entonces el almacén rechazaba el ticker entero y conservaba lo guardado:
+
+  | Ticker | Qué revisó Yahoo | Última sesión guardada |
+  |---|---|---|
+  | ITX.MC | 5 dividendos de 2002-09-25 a 2008-09-25 | 2026-10-09 |
+  | MC.PA | el dividendo del 2008-11-05 | 2026-10-09 |
+  | VOD.L | el dividendo del 2026-06-04 | 2026-10-09 |
+  | MSFT | el volumen de la sesión 2026-10-12 | 2026-10-12 |
+  | NVDA | el volumen de la sesión 2026-10-12 | 2026-10-12 |
+
+  MSFT y NVDA guardaron la sesión del 2026-10-12 en la descarga del núcleo del 2026-10-13 con un volumen todavía
+  provisional, y Yahoo lo corrigió después; por eso se quedaron en esa sesión mientras que META, descargado el
+  2026-10-14, ya tiene la del 2026-10-13. Desde entonces el adaptador tolera esas revisiones
+  (`yahoo.REVISIONES_TOLERADAS = ('volume', 'dividendo')`, que pasa a `almacen.escribir_precios(revisiones_toleradas=...)`):
+  si una sesión guardada solo cambia en volumen o dividendo, se conserva la vela guardada tal cual (sin fuga hacia
+  atrás), se añaden las sesiones nuevas y cada discrepancia (ticker, sesión, columna, valor guardado y nuevo, fecha de
+  detección) se apunta en `<corpus>/mercados_series/logs/revisiones_precios_yahoo.csv`. Un cambio en cualquier otra
+  columna (OHLC, split, mercado, divisa o publicación) sigue siendo `ErrorContrato`. Los 5 tickers de la tabla se
+  pondrán al día en el próximo refresco. `... proveedores.yahoo posproceso` escribe la cobertura por índice y mercado, los fallidos y las
   incidencias de `calidad` en `tablas/yahoo_ampliado_cobertura.csv` y en la ficha `yahoo`; `tablas/yahoo_ampliado.csv`
   es el registro por ticker (metadatos, sin precios).
 - **Cripto** ([`fuentes.cripto`](fuentes/cripto.py)): Coinbase BTC-USD y ETH-USD (vela UTC, visible en D+1) como fuente
@@ -487,7 +517,7 @@ entera, **parcial** si falta una parte documentada en la ficha y **bloqueada** s
 | `boc`, `boj`, `bundesbank`, `rba` | ok | 1997 – 2026-10 | RBA desde 2011; BoC desde 2001 |
 | `boe` (IADB) | bloqueada | – | `robots.txt` prohíbe la ruta CSV |
 | `ust_curva`, `bce_curvas`, `boe_curvas`, `mof_jgb`, `boc_curva` | ok | 1974 – 2026-10 | curvas oficiales |
-| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado en descarga (731 de 1.842 intentados, 599 con datos) |
+| `yahoo` | ok | 1927 – 2026-10 | núcleo de 92 tickers; ampliado completo (2026-10-14): 1.388 de 1.842 con datos (449 deslistados, 5 rechazos del almacén, ya tolerados) |
 | `coinbase`, `binance_vision` | ok | 2015 – 2026-10 | Binance de control |
 | `universo` | ok | – | 202 instrumentos |
 | `sp500_constituyentes` | ok | 1996 – 2026-08 | fecha efectiva del cambio |
@@ -515,6 +545,11 @@ japonés (2026-10-09) se veía en el festivo (15 filas; test de regresión) y el
 el empalme del PIB de EE. UU. después de escribir la base (test de regresión).
 
 Precios y universo:
+- **Volumen provisional de la última sesión**: resueltos los rechazos del almacén de precios (bloque 6: las
+  revisiones de volumen o dividendo ya no paran el ticker; se conserva la vela guardada y se apuntan en
+  `logs/revisiones_precios_yahoo.csv`). Queda abierto si conviene no guardar la última sesión hasta D+1, cuando el
+  volumen ya es definitivo, en vez de conservar el provisional. ITX.MC, MC.PA, VOD.L, MSFT y NVDA siguen en su última
+  sesión guardada hasta el próximo refresco.
 - **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX (Tiingo, alternativa sin probar). Ya se leen los
   parquet as-traded del ampliado (todos los tramos con precio): 459 de 759 salidos siguen sin precio en Yahoo y 134
   más solo lo tienen fuera de su tramo, así que la PIT cubre de media el 66 % de los miembros de cada mes (37 % en

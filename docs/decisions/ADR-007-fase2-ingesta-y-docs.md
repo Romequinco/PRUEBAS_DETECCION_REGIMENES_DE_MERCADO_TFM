@@ -33,6 +33,10 @@
    `src/ingesta/comun/` (esquema `Documento`, fichas de fuente, cliente HTTP educado, rutas).
 2. **Ramas:** una rama por tema (`fase2/t1-mercados-series`, `fase2/t2-bancos-riesgo`, `fase2/t3-empresas`,
    `fase2/t4-noticias-alt`), con un PR a `main` por pieza cerrada. Lo común solo cambia con un PR pequeño a `main`.
+   **Excepción, por decisión expresa del responsable del Tema 1:** la reorganización de `docs/` de esta ADR (§2.2), los ajustes de lo común que
+   la acompañan (`docs/fase2/README.md`, enlaces de los README de los otros temas) y esta misma ADR se han hecho en la
+   rama del Tema 1 (`fase2/t1-mercados-series`) a propósito, no en un PR aparte. Todo llegará a `main` cuando se
+   unifiquen las ramas de la Fase 2; hasta entonces, quien trabaje en otra rama verá en `main` el árbol anterior.
 3. **Salidas:** tests en `tests/ingesta/<tema>/` (sin red por defecto), salidas pequeñas versionadas en
    `results/ingesta/<tema>/`, notebooks en `notebooks/fase2/<tema>/`, dependencias en
    `requirements/ingesta-<tema>.txt`. El corpus pesado y el texto con derechos, **fuera del repositorio**
@@ -71,7 +75,9 @@ Reglas:
    original v1 de cada detector pasa a `historia/fichas_v1.md`.
 3. **Lo histórico, en `historia/`.** Lo que solo cuenta de dónde venimos (Capa 1, estado del arte v1, tarea previa)
    no se mezcla con lo vigente. La memoria, el informe y la procedencia de datos de la Capa 1 se retiran del árbol:
-   eran copias idénticas de lo que guarda el tag `capa1-final`.
+   eran copias idénticas de lo que guarda el tag `capa1-final`, salvo `memoria/99_conclusions.md`, que llevaba una
+   nota propia de 2026-10 (la recomendación v1 queda superada); esa nota se recoge en
+   [`historia/capa1/README.md`](../historia/capa1/README.md) §5.
 4. **Lo interno, solo local.** Presentaciones, documentos LaTeX de trabajo y diarios de proceso viven en
    `docs/tfm/internos/`, excluido en el `.gitignore` de la raíz (vale para todos los clones). Si un documento versionado necesita algo de ahí, se destila a Markdown
    (como `fase2/plan_datos.md`) y se enlaza el destilado.
@@ -81,7 +87,7 @@ Reglas:
 
 | Ruta | Por qué |
 |---|---|
-| `docs/references.bib` | La citan los documentos y la bibliografía de la memoria; un solo fichero deduplicado con alias para las claves antiguas |
+| `docs/references.bib` | La citan los documentos y la bibliografía de la memoria; un solo fichero deduplicado: si una obra ya estaba con otra clave, la entrada antigua es la canónica y la clave nueva del estado del arte es un alias (campo `ids`; 16 alias más 3 obras con la misma clave) |
 | `docs/decisions/` | Las ADR se enlazan desde el código, los notebooks y el README raíz |
 | `docs/fase2/README.md` | La enlazan los README de los cuatro temas, que viven en ramas distintas: moverla rompería enlaces en ramas que no controla quien reorganiza |
 | `docs/GLOSARIO.md` | La enlazan notebooks, ADR y el README raíz, también por ancla; sus anclas de términos se conservan |
@@ -102,7 +108,12 @@ Reglas:
 - **Ganamos:** la Fase 2 avanza en paralelo sin tocar la Fase 1; cada tema se revisa y se fusiona por piezas; quien
   llega a `docs/` encuentra un índice, un recorrido según su papel y una sola versión de cada contenido.
 - **Coste:** la reorganización cambia muchas rutas de `docs/`; los enlaces del README raíz, de los notebooks y de las
-  ramas abiertas se actualizan en la misma tanda (las rutas fijas existen para acotar ese coste). Ningún fichero de
-  `src/regimenes/`, `configs/` ni `data/` cambia, así que la caché del benchmark sigue vigente.
+  ramas abiertas se actualizan en la misma tanda (las rutas fijas existen para acotar ese coste). De `src/regimenes/`
+  solo cambian su `README.md` y el docstring de `__init__.py` (un enlace), que no entran en la huella de caché; ningún
+  fichero de `regimenes.detectores`, `regimenes.evaluacion`, `regimenes.benchmark`, `configs/` ni `data/` cambia, así
+  que la caché del benchmark sigue vigente. Dos comentarios de `configs/` (`benchmark_spec.yaml:8` y `catalog.yaml:3`)
+  conservan rutas antiguas de `docs/datos/` (hoy `fase1/eda.md` y `estado_del_arte/fuentes_datos.md`): se dejan como
+  están porque `configs/` no se toca en la Fase 2, y el test de enlaces (`tests/test_docs_enlaces.py`) los documenta en
+  su lista de excepciones.
 - **Reversibilidad:** total con la historia de git; la Capa 1 completa sigue en el tag `capa1-final`.
 - **Pendiente:** dónde viven las fases 3–5 se decidirá en otra ADR.

@@ -41,7 +41,7 @@ Se construye de abajo arriba: primero las piezas que no dependen de un LLM, desp
 | Fase | Qué | Estado | Siguiente paso |
 |:---:|---|---|---|
 | 1 | **Régimen de mercado:** base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | **En curso.** Hechos: datos, preprocesado, benchmark de 12 detectores, fusiones y sintéticos (notebooks `00`–`17`). Pendientes: `18` (aumento), `19` (decisión final) y `20` (pseudolive), hoy esqueletos | Elegir la señal final (notebook 19, futura ADR-006) y publicarla como `get_regimen(fecha)` |
-| 2 | **Ingesta, RAG y tools:** corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | **En marcha** en `src/ingesta`, repartida en cuatro temas con una rama cada uno. **Tema 1 (mercados y series) completado** en la rama `fase2/t1-mercados-series`: tools `get_serie` y `get_precios` con TimeGate auditado | Temas 2–4 (bancos centrales y riesgo, empresas, noticias y alternativos); después, troceado, embeddings y primeros índices con evaluación de la recuperación |
+| 2 | **Ingesta, RAG y tools:** corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | **En marcha** en `src/ingesta`, repartida en cuatro temas con una rama cada uno. **Tema 1 (mercados y series) completado** en la rama `fase2/t1-mercados-series`: tools `get_serie` y `get_precios` con TimeGate auditado | Temas 2–4: el Tema 3 (empresas) ya está en marcha en la rama `fase2/t3-empresas` (sonda EDGAR); los temas 2 (bancos centrales y riesgo) y 4 (noticias y alternativos) aún no tienen rama publicada (estado a 2026-10-14). Después, troceado, embeddings y primeros índices con evaluación de la recuperación |
 | 3 | **Agentes Macro, Equity y Risk** en LangGraph, salidas estructuradas y trazables | Pendiente | Macro Agent completo con sus skills, sobre episodios históricos concretos |
 | 4 | **Cartera y memo:** Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | Pendiente | Añadir Equity, Risk, Portfolio y CIO |
 | 5 | **Evaluación:** backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos | Pendiente | Backtest tras escalar los agentes |
@@ -68,7 +68,7 @@ contrato; `20_pseudolive` lo valida sobre datos no usados. Contrato provisional 
 | [cliente_y_carteras.md](cliente_y_carteras.md) | Cliente minorista, formulario de perfil, dos carteras, memoria de cartera, botón de cataclismo; preguntas abiertas |
 | [lineas_abiertas.md](lineas_abiertas.md) | System One decision agents, Briefly, elementos de la propuesta pendientes de análisis, ubicación del código de las fases 3–5 |
 | [`fuentes/`](fuentes/) | Documentos de origen: [`propuesta_v2.pdf`](fuentes/propuesta_v2.pdf) (propuesta original, parcialmente superada por ADR-005) y [`reunion_tutor.pdf`](fuentes/reunion_tutor.pdf) (presentación al tutor, octubre de 2026) |
-| `internos/` | Solo local, no versionado: presentaciones, plan de datos en LaTeX, libro divulgativo de la Fase 1 y diario del estado del arte (ver [`docs/README.md`](../README.md#solo-local)) |
+| `internos/` | Solo local, no versionado: presentaciones, plan de datos en LaTeX y material de trabajo del estado del arte (ver [`docs/README.md`](../README.md#solo-local)) |
 
 Los datos alternativos candidatos (Pelosi tracker, Polymarket, EWS…) están en [`docs/fase2/datos_alternativos.md`](../fase2/datos_alternativos.md).
 

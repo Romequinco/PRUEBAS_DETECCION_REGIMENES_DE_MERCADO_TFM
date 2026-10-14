@@ -87,7 +87,9 @@ docs/
 ### Términos y bibliografía
 - [`GLOSARIO.md`](GLOSARIO.md) — pistas, roles, causalidad, regla anti-fuga, métricas del ranking, sintéticos y
   términos del TFM.
-- [`references.bib`](references.bib) — bibliografía única, deduplicada (las claves antiguas se conservan como alias).
+- [`references.bib`](references.bib) — bibliografía única, deduplicada. Cuando una obra ya estaba con otra clave, la
+  entrada antigua es la canónica y la clave nueva del estado del arte es un alias (campo `ids`): 16 alias, más 3
+  obras que ya tenían la misma clave. Con BibTeX clásico, que no entiende `ids`, se cita la clave canónica.
 
 ---
 
@@ -133,8 +135,7 @@ copia de quien lo genera:
 |---|---|---|
 | `tfm/internos/presentacion/` | Presentaciones (HTML y PDF) y su script de construcción | Material de exposición, cambia con cada reunión |
 | `tfm/internos/plan_datos/` | Plan de datos completo en LaTeX con figuras y resumen de fuentes | Documento de trabajo; su contenido vigente está destilado en [`fase2/plan_datos.md`](fase2/plan_datos.md) |
-| `tfm/internos/libro/` | Libro divulgativo de la Fase 1 en LaTeX (capítulos, figuras, tablas y scripts que los preparan) | Resumen didáctico para uso propio; se recompila desde la raíz con los scripts de su carpeta `scripts/` |
-| `tfm/internos/estado_del_arte/` | Diario de los agentes que construyeron el estado del arte | Registro de proceso; el resultado está en [`estado_del_arte/`](estado_del_arte/README.md) |
+| `tfm/internos/estado_del_arte/` | Material de trabajo del estado del arte: el diario de su construcción (`_journal_estado_del_arte.jsonl`), la bibliografía de trabajo previa a la fusión (`referencias.bib`, 273 entradas), el catálogo navegable generado (`catalogo.html`) y el guion de la diapositiva del estado del arte (`slide1_estado_del_arte.md`) | Registro de proceso y salidas generadas; el resultado está en [`estado_del_arte/`](estado_del_arte/README.md) y la bibliografía fusionada, en [`references.bib`](references.bib) |
 
 Si un documento versionado necesita algo de `internos/`, se destila a Markdown en su carpeta y se enlaza ese destilado,
 nunca la ruta local.

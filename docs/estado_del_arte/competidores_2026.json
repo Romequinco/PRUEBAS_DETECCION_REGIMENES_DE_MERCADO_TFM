@@ -15,18 +15,18 @@
   "amenaza_al_hueco": "alta: es lo más cercano al TimeGate y a la regla de que el LLM no fija pesos (vintages ALFRED, sondas de memoria, régimen hacia un playbook). Aun así no tiene detector cuantitativo walk-forward, ni agentes con RAG y citas, ni optimizadores de riesgo, ni datos alternativos, ni cliente minorista. Es un repositorio de una semana, sin revisión por pares y con 0 estrellas."
  },
  {
-  "titulo": "Agentes de IA de JPMorgan para régimes de mercado y asignación acciones/bonos (nota de estrategia, cobertura de Bloomberg)",
+  "titulo": "Agentes de IA de JPMorgan para regímenes de mercado y asignación acciones/bonos (nota de estrategia, cobertura de Bloomberg)",
   "autores": "Estrategas de JPMorgan dirigidos por Thomas Salopek",
   "fecha": "Nota del 9 de julio de 2026; publicada por Bloomberg y PYMNTS el 9-10 de julio de 2026",
   "url": "https://www.pymnts.com/news/artificial-intelligence/2026/jpmorgan-ai-agents-beat-traditional-investment-portfolios-in-historical-simulations/",
-  "que_hace": "Ocho agentes con modelos de OpenAI y Anthropic clasifican el mercado en cuatro régimes de crecimiento e inflación (Goldilocks, reflación, estanflación, risk-off). Con eso desplazan el peso entre acciones y bonos. En backtests de unas dos décadas, los ocho baten al 60/40 ajustado por riesgo y también al modelo de régimen por reglas de la propia casa. El mejor agente gana unos 0,7 pp al año con menos volatilidad.",
+  "que_hace": "Ocho agentes con modelos de OpenAI y Anthropic clasifican el mercado en cuatro regímenes de crecimiento e inflación (Goldilocks, reflación, estanflación, risk-off). Con eso desplazan el peso entre acciones y bonos. En backtests de unas dos décadas, los ocho baten al 60/40 ajustado por riesgo y también al modelo de régimen por reglas de la propia casa. El mejor agente gana unos 0,7 pp al año con menos volatilidad.",
   "regimen": "si",
   "multiagente": "parcial",
   "rag_citas": "no",
   "anti_lookahead": "no",
   "cartera": "parcial",
   "datos_alt": "no",
-  "nota": "Solo lo he comprobado en prensa (PYMNTS y GuruFocus/Yahoo); el informe no es público. Multiagente parcial: son ocho agentes alternativos que se comparan, no un equipo con roles. Los artículos no explican ni entradas ni controles de look-ahead o memorización. Los propios estrategistas advierten contra resultados in-sample demasiado optimistas y piden que el agente opere dentro de un proceso de inversión estructurado, que es la idea de las bandas. La cartera es una asignación táctica acciones/bonos, sin motores de riesgo.",
+  "nota": "Solo se ha podido contrastar en prensa (PYMNTS y GuruFocus/Yahoo): el informe no es público. Multiagente parcial: son ocho agentes alternativos que se comparan, no un equipo con roles. Los artículos no explican ni entradas ni controles de look-ahead o memorización. Los propios estrategas advierten contra resultados in-sample demasiado optimistas y piden que el agente opere dentro de un proceso de inversión estructurado, que es la idea de las bandas. La cartera es una asignación táctica acciones/bonos, sin motores de riesgo.",
   "amenaza_al_hueco": "media-alta: la industria valida la idea de un LLM que llama al régimen y asigna activos, con un banco de primer nivel detrás. Pero falta la metodología pública y no hay ni RAG con citas, ni TimeGate, ni detector cuantitativo, ni datos alternativos."
  },
  {
@@ -34,7 +34,7 @@
   "autores": "Matthew Francis Dixon",
   "fecha": "2026-06-16 (arXiv 2606.17383, q-fin.RM)",
   "url": "https://arxiv.org/abs/2606.17383",
-  "que_hace": "Marco POMDP para validar agentes de IA financieros por capas: información, creencias, previsión, acción y utilidad. En el caso de cartera, un LLM (vía la API de OpenAI) hace de filtro bayesiano aproximado. Recibe datos de mercado y macro más la creencia anterior, y devuelve probabilidades sobre cinco régimes: AI Boom, Soft Landing, Inflation Shock, Recession y Crisis. Esas creencias condicionan las vistas de un Black-Litterman long-only con un tope del 35% por activo. Datos de junio de 2024 a junio de 2026 sobre 9 activos.",
+  "que_hace": "Marco POMDP para validar agentes de IA financieros por capas: información, creencias, previsión, acción y utilidad. En el caso de cartera, un LLM (vía la API de OpenAI) hace de filtro bayesiano aproximado. Recibe datos de mercado y macro más la creencia anterior, y devuelve probabilidades sobre cinco regímenes: AI Boom, Soft Landing, Inflation Shock, Recession y Crisis. Esas creencias condicionan las vistas de un Black-Litterman long-only con un tope del 35% por activo. Datos de junio de 2024 a junio de 2026 sobre 9 activos.",
   "regimen": "si",
   "multiagente": "no",
   "rag_citas": "no",
@@ -49,7 +49,7 @@
   "autores": "Matthew Francis Dixon",
   "fecha": "2026-06-13 (arXiv 2606.15473, q-fin.RM)",
   "url": "https://arxiv.org/abs/2606.15473",
-  "que_hace": "Usa el LLM como observador semántico ruidoso: convierte evidencia compleja en probabilidades sobre régimes ocultos, y un filtro bayesiano impone coherencia temporal y deja posteriores auditables. Separa incertidumbre (entropía, deriva de creencias, error de calibración) de riesgo (VaR y CVaR de la pérdida). El caso de estudio usa rendimientos diarios ajustados de renta variable.",
+  "que_hace": "Usa el LLM como observador semántico ruidoso: convierte evidencia compleja en probabilidades sobre regímenes ocultos, y un filtro bayesiano impone coherencia temporal y deja posteriores auditables. Separa incertidumbre (entropía, deriva de creencias, error de calibración) de riesgo (VaR y CVaR de la pérdida). El caso de estudio usa rendimientos diarios ajustados de renta variable.",
   "regimen": "si",
   "multiagente": "no",
   "rag_citas": "no",
@@ -79,7 +79,7 @@
   "autores": "Sehee Kim, Yumin Choi, Minki Kang, Sung Ju Hwang",
   "fecha": "2026-09-15 (arXiv 2609.17632)",
   "url": "https://arxiv.org/abs/2609.17632",
-  "que_hace": "Trata el prompt de sistema de un agente de trading con herramientas como una política escrita en texto. Un Policy Agent la revisa a partir de las trazas de decisión y del resultado realizado de la cartera, con el LLM base congelado. Mejora Sharpe y retorno frente a políticas fijas en varios régimes de mercado y con dos LLM base.",
+  "que_hace": "Trata el prompt de sistema de un agente de trading con herramientas como una política escrita en texto. Un Policy Agent la revisa a partir de las trazas de decisión y del resultado realizado de la cartera, con el LLM base congelado. Mejora Sharpe y retorno frente a políticas fijas en varios regímenes de mercado y con dos LLM base.",
   "regimen": "parcial",
   "multiagente": "parcial",
   "rag_citas": "no",
@@ -116,7 +116,7 @@
   "anti_lookahead": "no",
   "cartera": "no",
   "datos_alt": "no",
-  "nota": "Lo he verificado solo por la descripción del repositorio y por el resumen del buscador. No he visto ninguna asignación de cartera ni controles point-in-time.",
+  "nota": "Solo se ha verificado con la descripción del repositorio y el resumen del buscador; no consta ninguna asignación de cartera ni controles point-in-time.",
   "amenaza_al_hueco": "baja: coincide en LangGraph con un detector cuantitativo de régimen, pero no asigna activos ni usa RAG con citas."
  },
  {

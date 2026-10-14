@@ -5,6 +5,13 @@ información financiera con fecha de publicación, sabe en qué **régimen** est
 explicadas en un *investment memo* con citas. La visión, las cinco fases y su estado real están en
 [`docs/tfm/README.md`](docs/tfm/README.md); la decisión de alcance, en [ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md).
 
+Requisitos añadidos en la tutoría, todos con el diseño abierto: cliente minorista con formulario de perfil
+que fija los límites del CIO, dos carteras (con límites y «en bruto»), memoria de la cartera anterior, datos
+alternativos (operaciones del Congreso, divergencias en Polymarket…), un «botón de cataclismo» automático
+(EWS, modo broma) y los *System One decision agents* como línea de investigación. Detalle en
+[`docs/tfm/cliente_y_carteras.md`](docs/tfm/cliente_y_carteras.md) y
+[`docs/tfm/lineas_abiertas.md`](docs/tfm/lineas_abiertas.md).
+
 **Este repositorio contiene la Fase 1** (el régimen, paquete `regimenes`) y el arranque de la **Fase 2**
 (ingesta de datos de los agentes, paquete `src/ingesta`; ver [ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
 La Fase 1 no busca un detector concreto, sino el **marco
@@ -22,18 +29,8 @@ solo información publicada hasta `fecha`.
 > `capa1-final`); **no** es la «Capa 1/Capa 2» de la propuesta (42 ETFs / ~1.300 acciones). Ver el
 > [GLOSARIO](docs/GLOSARIO.md#capa-1-del-repositorio-no-es-la-capa-1-de-la-propuesta).
 
-**Si acabas de llegar:** el índice de la documentación y el **orden de lectura** están en
-[`docs/README.md`](docs/README.md#orden-de-lectura). Visita rápida:
-[`docs/tfm/README.md`](docs/tfm/README.md) (el TFM completo) →
-[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) →
-[`docs/GLOSARIO.md`](docs/GLOSARIO.md) (términos: pistas, métricas, numeraciones) →
-[`docs/fase1/README.md`](docs/fase1/README.md) (pipeline 00–20, mapa del código, índice de detectores) →
-[`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) (de dónde venimos) → decisiones
-[ADR-001](docs/decisions/ADR-001-rebase-datos.md) (re-base de datos) ·
-[ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) (ventanas) ·
-[ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) (causalidad y ranking) ·
-[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura del repo y del paquete) ·
-[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) (el TFM es multi-agente; el régimen es la Fase 1).
+**Si acabas de llegar:** el índice de la documentación y el **único orden de lectura** (por público: equipo, tutor
+y memoria, más una visita rápida) están en [`docs/README.md`](docs/README.md#orden-de-lectura).
 
 ---
 

@@ -1,6 +1,6 @@
 # Generadores sintéticos
 
-> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados.
+> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados, salvo la lista de generadores aptos por pista del notebook 16, que es la entrada del 18 (ver «Veredicto del notebook 16 por pista»).
 
 > **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks [`15_sinteticos_generadores`](../../notebooks/15_sinteticos_generadores.ipynb), [`16_sinteticos_validacion`](../../notebooks/16_sinteticos_validacion.ipynb), [`17_sinteticos_laboratorio`](../../notebooks/17_sinteticos_laboratorio.ipynb) y [`18_sinteticos_aumento`](../../notebooks/18_sinteticos_aumento.ipynb), y sus salidas en [`results/sinteticos/`](../../results/sinteticos/).
 
@@ -593,6 +593,14 @@ en algún nivel.
   generadores **advirtiendo** que son distinguibles del real.
 - **`apto_aumento`** = memorización + condicionamiento, igual en las dos pistas: lo
   generado no es copia del entrenamiento y lleva la señal de régimen (notebook 18).
+
+**Veredicto del notebook 16 por pista** (`veredicto_pista<X>.csv`; es la entrada del notebook 18). Ningún generador
+queda `apto_laboratorio` ni `laboratorio_condicionado` en ninguna pista. Son `apto_aumento`:
+
+- **Pista A:** gaussiano_regimen, var_regimen, garch_regimen, rbig, flow_matching, difusion, cvae y cgan (todos salvo
+  jitter y bootstrap_regimen, que no pasan la memorización).
+- **Pista B:** gaussiano_regimen, var_regimen, garch_regimen, rbig y flow_matching (jitter y bootstrap_regimen no pasan
+  la memorización; difusion, cvae y cgan no pasan el condicionamiento).
 
 **Decisiones declaradas.** Todas del 2026-10-01; el motivo y las cifras que justifican
 cada una están en los comentarios de la sección `validacion` de

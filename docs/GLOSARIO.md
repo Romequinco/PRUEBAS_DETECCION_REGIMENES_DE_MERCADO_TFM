@@ -42,7 +42,8 @@ coherencia con el tag y la historia ([ADR-005](decisions/ADR-005-reencuadre-tfm-
 
 ### «Fase» no es siempre la fase del TFM
 
-En el repositorio conviven cinco numeraciones. Sin más contexto, «Fase 2» es la del TFM.
+En el repositorio conviven cinco numeraciones de fases. Sin más contexto, «Fase 2» es la del TFM. **P1–P5 solo
+designa fases del TFM**; las demás listas numeradas usan otra letra (última tabla de esta sección).
 
 | Uso | Dónde aparece | Qué significa |
 |---|---|---|
@@ -51,6 +52,14 @@ En el repositorio conviven cinco numeraciones. Sin más contexto, «Fase 2» es 
 | **fases 1–4 del re-base de datos** | [ADR-001](decisions/ADR-001-rebase-datos.md) §6 | 1 reorganización · 2 datos (estado del arte y descarga) · 3 EDA y banco congelado · 4 preprocesado |
 | **sub-fases D, E, S, F** | notebooks `04`–`20`, [`fase1/README.md`](fase1/README.md) | detectores, fusión, sintéticos y cierre de la Fase 1 |
 | **P1–P5** | [`estado_del_arte/`](estado_del_arte/README.md): dossier, `obras.csv` (`relevancia_fase`), `fichas.json` y notas de `references.bib` | alias de las Fases 1–5 del TFM, para no chocar con las familias F1–F7 ni con la sub-fase F: P1 régimen · P2 ingesta, RAG y tools · P3 agentes · P4 cartera y memo · P5 evaluación y backtest |
+
+Otras listas numeradas que no son fases:
+
+| Uso | Dónde aparece | Qué significa |
+|---|---|---|
+| **L1–L5** | [`fase2/plan_datos.md`](fase2/plan_datos.md) §7.1 | pruebas del protocolo de look-ahead del LLM: L1 sondas · L2 datación · L3 ablación · L4 fuera del corte · L5 modelo con corte |
+| **Q1–Q11** | [`fase2/plan_datos.md`](fase2/plan_datos.md) §8 | preguntas abiertas del plan de datos (en el LaTeX local del plan se numeraban P1–P11) |
+| **P1–P6 de *The Alpha Illusion*** | [`estado_del_arte/estado_del_arte.md`](estado_del_arte/estado_del_arte.md) | protocolo de una obra citada; se nombra siempre con la obra, nunca solo |
 
 ---
 
