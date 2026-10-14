@@ -417,11 +417,13 @@ cero, cierres repetidos, dividendos altos).
 - **Núcleo**: 92 de 92 tickers (ETF de la propuesta, AGG, RSP, VBMFX, IBIT, ETHA, 16 índices, 4 divisas, 5 futuros y
   20 acciones grandes): 657.499 sesiones, unos 6 minutos (`python -m ingesta.mercados_series.proveedores.yahoo nucleo`,
   reanudable con registro en `logs/yahoo_nucleo.jsonl`).
-- **Nivel ampliado** (1.842 tickers: S&P 500 histórico y constituyentes actuales de 10 índices): descarga reanudable
-  en curso (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`). `... proveedores.yahoo posproceso`
-  lee solo lo ya guardado y escribe la cobertura por índice y mercado, los fallidos (vacío, deslistado) y las
-  incidencias de `calidad` en `tablas/yahoo_ampliado_cobertura.csv` y en la ficha `yahoo` («descarga en curso: N de
-  M» mientras no se haya intentado toda la lista); se repite al terminar.
+- **Nivel ampliado** (1.842 tickers: S&P 500 histórico y constituyentes actuales de 10 índices): descarga
+  completada el 2026-10-14 (`... proveedores.yahoo ampliado --fichero <csv con columna ticker>`, reanudable):
+  **1.388 tickers con datos y 454 fallidos** (deslistados que Yahoo ya no sirve). Un rechazo del almacén: Yahoo revisó
+  un dividendo ya guardado de VOD.L (2026-06-04) y la base de precios solo crece, así que se conserva el valor
+  original. `... proveedores.yahoo posproceso` escribe la cobertura por índice y mercado, los fallidos y las
+  incidencias de `calidad` en `tablas/yahoo_ampliado_cobertura.csv` y en la ficha `yahoo`; `tablas/yahoo_ampliado.csv`
+  es el registro por ticker (metadatos, sin precios).
 - **Cripto** ([`fuentes.cripto`](fuentes/cripto.py)): Coinbase BTC-USD y ETH-USD (vela UTC, visible en D+1) como fuente
   principal y Binance Vision (BTCUSDT, ETHUSDT) como control (`tablas/cripto_comparacion_binance_coinbase.csv`).
 - **Curvas** ([`fuentes.curvas`](fuentes/curvas.py)): US Treasury (par, desde 1990), BCE (Svensson, desde 2004), BoE
@@ -507,9 +509,6 @@ japonés (2026-10-09) se veía en el festivo (15 filas; test de regresión) y el
 el empalme del PIB de EE. UU. después de escribir la base (test de regresión).
 
 Precios y universo:
-- **Nivel ampliado de precios**: descarga en curso (último posproceso: 731 de 1.842 intentados, 599 con datos; los
-  fallidos son tickers deslistados del S&P 500). Al terminar: `proveedores.yahoo posproceso`, reejecutar el notebook
-  06 y borrar `crudo/yahoo/mercados_fusionados.yaml` (lo escribe aún el proceso en curso, con el código antiguo).
 - **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX (Tiingo, alternativa sin probar). Al terminar el
   ampliado, contar los tramos salidos con parquet y, si mejora la muestra (hoy 122 tramos), leer esos parquet
   as-traded en `supervivencia.py` en lugar de pedir otra vez a yfinance.
