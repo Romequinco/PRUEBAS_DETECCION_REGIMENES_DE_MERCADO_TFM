@@ -1,10 +1,26 @@
-# Estado del arte de datos — Detección de regímenes de mercado
+# Estado del arte de las fuentes de datos para detectar regímenes
 
 **Proyecto:** banco de pruebas de detección de regímenes (Fase 1 —régimen— del TFM MIAX *Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence*; ver ADR-005).
-**Fecha de verificación de todo lo que sigue:** 2026-07-18.
+**Fecha de verificación de las descargas:** 2026-07-18. **Contrastado con el EDA y corregido:** 2026-10-14 (ver el recuadro siguiente).
 **Método:** cada serie se **descargó de verdad** (FRED API con `FRED_API_KEY` del `.env`, `yfinance period='max'`, CSV de OFR, ficheros académicos y repos GitHub). Se reporta la fecha de inicio **observada**, no la de marketing, y el estado (vivo / descontinuado / retirado).
 
-Este documento es el estado del arte **de los datos** (no de los detectores). Explica, por categoría, qué existe gratis para detección de regímenes, qué elegimos y por qué, desde cuándo (histórico real), de qué fuente gratuita, y cómo se reparte entre las dos pistas del proyecto.
+Este documento es el estado del arte **de los datos** (no de los detectores: ver [`detectores.md`](detectores.md); el estado del arte general del TFM está en [`estado_del_arte.md`](estado_del_arte.md)). Explica, por categoría, qué existe gratis para detección de regímenes, qué elegimos y por qué, desde cuándo (histórico real), de qué fuente gratuita, y cómo se reparte entre las dos pistas del proyecto.
+
+> **Correcciones tras el EDA.** Este inventario se escribió antes del EDA profundo; donde
+> ambos discrepaban manda el EDA ([`../fase1/eda.md`](../fase1/eda.md)), y el texto de abajo
+> ya está corregido:
+> 1. **`DGS30` no tiene hueco en 2002–2006.** La serie descargada es continua (unas 250
+>    observaciones al año, hueco máximo de 5 días). Los huecos diarios estructurales reales son
+>    `DGS20` (1986-12 → 1993-10) y `DTB1YR` (2002-02 → 2008-06) (EDA §1).
+> 2. **No hay `NaN`.** Las 160 series tienen 0 valores nulos: los huecos son **fechas
+>    ausentes** (festivos, series que aún no existían), no valores vacíos (EDA §1).
+> 3. **22 crisis desde 1929.** La verdad de referencia es el catálogo `crisis_catalog`, con 22
+>    episodios peak→trough entre 1929 y 2025, no las «~20 ventanas desde 1950» del primer
+>    borrador (EDA §6).
+> 4. **El crédito diario de Moody's es un proxy muerto.** Los rendimientos *seasoned* de
+>    Moody's son medias suavizadas: la correlación del retorno de crédito con el equity es
+>    +0,010 diaria, +0,072 semanal y +0,322 mensual. Baa−Aaa y Baa−10y sirven en nivel o a
+>    frecuencia semanal/mensual, no como cambio diario (EDA §3).
 
 ---
 
@@ -39,9 +55,9 @@ Muchas series sirven a **ambas** (p.ej. VIX desde 1990, DGS10 desde 1962): son p
 | **OFR** (`financialresearch.gov`, CSV) | ninguna | Financial Stress Index diario 2000+ con subíndices (Credit/Funding/Volatility…) | Vivo |
 | **GitHub datahub.io** (PDDL) | ninguna | Mirrors sin auth: S&P500+CAPE 1871+, VIX diario 1990+, oro mensual 1833+, constituyentes point-in-time | Vivo |
 
-### 1.4. Política de datos (dura, del `catalog.yaml`)
+### 1.4. Política de datos (dura, de `configs/catalog.yaml`)
 
-- **NUNCA imputar**: cada serie arranca en su fecha real; los huecos quedan `NaN`.
+- **NUNCA imputar**: cada serie arranca en su fecha real; los huecos son fechas ausentes, no se rellenan (el EDA verificó 0 `NaN` en las 160 series).
 - **Causalidad**: toda feature derivada será z-score *expanding/rolling* (nunca de muestra completa).
 - **Reproducibilidad**: `raw` con checksum + provenance; descargas versionadas.
 
@@ -65,7 +81,7 @@ Muchas series sirven a **ambas** (p.ej. VIX desde 1990, DGS10 desde 1962): son p
 **Qué existe — y el hallazgo que condiciona la categoría.** Las series ICE BofA **OAS por rating** de FRED (todas las `BAML…`) **dejaron de servir su historia completa**: desde abril-2026 FRED las limita a una **ventana rodante de 3 años** por licencia de ICE. Verificado: `BAMLH0A0HYM2` (HY OAS) arranca en 2023-07-18 (= hoy − 3 años) y forzar `observation_start=1996` no devuelve más. Es decir: **con fuentes gratis ya no se puede reconstruir la historia larga de las OAS por rating** (2008/2011/2015/2020 quedan fuera). La mayor pérdida es la **CCC OAS**, el mejor termómetro de estrés de crédito.
 
 **Qué elegimos y por qué.**
-- **Espina profunda (Pista A/ambas):** el **spread Baa−Aaa de Moody's** (`DBAA−DAAA`, diario desde 1986) y **`BAA10Y`** (Baa − Treasury 10y, diario 1986), más `BAA`/`AAA` **mensuales desde 1919**. Es grado de inversión, no HY, pero es el índice de riesgo de crédito con memoria de +100 años que **sí sobrevive** (Moody's no está capado como ICE). Sanity check: Baa−Aaa pico 3.50 en dic-2008, 1.99 en 2020, 1.46 en 2011. Es el **sustituto honesto de las OAS** para historia larga.
+- **Espina profunda (Pista A/ambas):** el **spread Baa−Aaa de Moody's** (`DBAA−DAAA`, diario desde 1986) y **`BAA10Y`** (Baa − Treasury 10y, diario 1986), más `BAA`/`AAA` **mensuales desde 1919**. Es grado de inversión, no HY, pero es el índice de riesgo de crédito con memoria de +100 años que **sí sobrevive** (Moody's no está capado como ICE). **Ojo:** a diario es un proxy muerto (rendimientos *seasoned* suavizados; corr. con el equity +0,010 diaria frente a +0,322 mensual, EDA §3), así que entra en nivel o a frecuencia semanal/mensual. Sanity check: Baa−Aaa pico 3.50 en dic-2008, 1.99 en 2020, 1.46 en 2011. Es el **sustituto honesto de las OAS** para historia larga.
 - **Proxies de HY con historia real (Pista B):** el par **HYG vs IEF** (spread `HYG−IEF`, 2007) y `HYG/LQD`. Cubren 2008 y COVID con nitidez (HYG/IEF rebased-100: mín 56 en dic-2008, 76 en mar-2020) justo donde la OAS de FRED ya no llega. Más `LQD` (IG, 2002), `EMB` (EM, 2007), `BKLN` (loans, 2011), `AGG` (2003).
 - **OAS por rating como features VIVAS (Pista B, solo 3 años):** `HY_OAS`, `IG_OAS`, `CCC_OAS`, `BB_OAS`, `B_OAS`, `BBB_OAS`, `EM_CORP_OAS`, `EURO_HY_OAS`. Granularidad por rating imbatible para el régimen **actual**, pero sin histórico de crisis. El pipeline debe estar diseñado para no depender de su profundidad.
 
@@ -84,7 +100,7 @@ Muchas series sirven a **ambas** (p.ej. VIX desde 1990, DGS10 desde 1962): son p
 - **Tramo corto profundo (Pista A):** las letras en secundario van mucho más atrás que el CMT — `DTB3` (3M diario, **1954**, spine corto), `DTB6` (1958), y la mensual `TB3MS` (3M, **1934**, la serie de tipos más profunda de FRED). Curva mensual profunda: `GS10/GS5/GS1` (**1953**). Pendiente profunda pre-1976 = `GS10 − TB3MS`.
 - **Reales / breakevens (régimen inflación vs crecimiento):** TIPS `DFII10`/`DFII5` (2003), `DFII30` (2010), breakevens `T10YIE`/`T5YIE` (2003) y el forward `T5YIFR` (5y5y, 2003).
 
-**Ojo a huecos estructurales:** `DGS20` tiene hueco 1987–1993 y `DGS30` hueco 2002-02→2006-02 (bono 30y descontinuado) — imputar/excluir esos nodos en esos tramos.
+**Ojo a huecos estructurales:** `DGS20` tiene hueco 1986-12 → 1993-10 (y `DTB1YR` 2002-02 → 2008-06): excluir esos nodos en esos tramos, sin imputar. `DGS30` **no** tiene hueco en 2002–2006 en la serie descargada: es continua (EDA §1).
 
 **Fallbacks.** yfinance `^TNX`(10y)/`^FVX`(5y)/`^TYX`(30y)/`^IRX`(13-wk) redundan a FRED 1:1 con historia igual de larga (1960-1962). Hoy `^TNX` cotiza el rendimiento directo (no ×10).
 
@@ -197,7 +213,7 @@ Estas series son **la respuesta**, no features (usarlas de input = fuga). Dos fa
 **Fechas de crisis / recesión (qué elegimos).**
 - **NBER**: `USRECD` (diario, **1854**) y `USREC` (mensual). **12 recesiones desde 1948.** Ojo metodológico: el `1` empieza el periodo **siguiente** al pico NBER (2008-01 = pico dic-2007) → retroceder un periodo para marcar inicio.
 - **Probabilidades de recesión:** `RECPROUSM156N` (Chauvet-Piger, Markov-switching, 1967 — es literalmente un régimen-switching benchmark), `SAHMREALTIME` (1959), `JHDUSRGDPBR` (Hamilton, 1967).
-- **`CRISIS_WINDOWS_SP500` (aportación propia):** las recesiones NBER no bastan — se pierden las crisis financieras **sin** recesión (1987, 1998 LTCM, 2010 flash crash, 2011 downgrade, 2015-16, 2018, 2022, 2023 SVB). Derivamos del cierre diario de `^GSPC` una lista de **~20 ventanas peak→trough desde 1950** (y hasta 103 con zigzag), cubriendo de sobra la promesa de "10+ crisis". Matiz honesto: **SVB (mar-2023) cae sub-umbral** en el índice (−7.8%); es crisis de crédito/banca, no drawdown del S&P500 → capturarla requiere estrés bancario (OFR-FSI Funding, spreads), no el nivel del índice.
+- **`CRISIS_WINDOWS_SP500` (aportación propia):** las recesiones NBER no bastan — se pierden las crisis financieras **sin** recesión (1987, 1998 LTCM, 2010 flash crash, 2011 downgrade, 2015-16, 2018, 2022, 2023 SVB). Derivamos del cierre diario de `^GSPC` una lista de ventanas peak→trough (el primer borrador daba ~20 desde 1950, y hasta 103 con zigzag); el catálogo final (`crisis_catalog`, EDA §6) tiene **22 crisis desde 1929**, de sobra para la promesa de "10+ crisis". Matiz honesto: **SVB (mar-2023) cae sub-umbral** en el índice (−7.8%); es crisis de crédito/banca, no drawdown del S&P500 → capturarla requiere estrés bancario (OFR-FSI Funding, spreads), no el nivel del índice.
 - **`crisisJST`** (JST R6, 1870, 18 países): ground truth internacional de crisis bancarias sistémicas.
 
 **Reglas de uso.** Positivo = estrés en todos los FSI. Reindexar semanal/mensual a diario con **forward-fill causal** (nunca interpolar hacia atrás). Doble ground truth (NBER ∪ CRISIS_WINDOWS) = recall alto; intersección = precisión.
@@ -256,7 +272,7 @@ Series elegidas por categoría, con rol y pista. Fuente: `FRED` (auth FRED_API_K
 | DGS10 | FRED `DGS10` | 1962-01 | ambas | spine |
 | DGS5 | FRED `DGS5` | 1962-01 | ambas | core |
 | DGS2 | FRED `DGS2` | 1976-06 | ambas | core |
-| DGS30 | FRED `DGS30` | 1977-02 (hueco 02-06) | ambas | core |
+| DGS30 | FRED `DGS30` | 1977-02 | ambas | core |
 | DGS3MO | FRED `DGS3MO` | 1981-09 | ambas | core |
 | DGS1 / DGS3 / DGS7 | FRED | 1962/1962/1969 | B | enricher |
 | DGS6MO / DGS1MO | FRED | 1981/2001 | B | enricher |
@@ -450,7 +466,8 @@ Series elegidas por categoría, con rol y pista. Fuente: `FRED` (auth FRED_API_K
 3. **PMI/ISM no gratis** → proxy Fed regionales (documentar que no es idéntico).
 4. **Amplitud "pura" y liquidez de Treasuries: no hay serie libre** → computar breadth desde constituyentes; usar OFR-FSI/MOVE como proxy de liquidez.
 5. **Vintages/revisiones macro:** FRED sirve datos revisados; para point-in-time estricto haría falta ALFRED. `SAHMREALTIME`/`WEI`/encuestas de difusión son lo más "as-of".
-6. **Huecos estructurales conocidos:** `DGS20` (1987-93), `DGS30` (2002-06), series broad *DTWEX* que paran en 2019 (empalmar con *GS). Se respeta la política de **no imputar** (huecos = `NaN`).
+6. **Huecos estructurales conocidos:** `DGS20` (1986-12 → 1993-10), `DTB1YR` (2002-02 → 2008-06), series broad *DTWEX* que paran en 2019 (empalmar con *GS). `DGS30` es continuo. Se respeta la política de **no imputar** (los huecos son fechas ausentes, sin `NaN`).
 7. **Stooq y Kaggle no son fuentes vivas** en este entorno; toda descarga viva se apoya en FRED + yfinance + académicos + OFR + GitHub. Conviene **cachear** las descargas de yfinance por si Yahoo capa un ticker.
+8. **Crédito de Moody's a diario:** su Δ diario es ruido (rendimientos suavizados); usar el nivel o frecuencia semanal/mensual.
 
 Todo lo listado como *elegido* está **verificado con descarga real el 2026-07-18**. Lo no verificado (snapshots OAS, Stooq, LIBOR diario, PMI ISM) queda fuera del conjunto elegido y documentado aquí como descartado o como deuda técnica.

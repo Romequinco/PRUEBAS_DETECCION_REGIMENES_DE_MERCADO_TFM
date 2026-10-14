@@ -1,22 +1,42 @@
 % references.bib — BIBLIOGRAFÍA ÚNICA del TFM (fuente canónica para citar).
-% Fusión (2026-09-29) de:
-%   - la bibliografía central (semilla de la propuesta + FASE 2 de la Capa 1),
-%   - los 7 .bib por familia de docs/teoria/F1..F7_*.bib (se conservan tal cual,
-%     como sidecars de cada ficha de teoría),
-%   - docs/historia/capa1/informe/references.bib (bib del informe LaTeX v1, que
-%     se conserva junto a su .tex para que siga compilando).
-% Deduplicado por clave y por DOI/título normalizado. Tres trabajos aparecían bajo
-% dos claves; queda UNA entrada canónica y la clave antigua se declara como alias
-% biblatex (campo `ids`), de modo que \cite{alias} sigue resolviendo con biblatex:
-%   - ms_angtimmermann2012 -> hmm_angtimmermann2012  (mismo DOI)
-%   - ms_hardy2001         -> hmm_hardy2001          (mismo DOI)
-%   - nn_bucci2021         -> clust_bucci2022realized (preprint arXiv de la versión
-%                                                     de revista; mismo título)
-% Con BibTeX clásico (sin `ids`), citar la clave canónica.
-% Ampliación (2026-09-30): bloque [F8] con las claves synth_* de
-% docs/teoria/F8_generadores_sinteticos.bib (fase S, generadores sintéticos).
-% No confundir (papers DISTINTOS): hmm_nystrup2018 vs nn_nystrup2018;
-% kritzman2010 (turbulencia, "Skulls...") vs kritzman2012 (regímenes).
+% Codificación UTF-8. Bloques, en este orden:
+%   1. Bibliografía central: semilla de la propuesta y Capa 1 · etapa 2, con las
+%      claves por familia F1–F7 (prefijos reglas_, clust_, hmm_, ms_, vol_, cp_,
+%      nn_) que citan docs/fase1/F*.md y docs/estado_del_arte/detectores.md.
+%   2. [F8] Generadores sintéticos (synth_*), que cita docs/fase1/sinteticos.md.
+%   3. Estado del arte del TFM: las 273 obras de
+%      docs/estado_del_arte/estado_del_arte.md, con clave autor-año.
+%   4. Referencias de ADR-003 y de la propuesta (docs/tfm/fuentes/propuesta_v2.pdf).
+% Las claves existentes no se renombran: las citan documentos, notebooks y código.
+% Los antiguos .bib por familia (docs/teoria/F*.bib) están integrados aquí enteros.
+%
+% Duplicados (misma obra bajo dos claves). Queda una entrada canónica y la otra
+% clave se declara como alias biblatex (campo `ids`): \cite{alias} resuelve con
+% biblatex; con BibTeX clásico, citar la clave canónica. Mapa clave nueva del
+% estado del arte -> clave canónica antigua:
+%   horvath2021      -> clust_horvath2021wasserstein
+%   botte2021        -> clust_twosigma2021regime
+%   adams2007        -> cp_adamsmackay2007
+%   truong2020       -> cp_truong2020
+%   ang2012          -> hmm_angtimmermann2012
+%   bulla2006        -> hmm_bullabulla2006
+%   nystrup2020      -> hmm_nystrup2020
+%   pagan2003        -> reglas_pagansossounov2003
+%   buhler2020       -> synth_buehler2020
+%   cont2001         -> synth_cont2001
+%   esteban2017      -> synth_esteban2017
+%   ledoit2004jma    -> synth_ledoitwolf2004
+%   politis1994      -> synth_politisromano1994
+%   wiese2020        -> synth_wiese2020
+%   timegan2019      -> synth_yoon2019
+%   haas2004         -> vol_haasmittnikpaolella2004
+% Las otras 3 obras del dossier ya estaban con la misma clave: hamilton1989, kritzman2010, kritzman2012.
+% Excepción: ms_hardy2001, ms_angtimmermann2012 (ficha F4) y nn_bucci2021 (ficha
+% F7, preprint) son entradas propias junto a su gemela, para que las claves de
+% las fichas resuelvan también con BibTeX clásico.
+% No confundir (obras DISTINTAS): hmm_nystrup2018 vs nn_nystrup2018;
+% kritzman2010 (turbulencia, "Skulls...") vs kritzman2012 (regímenes);
+% ledoit2004jpm ("Honey, I Shrunk...") vs synth_ledoitwolf2004 (JMA).
 
 % ---------------------------------------------------------------------------
 % Regímenes / Markov-switching / HMM (núcleo metodológico)
@@ -113,15 +133,13 @@
 }
 
 % ###########################################################################
-% FASE 2 — ESTADO DEL ARTE. Entradas fusionadas desde los 7 sidecars de
-% docs/teoria/F*_*.bib (2026-06-16). Cada bloque conserva el prefijo de
-% familia de su sidecar; no colisiona con las 7 claves semilla de arriba.
-% NOTA DE FUSIÓN (FASE 2): los duplicados bajo dos claves se resolvieron en la
-% fusión de 2026-09-29; ver la cabecera (alias `ids`).
+% Capa 1 · etapa 2 — ESTADO DEL ARTE DE LOS DETECTORES. Entradas de las fichas
+% por familia (antes docs/teoria/F*_*.bib; hoy docs/fase1/F*.md). Cada bloque
+% conserva el prefijo de su familia; no colisiona con las claves semilla.
 % ###########################################################################
 
 % ===========================================================================
-% [F1] Reglas / Umbrales  (sidecar 01_reglas_umbrales.bib)
+% [F1] Reglas / Umbrales  (ficha docs/fase1/F1_reglas.md)
 % ===========================================================================
 @article{reglas_bloom2009,
   author  = {Bloom, Nicholas},
@@ -179,6 +197,7 @@
 }
 
 @article{reglas_pagansossounov2003,
+  ids     = {pagan2003},
   author  = {Pagan, Adrian R. and Sossounov, Kirill A.},
   title   = {A Simple Framework for Analysing Bull and Bear Markets},
   journal = {Journal of Applied Econometrics},
@@ -210,7 +229,7 @@
 }
 
 % ===========================================================================
-% [F2] Clustering  (sidecar 02_clustering.bib)
+% [F2] Clustering  (ficha docs/fase1/F2_clustering.md)
 % ===========================================================================
 @article{clust_munnix2012,
   author  = {M{\"u}nnix, Michael C. and Shimada, Takashi and Sch{\"a}fer, Rudi and Leyvraz, Francois and Seligman, Thomas H. and Guhr, Thomas and Stanley, H. Eugene},
@@ -224,6 +243,7 @@
 }
 
 @article{clust_horvath2021wasserstein,
+  ids     = {horvath2021},
   author  = {Horvath, Blanka and Issa, Zacharia and Muguruza, Aitor},
   title   = {Clustering Market Regimes using the Wasserstein Distance},
   journal = {Journal of Computational Finance},
@@ -246,7 +266,6 @@
 }
 
 @article{clust_bucci2022realized,
-  ids     = {nn_bucci2021},
   author  = {Bucci, Andrea and Ciciretti, Vito},
   title   = {Market regime detection via realized covariances: A comparison between unsupervised learning and nonlinear models},
   journal = {Economic Modelling},
@@ -258,7 +277,20 @@
   url     = {https://arxiv.org/abs/2104.03667}
 }
 
+% Preprint arXiv de clust_bucci2022realized (versión de revista con DOI); lo cita
+% la ficha F7 y el detector D12.
+@misc{nn_bucci2021,
+  author = {Bucci, Andrea and Ciciretti, Vito},
+  title  = {Market Regime Detection via Realized Covariances: A Comparison between Unsupervised Learning and Nonlinear Models},
+  year   = {2021},
+  eprint = {2104.03667},
+  archivePrefix = {arXiv},
+  primaryClass  = {q-fin.ST},
+  url    = {https://arxiv.org/abs/2104.03667}
+}
+
 @techreport{clust_twosigma2021regime,
+  ids     = {botte2021},
   author      = {{Two Sigma}},
   title       = {A Machine Learning Approach to Regime Modeling},
   institution = {Two Sigma Investments},
@@ -382,7 +414,7 @@
 }
 
 % ===========================================================================
-% [F3] HMM (emisiones latentes, hmmlearn/pomegranate)  (sidecar 03_hmm.bib)
+% [F3] HMM (emisiones latentes, hmmlearn/pomegranate)  (ficha docs/fase1/F3_hmm.md)
 % ===========================================================================
 @article{hmm_rabiner1989,
   author  = {Rabiner, Lawrence R.},
@@ -451,6 +483,7 @@
 }
 
 @article{hmm_bullabulla2006,
+  ids     = {bulla2006},
   author  = {Bulla, Jan and Bulla, Ingo},
   title   = {Stylized Facts of Financial Time Series and Hidden Semi-Markov Models},
   journal = {Computational Statistics and Data Analysis},
@@ -462,7 +495,19 @@
 }
 
 @article{hmm_hardy2001,
-  ids     = {ms_hardy2001},
+  author  = {Hardy, Mary R.},
+  title   = {A Regime-Switching Model of Long-Term Stock Returns},
+  journal = {North American Actuarial Journal},
+  year    = {2001},
+  volume  = {5},
+  number  = {2},
+  pages   = {41--53},
+  doi     = {10.1080/10920277.2001.10595984}
+}
+
+% Misma obra que hmm_hardy2001; entrada propia para que la clave de la ficha F4
+% resuelva también con BibTeX clásico (sin `ids`).
+@article{ms_hardy2001,
   author  = {Hardy, Mary R.},
   title   = {A Regime-Switching Model of Long-Term Stock Returns},
   journal = {North American Actuarial Journal},
@@ -496,6 +541,7 @@
 }
 
 @article{hmm_nystrup2020,
+  ids     = {nystrup2020},
   author  = {Nystrup, Peter and Lindstr{\"o}m, Erik and Madsen, Henrik},
   title   = {Learning Hidden Markov Models with Persistent States by Penalizing Jumps},
   journal = {Expert Systems with Applications},
@@ -517,7 +563,19 @@
 }
 
 @article{hmm_angtimmermann2012,
-  ids     = {ms_angtimmermann2012},
+  ids     = {ang2012},
+  author  = {Ang, Andrew and Timmermann, Allan},
+  title   = {Regime Changes and Financial Markets},
+  journal = {Annual Review of Financial Economics},
+  year    = {2012},
+  volume  = {4},
+  pages   = {313--337},
+  doi     = {10.1146/annurev-financial-110311-101808}
+}
+
+% Misma obra que hmm_angtimmermann2012; entrada propia para que la clave de la
+% ficha F4 resuelva también con BibTeX clásico (sin `ids`).
+@article{ms_angtimmermann2012,
   author  = {Ang, Andrew and Timmermann, Allan},
   title   = {Regime Changes and Financial Markets},
   journal = {Annual Review of Financial Economics},
@@ -548,7 +606,7 @@
 
 % ===========================================================================
 % [F4] Markov-Switching econométrico (Hamilton/Kim, statsmodels)
-%      (sidecar 04_markov_switching.bib) — hamilton1989 ya está arriba
+%      (ficha docs/fase1/F4_markov_switching.md) — hamilton1989 ya está arriba
 % ===========================================================================
 @article{ms_kim1994,
   author  = {Kim, Chang-Jin},
@@ -596,7 +654,7 @@
 }
 
 % ===========================================================================
-% [F5] Volatilidad / GARCH / RS-GARCH  (sidecar 05_volatilidad_garch.bib)
+% [F5] Volatilidad / GARCH / RS-GARCH  (ficha docs/fase1/F5_volatilidad_garch.md)
 % ===========================================================================
 @article{vol_engle1982,
   author  = {Engle, Robert F.},
@@ -698,6 +756,7 @@
 }
 
 @article{vol_haasmittnikpaolella2004,
+  ids     = {haas2004},
   author  = {Haas, Markus and Mittnik, Stefan and Paolella, Marc S.},
   title   = {A New Approach to Markov-Switching GARCH Models},
   journal = {Journal of Financial Econometrics},
@@ -738,7 +797,7 @@
 }
 
 % ===========================================================================
-% [F6] Change-point detection  (sidecar 06_change_point.bib)
+% [F6] Change-point detection  (ficha docs/fase1/F6_change_point.md)
 % ===========================================================================
 @article{cp_page1954,
   author  = {Page, E. S.},
@@ -765,6 +824,7 @@
 }
 
 @article{cp_adamsmackay2007,
+  ids     = {adams2007},
   author  = {Adams, Ryan Prescott and MacKay, David J. C.},
   title   = {Bayesian Online Changepoint Detection},
   journal = {arXiv preprint arXiv:0710.3742},
@@ -826,6 +886,7 @@
 }
 
 @article{cp_truong2020,
+  ids     = {truong2020},
   author  = {Truong, Charles and Oudre, Laurent and Vayatis, Nicolas},
   title   = {Selective Review of Offline Change Point Detection Methods},
   journal = {Signal Processing},
@@ -837,7 +898,7 @@
 }
 
 % ===========================================================================
-% [F7] Redes neuronales / no supervisado moderno  (sidecar 07_redes_neuronales.bib)
+% [F7] Redes neuronales / no supervisado moderno  (ficha docs/fase1/F7_redes_neuronales.md)
 % ===========================================================================
 @article{nn_hochreiter1997,
   author  = {Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
@@ -949,12 +1010,13 @@
 }
 
 % ===========================================================================
-% [F8] Generadores de datos sintéticos  (sidecar F8_generadores_sinteticos.bib)
+% [F8] Generadores de datos sintéticos  (ficha docs/fase1/sinteticos.md)
 %      Fusionado el 2026-09-30. Reutiliza sin re-declarar: hamilton1989,
 %      nn_kingma2014, vol_glosten1993, vol_bollerslev1987, vol_gray1996,
 %      vol_haasmittnikpaolella2004.
 % ===========================================================================
 @article{synth_cont2001,
+  ids     = {cont2001},
   author  = {Cont, Rama},
   title   = {Empirical Properties of Asset Returns: Stylized Facts and Statistical Issues},
   journal = {Quantitative Finance},
@@ -977,6 +1039,7 @@
 }
 
 @article{synth_politisromano1994,
+  ids     = {politis1994},
   author  = {Politis, Dimitris N. and Romano, Joseph P.},
   title   = {The Stationary Bootstrap},
   journal = {Journal of the American Statistical Association},
@@ -988,6 +1051,7 @@
 }
 
 @article{synth_ledoitwolf2004,
+  ids     = {ledoit2004jma},
   author  = {Ledoit, Olivier and Wolf, Michael},
   title   = {A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices},
   journal = {Journal of Multivariate Analysis},
@@ -1174,6 +1238,7 @@
 }
 
 @inproceedings{synth_yoon2019,
+  ids     = {timegan2019},
   author    = {Yoon, Jinsung and Jarrett, Daniel and van der Schaar, Mihaela},
   title     = {Time-series Generative Adversarial Networks},
   booktitle = {Advances in Neural Information Processing Systems 32 (NeurIPS 2019)},
@@ -1182,6 +1247,7 @@
 }
 
 @article{synth_wiese2020,
+  ids     = {wiese2020},
   author  = {Wiese, Magnus and Knobloch, Robert and Korn, Ralf and Kretschmer, Peter},
   title   = {Quant {GAN}s: Deep Generation of Financial Time Series},
   journal = {Quantitative Finance},
@@ -1203,6 +1269,7 @@
 }
 
 @misc{synth_buehler2020,
+  ids     = {buhler2020},
   author = {B{\"u}hler, Hans and Horvath, Blanka and Lyons, Terry and Perez Arribas, Imanol and Wood, Ben},
   title  = {A Data-driven Market Simulator for Small Data Environments},
   year   = {2020},
@@ -1213,6 +1280,7 @@
 }
 
 @misc{synth_esteban2017,
+  ids     = {esteban2017},
   author = {Esteban, Crist{\'o}bal and Hyland, Stephanie L. and R{\"a}tsch, Gunnar},
   title  = {Real-valued (Medical) Time Series Generation with Recurrent Conditional {GAN}s},
   year   = {2017},
@@ -1277,4 +1345,2386 @@
   pages   = {2917--2936},
   doi     = {10.1287/mnsc.2023.00936},
   note    = {Preprint arXiv:2203.01664 (2022)}
+}
+
+
+% ###########################################################################
+% ESTADO DEL ARTE DEL TFM (corte 2026-10-13). Las 273 obras del documento
+% docs/estado_del_arte/estado_del_arte.md (detalle en obras.csv), con clave
+% autor-año. Aquí van 254 entradas; las otras 19 ya estaban arriba (ver el
+% mapa de alias de la cabecera). En `note`, «fases P1–P5» son las fases del TFM
+% (P1 régimen, P2 ingesta/RAG, P3 agentes, P4 cartera, P5 evaluación), no las
+% familias de detectores F1–F7.
+% ###########################################################################
+@article{shu2024downside,
+  title = {{Downside Risk Reduction Using Regime-Switching Signals: A Statistical Jump Model Approach}},
+  author = {Yizhan Shu and Chenyu Yu and John M. Mulvey},
+  year = {2024},
+  journal = {Journal of Asset Management (arXiv 2402.05272)},
+  url = {https://arxiv.org/abs/2402.05272},
+  note = {Bloque 1-regimen; fases P1, P4, P5; tipo paper}
+}
+
+@misc{hammond2026,
+  title = {{Geometric Observables for Financial Regime Detection}},
+  author = {Will Hammond},
+  year = {2026},
+  howpublished = {arXiv 2605.17117 (q-fin.ST)},
+  url = {https://arxiv.org/abs/2605.17117},
+  note = {Bloque 1-regimen; fases P1, P5; tipo benchmark}
+}
+
+@article{kaminsky1998,
+  title = {{Leading Indicators of Currency Crises}},
+  author = {Graciela Kaminsky and Saul Lizondo and Carmen Reinhart},
+  year = {1998},
+  journal = {IMF Staff Papers 45(1)},
+  url = {https://www.imf.org/external/Pubs/FT/staffp/1998/03-98/kaminsky.htm},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@article{sarlin2013,
+  title = {{On policymakers' loss functions and the evaluation of early warning systems}},
+  author = {Peter Sarlin},
+  year = {2013},
+  journal = {Economics Letters 119(1):1-7},
+  url = {https://ideas.repec.org/a/eee/ecolet/v119y2013i1p1-7.html},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@techreport{drehmann2013,
+  title = {{Evaluating early warning indicators of banking crises: satisfying policy requirements}},
+  author = {Mathias Drehmann and Mikael Juselius},
+  year = {2013},
+  institution = {BIS Working Paper No. 421},
+  url = {https://www.bis.org/publ/work421.htm},
+  note = {Bloque 1-alerta; fases P1, P5; tipo informe}
+}
+
+@misc{finmem2023,
+  title = {{FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and Character Design}},
+  author = {Yangyang Yu and Haohang Li and Zhi Chen and Yuechen Jiang and Yang Li and Denghui Zhang and Rong Liu and Jordan W. Suchow and Khaldoun Khashanah},
+  year = {2023},
+  howpublished = {arXiv 2311.13743 (q-fin.CP)},
+  url = {https://arxiv.org/abs/2311.13743},
+  note = {Bloque 2-agentes; fases P2, P3, P4; tipo preprint}
+}
+
+@inproceedings{fincon2024,
+  title = {{FinCon: A Synthesized LLM Multi-Agent System with Conceptual Verbal Reinforcement for Enhanced Financial Decision Making}},
+  author = {Yangyang Yu and Zhiyuan Yao and Haohang Li and others},
+  year = {2024},
+  booktitle = {NeurIPS 2024},
+  url = {https://arxiv.org/abs/2407.06567},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@misc{tradingagents2024,
+  title = {{TradingAgents: Multi-Agents LLM Financial Trading Framework}},
+  author = {Yijia Xiao and Edward Sun and Di Luo and Wei Wang},
+  year = {2024},
+  howpublished = {arXiv 2412.20138 (q-fin.TR); software en GitHub (TauricResearch)},
+  url = {https://arxiv.org/abs/2412.20138},
+  note = {Bloque 2-agentes; fases P2, P3, P4, P5; tipo preprint}
+}
+
+@misc{ang2026,
+  title = {{The Self Driving Portfolio: Agentic Architecture for Institutional Asset Management}},
+  author = {Andrew Ang and Nazym Azimbayev and Andrey Kim},
+  year = {2026},
+  howpublished = {arXiv 2604.02279 (v2 sept. 2026)},
+  url = {https://arxiv.org/abs/2604.02279},
+  note = {Bloque 2-agentes; fases P1, P3, P4, P5; tipo preprint}
+}
+
+@misc{finsaber2025,
+  title = {{Can LLM-based Financial Investing Strategies Outperform the Market in Long Run? (FINSABER)}},
+  author = {Weixian Waylon Li and Hyeonjun Kim and Mihai Cucuringu and Tiejun Ma},
+  year = {2025},
+  howpublished = {KDD 2026 Datasets \& Benchmarks Track (arXiv 2505.07078)},
+  url = {https://arxiv.org/abs/2505.07078},
+  note = {Bloque 2-agentes; fases P1, P5; tipo benchmark}
+}
+
+@misc{alphaillusion2026,
+  title = {{The Alpha Illusion: Reported Alpha from LLM Trading Agents Should Not Be Treated as Deployment Evidence}},
+  author = {Yuxuan Ye and Jun Han and Ao Hu and Juncheng Bu and Yiyi Chen and Liangjian Wen and Danilo Mandic and Danny Dongning Sun and Xu Yinghui and Zenglin Xu},
+  year = {2026},
+  howpublished = {arXiv 2605.16895 (cs.CE)},
+  url = {https://arxiv.org/abs/2605.16895},
+  note = {Bloque 2-agentes; fases P4, P5; tipo preprint}
+}
+
+@inproceedings{kong2026,
+  title = {{Evaluating LLMs in Finance Requires Explicit Bias Consideration}},
+  author = {Yaxuan Kong and Hoyoung Lee and Yoontae Hwang and Alejandro Lopez-Lira and Bradford Levy and Dhagash Mehta and Qingsong Wen and Chanyeol Choi and Yongjae Lee and Stefan Zohren},
+  year = {2026},
+  booktitle = {ICML 2026 (position paper)},
+  url = {https://arxiv.org/abs/2602.14233},
+  note = {Bloque 4-lookahead; fases P4, P5; tipo paper}
+}
+
+@misc{financebench2023,
+  title = {{FinanceBench: A New Benchmark for Financial Question Answering}},
+  author = {Pranab Islam and Anand Kannappan and Douwe Kiela and Rebecca Qian and Nino Scherrer and Bertie Vidgen},
+  year = {2023},
+  howpublished = {arXiv 2311.11944 (Patronus AI)},
+  url = {https://arxiv.org/abs/2311.11944},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@misc{finder2025,
+  title = {{FinDER: Financial Dataset for Question Answering and Evaluating Retrieval-Augmented Generation}},
+  author = {Chanyeol Choi and Jihoon Kwon and Jaeseon Ha and Hojun Choi and Chaewoon Kim and Yongjae Lee and Jy-yong Sohn and Alejandro Lopez-Lira},
+  year = {2025},
+  howpublished = {ICLR 2025 Workshop on Advances in Financial AI},
+  url = {https://arxiv.org/abs/2504.15800},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@inproceedings{finsage2025,
+  title = {{FinSage: A Multi-aspect RAG System for Financial Filings Question Answering}},
+  author = {Xinyu Wang and Jijun Chi and Zhenghan Tai and others},
+  year = {2025},
+  booktitle = {CIKM 2025},
+  url = {https://arxiv.org/abs/2504.14493},
+  note = {Bloque 3-rag; fases P2; tipo paper}
+}
+
+@misc{chrono2025,
+  title = {{Chronologically Consistent Large Language Models (ChronoBERT / ChronoGPT)}},
+  author = {Songrun He and Linying Lv and Asaf Manela and Jimmy Wu},
+  year = {2025},
+  howpublished = {arXiv 2502.21206 (q-fin); AEA 2026},
+  url = {https://arxiv.org/abs/2502.21206},
+  note = {Bloque 4-lookahead; fases P2, P3, P5; tipo preprint}
+}
+
+@misc{datedgpt2026,
+  title = {{DatedGPT: Preventing Lookahead Bias in Large Language Models with Time-Aware Pretraining}},
+  author = {Yutong Yan and Raphael Tang and Zhenyu Gao and Wenxi Jiang and Yao Lu},
+  year = {2026},
+  howpublished = {arXiv 2603.11838},
+  url = {https://arxiv.org/abs/2603.11838},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo preprint}
+}
+
+@techreport{kelly2026,
+  title = {{Scaling Point-in-Time Language Models}},
+  author = {Bryan T. Kelly and Semyon Malamud and Johannes Schwab and Teng Andrea Xu},
+  year = {2026},
+  institution = {NBER Working Paper 35247},
+  url = {https://www.nber.org/papers/w35247},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo informe}
+}
+
+@inproceedings{ellahib2026,
+  title = {{Temporal Leakage in Search-Engine Date-Filtered Web Retrieval: A Retrospective Forecasting Case Study}},
+  author = {Ali El Lahib and Ying-Jieh Xia and Zehan Li and Yuxuan Wang and Xinyu Pi},
+  year = {2026},
+  booktitle = {ACL 2026},
+  url = {https://arxiv.org/abs/2602.00758},
+  note = {Bloque 4-lookahead; fases P2; tipo paper}
+}
+
+@article{hansen2005,
+  title = {{A forecast comparison of volatility models: does anything beat a GARCH(1,1)?}},
+  author = {Peter R. Hansen and Asger Lunde},
+  year = {2005},
+  journal = {Journal of Applied Econometrics 20(7):873-889},
+  url = {https://ideas.repec.org/a/jae/japmet/v20y2005i7p873-889.html},
+  note = {Bloque 1-regimen; fases P1, P5; tipo paper}
+}
+
+@article{makridakis2018,
+  title = {{The M4 Competition: Results, findings, conclusion and way forward}},
+  author = {Spyros Makridakis and Evangelos Spiliotis and Vassilios Assimakopoulos},
+  year = {2018},
+  journal = {International Journal of Forecasting 34(4):802-808},
+  url = {https://ideas.repec.org/a/eee/intfor/v34y2018i4p802-808.html},
+  note = {Bloque 1-regimen; fases P5; tipo paper}
+}
+
+@misc{vandenburg2020,
+  title = {{An Evaluation of Change Point Detection Algorithms}},
+  author = {Gerrit J. J. van den Burg and Christopher K. I. Williams},
+  year = {2020},
+  howpublished = {arXiv 2003.06222 (TCPDBench)},
+  url = {https://arxiv.org/abs/2003.06222},
+  note = {Bloque 1-regimen; fases P1, P5; tipo benchmark}
+}
+
+@article{ang2002,
+  title = {{International Asset Allocation With Regime Shifts}},
+  author = {Andrew Ang and Geert Bekaert},
+  year = {2002},
+  journal = {Review of Financial Studies 15(4):1137-1187},
+  url = {https://ideas.repec.org/a/oup/rfinst/v15y2002i4p1137-1187.html},
+  note = {Bloque 1-regimen; fases P1, P4; tipo paper}
+}
+
+@article{kritzman2011,
+  title = {{Principal Components as a Measure of Systemic Risk}},
+  author = {Mark Kritzman and Yuanzhen Li and Sébastien Page and Roberto Rigobon},
+  year = {2011},
+  journal = {Journal of Portfolio Management 37(4):112-126},
+  url = {https://doi.org/10.3905/jpm.2011.37.4.112},
+  note = {Bloque 1-alerta; fases P1, P4; tipo paper}
+}
+
+@article{aminikhanghahi2017,
+  title = {{A Survey of Methods for Time Series Change Point Detection}},
+  author = {Samaneh Aminikhanghahi and Diane J. Cook},
+  year = {2017},
+  journal = {Knowledge and Information Systems 51(2):339-367},
+  url = {https://pmc.ncbi.nlm.nih.gov/articles/PMC5464762/},
+  note = {Bloque 1-regimen; fases P1, P5; tipo paper}
+}
+
+@article{nystrup2021,
+  title = {{Feature Selection in Jump Models}},
+  author = {Peter Nystrup and Petter N. Kolm and Erik Lindström},
+  year = {2021},
+  journal = {Expert Systems with Applications 184:115558},
+  url = {https://doi.org/10.1016/j.eswa.2021.115558},
+  note = {Bloque 1-regimen; fases P1; tipo paper}
+}
+
+@article{aydinhan2024,
+  title = {{Identifying patterns in financial markets: extending the statistical jump model for regime identification}},
+  author = {Afşar Onat Aydınhan and Petter N. Kolm and John M. Mulvey and Yizhan Shu},
+  year = {2024},
+  journal = {Annals of Operations Research (DOI 10.1007/s10479-024-06035-z)},
+  url = {https://collaborate.princeton.edu/en/publications/identifying-patterns-in-financial-markets-extending-the-statistic/},
+  note = {Bloque 1-regimen; fases P1; tipo paper}
+}
+
+@article{cortese2026,
+  title = {{Generalized information criteria for high-dimensional sparse statistical jump models}},
+  author = {Federico P. Cortese and Petter N. Kolm and Erik Lindström},
+  year = {2026},
+  journal = {AStA Advances in Statistical Analysis 110(2):289-317},
+  url = {https://lup.lub.lu.se/record/64f7f7da-9636-4d58-b862-6145fb30ece6},
+  note = {Bloque 1-regimen; fases P1; tipo paper}
+}
+
+@misc{jumpmodels2024,
+  title = {{jumpmodels: Statistical Jump Models in Python}},
+  author = {Yizhan Shu},
+  year = {2024},
+  howpublished = {GitHub / PyPI (Apache-2.0)},
+  url = {https://github.com/Yizhan-Oliver-Shu/jump-models},
+  note = {Bloque 1-regimen; fases P1; tipo software}
+}
+
+@misc{shu2024factor,
+  title = {{Dynamic Factor Allocation Leveraging Regime-Switching Signals}},
+  author = {Yizhan Shu and John M. Mulvey},
+  year = {2024},
+  howpublished = {arXiv 2410.14841 (q-fin.PM)},
+  url = {https://arxiv.org/abs/2410.14841},
+  note = {Bloque 1-regimen; fases P1, P4; tipo preprint}
+}
+
+@misc{shu2024asset,
+  title = {{Dynamic Asset Allocation with Asset-Specific Regime Forecasts}},
+  author = {Yizhan Shu and Chenyu Yu and John M. Mulvey},
+  year = {2024},
+  howpublished = {arXiv 2406.09578 (q-fin.PM)},
+  url = {https://arxiv.org/abs/2406.09578},
+  note = {Bloque 1-regimen; fases P1, P4; tipo preprint}
+}
+
+@misc{alridhawi2026,
+  title = {{Adaptive Regime-Aware Stock Price Prediction Using Autoencoder-Gated Dual Node Transformers with Reinforcement Learning Control}},
+  author = {Mohammad Al Ridhawi and Mahtab Haj Ali and Hussein Al Osman},
+  year = {2026},
+  howpublished = {arXiv 2603.19136 (cs.LG)},
+  url = {https://arxiv.org/abs/2603.19136},
+  note = {Bloque 1-regimen; fases P1; tipo preprint}
+}
+
+@article{beutel2019,
+  title = {{Does Machine Learning Help us Predict Banking Crises?}},
+  author = {Johannes Beutel and Sophia List and Gregor von Schweinitz},
+  year = {2019},
+  journal = {Journal of Financial Stability 45:100693},
+  url = {https://iwh-halle.de/publikationen/detail/does-machine-learning-help-us-predict-banking-crises},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@article{bluwstein2023,
+  title = {{Credit growth, the yield curve and financial crisis prediction: Evidence from a machine learning approach}},
+  author = {Kristina Bluwstein and Marcus Buckmann and Andreas Joseph and Sujit Kapadia and Özgür Şimşek},
+  year = {2023},
+  journal = {Journal of International Economics 145 (BoE Staff WP 848, 2020)},
+  url = {https://doi.org/10.1016/j.jinteco.2023.103773},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@article{hansen2011,
+  title = {{The Model Confidence Set}},
+  author = {Peter R. Hansen and Asger Lunde and James M. Nason},
+  year = {2011},
+  journal = {Econometrica 79(2):453-497},
+  url = {https://ideas.repec.org/a/ecm/emetrp/v79y2011i2p453-497.html},
+  note = {Bloque 1-regimen; fases P1, P5; tipo paper}
+}
+
+@article{frankel1996,
+  title = {{Currency crashes in emerging markets: An empirical treatment}},
+  author = {Jeffrey A. Frankel and Andrew K. Rose},
+  year = {1996},
+  journal = {Journal of International Economics 41(3-4):351-366},
+  url = {https://ideas.repec.org/a/eee/inecon/v41y1996i3-4p351-366.html},
+  note = {Bloque 1-alerta; fases P1; tipo paper}
+}
+
+@article{schularick2012,
+  title = {{Credit Booms Gone Bust: Monetary Policy, Leverage Cycles, and Financial Crises, 1870-2008}},
+  author = {Moritz Schularick and Alan M. Taylor},
+  year = {2012},
+  journal = {American Economic Review 102(2):1029-1061},
+  url = {https://www.aeaweb.org/articles?id=10.1257/aer.102.2.1029},
+  note = {Bloque 1-alerta; fases P1, P3; tipo paper}
+}
+
+@article{alessi2011,
+  title = {{Quasi real time early warning indicators for costly asset price boom/bust cycles: A role for global liquidity}},
+  author = {Lucia Alessi and Carsten Detken},
+  year = {2011},
+  journal = {European Journal of Political Economy 27(3):520-533},
+  url = {https://ideas.repec.org/a/eee/poleco/v27y2011i3p520-533.html},
+  note = {Bloque 1-alerta; fases P1; tipo paper}
+}
+
+@article{illing2006,
+  title = {{Measuring financial stress in a developed country: An application to Canada}},
+  author = {Mark Illing and Ying Liu},
+  year = {2006},
+  journal = {Journal of Financial Stability 2(3):243-265},
+  url = {https://ideas.repec.org/a/eee/finsta/v2y2006i3p243-265.html},
+  note = {Bloque 1-alerta; fases P1; tipo paper}
+}
+
+@techreport{hakkio2009,
+  title = {{Financial stress: what is it, how can it be measured, and why does it matter?}},
+  author = {Craig S. Hakkio and William R. Keeton},
+  year = {2009},
+  institution = {Economic Review, Federal Reserve Bank of Kansas City 94(Q II):5-50},
+  url = {https://ideas.repec.org/a/fip/fedker/y2009iqiip5-50nv.94no.2.html},
+  note = {Bloque 1-alerta; fases P1, P2; tipo informe}
+}
+
+@techreport{hollo2012,
+  title = {{CISS - A Composite Indicator of Systemic Stress in the Financial System}},
+  author = {Dániel Holló and Manfred Kremer and Marco Lo Duca},
+  year = {2012},
+  institution = {ECB Working Paper No. 1426},
+  url = {https://ideas.repec.org/p/ecb/ecbwps/20121426.html},
+  note = {Bloque 1-alerta; fases P1, P2; tipo informe}
+}
+
+@article{brave2011,
+  title = {{Monitoring Financial Stability: A Financial Conditions Index Approach}},
+  author = {Scott A. Brave and R. Andrew Butters},
+  year = {2011},
+  journal = {Federal Reserve Bank of Chicago, Economic Perspectives 35(1)},
+  url = {https://www.chicagofed.org/publications/economic-perspectives/2011/1q-brave-butters},
+  note = {Bloque 1-alerta; fases P2, P5; tipo paper}
+}
+
+@techreport{kliesen2020,
+  title = {{The St. Louis Fed's Financial Stress Index, Version 2.0}},
+  author = {Kevin L. Kliesen and Michael W. McCracken},
+  year = {2020},
+  institution = {Federal Reserve Bank of St. Louis, On the Economy (26-03-2020)},
+  url = {https://www.stlouisfed.org/on-the-economy/2020/march/financial-stress-index-version-2},
+  note = {Bloque 1-alerta; fases P2, P5; tipo informe}
+}
+
+@article{monin2019,
+  title = {{The OFR Financial Stress Index}},
+  author = {Phillip J. Monin},
+  year = {2019},
+  journal = {Risks 7(1):25},
+  url = {https://ideas.repec.org/a/gam/jrisks/v7y2019i1p25-d209064.html},
+  note = {Bloque 1-alerta; fases P2, P5; tipo paper}
+}
+
+@article{adrian2019,
+  title = {{Vulnerable Growth}},
+  author = {Tobias Adrian and Nina Boyarchenko and Domenico Giannone},
+  year = {2019},
+  journal = {American Economic Review 109(4):1263-1289},
+  url = {https://www.aeaweb.org/articles?id=10.1257/aer.20161923},
+  note = {Bloque 1-alerta; fases P1, P3; tipo paper}
+}
+
+@article{duprey2017,
+  title = {{Dating systemic financial stress episodes in the EU countries}},
+  author = {Thibaut Duprey and Benjamin Klaus and Tuomas Peltonen},
+  year = {2017},
+  journal = {Journal of Financial Stability 32:30-56},
+  url = {https://ideas.repec.org/a/eee/finsta/v32y2017icp30-56.html},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@misc{laeven2020,
+  title = {{Systemic Banking Crises Database II}},
+  author = {Luc Laeven and Fabian Valencia},
+  year = {2020},
+  howpublished = {IMF Economic Review 68(2):307-361},
+  url = {https://ideas.repec.org/a/pal/imfecr/v68y2020i2d10.1057_s41308-020-00107-3.html},
+  note = {Bloque 1-alerta; fases P1, P5; tipo dataset}
+}
+
+@article{chauvet2008,
+  title = {{A Comparison of the Real-Time Performance of Business Cycle Dating Methods}},
+  author = {Marcelle Chauvet and Jeremy Piger},
+  year = {2008},
+  journal = {Journal of Business \& Economic Statistics 26(1):42-49},
+  url = {https://ideas.repec.org/a/bes/jnlbes/v26y2008p42-49.html},
+  note = {Bloque 1-alerta; fases P1, P5; tipo paper}
+}
+
+@techreport{fouliard2020,
+  title = {{Answering the Queen: Machine Learning and Financial Crises}},
+  author = {Jérémy Fouliard and Michael Howell and Hélène Rey and Vania Stavrakeva},
+  year = {2020},
+  institution = {NBER Working Paper 28302 (rev. 2023); BIS WP 926},
+  url = {https://www.nber.org/papers/w28302},
+  note = {Bloque 1-alerta; fases P1, P5; tipo informe}
+}
+
+@techreport{aldasoro2025,
+  title = {{Predicting financial market stress with machine learning}},
+  author = {Iñaki Aldasoro and Peter Hördahl and Andreas Schrimpf and Xingyu Sonya Zhu},
+  year = {2025},
+  institution = {BIS Working Paper No. 1250},
+  url = {https://econpapers.repec.org/paper/bisbiswps/1250.htm},
+  note = {Bloque 1-alerta; fases P1, P3; tipo informe}
+}
+
+@techreport{aquilina2025,
+  title = {{Harnessing artificial intelligence for monitoring financial markets}},
+  author = {Matteo Aquilina and Douglas Araujo and Gaston Gelos and Taejin Park and Fernando Pérez-Cruz},
+  year = {2025},
+  institution = {BIS Working Paper No. 1291 (SUERF Policy Brief 1284)},
+  url = {https://www.suerf.org/publications/suerf-policy-notes-and-briefs/harnessing-artificial-intelligence-for-monitoring-financial-markets-early-warning-signals-from-interpretable-machine-learning/},
+  note = {Bloque 1-alerta; fases P1, P2, P3; tipo informe}
+}
+
+@misc{koa2024,
+  title = {{Temporal Relational Reasoning of Large Language Models for Detecting Stock Portfolio Crashes}},
+  author = {Kelvin J. L. Koa and Yunshan Ma and Yi Xu and Ritchie Ng and Huanhuan Zheng and Tat-Seng Chua},
+  year = {2024},
+  howpublished = {arXiv 2410.17266; ICAIF 2025 Workshop},
+  url = {https://arxiv.org/abs/2410.17266},
+  note = {Bloque 1-alerta; fases P1, P3; tipo preprint}
+}
+
+@misc{lefort2024,
+  title = {{Stress index strategy enhanced with financial news sentiment analysis for the equity markets}},
+  author = {{Lefort} and {Benhamou} and {Ohana} and {Saltiel} and {Guez} and {Jacquot}},
+  year = {2024},
+  howpublished = {arXiv 2404.00012 (q-fin.ST)},
+  url = {https://arxiv.org/abs/2404.00012},
+  note = {Bloque 1-alerta; fases P1, P2, P5; tipo preprint}
+}
+
+@misc{park2024,
+  title = {{Enhancing Anomaly Detection in Financial Markets with an LLM-based Multi-Agent Framework}},
+  author = {Taejin Park},
+  year = {2024},
+  howpublished = {arXiv 2403.19735 (q-fin.RM)},
+  url = {https://arxiv.org/abs/2403.19735},
+  note = {Bloque 1-alerta; fases P1, P3, P4; tipo preprint}
+}
+
+@article{markowitz_minvar_clarke2006,
+  title = {{Minimum-Variance Portfolios in the U.S. Equity Market}},
+  author = {Roger G. Clarke and Harindra de Silva and Steven Thorley},
+  year = {2006},
+  journal = {Journal of Portfolio Management 33(1):10-24},
+  url = {https://doi.org/10.3905/jpm.2006.661366},
+  note = {Bloque 1-cartera; fases P4; tipo paper}
+}
+
+@article{choueifaty2008,
+  title = {{Toward Maximum Diversification}},
+  author = {Yves Choueifaty and Yves Coignard},
+  year = {2008},
+  journal = {Journal of Portfolio Management 35(1):40-51},
+  url = {https://doi.org/10.3905/JPM.2008.35.1.40},
+  note = {Bloque 1-cartera; fases P4; tipo paper}
+}
+
+@article{maillard2010,
+  title = {{The Properties of Equally Weighted Risk Contribution Portfolios}},
+  author = {Sébastien Maillard and Thierry Roncalli and Jérôme Teïletche},
+  year = {2010},
+  journal = {Journal of Portfolio Management 36(4):60-70},
+  url = {https://doi.org/10.3905/jpm.2010.36.4.060},
+  note = {Bloque 1-cartera; fases P4; tipo paper}
+}
+
+@misc{bruder2012,
+  title = {{Managing Risk Exposures Using the Risk Budgeting Approach}},
+  author = {Benjamin Bruder and Thierry Roncalli},
+  year = {2012},
+  howpublished = {SSRN 2009778},
+  url = {https://doi.org/10.2139/ssrn.2009778},
+  note = {Bloque 1-cartera; fases P4; tipo preprint}
+}
+
+@article{lopezdeprado2016,
+  title = {{Building Diversified Portfolios that Outperform Out of Sample}},
+  author = {Marcos López de Prado},
+  year = {2016},
+  journal = {Journal of Portfolio Management 42(4):59-69},
+  url = {https://doi.org/10.3905/jpm.2016.42.4.059},
+  note = {Bloque 1-cartera; fases P4, P5; tipo paper}
+}
+
+@article{ledoit2004jpm,
+  title = {{Honey, I Shrunk the Sample Covariance Matrix}},
+  author = {Olivier Ledoit and Michael Wolf},
+  year = {2004},
+  journal = {Journal of Portfolio Management 30(4):110-119},
+  url = {https://doi.org/10.3905/jpm.2004.110},
+  note = {Bloque 1-cartera; fases P4; tipo paper}
+}
+
+@article{harvey2018,
+  title = {{The Impact of Volatility Targeting}},
+  author = {Campbell R. Harvey and Edward Hoyle and Russell Korgaonkar and Sandy Rattray and Matthew Sargaison and Otto Van Hemert},
+  year = {2018},
+  journal = {Journal of Portfolio Management 45(1):14-33},
+  url = {https://doi.org/10.3905/jpm.2018.45.1.014},
+  note = {Bloque 1-cartera; fases P4, P5; tipo paper}
+}
+
+@article{costa2019,
+  title = {{Risk parity portfolio optimization under a Markov regime-switching framework}},
+  author = {Giorgio Costa and Roy H. Kwon},
+  year = {2019},
+  journal = {Quantitative Finance 19(3):453-471},
+  url = {https://doi.org/10.1080/14697688.2018.1486036},
+  note = {Bloque 1-cartera; fases P1, P4; tipo paper}
+}
+
+@article{mantshimuli2026,
+  title = {{Toward a unified agentic framework for regime-aware portfolio optimization with LLM signals}},
+  author = {Lamukanyani Alson Mantshimuli and John Weirstrass Muteba Mwamba},
+  year = {2026},
+  journal = {International Journal of Data Science and Analytics 22(1), art. 92},
+  url = {https://doi.org/10.1007/s41060-026-01066-0},
+  note = {Bloque 1-cartera; fases P1, P4, P5; tipo paper}
+}
+
+@misc{tradinggpt2023,
+  title = {{TradingGPT: Multi-Agent System with Layered Memory and Distinct Characters for Enhanced Financial Trading Performance}},
+  author = {Yang Li and Yangyang Yu and Haohang Li and Zhi Chen and Khaldoun Khashanah},
+  year = {2023},
+  howpublished = {arXiv 2309.03736 (q-fin.PM)},
+  url = {https://arxiv.org/abs/2309.03736},
+  note = {Bloque 2-agentes; fases P3; tipo preprint}
+}
+
+@inproceedings{finagent2024,
+  title = {{A Multimodal Foundation Agent for Financial Trading: Tool-Augmented, Diversified, and Generalist (FinAgent)}},
+  author = {Wentao Zhang and Lingxuan Zhao and Haochong Xia and Shuo Sun and Jiaze Sun and Molei Qin and Xinyi Li and others},
+  year = {2024},
+  booktitle = {KDD 2024 (arXiv 2402.18485)},
+  url = {https://arxiv.org/abs/2402.18485},
+  note = {Bloque 2-agentes; fases P2, P3; tipo paper}
+}
+
+@misc{finrobot2024,
+  title = {{FinRobot: An Open-Source AI Agent Platform for Financial Applications using Large Language Models}},
+  author = {Hongyang Yang and Boyu Zhang and Neng Wang and Cheng Guo and Xiaoli Zhang and Likun Lin and Junlin Wang and Tianyu Zhou and Mao Guan and Runjia Zhang and Christina Dan Wang},
+  year = {2024},
+  howpublished = {arXiv 2405.14767 (AI4Finance)},
+  url = {https://arxiv.org/abs/2405.14767},
+  note = {Bloque 2-agentes; fases P2, P3; tipo software}
+}
+
+@misc{finrobot2024equity,
+  title = {{FinRobot: AI Agent for Equity Research and Valuation with Large Language Models}},
+  author = {Tianyu Zhou and Pinqiao Wang and Yilin Wu and Hongyang Yang},
+  year = {2024},
+  howpublished = {arXiv 2411.08804},
+  url = {https://arxiv.org/abs/2411.08804},
+  note = {Bloque 2-agentes; fases P3, P4; tipo preprint}
+}
+
+@inproceedings{finvision2024,
+  title = {{FinVision: A Multi-Agent Framework for Stock Market Prediction}},
+  author = {Sorouralsadat Fatemi and Yuheng Hu},
+  year = {2024},
+  booktitle = {ICAIF 2024},
+  url = {https://arxiv.org/abs/2411.08899},
+  note = {Bloque 2-agentes; fases P3; tipo paper}
+}
+
+@inproceedings{elliottagents2024,
+  title = {{ElliottAgents: A Natural Language-Driven Multi-Agent System for Stock Market Analysis and Prediction}},
+  author = {Jarosław A. Chudziak and Michał Wawer},
+  year = {2024},
+  booktitle = {PACLIC 38 (2024); arXiv 2507.03435},
+  url = {https://arxiv.org/abs/2507.03435},
+  note = {Bloque 2-agentes; fases P3; tipo paper}
+}
+
+@misc{stockagent2024,
+  title = {{When AI Meets Finance (StockAgent): Large Language Model-based Stock Trading in Simulated Real-world Environments}},
+  author = {Chong Zhang and Xinyi Liu and Zhongmou Zhang and Mingyu Jin and Lingyao Li and Zhenting Wang and Wenyue Hua and others},
+  year = {2024},
+  howpublished = {arXiv 2407.18957},
+  url = {https://arxiv.org/abs/2407.18957},
+  note = {Bloque 2-agentes; fases P5; tipo preprint}
+}
+
+@misc{ding2024survey,
+  title = {{Large Language Model Agent in Financial Trading: A Survey}},
+  author = {Han Ding and Yinheng Li and Junhao Wang and Hang Chen and Doudou Guo and Yunbai Zhang},
+  year = {2024},
+  howpublished = {arXiv 2408.06361 (q-fin.TR)},
+  url = {https://arxiv.org/abs/2408.06361},
+  note = {Bloque 2-agentes; fases P3; tipo preprint}
+}
+
+@inproceedings{dong2025survey,
+  title = {{Large Language Model Agents in Finance: A Survey Bridging Research, Practice, and Real-World Deployment}},
+  author = {Yifei Dong and Fengyi Wu and Kunlin Zhang and others},
+  year = {2025},
+  booktitle = {Findings of EMNLP 2025, pp. 17889-17907},
+  url = {https://aclanthology.org/2025.findings-emnlp.972/},
+  note = {Bloque 8-industria; fases P3, P5; tipo paper}
+}
+
+@misc{xia2026,
+  title = {{Agentic Trading: When LLM Agents Meet Financial Markets}},
+  author = {Yihan Xia and Panpan You and Taotao Wang and Fang Liu and Han Qi and Xiaoxiao Wu and Shengli Zhang},
+  year = {2026},
+  howpublished = {arXiv 2605.19337 (survey, v2 oct. 2026)},
+  url = {https://arxiv.org/abs/2605.19337},
+  note = {Bloque 2-agentes; fases P3, P4, P5; tipo preprint}
+}
+
+@inproceedings{hedgeagents2025,
+  title = {{HedgeAgents: A Balanced-aware Multi-agent Financial Trading System}},
+  author = {Xiangyu Li and Yawen Zeng and Xiaofen Xing and Jin Xu and Xiangmin Xu},
+  year = {2025},
+  booktitle = {The Web Conference (WWW) 2025, oral},
+  url = {https://arxiv.org/abs/2502.13165},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@misc{marketsenseai2025,
+  title = {{MarketSenseAI 2.0: Enhancing Stock Analysis through LLM Agents}},
+  author = {George Fatouros and Kostas Metaxas and John Soldatos and Manos Karathanassis},
+  year = {2025},
+  howpublished = {arXiv 2502.00415 (en revisión en Financial Innovation)},
+  url = {https://arxiv.org/abs/2502.00415},
+  note = {Bloque 2-agentes; fases P2, P3, P5; tipo preprint}
+}
+
+@misc{alphaagents2025,
+  title = {{AlphaAgents: Large Language Model based Multi-Agents for Equity Portfolio Constructions}},
+  author = {Tianjiao Zhao and Jingrao Lyu and Stokes Jones and Harrison Garber and Stefano Pasquali and Dhagash Mehta},
+  year = {2025},
+  howpublished = {arXiv 2508.11152 (BlackRock)},
+  url = {https://arxiv.org/abs/2508.11152},
+  note = {Bloque 2-agentes; fases P2, P3, P4; tipo preprint}
+}
+
+@inproceedings{lee2025bl,
+  title = {{LLM-Enhanced Black-Litterman Portfolio Optimization}},
+  author = {Youngbin Lee and Yejin Kim and Juhyeong Kim and Suin Kim and Yongjae Lee},
+  year = {2025},
+  booktitle = {CIKM 2025 Workshop on Financial AI},
+  url = {https://arxiv.org/abs/2504.14345},
+  note = {Bloque 2-agentes; fases P4; tipo paper}
+}
+
+@inproceedings{raptor2025,
+  title = {{RAPTOR: Reasoned Agentic Portfolio Trading with Orchestrated Rebalancing}},
+  author = {Blake Almon and Matthew Caliboso and Alex Kim and Rohan Dutta and Rohan Raman and Mithil Srungarapu and Vasu Sharma and Kevin Zhu and Sunishchal Dev},
+  year = {2025},
+  booktitle = {CEUR-WS Vol-4162 (NORA'25, NeurIPS 2025 workshop)},
+  url = {https://ceur-ws.org/Vol-4162/paper8.pdf},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@inproceedings{solid2025,
+  title = {{SOLID: a Framework of Synergizing Optimization and LLMs for Intelligent Decision-Making}},
+  author = {Yinsheng Wang and Tario G. You and Léonard Boussioux and Shan Liu},
+  year = {2025},
+  booktitle = {NeurIPS 2025 ML*OR Workshop},
+  url = {https://arxiv.org/abs/2511.15202},
+  note = {Bloque 2-agentes; fases P4; tipo paper}
+}
+
+@misc{quek2025,
+  title = {{Leveraging LLMs for Top-Down Sector Allocation In Automated Trading}},
+  author = {Ryan Quek Wei Heng and Edoardo Vittori and Keane Ong and Rui Mao and Erik Cambria and Gianmarco Mengaldo},
+  year = {2025},
+  howpublished = {arXiv 2503.09647},
+  url = {https://arxiv.org/abs/2503.09647},
+  note = {Bloque 2-agentes; fases P3, P4; tipo preprint}
+}
+
+@misc{luo2025crypto,
+  title = {{LLM-Powered Multi-Agent System for Automated Crypto Portfolio Management}},
+  author = {Yichen Luo and Yebo Feng and Jiahua Xu and Paolo Tasca and Yang Liu},
+  year = {2025},
+  howpublished = {arXiv 2501.00826 (v3 2026)},
+  url = {https://arxiv.org/abs/2501.00826},
+  note = {Bloque 2-agentes; fases P2, P3; tipo preprint}
+}
+
+@misc{quantagent2025,
+  title = {{QuantAgent / QuantHarness: Price-Driven Multi-Agent LLMs for High-Frequency Trading}},
+  author = {Fei Xiong and Xiang Zhang and Aosong Feng and Siqi Sun and Chenyu You},
+  year = {2025},
+  howpublished = {arXiv 2509.09995 (v4 2026)},
+  url = {https://arxiv.org/abs/2509.09995},
+  note = {Bloque 2-agentes; fases P3; tipo preprint}
+}
+
+@misc{flagtrader2025,
+  title = {{FLAG-Trader: Fusion LLM-Agent with Gradient-based Reinforcement Learning for Financial Trading}},
+  author = {Guojun Xiong and Zhiyang Deng and Keyi Wang and others},
+  year = {2025},
+  howpublished = {arXiv 2502.11433 (cs.AI)},
+  url = {https://arxiv.org/abs/2502.11433},
+  note = {Bloque 2-agentes; fases P3, P4; tipo preprint}
+}
+
+@misc{agentarena2025,
+  title = {{Agent Trading Arena: A Study on Numerical Understanding in LLM-Based Agents}},
+  author = {Tianmi Ma and Jiawei Du and Wenxin Huang and Wenjie Wang and Liang Xie and Xian Zhong and Joey Tianyi Zhou},
+  year = {2025},
+  howpublished = {arXiv 2502.17967 (cs.LG)},
+  url = {https://arxiv.org/abs/2502.17967},
+  note = {Bloque 2-agentes; fases P2, P5; tipo benchmark}
+}
+
+@article{ko2024,
+  title = {{Can ChatGPT improve investment decisions? From a portfolio management perspective}},
+  author = {Hyungjin Ko and Jaewook Lee},
+  year = {2024},
+  journal = {Finance Research Letters 64:105433},
+  url = {https://doi.org/10.1016/j.frl.2024.105433},
+  note = {Bloque 2-agentes; fases P4; tipo paper}
+}
+
+@misc{mrc2026,
+  title = {{Market Regime Council for Dynamic Credit Assignment in Multi-Agent LLM Decision Systems}},
+  author = {Yunhua Pei and Zerui Ge and Jin Zheng and John Cartlidge},
+  year = {2026},
+  howpublished = {arXiv 2605.24490},
+  url = {https://arxiv.org/abs/2605.24490},
+  note = {Bloque 2-agentes; fases P1, P3, P4; tipo preprint}
+}
+
+@misc{asadi2026,
+  title = {{Regime-Aware Portfolio Management via Retrieval-Augmented LLM-Guided Expert Switching}},
+  author = {Ahmad Asadi and Reza Safabakhsh},
+  year = {2026},
+  howpublished = {arXiv 2608.28252 (cs.AI)},
+  url = {https://arxiv.org/abs/2608.28252},
+  note = {Bloque 2-agentes; fases P1, P2, P4; tipo preprint}
+}
+
+@misc{miyazaki2026,
+  title = {{Toward Expert Investment Teams: A Multi-Agent LLM System with Fine-Grained Trading Tasks}},
+  author = {Kunihiro Miyazaki and Takanobu Kawahara and Stephen Roberts and Stefan Zohren},
+  year = {2026},
+  howpublished = {arXiv 2602.23330},
+  url = {https://arxiv.org/abs/2602.23330},
+  note = {Bloque 2-agentes; fases P3, P4, P5; tipo preprint}
+}
+
+@misc{macroecon2026,
+  title = {{Macro Economists in the Machine: A Multi-Agent LLM Framework for Commodity-Related ETF Portfolio Construction}},
+  author = {Yiqing Wang and Dehao Dai and Ding Ma and Kerui Geng},
+  year = {2026},
+  howpublished = {arXiv 2606.08283 (q-fin.PM)},
+  url = {https://arxiv.org/abs/2606.08283},
+  note = {Bloque 2-agentes; fases P3, P4, P5; tipo preprint}
+}
+
+@inproceedings{blindtrade2026,
+  title = {{Can Blindfolded LLMs Still Trade? An Anonymization-First Framework for Portfolio Optimization (BlindTrade)}},
+  author = {Joohyoung Jeon and Hongchul Lee},
+  year = {2026},
+  booktitle = {ICLR 2026 Workshop on Advances in Financial AI},
+  url = {https://arxiv.org/abs/2603.17692},
+  note = {Bloque 2-agentes; fases P5; tipo paper}
+}
+
+@misc{portbench2026,
+  title = {{PortBench: A Correlation-Aware, Full-Pipeline Benchmark for LLM-Driven Portfolio Management}},
+  author = {Yuxuan Zhao and Sijia Chen and Ningxin Su},
+  year = {2026},
+  howpublished = {arXiv 2605.27887 (v6 oct. 2026)},
+  url = {https://arxiv.org/abs/2605.27887},
+  note = {Bloque 2-agentes; fases P5; tipo benchmark}
+}
+
+@inproceedings{booch2021,
+  title = {{Thinking Fast and Slow in AI}},
+  author = {Grady Booch and Francesco Fabiano and Lior Horesh and Kiran Kate and Jonathan Lenchner and Nick Linck and Andrea Loreggia and Keerthiram Murugesan and Nicholas Mattei and Francesca Rossi and Biplav Srivastava},
+  year = {2021},
+  booktitle = {AAAI 2021 (arXiv 2010.06002)},
+  url = {https://arxiv.org/abs/2010.06002},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@inproceedings{swiftsage2023,
+  title = {{SwiftSage: A Generative Agent with Fast and Slow Thinking for Complex Interactive Tasks}},
+  author = {Bill Yuchen Lin and Yicheng Fu and Karina Yang and Faeze Brahman and Shiyu Huang and Chandra Bhagavatula and Prithviraj Ammanabrolu and Yejin Choi and Xiang Ren},
+  year = {2023},
+  booktitle = {NeurIPS 2023 (spotlight)},
+  url = {https://arxiv.org/abs/2305.17390},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@misc{talkerreasoner2024,
+  title = {{Agents Thinking Fast and Slow: A Talker-Reasoner Architecture}},
+  author = {Konstantina Christakopoulou and Shibl Mourad and Maja Matarić},
+  year = {2024},
+  howpublished = {arXiv 2410.08328 (Google DeepMind)},
+  url = {https://arxiv.org/abs/2410.08328},
+  note = {Bloque 2-agentes; fases P3, P4; tipo preprint}
+}
+
+@inproceedings{reflexion2023,
+  title = {{Reflexion: Language Agents with Verbal Reinforcement Learning}},
+  author = {Noah Shinn and Federico Cassano and Edward Berman and Ashwin Gopinath and Karthik Narasimhan and Shunyu Yao},
+  year = {2023},
+  booktitle = {NeurIPS 2023},
+  url = {https://arxiv.org/abs/2303.11366},
+  note = {Bloque 2-agentes; fases P4; tipo paper}
+}
+
+@inproceedings{generativeagents2023,
+  title = {{Generative Agents: Interactive Simulacra of Human Behavior}},
+  author = {Joon Sung Park and Joseph C. O'Brien and Carrie J. Cai and Meredith Ringel Morris and Percy Liang and Michael S. Bernstein},
+  year = {2023},
+  booktitle = {UIST 2023},
+  url = {https://arxiv.org/abs/2304.03442},
+  note = {Bloque 2-agentes; fases P3, P4; tipo paper}
+}
+
+@inproceedings{ael2026,
+  title = {{AEL: Evolving Agent Harness in Open-Ended Environments}},
+  author = {Wujiang Xu and Jiaojiao Han and Minghao Guo and Kai Mei and Xi Zhu and Han Zhang and Dimitris N. Metaxas},
+  year = {2026},
+  booktitle = {Findings of EMNLP 2026 (arXiv 2604.21725)},
+  url = {https://arxiv.org/abs/2604.21725},
+  note = {Bloque 2-agentes; fases P4, P5; tipo paper}
+}
+
+@misc{webcryptoagent2026,
+  title = {{WebCryptoAgent: Agentic Crypto Trading with Web Informatics}},
+  author = {{Kurban} and {Luo} and {Zuo} and {Zhang} and {Han} and {Kang} and {Tang} and {Zhao}},
+  year = {2026},
+  howpublished = {arXiv 2601.04687},
+  url = {https://arxiv.org/abs/2601.04687},
+  note = {Bloque 2-agentes; fases P3, P4; tipo preprint}
+}
+
+@misc{farsight2026,
+  title = {{SoK: Trading Agents or Market Crashers? Dissecting Robustness and Security Failures in Academic Financial LLM Trading Schemes}},
+  author = {Mengxiao Wang and Nitesh Saxena},
+  year = {2026},
+  howpublished = {arXiv 2609.19705 (cs.CR)},
+  url = {https://arxiv.org/abs/2609.19705},
+  note = {Bloque 2-agentes; fases P2, P5; tipo preprint}
+}
+
+@misc{fia2024,
+  title = {{Best Practices for Automated Trading Risk Controls and System Safeguards}},
+  author = {{FIA (Futures Industry Association)}},
+  year = {2024},
+  howpublished = {FIA (18-jul-2024)},
+  url = {https://www.fia.org/fia/articles/fia-releases-best-practices-automated-trading-risk-controls-and-system-safeguards},
+  note = {Bloque 8-industria; fases P4, P5; tipo industria}
+}
+
+@inproceedings{lewis2020,
+  title = {{Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks}},
+  author = {Patrick Lewis and Ethan Perez and Aleksandra Piktus and Fabio Petroni and Vladimir Karpukhin and Naman Goyal and Heinrich Küttler and Mike Lewis and Wen-tau Yih and Tim Rocktäschel and Sebastian Riedel and Douwe Kiela},
+  year = {2020},
+  booktitle = {NeurIPS 2020},
+  url = {https://arxiv.org/abs/2005.11401},
+  note = {Bloque 3-rag; fases P2; tipo paper}
+}
+
+@misc{finqa2021,
+  title = {{FinQA: A Dataset of Numerical Reasoning over Financial Data}},
+  author = {Zhiyu Chen and Wenhu Chen and Charese Smiley and Sameena Shah and Iana Borova and Dylan Langdon and Reema Moussa and Matt Beane and Ting-Hao Huang and Bryan Routledge and William Yang Wang},
+  year = {2021},
+  howpublished = {EMNLP 2021},
+  url = {https://arxiv.org/abs/2109.00122},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@misc{tatqa2021,
+  title = {{TAT-QA: A Question Answering Benchmark on a Hybrid of Tabular and Textual Content in Finance}},
+  author = {Fengbin Zhu and Wenqiang Lei and Youcheng Huang and Chao Wang and Shuo Zhang and Jiancheng Lv and Fuli Feng and Tat-Seng Chua},
+  year = {2021},
+  howpublished = {ACL 2021},
+  url = {https://arxiv.org/abs/2105.07624},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@misc{docfinqa2024,
+  title = {{DocFinQA: A Long-Context Financial Reasoning Dataset}},
+  author = {Varshini Reddy and Rik Koncel-Kedziorski and Viet Dac Lai and Michael Krumdick and Charles Lovering and Chris Tanner},
+  year = {2024},
+  howpublished = {arXiv 2401.06915 (Kensho)},
+  url = {https://arxiv.org/abs/2401.06915},
+  note = {Bloque 3-rag; fases P2; tipo benchmark}
+}
+
+@misc{secqa2024,
+  title = {{SEC-QA: A Systematic Evaluation Corpus for Financial QA}},
+  author = {Viet Dac Lai and Michael Krumdick and Charles Lovering and Varshini Reddy and Craig Schmidt and Chris Tanner},
+  year = {2024},
+  howpublished = {arXiv 2406.14394},
+  url = {https://arxiv.org/abs/2406.14394},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@misc{jimeno2024,
+  title = {{Financial Report Chunking for Effective Retrieval Augmented Generation}},
+  author = {Antonio Jimeno Yepes and Yao You and Jan Milczek and Sebastian Laverde and Renyu Li},
+  year = {2024},
+  howpublished = {arXiv 2402.05131 (Unstructured)},
+  url = {https://arxiv.org/abs/2402.05131},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{setty2024,
+  title = {{Improving Retrieval for RAG based Question Answering Models on Financial Documents}},
+  author = {Spurthi Setty and Harsh Thakkar and Alyssa Lee and Eden Chung and Natan Vidra},
+  year = {2024},
+  howpublished = {arXiv 2404.07221 (cs.IR)},
+  url = {https://arxiv.org/abs/2404.07221},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{lumer2025,
+  title = {{Rethinking Retrieval: From Traditional RAG to Agentic and Non-Vector Reasoning Systems in the Financial Domain for LLMs}},
+  author = {Elias Lumer and {Melich} and {Zino} and {Kim} and {Dieter} and Honaganahalli Basavaraju and {Subbiah} and {Burke} and {Hernandez}},
+  year = {2025},
+  howpublished = {arXiv 2511.18177},
+  url = {https://arxiv.org/abs/2511.18177},
+  note = {Bloque 3-rag; fases P2, P3; tipo preprint}
+}
+
+@misc{contextualretrieval2024,
+  title = {{Introducing Contextual Retrieval}},
+  author = {{Anthropic}},
+  year = {2024},
+  howpublished = {Anthropic (blog técnico)},
+  url = {https://www.anthropic.com/news/contextual-retrieval},
+  note = {Bloque 3-rag; fases P2; tipo industria}
+}
+
+@misc{latechunking2024,
+  title = {{Late Chunking: Contextual Chunk Embeddings Using Long-Context Embedding Models}},
+  author = {Michael Günther and Isabelle Mohr and Daniel James Williams and Bo Wang and Han Xiao},
+  year = {2024},
+  howpublished = {arXiv 2409.04701 (Jina AI)},
+  url = {https://arxiv.org/abs/2409.04701},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{modernbert2024,
+  title = {{Smarter, Better, Faster, Longer: A Modern Bidirectional Encoder (ModernBERT)}},
+  author = {Benjamin Warner and Antoine Chaffin and Benjamin Clavié and Orion Weller and others},
+  year = {2024},
+  howpublished = {arXiv 2412.13663},
+  url = {https://arxiv.org/abs/2412.13663},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{bgem32024,
+  title = {{M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation (BGE-M3)}},
+  author = {Jianlv Chen and Shitao Xiao and Peitian Zhang and Kun Luo and Defu Lian and Zheng Liu},
+  year = {2024},
+  howpublished = {arXiv 2402.03216},
+  url = {https://arxiv.org/abs/2402.03216},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{graphrag2024,
+  title = {{From Local to Global: A Graph RAG Approach to Query-Focused Summarization}},
+  author = {Darren Edge and Ha Trinh and Newman Cheng and Joshua Bradley and Alex Chao and Apurva Mody and Steven Truitt and Dasha Metropolitansky and Robert Osazuwa Ness and Jonathan Larson},
+  year = {2024},
+  howpublished = {arXiv 2404.16130 (Microsoft Research)},
+  url = {https://arxiv.org/abs/2404.16130},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{hybridrag2024,
+  title = {{HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction}},
+  author = {Bhaskarjit Sarmah and Benika Hall and Rohan Rao and Sunil Patel and Stefano Pasquali and Dhagash Mehta},
+  year = {2024},
+  howpublished = {arXiv 2408.04948 (BlackRock/NVIDIA)},
+  url = {https://arxiv.org/abs/2408.04948},
+  note = {Bloque 3-rag; fases P2, P3; tipo preprint}
+}
+
+@misc{finmteb2025,
+  title = {{FinMTEB: Finance Massive Text Embedding Benchmark}},
+  author = {Yixuan Tang and Yi Yang},
+  year = {2025},
+  howpublished = {EMNLP 2025 (arXiv 2502.10990)},
+  url = {https://arxiv.org/abs/2502.10990},
+  note = {Bloque 3-rag; fases P2; tipo benchmark}
+}
+
+@misc{tempralm2024,
+  title = {{It's About Time: Incorporating Temporality in Retrieval Augmented Language Models (TempRALM)}},
+  author = {Anoushka Gade and Jorjeta Jetcheva},
+  year = {2024},
+  howpublished = {arXiv 2401.13222},
+  url = {https://arxiv.org/abs/2401.13222},
+  note = {Bloque 3-rag; fases P2; tipo preprint}
+}
+
+@misc{fintmmbench2025,
+  title = {{Towards Temporal-Aware Multi-Modal Retrieval Augmented Generation in Finance (FinTMMBench)}},
+  author = {Fengbin Zhu and {Li} and {Pan} and {Wang} and {Feng} and {Wang} and {Luan} and Tat-Seng Chua},
+  year = {2025},
+  howpublished = {ACM MM 2025},
+  url = {https://arxiv.org/abs/2503.05185},
+  note = {Bloque 3-rag; fases P2, P5; tipo benchmark}
+}
+
+@misc{finbert2019,
+  title = {{FinBERT: Financial Sentiment Analysis with Pre-trained Language Models}},
+  author = {Dogu Araci},
+  year = {2019},
+  howpublished = {arXiv 1908.10063},
+  url = {https://arxiv.org/abs/1908.10063},
+  note = {Bloque 3-rag; fases P2, P3; tipo preprint}
+}
+
+@misc{bloomberggpt2023,
+  title = {{BloombergGPT: A Large Language Model for Finance}},
+  author = {Shijie Wu and Ozan Irsoy and Steven Lu and Vadim Dabravolski and Mark Dredze and Sebastian Gehrmann and Prabhanjan Kambadur and David Rosenberg and Gideon Mann},
+  year = {2023},
+  howpublished = {arXiv 2303.17564 (Bloomberg)},
+  url = {https://arxiv.org/abs/2303.17564},
+  note = {Bloque 3-rag; fases P3; tipo preprint}
+}
+
+@misc{fingpt2023,
+  title = {{FinGPT: Open-Source Financial Large Language Models}},
+  author = {Hongyang Yang and Xiao-Yang Liu and Christina Dan Wang},
+  year = {2023},
+  howpublished = {arXiv 2306.06031 (AI4Finance)},
+  url = {https://arxiv.org/abs/2306.06031},
+  note = {Bloque 3-rag; fases P2, P3; tipo software}
+}
+
+@misc{finr12025,
+  title = {{Fin-R1: A Large Language Model for Financial Reasoning through Reinforcement Learning}},
+  author = {Zhaowei Liu and Xin Guo and Zhi Yang and others},
+  year = {2025},
+  howpublished = {arXiv 2503.16252},
+  url = {https://arxiv.org/abs/2503.16252},
+  note = {Bloque 3-rag; fases P3, P5; tipo preprint}
+}
+
+@inproceedings{trilliondollar2023,
+  title = {{Trillion Dollar Words: A New Financial Dataset, Task \& Market Analysis}},
+  author = {Agam Shah and Suvan Paturi and Sudheer Chava},
+  year = {2023},
+  booktitle = {ACL 2023},
+  url = {https://arxiv.org/abs/2305.07972},
+  note = {Bloque 3-rag; fases P2, P3; tipo paper}
+}
+
+@article{pfeifer2023,
+  title = {{CentralBankRoBERTa: A fine-tuned large language model for central bank communications}},
+  author = {Moritz Pfeifer and Vincent P. Marohl},
+  year = {2023},
+  journal = {The Journal of Finance and Data Science 9:100114},
+  url = {https://doi.org/10.1016/j.jfds.2023.100114},
+  note = {Bloque 3-rag; fases P2; tipo paper}
+}
+
+@techreport{hansen2023fedspeak,
+  title = {{Can ChatGPT Decipher Fedspeak?}},
+  author = {Anne Lundgaard Hansen and Sophia Kazinnik},
+  year = {2023},
+  institution = {Federal Reserve Bank of Richmond working paper (SSRN 4399406)},
+  url = {https://papers.ssrn.com/abstract=4399406},
+  note = {Bloque 3-rag; fases P3; tipo informe}
+}
+
+@techreport{du2026beige,
+  title = {{Do Anecdotes Matter? Exploring the Beige Book through Textual Analysis from 1970 to 2025}},
+  author = {{Du} and {Haberkorn} and {Kitschelt} and {Lee} and {Monken} and {Saez} and {Shipman} and {Thakur}},
+  year = {2026},
+  institution = {Federal Reserve Board, FEDS 2026-004},
+  url = {https://www.federalreserve.gov/econres/feds/do-anecdotes-matter-exploring-the-beige-book-through-textual-analysis-from-1970-to-2025.htm},
+  note = {Bloque 3-rag; fases P1, P2; tipo informe}
+}
+
+@misc{kang2023,
+  title = {{Deficiency of Large Language Models in Finance: An Empirical Examination of Hallucination}},
+  author = {Haoqiang Kang and Xiao-Yang Liu},
+  year = {2023},
+  howpublished = {arXiv 2311.15548},
+  url = {https://arxiv.org/abs/2311.15548},
+  note = {Bloque 3-rag; fases P3, P5; tipo preprint}
+}
+
+@misc{failsafeqa2025,
+  title = {{Expect the Unexpected: FailSafe Long Context QA for Finance (FailSafeQA)}},
+  author = {Kiran Kamble and Melisa Russak and Dmytro Mozolevskyi and Muayad Ali and Mateusz Russak and Waseem AlShikh},
+  year = {2025},
+  howpublished = {arXiv 2502.06329 (Writer)},
+  url = {https://arxiv.org/abs/2502.06329},
+  note = {Bloque 3-rag; fases P5; tipo benchmark}
+}
+
+@inproceedings{selfrag2023,
+  title = {{Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection}},
+  author = {Akari Asai and Zeqiu Wu and Yizhong Wang and Avirup Sil and Hannaneh Hajishirzi},
+  year = {2023},
+  booktitle = {ICLR 2024 (arXiv 2310.11511)},
+  url = {https://arxiv.org/abs/2310.11511},
+  note = {Bloque 3-rag; fases P3, P4; tipo paper}
+}
+
+@misc{longcite2024,
+  title = {{LongCite: Enabling LLMs to Generate Fine-grained Citations in Long-context QA}},
+  author = {Jiajie Zhang and Yushi Bai and Xin Lv and Wanjun Gu and Danqing Liu and Minhao Zou and Shulin Cao and Lei Hou and Yuxiao Dong and Ling Feng and Juanzi Li},
+  year = {2024},
+  howpublished = {arXiv 2409.02897},
+  url = {https://arxiv.org/abs/2409.02897},
+  note = {Bloque 3-rag; fases P4, P5; tipo preprint}
+}
+
+@article{croushore2001,
+  title = {{A Real-Time Data Set for Macroeconomists}},
+  author = {Dean Croushore and Tom Stark},
+  year = {2001},
+  journal = {Journal of Econometrics 105:111-130},
+  url = {https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/real-time-data-set-for-macroeconomists},
+  note = {Bloque 4-lookahead; fases P1, P2, P5; tipo paper}
+}
+
+@misc{alfred2006,
+  title = {{ALFRED: ArchivaL Federal Reserve Economic Data}},
+  author = {{Federal Reserve Bank of St. Louis}},
+  year = {2006},
+  howpublished = {Federal Reserve Bank of St. Louis},
+  url = {https://fred.stlouisfed.org/blog/2021/04/alfred-at-15-archiving-fred-data-since-2006/},
+  note = {Bloque 4-lookahead; fases P1, P2; tipo dataset}
+}
+
+@article{giannone2008,
+  title = {{Nowcasting: The real-time informational content of macroeconomic data}},
+  author = {Domenico Giannone and Lucrezia Reichlin and David Small},
+  year = {2008},
+  journal = {Journal of Monetary Economics 55(4):665-676},
+  url = {https://doi.org/10.1016/j.jmoneco.2008.05.010},
+  note = {Bloque 4-lookahead; fases P1, P2; tipo paper}
+}
+
+@misc{glasserman2023,
+  title = {{Assessing Look-Ahead Bias in Stock Return Predictions Generated By GPT Sentiment Analysis}},
+  author = {Paul Glasserman and Caden Lin},
+  year = {2023},
+  howpublished = {arXiv 2309.17322 (q-fin)},
+  url = {https://arxiv.org/abs/2309.17322},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo preprint}
+}
+
+@inproceedings{sarkar2024,
+  title = {{Lookahead Bias in Pretrained Language Models}},
+  author = {Suproteem Sarkar and Keyon Vafa},
+  year = {2024},
+  booktitle = {ICML 2025 Workshop DataWorld (NBER 2024)},
+  url = {https://icml.cc/virtual/2025/48685},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo paper}
+}
+
+@misc{storieslm2024,
+  title = {{StoriesLM: A Family of Language Models With Time-Indexed Training Data}},
+  author = {Suproteem Sarkar},
+  year = {2024},
+  howpublished = {SSRN 4881024},
+  url = {https://doi.org/10.2139/ssrn.4881024},
+  note = {Bloque 4-lookahead; fases P2; tipo preprint}
+}
+
+@inproceedings{timemachinegpt2024,
+  title = {{Time Machine GPT}},
+  author = {Felix Drinkall and Eghbal Rahimikia and Janet B. Pierrehumbert and Stefan Zohren},
+  year = {2024},
+  booktitle = {Findings of NAACL 2024},
+  url = {https://arxiv.org/abs/2404.18543},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo paper}
+}
+
+@misc{chronoinstruct2025,
+  title = {{Instruction Tuning Chronologically Consistent Language Models}},
+  author = {Songrun He and Linying Lv and Asaf Manela and Jimmy Wu},
+  year = {2025},
+  howpublished = {arXiv 2510.11677},
+  url = {https://arxiv.org/abs/2510.11677},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo preprint}
+}
+
+@misc{lopezlira2025mem,
+  title = {{The Memorization Problem: Can We Trust LLMs' Economic Forecasts?}},
+  author = {Alejandro Lopez-Lira and Yuehua Tang and Mingyin Zhu},
+  year = {2025},
+  howpublished = {arXiv 2504.14765 / SSRN 5217505},
+  url = {https://arxiv.org/abs/2504.14765},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo preprint}
+}
+
+@misc{gao2025lap,
+  title = {{Detecting Lookahead Bias in LLM Forecasts}},
+  author = {Zhenyu Gao and Wenxi Jiang and Yutong Yan},
+  year = {2025},
+  howpublished = {arXiv 2512.23847 (q-fin.GN)},
+  url = {https://arxiv.org/abs/2512.23847},
+  note = {Bloque 4-lookahead; fases P5; tipo preprint}
+}
+
+@misc{profitmirage2025,
+  title = {{Profit Mirage: Revisiting Information Leakage in LLM-based Financial Agents}},
+  author = {Xiangyu Li and Yawen Zeng and Xiaofen Xing and Jin Xu and Xiangmin Xu},
+  year = {2025},
+  howpublished = {arXiv 2510.07920},
+  url = {https://arxiv.org/abs/2510.07920},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo preprint}
+}
+
+@misc{merchant2025,
+  title = {{A Fast and Effective Solution to the Problem of Look-ahead Bias in LLMs}},
+  author = {Humzah Merchant and Bradford Levy},
+  year = {2025},
+  howpublished = {arXiv 2512.06607 / NeurIPS 2025},
+  url = {https://arxiv.org/abs/2512.06607},
+  note = {Bloque 4-lookahead; fases P3; tipo preprint}
+}
+
+@inproceedings{fincad2026,
+  title = {{Summoning the Oracle to Slay It: Mitigating Look-Ahead Bias in Financial Backtesting with Large Language Models}},
+  author = {Weixian Waylon Li and Mengyu Wang and Tiejun Ma},
+  year = {2026},
+  booktitle = {EMNLP 2026 (Main)},
+  url = {https://arxiv.org/abs/2605.24564},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo paper}
+}
+
+@misc{wu2025anon,
+  title = {{Anonymization and Information Loss}},
+  author = {Ke Wu and Baozhong Yang and Zhenkun Ying and Dexin Zhou},
+  year = {2025},
+  howpublished = {arXiv 2511.15364 (q-fin.GN)},
+  url = {https://arxiv.org/abs/2511.15364},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo preprint}
+}
+
+@article{levy2026,
+  title = {{Caution Ahead: Numerical Reasoning and Look-Ahead Bias in AI Models}},
+  author = {Bradford Levy},
+  year = {2026},
+  journal = {Journal of Accounting Research 64(3)},
+  url = {https://doi.org/10.1111/1475-679x.70058},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo paper}
+}
+
+@misc{lookaheadbench2026,
+  title = {{Look-Ahead-Bench: a Standardized Benchmark of Look-ahead Bias in Point-in-Time LLMs for Finance}},
+  author = {Mostapha Benhenda},
+  year = {2026},
+  howpublished = {arXiv 2601.13770},
+  url = {https://arxiv.org/abs/2601.13770},
+  note = {Bloque 4-lookahead; fases P3, P5; tipo benchmark}
+}
+
+@misc{xu2024contamination,
+  title = {{Benchmark Data Contamination of Large Language Models: A Survey}},
+  author = {Cheng Xu and Shuhao Guan and Derek Greene and M-Tahar Kechadi},
+  year = {2024},
+  howpublished = {arXiv 2406.04244 (cs.CL)},
+  url = {https://arxiv.org/abs/2406.04244},
+  note = {Bloque 4-lookahead; fases P5; tipo preprint}
+}
+
+@misc{timespec2026,
+  title = {{All Leaks Count, Some Count More: Interpretable Temporal Contamination Detection and Mitigation in LLM Backtesting}},
+  author = {Zeyu Zhang and Ryan Chen and Bradly C. Stadie},
+  year = {2026},
+  howpublished = {arXiv 2602.17234 (cs.AI)},
+  url = {https://arxiv.org/abs/2602.17234},
+  note = {Bloque 4-lookahead; fases P2, P4, P5; tipo preprint}
+}
+
+@misc{zhao2026pit,
+  title = {{Point-in-Time Financial RAG with Frozen LLMs and Market-Feedback Adaptive Retrieval}},
+  author = {Zijie Zhao and Roy E. Welsch},
+  year = {2026},
+  howpublished = {arXiv 2605.31201},
+  url = {https://arxiv.org/abs/2605.31201},
+  note = {Bloque 4-lookahead; fases P2, P5; tipo preprint}
+}
+
+@misc{guan2026,
+  title = {{Leakage-Aware Benchmarking of LLM Forecasting: Real-Time Nowcasts as the Decision-Time Input for Macro Factor Ranking}},
+  author = {Mao Guan and Qian Chen},
+  year = {2026},
+  howpublished = {arXiv 2606.22719 (q-fin.ST); ICML 2026 Workshop on AI Forecasting},
+  url = {https://arxiv.org/abs/2606.22719},
+  note = {Bloque 4-lookahead; fases P1, P2, P5; tipo preprint}
+}
+
+@inproceedings{ragas2023,
+  title = {{Ragas: Automated Evaluation of Retrieval Augmented Generation}},
+  author = {Shahul Es and Jithin James and Luis Espinosa-Anke and Steven Schockaert},
+  year = {2023},
+  booktitle = {EACL 2024 System Demonstrations (arXiv 2309.15217)},
+  url = {https://arxiv.org/abs/2309.15217},
+  note = {Bloque 5-evaluacion; fases P2, P5; tipo paper}
+}
+
+@inproceedings{ares2023,
+  title = {{ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems}},
+  author = {Jon Saad-Falcon and Omar Khattab and Christopher Potts and Matei Zaharia},
+  year = {2023},
+  booktitle = {NAACL 2024},
+  url = {https://arxiv.org/abs/2311.09476},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@misc{ragchecker2024,
+  title = {{RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation}},
+  author = {Dongyu Ru and Lin Qiu and Xiangkun Hu and others},
+  year = {2024},
+  howpublished = {arXiv 2408.08067 (Amazon)},
+  url = {https://arxiv.org/abs/2408.08067},
+  note = {Bloque 5-evaluacion; fases P2, P5; tipo preprint}
+}
+
+@inproceedings{alce2023,
+  title = {{Enabling Large Language Models to Generate Text with Citations (ALCE)}},
+  author = {Tianyu Gao and Howard Yen and Jiatong Yu and Danqi Chen},
+  year = {2023},
+  booktitle = {EMNLP 2023},
+  url = {https://arxiv.org/abs/2305.14627},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo paper}
+}
+
+@inproceedings{factscore2023,
+  title = {{FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation}},
+  author = {Sewon Min and Kalpesh Krishna and Xinxi Lyu and Mike Lewis and Wen-tau Yih and Pang Wei Koh and Mohit Iyyer and Luke Zettlemoyer and Hannaneh Hajishirzi},
+  year = {2023},
+  booktitle = {EMNLP 2023},
+  url = {https://arxiv.org/abs/2305.14251},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo paper}
+}
+
+@inproceedings{zheng2023judge,
+  title = {{Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena}},
+  author = {Lianmin Zheng and Wei-Lin Chiang and Ying Sheng and others},
+  year = {2023},
+  booktitle = {NeurIPS 2023 Datasets and Benchmarks},
+  url = {https://arxiv.org/abs/2306.05685},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@misc{deepresearchbench2025,
+  title = {{DeepResearch Bench: A Comprehensive Benchmark for Deep Research Agents}},
+  author = {Mingxuan Du and Benfeng Xu and Chiwei Zhu and Xiaorui Wang and Zhendong Mao},
+  year = {2025},
+  howpublished = {arXiv 2506.11763},
+  url = {https://arxiv.org/abs/2506.11763},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo benchmark}
+}
+
+@misc{finresearchbench2025,
+  title = {{FinResearchBench: A Logic Tree based Agent-as-a-Judge Evaluation Framework for Financial Research Agents}},
+  author = {Rui Sun and Zuo Bai and Wentao Zhang and Yuxiang Zhang and Li Zhao and Shan Sun and Zhengwen Qiu},
+  year = {2025},
+  howpublished = {arXiv 2507.16248},
+  url = {https://arxiv.org/abs/2507.16248},
+  note = {Bloque 5-evaluacion; fases P5; tipo benchmark}
+}
+
+@misc{finresearchbench2026,
+  title = {{FinResearchBench II: A Deep Research Benchmark with Consensus-Derived Gold Rubrics for Distinguishing Financial Report Quality}},
+  author = {Beidi Luan and Rui Sun and Sinuo Wang and Yan Gu and Chao Li and Zhenliang Xiong and Jing Li and Zuo Bai},
+  year = {2026},
+  howpublished = {arXiv 2607.12252},
+  url = {https://arxiv.org/abs/2607.12252},
+  note = {Bloque 5-evaluacion; fases P5; tipo benchmark}
+}
+
+@misc{findeepresearch2025,
+  title = {{FinDeepResearch: Evaluating Deep Research Agents in Rigorous Financial Analysis}},
+  author = {Fengbin Zhu and Xiang Yao Ng and Ziyang Liu and others},
+  year = {2025},
+  howpublished = {arXiv 2510.13936},
+  url = {https://arxiv.org/abs/2510.13936},
+  note = {Bloque 5-evaluacion; fases P3, P5; tipo benchmark}
+}
+
+@inproceedings{finrpt2025,
+  title = {{FinRpt: Dataset, Evaluation System and LLM-based Multi-agent Framework for Equity Research Report Generation}},
+  author = {Song Jin and Shuqi Li and Shukun Zhang and Rui Yan},
+  year = {2025},
+  booktitle = {AAAI 2026},
+  url = {https://arxiv.org/abs/2511.07322},
+  note = {Bloque 5-evaluacion; fases P3, P4, P5; tipo paper}
+}
+
+@misc{finreasoning2026,
+  title = {{FinReasoning: A Hierarchical Benchmark for Reliable Financial Research Reporting}},
+  author = {Yiyun Zhu and Yidong Jiang and Ziwen Xu and Yinsheng Yao and Dawei Cheng and Jinru Ding and Jie Xu},
+  year = {2026},
+  howpublished = {arXiv 2603.19254},
+  url = {https://arxiv.org/abs/2603.19254},
+  note = {Bloque 5-evaluacion; fases P5; tipo benchmark}
+}
+
+@inproceedings{luo2026memos,
+  title = {{LLM-Generated Investment Research Memos Need Validation}},
+  author = {Chenri Luo and Xukang Gong and Binyan Yu and Xiaoyang Liu},
+  year = {2026},
+  booktitle = {NeurIPS 2026 workshop (Can We Trust AI Evaluation?)},
+  url = {https://neurips.cc/virtual/2026/178273},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo paper}
+}
+
+@misc{finben2024,
+  title = {{FinBen: A Holistic Financial Benchmark for Large Language Models}},
+  author = {Qianqian Xie and Weiguang Han and Zhengyu Chen and others},
+  year = {2024},
+  howpublished = {arXiv 2402.12659},
+  url = {https://arxiv.org/abs/2402.12659},
+  note = {Bloque 5-evaluacion; fases P3, P5; tipo benchmark}
+}
+
+@misc{bizfinbench2025,
+  title = {{BizFinBench: A Business-Driven Real-World Financial Benchmark for Evaluating LLMs}},
+  author = {Guilong Lu and Xuntao Guo and Rongjunchen Zhang and others},
+  year = {2025},
+  howpublished = {arXiv 2505.19457},
+  url = {https://arxiv.org/abs/2505.19457},
+  note = {Bloque 5-evaluacion; fases P5; tipo benchmark}
+}
+
+@misc{fingaia2025,
+  title = {{FinGAIA: A Chinese Benchmark for AI Agents in Real-World Financial Domain}},
+  author = {Lingfeng Zeng and Fangqi Lou and Zixuan Wang and others},
+  year = {2025},
+  howpublished = {arXiv 2507.17186},
+  url = {https://arxiv.org/abs/2507.17186},
+  note = {Bloque 5-evaluacion; fases P3, P5; tipo benchmark}
+}
+
+@misc{finsearchcomp2025,
+  title = {{FinSearchComp: Towards a Realistic, Expert-Level Evaluation of Financial Search and Reasoning}},
+  author = {Liang Hu and Jianpeng Jiao and Jiashuo Liu and others},
+  year = {2025},
+  howpublished = {arXiv 2509.13160},
+  url = {https://arxiv.org/abs/2509.13160},
+  note = {Bloque 5-evaluacion; fases P2, P5; tipo benchmark}
+}
+
+@misc{financeagentbench2025,
+  title = {{Finance Agent Benchmark: Benchmarking LLMs on Real-world Financial Research Tasks}},
+  author = {Antoine Bigeard and Langston Nashold and Rayan Krishnan and Shirley Wu},
+  year = {2025},
+  howpublished = {arXiv 2508.00828 (Vals AI)},
+  url = {https://arxiv.org/abs/2508.00828},
+  note = {Bloque 5-evaluacion; fases P2, P3, P5; tipo benchmark}
+}
+
+@misc{investorbench2024,
+  title = {{InvestorBench: A Benchmark for Financial Decision-Making Tasks with LLM-based Agent}},
+  author = {Haohang Li and Yupeng Cao and Yangyang Yu and others},
+  year = {2024},
+  howpublished = {arXiv 2412.18174},
+  url = {https://arxiv.org/abs/2412.18174},
+  note = {Bloque 5-evaluacion; fases P3, P5; tipo benchmark}
+}
+
+@misc{deepfund2025,
+  title = {{Time Travel is Cheating: Going Live with DeepFund for Real-Time Fund Investment Benchmarking}},
+  author = {Changlun Li and Yao Shi and Chen Wang and Qiqi Duan and others},
+  year = {2025},
+  howpublished = {NeurIPS 2025 Datasets and Benchmarks},
+  url = {https://arxiv.org/abs/2505.11065},
+  note = {Bloque 5-evaluacion; fases P3, P4, P5; tipo benchmark}
+}
+
+@misc{livetradebench2025,
+  title = {{LiveTradeBench: Seeking Real-World Alpha with Large Language Models}},
+  author = {Haofei Yu and Fenghai Li and Jiaxuan You},
+  year = {2025},
+  howpublished = {arXiv 2511.03628},
+  url = {https://arxiv.org/abs/2511.03628},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo benchmark}
+}
+
+@article{demiguel2009,
+  title = {{Optimal Versus Naive Diversification: How Inefficient is the 1/N Portfolio Strategy?}},
+  author = {Victor DeMiguel and Lorenzo Garlappi and Raman Uppal},
+  year = {2009},
+  journal = {Review of Financial Studies 22(5):1915-1953},
+  url = {https://academic.oup.com/rfs/article/22/5/1915/1592901},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo paper}
+}
+
+@article{jegadeesh1993,
+  title = {{Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency}},
+  author = {Narasimhan Jegadeesh and Sheridan Titman},
+  year = {1993},
+  journal = {Journal of Finance 48(1):65-91},
+  url = {https://ideas.repec.org/a/bla/jfinan/v48y1993i1p65-91.html},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@article{white2000,
+  title = {{A Reality Check for Data Snooping}},
+  author = {Halbert White},
+  year = {2000},
+  journal = {Econometrica 68(5):1097-1126},
+  url = {https://ideas.repec.org/a/ecm/emetrp/v68y2000i5p1097-1126.html},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@article{harvey2016,
+  title = {{... and the Cross-Section of Expected Returns}},
+  author = {Campbell R. Harvey and Yan Liu and Heqing Zhu},
+  year = {2016},
+  journal = {Review of Financial Studies 29(1):5-68},
+  url = {https://www.nber.org/papers/w20592},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@article{bailey2014,
+  title = {{The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting and Non-Normality}},
+  author = {David H. Bailey and Marcos López de Prado},
+  year = {2014},
+  journal = {Journal of Portfolio Management 40(5):94-107},
+  url = {https://papers.ssrn.com/abstract=2460551},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@article{bailey2015,
+  title = {{The Probability of Backtest Overfitting}},
+  author = {David H. Bailey and Jonathan M. Borwein and Marcos López de Prado and Qiji Jim Zhu},
+  year = {2015},
+  journal = {Journal of Computational Finance 20(4), 2017 (SSRN 2326253)},
+  url = {https://www.risk.net/journal-of-computational-finance/2471206/the-probability-of-backtest-overfitting},
+  note = {Bloque 5-evaluacion; fases P1, P5; tipo paper}
+}
+
+@article{ledoit2008,
+  title = {{Robust performance hypothesis testing with the Sharpe ratio}},
+  author = {Oliver Ledoit and Michael Wolf},
+  year = {2008},
+  journal = {Journal of Empirical Finance 15(5):850-859},
+  url = {https://ideas.repec.org/a/eee/empfin/v15y2008i5p850-859.html},
+  note = {Bloque 5-evaluacion; fases P5; tipo paper}
+}
+
+@article{novymarx2016,
+  title = {{A Taxonomy of Anomalies and Their Trading Costs}},
+  author = {Robert Novy-Marx and Mihail Velikov},
+  year = {2016},
+  journal = {Review of Financial Studies 29(1):104-147},
+  url = {https://www.nber.org/papers/w20721},
+  note = {Bloque 5-evaluacion; fases P4, P5; tipo paper}
+}
+
+@article{wolfers2004,
+  title = {{Prediction Markets}},
+  author = {Justin Wolfers and Eric Zitzewitz},
+  year = {2004},
+  journal = {Journal of Economic Perspectives 18(2):107-126},
+  url = {https://www.aeaweb.org/articles?id=10.1257/0895330041371321},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@article{arrow2008,
+  title = {{The Promise of Prediction Markets}},
+  author = {Kenneth J. Arrow and Robert Forsythe and Michael Gorham and Robert Hahn and Robin Hanson and others},
+  year = {2008},
+  journal = {Science 320(5878):877-878},
+  url = {https://doi.org/10.1126/science.1157679},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@techreport{diercks2026,
+  title = {{Kalshi and the Rise of Macro Markets}},
+  author = {Anthony M. Diercks and Jared Dean Katz and Jonathan H. Wright},
+  year = {2026},
+  institution = {Federal Reserve Board, FEDS 2026-010},
+  url = {https://www.federalreserve.gov/econres/feds/kalshi-and-the-rise-of-macro-markets.htm},
+  note = {Bloque 6-datos-alt; fases P1, P2, P3; tipo informe}
+}
+
+@misc{gomezcram2026,
+  title = {{Prediction Market Accuracy: Crowd Wisdom or Informed Minority?}},
+  author = {Roberto Gómez-Cram and Yunhan Guo and Theis Ingerslev Jensen and Howard Kung},
+  year = {2026},
+  howpublished = {Working paper (LBS / Yale SOM), resumen en Yale Insights},
+  url = {https://insights.som.yale.edu/insights/wisdom-of-the-few-prediction-markets-are-driven-by-small-number-of-skilled-traders},
+  note = {Bloque 6-datos-alt; fases P2, P5; tipo preprint}
+}
+
+@misc{tsang2026,
+  title = {{The Anatomy of a Blockchain Prediction Market: Polymarket in the 2024 U.S. Presidential Election}},
+  author = {Kwok Ping Tsang and Zichao Yang},
+  year = {2026},
+  howpublished = {arXiv 2603.03136 (econ.GN)},
+  url = {https://arxiv.org/abs/2603.03136},
+  note = {Bloque 6-datos-alt; fases P2; tipo preprint}
+}
+
+@misc{polybench2026,
+  title = {{PolyBench: Benchmarking LLM Forecasting and Trading Capabilities on Live Prediction Market Data}},
+  author = {Pu Cheng and Juncheng Liu and Yunshen Long},
+  year = {2026},
+  howpublished = {arXiv 2604.14199 (q-fin.CP)},
+  url = {https://arxiv.org/abs/2604.14199},
+  note = {Bloque 6-datos-alt; fases P2, P5; tipo benchmark}
+}
+
+@article{ziobrowski2004,
+  title = {{Abnormal Returns from the Common Stock Investments of the U.S. Senate}},
+  author = {Alan J. Ziobrowski and Ping Cheng and James W. Boyd and Brigitte J. Ziobrowski},
+  year = {2004},
+  journal = {Journal of Financial and Quantitative Analysis 39(4):661-676},
+  url = {https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/abs/abnormal-returns-from-the-common-stock-investments-of-the-us-senate/A39406479940758D59E09FDCB8EE9BEC},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@article{eggers2013,
+  title = {{Capitol Losses: The Mediocre Performance of Congressional Stock Portfolios}},
+  author = {Andrew C. Eggers and Jens Hainmueller},
+  year = {2013},
+  journal = {Journal of Politics 75(2):535-551},
+  url = {https://researchonline.lse.ac.uk/id/eprint/46513/},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@techreport{wei2025,
+  title = {{"Captain Gains" on Capitol Hill}},
+  author = {Shang-Jin Wei and Yifan Zhou},
+  year = {2025},
+  institution = {NBER Working Paper 34524},
+  url = {https://www.nber.org/papers/w34524},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo informe}
+}
+
+@techreport{chen2026,
+  title = {{Capital in the Capitol: Congressional Trades Resemble Uninformed Retail Trading}},
+  author = {Haotian Chen and Bruce Sacerdote},
+  year = {2026},
+  institution = {NBER Working Paper 35041},
+  url = {https://www.nber.org/papers/w35041},
+  note = {Bloque 6-datos-alt; fases P2, P3, P5; tipo informe}
+}
+
+@article{lakonishok2001,
+  title = {{Are Insider Trades Informative?}},
+  author = {Josef Lakonishok and Inmoo Lee},
+  year = {2001},
+  journal = {Review of Financial Studies 14(1):79-111},
+  url = {https://ideas.repec.org/a/oup/rfinst/v14y2001i1p79-111.html},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@article{cohen2012,
+  title = {{Decoding Inside Information}},
+  author = {Lauren Cohen and Christopher Malloy and Lukasz Pomorski},
+  year = {2012},
+  journal = {Journal of Finance 67(3):1009-1043},
+  url = {https://dash.harvard.edu/entities/publication/73120379-15cc-6bd4-e053-0100007fdf3b},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@misc{secinsider,
+  title = {{Insider Transactions Data Sets (Forms 3, 4 y 5)}},
+  author = {{U.S. Securities and Exchange Commission}},
+  year = {2026},
+  howpublished = {SEC (DERA), 2006T1-2026T3},
+  url = {https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets},
+  note = {Bloque 6-datos-alt; fases P2; tipo dataset}
+}
+
+@article{gentzkow2019,
+  title = {{Text as Data}},
+  author = {Matthew Gentzkow and Bryan Kelly and Matt Taddy},
+  year = {2019},
+  journal = {Journal of Economic Literature 57(3):535-574},
+  url = {https://www.aeaweb.org/articles?id=10.1257/jel.20181020},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@article{baker2016,
+  title = {{Measuring Economic Policy Uncertainty}},
+  author = {Scott R. Baker and Nicholas Bloom and Steven J. Davis},
+  year = {2016},
+  journal = {Quarterly Journal of Economics 131(4):1593-1636},
+  url = {https://www.nber.org/papers/w21633},
+  note = {Bloque 6-datos-alt; fases P1, P3; tipo paper}
+}
+
+@article{caldara2022,
+  title = {{Measuring Geopolitical Risk}},
+  author = {Dario Caldara and Matteo Iacoviello},
+  year = {2022},
+  journal = {American Economic Review 112(4):1194-1225},
+  url = {https://www.aeaweb.org/articles?id=10.1257/aer.20191823},
+  note = {Bloque 6-datos-alt; fases P1, P3; tipo paper}
+}
+
+@article{loughran2011,
+  title = {{When Is a Liability Not a Liability? Textual Analysis, Dictionaries, and 10-Ks}},
+  author = {Tim Loughran and Bill McDonald},
+  year = {2011},
+  journal = {Journal of Finance 66(1):35-65},
+  url = {https://sraf.nd.edu/loughranmcdonald-master-dictionary/},
+  note = {Bloque 6-datos-alt; fases P2, P3, P5; tipo paper}
+}
+
+@article{tetlock2007,
+  title = {{Giving Content to Investor Sentiment: The Role of Media in the Stock Market}},
+  author = {Paul C. Tetlock},
+  year = {2007},
+  journal = {Journal of Finance 62(3):1139-1168},
+  url = {https://ideas.repec.org/a/bla/jfinan/v62y2007i3p1139-1168.html},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@misc{gdelt,
+  title = {{The GDELT Project (Global Database of Events, Language, and Tone)}},
+  author = {Kalev H. Leetaru},
+  year = {2013},
+  howpublished = {GDELT Project (2013-2026)},
+  url = {https://www.gdeltproject.org/about.html},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo dataset}
+}
+
+@article{shapiro2022,
+  title = {{Measuring news sentiment}},
+  author = {Adam Hale Shapiro and Moritz Sudhof and Daniel J. Wilson},
+  year = {2022},
+  journal = {Journal of Econometrics 228(2):221-243},
+  url = {https://ideas.repec.org/a/eee/econom/v228y2022i2p221-243.html},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@misc{frbsf2020,
+  title = {{Daily News Sentiment Index}},
+  author = {{Federal Reserve Bank of San Francisco (Buckman} and {Shapiro} and {Sudhof} and {Wilson)}},
+  year = {2020},
+  howpublished = {FRB San Francisco},
+  url = {https://www.frbsf.org/research-and-insights/data-and-indicators/daily-news-sentiment-index/},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo dataset}
+}
+
+@article{hansen2018,
+  title = {{Transparency and Deliberation Within the FOMC: A Computational Linguistics Approach}},
+  author = {Stephen Hansen and Michael McMahon and Andrea Prat},
+  year = {2018},
+  journal = {Quarterly Journal of Economics 133(2):801-870},
+  url = {https://academic.oup.com/qje/article/133/2/801/4582916},
+  note = {Bloque 6-datos-alt; fases P2, P3; tipo paper}
+}
+
+@article{larsen2019,
+  title = {{The value of news for economic developments}},
+  author = {Vegard H. Larsen and Leif A. Thorsrud},
+  year = {2019},
+  journal = {Journal of Econometrics 210(1):203-218},
+  url = {https://ideas.repec.org/a/eee/econom/v210y2019i1p203-218.html},
+  note = {Bloque 6-datos-alt; fases P3, P5; tipo paper}
+}
+
+@article{thorsrud2020,
+  title = {{Words are the New Numbers: A Newsy Coincident Index of the Business Cycle}},
+  author = {Leif Anders Thorsrud},
+  year = {2020},
+  journal = {Journal of Business \& Economic Statistics 38(2):393-409},
+  url = {https://ideas.repec.org/a/taf/jnlbes/v38y2020i2p393-409.html},
+  note = {Bloque 6-datos-alt; fases P1, P3, P5; tipo paper}
+}
+
+@article{ellingsen2022,
+  title = {{News media versus FRED-MD for macroeconomic forecasting}},
+  author = {Jon Ellingsen and Vegard H. Larsen and Leif Anders Thorsrud},
+  year = {2022},
+  journal = {Journal of Applied Econometrics 37(1):63-81},
+  url = {https://ideas.repec.org/a/wly/japmet/v37y2022i1p63-81.html},
+  note = {Bloque 6-datos-alt; fases P2, P3, P5; tipo paper}
+}
+
+@article{bybee2024,
+  title = {{Business News and Business Cycles}},
+  author = {Leland Bybee and Bryan T. Kelly and Asaf Manela and Dacheng Xiu},
+  year = {2024},
+  journal = {Journal of Finance 79(5):3105-3147},
+  url = {https://www.nber.org/papers/w29344},
+  note = {Bloque 6-datos-alt; fases P1, P3, P5; tipo paper}
+}
+
+@misc{lopezlira2023,
+  title = {{Can ChatGPT Forecast Stock Price Movements? Return Predictability and Large Language Models}},
+  author = {Alejandro Lopez-Lira and Yuehua Tang},
+  year = {2023},
+  howpublished = {arXiv 2304.07619 (v6 2025)},
+  url = {https://arxiv.org/abs/2304.07619},
+  note = {Bloque 6-datos-alt; fases P3, P5; tipo preprint}
+}
+
+@inproceedings{ni2021,
+  title = {{Sig-Wasserstein GANs for Time Series Generation}},
+  author = {Hao Ni and Lukasz Szpruch and Marc Sabate-Vidales and Baoren Xiao and Magnus Wiese and Shujian Liao},
+  year = {2021},
+  booktitle = {ACM ICAIF 2021},
+  url = {https://arxiv.org/abs/2111.01207},
+  note = {Bloque 7-sinteticos; fases P1, P5; tipo paper}
+}
+
+@inproceedings{huang2024fts,
+  title = {{Generative Learning for Financial Time Series with Irregular and Scale-Invariant Patterns (FTS-Diffusion)}},
+  author = {Hongbin Huang and Minghua Chen and Xiao Qiao},
+  year = {2024},
+  booktitle = {ICLR 2024},
+  url = {https://mlanthology.org/iclr/2024/huang2024iclr-generative},
+  note = {Bloque 7-sinteticos; fases P1; tipo paper}
+}
+
+@misc{pfohl2025,
+  title = {{A Jump-Diffusion Framework for Irregular Time Series Generation}},
+  author = {O. Pfohl and J. Chemseddine and P. Hagemann and G. Steidl and C. Wald and T. Jahn},
+  year = {2025},
+  howpublished = {arXiv 2505.23215},
+  url = {https://arxiv.org/abs/2505.23215},
+  note = {Bloque 7-sinteticos; fases P1; tipo preprint}
+}
+
+@misc{wang2026diffusion,
+  title = {{Diffusion Models in Finance: A Survey}},
+  author = {Zhuohan Wang and Carmine Ventre},
+  year = {2026},
+  howpublished = {arXiv 2608.12583 (q-fin.CP)},
+  url = {https://arxiv.org/abs/2608.12583},
+  note = {Bloque 7-sinteticos; fases P1; tipo preprint}
+}
+
+@techreport{fukunishi2026,
+  title = {{Generating Synthetic Stock Return Distributions with Diffusion Models}},
+  author = {Yosuke Fukunishi and Haorong Qiu and Akihiko Takahashi},
+  year = {2026},
+  institution = {CIRJE Discussion Paper F-1273 (Univ. de Tokio)},
+  url = {https://econpapers.repec.org/paper/tkyfseres/2026cf1273.htm},
+  note = {Bloque 7-sinteticos; fases P1; tipo informe}
+}
+
+@inproceedings{kuular2026,
+  title = {{Behavioral Proxy Conditioning for Financial Stress Scenario Generation with a Pretrained Diffusion Model}},
+  author = {Elena Kuular and Junsuk Choe},
+  year = {2026},
+  booktitle = {ICML 2026 Workshop on Foundation Models for Structured Data},
+  url = {https://icml.cc/virtual/2026/71443},
+  note = {Bloque 7-sinteticos; fases P1, P4; tipo paper}
+}
+
+@article{tsgbench2024,
+  title = {{TSGBench: Time Series Generation Benchmark}},
+  author = {Yihao Ang and Qiang Huang and Yifan Bao and Anthony K. H. Tung and Zhiyong Huang},
+  year = {2024},
+  journal = {PVLDB 17 (VLDB 2024)},
+  url = {https://arxiv.org/abs/2309.03755},
+  note = {Bloque 7-sinteticos; fases P1, P5; tipo benchmark}
+}
+
+@misc{steb2025,
+  title = {{STEB: In Search of the Best Evaluation Approach for Synthetic Time Series}},
+  author = {Michael Stenger and Robert Leppich and André Bauer and Samuel Kounev},
+  year = {2025},
+  howpublished = {arXiv 2505.21160},
+  url = {https://arxiv.org/abs/2505.21160},
+  note = {Bloque 7-sinteticos; fases P5; tipo benchmark}
+}
+
+@misc{cetingoz2025,
+  title = {{Synthetic Data for Portfolios: A Throw of the Dice Will Never Abolish Chance}},
+  author = {Adil Rengim Cetingoz and Charles-Albert Lehalle},
+  year = {2025},
+  howpublished = {arXiv 2501.03993 (q-fin.PM, v6 2026)},
+  url = {https://arxiv.org/abs/2501.03993},
+  note = {Bloque 7-sinteticos; fases P1, P4, P5; tipo preprint}
+}
+
+@misc{potluru2023,
+  title = {{Synthetic Data Applications in Finance}},
+  author = {Vamsi K. Potluru and Daniel Borrajo and Andrea Coletta and others},
+  year = {2023},
+  howpublished = {arXiv 2401.00081 (J.P. Morgan AI Research)},
+  url = {https://arxiv.org/abs/2401.00081},
+  note = {Bloque 7-sinteticos; fases P1, P5; tipo preprint}
+}
+
+@misc{proteus2025,
+  title = {{ProteuS: A Generative Approach for Simulating Concept Drift in Financial Markets}},
+  author = {Andrés L. Suárez-Cetrulo and Alejandro Cervantes and David Quintana},
+  year = {2025},
+  howpublished = {arXiv 2509.11844},
+  url = {https://arxiv.org/abs/2509.11844},
+  note = {Bloque 7-sinteticos; fases P1, P5; tipo preprint}
+}
+
+@inproceedings{react2022,
+  title = {{ReAct: Synergizing Reasoning and Acting in Language Models}},
+  author = {Shunyu Yao and Jeffrey Zhao and Dian Yu and Nan Du and Izhak Shafran and Karthik Narasimhan and Yuan Cao},
+  year = {2022},
+  booktitle = {ICLR 2023},
+  url = {https://arxiv.org/abs/2210.03629},
+  note = {Bloque 8-industria; fases P2, P3; tipo paper}
+}
+
+@inproceedings{du2023debate,
+  title = {{Improving Factuality and Reasoning in Language Models through Multiagent Debate}},
+  author = {Yilun Du and Shuang Li and Antonio Torralba and Joshua B. Tenenbaum and Igor Mordatch},
+  year = {2023},
+  booktitle = {ICML 2024 (arXiv 2305.14325)},
+  url = {https://arxiv.org/abs/2305.14325},
+  note = {Bloque 8-industria; fases P3, P4; tipo paper}
+}
+
+@misc{autogen2023,
+  title = {{AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation}},
+  author = {Qingyun Wu and Gagan Bansal and others},
+  year = {2023},
+  howpublished = {arXiv 2308.08155 (Microsoft Research)},
+  url = {https://arxiv.org/abs/2308.08155},
+  note = {Bloque 8-industria; fases P3; tipo preprint}
+}
+
+@misc{langgraph2024,
+  title = {{LangGraph: low-level orchestration framework for building stateful agents}},
+  author = {{LangChain Inc.}},
+  year = {2024},
+  howpublished = {GitHub (MIT)},
+  url = {https://github.com/langchain-ai/langgraph},
+  note = {Bloque 8-industria; fases P3, P4; tipo software}
+}
+
+@misc{openaiagents2025,
+  title = {{OpenAI Agents SDK}},
+  author = {{OpenAI}},
+  year = {2025},
+  howpublished = {GitHub (MIT)},
+  url = {https://github.com/openai/openai-agents-python},
+  note = {Bloque 8-industria; fases P3; tipo software}
+}
+
+@misc{mcp2024,
+  title = {{Introducing the Model Context Protocol (MCP)}},
+  author = {{Anthropic}},
+  year = {2024},
+  howpublished = {Anthropic (25-nov-2024)},
+  url = {https://www.anthropic.com/news/model-context-protocol},
+  note = {Bloque 8-industria; fases P2; tipo industria}
+}
+
+@misc{jev2026,
+  title = {{Jev (System One decision model): Building a harness with Jev}},
+  author = {{TypeSafe AI; Sydney Runkle} and {Hunter Lovell (LangChain)}},
+  year = {2026},
+  howpublished = {LangChain blog (17-sep-2026)},
+  url = {https://www.langchain.com/blog/building-a-harness-with-jev},
+  note = {Bloque 8-industria; fases P3; tipo industria}
+}
+
+@misc{clef2026,
+  title = {{Clef / Clef-flash decision models}},
+  author = {{Cloudflare (Michelle Chen)}},
+  year = {2026},
+  howpublished = {Cloudflare blog (1-oct-2026)},
+  url = {https://blog.cloudflare.com/clef-decision-models/},
+  note = {Bloque 8-industria; fases P3; tipo industria}
+}
+
+@misc{laya2026,
+  title = {{Laya: System 1 decision model}},
+  author = {{Convai Innovations}},
+  year = {2026},
+  howpublished = {Hugging Face (Apache 2.0)},
+  url = {https://huggingface.co/convaiinnovations/laya},
+  note = {Bloque 8-industria; fases P3; tipo software}
+}
+
+@misc{jpm2025,
+  title = {{Inside JPMorgan's LLM Suite as AI agents spread across the bank}},
+  author = {{CeFPro Connect}},
+  year = {2025},
+  howpublished = {CeFPro Connect (7-oct-2025)},
+  url = {https://connect.cefpro.com/article/view/inside-jpmorgan-llm-suite-as-ai-agents-spread-across-the-bank},
+  note = {Bloque 8-industria; fases P3; tipo industria}
+}
+
+@misc{morganstanley2023,
+  title = {{Morgan Stanley: AI @ Morgan Stanley Assistant y Debrief (caso OpenAI)}},
+  author = {{OpenAI / Morgan Stanley Wealth Management}},
+  year = {2023},
+  howpublished = {OpenAI customer story},
+  url = {https://openai.com/index/morgan-stanley/},
+  note = {Bloque 8-industria; fases P2, P5; tipo industria}
+}
+
+@misc{askb2026,
+  title = {{ASKB: agentic AI on the Bloomberg Terminal (beta)}},
+  author = {{Bloomberg L.P.}},
+  year = {2026},
+  howpublished = {Markets Media (anuncio 23-feb-2026)},
+  url = {https://www.marketsmedia.com/bloomberg-introduces-agentic-ai-to-the-terminal/},
+  note = {Bloque 8-industria; fases P2, P3; tipo industria}
+}
+
+@misc{aladdin2025,
+  title = {{BlackRock Aladdin Copilot sobre LangGraph (caso de estudio)}},
+  author = {{BlackRock / LangChain}},
+  year = {2025},
+  howpublished = {Documentación de LangChain (casos de uso; charla Interrupt 2025)},
+  url = {https://docs.langchain.com/oss/python/langgraph/case-studies.md},
+  note = {Bloque 8-industria; fases P3; tipo industria}
+}
+
+@techreport{evident2025,
+  title = {{Banks go agentic (Evident Banking Brief)}},
+  author = {{Evident Insights}},
+  year = {2025},
+  institution = {Evident Insights (17-abr-2025)},
+  url = {https://evidentinsights.com/bankingbrief/banks-go-agentic/},
+  note = {Bloque 8-industria; fases P3; tipo informe}
+}
+
+@misc{bridgewater2026,
+  title = {{Bridgewater AIA Labs}},
+  author = {{Bridgewater Associates}},
+  year = {2026},
+  howpublished = {Bridgewater Associates (web corporativa)},
+  url = {https://www.bridgewater.com/aia-labs},
+  note = {Bloque 8-industria; fases contexto; tipo industria}
+}
+
+@misc{publicalpha2026,
+  title = {{Public Alpha}},
+  author = {{Public Holdings} and {Inc.}},
+  year = {2026},
+  howpublished = {Public.com},
+  url = {https://public.com/alpha},
+  note = {Bloque 8-industria; fases contexto; tipo industria}
+}
+
+@techreport{amundi2026,
+  title = {{Agentic AI for Financial Applications: A Comprehensive Survey}},
+  author = {Frédéric Lepetit and Ru Qi Wu},
+  year = {2026},
+  institution = {Amundi Investment Institute, working paper (5-ago-2026)},
+  url = {https://research-center.amundi.com/article/agentic-ai-financial-applications-comprehensive-survey},
+  note = {Bloque 8-industria; fases P3, P5; tipo informe}
+}
+
+@article{grable1999,
+  title = {{Financial risk tolerance revisited: the development of a risk assessment instrument}},
+  author = {John E. Grable and Ruth H. Lytton},
+  year = {1999},
+  journal = {Financial Services Review 8(3):163-181},
+  url = {https://openjournals.libs.uga.edu/fsr/article/view/3890},
+  note = {Bloque 8-minorista-regulacion; fases P4; tipo paper}
+}
+
+@article{jung2018,
+  title = {{Robo-Advisory: Digitalization and Automation of Financial Advisory}},
+  author = {Dominik Jung and Verena Dorner and Florian Glaser and Stefan Morana},
+  year = {2018},
+  journal = {Business \& Information Systems Engineering 60(1):81-86},
+  url = {https://aisel.aisnet.org/bise/vol60/iss1/7},
+  note = {Bloque 8-minorista-regulacion; fases P4; tipo paper}
+}
+
+@article{dacunto2019,
+  title = {{The Promises and Pitfalls of Robo-Advising}},
+  author = {Francesco D'Acunto and Nagpurnanand Prabhala and Alberto G. Rossi},
+  year = {2019},
+  journal = {Review of Financial Studies 32(5):1983-2020},
+  url = {https://ideas.repec.org/a/oup/rfinst/v32y2019i5p1983-2020..html},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo paper}
+}
+
+@misc{hens2024,
+  title = {{How Good are LLMs in Risk Profiling? (SFI Working Paper 24-30)}},
+  author = {Thorsten Hens and Trine Nordlie},
+  year = {2024},
+  howpublished = {Swiss Finance Institute},
+  url = {https://sfi.ch/en/publications/n-24-30-how-good-are-llms-in-risk-profiling},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo preprint}
+}
+
+@inproceedings{takayanagi2025,
+  title = {{Are Generative AI Agents Effective Personalized Financial Advisors?}},
+  author = {Takehiro Takayanagi and Kiyoshi Izumi and Javier Sanz-Cruzado and Richard McCreadie and Iadh Ounis},
+  year = {2025},
+  booktitle = {SIGIR 2025},
+  url = {https://arxiv.org/abs/2504.05862},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo paper}
+}
+
+@misc{zhi2025,
+  title = {{Exposing Product Bias in LLM Investment Recommendation}},
+  author = {Yuhan Zhi and Xiaoyu Zhang and Longtian Wang and Shumin Jiang and Shiqing Ma and Xiaohong Guan and Chao Shen},
+  year = {2025},
+  howpublished = {arXiv 2503.08750},
+  url = {https://arxiv.org/abs/2503.08750},
+  note = {Bloque 8-minorista-regulacion; fases P3, P5; tipo preprint}
+}
+
+@article{winder2025,
+  title = {{Biased echoes: Large language models reinforce investment biases and increase portfolio risks of private investors}},
+  author = {Philipp Winder and Christian Hildebrand and Jochen Hartmann},
+  year = {2025},
+  journal = {PLOS ONE 20(6):e0325459},
+  url = {https://doi.org/10.1371/journal.pone.0325459},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo paper}
+}
+
+@misc{ross2026,
+  title = {{One Size Fits None: Heuristic Collapse in LLM Investment Advice}},
+  author = {Jillian Ross and Andrew W. Lo},
+  year = {2026},
+  howpublished = {arXiv 2604.23837},
+  url = {https://arxiv.org/abs/2604.23837},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo preprint}
+}
+
+@misc{crisostomo2026,
+  title = {{Large Language Models and Stock Investing: Is the Human Factor Required? (CNMV Documento de Trabajo 96)}},
+  author = {Ricardo Crisóstomo and Diana Mykhalyuk},
+  year = {2026},
+  howpublished = {CNMV / arXiv 2603.19944},
+  url = {https://arxiv.org/abs/2603.19944},
+  note = {Bloque 8-minorista-regulacion; fases P2, P3, P5; tipo preprint}
+}
+
+@article{lo2024,
+  title = {{Can ChatGPT Plan Your Retirement?: Generative AI and Financial Advice}},
+  author = {Andrew W. Lo and Jillian Ross},
+  year = {2024},
+  journal = {Harvard Data Science Review (SSRN 4722780)},
+  url = {https://doi.org/10.1162/99608f92.ec74a002},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo paper}
+}
+
+@misc{biasmix2026,
+  title = {{BiasMix-Finance: Post-Generation KYC Guardrails for LLM Portfolio Advice}},
+  author = {Gaurav Kukreja and Parul Kukreja and Mohammed Abraar and Raj Dandekar and Rajat Dandekar and Sreedath Panat},
+  year = {2026},
+  howpublished = {ICLR 2026 FinAI Workshop (arXiv 2608.28646)},
+  url = {https://arxiv.org/abs/2608.28646},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo preprint}
+}
+
+@misc{openpm2026,
+  title = {{OpenPM: Auditable Point-in-Time Evaluation for LLM Portfolio-Management Agents}},
+  author = {Xinying Cai and Minghao Guo and Jiahe Liu and Jiaojiao Han and Bangwei Guo and Yitao Long and Yuxuan Chen and Bohan Wu and Dimitris N. Metaxas and Raymond Li},
+  year = {2026},
+  howpublished = {arXiv 2608.09988 (cs.CE)},
+  url = {https://arxiv.org/abs/2608.09988},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo benchmark}
+}
+
+@misc{yeo2023,
+  title = {{A Comprehensive Review on Financial Explainable AI}},
+  author = {Wei Jie Yeo and Wihan van der Heever and Rui Mao and Erik Cambria and Ranjan Satapathy and Gianmarco Mengaldo},
+  year = {2023},
+  howpublished = {arXiv 2309.11960},
+  url = {https://arxiv.org/abs/2309.11960},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo preprint}
+}
+
+@techreport{mifid2017,
+  title = {{Reglamento Delegado (UE) 2017/565 de la Comisión (MiFID II), arts. 54-55 (evaluación de la idoneidad)}},
+  author = {{Comisión Europea}},
+  year = {2017},
+  institution = {Diario Oficial de la UE L 87, 31-3-2017},
+  url = {https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32017R0565},
+  note = {Bloque 8-minorista-regulacion; fases P4; tipo informe}
+}
+
+@techreport{esma2022,
+  title = {{Guidelines on certain aspects of the MiFID II suitability requirements (Final Report ESMA35-43-3172)}},
+  author = {{ESMA}},
+  year = {2022},
+  institution = {ESMA (23-09-2022)},
+  url = {https://www.esma.europa.eu/node/101543},
+  note = {Bloque 8-minorista-regulacion; fases P4; tipo informe}
+}
+
+@techreport{esma2024,
+  title = {{Public Statement on the use of Artificial Intelligence in the provision of retail investment services (ESMA35-335435667-5924)}},
+  author = {{ESMA}},
+  year = {2024},
+  institution = {ESMA (30-05-2024)},
+  url = {https://www.esma.europa.eu/press-news/esma-news/esma-provides-guidance-firms-using-artificial-intelligence-investment-services},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo informe}
+}
+
+@techreport{esma2025wp,
+  title = {{Leveraging Large Language Models in Finance: Pathways to Responsible Adoption (Working Paper)}},
+  author = {{ESMA} and Institut Louis Bachelier and Alan Turing Institute},
+  year = {2025},
+  institution = {ESMA (Risk monitoring)},
+  url = {https://www.esma.europa.eu/document/working-paper-leveraging-large-language-models-finance-pathways-responsible-adoption},
+  note = {Bloque 8-minorista-regulacion; fases P2, P3, P5; tipo informe}
+}
+
+@techreport{aiact2024,
+  title = {{Regulation (EU) 2024/1689 (AI Act): Annex III y artículo 14 (supervisión humana)}},
+  author = {{Parlamento Europeo y Consejo de la UE}},
+  year = {2024},
+  institution = {Diario Oficial de la UE},
+  url = {https://eur-lex.europa.eu/eli/reg/2024/1689/oj},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo informe}
+}
+
+@techreport{finra2024,
+  title = {{Regulatory Notice 24-09: FINRA Reminds Members of Regulatory Obligations When Using Generative AI and LLMs}},
+  author = {{FINRA}},
+  year = {2024},
+  institution = {FINRA (27-06-2024)},
+  url = {https://www.finra.org/rules-guidance/notices/24-09},
+  note = {Bloque 8-minorista-regulacion; fases P4, P5; tipo informe}
+}
+
+@techreport{sec2023,
+  title = {{Conflicts of Interest Associated with the Use of Predictive Data Analytics by Broker-Dealers and Investment Advisers (propuesta 2023, retirada 2025)}},
+  author = {{U.S. Securities and Exchange Commission}},
+  year = {2023},
+  institution = {SEC (propuesta 26-07-2023; retirada 12-06-2025)},
+  url = {https://www.sec.gov/rules/2023/07/s7-12-23},
+  note = {Bloque 8-minorista-regulacion; fases P4; tipo informe}
+}
+
+@techreport{iosco2025,
+  title = {{Artificial Intelligence in Capital Markets: Use Cases, Risks, and Challenges (Consultation Report CR/01/2025)}},
+  author = {{IOSCO Fintech Task Force}},
+  year = {2025},
+  institution = {IOSCO (21-03-2025)},
+  url = {https://www.amf-france.org/en/news-publications/news/international-organization-securities-commissions-iosco-publishes-report-artificial-intelligence},
+  note = {Bloque 8-minorista-regulacion; fases P3, P4, P5; tipo informe}
+}
+
+% ###########################################################################
+% REFERENCIAS DE ADR-003 Y DE LA PROPUESTA. Metadatos comprobados en Crossref
+% y arXiv (2026-10-14). Kaminsky-Lizondo-Reinhart 1998 (kaminsky1998), Alessi-
+% Detken 2011 (alessi2011), DeMiguel 2009, Jegadeesh-Titman 1993, Loughran-
+% McDonald 2011, Wolfers-Zitzewitz 2004 y Arrow 2008 ya están en el bloque del
+% estado del arte; Ledoit-Wolf 2004 es synth_ledoitwolf2004.
+% ###########################################################################
+
+% --- ADR-003: métrica por evento y criterio de azar ---
+@inproceedings{kim2022,
+  author    = {Kim, Siwon and Choi, Kukjin and Choi, Hyun-Soo and Lee, Byunghan and Yoon, Sungroh},
+  title     = {Towards a Rigorous Evaluation of Time-Series Anomaly Detection},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  year      = {2022},
+  volume    = {36},
+  number    = {7},
+  pages     = {7194--7201},
+  doi       = {10.1609/aaai.v36i7.20680}
+}
+
+@inproceedings{tatbul2018,
+  author    = {Tatbul, Nesime and Lee, Tae Jun and Zdonik, Stan and Alam, Mejbah and Gottschlich, Justin},
+  title     = {Precision and Recall for Time Series},
+  booktitle = {Advances in Neural Information Processing Systems 31 (NeurIPS 2018)},
+  year      = {2018},
+  eprint    = {1803.03639},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/1803.03639}
+}
+
+@article{garg2021,
+  author  = {Garg, Astha and Zhang, Wenyu and Samaran, Jules and Savitha, Ramasamy and Foo, Chuan-Sheng},
+  title   = {An Evaluation of Anomaly Detection and Diagnosis in Multivariate Time Series},
+  journal = {IEEE Transactions on Neural Networks and Learning Systems},
+  year    = {2022},
+  volume  = {33},
+  number  = {6},
+  pages   = {2508--2517},
+  doi     = {10.1109/TNNLS.2021.3105827},
+  note    = {Publicado en línea en 2021; ADR-003 lo cita como Garg et al. 2021}
+}
+
+% --- Propuesta: factores, carteras basadas en riesgo y ejecución ---
+@article{sloan1996,
+  author  = {Sloan, Richard G.},
+  title   = {Do Stock Prices Fully Reflect Information in Accruals and Cash Flows about Future Earnings?},
+  journal = {The Accounting Review},
+  year    = {1996},
+  volume  = {71},
+  number  = {3},
+  pages   = {289--315},
+  doi     = {10.2308/tar-9608042309}
+}
+
+@article{fama1993,
+  author  = {Fama, Eugene F. and French, Kenneth R.},
+  title   = {Common Risk Factors in the Returns on Stocks and Bonds},
+  journal = {Journal of Financial Economics},
+  year    = {1993},
+  volume  = {33},
+  number  = {1},
+  pages   = {3--56},
+  doi     = {10.1016/0304-405X(93)90023-5}
+}
+
+@article{pflug2012,
+  author  = {Pflug, Georg Ch. and Pichler, Alois and Wozabal, David},
+  title   = {The 1/{N} Investment Strategy is Optimal under High Model Ambiguity},
+  journal = {Journal of Banking \& Finance},
+  year    = {2012},
+  volume  = {36},
+  number  = {2},
+  pages   = {410--417},
+  doi     = {10.1016/j.jbankfin.2011.07.018}
+}
+
+@article{almgren2001,
+  author  = {Almgren, Robert and Chriss, Neil},
+  title   = {Optimal Execution of Portfolio Transactions},
+  journal = {Journal of Risk},
+  year    = {2001},
+  volume  = {3},
+  number  = {2},
+  pages   = {5--39},
+  doi     = {10.21314/JOR.2001.041}
 }
