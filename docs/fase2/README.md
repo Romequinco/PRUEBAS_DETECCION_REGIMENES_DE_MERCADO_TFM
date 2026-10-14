@@ -13,7 +13,9 @@ reparte en **cuatro temas**: cada uno tiene responsable, rama y carpetas propias
 | 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | `fase2/t3-empresas` | Equity, Risk | `buscar_filings`, `get_fundamentales` | _por asignar_ |
 | 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `fase2/t4-noticias-alt` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | _por asignar_ |
 
-Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas.
+Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas. El plan de datos común (arquitectura,
+TimeGate, tratamiento RAG, look-ahead del LLM, evaluación y preguntas abiertas) está en [`plan_datos.md`](plan_datos.md);
+las candidatas a datos alternativos, en [`datos_alternativos.md`](datos_alternativos.md).
 
 ## 2. Dónde escribe cada tema
 

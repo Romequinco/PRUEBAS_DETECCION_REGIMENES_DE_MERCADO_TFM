@@ -32,8 +32,9 @@ que cubre IA multimodal. **Si da tiempo, se integra al final** del trabajo. Hoy 
 
 ## 3. Elementos de la propuesta pendientes de análisis
 
-La presentación al tutor no los menciona. **No están descartados ni confirmados**; se analizarán en profundidad antes de la
-Fase 2 (ADR-005 §2.3).
+La presentación al tutor no los menciona. **No están descartados ni confirmados** (ADR-005 §2.3). La Fase 2 ya está en
+marcha, así que se analizan a medida que cada tema los toca: el plan de datos acota la ventana del backtest y el Tema 1
+ya ha definido un universo de activos propio (ver [`plan_datos.md`](../fase2/plan_datos.md)).
 
 | Elemento de la propuesta | Relación con el diseño actual |
 |---|---|
@@ -46,8 +47,9 @@ Fase 2 (ADR-005 §2.3).
 
 ## 4. Dónde vivirá el código de las fases 2–5
 
-**Fase 2: decidido.** En este repositorio, paquete `src/ingesta` con un subpaquete por tema y una rama por persona
-([`docs/fase2`](../fase2/README.md)); sus dependencias pesadas, en un entorno aparte para no alterar la huella de la Fase 1.
+**Fase 2: decidido** ([ADR-007](../decisions/ADR-007-fase2-ingesta-y-docs.md)). En este repositorio, paquete `src/ingesta`
+con un subpaquete por tema y una rama por tema ([`docs/fase2`](../fase2/README.md)); sus dependencias pesadas, en un
+entorno aparte para no alterar la huella de la Fase 1.
 
 **Fases 3–5: abierto.** Opciones: nuevos paquetes en este repositorio (junto a `regimenes`) o un repositorio aparte que consuma
 `get_regimen`. Se decidirá en una ADR propia. Criterios a considerar: aislamiento de dependencias (LLM, vectores), caché y

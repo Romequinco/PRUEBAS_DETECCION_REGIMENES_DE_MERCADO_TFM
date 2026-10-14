@@ -7,6 +7,8 @@
   y la validación F8 completos; subpaquetes de `regimenes.sinteticos`: `parametricos`, `neuronales`,
   `validacion` y `laboratorio`); el 18 se mantiene y los 19 (`decision_final`) y 20 (`pseudolive`) son el cierre
   de la Fase 1: la señal de régimen que consumirán los agentes, no «el sistema final del TFM».
+- **Revisión posterior (2026-10-14):** [ADR-007](ADR-007-fase2-ingesta-y-docs.md) sustituye el árbol de `docs/` de
+  §2 (punto 4) y §3; la estructura vigente está en el índice [`docs/README.md`](../README.md).
 - **Revierte:** [ADR-001](ADR-001-rebase-datos.md) §7, último punto (*"Capa 1 se mantiene intacta"*),
   y el coste asumido en ADR-001 §5 (*"duplicación intencionada del framework"*). El resto de ADR-001
   (re-base de datos, dos pistas), ADR-002 y ADR-003 siguen vigentes sin cambios.
@@ -58,6 +60,11 @@ Todo el TFM vive en **un repositorio plano y un paquete instalable**, `regimenes
    ADR-003 §4.
 
 ## 3. Estructura resultante
+
+> **Nota (2026-10-14).** El árbol de `docs/` de esta sección es el de 2026-09-29 y ya no está vigente: la
+> reorganización de [ADR-007](ADR-007-fase2-ingesta-y-docs.md) movió `teoria/`, `detectores/`, `datos/` y `context/`
+> a `fase1/`, `estado_del_arte/`, `historia/` y `tfm/fuentes/`. La estructura vigente está en el índice
+> [`docs/README.md`](../README.md). El resto del árbol (código, configuración, resultados y notebooks) sigue vigente.
 
 ```
 /
@@ -115,7 +122,7 @@ Todo el TFM vive en **un repositorio plano y un paquete instalable**, `regimenes
 | 19–20 | `19_decision_final` · `20_pseudolive` | sistema a congelar y prueba pseudolive (esqueletos) |
 
 **Plantilla de notebook de familia (05–11):** título y resumen · teoría de la familia (de
-`docs/teoria/` y las fichas de detector) · configuración generada desde
+`docs/teoria/` y las fichas de detector; hoy `docs/fase1/F1…F7`) · configuración generada desde
 `regimenes.detectores.registry` · ejecución con `EJECUTAR = False` por defecto (carga la caché de
 `results/benchmark` y falla con el comando exacto si no está vigente) · por detector y pista: estados
 OOS con franjas de crisis, diagnóstico propio (marcado ilustrativo no-causal si se ajusta sobre la

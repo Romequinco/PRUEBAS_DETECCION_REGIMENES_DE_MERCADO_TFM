@@ -28,8 +28,11 @@ backtest (fecha simulada) y para el modo en vivo (hoy). Consecuencias:
   (`regimenes.features.lags.LAG_PUBLICACION`, [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md))
   aplicados a la serie cruda antes de transformar, y validación *walk-forward*.
 - Los documentos se indexan por su **fecha real de publicación** (p. ej. las actas del FOMC, unas tres semanas después de la reunión).
-- **Limitación declarada:** los lags fijos no equivalen a los *vintages* en tiempo real (ALFRED); las series macro revisadas pueden
-  contener información posterior. ALFRED es más exacto pero de coste alto (ADR-003); su uso en `get_serie` es una decisión de la Fase 2.
+- **Limitación declarada de la Fase 1:** los lags fijos no equivalen a los *vintages* en tiempo real (ALFRED); las series
+  macro revisadas pueden contener información posterior (ADR-003). En la Fase 2 ya está resuelto para los agentes:
+  `get_serie` sirve los vintages exactos de ALFRED de las series revisables (Tema 1,
+  [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md)). Reevaluar el detector con vintages es
+  una pregunta abierta del [plan de datos](../fase2/plan_datos.md#8-preguntas-abiertas).
 
 ## 3. Anatomía de un agente
 
@@ -65,8 +68,8 @@ Cada tool aplica el TimeGate con `fecha`. Las marcadas **D** son deterministas (
 | `verificar_citas(memo)` | Cada afirmación respaldada por una fuente recuperada | | | | | x |
 
 Los parámetros del `composite_score` (40/35/25) vienen de la propuesta y su universo está **pendiente de análisis**
-(ver [LINEAS_ABIERTAS.md](LINEAS_ABIERTAS.md)). Los datos alternativos candidatos a nuevas tools están en
-[DATOS_ALTERNATIVOS.md](DATOS_ALTERNATIVOS.md).
+(ver [lineas_abiertas.md](lineas_abiertas.md)). Los datos alternativos candidatos a nuevas tools están en
+[datos_alternativos.md](../fase2/datos_alternativos.md).
 
 ## 5. Contrato provisional de `get_regimen(fecha)`
 
@@ -126,7 +129,7 @@ presentación al tutor: son **diseño propuesto, sujeto a revisión**. Los ejemp
 | Alerta | Máxima diversificación | 10 % |
 | Crisis | Mínima varianza, más liquidez | 7 % |
 
-- **Límites (diseño propuesto):** 5 % por acción, 15 % por ETF, 30 % por sector, 5 % mínimo de liquidez. En el producto final los límites los fija el perfil del cliente ([CLIENTE_Y_CARTERAS.md](CLIENTE_Y_CARTERAS.md)).
+- **Límites (diseño propuesto):** 5 % por acción, 15 % por ETF, 30 % por sector, 5 % mínimo de liquidez. En el producto final los límites los fija el perfil del cliente ([cliente_y_carteras.md](cliente_y_carteras.md)).
 
 ### CIO Agent — el comité de inversión
 

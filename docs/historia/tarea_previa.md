@@ -1,11 +1,10 @@
-# Resumen de la Tarea — Detección de Regímenes de Mercado y Stress Testing
+# Tarea previa — detección de regímenes y stress testing (histórico)
 
-> **Documento de contexto: es la tarea previa, no el TFM.** Resume la práctica `Tarea_riesgos.ipynb`
-> (stress testing con un HMM de 2 estados), que dio origen a la Fase 1 del TFM. El TFM es el sistema
-> multi-agente descrito en [`docs/tfm/`](../tfm/README.md) y en
-> [ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md); este repositorio es su Fase 1 (régimen).
-> El resumen se conserva tal como se escribió; la tabla siguiente indica dónde se resolvió cada limitación
-> de su §7.
+> **Documento histórico: es la práctica previa, no el TFM.** Resume la práctica `Tarea_riesgos.ipynb`
+> (stress testing de una cartera con un HMM de 2 estados), anterior al TFM, que dio origen a su Fase 1
+> (régimen de mercado). Qué es el TFM: [`tfm/README.md`](../tfm/README.md).
+> El resumen se conserva tal como se escribió (sus «fases 0–5» son las de la práctica, no las del TFM); la
+> tabla siguiente indica dónde se resolvió en la Fase 1 cada limitación de su §7.
 
 | Limitación del detector de la tarea (§7) | Dónde se abordó en la Fase 1 |
 |---|---|
@@ -13,9 +12,9 @@
 | 2. Ciego a crisis rápidas (2013, 2018) | El banco las incluye como eventos y trampas de falso positivo (`configs/benchmark_spec.yaml`); el ranking por detección por evento (ADR-003) mide si cada detector las ve |
 | 3. Etiquetado post-hoc por umbral | Las etiquetas de crisis son un catálogo externo usado solo para evaluar, nunca como feature (rol `validation` de `configs/catalog.yaml`) |
 | 4. Look-ahead / entrenamiento in-sample | Evaluación walk-forward sin ver el futuro (notebook `04_protocolo_evaluacion`, `regimenes.evaluacion`); ADR-003 |
-| 5. Emisiones gaussianas | Otras familias de detectores (Markov-Switching, GARCH, cambio de punto, redes) en `docs/teoria/` y `docs/detectores/` |
+| 5. Emisiones gaussianas | Otras familias de detectores (Markov-Switching, GARCH, cambio de punto, redes) en [`docs/fase1/`](../fase1/README.md) |
 | 6. Z-score con toda la muestra | Features causales (expanding/rolling) y lags de publicación (`regimenes.features`, ADR-003) |
-| 7. `startprob_` degenerado | Detalle del HMM de la tarea; los detectores del repositorio parten de su propia inicialización (ver `docs/detectores/`) |
+| 7. `startprob_` degenerado | Detalle del HMM de la tarea; los detectores del repositorio parten de su propia inicialización (ver [`docs/fase1/`](../fase1/README.md#índice-de-detectores-por-familia)) |
 | 8. Sin incertidumbre (Viterbi duro) | Los detectores exponen probabilidades (`predict_proba`) y la tool `get_regimen(fecha)` devolverá estado y probabilidad (ADR-005 §2.1) |
 
 ---

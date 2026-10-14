@@ -12,9 +12,11 @@
 > también el registro de **qué se decidió en la Capa 1 y por qué** (§2), para que ADR-001 … ADR-004
 > se lean en orden.
 >
-> Esta carpeta conserva **los artefactos que no se re-ejecutan** (memoria, informe, métricas v1,
-> procedencia de datos v1). El código y la teoría que siguen vivos están en el paquete `regimenes`,
-> `docs/teoria/` y `docs/detectores/` (tabla de §7); el original completo, en el tag `capa1-final` (§8).
+> Esta carpeta conserva lo que leen los notebooks: las **métricas v1** ([`resultados/`](resultados/metrics_master.csv)).
+> La memoria, el informe y la procedencia de los datos v1 ya solo están en el tag `capa1-final` (§8). El código y la
+> teoría que siguen vivos están en el paquete `regimenes` y en [`docs/fase1/`](../../fase1/README.md) (tabla de §7);
+> la narrativa v1 de cada detector, en [`historia/fichas_v1.md`](../fichas_v1.md), y el estado del arte v1, en
+> [`historia/estado_del_arte_v1.md`](../estado_del_arte_v1.md).
 
 ---
 
@@ -26,13 +28,13 @@ qué"**: misma interfaz `RegimeDetector`, mismo protocolo walk-forward causal y 
 switching, duración, estabilidad, BIC) para los 12 detectores.
 
 La propuesta del TFM (MIAX) es un sistema multi-agente RAG con conciencia de régimen
-([`../../context/TFM_Proposal_v2.pdf`](../../context/TFM_Proposal_v2.pdf)), cuya pieza de régimen
+([`propuesta_v2.pdf`](../../tfm/fuentes/propuesta_v2.pdf); visión actual en [`tfm/README.md`](../../tfm/README.md)), cuya pieza de régimen
 planteaba un HMM t-Student multi-estado ([ADR-005](../../decisions/ADR-005-reencuadre-tfm-multiagente.md)).
 La Capa 1 partía de la
 **tarea previa**: un HMM gaussiano de 2 estados in-sample, con z-scores de muestra completa, que
 acertaba las crisis grandes (2008: 98.6 %, 2020: 92.3 %) pero se perdía las correcciones rápidas
 (2013: 10.9 %, Q4 2018: 20.6 %)
-([`../../context/RESUMEN_DETECCION_REGIMENES.md`](../../context/RESUMEN_DETECCION_REGIMENES.md)).
+([`historia/tarea_previa.md`](../tarea_previa.md)).
 Sus problemas —look-ahead de los z-scores, evaluación in-sample, Viterbi duro sin probabilidades,
 supuesto gaussiano y etiquetado frágil— no permitían saber si el HMM era una buena elección o solo
 una elección: de ahí el banco.
@@ -59,7 +61,7 @@ comparativa · 5 pulido (cerradas todas; el detalle de cada tanda está en el ta
 | D12 | `deep_ae_regime` (AE→GMM) | F7 redes | exploratorio-negativo | 2015–2026 | no |
 | D13 | `hsmm_tstudent` | F3 (ablación de D8) | fuera del ranking | = D8 | no |
 
-Fuente: [`memoria/99_conclusions.md`](memoria/99_conclusions.md) y
+Fuente: la memoria v1 (`capa1_exploracion/memory/99_conclusions.md` en el tag `capa1-final`, §8) y
 [`resultados/metrics_master.csv`](resultados/metrics_master.csv). La ablación D8↔D13 está en
 [`resultados/ablation_hsmm/`](resultados/ablation_hsmm/README.md): la duración explícita **no** reduce
 el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
@@ -101,17 +103,15 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 5. **La complejidad extra no se paga con ~4 crisis:** D11 MS-GARCH degenera (cobertura GFC 0 %) y D12
    AE empeora a su PCA (switching 0.287) → parsimonia validada.
 
-(Las cifras son las de la memoria v1; detalle y evidencia en
-[`memoria/99_conclusions.md`](memoria/99_conclusions.md) §2 y en el
-[informe](informe/informe_capa1.pdf).)
+(Las cifras son las de la memoria v1; detalle y evidencia en su §2 y en el informe v1, ambos en el tag
+`capa1-final`: `capa1_exploracion/memory/99_conclusions.md` y `capa1_exploracion/report/informe_capa1.pdf`, §8.)
 
 ## 4. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/00_eda.ipynb`)
 
 - **Datos:** 9 series descargadas **sin imputar** (S&P 500, VIX, MOVE, TLT, IEF, HYG, GLD, DXY y la
   pendiente 10Y−3M). FRED era inaccesible en aquel entorno → fallbacks documentados: DXY por
   `DX-Y.NYB`, curva por el proxy `^TNX − ^IRX` y HY OAS omitido (crédito vía HYG y spread HYG−IEF).
-  Procedencia en [`datos_v1/provenance.json`](datos_v1/provenance.json) y
-  [`datos_v1/coverage_report.csv`](datos_v1/coverage_report.csv).
+  Procedencia en `capa1_exploracion/data/raw/provenance.json` y `coverage_report.csv` (tag `capa1-final`).
 - **Ventana común 2007-04-11 → 2026-06**, gobernada por HYG (la serie que arranca más tarde): se
   prefirió perder la DotCom antes que imputar hacia atrás.
 - **Colas gordas:** kurtosis de exceso del S&P 500 25.6 y de HYG 39.6 → motiva la t-Student.
@@ -124,8 +124,8 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
   `corr_spx_bond`.
 - **15 features causales** (z-scores expanding) verificadas con `assert_causal` (`max_abs_diff = 0`).
 
-Memoria completa: [`memoria/01_data_and_eda.md`](memoria/01_data_and_eda.md). El EDA v2 que lo
-sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos/EDA_v2.md).
+Memoria completa: `capa1_exploracion/memory/01_data_and_eda.md` (tag `capa1-final`). El EDA v2 que lo
+sustituye está en [`fase1/eda.md`](../../fase1/eda.md).
 
 ## 5. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/13_comparison.ipynb`)
 
@@ -144,7 +144,7 @@ sustituye (166 series, 22 crisis) está en [`../../datos/EDA_v2.md`](../../datos
   superioridad OOS estricta) + change-point tipo D7 como alerta temprana + D1/D5/D6 como control.
   Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `13`–`14`).
 
-Figuras y tablas del informe: [`informe/informe_capa1.pdf`](informe/informe_capa1.pdf). Sus cifras se
+Figuras y tablas del informe: `capa1_exploracion/report/informe_capa1.pdf` (tag `capa1-final`). Sus cifras se
 verificaron contra la tabla maestra (20 cifras muestreadas, 0 discrepancias; las 4 citas centrales,
 correctas) y las cautelas exigidas (consistente con, no «confirma»; n≈4 crisis sin tests; BIC in-sample;
 lead/lag censurado a 252 días; cobertura por ventana; D11/D12 exploratorio-negativos) están presentes.
@@ -181,36 +181,42 @@ Consecuencias:
 | `capa1_exploracion/detectors/*.py` (12 + `hsmm_tstudent` + utilidades HMM) | `src/regimenes/detectores/f1_reglas/` … `f7_deep/` |
 | `capa1_exploracion/src/detector_base.py` | `src/regimenes/detectores/base.py` (era idéntica a la de v2) |
 | `capa1_exploracion/src/{data_loader,evaluation,features,viz}.py` (marco v1) | no forman parte del paquete; en el tag `capa1-final` (§8). El juez vigente es `regimenes.evaluacion` |
-| `capa1_exploracion/memory/00_state_of_the_art.md` | [`docs/teoria/00_estado_del_arte.md`](../../teoria/00_estado_del_arte.md) |
-| `capa1_exploracion/memory/sota/0k_*.md` y `.bib` | `docs/teoria/Fk_*.md` y `.bib` (p. ej. [`F3_hmm.md`](../../teoria/F3_hmm.md)) |
-| `capa1_exploracion/memory/detectors/NN_*.md` | `docs/detectores/DNN_*.md` (p. ej. [`D08_hmm_tstudent.md`](../../detectores/D08_hmm_tstudent.md)) |
-| `capa1_exploracion/memory/{01_data_and_eda,99_conclusions}.md` | [`memoria/`](memoria/99_conclusions.md) (aquí) |
+| `capa1_exploracion/memory/00_state_of_the_art.md` | [`docs/estado_del_arte/detectores.md`](../../estado_del_arte/detectores.md) (§1–§4) y [`docs/historia/estado_del_arte_v1.md`](../estado_del_arte_v1.md) (§5–§6, la propuesta de lista de detectores) |
+| `capa1_exploracion/memory/sota/0k_*.md` y `.bib` | `docs/fase1/Fk_*.md` (p. ej. [`F3_hmm.md`](../../fase1/F3_hmm.md)); sus `.bib`, fusionados en [`docs/references.bib`](../../references.bib) |
+| `capa1_exploracion/memory/detectors/NN_*.md` | narrativa v1 en [`docs/historia/fichas_v1.md`](../fichas_v1.md); ubicación y resultados v2 de cada detector en su ficha de familia `docs/fase1/Fk_*.md` |
+| `capa1_exploracion/memory/{01_data_and_eda,99_conclusions}.md` | solo en el tag `capa1-final` (resumidas en §2–§6 de este README) |
 | `capa1_exploracion/memory/{INDEX.md,pdf_src/}`, `report/_revision_pdf.md`, `results/_archive/` | documentos de proceso: solo en el tag `capa1-final` |
-| `capa1_exploracion/report/` (tex, pdf, bib) | [`informe/`](informe/informe_capa1.pdf) (aquí) |
+| `capa1_exploracion/report/` (tex, pdf, bib) | solo en el tag `capa1-final` |
 | `capa1_exploracion/results/*.csv`, `ablation_hsmm/` | [`resultados/`](resultados/metrics_master.csv) (aquí) |
-| `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | [`datos_v1/`](datos_v1/provenance.json) (aquí) |
+| `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | solo en el tag `capa1-final` |
 | `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/05_familia_F1_reglas` … `11_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
 | `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/07_familia_F3_hmm`; original en el tag |
 | `capa1_exploracion/notebooks/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §4–§5 de este README; originales en el tag |
-| bibliografía `report/references.bib` | fusionada en la bibliografía única [`docs/references.bib`](../../references.bib) (se conserva aquí para que el `.tex` compile) |
+| bibliografía `report/references.bib` | fusionada en la bibliografía única [`docs/references.bib`](../../references.bib); el original, en el tag junto al `.tex` |
 
-**Rutas dentro de estos documentos.** La memoria y el informe son históricos y **no se reescriben**:
+**Rutas dentro de los documentos del tag.** La memoria y el informe son históricos y **no se reescriben**:
 sus rutas (`docs/memory/…`, `results/…`, `notebooks/…`, `report/…`, `detectors/…`) son relativas a la
 antigua raíz de la Capa 1 (`capa1_exploracion/`). Tradúcelas con la tabla anterior.
 
 ## 8. Recuperar la Capa 1 original (tag `capa1-final`)
 
 El tag `capa1-final` apunta al último commit con la Capa 1 completa
-(notebooks v1 ejecutados con sus salidas, marco v1 y detectores en su sitio original):
+(notebooks v1 ejecutados con sus salidas, marco v1, detectores en su sitio original, memoria, informe y procedencia de
+datos v1):
 
 ```bash
-git show capa1-final:capa1_exploracion/src/evaluation.py        # un archivo concreto
-git show capa1-final:capa1_exploracion/notebooks/13_comparison.ipynb > /tmp/13_comparison.ipynb
-git worktree add ../capa1-v1 capa1-final                         # árbol completo, sin tocar tu rama
+git show capa1-final:capa1_exploracion/memory/99_conclusions.md               # memoria v1 (conclusiones)
+git show capa1-final:capa1_exploracion/memory/01_data_and_eda.md              # memoria v1 (datos y EDA)
+git show capa1-final:capa1_exploracion/report/informe_capa1.pdf > informe_capa1.pdf   # informe v1
+git show capa1-final:capa1_exploracion/data/raw/provenance.json               # procedencia de los datos v1
+git show capa1-final:capa1_exploracion/notebooks/13_comparison.ipynb > 13_comparison.ipynb
+git worktree add ../capa1-v1 capa1-final                                      # árbol completo, sin tocar tu rama
 ```
 
-Código v1 que solo vive en el tag: `data_loader.py`, `evaluation.py`, `features.py`, `viz.py`
-(marco v1) y los 15 notebooks v1. El código v2 con la Capa 1 como árbol aparte está en el tag
+Solo viven en el tag: la memoria (`memory/`), el informe con su `.tex` y su bibliografía (`report/`), la procedencia
+de los datos v1 (`data/raw/`), el marco v1 (`data_loader.py`, `evaluation.py`, `features.py`, `viz.py`) y los 15
+notebooks v1. Hasta la reorganización de `docs/` la memoria, el informe y la procedencia tenían copia en esta carpeta
+(`memoria/`, `informe/`, `datos_v1/`); se retiraron porque eran idénticas a las del tag. El código v2 con la Capa 1 como árbol aparte está en el tag
 `v2-pre-unificacion`; la historia anterior al re-base, en la rama remota `backup-main-pre-datos-v2`.
 
 > Si re-ejecutas un notebook v1 desde un worktree del tag, hazlo **desde dentro de

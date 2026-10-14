@@ -2,7 +2,8 @@
 
 Requisitos añadidos en la tutoría ([ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md) §2.2). **Todos están
 abiertos en su diseño**; este documento fija la intención y deja las preguntas sin responder en la sección final.
-Contexto del sistema: [README](README.md) · [ARQUITECTURA](ARQUITECTURA.md).
+Contexto del sistema: [README](README.md) · [arquitectura](arquitectura.md). Lo que el plan de datos ya propone para
+cada pregunta (perfil, divisa, costes, rebalanceo, estado): [`plan_datos.md`](../fase2/plan_datos.md#6-cartera-y-cliente).
 
 ## 1. Cliente minorista
 
@@ -41,7 +42,7 @@ TimeGate: en el backtest, la memoria solo contiene decisiones ya tomadas.
   que vigila vuelos de jets privados. Modo broma: si «los millonarios huyen en jet», se **desinvierte todo**.
 - **Alcance:** solo **en vivo o demostración**. El histórico de EWS empieza el 6 de octubre de 2025, por lo que no cabe en
   el backtest (que usa ventanas largas) ni participa en la evaluación.
-- Detalles de la fuente: [DATOS_ALTERNATIVOS.md](DATOS_ALTERNATIVOS.md).
+- Detalles de la fuente: [datos_alternativos.md](../fase2/datos_alternativos.md).
 - Por decidir: umbral de nivel de alerta que dispara la acción, si pasa por el CIO Agent o lo anula, y cómo se registra
   en el memo.
 

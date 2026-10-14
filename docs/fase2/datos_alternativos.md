@@ -1,8 +1,12 @@
-# Datos alternativos y fuentes de la Fase 2
+# Datos alternativos candidatos
 
-Estado de todas las fuentes de esta página: **a investigar**. Nada de lo descrito está descargado ni validado. Los
-detalles proceden de una primera consulta de documentación (octubre de 2026) y deben comprobarse antes de usarlos.
-Contexto: [README](README.md) · [ARQUITECTURA](ARQUITECTURA.md) (TimeGate, catálogo de tools).
+Candidatas a datos alternativos pedidas en la tutoría ([ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md) §2.2).
+Los detalles proceden de una primera consulta de documentación (octubre de 2026); las sondas del plan de datos ya
+midieron algunas (Polymarket, EWS, informes del Congreso) y sus conclusiones prevalecen sobre el estado «a investigar»
+de estas tablas. Su tratamiento (destino, TimeGate,
+historia útil) está en el [plan de datos](plan_datos.md) §4 (Tema 4) y su implementación corresponde al
+[Tema 4](../../src/ingesta/noticias_alt/README.md). Contexto: [`README.md`](README.md) (reparto de la Fase 2) ·
+[`tfm/arquitectura.md`](../tfm/arquitectura.md) (TimeGate, catálogo de tools).
 
 **Regla común de TimeGate:** cada dato se indexa por su **fecha de publicación** (no la del hecho), igual que
 `LAG_PUBLICACION` en [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md). Una tool solo devuelve
@@ -43,7 +47,7 @@ filas publicadas hasta la fecha de decisión.
 | Profundidad histórica | Desde el 6 de octubre de 2025 |
 | Retraso | Del orden de la frecuencia de muestreo (30 min); por comprobar |
 | TimeGate | No aplica al backtest largo (histórico insuficiente); en vivo, marca temporal de cada muestra |
-| Uso previsto | Botón de cataclismo ([CLIENTE_Y_CARTERAS.md](CLIENTE_Y_CARTERAS.md)); solo vivo/demo |
+| Uso previsto | Botón de cataclismo ([`tfm/cliente_y_carteras.md`](../tfm/cliente_y_carteras.md)); solo vivo/demo |
 | Estado | A investigar (feed no documentado: estabilidad incierta) |
 
 ### Otras candidatas
@@ -56,17 +60,8 @@ filas publicadas hasta la fecha de decisión.
 | Put/call y SKEW de CBOE | Posicionamiento en opciones | Diario; comprobar disponibilidad histórica | Risk | A investigar |
 | Google Trends | Interés de búsqueda | Normalización cambiante entre descargas: riesgo de mirar el futuro | Risk | A investigar |
 
-## 2. Fuentes principales de la Fase 2
+## 2. Fuentes principales
 
-Las fuentes de la propuesta y la presentación al tutor, que alimentan los cuatro índices y la base de series.
-
-| Fuente | Contenido | Alimenta | Notas |
-|---|---|---|---|
-| Fed, BCE, FMI | Actas, comunicados, Beige Book | Índice Macro, `buscar_macro` | Fecha real de publicación (las actas, unas 3 semanas después) |
-| SEC EDGAR | 10-K, 10-Q, 8-K, earnings calls | Índice Equity, `buscar_filings` | Disponibles solo tras su fecha de presentación |
-| BIS, FSR (Fed/BCE) | Informes de estabilidad y papers de crisis | Índice Risk, `buscar_riesgo` | Análogos históricos |
-| GDELT, RSS (Reuters/FT) | Noticias y eventos | Índice News, `buscar_noticias` | Trozos cortos |
-| FRED / ALFRED | Series macro y de mercado (curva, IPC, paro, VIX, spreads) | Base de series, `get_serie` | ALFRED da el *vintage* publicado; limitación declarada en la Fase 1 |
-| yfinance | Precios de ETF y acciones | `get_precios`, `optimizar_cartera` | Ajuste por dividendos y splits a revisar |
-| SEC XBRL | Ventas, márgenes, deuda | `get_fundamentales` | Por fecha de presentación |
-| Polymarket | Probabilidad implícita de eventos | `get_polymarket` | Ver arriba |
+Las fuentes principales de la Fase 2 (bancos centrales, EDGAR, informes de riesgo, noticias, FRED/ALFRED, precios,
+XBRL) ya no se listan aquí: su reparto por tema está en [`README.md`](README.md) §1 y su tratamiento, en el
+[plan de datos](plan_datos.md) §4.
