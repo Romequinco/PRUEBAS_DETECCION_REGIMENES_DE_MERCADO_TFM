@@ -234,7 +234,7 @@ def _validar_tramos(tramos: Any, fin_periodo: str, donde: str) -> None:
 
 
 @lru_cache(maxsize=4)
-def _lags_cache(ruta: str, _mtime_ns: int) -> dict[str, dict[str, Any]]:
+def _lags_cache(ruta: str, _firma: tuple) -> dict[str, dict[str, Any]]:
     return _validar_lags(visibilidad._leer_yaml(Path(ruta)), Path(ruta).name)
 
 
@@ -245,7 +245,7 @@ def cargar_lags(ruta: Path | None = None) -> dict[str, dict[str, Any]]:
     un ``lag`` mal formado o un ``fin_periodo`` desconocido son ``ValueError``.
     """
     r = Path(ruta) if ruta is not None else RUTA_LAGS
-    return copy.deepcopy(_lags_cache(str(r.resolve()), r.stat().st_mtime_ns))
+    return copy.deepcopy(_lags_cache(str(r.resolve()), visibilidad.firma(r)))
 
 
 def fin_de_periodo(fechas: Any, fin_periodo: str) -> pd.Series:
@@ -726,7 +726,7 @@ def _validar_catalogo(crudo: Any, origen: str, lags: dict, publicadores: dict) -
 
 
 @lru_cache(maxsize=4)
-def _catalogo_cache(ruta: str, _mtime: int, ruta_lags: str, _mtime_lags: int) -> dict[str, dict[str, Any]]:
+def _catalogo_cache(ruta: str, _firma: tuple, ruta_lags: str, _firma_lags: tuple) -> dict[str, dict[str, Any]]:
     pub = visibilidad.cargar_publicaciones(visibilidad.RUTA_PUBLICACIONES, catalogo=False)
     return _validar_catalogo(visibilidad._leer_yaml(Path(ruta)), Path(ruta).name,
                              cargar_lags(Path(ruta_lags)), pub["publicadores"])
@@ -754,15 +754,15 @@ def cargar_catalogo(ruta: Path | None = None, *, lags: Path | None = None,
     rl = Path(lags) if lags is not None else RUTA_LAGS
     if publicaciones is not None:
         return _validar_catalogo(visibilidad._leer_yaml(r), r.name, cargar_lags(rl), publicaciones["publicadores"])
-    return copy.deepcopy(_catalogo_cache(str(r.resolve()), r.stat().st_mtime_ns,
-                                         str(rl.resolve()), rl.stat().st_mtime_ns))
+    return copy.deepcopy(_catalogo_cache(str(r.resolve()), visibilidad.firma(r),
+                                         str(rl.resolve()), visibilidad.firma(rl)))
 
 
 def _cat(catalogo: dict[str, dict] | None) -> dict[str, dict]:
     if catalogo is not None:
         return catalogo
-    return _catalogo_cache(str(RUTA_CATALOGO), RUTA_CATALOGO.stat().st_mtime_ns,
-                           str(RUTA_LAGS), RUTA_LAGS.stat().st_mtime_ns)
+    return _catalogo_cache(str(RUTA_CATALOGO), visibilidad.firma(RUTA_CATALOGO),
+                           str(RUTA_LAGS), visibilidad.firma(RUTA_LAGS))
 
 
 def origenes(entrada: dict[str, Any]) -> tuple[str, ...]:

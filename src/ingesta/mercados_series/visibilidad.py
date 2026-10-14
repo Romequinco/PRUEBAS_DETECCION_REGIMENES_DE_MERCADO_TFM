@@ -26,6 +26,7 @@ es un error (``timegate.fecha_decision``): su día solo tiene sentido en Nueva Y
 from __future__ import annotations
 
 import copy
+import hashlib
 import re
 from collections.abc import Iterable
 from datetime import date, datetime, time, timedelta
@@ -234,8 +235,19 @@ def _validar_mercados(crudo: Any, origen: str) -> dict[str, dict[str, Any]]:
     return out
 
 
+def firma(ruta: Path) -> tuple[int, int, str]:
+    """Clave de caché de un fichero de configuración: (mtime, tamaño, sha1 del contenido).
+
+    El ``mtime`` solo no basta: en Windows dos escrituras seguidas pueden compartirlo y la caché
+    devolvería la versión anterior.
+    """
+    r = Path(ruta)
+    datos = r.read_bytes()
+    return (r.stat().st_mtime_ns, len(datos), hashlib.sha1(datos).hexdigest())
+
+
 @lru_cache(maxsize=8)
-def _mercados_cache(ruta: str, _mtime_ns: int) -> dict[str, dict[str, Any]]:
+def _mercados_cache(ruta: str, _firma: tuple) -> dict[str, dict[str, Any]]:
     return _validar_mercados(_leer_yaml(Path(ruta)), Path(ruta).name)
 
 
@@ -249,14 +261,14 @@ def cargar_mercados(ruta: Path | None = None) -> dict[str, dict[str, Any]]:
     culpable. Devuelve una copia (la lectura se cachea por ruta y fecha de modificación).
     """
     r = Path(ruta) if ruta is not None else RUTA_MERCADOS
-    return copy.deepcopy(_mercados_cache(str(r.resolve()), r.stat().st_mtime_ns))
+    return copy.deepcopy(_mercados_cache(str(r.resolve()), firma(r)))
 
 
 def _mercados(mercados: dict[str, dict[str, Any]] | None) -> dict[str, dict[str, Any]]:
     """``mercados`` dado o el YAML por defecto (cacheado, solo lectura)."""
     if mercados is not None:
         return mercados
-    return _mercados_cache(str(RUTA_MERCADOS), RUTA_MERCADOS.stat().st_mtime_ns)
+    return _mercados_cache(str(RUTA_MERCADOS), firma(RUTA_MERCADOS))
 
 
 def _info_mercado(mercados: dict[str, dict[str, Any]], mercado: str) -> dict[str, Any]:
@@ -501,7 +513,7 @@ def _validar_publicaciones(crudo: Any, origen: str) -> dict[str, Any]:
 
 
 @lru_cache(maxsize=8)
-def _publicaciones_cache(ruta: str, _mtime_ns: int, catalogo: tuple | None = None) -> dict[str, Any]:
+def _publicaciones_cache(ruta: str, _firma: tuple, catalogo: tuple | None = None) -> dict[str, Any]:
     base = _validar_publicaciones(_leer_yaml(Path(ruta)), Path(ruta).name)
     if catalogo is None:
         return base
@@ -541,7 +553,7 @@ def _clave_catalogo(ruta: Path | None) -> tuple | None:
     from ingesta.mercados_series import catalogo
 
     r = Path(ruta).resolve()
-    return (str(r), r.stat().st_mtime_ns, catalogo.RUTA_LAGS.stat().st_mtime_ns)
+    return (str(r), firma(r), firma(catalogo.RUTA_LAGS))
 
 
 def _ruta_catalogo(ruta: Path | None, catalogo: Path | bool | None) -> Path | None:
@@ -572,7 +584,7 @@ def cargar_publicaciones(ruta: Path | None = None, *, catalogo: Path | bool | No
     """
     r = Path(ruta) if ruta is not None else RUTA_PUBLICACIONES
     cat = _clave_catalogo(_ruta_catalogo(ruta, catalogo))
-    return copy.deepcopy(_publicaciones_cache(str(r.resolve()), r.stat().st_mtime_ns, cat))
+    return copy.deepcopy(_publicaciones_cache(str(r.resolve()), firma(r), cat))
 
 
 @lru_cache(maxsize=256)
@@ -592,7 +604,7 @@ def _festivos(calendario: str, anio: int) -> frozenset[date]:
 def _publicaciones_defecto() -> dict[str, Any]:
     """``config/publicaciones.yaml`` validado (cacheado, solo lectura; sin fusionar el catálogo:
     publicadores y cierres extraordinarios no dependen de él)."""
-    return _publicaciones_cache(str(RUTA_PUBLICACIONES), RUTA_PUBLICACIONES.stat().st_mtime_ns)
+    return _publicaciones_cache(str(RUTA_PUBLICACIONES), firma(RUTA_PUBLICACIONES))
 
 
 def _cierres_extraordinarios(calendario: str, publicaciones: dict[str, Any] | None) -> frozenset[date]:
