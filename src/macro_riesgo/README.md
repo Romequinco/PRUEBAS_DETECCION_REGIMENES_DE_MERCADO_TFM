@@ -1,7 +1,18 @@
-# Módulos reservados
+# Módulos del corpus y sonda
 
-Este directorio será el paquete Python del pipeline. Solo contiene estructura;
-los `.gitkeep` permiten conservar las carpetas en Git.
+`sonda/` implementa las consultas pequeñas del notebook: HTTP con caché de
+originales, adaptadores de documentos/tablas/APIs, extracción, política temporal,
+mediciones y gráficos. `ConfigSonda` limita volumen y páginas; `Sonda.ejecutar`
+mantiene independiente cada apartado. El inventario declarativo vive en
+`config/sources/sonda_fuentes.json`.
+
+La adquisición no convierte fechas de evento o periodos en publicación.
+Las versiones de portales actuales conservan sus fechas conocidas, pero no
+entran en el TimeGate estricto hasta acreditar el texto histórico. arXiv fija
+la descarga a v1. Las pruebas de `tests/unit/` cubren los límites temporales.
+
+Las demás carpetas conservan la estructura prevista para el pipeline completo;
+no representan integraciones R2/D1 ni un recolector masivo implementado.
 
 | Carpeta | Trabajo que contendrá |
 |---|---|

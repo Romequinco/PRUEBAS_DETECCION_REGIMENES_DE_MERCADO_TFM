@@ -1,20 +1,21 @@
-# Bancos centrales, riesgo sistémico y literatura
+# Bancos centrales, riesgo sistémico y literatura — sonda de fuentes y disponibilidad temporal
 
-**Notebook de selección de fuentes · revisión: 12 de octubre de 2026**
+**Fase 2 del TFM · Responsable: Fernando Dapena Tauste · Revisión: 14 de octubre de 2026.**
 
-Objetivo: decidir de dónde obtener cada tipo de información de la captura, priorizando fuentes gratuitas, originales y verificables. Los **14 apartados** reproducen sus tarjetas; las tablas separan los subtipos de documentos.
+Antes de ampliar el corpus, probamos cada fuente con poco volumen y medimos **qué entrega, qué fechas acredita, con qué retraso publica, cuánto texto se puede extraer, cuánto ocupa y qué falla**. La estructura sigue la [sonda de empresas de Daniel](https://github.com/Romequinco/PRUEBAS_DETECCION_REGIMENES_DE_MERCADO_TFM/blob/fase2/t3-empresas/notebooks/fase2/t3_01_sonda_empresas.ipynb): configuración común, adquisición, cobertura, auditoría temporal, texto, volumen y resumen calculado.
 
-**Orientación actual del proyecto:** construir una biblioteca amplia de literatura, informes y comunicaciones para que los agentes busquen evidencias y fundamenten decisiones. Se recopilará por lotes; la prioridad es cobertura, calidad y consulta útil, sin exigir ingesta inmediata. Las fechas y versiones aportan contexto. Las indicaciones de TimeGate de este cuaderno se aplican cuando se pide una evaluación histórica, y no bloquean por defecto la incorporación al corpus general.
+Se mantienen los **14 apartados independientes**. Fed, BCE, cada banco y cada familia aportan información distinta; sus filas y gráficos conservan esa separación. El código de adquisición y medición vive en `src/macro_riesgo/sonda/`; este notebook lo ejecuta y presenta resultados. Las URLs y las 94 familias de muestras están en `config/sources/sonda_fuentes.json`.
 
-Una publicación sin fecha pública exacta puede ser útil si conocemos su procedencia, términos y versión y el texto es fiable; la incertidumbre se muestra al agente. Mantener papers e informes antiguos como contexto, identificar ediciones y no confundir una guía sustituida con una vigente. El detalle del diseño está en [Corpus de conocimiento para agentes](../docs/CORPUS_PARA_AGENTES.md).
+Una sonda pequeña no demuestra el inicio del histórico ni representa todo el archivo. Los recuentos de la captura del proyecto tampoco son resultados de esta ejecución. La biblioteca general admite texto validado con incertidumbre temporal explícita; el ejemplo de **TimeGate histórico es estricto por versión**.
 
-Este cuaderno es documental: se puede leer sin ejecutar celdas. Los enlaces son las referencias que respaldan las recomendaciones. Se han consultado portales, páginas de publicaciones y fichas de datasets; todavía no se ha descargado ni validado un corpus completo ni probado la automatización de todas las fuentes.
+### Antes de ejecutar
 
-**Cómo interpretar “calidad”.** Para comunicaciones institucionales, elegir el emisor original: texto íntegro, fecha, versión y procedencia. Para papers, evaluar también metodología, revisión académica y versión. Un repositorio cómodo de descargar no convierte sus textos o etiquetas en información de mayor calidad.
+1. Usa el kernel `Python (.venv - Bancos centrales TFM)` e instala `requirements.txt` si recreas el entorno.
+2. Ejecuta la configuración y después el apartado que quieras. `MODO_RAPIDO=True` limita a 3 documentos por familia descubierta, 3 filas y 40 páginas por PDF. Las URLs de edición fija entregan una edición. El modo ampliado sigue siendo una sonda, no una descarga de todo el histórico.
+3. `HF_TOKEN` y `UNPAYWALL_EMAIL` se leen de variables de entorno si se necesitan. Las demás muestras no requieren API key. Los errores de acceso y los permisos pendientes quedan en sus tablas.
+4. Se conservan originales por SHA-256 en `data/cache/sonda/`, texto y fragmentos en `data/local/sonda/` y tablas en `data/exports/sonda/`, fuera de Git. La caché se reutiliza; `usar_cache=False` vuelve a consultar y conserva los objetos antiguos.
 
-**Cómo interpretar “gratis”.** Se refiere al acceso digital indicado. Descargar sin pagar no implica permiso ilimitado para redistribuir, comercializar o realizar descargas masivas. Las restricciones expresas más relevantes aparecen en sus apartados. El futuro almacenamiento y procesamiento tienen sus propios costes.
-
-Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referencias del proyecto, **no inventarios verificados**. Un bloqueo técnico de una web no demuestra que el contenido sea de pago.
+La lectura completa de la referencia y las decisiones de adaptación están en [Análisis del notebook de Daniel](../docs/ANALISIS_NOTEBOOK_REFERENCIA.md).
 
 ## Vista rápida e índice
 
@@ -35,6 +36,74 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 | [13. Literatura de cartera y CIO](#cartera) | Autores/instituciones y EUR-Lex, ESMA, CNMV | Mixto en literatura; normativa propuesta gratuita | Alta: selección abierta desde el piloto |
 | [14. La literatura llega tarde](#literatura-tarde) | Historial de versiones y evidencia de publicación | Metadatos gratuitos; análisis propio | Opcional: evaluación histórica posterior |
 
+## Configuración común
+
+Los apartados comparten únicamente la configuración y las funciones de medición. Cada apartado se puede ejecutar por separado después de esta celda. `CORTE_UTC` incluye zona horaria; el corte es una elección del análisis, no la hora de descarga.
+
+```python
+from pathlib import Path
+import sys
+
+import pandas as pd
+from IPython.display import display
+
+RAIZ = next((p for p in [Path.cwd(), *Path.cwd().parents]
+             if (p / "config/sources/sonda_fuentes.json").exists()), None)
+if RAIZ is None:
+    raise RuntimeError("Abre el notebook desde este repositorio.")
+if str(RAIZ / "src") not in sys.path:
+    sys.path.insert(0, str(RAIZ / "src"))
+
+from macro_riesgo.sonda import ConfigSonda, Sonda
+from macro_riesgo.sonda.analysis import mostrar_apartado
+
+pd.set_option("display.max_columns", 24)
+pd.set_option("display.max_colwidth", 100)
+
+MODO_RAPIDO = True
+CORTE_UTC = "2026-10-14T00:00:00+00:00"
+
+cfg = ConfigSonda(
+    raiz=RAIZ,
+    max_por_familia=3 if MODO_RAPIDO else 10,
+    max_filas=3 if MODO_RAPIDO else 10,
+    max_paginas=40 if MODO_RAPIDO else 200,
+    usar_cache=True,
+    corte_utc=CORTE_UTC,
+)
+sonda = Sonda(cfg)
+print("Responsable: Fernando Dapena Tauste")
+print("Raíz:", RAIZ)
+print("Modo:", "rápido" if MODO_RAPIDO else "ampliado (no es el histórico completo)")
+print("Corte histórico:", CORTE_UTC)
+```
+
+## Cómo leer las mediciones y evitar look-ahead
+
+| Campo | Qué significa y qué permite |
+|---|---|
+| `fecha_evento` | Reunión, fin de periodo o referencia explícita. No fecha de publicación. En el apartado 14 es el corte ilustrativo de la GFC. |
+| `fecha_publicacion` | Fecha anunciada para el documento o metadato consultado. La evidencia y la precisión acompañan cada fila. No demuestra por sí sola que el texto actual sea la versión original. |
+| `fecha_aplicacion` | Entrada en vigor/effectividad cuando el texto la declara. Si no existe o no se extrae, queda vacía; un paper no tiene por defecto una fecha de aplicación. |
+| `retraso_evento_dias` | Publicación menos evento/referencia en días de calendario. Solo se calcula con un par de fechas identificadas. |
+| `retraso_aplicacion_dias` | Publicación menos aplicación. Negativo significa anuncio anterior a la entrada en vigor. No se confunde con retraso respecto a la reunión. |
+| `retrieved_at` / `consulta_utc` | Primera descarga de esos bytes / ejecución de la medición. Nunca sustituyen publicación. |
+| `version_id` / `sha256` | Identifican los bytes del original; el hash evita mezclar revisiones, pero no prueba su historia pública. |
+| `disponible_desde_utc` | Límite conservador para el texto completo de una versión acreditada; no se rellena con estimaciones. |
+
+**Política `sonda-timegate-v1`:** la vista histórica admite únicamente texto completo, versión acreditada y disponibilidad anterior o igual al corte. Una fecha con hora y zona se normaliza a UTC. Si solo hay día y conocemos la zona, una versión acreditada se admite desde el **inicio del día local siguiente**; esa es una política conservadora, no una hora de publicación observada. Mes/año, hora sin zona y fecha desconocida no bastan para el filtro. No se modelan calendarios bursátiles ni aperturas/cierres de mercado.
+
+Los HTML/PDF actuales de los portales conservan su publicación conocida, pero permanecen **pendientes de acreditar la versión histórica**: descargar hoy no demuestra qué texto había antes. arXiv consulta y descarga **v1 explícitamente** para unir el texto con su fecha. Un PDF truncado por el límite de páginas, una ficha bibliográfica, un abstract, un dataset revisado o una etiqueta ex post no se presentan como texto completo disponible en el pasado. Last-Modified, CreationDate, fecha de reunión y fecha de depósito no se convierten automáticamente en publicación.
+
+### Salidas de cada apartado
+
+1. Inventario y descarga limitada por familia.
+2. Cobertura de la muestra: primera/última publicación, pares válidos, mediana y P10–P90 de retrasos, extracción y volumen.
+3. Gráficos de cobertura temporal, retraso frente al evento, retraso frente a aplicación, fechas de publicación y palabras extraídas. **Sin fechas no hay un cero ficticio:** se marca «sin par de fechas» o «no consta / no procede».
+4. Documento/fila de ejemplo con URL y hash, errores y TimeGate al corte. Cuando hay dos textos completos de la misma familia se compara su vocabulario; es una medida descriptiva, no sentimiento ni señal predictiva.
+
+Los PDFs se leen hasta el límite configurado; las tablas conservan filas y unidades cuando las entrega la fuente. El número de palabras mide extracción, no calidad científica. Las primeras/últimas publicaciones de una muestra pequeña no permiten extrapolar cobertura ni GB del histórico.
+
 ## 1. Fed
 
 <a id="fed"></a>
@@ -46,11 +115,25 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 | Comunicados y decisiones FOMC | [Calendarios y documentos FOMC](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) | Sí, sin cuenta | HTML y PDF enlazados por reunión |
 | Actas | [Mismo calendario FOMC](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) y [archivo histórico](https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm) | Sí | HTML/PDF; publicación separada del comunicado |
 | Ruedas de prensa | [Calendario FOMC](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) | Sí | Transcripción cuando esté publicada; vídeo como complemento |
-| Beige Book | [Archivo oficial Beige Book](https://www.federalreserve.gov/monetarypolicy/beigebook/default.htm) | Sí | HTML/PDF por edición y distrito |
+| Beige Book | [Archivo oficial Beige Book](https://www.federalreserve.gov/monetarypolicy/beige-book-default.htm) | Sí | HTML/PDF por edición y distrito |
 | Transcripciones y material histórico | [FOMC Historical Materials](https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm) | Sí | PDF y documentos por año |
 | Discursos | [Speeches de la Fed](https://www.federalreserve.gov/newsevents/speeches.htm) | Sí | HTML/PDF con autor y fecha |
 
 **Calidad y tiempo:** preferir HTML para extraer párrafos y conservar el PDF original cuando exista. Las actas actuales suelen publicarse unas tres semanas después; las transcripciones completas se publican con aproximadamente cinco años de retraso. Usar la fecha efectiva de cada publicación: los “+21 días” y “+6 años” de la captura no son reglas universales para todo el histórico. El archivo enlazado documenta el régimen de publicación.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Comunicado, actas, rueda de prensa, Beige Book, transcripción histórica y discurso son series distintas. En las actas se cruza el identificador oficial de la reunión con la etiqueta **Released** del calendario; no se suma una constante de 21 días. Un aviso `For release at` con EST/EDT permite conservar la hora real del comunicado. La publicación de una transcripción histórica no se obtiene sumando cinco años ni usando el año de su carpeta.
+
+```python
+inventario_01 = sonda.inventario(1)
+display(inventario_01[["fuente", "tipo", "adaptador"]])
+muestra_01 = sonda.ejecutar(1)
+```
+
+```python
+resumen_01 = mostrar_apartado(sonda, 1, '1. Fed')
+```
 
 ## 2. BCE
 
@@ -66,6 +149,20 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 | Discursos | [Speeches](https://www.ecb.europa.eu/press/key/html/index.en.html) | Sí | HTML/PDF según documento |
 
 **Calidad y tiempo:** guardar el idioma original y vincular traducciones como versiones relacionadas. Las accounts están disponibles después de la reunión; usar la fecha real de publicación, sin imponer “+28 días” a todas las ediciones. La fecha de reunión identifica el evento; la fecha de publicación decide cuándo podía conocerlo el pipeline.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Decisión, declaración, Q&A, accounts y discursos se mantienen separados. Las accounts identifican la reunión en el encabezado y la publicación en `ecb-publicationDate`; el gráfico usa ese par real. Las decisiones pueden indicar una aplicación futura. La sección Q&A hereda la publicación del padre, pero no acredita la fecha de subida de la transcripción ni sustituye el documento completo.
+
+```python
+inventario_02 = sonda.inventario(2)
+display(inventario_02[["fuente", "tipo", "adaptador"]])
+muestra_02 = sonda.ejecutar(2)
+```
+
+```python
+resumen_02 = mostrar_apartado(sonda, 2, '2. BCE')
+```
 
 ## 3. BoE y BoJ
 
@@ -84,6 +181,20 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 
 **Calidad y tiempo:** en BoJ, las opiniones y las actas son documentos diferentes. Su [explicación oficial del procedimiento](https://www.boj.or.jp/en/about/education/oshiete/seisaku/b20.htm) vincula la publicación de actas a su aprobación en una reunión posterior. El “+44 días” de la captura no debe convertirse en retraso fijo. Las traducciones al inglés pueden aparecer después del original japonés.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** BoE y BoJ conservan filas distintas. En BoJ se leen por separado las columnas **Date of MPM** y **Release Schedule** del calendario: Summary of Opinions y Minutes pueden salir en días distintos. No se interpreta la fecha de reunión codificada en el nombre del PDF como publicación. La fecha del texto inglés no se presume idéntica a la del original japonés.
+
+```python
+inventario_03 = sonda.inventario(3)
+display(inventario_03[["fuente", "tipo", "adaptador"]])
+muestra_03 = sonda.ejecutar(3)
+```
+
+```python
+resumen_03 = mostrar_apartado(sonda, 3, '3. BoE y BoJ')
+```
+
 ## 4. Discursos BIS y Annual Report
 
 <a id="discursos-bis"></a>
@@ -98,6 +209,20 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 | Informe institucional anual | [Annual Report](https://www.bis.org/about/areport/index.htm) | Sí | Informe de actividad institucional |
 
 **Calidad:** el paquete es especialmente útil para empezar sin reconstruir miles de páginas. BIS advierte que la cobertura no es exhaustiva y que la conversión automática puede introducir errores. Validar muestras contra los originales y guardar la fecha/versión de la descarga. Annual Economic Report y Annual Report tienen objetivos diferentes: catalogarlos por separado. No asumir que todas las publicaciones BIS comparten la licencia del paquete de discursos.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** El discurso individual, el paquete CSV de 1996, el Annual Economic Report y el Annual Report institucional tienen registros propios. La fecha de un discurso es un evento; la fecha de subida al BIS o de creación del paquete es otra. El CSV conserva sus nombres de campos y no entra en TimeGate hasta contrastar originales y versiones.
+
+```python
+inventario_04 = sonda.inventario(4)
+display(inventario_04[["fuente", "tipo", "adaptador"]])
+muestra_04 = sonda.ejecutar(4)
+```
+
+```python
+resumen_04 = mostrar_apartado(sonda, 4, '4. Discursos BIS y Annual Report')
+```
 
 ## 5. Otros bancos centrales
 
@@ -121,6 +246,20 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 
 **Calidad:** registrar país, institución, idioma y tipo de documento. Banco de España pertenece al Eurosistema: las decisiones monetarias del euro se obtienen del BCE; una traducción o republicación no es una decisión adicional. Para discursos internacionales, BIS es una alternativa gratuita útil, con cobertura parcial. Preferir descargas o feeds oficialmente ofrecidos antes de desarrollar extracción de páginas; no presuponer que todos ofrecen JSON/RSS/API.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Cada banco y cada tipo conserva su propia fila en tablas y gráficos. Se consulta la edición o el listado indicado; el modo ampliado no reconstruye todo el archivo de esos bancos. Un PDF sin fecha explícita, un portal JavaScript o un bloqueo HTTP queda pendiente, sin inventar retrasos comunes. Banco de España se mantiene como fuente de análisis del Eurosistema; sus documentos no se cuentan como otra decisión monetaria del BCE.
+
+```python
+inventario_05 = sonda.inventario(5)
+display(inventario_05[["fuente", "tipo", "adaptador"]])
+muestra_05 = sonda.ejecutar(5)
+```
+
+```python
+resumen_05 = mostrar_apartado(sonda, 5, '5. Otros bancos centrales')
+```
+
 ## 6. Organismos: Banco Mundial, FMI WEO y OCDE
 
 <a id="organismos"></a>
@@ -139,6 +278,20 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 
 **Tiempo:** preservar cada edición o vintage. Una serie revisada hoy no reproduce lo conocido en 2008; una proyección WEO tampoco es un dato observado. Conservar unidad, país, periodo, condición observado/proyectado y edición.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Texto y datos de GEP, WEO y Economic Outlook tienen filas distintas. El periodo de una cifra y su condición observado/proyectado no son publicación. DataMapper sirve datos actuales revisables: sin vintage acreditado no hay point-in-time. Los anexos GEP consultados no heredan la fecha de una edición distinta.
+
+```python
+inventario_06 = sonda.inventario(6)
+display(inventario_06[["fuente", "tipo", "adaptador"]])
+muestra_06 = sonda.ejecutar(6)
+```
+
+```python
+resumen_06 = mostrar_apartado(sonda, 6, '6. Organismos: Banco Mundial, FMI WEO y OCDE')
+```
+
 ## 7. Datasets abiertos: Hugging Face, FOMC y Beige Book
 
 <a id="datasets"></a>
@@ -150,11 +303,25 @@ Las cantidades, tamaños y estados OK/MIXTO/BLOQUEADA de la captura son referenc
 | Comunicaciones de múltiples bancos | [aufklarer/central-bank-communications](https://huggingface.co/datasets/aufklarer/central-bank-communications) | Descarga pública gratuita; ficha declara CC BY 4.0 | Candidato compatible con la descripción de la captura; no se ha demostrado que sea exactamente su dataset. Incluye corpus/anotaciones; contrastar procedencia y fechas |
 | Frases FOMC con tono anotado | [gtfintechlab/fomc_communication](https://huggingface.co/datasets/gtfintechlab/fomc_communication) | Sí; ficha declara CC BY-NC 4.0 | Adecuado para etiquetas hawkish/dovish/neutral; restringe uso comercial. No sustituye un archivo completo de documentos |
 | Discursos de bancos centrales | [istat-ai/cb-speeches](https://huggingface.co/datasets/istat-ai/cb-speeches) | Acceso condicionado a cuenta y aceptación/solicitud según ficha | Revisar permisos del contenido original además de la licencia declarada. Para empezar, preferir descarga directa BIS |
-| Beige Book | [Archivo oficial Fed](https://www.federalreserve.gov/monetarypolicy/beigebook/default.htm) | Sí, sin cuenta | Mejor procedencia para el texto completo; la captura no identifica un dataset concreto de Beige Book |
+| Beige Book | [Archivo oficial Fed](https://www.federalreserve.gov/monetarypolicy/beige-book-default.htm) | Sí, sin cuenta | Mejor procedencia para el texto completo; la captura no identifica un dataset concreto de Beige Book |
 
 **Calidad y tiempo:** una etiqueta de sentimiento es una interpretación, no una afirmación oficial del banco. Registrar quién anotó, método y versión. Si un dataset contiene `meeting_date` pero no evidencia de publicación, esa fecha no basta para TimeGate. Usarlo como semilla y reconstruir la disponibilidad desde el original. No atribuir CC BY a todos los datasets de una plataforma.
 
 Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracción se hayan validado aunque su fecha exacta sea desconocida. Reconstruir la disponibilidad precisa solo cuando haga falta para el modo histórico; no dejar estos corpus fuera únicamente por ese dato ausente.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Cada dataset HF mantiene identificador, campos y etiquetas originales. Un `publication_date` del dataset es evidencia secundaria; no prueba la disponibilidad de cada frase ni la fecha de sus anotaciones. La falta de permisos se registra sin detener el Beige Book original. Para un backtest habría que reconstruir documentos padres, fechas, versiones y fecha de disponibilidad de las etiquetas.
+
+```python
+inventario_07 = sonda.inventario(7)
+display(inventario_07[["fuente", "tipo", "adaptador"]])
+muestra_07 = sonda.ejecutar(7)
+```
+
+```python
+resumen_07 = mostrar_apartado(sonda, 7, '7. Datasets abiertos: Hugging Face, FOMC y Beige Book')
+```
 
 ## 8. Estabilidad financiera
 
@@ -173,6 +340,20 @@ Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracci
 
 **Calidad:** conservar gráficos y referencias a tablas junto al texto. “Estabilidad financiera” agrupa series distintas: no tratar un informe anual OFR y un FSR semestral como observaciones idénticas. Deduplicar informe completo y capítulos, sin perder su relación. Los recuentos de la captura no representan necesariamente todo el archivo actual.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Fed, BCE, BoE, ESRB, OFR y FSB conservan series separadas. Fecha de edición, fin del periodo analizado, corte de datos y publicación no se intercambian. Se miden páginas, palabras y tamaño; un informe que exceda el límite de páginas se señala como extracción parcial. Los gráficos no atribuyen igual frecuencia a todas las instituciones.
+
+```python
+inventario_08 = sonda.inventario(8)
+display(inventario_08[["fuente", "tipo", "adaptador"]])
+muestra_08 = sonda.ejecutar(8)
+```
+
+```python
+resumen_08 = mostrar_apartado(sonda, 8, '8. Estabilidad financiera')
+```
+
 ## 9. BIS Quarterly Review y Working Papers
 
 <a id="bis-papers"></a>
@@ -185,6 +366,20 @@ Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracci
 | Working Papers | [BIS Working Papers](https://www.bis.org/publications/working-paper) | Sí | Catálogo y PDFs individuales |
 
 **Calidad y tiempo:** separar el informe trimestral de sus artículos y vincularlos con un documento padre. Un Working Paper no equivale automáticamente a un artículo revisado por una revista. Guardar la versión y el número de la serie. Para TimeGate, contrastar la fecha de lanzamiento con la portada y la ficha: la fecha de modificación de una página migrada puede ser posterior a la publicación original.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Quarterly Review, artículo y Working Paper son familias distintas. La ficha consultada puede contener solo resumen/metadatos; no se presume el informe completo. Se registran publicación y número/URL cuando existen. La portada de un WP con mes y año no se transforma en el primer día del mes.
+
+```python
+inventario_09 = sonda.inventario(9)
+display(inventario_09[["fuente", "tipo", "adaptador"]])
+muestra_09 = sonda.ejecutar(9)
+```
+
+```python
+resumen_09 = mostrar_apartado(sonda, 9, '9. BIS Quarterly Review y Working Papers')
+```
 
 ## 10. FMI Global Financial Stability Report — GFSR
 
@@ -201,6 +396,20 @@ Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracci
 **Calidad y acceso:** la captura marca “BLOQUEADA” por WAF; eso describe un obstáculo de adquisición, no un precio. Si falla la descarga automática, usar el enlace oficial al PDF o descarga manual con registro de procedencia. No es necesario empezar comprando el informe impreso. Una traducción de un resumen ejecutivo no sustituye el informe completo en inglés.
 
 **Tiempo:** ciertos registros de ediciones antiguas pueden reflejar la incorporación al portal. Comprobar fecha original de edición/lanzamiento y conservar evidencia; no usar sin más la fecha reciente de la ficha migrada.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Se conserva por separado la ficha descubierta, el PDF fijo de abril de 2026 y la ruta editorial alternativa. **El PDF fijo no hereda la fecha de la última ficha descubierta:** pueden ser ediciones distintas. La falta de fecha verificada queda visible; un bloqueo de acceso es un resultado de la sonda, no prueba de que el informe sea de pago.
+
+```python
+inventario_10 = sonda.inventario(10)
+display(inventario_10[["fuente", "tipo", "adaptador"]])
+muestra_10 = sonda.ejecutar(10)
+```
+
+```python
+resumen_10 = mostrar_apartado(sonda, 10, '10. FMI Global Financial Stability Report — GFSR')
+```
 
 ## 11. Papers de crisis
 
@@ -221,6 +430,20 @@ Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracci
 
 **Alcance:** la imagen no aporta la bibliografía de sus 386 papers/37 crisis. No se puede afirmar que se haya localizado ese conjunto exacto. Antes de recolectarlo, definir crisis, criterios de inclusión y lista de referencias. Deduplicar por DOI y conservar separadas las versiones que cambian resultados.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Texto institucional, preprint, ficha SSRN/NBER, metadatos Crossref y copia localizada por Unpaywall tienen registros independientes. Crossref conserva online/print por separado; no acredita acceso al PDF. arXiv fija el documento a v1. Unpaywall localiza acceso abierto actual, pero no demuestra cuándo se abrió esa copia. La bibliografía completa de la captura sigue pendiente.
+
+```python
+inventario_11 = sonda.inventario(11)
+display(inventario_11[["fuente", "tipo", "adaptador"]])
+muestra_11 = sonda.ejecutar(11)
+```
+
+```python
+resumen_11 = mostrar_apartado(sonda, 11, '11. Papers de crisis')
+```
+
 ## 12. Huellas de crisis
 
 <a id="huellas"></a>
@@ -239,6 +462,20 @@ Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracci
 
 En consulta general, el análisis retrospectivo es conocimiento útil para los agentes y puede incorporarse con su metodología y procedencia. La restricción de disponibilidad anterior al evento se reserva a backtests o simulaciones históricas.
 
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Las filas ESRB y Macrohistory son ejemplos de bases revisables; las metodologías FMI pertenecen a ediciones identificadas. La fecha de inicio de una crisis es una etiqueta retrospectiva, no una señal disponible ese día. Las huellas reproducibles exigirían el vintage, variables y reglas; esta sonda muestra los datos de ejemplo y no fabrica las 18 crisis ni las siete familias de la captura.
+
+```python
+inventario_12 = sonda.inventario(12)
+display(inventario_12[["fuente", "tipo", "adaptador"]])
+muestra_12 = sonda.ejecutar(12)
+```
+
+```python
+resumen_12 = mostrar_apartado(sonda, 12, '12. Huellas de crisis')
+```
+
 ## 13. Literatura de cartera y CIO
 
 <a id="cartera"></a>
@@ -256,6 +493,20 @@ En consulta general, el análisis retrospectivo es conocimiento útil para los a
 **Calidad y alcance:** la captura no identifica las 34 referencias de cartera ni los 20 documentos de idoneidad: hace falta su bibliografía para reproducir la colección exacta. Idoneidad y conveniencia son evaluaciones distintas; etiquetar correctamente las guías. Los memos privados de un CIO no son necesariamente públicos ni sustituibles por un paper: incorporar únicamente material publicado o autorizado.
 
 **Tiempo:** conservar versiones históricas de normativa, guías y literatura. Un texto actualizado no representa automáticamente las reglas o conocimientos disponibles años antes; los datasets empíricos también pueden sufrir revisiones.
+
+### Sonda: adquisición y mediciones
+
+**Medición específica.** Literatura, factores empíricos y normativa tienen filas distintas. MiFID II requiere distinguir publicación, entrada en vigor, aplicación y versión consolidada; el extractor solo registra la aplicación cuando encuentra una frase explícita. La traducción ESMA conserva su propia versión. Los factores de French actuales no son un vintage histórico; su mes de observación no se usa como publicación.
+
+```python
+inventario_13 = sonda.inventario(13)
+display(inventario_13[["fuente", "tipo", "adaptador"]])
+muestra_13 = sonda.ejecutar(13)
+```
+
+```python
+resumen_13 = mostrar_apartado(sonda, 13, '13. Literatura de cartera y CIO')
+```
 
 ## 14. La literatura llega tarde
 
@@ -276,32 +527,37 @@ En consulta general, el análisis retrospectivo es conocimiento útil para los a
 
 Para comprobar “18 de 77 disponibles el 15-09-2008”, primero necesitamos los 77 identificadores y su historial. Tampoco se ha verificado el “+1,6 años” de la imagen. Informar denominador, tratamiento de versiones y casos inciertos antes de presentar esos valores como resultado.
 
-## Reglas comunes para el futuro pipeline
+### Sonda: adquisición y mediciones
 
-La columna “Cómo se trata” de la captura se traduce en estas decisiones de diseño; se implementarán cuando empiece la fase de código.
+**Medición específica.** Se usa el corte ilustrativo **15 de septiembre de 2008** como referencia en el retraso de publicación. Los valores negativos indican publicaciones anteriores al corte; los positivos, posteriores. La tabla incluye evidencia y estado de cada versión; un paper anterior puede quedar excluido si no se acredita su texto. No se reproducen «18 de 77» ni «+1,6 años» sin los identificadores y el historial del corpus completo.
 
-| Necesidad | Qué conservar o hacer |
-|---|---|
-| Original verificable | HTML/PDF original, URL, institución, tipo, idioma, fecha de descarga y hash del archivo |
-| Catálogo y versiones | Título, autores, identificador/DOI, versión, tema, país, idioma, estado editorial conocido, términos y relación con traducciones y documento padre |
-| Fechas como contexto | Fecha del evento/publicación cuando se conozcan y fecha de descarga; mostrar precisión e incertidumbre sin bloquear el corpus general |
-| TimeGate opcional | Para backtests: primera disponibilidad pública de la versión y evidencia; no confundir con descarga ni inventar horas |
-| Troceado de bancos centrales | Párrafos y una unidad por pregunta/respuesta, conservando contexto y orden; el rango de 60–350 palabras de la captura es una pauta inicial |
-| Troceado de informes | Sección, aproximadamente 800 tokens como pauta, con vínculo al documento padre y referencias a tablas |
-| Búsqueda y RAG | Catálogo y búsqueda textual del texto validado; embeddings por lotes prioritarios, ampliables según utilidad y coste; filtros temporales solo en modo histórico |
-| Consulta de agentes | Buscar por pregunta/tema/fuente/tipo, recuperar pasajes, ampliar contexto y abrir el documento completo con fuente, versión, página/sección y URL |
-| Cobertura útil | Medir documentos únicos utilizables por familia y tema, errores y referencias sin texto; evaluar relevancia y respaldo de citas con preguntas de referencia |
-| Tono y diferencias | Resultados derivados con modelo/método/versión y fecha de cálculo; vinculados al texto fuente |
-| Destino Cloudflare | R2 para originales, texto y JSONL; D1 para metadatos consultables. Las fuentes no se conectan directamente a R2: el recolector escribe los objetos y el catálogo |
+```python
+inventario_14 = sonda.inventario(14)
+display(inventario_14[["fuente", "tipo", "adaptador"]])
+muestra_14 = sonda.ejecutar(14)
+```
 
-No es necesario contratar una fuente de datos para comenzar la colección propuesta. Primero validar un pequeño lote gratuito y diverso; ampliar luego la carga retrospectiva. Como punto de partida, refrescos semanales para comunicaciones y mensuales para literatura, ajustables al piloto. Mantener los corpus fuera de Git y conservar en el repositorio documentación, configuración y, más adelante, el código de adquisición.
+```python
+resumen_14 = mostrar_apartado(sonda, 14, '14. La literatura llega tarde')
+```
 
-## Orden recomendado para empezar sin pagar por fuentes
+## Volumen, exportación y resumen para el equipo
 
-1. **Piloto diverso:** paquete de discursos BIS, muestra de BIS QR/Working Papers y papers de crisis, informes de estabilidad/GFSR, comunicaciones Fed/BCE y referencias de cartera abiertas. Validar formatos y utilidad de varias familias.
-2. **Consulta inicial:** buscar pasajes en texto validado, abrir contexto y comprobar citas; medir cobertura y calidad. Subir PDFs a R2 requiere además esa capa de recuperación para que los agentes los aprovechen.
-3. **Cargas amplias:** ampliar series y años del piloto, BoE/BoJ, GEP/WEO/OCDE, otros bancos y literatura de cartera/regulación. Priorizar descargas masivas oficiales y versiones abiertas autorizadas.
-4. **RAG y agentes:** combinar búsqueda textual y semántica, ampliar embeddings por lotes y conectar una interfaz de consulta con citas. Mantener accesibles los documentos sin embeddings.
-5. **Derivados opcionales:** tono, diferencias y huellas si aportan utilidad; reconstrucción temporal detallada y estudio de literatura tardía cuando se soliciten evaluaciones históricas.
+Todo se calcula desde los apartados ejecutados. Se conservan los fallos y las fechas ausentes. El tamaño cuenta originales únicos por hash **dentro de cada apartado**; una republicación puede aparecer en varios apartados y sus MB no deben sumarse como corpus deduplicado global. No se extrapola al universo sin inventario de documentos y una muestra representativa.
 
-**Criterio de aceptación para la biblioteca general:** original accesible y conservado, procedencia y términos registrados, texto suficientemente completo, versión/hash e identificador reproducible. Las fechas conocidas se conservan y las ausentes se marcan; no se exige precisión extrema. Referencias sin texto y fallos graves de extracción permanecen como pendientes. Para análisis histórico estricto se añade evidencia de disponibilidad antes del corte. El volumen se evalúa junto con relevancia, diversidad de fuentes y calidad de las citas.
+Los CSV de auditoría incluyen fuente, familia, fechas, precisión, evidencias, URL, hash, bytes, errores y política temporal. Los JSONL locales conservan además texto, fragmentos y filas de ejemplo. No hay subida a Cloudflare ni despliegue en esta sonda.
+
+```python
+resumen_equipo = sonda.resumen()
+display(resumen_equipo.round(2))
+directorio_tablas = sonda.guardar_tablas()
+print("Tablas de medición:", directorio_tablas)
+print("Textos y fragmentos:", RAIZ / "data/local/sonda")
+print("Originales:", RAIZ / "data/cache/sonda/objects")
+```
+
+## Limitaciones que quedan medidas
+
+La sonda registra problemas de acceso, cambios de HTML, fechas incompletas y extracción parcial. El texto HTML puede incluir material accesorio y no se ha aplicado OCR a PDFs escaneados. La descarga del PDF completo puede ocupar más que sus páginas extraídas; las métricas separan bytes, páginas y texto completo.
+
+La biblioteca de consulta general conserva estos textos y su contexto temporal. Para un backtest, deben acreditarse las versiones históricas de los portales, los vintages de tablas y la fecha de disponibilidad de traducciones y anotaciones. También hay que revisar el conocimiento futuro incorporado en cualquier modelo entrenado que produzca tono o resúmenes. Los gráficos muestran lo realmente medido y hacen visibles esas lagunas.

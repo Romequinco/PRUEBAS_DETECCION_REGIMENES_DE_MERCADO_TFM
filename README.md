@@ -16,14 +16,63 @@ por verificar, no resultados de una recolección ejecutada.
 
 ## Estado
 
-Hay documentación, un notebook de selección de fuentes y carpetas reservadas
-con `.gitkeep`. No hay scripts de recolección,
-dependencias instaladas, SQL, workflows ejecutables, infraestructura desplegada,
-credenciales, documentos descargados ni integración Cloudflare activa.
+Hay documentación y una sonda ejecutable de fuentes, con módulos Python para
+descarga, extracción, auditoría temporal y gráficos. La sonda conserva muestras
+locales fuera de Git. No hay recolección masiva, SQL, infraestructura desplegada
+ni integración Cloudflare activa.
 El repositorio existente utiliza `main` y está conectado a
 `feraltauste1/Bancos-centrales-riesgo-sistem-tico-y-literatura` en GitHub.
-El notebook documenta recomendaciones de fuentes; no representa una
-recolección de datos ya ejecutada.
+El notebook, a cargo de **Fernando Dapena Tauste**, mantiene sus 14 apartados
+independientes y consulta 94 familias de documentos, filas de datos y metadatos.
+Muestra cobertura de la muestra, retrasos, fechas de publicación/aplicación,
+calidad de extracción, volumen y errores. No representa el histórico completo.
+
+Para probarlo, ejecuta la configuración común y después el apartado que te
+interese. `MODO_RAPIDO=True` limita las muestras descubiertas a tres por familia
+y la extracción a 40 páginas por PDF; el modo ampliado también tiene límites.
+`HF_TOKEN` y `UNPAYWALL_EMAIL` se leen del entorno cuando hacen falta. Las demás
+consultas no requieren API key. Cada apartado muestra sus gráficos, fechas,
+precisión, evidencia y URL. Los fallos y las credenciales pendientes se registran
+sin detener las demás fuentes. El TimeGate histórico exige acreditar la versión
+textual; una fecha de publicación conocida no basta por sí sola.
+
+El código está en `src/macro_riesgo/sonda/` y el inventario en
+`config/sources/sonda_fuentes.json`. Los originales, JSONL y CSV se guardan en
+`data/cache/sonda/`, `data/local/sonda/` y `data/exports/sonda/`, ignorados por Git.
+La [lectura del notebook de Daniel](docs/ANALISIS_NOTEBOOK_REFERENCIA.md) explica
+la estructura adaptada y las decisiones temporales.
+
+## Entorno Python y ejecución
+
+El entorno virtual local está en `.venv/` y está excluido de Git.
+Las dependencias del notebook y de Jupyter están en `requirements.txt`.
+Desde la raíz del repositorio, abre JupyterLab en PowerShell:
+
+```powershell
+.\.venv\Scripts\python.exe -m jupyterlab notebooks
+```
+
+Abre `01_fuentes_prioridad_gratuita.ipynb` y selecciona el kernel
+`Python (.venv - Bancos centrales TFM)`. Puedes comprobar el intérprete con
+`import sys; print(sys.executable)`:
+debe apuntar a `.venv\Scripts\python.exe` dentro de este repositorio.
+En VS Code, selecciona ese mismo intérprete como kernel del notebook.
+
+Para activar el entorno en una terminal PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Si PowerShell no permite la activación, puedes seguir usando directamente
+`.\.venv\Scripts\python.exe`, como en el comando de JupyterLab.
+Para recrear el entorno en otra instalación con Python 3.13:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m ipykernel install --prefix .venv --name bancos-centrales-tfm --display-name "Python (.venv - Bancos centrales TFM)"
+```
 
 ## Diseño elegido
 
@@ -73,9 +122,21 @@ Bancos-centrales-riesgo-sistem-tico-y-literatura/
 └── .github/workflows/          Lugar reservado; no hay workflows todavía
 ```
 
-`pyproject.toml`, lockfile, módulos Python, esquemas JSON, migraciones SQL y
-workflows se crearán al empezar la implementación. No se han añadido archivos
-vacíos que puedan confundirse con una aplicación ejecutable.
+Los módulos Python de la sonda están implementados. `pyproject.toml`, lockfile,
+esquemas de producción, migraciones SQL y workflows del pipeline siguen pendientes.
+
+Para ejecutar todas las celdas y sincronizar las versiones de lectura:
+
+```powershell
+.\.venv\Scripts\python.exe jobs/ejecutar_notebook_sonda.py
+.\.venv\Scripts\python.exe jobs/exportar_notebook.py
+```
+
+Las pruebas de reglas temporales se ejecutan con:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests/unit -v
+```
 
 ## Qué leer primero
 

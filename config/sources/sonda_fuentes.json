@@ -1,0 +1,843 @@
+[
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Comunicado y decisión FOMC",
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "patron": "/pressreleases/monetary\\d{8}a\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Actas FOMC",
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "patron": "/fomcminutes\\d{8}\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Rueda de prensa: transcripción",
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm",
+    "patron": [
+      "/fomcpressconf\\d{8}\\.htm$",
+      "/FOMCpresconf\\d{8}\\.pdf$"
+    ],
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Beige Book",
+    "url": "https://www.federalreserve.gov/monetarypolicy/beige-book-default.htm",
+    "patron": "/beigebook\\d{6}(?:-summary)?\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Transcripción histórica de reunión (no de rueda de prensa)",
+    "url": "https://www.federalreserve.gov/monetarypolicy/fomchistorical2020.htm",
+    "patron": "/FOMC\\d{8}meeting\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 1,
+    "fuente": "Fed",
+    "tipo": "Discurso",
+    "url": "https://www.federalreserve.gov/newsevents/2026-speeches.htm",
+    "patron": "/speech/[^/]+\\d{8}[a-z]\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 2,
+    "fuente": "BCE",
+    "tipo": "Decisión de política monetaria",
+    "url": "https://www.ecb.europa.eu/press/press_conference/html/index.en.html",
+    "patron": "/press/pr/date/\\d{4}/html/ecb\\.mp.*\\.en\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 2,
+    "fuente": "BCE",
+    "tipo": "Declaración de política monetaria",
+    "url": "https://www.ecb.europa.eu/press/press_conference/html/index.en.html",
+    "patron": "/monetary-policy-statement/\\d{4}/html/.*\\.en\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 2,
+    "fuente": "BCE",
+    "tipo": "Monetary policy accounts",
+    "url": "https://www.ecb.europa.eu/press/accounts/html/index.en.html",
+    "patron": "/press/accounts/\\d{4}/html/ecb\\.mg.*\\.en\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 2,
+    "fuente": "BCE",
+    "tipo": "Discurso",
+    "url": "https://www.ecb.europa.eu/press/key/date/2026/html/ecb.sp260909~59a07e6f05.en.html",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 2,
+    "fuente": "BCE",
+    "tipo": "Preguntas y respuestas",
+    "url": "https://www.ecb.europa.eu/press/press_conference/html/index.en.html",
+    "patron": "/monetary-policy-statement/\\d{4}/html/.*\\.en\\.html$",
+    "adaptador": "qa",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoE",
+    "tipo": "Decisión y actas MPC",
+    "url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/july-2026",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoE",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.bankofengland.co.uk/monetary-policy-report/2026/april-2026",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoE",
+    "tipo": "Discurso",
+    "url": "https://www.bankofengland.co.uk/speech/2026/october/andrew-bailey-speech-at-the-istanbul-economic-forum-central-bank-of-the-republic-of-turkey-istanbul",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoJ",
+    "tipo": "Comunicado de política monetaria",
+    "url": "https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm",
+    "patron": "/mpmdeci/mpr_\\d{4}/k\\d{6}a\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoJ",
+    "tipo": "Summary of Opinions",
+    "url": "https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm",
+    "patron": "/opinion_\\d{4}/opi\\d{6}\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoJ",
+    "tipo": "Minutes",
+    "url": "https://www.boj.or.jp/en/mopo/mpmsche_minu/index.htm",
+    "patron": "/minu_\\d{4}/g\\d{6}\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoJ",
+    "tipo": "Outlook Report",
+    "url": "https://www.boj.or.jp/en/mopo/outlook/index.htm",
+    "patron": "/gor\\d{4}b\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 3,
+    "fuente": "BoJ",
+    "tipo": "Discurso original BoJ",
+    "url": "https://www.boj.or.jp/en/announcements/press/koen_2026/index.htm",
+    "patron": "/koen_\\d{4}/ko\\d{6}[a-z]\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 4,
+    "fuente": "BIS",
+    "tipo": "Discurso individual y metadatos",
+    "url": "https://www.bis.org/speeches/central-bank",
+    "patron": "/speeches/\\d{8}-[^/?#]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 4,
+    "fuente": "BIS",
+    "tipo": "Annual Economic Report",
+    "url": "https://www.bis.org/publications/aer",
+    "patron": "/publications/aer-\\d{4}$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 4,
+    "fuente": "BIS",
+    "tipo": "Annual Report institucional",
+    "url": "https://www.bis.org/about/areport/index.htm",
+    "patron": "/publications/annual-report-\\d{4}$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 4,
+    "fuente": "BIS",
+    "tipo": "CSV oficial de discursos (1996)",
+    "url": "https://www.bis.org/speeches/central-bank/download",
+    "patron": "speeches-1996\\.zip$",
+    "adaptador": "bis_csv",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BCB (Brasil)",
+    "tipo": "Comunicado Copom",
+    "url": "https://www.bcb.gov.br/en/monetarypolicy/copomstatements/cronologicos",
+    "patron": "/copomstatements/[^/?#]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BCB (Brasil)",
+    "tipo": "Acta Copom",
+    "url": "https://www.bcb.gov.br/content/copom/atascopom/Copom262-not20240508262.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BCB (Brasil)",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.bcb.gov.br/content/ri/inflationreport/202503/rpm202503i.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BoC (Canadá)",
+    "tipo": "Decisión monetaria",
+    "url": "https://www.bankofcanada.ca/2026/09/fad-press-release-2026-09-02/",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "BoC (Canadá)",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.bankofcanada.ca/publications/mpr/mpr-2026-07-15/",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BoC (Canadá)",
+    "tipo": "Deliberaciones",
+    "url": "https://www.bankofcanada.ca/2026/09/summary-of-governing-council-deliberations-fixed-announcement-date-of-september-2-2026/",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "BoC (Canadá)",
+    "tipo": "Discurso",
+    "url": "https://www.bankofcanada.ca/2026/09/adapting-structural-forces-navigating-uncertainty/",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "SNB (Suiza)",
+    "tipo": "Evaluación y decisión monetaria",
+    "url": "https://www.snb.ch/en/publications/communication/press-releases-restricted/pre_20260618",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "Riksbank (Suecia)",
+    "tipo": "Decisión monetaria",
+    "url": "https://www.riksbank.se/en-gb/monetary-policy/monetary-policy-report/",
+    "patron": "/\\d{4}/monetary-policy-decision-[^/]+/$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "Riksbank (Suecia)",
+    "tipo": "Actas",
+    "url": "https://www.riksbank.se/en-gb/monetary-policy/monetary-policy-report/minutes-of-the-executive-boards-monetary-policy-meetings/",
+    "patron": "\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Riksbank (Suecia)",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.riksbank.se/en-gb/monetary-policy/monetary-policy-report/monetary-policy-reports-and-updates/",
+    "patron": "\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Norges Bank (Noruega)",
+    "tipo": "Decisión monetaria",
+    "url": "https://www.norges-bank.no/en/news-events/news/Press-releases/2026/2026-09-24-rate/",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "Norges Bank (Noruega)",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.norges-bank.no/en/news-events/publications/Monetary-Policy-Report/",
+    "patron": "/\\d{4}/[^/]+/$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Norges Bank (Noruega)",
+    "tipo": "Discurso",
+    "url": "https://www.norges-bank.no/en/news-events/news/Speeches/",
+    "patron": "/\\d{4}/[^/]+/$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBNZ (Nueva Zelanda)",
+    "tipo": "Monetary Policy Statement y decisión del comité",
+    "url": "https://www.rbnz.govt.nz/hub/publications/monetary-policy-statement/2025/nov-1125/monetary-policy-statement-november-2025",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBI (India)",
+    "tipo": "Comunicado y resolución MPC",
+    "url": "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63742",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBI (India)",
+    "tipo": "Monetary Policy Report",
+    "url": "https://www.rbi.org.in/Scripts/PublicationsView.aspx?id=24085",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBI (India)",
+    "tipo": "Discurso",
+    "url": "https://www.rbi.org.in/scripts/BS_SpeechesView.aspx?Id=1582",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banxico (México)",
+    "tipo": "Anuncio de decisión",
+    "url": "https://www.banxico.org.mx/publicaciones-y-prensa/anuncios-de-las-decisiones-de-politica-monetaria/anuncios-politica-monetaria-t.html",
+    "patron": "/anuncios-de-las-decisiones.*\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banxico (México)",
+    "tipo": "Minuta",
+    "url": "https://www.banxico.org.mx/publicaciones-y-prensa/minutas-de-las-decisiones-de-politica-monetaria/minutas-politica-monetaria-ta.html",
+    "patron": "/minutas-de-las-decisiones.*\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banxico (México)",
+    "tipo": "Informe trimestral",
+    "url": "https://www.banxico.org.mx/publicaciones-y-prensa/informes-trimestrales/informes-trimestrales-precios.html",
+    "patron": "/informes-trimestrales/.*\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banco de España",
+    "tipo": "Proyecciones macroeconómicas",
+    "url": "https://www.bde.es/wbe/es/publicaciones/",
+    "patron": "/proyecciones-macro-informe-trimestral/[^/]+\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banco de España",
+    "tipo": "Análisis: documento ocasional",
+    "url": "https://www.bde.es/wbe/es/publicaciones/",
+    "patron": "/DocumentosOcasionales/\\d{2}/(?:Fich|Files)/do\\d+[a-z]?\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "Banco de España",
+    "tipo": "Informe de estabilidad financiera",
+    "url": "https://www.bde.es/wbe/es/publicaciones/estabilidad-financiera-politica-macroprudencial/informe-estabilidad-financiera/",
+    "patron": "\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBA (Australia)",
+    "tipo": "Decisión monetaria",
+    "url": "https://www.rba.gov.au/monetary-policy/int-rate-decisions/2026/",
+    "patron": "/media-releases/\\d{4}/mr-\\d{2}-\\d{2}\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBA (Australia)",
+    "tipo": "Actas",
+    "url": "https://www.rba.gov.au/monetary-policy/rba-board-minutes/2026/",
+    "patron": "/minutes/\\d{4}/\\d{8}\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "RBA (Australia)",
+    "tipo": "Statement on Monetary Policy",
+    "url": "https://www.rba.gov.au/publications/smp/",
+    "patron": "/smp/\\d{4}/[^/]+/(?:index\\.html)?$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 5,
+    "fuente": "PBoC (China)",
+    "tipo": "China Monetary Policy Report Q1 2025 (portal oficial regional)",
+    "url": "https://xining.pbc.gov.cn/en/3688229/3688353/3688356/2025/2025120609594943547/2025061614254988376.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 6,
+    "fuente": "Banco Mundial",
+    "tipo": "GEP: informe/capítulo",
+    "url": "https://www.worldbank.org/en/publication/global-economic-prospects",
+    "patron": "GEP-Jun-2026-Chapter-1-Highlights\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 6,
+    "fuente": "Banco Mundial",
+    "tipo": "GEP: fila de datos publicada junto al informe",
+    "url": "https://www.worldbank.org/en/publication/global-economic-prospects",
+    "patron": "GEP-Jun-2026-Chapter-2-Box-LIC-table\\.xlsx$",
+    "adaptador": "tabla",
+    "header": 3,
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 6,
+    "fuente": "FMI",
+    "tipo": "World Economic Outlook: informe",
+    "url": "https://www.imf.org/en/Publications/WEO",
+    "patron": "/weo/issues/\\d{4}/\\d{2}/\\d{2}/[^/?#]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 6,
+    "fuente": "OCDE",
+    "tipo": "Economic Outlook: informe, junio 2025",
+    "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/06/oecd-economic-outlook-volume-2025-issue-1_1fd979a8/83363382-en.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 6,
+    "fuente": "FMI DataMapper",
+    "tipo": "WEO: crecimiento real del PIB de España",
+    "url": "https://www.imf.org/external/datamapper/api/v2/NGDP_RPCH/ESP",
+    "adaptador": "weo",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 7,
+    "fuente": "Hugging Face",
+    "tipo": "aufklarer/central-bank-communications",
+    "identificador": "aufklarer/central-bank-communications",
+    "adaptador": "huggingface",
+    "config": "documents",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 7,
+    "fuente": "Hugging Face",
+    "tipo": "gtfintechlab/fomc_communication",
+    "identificador": "gtfintechlab/fomc_communication",
+    "adaptador": "huggingface",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 7,
+    "fuente": "Hugging Face",
+    "tipo": "istat-ai/cb-speeches",
+    "identificador": "istat-ai/cb-speeches",
+    "adaptador": "huggingface",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 7,
+    "fuente": "Fed",
+    "tipo": "Beige Book original (sin dataset HF identificado)",
+    "url": "https://www.federalreserve.gov/monetarypolicy/beige-book-default.htm",
+    "patron": "/beigebook\\d{6}(?:-summary)?\\.htm$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "Fed",
+    "tipo": "Financial Stability Report",
+    "url": "https://www.federalreserve.gov/publications/financial-stability-report.htm",
+    "patron": "/publications/files/financial-stability-report-\\d{8}\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "BCE",
+    "tipo": "Financial Stability Review",
+    "url": "https://www.ecb.europa.eu/pub/financial-stability/fsr/html/index.en.html",
+    "patron": "/fsr/html/ecb\\.fsr\\d{6}~[^.]+\\.en\\.html$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "BoE",
+    "tipo": "Financial Stability Report",
+    "url": "https://www.bankofengland.co.uk/sitemap/financial-stability-report",
+    "patron": "/financial-stability-report/\\d{4}/[^/]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "ESRB",
+    "tipo": "Informe de riesgo sistémico",
+    "url": "https://www.esrb.europa.eu/pub/reports/html/index.en.html",
+    "patron": "/pub/pdf/reports/.*\\.en\\.pdf",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "OFR",
+    "tipo": "Annual Report",
+    "url": "https://www.financialresearch.gov/annual-reports/",
+    "patron": "/annual-reports/\\d{4}-annual-report/$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 8,
+    "fuente": "FSB",
+    "tipo": "Informe de supervisión y vulnerabilidades",
+    "url": "https://www.fsb.org/publications/",
+    "patron": "/\\d{4}/\\d{2}/[^/]*report/$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 9,
+    "fuente": "BIS",
+    "tipo": "Quarterly Review: edición completa",
+    "url": "https://www.bis.org/publications/qr",
+    "patron": "/publications/qr-\\d{6}$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 9,
+    "fuente": "BIS",
+    "tipo": "Working Paper: autores, serie y resumen",
+    "url": "https://www.bis.org/publications/working-paper",
+    "patron": "/publications/working-paper-\\d+-[^/?#]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 9,
+    "fuente": "BIS",
+    "tipo": "Quarterly Review: artículo",
+    "url": "https://www.bis.org/publ/qtrpdf/r2503a.htm",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 10,
+    "fuente": "FMI",
+    "tipo": "GFSR: ficha de una edición",
+    "url": "https://www.imf.org/en/Publications/GFSR",
+    "patron": "/gfsr/issues/\\d{4}/\\d{2}/\\d{2}/[^/?#]+$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 10,
+    "fuente": "FMI",
+    "tipo": "GFSR: texto del informe completo (extracción limitada por configuración)",
+    "url": "https://www.imf.org/-/media/files/publications/gfsr/2026/april/english/text.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 10,
+    "fuente": "FMI eLibrary",
+    "tipo": "Ficha editorial alternativa GFSR",
+    "url": "https://www.elibrary.imf.org/subject/082",
+    "patron": "/(?:view|abstract)/book/[^?#]+",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "BIS",
+    "tipo": "Working Paper sobre crisis",
+    "url": "https://www.bis.org/publ/work395.htm",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "BCE",
+    "tipo": "Working Paper institucional",
+    "url": "https://www.ecb.europa.eu/press/research-publications/working-papers/html/index.en.html",
+    "patron": "/pub/pdf/scpwps/ecb[^?#]+\\.en\\.pdf",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "arXiv",
+    "tipo": "Preprint sobre crisis financiera",
+    "identificador": "0905.0220",
+    "adaptador": "arxiv",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "SSRN",
+    "tipo": "Manuscrito: ficha y resumen",
+    "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1106608",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "NBER",
+    "tipo": "Working Paper: ficha, autores y resumen",
+    "url": "https://www.nber.org/papers/w13882",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "Crossref",
+    "tipo": "Metadatos bibliográficos",
+    "identificador": "10.3386/w13882",
+    "adaptador": "crossref",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 11,
+    "fuente": "Unpaywall",
+    "tipo": "Ubicación de copia abierta",
+    "identificador": "10.3386/w13882",
+    "adaptador": "unpaywall",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 12,
+    "fuente": "ESRB",
+    "tipo": "Un episodio de la base de crisis europeas",
+    "url": "https://www.esrb.europa.eu/pub/financial-crises/html/index.en.html",
+    "patron": "\\.xlsx(?:\\?|$)",
+    "adaptador": "tabla",
+    "hoja": "Systemic crises",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 12,
+    "fuente": "FMI",
+    "tipo": "Systemic Banking Crises Database 1970–2025: documento y metodología",
+    "url": "https://www.imf.org/en/publications/wp/issues/2026/05/14/systemic-banking-crises-database-1970-2025-576036",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 12,
+    "fuente": "FMI",
+    "tipo": "Laeven–Valencia 2018: versión histórica documentada",
+    "url": "https://www.imf.org/en/Publications/WP/Issues/2018/09/14/Systemic-Banking-Crises-Revisited-46232",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 12,
+    "fuente": "Macrohistory",
+    "tipo": "Una observación macrofinanciera histórica",
+    "url": "https://www.macrohistory.net/database/",
+    "patron": "JSTdataset[^/?]+\\.xlsx",
+    "adaptador": "tabla",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 13,
+    "fuente": "BIS",
+    "tipo": "Literatura de carteras: working paper",
+    "url": "https://www.bis.org/publ/work1362.htm",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 13,
+    "fuente": "BCE",
+    "tipo": "Portfolio rebalancing: working paper",
+    "url": "https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2125.en.pdf",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 13,
+    "fuente": "Crossref",
+    "tipo": "Referencia de teoría de carteras: Portfolio Selection",
+    "identificador": "10.1111/j.1540-6261.1952.tb01525.x",
+    "adaptador": "crossref",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 13,
+    "fuente": "Kenneth French / Dartmouth",
+    "tipo": "Una fila mensual de factores (porcentajes según cabecera)",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip",
+    "patron": null,
+    "adaptador": "tabla",
+    "formato": "zip_csv",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 13,
+    "fuente": "EUR-Lex",
+    "tipo": "MiFID II: texto oficial",
+    "url": "https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32014L0065",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 13,
+    "fuente": "ESMA",
+    "tipo": "Directrices de idoneidad MiFID II: texto español",
+    "url": "https://www.esma.europa.eu/document/guidelines-certain-aspects-mifid-ii-suitability-requirements-1",
+    "patron": "suitability_requirements_ES\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": true
+  },
+  {
+    "apartado": 13,
+    "fuente": "CNMV",
+    "tipo": "Guía técnica de conveniencia (distinta de idoneidad)",
+    "url": "https://www.cnmv.es/portal/legislacion/guias-tecnicas?lang=es",
+    "patron": "GT_2_2022_EvaluacConveniencia\\.pdf$",
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 14,
+    "fuente": "arXiv",
+    "tipo": "Primera fecha pública y actualización del preprint",
+    "identificador": "0905.0220",
+    "adaptador": "arxiv",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 14,
+    "fuente": "Crossref",
+    "tipo": "Fechas editoriales frente a fechas de registro",
+    "identificador": "10.3386/w13882",
+    "adaptador": "crossref",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 14,
+    "fuente": "SSRN",
+    "tipo": "Ficha original: buscar Posted / Last revised",
+    "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1106608",
+    "patron": null,
+    "adaptador": "documento",
+    "aplicacion_relevante": false
+  },
+  {
+    "apartado": 14,
+    "fuente": "Unpaywall",
+    "tipo": "Ubicación de copia abierta",
+    "identificador": "10.3386/w13882",
+    "adaptador": "unpaywall",
+    "aplicacion_relevante": false
+  }
+]

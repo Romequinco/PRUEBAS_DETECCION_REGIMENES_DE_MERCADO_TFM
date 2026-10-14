@@ -2,6 +2,14 @@
 
 Diseño conceptual; no se han creado tablas SQL ni contratos ejecutables.
 
+La sonda del notebook implementa una primera política local
+`sonda-timegate-v1` en `src/macro_riesgo/sonda/temporal.py`: texto completo,
+versión acreditada y disponibilidad con zona antes del corte. Una fecha con
+solo día y zona conocida se admite desde el inicio del día local siguiente;
+es un límite conservador, no una hora observada. La biblioteca general conserva
+también muestras con fecha incierta. Este código no implementa todavía el
+catálogo D1 ni el filtrado de un servicio RAG.
+
 La consulta general del corpus es el modo predeterminado: admite literatura
 relevante aunque no se conozca la fecha exacta de su primera disponibilidad.
 Se conservan fechas, versiones y dudas para aportar contexto. El modo histórico
