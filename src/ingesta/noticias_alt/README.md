@@ -8,7 +8,7 @@ noticias al cajón, alternativos a la base de series. Reglas comunes: [`docs/fas
 
 Por un lado, **noticias** con su fecha y hora de publicación, históricas y en vivo, de todo el mundo. Por otro, los
 **datos alternativos** pedidos en la tutoría. **Todos se investigan y todos entran**
-(ver [`docs/tfm/DATOS_ALTERNATIVOS.md`](../../../docs/tfm/DATOS_ALTERNATIVOS.md)).
+(ver [`docs/fase2/datos_alternativos.md`](../../../docs/fase2/datos_alternativos.md)).
 
 ## Fuentes a investigar
 

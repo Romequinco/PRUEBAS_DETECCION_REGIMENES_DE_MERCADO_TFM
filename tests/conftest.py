@@ -10,6 +10,7 @@ Estructura::
     tests/fusion/       -> regimenes.fusion
     tests/sinteticos/   -> regimenes.sinteticos
     tests/test_paquete.py -> guardas del paquete completo
+    tests/test_docs_enlaces.py -> enlaces relativos de docs/, READMEs y notebooks
 
 Marcadores (declarados en ``pyproject.toml``):
 
