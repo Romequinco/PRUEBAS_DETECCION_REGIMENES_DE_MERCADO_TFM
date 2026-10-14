@@ -1,0 +1,7 @@
+dia,clave,cobertura,dia_exacto,warc,warcs_mes,bytes_warc,bytes_leidos,respuestas,con_texto,respuestas_por_warc_est,respuestas_mes_est,gb_mes_est,mes_completo
+2008-09-15,lehman,False,,,,,,,,,,,
+2016-11-09,elecciones_2016,True,True,CC-NEWS-20161109145340-00023.warc.gz,32.0,736176027.0,3000000.0,126.0,123.0,30919.0,989408.0,23.6,True
+2020-03-16,covid,True,True,CC-NEWS-20200316144652-01243.warc.gz,441.0,1072698809.0,3000000.0,102.0,78.0,36472.0,16084152.0,473.1,True
+2023-03-10,svb,True,True,CC-NEWS-20230310141823-01106.warc.gz,745.0,1072712632.0,3000000.0,75.0,62.0,26818.0,19979410.0,799.2,True
+2025-04-07,aranceles,True,True,CC-NEWS-20250407132826-01517.warc.gz,491.0,1072774790.0,3000000.0,70.0,54.0,25031.0,12290221.0,526.7,True
+2026-10-14,hoy,True,True,CC-NEWS-20261014065111-00253.warc.gz,161.0,1072732544.0,3000000.0,63.0,52.0,22527.0,3626847.0,172.7,False

@@ -1,0 +1,68 @@
+dia,fuente,titular,n_medios,medio_original,primera_fecha,otros_medios
+elecciones_2016,ccnews,"Endorsing Trump didn’t hurt California Republicans, despite Clinton wave",3,idahostatesman,2016-11-09T15:06:06+00:00,charlotteobserver; sunherald
+elecciones_2016,ccnews,‘This was a white lash’: How some people are feeling this morning,3,idahostatesman,2016-11-09T15:06:07+00:00,charlotteobserver; sunherald
+elecciones_2016,ccnews,Trump market surprise: Dow turns up in U.S. after world sells off,3,idahostatesman,2016-11-09T15:06:10+00:00,charlotteobserver; sunherald
+elecciones_2016,ccnews,Clinton to deliver concession speech within the hour,3,idahostatesman,2016-11-09T15:06:11+00:00,charlotteobserver; sunherald
+elecciones_2016,ccnews,The London Klezmer Quartet play Chichester,2,crawleyobserver.co.uk,2016-11-09T15:11:08+00:00,midsussextimes.co.uk
+elecciones_2016,ccnews,Comedian Romesh Ranganathan to judge art competition for hospital,2,midsussextimes.co.uk,2016-11-09T15:15:11+00:00,crawleyobserver.co.uk
+elecciones_2016,ccnews,Drug driving arrest following collision,2,crawleyobserver.co.uk,2016-11-09T15:28:11+00:00,dunstabletoday.co.uk
+covid,gdelt_doc,Bank of Japan holds emergency policy meeting after Fed cut,10,abcnews.go.com,2020-03-16T00:00:00+00:00,680news.com; startribune.com; sfgate.com; mynorthwest.com; dailyherald.com
+covid,gdelt_doc,Business and economic reports scheduled for Tuesday,7,abcnews.go.com,2020-03-16T00:00:00+00:00,houstonchronicle.com; 680news.com; chron.com; startribune.com; washingtonpost.com
+covid,gdelt_doc,"After Trump boasts about rally , Wall Street tanks again",5,uk.reuters.com,2020-03-16T00:00:00+00:00,theglobeandmail.com; reuters.com; investing.com; kitco.com
+covid,gdelt_doc,US Federal Reserve cuts key interest rate to 0 - 0 . 25 % amid coronavirus crisis,4,business-standard.com,2020-03-16T00:00:00+00:00,thehindubusinessline.com; indiatvnews.com; telegraphindia.com
+covid,gdelt_doc,European Union headed for 2020 recession - EU Breton,3,uk.reuters.com,2020-03-16T00:00:00+00:00,in.reuters.com; reuters.com
+covid,gdelt_doc,Goldman Sachs predicts U . S . GDP to shrink 5 % in second quarter,3,bnnbloomberg.ca,2020-03-16T00:00:00+00:00,newsmax.com; finance.yahoo.com
+covid,gdelt_doc,"Fed takes emergency action , including slashing rate by full percentage point",3,wmur.com,2020-03-16T00:00:00+00:00,wxii12.com; wcvb.com
+covid,gdelt_doc,"When market drops , play long game with retirement savings :: WRAL . com",3,wral.com,2020-03-16T00:00:00+00:00,finance.yahoo.com; infotel.ca
+covid,gdelt_gkg,"Trump calls on Americans to cease hoarding food, supplies",3,wfmj.com,2020-03-16T00:00:00+00:00,wect.com; wbtv.com
+covid,gdelt_gkg,"AP FACT CHECK: The Dems on pandemic, Social Security, more",3,wbng.com,2020-03-16T00:00:00+00:00,aberdeennews.com; madison.com
+covid,gdelt_gkg,Ask the Weather Guys: Will spring temperatures affect the COVID-19 outbreak?,3,napavalleyregister.com,2020-03-16T00:00:00+00:00,missoulian.com; columbustelegram.com
+covid,gdelt_doc,"Alert : Trump says US economy may be heading toward recession amid pandemic , calls virus…",2,chron.com,2020-03-16T00:00:00+00:00,sfgate.com
+covid,gdelt_doc,Fed slashes main interest rate to near zero in historic move designed to cushion economic…,2,businessinsider.com.au,2020-03-16T00:00:00+00:00,news.yahoo.com
+covid,gdelt_doc,Should You Buy a Home If a Recession Is Imminent ? Answers Ahead,2,sfgate.com,2020-03-16T00:00:00+00:00,realtor.com
+covid,gdelt_doc,Feed News - International Shia News Agency,2,en.shafaqna.com,2020-03-16T00:00:00+00:00,shafaqna.com
+svb,gdelt_doc,More Than $70 Billion Wiped Off Crypto Market in 24 Hours as Bitcoin Drops 8 % Below $20…,8,nbcwashington.com,2023-03-10T00:00:00+00:00,nbcbayarea.com; nbcsandiego.com; nbcdfw.com; nbclosangeles.com; nbcnewyork.com
+svb,gdelt_doc,UK Economy Rebounds With Stronger - Than - Expected January GDP Print,6,nbcphiladelphia.com,2023-03-10T00:00:00+00:00,nbcdfw.com; nbcsandiego.com; nbcmiami.com; nbclosangeles.com; nbcchicago.com
+svb,gdelt_doc,UK economic rebound eases recession fear before budget,5,digitaljournal.com,2023-03-10T00:00:00+00:00,news.yahoo.com; ibtimes.com; ibtimes.co.uk; menafn.com
+svb,gdelt_doc,Unemployment rate increases as Fed continues to fight inflation,4,abc15.com,2023-03-10T00:00:00+00:00,10news.com; wxyz.com; abcactionnews.com
+svb,gdelt_doc,Cathie Wood ARK Fund set for worst week since Sept as higher rates loom,3,streetinsider.com,2023-03-10T00:00:00+00:00,financialpost.com; news.yahoo.com
+svb,gdelt_doc,India moved from women development to women - led development in 9 years : PM,3,business-standard.com,2023-03-10T00:00:00+00:00,tribuneindia.com; ndtv.com
+svb,gdelt_doc,Banks feel sting of Fed fight against inflation,3,abcnews.go.com,2023-03-10T00:00:00+00:00,news.yahoo.com; wfmz.com
+svb,gdelt_doc,European Markets Expected to Lower Open After a Week of Market Sell - Offs,3,nbcdfw.com,2023-03-10T00:00:00+00:00,nbcmiami.com; nbcsandiego.com
+svb,gdelt_doc,India moved from women development to women - led development in last nine years : PM Mod…,3,timesofindia.indiatimes.com,2023-03-10T00:00:00+00:00,thehindu.com; economictimes.indiatimes.com
+svb,gdelt_doc,Stock Market | FinancialContent Business Page,2,markets.financialcontent.com,2023-03-10T00:00:00+00:00,financialcontent.com
+svb,gdelt_doc,European Markets Open Lower ; Bank Stocks Shed 4 % on Silicon Valley Bank Plummet – NBC L…,2,nbclosangeles.com,2023-03-10T00:00:00+00:00,nbcchicago.com
+svb,gdelt_doc,SVB Financial shares slide again on concerns over balance sheet,2,streetinsider.com,2023-03-10T00:00:00+00:00,economictimes.indiatimes.com
+svb,gdelt_doc,Economy grows in Budget boost to Jeremy Hunt,2,telegraph.co.uk,2023-03-10T00:00:00+00:00,news.yahoo.com
+svb,gdelt_doc,Why employment remains red hot even as the Federal Reserve tries to put job market on ice,2,news.yahoo.com,2023-03-10T00:00:00+00:00,theconversation.com
+svb,gdelt_doc,Has Britain avoided a recession ? All eyes turn to Spring Budget,2,dailymail.co.uk,2023-03-10T00:00:00+00:00,thisismoney.co.uk
+aranceles,gdelt_doc,Tariffs : The potential positive impact on your finances,8,wcpo.com,2025-04-07T00:00:00+00:00,ksby.com; kxxv.com; wtvr.com; wkbw.com; abcactionnews.com
+aranceles,gdelt_doc,Trump Breaks Silence On Sweeping Tariff Plans Following Market Downturn,8,newsradio1290wtks.iheart.com,2025-04-07T00:00:00+00:00,wmeq.iheart.com; jetradio1400.iheart.com; 1019bigwaax.iheart.com; b98fm.iheart.com; newsradio967.iheart.com
+aranceles,gdelt_doc,Trump digs in his heels as global markets keep dropping over tariffs,7,wsbradio.com,2025-04-07T00:00:00+00:00,theyeshivaworld.com; economictimes.indiatimes.com; bostonherald.com; ky3.com; ktar.com
+aranceles,gdelt_doc,Worst stock market days in history,5,fox29.com,2025-04-07T00:00:00+00:00,fox5dc.com; foxla.com; fox6now.com; ktvu.com
+aranceles,gdelt_doc,7 minutes of mayhem : Trump rumour sends $4 . 2 trillion shock through Wall Street,4,watoday.com.au,2025-04-07T00:00:00+00:00,brisbanetimes.com.au; theage.com.au; smh.com.au
+aranceles,gdelt_doc,Tariffs are fueling fears of a recession . What does it take to actually declare one ?,4,kalw.org,2025-04-07T00:00:00+00:00,wamc.org; wmot.org; wjct.org
+aranceles,gdelt_doc,Will the tariffs lead to a recession ? Here how to know if were in one,4,clickorlando.com,2025-04-07T00:00:00+00:00,news4jax.com; journal-news.com; yahoo.com
+aranceles,gdelt_doc,This is the stock market worst start to a presidential term in modern history,3,aol.com,2025-04-07T00:00:00+00:00,us.cnn.com; erienewsnow.com
+aranceles,gdelt_gkg,"Buchenwald Camp Survivor Recounts Liberation, 80 Years On",3,ibtimes.com,2025-04-07T00:00:00+00:00,digitaljournal.com; northwestsignal.net
+aranceles,gdelt_doc,Stocks plunge to start week as Trump digs in on tariffs,2,thehill.com,2025-04-07T00:00:00+00:00,yahoo.com
+aranceles,gdelt_doc,TAT Technologies Ltd . - Ordinary Shares ( Nasdaq : TATT ) Stock Quote,2,markets.financialcontent.com,2025-04-07T00:00:00+00:00,financialcontent.com
+aranceles,gdelt_doc,Trump has blown lid off illusion ... we have to build production - based economy : Rahul…,2,news.webindia123.com,2025-04-07T00:00:00+00:00,aninews.in
+aranceles,gdelt_doc,US stock futures extend heavy losses to kick off new week,2,shine.cn,2025-04-07T00:00:00+00:00,capitalfm.co.ke
+aranceles,gdelt_doc,Oil tumbles further as US - China trade conflict fuels recession fears,2,marketscreener.com,2025-04-07T00:00:00+00:00,brecorder.com
+aranceles,gdelt_doc,"Indian shares sink on global trade war , U . S . recession fears",2,thehindu.com,2025-04-07T00:00:00+00:00,marketscreener.com
+hoy,gdelt_gkg,Water firms set to return £240m to customers by 2030 for poor performance,4,leighjournal.co.uk,2026-10-14T00:00:00+00:00,wiltshiretimes.co.uk; newsandstar.co.uk; halesowennews.co.uk
+hoy,gdelt_gkg,Burnham to meet Zelensky in wake of Trump's diesel deal with Moscow,4,kidderminstershuttle.co.uk,2026-10-14T00:00:00+00:00,london-now.co.uk; worcesternews.co.uk; witneygazette.co.uk
+hoy,gdelt_gkg,"Russell Brand 'did Basil Fawlty silly walks' before raping woman, court told",4,peeblesshirenews.com,2026-10-14T00:00:00+00:00,lynnnews.co.uk; redditchadvertiser.co.uk; bournemouthecho.co.uk
+hoy,gdelt_gkg,Body of man recovered amid search for missing fishing boat,3,redditchadvertiser.co.uk,2026-10-14T00:00:00+00:00,basingstokegazette.co.uk; heraldseries.co.uk
+hoy,gdelt_gkg,"Iran-linked incident at RAF Fairford 'not unique', spy chief says",3,northwichguardian.co.uk,2026-10-14T00:00:00+00:00,worcesternews.co.uk; kidderminstershuttle.co.uk
+hoy,gdelt_gkg,Getting information from RUC about Omagh like pulling teeth – Nuala O'Loan,3,eadt.co.uk,2026-10-14T00:00:00+00:00,lynnnews.co.uk; redditchadvertiser.co.uk
+hoy,gdelt_gkg,"Raising gaming machine tax could put 3,800 casino jobs at risk, report warns",3,wiltshiretimes.co.uk,2026-10-14T00:00:00+00:00,readingchronicle.co.uk; halesowennews.co.uk
+hoy,bing_news_rss,Bank of America hit with $1.2 billion fine over failure to report $5 billion in suspiciou…,2,International Business Times UK on MSN,2026-10-13T16:27:24+00:00,ibtimes.co.uk
+hoy,bing_news_rss,Bank of America hit with $1.2B penalty over anti-money laundering failures,2,USA TODAY on MSN,2026-10-13T20:42:00+00:00,Daily Sabah
+hoy,gdelt_gkg,Strong winds to hit north-west Scotland as weather warning issued,2,wiltshiretimes.co.uk,2026-10-14T00:00:00+00:00,readingchronicle.co.uk
+hoy,gdelt_gkg,"6 Deaths Confirmed in Florida From Hurricane Isaias, Governor Says",2,chronicle.lu,2026-10-14T00:00:00+00:00,hot96.com
+hoy,gdelt_gkg,Russell Brand's entourage 'did nothing during radio station sexual assault',2,darlingtonandstocktontimes.co.uk,2026-10-14T00:00:00+00:00,surreycomet.co.uk
+hoy,gdelt_gkg,Questions mount over FBI raid at Rep. Ilhan Omar's Washington home amid new allegations,2,foxrochester.com,2026-10-14T00:00:00+00:00,news3lv.com
+hoy,gdelt_gkg,King sends well-wishes to Pope after cancer diagnosis,2,lancashiretelegraph.co.uk,2026-10-14T00:00:00+00:00,eadt.co.uk
+hoy,gdelt_gkg,Ukrainian Ex-Officer Stands Trial in Germany Over Nord Stream Bombing,2,chronicle.lu,2026-10-14T00:00:00+00:00,Moscow Times

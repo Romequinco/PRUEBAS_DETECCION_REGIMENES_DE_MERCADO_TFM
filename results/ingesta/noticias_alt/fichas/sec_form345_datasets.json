@@ -1,0 +1,32 @@
+{
+  "fuente": "sec_form345_datasets",
+  "nombre": "SEC Insider Transactions Data Sets (Forms 3/4/5 trimestrales)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity"
+  ],
+  "rag": "serie",
+  "url": "https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "dominio público (SEC EDGAR); User-Agent con contacto; ≤10 peticiones/s",
+  "cobertura_inicio": "2006-01-01",
+  "cobertura_fin": "2026-09-30",
+  "frecuencia": "trimestral",
+  "retraso_publicacion": "dataset: tras el cierre del trimestre (documentado); por fila, FILING_DATE ≤2 días",
+  "formato": "zip de TSV (SUBMISSION, REPORTINGOWNER, NONDERIV_TRANS, DERIV_TRANS…)",
+  "volumen_estimado": "≈10-25 MB/trimestre (documentado) × 83 trimestres",
+  "limites": "≤10 peticiones/s; descarga lenta desde IP compartida (fase2/datos midió ≈14 MB en ≈3 min)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "trimestres": 83,
+    "primero": "2006q1",
+    "ultimo": "2026q3"
+  },
+  "notas": [
+    "Vía recomendada para el backtest completo: FILING_DATE por fila (no la fecha de publicación del zip).",
+    "Solo se lista la página de descargas: los zip no se bajan en la sonda."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

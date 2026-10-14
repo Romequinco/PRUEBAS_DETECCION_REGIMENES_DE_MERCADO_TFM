@@ -1,0 +1,28 @@
+{
+  "fuente": "congreso_agregadores_pago",
+  "nombre": "Quiver Quantitative · Capitol Trades · Unusual Whales",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "ninguno",
+  "url": "https://www.quiverquant.com/congresstrading/",
+  "acceso": "api",
+  "autenticacion": "pago",
+  "coste": "Quiver API desde ≈30 USD/mes; Unusual Whales 50-120 USD/mes; Capitol Trades: web sin API",
+  "licencia_y_terminos": "licencias comerciales; Capitol Trades prohíbe scraping en sus términos",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "diaria",
+  "retraso_publicacion": "horas tras el PTR (documentado)",
+  "formato": "json/csv",
+  "volumen_estimado": "no medido",
+  "limites": "según plan",
+  "estado_sonda": "no_probada",
+  "mediciones": {},
+  "notas": [
+    "No se contrata (coste cero). Aportarían Cámara + Senado normalizados con tickers mapeados."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

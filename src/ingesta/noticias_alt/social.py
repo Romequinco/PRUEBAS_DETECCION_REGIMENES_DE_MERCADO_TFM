@@ -48,6 +48,7 @@ CNN = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
 REDDIT = "https://www.reddit.com/r/wallstreetbets/new.json"
 TRENDS = "https://trends.google.com/trends/api/explore"
 SIN_COB = "sin cobertura"               # prefijo de error que no cuenta como fallo de la fuente
+HUECO_MIN_DIAS = 7                      # Truth: rachas de >= 7 días a 0 posts = hueco del archivo, no silencio
 ORIGINAL_MAX_H = 72                     # Last-Modified más tardío = fichero re-subido (no mide el lag)
 
 
@@ -106,15 +107,32 @@ def posts_por_dia(df: pd.DataFrame) -> pd.Series:
     return n.reindex(pd.date_range(n.index.min(), n.index.max(), freq="D"), fill_value=0)
 
 
+def rachas_hueco(por_dia: pd.Series, minimo: int = HUECO_MIN_DIAS) -> pd.Series:
+    """Máscara de los días dentro de rachas de ``minimo`` o más días seguidos con 0 posts.
+
+    Una cuenta que publica ~19 posts/día no calla una semana entera: esas rachas son huecos del archivo
+    comunitario (días sin capturar), no silencio, y no deben entrar como ceros.
+    """
+    if por_dia.empty:
+        return pd.Series(dtype=bool)
+    cero = por_dia == 0
+    grupo = (cero != cero.shift()).cumsum()
+    return cero & (cero.groupby(grupo).transform("size") >= minimo)
+
+
 def serie_truth(por_dia: pd.Series) -> pd.DataFrame:
     """Serie larga ``truth_posts_dia``: el recuento del día UTC D solo se cierra a las 24:00 UTC (después del
-    cierre de NY), así que se publica en D+1 (``disponible_utc`` = D+1 00:00 UTC)."""
+    cierre de NY), así que se publica en D+1 (``disponible_utc`` = D+1 00:00 UTC).
+
+    Las rachas de ``HUECO_MIN_DIAS`` o más días a 0 son huecos del archivo y se quitan (sin fila = sin dato).
+    """
+    por_dia = por_dia[~rachas_hueco(por_dia)] if not por_dia.empty else por_dia
     siguiente = por_dia.index + pd.Timedelta(days=1)
     return pd.DataFrame(dict(serie="truth_posts_dia", fecha_referencia=por_dia.index, fecha_publicacion=siguiente,
                              valor=por_dia.values.astype(float), unidad="posts/día", fuente=F_TRUTH,
                              disponible_utc=[f"{d.date()}T00:00:00Z" for d in siguiente],
                              metodo_publicacion="día UTC cerrado -> D+1",
-                             nota="días sin posts = 0 (o hueco del archivo)"))
+                             nota=f"días sin posts = 0; rachas >= {HUECO_MIN_DIAS} días a 0 = hueco del archivo (fuera)"))
 
 
 def _sondear_truth(cfg: base.ConfigSonda, res: base.Resultado) -> None:
@@ -137,13 +155,19 @@ def _sondear_truth(cfg: base.ConfigSonda, res: base.Resultado) -> None:
     fin = df["created_at"].max() if not df.empty else None
     retraso_archivo_h = base.lag_horas(fin, captura) if fin is not None else None
     hueco = int((por_dia == 0).astype(int).groupby((por_dia != 0).cumsum()).sum().max()) if not por_dia.empty else 0
+    en_hueco = rachas_hueco(por_dia)
+    n_rachas = int((en_hueco & ~en_hueco.shift(fill_value=False)).sum()) if not por_dia.empty else 0
+    rachas_txt = "; ".join(f"{g.index.min().date()}..{g.index.max().date()} ({len(g)} d)"
+                           for _, g in por_dia[en_hueco].groupby((~en_hueco).cumsum()[en_hueco])) if n_rachas else ""
+    validos = por_dia[~en_hueco] if not por_dia.empty else por_dia
     res.tablas["truth_resumen"] = pd.DataFrame([dict(
         inicio=ini.isoformat() if ini is not None else None, fin=fin.isoformat() if fin is not None else None,
         n_posts=len(df), n_posts_vacios=int(df["vacio"].sum()) if not df.empty else 0,
         dias=len(por_dia), dias_con_posts=int((por_dia > 0).sum()),
-        posts_dia_media=round(float(por_dia.mean()), 2) if not por_dia.empty else None,
-        posts_dia_p90=float(por_dia.quantile(.9)) if not por_dia.empty else None,
-        max_dias_sin_posts=hueco, ultimo=fin.isoformat() if fin is not None else None,
+        posts_dia_media=round(float(validos.mean()), 2) if not validos.empty else None,
+        posts_dia_p90=round(float(validos.quantile(.9)), 2) if not validos.empty else None,
+        max_dias_sin_posts=hueco, dias_hueco_archivo=int(en_hueco.sum()) if not por_dia.empty else 0,
+        n_rachas_hueco=n_rachas, rachas_hueco=rachas_txt, ultimo=fin.isoformat() if fin is not None else None,
         captura=captura.isoformat(), horas_desde_ultimo=retraso_archivo_h, bytes=info.get("bytes", 0))])
 
     # días testigo: posts de ese día (UTC); los textos solo al corpus
@@ -188,6 +212,7 @@ def _sondear_truth(cfg: base.ConfigSonda, res: base.Resultado) -> None:
         fin=fin.date().isoformat() if fin is not None else None, hora=True, idiomas="en", lag_mediana_h=0.0,
         destino="cajon", backtest=bool(len(df)), estado=est,
         nota=(f"{len(df)} posts; serie truth_posts_dia (posts/día UTC, publicada en D+1); textos de los días testigo al corpus. "
+              + (f"Huecos del archivo (rachas >= {HUECO_MIN_DIAS} días a 0, fuera de la serie): {rachas_txt}. " if n_rachas else "")
               + (f"Archivo sin actualizar: último post hace {retraso_archivo_h / 24:.0f} días. " if viejo else "")
               + (f"Días testigo sin cobertura: {', '.join(sin_cob)}." if sin_cob else ""))))
     res.fichas.append(base.ficha(
@@ -204,8 +229,9 @@ def _sondear_truth(cfg: base.ConfigSonda, res: base.Resultado) -> None:
         limites="sin clave; un fichero; robots.txt de raw.githubusercontent.com no existe (404 = permitido)",
         estado_sonda=est, mediciones=dict(
             posts=len(df), posts_vacios=int(df["vacio"].sum()) if not df.empty else 0,
-            posts_dia_media=float(por_dia.mean()) if not por_dia.empty else None,
-            max_dias_sin_posts=hueco, horas_desde_ultimo=retraso_archivo_h, bytes=info.get("bytes", 0),
+            posts_dia_media=float(validos.mean()) if not validos.empty else None,
+            max_dias_sin_posts=hueco, dias_hueco_archivo=int(en_hueco.sum()) if not por_dia.empty else 0,
+            rachas_hueco=rachas_txt, horas_desde_ultimo=retraso_archivo_h, bytes=info.get("bytes", 0),
             segundos=base.segundos(t0)),
         notas=["Marca temporal exacta: sirve para atribuir saltos de mercado o de Polymarket (aranceles 2025).",
                "Serie diaria en UTC: un post de las 17:00 ET cae en el mismo día UTC que el cierre; para decisiones "

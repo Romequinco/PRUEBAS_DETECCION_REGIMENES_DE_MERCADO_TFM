@@ -187,7 +187,7 @@ def test_sondear_sin_red_modo_rapido(sin_red, red_falsa, sin_robots):
     assert list(cob.columns) == [c for c in base.COLUMNAS_COBERTURA if c != "fuente"]
     assert set(cob.index) == {"gpr", "epu", "cboe_skew", "cboe_vix", "cboe_putcall"}
     assert cob.loc["gpr", "estado"] == "ok" and cob.loc["cboe_putcall", "estado"] == "parcial"
-    assert cob.loc["cboe_putcall", "fin"] == "2019-10-04" and (cob["destino"] == "base").all()
+    assert cob.loc["cboe_putcall", "fin"] == "2019-10-04" and (cob["destino"] == "serie").all()
     # Vintages: el 10-03-2023 aparece en el vintage del lunes 13 (3 días) y se revisó después.
     vt = res.tablas["gpr_vintages_testigo"].set_index(["dia", "tipo"])
     assert vt.loc[("svb", "diario"), "lag_dias"] == 3

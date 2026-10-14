@@ -1,0 +1,30 @@
+{
+  "fuente": "congreso_stock_watcher",
+  "nombre": "House/Senate Stock Watcher (datasets abiertos, S3)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity"
+  ],
+  "rag": "ninguno",
+  "url": "https://housestockwatcher.com",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "proyecto comunitario; sin licencia formal",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "estático",
+  "retraso_publicacion": "n/a",
+  "formato": "json",
+  "volumen_estimado": "no medido",
+  "limites": "buckets S3 públicos",
+  "estado_sonda": "fallo",
+  "mediciones": {
+    "house": "HTTPError: 403 Client Error: Forbidden for url: https://house-stock-watcher-data.s3-us-west",
+    "senate": "HTTPError: 403 Client Error: Forbidden for url: https://senate-stock-watcher-data.s3-us-wes"
+  },
+  "notas": [
+    "Si responde 403 el proyecto ya no sirve datos (abandonado): se sustituye por el parseo propio de los PTR."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

@@ -1,0 +1,28 @@
+{
+  "fuente": "x_twitter",
+  "nombre": "X (Twitter) API",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://docs.x.com/x-api",
+  "acceso": "api",
+  "autenticacion": "pago",
+  "coste": "pago por uso: 0,005 USD por post leído (tope 3 M lecturas/mes); 100 k posts ≈ 500 USD; histórico masivo solo Enterprise (consultado 2026-10-06)",
+  "licencia_y_terminos": "X Developer Agreement: prohíbe redistribuir y entrenar modelos",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "continua",
+  "retraso_publicacion": "tiempo real",
+  "formato": "json",
+  "volumen_estimado": "n/a",
+  "limites": "según plan",
+  "estado_sonda": "no_probada",
+  "mediciones": {},
+  "notas": [
+    "No probada: de pago. Sustitutos: Truth Social (Trump), GDELT, visitas de Wikipedia, Polymarket."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

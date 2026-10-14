@@ -1,0 +1,98 @@
+{
+  "fuente": "wiki_pageviews",
+  "nombre": "Wikimedia pageviews (atención por artículo)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk",
+    "equity"
+  ],
+  "rag": "serie",
+  "url": "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "CC0 (datos de pageviews de Wikimedia)",
+  "cobertura_inicio": "2015-07-01",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria",
+  "retraso_publicacion": "último día disponible 2026-10-13 (≤ 37.3 h desde su inicio); regla D+1",
+  "formato": "json",
+  "volumen_estimado": "607.2 KB por artículo y serie completa",
+  "limites": "≤100 peticiones/s con UA identificable; 'user' excluye bots declarados",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "articulos": 6,
+    "filas": 24738,
+    "ultimo_dia": "2026-10-13",
+    "horas_desde_inicio_ultimo_dia": 37.3,
+    "picos": [
+      {
+        "articulo": "Recession",
+        "fecha_pico": "2022-07-29",
+        "visitas_pico": 202793,
+        "mediana": 780.0,
+        "ratio_pico_mediana": 260.0,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      },
+      {
+        "articulo": "Bank_run",
+        "fecha_pico": "2023-03-13",
+        "visitas_pico": 38046,
+        "mediana": 344.0,
+        "ratio_pico_mediana": 110.6,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      },
+      {
+        "articulo": "Stock_market_crash",
+        "fecha_pico": "2020-03-12",
+        "visitas_pico": 20529,
+        "mediana": 620.0,
+        "ratio_pico_mediana": 33.1,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      },
+      {
+        "articulo": "Inflation",
+        "fecha_pico": "2021-05-12",
+        "visitas_pico": 9275,
+        "mediana": 2067.0,
+        "ratio_pico_mediana": 4.5,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      },
+      {
+        "articulo": "Financial_crisis",
+        "fecha_pico": "2020-03-12",
+        "visitas_pico": 1561,
+        "mediana": 365.0,
+        "ratio_pico_mediana": 4.3,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      },
+      {
+        "articulo": "Tariff",
+        "fecha_pico": "2025-02-02",
+        "visitas_pico": 80598,
+        "mediana": 641.0,
+        "ratio_pico_mediana": 125.7,
+        "inicio": "2015-07-01",
+        "fin": "2026-10-13",
+        "n_dias": 4123
+      }
+    ],
+    "kb_por_articulo": 607.2
+  },
+  "notas": [
+    "Desde 2015-07-01 (antes, 'pagecounts' en volcados horarios de TB: solo si hace falta 2008).",
+    "Valores absolutos y estables entre descargas (mejor que Google Trends para backtest).",
+    "Serie 'wiki_pageviews' en tabla larga, serie='wiki_pv:<artículo>', fecha_publicacion = D+1."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

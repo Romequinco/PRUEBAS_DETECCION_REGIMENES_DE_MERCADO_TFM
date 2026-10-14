@@ -1,0 +1,8 @@
+modulo,jsonl,n_documentos
+ccnews,ccnews_muestra,350
+gdelt,gdelt_gkg_titulares,30553
+gdelt,gdelt_doc_titulares,657
+wikipedia,wiki_current_events,71
+rss,rss_titulares,983
+rss,bing_news_titulares,35
+social,truth_posts_testigo,48

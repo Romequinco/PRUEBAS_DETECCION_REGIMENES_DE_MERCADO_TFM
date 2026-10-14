@@ -1,0 +1,41 @@
+{
+  "fuente": "congreso_etfs_nanc_kruz",
+  "nombre": "ETFs NANC y KRUZ (réplica de carteras del Congreso)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://www.subversiveetfs.com",
+  "acceso": "libreria",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "precios vía Yahoo Finance (términos de Yahoo, uso personal)",
+  "cobertura_inicio": "2023-02-07",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria",
+  "retraso_publicacion": "cierre del mismo día",
+  "formato": "dataframe (yfinance)",
+  "volumen_estimado": "KB",
+  "limites": "yfinance no oficial",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "NANC": {
+      "inicio": "2023-02-07",
+      "fin": "2026-10-13",
+      "dias": 924
+    },
+    "KRUZ": {
+      "inicio": null,
+      "fin": null,
+      "dias": 0
+    },
+    "segundos": 2.34
+  },
+  "notas": [
+    "Proxy del modo vivo y para validar la señal propia del Congreso en 2023-hoy.",
+    "KRUZ sin datos en Yahoo (posible liquidación del ETF): queda solo NANC."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

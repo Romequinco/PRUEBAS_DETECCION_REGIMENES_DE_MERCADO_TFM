@@ -43,6 +43,7 @@ COLUMNAS_SERIE = [
 ]
 SUFIJO_RAPIDO = "_rapido"      # salidas del modo rápido: nunca pisan las de la pasada completa
 REVISABLE = "vintage_actual_revisable"   # metodo_publicacion de series guardadas con el vintage de hoy (revisadas)
+MAX_TITULAR = 90           # caracteres de un titular en results/ (copyright: titulares cortos)
 TIPOS = ("texto", "titular", "serie", "evento", "instantanea", "ficha")
 DESTINOS = ("cajon", "base", "serie", "base+cajon", "vivo", "ninguno")
 
@@ -118,6 +119,12 @@ def estado(registro: Iterable[dict], fuente: str | None = None) -> str:
         return "no_probada"
     pct = sum(r["ok"] for r in filas) / len(filas)
     return "fallo" if pct == 0 else ("ok" if pct >= 0.9 else "parcial")
+
+
+def titular_corto(t: Any, n: int = MAX_TITULAR) -> str:
+    """Titular en una línea y recortado a ``n`` caracteres (con «…»): el criterio único para ``results/``."""
+    t = " ".join(str(t or "").split())
+    return t if len(t) <= n else t[: n - 1].rstrip() + "…"
 
 
 def lag_horas(hecho: datetime | date | None, publicado: datetime | date | None) -> float | None:

@@ -832,7 +832,7 @@ def _cobertura_y_fichas(res: base.Resultado, med: dict, errores: dict, resumen_f
         lag = _lag_med(res, fuente)
         res.cobertura.append(dict(
             fuente=fuente, familia="indices_ews", tipo="serie", inicio=ini, fin=fin, hora=False, idiomas=c["idiomas"],
-            lag_mediana_h=lag, destino="base", backtest=est in ("ok", "parcial"), estado=est, nota=nota_cob[:300]))
+            lag_mediana_h=lag, destino="serie", backtest=est in ("ok", "parcial"), estado=est, nota=nota_cob[:300]))
         n_obs = sum(r["n"] for r in series_f)
         bytes_f = sum(r["bytes"] for r in res.registro if r["fuente"] == fuente)
         res.fichas.append(base.ficha(

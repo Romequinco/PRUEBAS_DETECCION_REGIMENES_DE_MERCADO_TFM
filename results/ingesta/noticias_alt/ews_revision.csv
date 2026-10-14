@@ -1,0 +1,2 @@
+instantanea_a,instantanea_b,t0_a,t0_b,n_comunes,pct_conteo_cambia,max_dif_conteo,pct_esperado_cambia,max_dif_esperado,pct_sd_cambia,max_dif_sd,pct_z_publicado_cambia,max_dif_z_publicado,primer_cambio,ultimo_cambio
+dashboard_20261006T092320Z.json,dashboard_20261014T103410Z.json,2025-10-06T08:59:50+00:00,2025-10-14T10:29:50+00:00,14296,0.0,0.0,10.42,1.2,8.85,0.53,2.81,0.04,2025-10-14T14:29:50+00:00,2026-10-03T05:29:50+00:00

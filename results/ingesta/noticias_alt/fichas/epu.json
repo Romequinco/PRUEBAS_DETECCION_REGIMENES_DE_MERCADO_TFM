@@ -1,0 +1,73 @@
+{
+  "fuente": "epu",
+  "nombre": "Economic Policy Uncertainty (Baker, Bloom y Davis, 2016)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.policyuncertainty.com",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "libre citando a Baker, Bloom y Davis (2016, QJE) y Davis (2016) para el global",
+  "cobertura_inicio": "1985-01-01",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (EE. UU.) y mensual (global)",
+  "retraso_publicacion": "epu_diario_usa: D+1; epu_global_mensual: último día del mes m+2 (publicación irregular) | medido (mediana): 23.92 h",
+  "formato": "csv / xlsx",
+  "volumen_estimado": "0.27 MB en esta sonda; 15971 observaciones",
+  "limites": "sin clave ni límites conocidos",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "diario_usa": {
+      "filas": 15261,
+      "inicio": "1985-01-01",
+      "fin": "2026-10-13",
+      "last_modified": "Tue, 13 Oct 2026 23:55:09 GMT"
+    },
+    "global_mensual": {
+      "filas": 355,
+      "inicio": "1997-01-01",
+      "fin": "2026-07-01",
+      "columnas": [
+        "GEPU_current",
+        "GEPU_ppp"
+      ],
+      "last_modified": "Sat, 08 Aug 2026 20:38:27 GMT",
+      "dias_desde_fin_ultimo_mes": 75
+    },
+    "bytes": 268725,
+    "series": [
+      {
+        "serie": "epu_usa_diario",
+        "inicio": "1985-01-01",
+        "fin": "2026-10-13",
+        "n": 15261,
+        "huecos": 0
+      },
+      {
+        "serie": "gepu_current",
+        "inicio": "1997-01-01",
+        "fin": "2026-07-01",
+        "n": 355,
+        "huecos": 0
+      },
+      {
+        "serie": "gepu_ppp",
+        "inicio": "1997-01-01",
+        "fin": "2026-07-01",
+        "n": 355,
+        "huecos": 0
+      }
+    ],
+    "segundos": 0.58
+  },
+  "notas": [
+    "Diario EE. UU. muy ruidoso: suavizar (7-30 días) antes de usar.",
+    "global: último mes 2026-07-01 (Last-Modified Sat, 08 Aug 2026 20:38:27 GMT; 75 días desde su fin a hoy)",
+    "Regla del global (fin de m+2) es una aproximación: la publicación es irregular."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

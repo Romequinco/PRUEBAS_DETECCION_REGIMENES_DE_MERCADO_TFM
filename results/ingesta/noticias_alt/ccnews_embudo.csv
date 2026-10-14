@@ -1,0 +1,5 @@
+etapa,orden,n,eliminados,pct_restante
+bruto,0,369,0,100.0
+tras_url,1,369,0,100.0
+tras_jaccard,2,356,13,96.5
+tras_simhash,3,350,6,94.9

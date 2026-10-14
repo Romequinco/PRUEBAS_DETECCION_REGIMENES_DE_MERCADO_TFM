@@ -1,0 +1,58 @@
+{
+  "fuente": "hf_financial_news_multisource",
+  "nombre": "Financial News Multisource (24 datasets agregados, 1990-2025)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://huggingface.co/datasets/Brianferrell787/financial-news-multisource",
+  "acceso": "descarga",
+  "autenticacion": "cuenta HF + aceptar condiciones",
+  "coste": "0 €",
+  "licencia_y_terminos": "declarada en el Hub: other; 'other': investigación/no comercial, hereda términos de cada fuente; GATED",
+  "cobertura_inicio": "1990-01-01",
+  "cobertura_fin": "2025-11-29",
+  "frecuencia": "estático (instantánea)",
+  "retraso_publicacion": "n/a (histórico cerrado)",
+  "formato": "gitattributes,md,parquet,jsonl",
+  "volumen_estimado": "21.41 GB en 157 ficheros; filas=no medidas",
+  "limites": "descarga HTTP del Hub (sin clave si no es gated); viewer: 100 filas por petición",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "hub": {
+      "gated": "auto",
+      "licencia": "other",
+      "ficheros": 157,
+      "bytes": 21410263184,
+      "descargas_mes": 1106,
+      "modificado": "2025-11-29T21:31:56.000Z",
+      "configs_tarjeta": [
+        "data"
+      ],
+      "extensiones": {
+        "gitattributes": 1,
+        "md": 1,
+        "parquet": 131,
+        "jsonl": 24
+      }
+    },
+    "filas": null,
+    "filas_por_config": null,
+    "fechas": "documentadas",
+    "columnas": "",
+    "tokens_mediana": null,
+    "dominios_top": "",
+    "lag_published_a_crawl_h": null,
+    "errores": {}
+  },
+  "notas": [
+    "Gated: hay que aceptar condiciones con cuenta HF (no se hace automáticamente); medidos solo metadatos públicos.",
+    "Agrega FNSPID, Reuters/Bloomberg antiguos, CC-NEWS…: atajo útil, pero con licencias y fechas heterogéneas; validar subconjunto a subconjunto.",
+    "gated: solo metadatos públicos",
+    "el viewer no da filas: tamaño en filas documentado, no medido"
+  ],
+  "fecha_sonda": "2026-10-14"
+}

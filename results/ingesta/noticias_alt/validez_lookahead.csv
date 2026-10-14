@@ -1,0 +1,117 @@
+comprobacion,fuente,resultado,evidencia,valor
+publicacion_no_anterior_a_referencia,congreso_ptr_presentados,ok,"0 de 3236 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: FilingDate + 1 días hábiles (k = p90 medido, n=42)",0.0
+publicacion_no_anterior_a_referencia,epu_usa_diario,ok,"0 de 15261 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,epu_usa_diario,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,ews_conteo_30min,ok,"0 de 14335 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo_real",0.0
+publicacion_no_anterior_a_referencia,ews_conteo_diario_medio,ok,"0 de 366 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: lag_fijo",0.0
+publicacion_no_anterior_a_referencia,ews_z_causal,ok,"0 de 12991 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: calculado_causal",0.0
+publicacion_no_anterior_a_referencia,ews_z_publicado,ok,"0 de 14335 filas con publicación < referencia; lag mediano 216 d, p90 335 d; campo: vintage_unico",0.0
+publicacion_no_anterior_a_referencia,finra_short_ratio_mercado,ok,"0 de 99 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: D+1 hábil (fichero ≈18:00 ET, tras el cierre; Last-Modified en disponible_utc)",0.0
+publicacion_no_anterior_a_referencia,gdelt_tono:economy,ok,"0 de 3533 filas con publicación < referencia; lag mediano 5 d, p90 5 d; campo: índice DOC con ~4 d de retraso -> D+5; vintage único",0.0
+publicacion_no_anterior_a_referencia,gepu_current,ok,"0 de 355 filas con publicación < referencia; lag mediano 91 d, p90 91 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gepu_current,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gepu_ppp,ok,"0 de 355 filas con publicación < referencia; lag mediano 91 d, p90 91 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gepu_ppp,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gpr,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gpr,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gpra,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gpra,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_chn,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_chn,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_deu,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_deu,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_esp,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_esp,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_gbr,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_gbr,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_isr,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_isr,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_rus,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_rus,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_ukr,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_ukr,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprc_usa,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprc_usa,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprd,ok,"0 de 15261 filas con publicación < referencia; lag mediano 4 d, p90 7 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprd,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprd_act,ok,"0 de 15261 filas con publicación < referencia; lag mediano 4 d, p90 7 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprd_act,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprd_threat,ok,"0 de 15261 filas con publicación < referencia; lag mediano 4 d, p90 7 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprd_threat,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprh,ok,"0 de 1521 filas con publicación < referencia; lag mediano 31 d, p90 32 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprh,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,gprt,ok,"0 de 501 filas con publicación < referencia; lag mediano 31 d, p90 33 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,gprt,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,n10d,ok,"0 de 15261 filas con publicación < referencia; lag mediano 4 d, p90 7 d; campo: vintage_actual_revisable",0.0
+valor_revisado_vintage_actual,n10d,riesgo,"100 % de filas con el vintage de hoy (valor revisado después de su publicación; fecha correcta, valor no point-in-time)",1.0
+publicacion_no_anterior_a_referencia,nanc_cierre,ok,"0 de 924 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: cierre diario (Yahoo vía yfinance)",0.0
+publicacion_no_anterior_a_referencia,pc_equity_calls,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_equity_puts,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_equity_ratio,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_index_calls,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_index_puts,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_index_ratio,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_total_calls,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_total_puts,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,pc_total_ratio,ok,"0 de 3253 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,polymarket_fed_recorte25_sep2025,ok,"0 de 133 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)",0.0
+publicacion_no_anterior_a_referencia,polymarket_fed_sin_recortes_2026,ok,"0 de 380 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)",0.0
+publicacion_no_anterior_a_referencia,polymarket_recesion_eeuu_2024,ok,"0 de 149 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)",0.0
+publicacion_no_anterior_a_referencia,polymarket_recesion_eeuu_2025,ok,"0 de 358 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)",0.0
+publicacion_no_anterior_a_referencia,polymarket_recesion_eeuu_2026,ok,"0 de 380 filas con publicación < referencia; lag mediano 0 d, p90 0 d; campo: tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)",0.0
+publicacion_no_anterior_a_referencia,skew,ok,"0 de 9247 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,truth_posts_dia,ok,"0 de 1283 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,vix_cierre,ok,"0 de 9293 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,vix_maximo,ok,"0 de 9293 filas con publicación < referencia; lag mediano 1 d, p90 3 d; campo: fichero_tras_cierre",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Bank_run,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Financial_crisis,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Inflation,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Recession,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Stock_market_crash,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+publicacion_no_anterior_a_referencia,wiki_pv:Tariff,ok,"0 de 4123 filas con publicación < referencia; lag mediano 1 d, p90 1 d; campo: día UTC cerrado -> D+1",0.0
+campo_fecha_timegate,bing_news_rss,ok,"campo: pubDate -> captura; 4 ejemplos, lag mediano 13.6 h, 0 negativos",0.0
+campo_fecha_timegate,cboe_putcall,ok,"campo: Last-Modified (HTTP) del JSON diario; Last-Modified (HTTP) del JSON diario; fichero regenerado o c; Last-Modified (HTTP); fichero regenerado o congelado después; regla: D+1 hábil (fichero ~5 h tras el; 13 ejemplos, lag mediano 24.0 h, 0 negativos",0.0
+campo_fecha_timegate,cboe_skew,ok,"campo: Last-Modified (HTTP); regla: D+1 hábil (fichero ~5 h tras el cierre); 7 ejemplos, lag mediano 24.0 h, 0 negativos",0.0
+campo_fecha_timegate,cboe_vix,ok,"campo: Last-Modified (HTTP); regla: D+1 hábil (fichero ~5 h tras el cierre); 7 ejemplos, lag mediano 24.0 h, 0 negativos",0.0
+campo_fecha_timegate,ccnews,ok,"campo: WARC-Date (rastreo_sin_meta); article:published_time (≤ WARC-Date); 40 ejemplos, lag mediano 0.7 h, 0 negativos",0.0
+campo_fecha_timegate,congreso_house_ptr,ok,"campo: FilingDate + 1 días hábiles (k = p90 medido, n=42); FilingDate -> Last-Modified del PDF (subida al web del Clerk; 16 ejemplos, lag mediano 684.0 h, 0 negativos",0.0
+campo_fecha_timegate,epu,ok,"campo: Last-Modified (HTTP); Last-Modified (HTTP); hecho = fin del mes; regla: D+1; regla: último día del mes m+2 (publicación irregular); 13 ejemplos, lag mediano 24.0 h, 0 negativos",0.0
+campo_fecha_timegate,ews,ok,"campo: snapshotGeneratedAt; snapshotGeneratedAt (z revisado en cada instantánea); 2 ejemplos, lag mediano 4380.1 h, 0 negativos",0.0
+campo_fecha_timegate,finra_short_volume,ok,"campo: Last-Modified (cabecera HTTP); 103 ejemplos, lag mediano 1.3 h, 0 negativos",0.0
+campo_fecha_timegate,gdelt_doc,ok,"campo: date (día UTC) -> D+5 (retraso del índice DOC); seendate (vista por GDELT); 4 ejemplos, lag mediano 120.0 h, 0 negativos",0.0
+campo_fecha_timegate,gdelt_eventos,ok,"campo: DATEADDED (no SQLDATE); 12 ejemplos, lag mediano 8780.0 h, 0 negativos",0.0
+campo_fecha_timegate,gdelt_gkg,ok,"campo: DATE (captura); hecho = PAGE_PRECISEPUBTIMESTAMP; 6 ejemplos, lag mediano 2.5 h, 0 negativos",0.0
+campo_fecha_timegate,gpr,ok,"campo: Last-Modified (HTTP); Last-Modified (HTTP); hecho = fin del mes; el fichero se ree; nombre del vintage (data_gpr_daily_recent_20230313.xls); nombre del vintage (data_gpr_daily_recent_20250407.xls); no; 18 ejemplos, lag mediano 168.0 h, 0 negativos",0.0
+campo_fecha_timegate,hf_ccnews,ok,"campo: published_date (≤ crawl_date); 15 ejemplos, lag mediano 26.7 h, 0 negativos",0.0
+campo_fecha_timegate,hf_fnspid,ok,"campo: Date (UTC, con hora); 5 ejemplos, lag mediano nan h, 0 negativos",0.0
+campo_fecha_timegate,kalshi,ok,"campo: close_time -> settlement_ts (liquidación); trades.created_time vs hora de consulta; 6 ejemplos, lag mediano 0.7 h, 0 negativos",0.0
+campo_fecha_timegate,polymarket,ok,"campo: gamma endDate -> closedTime (resolución UMA); prices-history.t (≤ 16:30 NY); trades.timestamp (s) vs hora de consulta; 11 ejemplos, lag mediano 0.1 h, 0 negativos",0.0
+campo_fecha_timegate,predictit,ok,"campo: markets[].timeStamp (hora NY) vs hora de consulta; 1 ejemplos, lag mediano 0.0 h, 0 negativos",0.0
+campo_fecha_timegate,rss_medios,ok,"campo: pubDate -> captura; 24 ejemplos, lag mediano 0.5 h, 0 negativos",0.0
+campo_fecha_timegate,sec_form4_insiders,ok,"campo: ACCEPTANCE-DATETIME (ET): <16:00 -> ese día; si no, día hábi; 12 ejemplos, lag mediano 96.0 h, 0 negativos",0.0
+campo_fecha_timegate,truth_social_trump,ok,"campo: created_at; created_at -> captura del archivo; 6 ejemplos, lag mediano 0.0 h, 0 negativos",0.0
+campo_fecha_timegate,wiki_current_events,ok,"campo: revisión vigente a las 23:59:59 UTC (rvstart, rvdir=older); 6 ejemplos, lag mediano 23.6 h, 0 negativos",0.0
+campo_fecha_timegate,wiki_pageviews,ok,"campo: timestamp (día UTC) -> D+1; 1 ejemplos, lag mediano 24.0 h, 0 negativos",0.0
+documentos_publicacion_no_anterior,bing_news_titulares,ok,"35 documentos: 0 sin fecha_publicacion, 35 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,ccnews_muestra,ok,"350 documentos: 0 sin fecha_publicacion, 350 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,gdelt_doc_titulares,ok,"657 documentos: 0 sin fecha_publicacion, 657 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,gdelt_gkg_titulares,ok,"30553 documentos: 0 sin fecha_publicacion, 30553 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,rss_titulares,ok,"983 documentos: 0 sin fecha_publicacion, 983 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,truth_posts_testigo,ok,"48 documentos: 0 sin fecha_publicacion, 48 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano nan d",0.0
+documentos_publicacion_no_anterior,wiki_current_events,ok,"71 documentos: 0 sin fecha_publicacion, 0 sin fecha_referencia (se fechan solo por publicación), 0 con publicación < referencia; lag mediano 1.00 d",0.0
+ews_z_publicado_vs_causal,ews,riesgo,"12991 semihoras: corr 0.60, |dif| media 0.70; alarmas z>=2.0: publicado 275, causal 504. El z publicado se recalcula con el archivo entero (mira el futuro)",0.6
+ews_z_publicado_fecha_vintage,ews,ok,z publicado guardado con fecha_publicacion = día de la instantánea (1 fechas distintas): no entra en el pasado del backtest,1.0
+gdelt_sqldate_vs_dateadded,gdelt_eventos,ok,"6 ficheros/días: 18.9 % de eventos con SQLDATE anterior a DATEADDED (p90 1602 d, máx 3650 d). Indexar por SQLDATE adelantaría información; el corpus usa DATEADDED",18.89
+wiki_revision_al_cierre,wiki_current_events,ok,"71 hechos: lag publicación-referencia mín 1 d, mediana 1 d (revisión de las 23:59 UTC posterior al cierre de NY -> D+1)",0.0
+ptr_filingdate,congreso_house_ptr,ok,531 operaciones: 0 con publicación anterior a presentación u operación,0.0
+ptr_lag_operacion_publicacion,congreso_house_ptr,riesgo,"lag operación->publicación: mediana 41 d, p90 329 d, 38.6 % > 45 d (plazo STOCK Act). Indexar por fecha de operación sería look-ahead",41.0
+form4_aceptacion,sec_form4_insiders,ok,"716 transacciones: lag transacción->publicación mediana 4 d, p90 5 d, 73.0 % > 2 d; 0 negativos",0.0
+trends_renormalizacion,google_trends,riesgo,Google Trends reescala 0-100 por consulta y ventana: el valor de un día cambia según el periodo pedido; solo es point-in-time guardando cada consulta el día que se hace (no probada),
+polymarket_corte_16_30,polymarket,ok,precio diario = último punto CLOB <= 16:30 NY del día (metodo_publicacion de las series),
+normalizacion_expanding_sin_futuro,todas,riesgo,"pipeline completo rehecho en 3 cortes solo con lo publicado hasta cada corte (rejilla, vigencia, conteos, transformación y z expanding de mínimo 252 obs): 6 de 40 series difieren (máx |dif. z| 5.64): epu_usa_diario, gprc_chn, gprc_rus, gprd, vix_cierre, vix_maximo",5.6384
+normalizacion_sin_futuro_serie,epu_usa_diario,riesgo,"máx |z(hasta t) − z(muestra entera)| = 5.64; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15, 2010-01-26; transformación nivel con datos hasta 2010-01-26 frente a log con la muestra entera",5.6384
+normalizacion_sin_futuro_serie,gprc_chn,riesgo,"máx |z(hasta t) − z(muestra entera)| = 4.96; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15, 2022-08-09; transformación log con datos hasta 2022-08-09 frente a nivel con la muestra entera",4.9567
+normalizacion_sin_futuro_serie,gprc_rus,riesgo,"máx |z(hasta t) − z(muestra entera)| = 1.9; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15, 2010-01-26; transformación nivel con datos hasta 2010-01-26 frente a log con la muestra entera",1.8964
+normalizacion_sin_futuro_serie,gprd,riesgo,máx |z(hasta t) − z(muestra entera)| = 2.72; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15; transformación log con datos hasta 1997-07-15 frente a nivel con la muestra entera,2.7155
+normalizacion_sin_futuro_serie,vix_cierre,riesgo,máx |z(hasta t) − z(muestra entera)| = 0.613; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15; transformación nivel con datos hasta 1997-07-15 frente a log con la muestra entera,0.6125
+normalizacion_sin_futuro_serie,vix_maximo,riesgo,máx |z(hasta t) − z(muestra entera)| = 0.658; 0 días con dato en un pipeline y no en el otro; cortes 1997-07-15; transformación nivel con datos hasta 1997-07-15 frente a log con la muestra entera,0.6581

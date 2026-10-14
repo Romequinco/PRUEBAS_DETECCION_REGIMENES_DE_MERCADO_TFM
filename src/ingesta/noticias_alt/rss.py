@@ -343,7 +343,8 @@ def _sondear_feeds(cfg: base.ConfigSonda, res: base.Resultado) -> None:
     items_df = pd.DataFrame(filas_item, columns=["fuente", "feed", "medio", "pais", "idioma", "titular",
                                                  "fecha_publicacion", "campo_fecha", "lag_captura_h"])
     res.tablas["rss_feeds"] = feeds_df
-    res.tablas["rss_items"] = items_df
+    # a results solo titulares cortos (el titular completo sigue en el corpus y en la deduplicación de abajo)
+    res.tablas["rss_items"] = items_df.assign(titular=items_df["titular"].map(base.titular_corto))
 
     for fuente, nombre in ((F_RSS, "rss_titulares"), (F_BING, "bing_news_titulares")):
         unicos = {d["doc_id"]: d for d in docs[fuente]}

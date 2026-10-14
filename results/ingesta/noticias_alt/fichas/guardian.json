@@ -1,0 +1,35 @@
+{
+  "fuente": "guardian",
+  "nombre": "The Guardian Open Platform (cuerpo completo desde 1999)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://open-platform.theguardian.com/",
+  "acceso": "api",
+  "autenticacion": "clave gratuita",
+  "coste": "0 €",
+  "licencia_y_terminos": "Guardian Open Platform T&C (developer): no comercial; atribución; borrar lo retirado",
+  "cobertura_inicio": "1999-01-01",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "continua",
+  "retraso_publicacion": "minutos (webPublicationDate con hora)",
+  "formato": "json: webTitle, webPublicationDate, sectionName, fields.bodyText",
+  "volumen_estimado": "≈2,5 M piezas; business+money ≈ 300 k; ≈2-4 GB de texto (documentado, no medido)",
+  "limites": "developer key: 1 petición/s y 500/día (≈25 k piezas/día con page-size 50)",
+  "estado_sonda": "no_probada",
+  "mediciones": {
+    "con_clave": false,
+    "piezas": 0,
+    "fechas": "documentadas (no medidas)",
+    "peticiones": 0
+  },
+  "notas": [
+    "sin clave (GUARDIAN_API_KEY vacía en .env): decisión del usuario, no se registra cuenta",
+    "Cómo obtener la clave: registro en open-platform.theguardian.com/access (developer key); GUARDIAN_API_KEY en .env."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

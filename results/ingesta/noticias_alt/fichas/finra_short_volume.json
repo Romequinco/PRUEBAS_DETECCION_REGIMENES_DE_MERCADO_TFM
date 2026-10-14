@@ -1,0 +1,49 @@
+{
+  "fuente": "finra_short_volume",
+  "nombre": "FINRA Reg SHO · volumen diario en corto (fichero consolidado CNMS)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.finra.org/finra-data/browse-catalog/short-sale-volume-data/daily-short-sale-volume-files",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "FINRA Data: uso libre no comercial con atribución",
+  "cobertura_inicio": "2018-08-01",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria",
+  "retraso_publicacion": "mismo día: mediana 1.3 h tras el cierre (Last-Modified, n=68); usable en D+1 hábil",
+  "formato": "txt separado por | (Date|Symbol|ShortVolume|ShortExemptVolume|TotalVolume|Market)",
+  "volumen_estimado": "≈0.33 MB/día x 2141 días hábiles ≈ 0.7 GB desde 2018-08-01",
+  "limites": "sin clave; 403 para cualquier día sin fichero (S3)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ficheros": 103,
+    "peticiones": 125,
+    "frontera": {
+      "primer_dia": "2018-08-01",
+      "ultimo_mes_sin_fichero": "2018-07"
+    },
+    "lag_publicacion_h": {
+      "n": 68,
+      "mediana_h": 1.3,
+      "p10_h": 1.28,
+      "p90_h": 1.37
+    },
+    "re_subidos": 35,
+    "short_ratio_min": 0.41453,
+    "short_ratio_max": 0.51703,
+    "tickers_mediana": 9889.0,
+    "segundos": 6.79
+  },
+  "notas": [
+    "Solo volumen en corto del día en los TRF/ADF/ORF de FINRA (no el interés corto ni todo el mercado); el ratio short/total es presión vendedora relativa.",
+    "robots.txt de cdn.finra.org no existe (S3 responde 403 a toda clave inexistente, también a robots.txt): no hay rastreo, es el enlace de descarga oficial que publica FINRA.",
+    "Antes de la frontera del CDN (2018) hay que ir a la API de FINRA (cuenta gratuita) o al catálogo; los días testigo de 2008 y 2016 quedan sin cobertura por esta vía.",
+    "Los ficheros antiguos fueron re-subidos (Last-Modified de 2021): su cabecera no mide el lag original."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

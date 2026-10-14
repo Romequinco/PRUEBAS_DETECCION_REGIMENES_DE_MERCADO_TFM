@@ -1,0 +1,33 @@
+{
+  "fuente": "cnn_fear_greed",
+  "nombre": "CNN Fear & Greed Index",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://edition.cnn.com/markets/fear-and-greed",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "endpoint interno de CNN sin términos de uso de datos",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "diaria",
+  "retraso_publicacion": "intradía",
+  "formato": "json",
+  "volumen_estimado": "pequeño",
+  "limites": "anti-bot (418 «You're a bot») sin cabeceras de navegador",
+  "estado_sonda": "fallo",
+  "mediciones": {
+    "robots_permite": true,
+    "http": 418,
+    "error": "HTTPError: 418 Client Error: Unknown Error for url: https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
+  },
+  "notas": [
+    "No se suplantan cabeceras de navegador.",
+    "Es una combinación de 7 series que ya hay en el repo (VIX, put/call, momentum, máximos-mínimos, spreads, refugio, amplitud): mejor RECONSTRUIRLO con datos propios y su propia fecha de publicación."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

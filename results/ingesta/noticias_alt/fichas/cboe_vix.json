@@ -1,0 +1,51 @@
+{
+  "fuente": "cboe_vix",
+  "nombre": "CBOE VIX (histórico diario)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.cboe.com/tradable_products/vix/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "datos de CBOE para conveniencia del visitante, sin garantía; términos de CBOE",
+  "cobertura_inicio": "1990-01-02",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (hábiles)",
+  "retraso_publicacion": "cboe_vix: D+1 hábil (fichero ~5 h tras el cierre) | medido (mediana): 4.93 h",
+  "formato": "csv",
+  "volumen_estimado": "0.47 MB en esta sonda; 18586 observaciones",
+  "limites": "sin clave",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "filas": 9293,
+    "inicio": "1990-01-02",
+    "fin": "2026-10-13",
+    "last_modified": "Wed, 14 Oct 2026 01:11:02 GMT",
+    "bytes": 473686,
+    "series": [
+      {
+        "serie": "vix_cierre",
+        "inicio": "1990-01-02",
+        "fin": "2026-10-13",
+        "n": 9293,
+        "huecos": 3
+      },
+      {
+        "serie": "vix_maximo",
+        "inicio": "1990-01-02",
+        "fin": "2026-10-13",
+        "n": 9293,
+        "huecos": 3
+      }
+    ],
+    "segundos": 0.45
+  },
+  "notas": [
+    "Referencia de mercado para la validez de los alternativos (VIX).",
+    "Huecos > 4 días naturales (cierres excepcionales, p. ej. 11-S): 2 series; huecos (> 4 días): [3, 3]"
+  ],
+  "fecha_sonda": "2026-10-14"
+}

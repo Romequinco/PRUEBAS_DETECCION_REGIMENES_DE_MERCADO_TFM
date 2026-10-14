@@ -1,0 +1,40 @@
+fuente,n_items_muestra,mb_muestra,gb_corpus_estimado,horas_descarga_estimadas,n_peticiones,n_peticiones_red,mb_s_medidos,nota
+ccnews,350,15.016,97169.4875,64110.08,12,0,0.421,tasa de la ficha (799.2 GB/mes) × 3701 días de cobertura; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈799.2 GB/mes y ≈20.0 M respuestas/mes (máximo de los meses medidos)
+hf_fnspid,3,0.051,29.55,19.5,3,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 29.55 GB en 4 ficheros; filas=no medidas
+hf_ccnews,4,0.326,966.82,637.88,4,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 966.82 GB en 481 ficheros; filas=893240667
+hf_bloomberg_2006_2013,2,0.002,1.39,0.92,3,1,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 1.39 GB en 3 ficheros; filas=no medidas
+hf_reuters_cnbc_2018,3,0.178,0.49,0.32,3,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 0.49 GB en 4 ficheros; filas=306242
+hf_financial_news_multisource,1,0.04,21.41,14.13,1,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 21.41 GB en 157 ficheros; filas=no medidas
+nyt,0,0.0,5.0,3.3,0,0,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈5-8 k piezas/mes; ≈2-3 MB de json/mes; 1851-hoy ≈ 4-5 GB (documentado, no medido)"
+guardian,0,0.0,4.0,2.64,0,0,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈2,5 M piezas; business+money ≈ 300 k; ≈2-4 GB de texto (documentado, no medido)"
+gdelt_gkg,30553,201.743,2900.0,371.51,29,2,2.168,volumen_estimado de la ficha; velocidad medida · ≈0.69 GB zip/día medidos -> ≈2.9 TB 2015-hoy (sin contar *.translation.gkg)
+gdelt_eventos,31,36.554,53.6,35.36,31,1,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · Events 1.0 completo ≈ 53.6 GB zip; 2.0 ≈ 0,1 MB/15 min"
+gdelt_doc,4190,0.518,,,13,3,0.421,sin cifra de volumen en la ficha; horas sin estimar · máx. 250 artículos por consulta y ventana; tono diario ≈ 3.500 puntos 2017-hoy
+wiki_current_events,71,0.08,0.038,0.03,30,0,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈7,257 días × 11.8 hechos ≈ 86 mil hechos; ≈38 MB de wikitexto"
+wiki_pageviews,24738,3.643,0.0006,0.0,6,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 607.2 KB por artículo y serie completa
+rss_medios,983,1.176,0.0012,0.0,36,10,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 991 ítems por pasada (982 únicos, 1.2 MB de XML); ≈2249 titulares nuevos/día -> ≈821 k/año si se captura a diario"
+bing_news_rss,35,0.034,,,5,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · ≈9 ítems por consulta; sin paginación
+google_news_rss,0,0.0,,,1,1,0.421,sin cifra de volumen en la ficha; horas sin estimar · ≤100 ítems por consulta; sin paginación
+truth_social_trump,1331,15.568,0.0156,0.01,1,0,0.421,"volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 29469 posts, 15.6 MB (fichero único)"
+finra_short_volume,99,34.637,0.7,0.46,125,5,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈0.33 MB/día x 2141 días hábiles ≈ 0.7 GB desde 2018-08-01
+reddit,0,0.0,,,0,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · WSB 2019-2024 en dumps ≈ decenas de GB
+x_twitter,0,0.0,,,0,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · n/a
+google_trends,0,0.0,,,0,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · pequeño (series de 0-100)
+aaii_sentiment,0,0.0,0.001,0.0,1,1,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · < 1 MB
+cnn_fear_greed,0,0.0,,,1,1,0.421,sin cifra de volumen en la ficha; horas sin estimar · pequeño
+congreso_house_ptr,3236,4.928,0.7,0.46,57,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 8399 PTR × 83 KB ≈ 0.70 GB; ≈12.64 operaciones/PTR electrónico
+congreso_senate_efd,0,0.0,,,0,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · no medido
+congreso_stock_watcher,0,0.0,,,2,2,0.421,sin cifra de volumen en la ficha; horas sin estimar · no medido
+congreso_agregadores_pago,0,0.0,,,0,0,0.421,sin cifra de volumen en la ficha; horas sin estimar · no medido
+congreso_etfs_nanc_kruz,924,0.0,,,2,2,0.421,sin cifra de volumen en la ficha; horas sin estimar · KB
+sec_form4_insiders,322,17.312,102.0,67.3,322,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · ≈9.7 M Form 4 desde 2003-06 × 11 KB ≈ 102 GB (mejor el dataset trimestral DERA)
+sec_form345_datasets,1,0.132,2.0745,3.94,1,1,0.146,tasa de la ficha (0.025 GB/trimestre) × 7577 días de cobertura; velocidad medida · ≈10-25 MB/trimestre (documentado) × 83 trimestres
+polymarket,1400,25.058,0.0003,0.0,241,3,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · historial a 12 h ≈ 6.6 KB/mercado (mediana); ≥ 1018 mercados resueltos > 100 k USD listados (tope de la muestra) -> ≈ 6.6 MB; página de 100 eventos sin mercado…
+kalshi,63,4.934,0.2394,0.66,63,9,0.101,volumen_estimado de la ficha; velocidad medida · 1983 mercados en 7 series macro; velas diarias de 32 días ≈ 10.3 KB por mercado (mediana) -> ≈ 239.4 MB con un año de velas por mercado
+predictit,1,0.429,0.0004,0.0,1,1,0.397,volumen_estimado de la ficha; velocidad medida · ≈ 0.43 MB por instantánea
+gpr,68076,23.574,0.0236,0.01,9,1,0.461,volumen_estimado de la ficha; velocidad medida · 23.57 MB en esta sonda; 68076 observaciones
+epu,15971,0.269,0.0003,0.0,2,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 0.27 MB en esta sonda; 15971 observaciones
+cboe_skew,9247,0.203,0.0002,0.0,1,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 0.20 MB en esta sonda; 9247 observaciones
+cboe_vix,18586,0.474,0.0005,0.0,1,0,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 0.47 MB en esta sonda; 18586 observaciones
+cboe_putcall,29277,0.456,0.0005,0.0,14,11,0.421,volumen_estimado de la ficha; velocidad conjunta de 6 fuentes (sin red propia suficiente) · 0.46 MB en esta sonda; 29277 observaciones
+ews,42027,0.891,0.0004,0.0,4,4,0.175,volumen_estimado de la ficha; velocidad medida · 0.41 MB por instantánea (≈20 MB/día archivando cada 30 min)

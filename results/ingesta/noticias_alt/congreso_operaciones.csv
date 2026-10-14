@@ -1,0 +1,532 @@
+doc_id,anio,representante,distrito,titular,activo,ticker,clase,tipo,fecha_operacion,fecha_notificacion,fecha_presentacion,fecha_publicacion,lag_dias,importe_min,importe_max
+20016258,2020,Lois Frankel,FL21,self,"Cinemark Holdings Inc CinemarkHoldings, Inc. (CNK) [sT]",CNK,ST,venta,2020-02-21,2020-02-21,2020-03-23,2020-03-24,32,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X142ConocoPhillips (CoP) [sT],COP,ST,compra,2020-03-11,2020-03-11,2020-03-23,2020-03-24,13,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141ConocoPhillips (CoP) [sT],COP,ST,compra,2020-03-04,2020-03-04,2020-03-23,2020-03-24,20,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141Danaher Corporation (DHR) [sT],DHR,ST,venta parcial,2020-02-19,2020-02-19,2020-03-23,2020-03-24,34,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X141Diamondback Energy, Inc. -Commmon stock (FANG) [sT]",FANG,ST,compra,2020-03-06,2020-03-06,2020-03-23,2020-03-24,18,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X142Donaldson Company, Inc. (DCI)[sT]",DCI,ST,compra,2020-03-06,2020-03-06,2020-03-23,2020-03-24,18,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Gartner, Inc. (IT) [sT]",IT,ST,compra,2020-02-28,2020-02-28,2020-03-23,2020-03-24,25,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X142Honeywell International Inc.(HoN) [sT],HON,ST,compra,2020-02-19,2020-02-19,2020-03-23,2020-03-24,34,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141Ingersoll Rand Inc. (IR) [sT],IR,ST,venta parcial,2020-02-19,2020-02-19,2020-03-23,2020-03-24,34,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141Ingersoll Rand Inc. (IR) [sT],IR,ST,venta parcial,2020-02-20,2020-02-20,2020-03-23,2020-03-24,33,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141Ingersoll Rand Inc. (IR) [sT],IR,ST,venta parcial,2020-03-05,2020-03-05,2020-03-23,2020-03-24,19,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X141Merck & Company, Inc. Commonstock (MRK) [sT]",MRK,ST,compra,2020-02-20,2020-02-20,2020-03-23,2020-03-24,33,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X141Merck & Company, Inc. Commonstock (MRK) [sT]",MRK,ST,compra,2020-02-19,2020-02-19,2020-03-23,2020-03-24,34,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X141Mohawk Industries, Inc. (MHK)[sT]",MHK,ST,venta parcial,2020-03-11,2020-03-11,2020-03-23,2020-03-24,13,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X142ollie's bargain outlet Holdings,Inc. (oLLI) [sT]",OLLI,ST,compra,2020-02-28,2020-02-28,2020-03-23,2020-03-24,25,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X142united bankshares, Inc. (ubsI)[sT]",UBSI,ST,venta,2020-03-11,2020-03-11,2020-03-23,2020-03-24,13,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X142Watsco, Inc. (Wso) [sT]",WSO,ST,compra,2020-03-04,2020-03-04,2020-03-23,2020-03-24,20,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X142Watsco, Inc. (Wso) [sT]",WSO,ST,compra,2020-03-03,2020-03-03,2020-03-23,2020-03-24,21,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X142Wells Fargo & Company (WFC)[sT],WFC,ST,venta,2020-03-11,2020-03-11,2020-03-23,2020-03-24,13,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,Morgan stanley IRA - X141Wells Fargo & Company (WFC)[sT],WFC,ST,venta parcial,2020-03-04,2020-03-04,2020-03-23,2020-03-24,20,1001,15000.0
+20016258,2020,Lois Frankel,FL21,self,"Morgan stanley IRA - X141Woodward, Inc. (WWD) [sT]",WWD,ST,venta parcial,2020-03-05,2020-03-05,2020-03-23,2020-03-24,19,1001,15000.0
+20019879,2021,Aston Donald McEachin,VA04,JT,NXP Semiconductors N.V. (NXPI)[ST],NXPI,ST,compra,2021-11-24,2021-11-24,2021-11-24,2021-11-25,1,1001,15000.0
+20020473,2022,Susie Lee,NV03,self,"Atlantic Richfield CO Bond,Maturity 2/1/22, Fixed CouponMoodys A1 S&P A- SemiannuallyCuSIP 048825BA0 [CS]",,CS,venta,2022-02-01,2022-02-15,2022-03-04,2022-03-07,34,15001,50000.0
+20023641,2023,Kevin Hern,OK01,JT,Accenture plc Class A Ordinary Shares (ACN) [ST],ACN,ST,compra,2023-08-15,2023-08-16,2023-09-07,2023-09-08,24,1001,15000.0
+20023641,2023,Kevin Hern,OK01,JT,CITIGROUP GLOBAL MKTS HLDGS IN SER N 0.00000% 08/20/2027 MTN ZERO CPN [CS],,CS,compra,2023-08-17,2023-08-18,2023-09-07,2023-09-08,22,500001,1000000.0
+20023641,2023,Kevin Hern,OK01,JT,Magellan Midstream Partners L.P. Limited Partnership (MMP) [ST],MMP,ST,compra,2023-08-14,2023-08-15,2023-09-07,2023-09-08,25,1001,15000.0
+20023641,2023,Kevin Hern,OK01,JT,"Marsh & McLennan Companies, Inc. (MMC) [ST]",MMC,ST,compra,2023-08-15,2023-08-16,2023-09-07,2023-09-08,24,1001,15000.0
+20023641,2023,Kevin Hern,OK01,JT,"ONEOK, Inc. (OKE) [ST]",OKE,ST,compra,2023-08-14,2023-08-15,2023-09-07,2023-09-08,25,1001,15000.0
+20023641,2023,Kevin Hern,OK01,JT,Texas Instruments Incorporated (TXN) [ST],TXN,ST,compra,2023-08-15,2023-08-16,2023-09-07,2023-09-08,24,1001,15000.0
+20023641,2023,Kevin Hern,OK01,JT,US TREAS BILLS 08/31/2023 [GS],,GS,venta,2023-08-31,2023-09-01,2023-09-07,2023-09-08,8,500001,1000000.0
+20025486,2024,Rick Larsen,WA02,self,"Goldman Sachs Group, Inc. (GS) [ST]",GS,ST,compra,2024-07-02,2024-07-12,2024-07-17,2024-07-18,16,1001,15000.0
+20025486,2024,Rick Larsen,WA02,self,"Hartford Financial Services Group, Inc. (HIG) [ST]",HIG,ST,venta,2024-07-02,2024-07-12,2024-07-17,2024-07-18,16,1001,15000.0
+20025486,2024,Rick Larsen,WA02,self,"Old Dominion Freight Line, Inc. - Common Stock (ODFL) [ST]",ODFL,ST,compra,2024-07-02,2024-07-12,2024-07-17,2024-07-18,16,1001,15000.0
+20025486,2024,Rick Larsen,WA02,self,"Waste Management, Inc. Common Stock (WM) [ST]",WM,ST,venta,2024-07-02,2024-07-12,2024-07-17,2024-07-18,16,1001,15000.0
+20030234,2025,Robert E. Latta,OH05,SP,"Farmers & Merchants Bancorp, Inc. (FMAO) [ST]",FMAO,ST,compra,2025-04-20,2025-04-20,2025-04-27,2025-04-28,8,1001,15000.0
+20017174,2020,Carol Devine Miller,WV03,self,"2000069067SP British American TobaccoIndustries, p.l.c. Common StockADR (BTI) [ST]",BTI,ST,compra,2019-02-01,2019-02-05,2020-08-12,2020-08-13,559,1001,15000.0
+20018870,2021,Robert J. Wittman,VA01,self,Dollar general Corporation (Dg)[ST],DG,ST,venta,2021-05-14,2021-05-18,2021-06-08,2021-06-09,26,1001,15000.0
+20018870,2021,Robert J. Wittman,VA01,self,"Morgan Stanley INH IRAunited Parcel Service, Inc. (uPS)[ST]",UPS,ST,venta,2021-05-14,2021-05-18,2021-06-08,2021-06-09,26,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,AEgON N.V. (AEg) [ST],AEG,ST,compra,2022-02-15,2022-02-15,2022-03-07,2022-03-08,21,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Antero Midstream Corporation(AM) [ST],AM,ST,venta,2022-02-17,2022-01-17,2022-03-07,2022-03-08,19,50001,100000.0
+20020543,2022,Virginia Foxx,NC05,JT,Antero Midstream Corporation(AM) [ST],AM,ST,compra,2022-02-10,2022-02-10,2022-03-07,2022-03-08,26,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,Archer-Daniels-Midland Company(ADM) [ST],ADM,ST,compra,2022-02-24,2022-02-24,2022-03-07,2022-03-08,12,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,AT&T Inc. (T) [ST],T,ST,compra,2022-02-02,2022-02-02,2022-03-07,2022-03-08,34,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Discovery, Inc. - Series A (DISCA)[ST]",DISCA,ST,compra,2022-02-24,2022-02-24,2022-03-07,2022-03-08,12,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Duke Energy CorporationDepositary Shares, eachrepresenting a 1/1,000th interest ina share of 5.75% Series ACumulative Redeemable PerpetualPreferred Stock (DuK$A) [ST]",DUK$A,ST,compra,2022-02-11,2022-02-11,2022-03-07,2022-03-08,25,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Duke Energy CorporationDepositary Shares, eachrepresenting a 1/1,000th interest ina share of 5.75% Series ACumulative Redeemable PerpetualPreferred Stock (DuK$A) [ST]",DUK$A,ST,compra,2022-02-14,2022-02-14,2022-03-07,2022-03-08,22,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Enterprise Products Partners l.P.(EPD) [ST],EPD,ST,compra,2022-02-14,2022-02-14,2022-03-07,2022-03-08,22,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Flowers Foods, Inc. (FlO) [ST]",FLO,ST,compra,2022-02-04,2022-02-04,2022-03-07,2022-03-08,32,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Flowers Foods, Inc. (FlO) [ST]",FLO,ST,compra,2022-02-24,2022-02-24,2022-03-07,2022-03-08,12,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,self,"JTgeneral Mills, Inc. (gIS) [ST]",GIS,ST,compra,2022-02-10,2022-02-10,2022-03-07,2022-03-08,26,50001,100000.0
+20020543,2022,Virginia Foxx,NC05,self,JTglaxoSmithKline PlC (gSK) [ST],GSK,ST,compra,2022-02-22,2022-02-22,2022-03-07,2022-03-08,14,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Kinder Morgan, Inc. (KMI) [ST]",KMI,ST,compra,2022-02-17,2022-02-17,2022-03-07,2022-03-08,19,50001,100000.0
+20020543,2022,Virginia Foxx,NC05,JT,Manulife Financial Corporation(MFC) [ST],MFC,ST,compra,2022-02-24,2022-02-24,2022-03-07,2022-03-08,12,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Microsoft Corporation (MSFT)[ST],MSFT,ST,venta,2022-02-24,2022-02-24,2022-03-07,2022-03-08,12,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Oxbridge Re Holdings limited -Ordinary Shares (OXBR) [ST],OXBR,ST,compra,2022-02-16,2022-02-16,2022-03-07,2022-03-08,20,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,Phillips 66 Partners lP Commonunits representing limited partnerinterest in the Partnership (PSXP)[ST],PSXP,ST,compra,2022-02-02,2022-02-02,2022-03-07,2022-03-08,34,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Phillips 66 Partners lP Commonunits representing limited partnerinterest in the Partnership (PSXP)[ST],PSXP,ST,compra,2022-02-15,2022-02-15,2022-03-07,2022-03-08,21,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Plains All American Pipeline, l.P. -Common units representinglimited Partner Interests (PAA)[ST]",PAA,ST,compra,2022-02-15,2022-02-15,2022-03-07,2022-03-08,21,1001,15000.0
+20020543,2022,Virginia Foxx,NC05,JT,PPl Corporation (PPl) [ST],PPL,ST,compra,2022-02-14,2022-02-14,2022-03-07,2022-03-08,22,15001,50000.0
+20020543,2022,Virginia Foxx,NC05,JT,Schwab uS Aggregate Bond ETF(SCHZ) [ST],SCHZ,ST,venta,2022-02-15,2022-02-15,2022-03-07,2022-03-08,21,50001,100000.0
+20020543,2022,Virginia Foxx,NC05,JT,"Tyson Foods, Inc. (TSN) [ST]",TSN,ST,compra,2022-02-04,2022-02-04,2022-03-07,2022-03-08,32,15001,50000.0
+20022269,2023,Victoria Spartz,IN05,self,"Simon Property Group, Inc. (SPG) [ST]",SPG,ST,compra,2023-01-10,2023-01-12,2023-01-12,2023-01-13,3,15001,50000.0
+20025822,2024,Lloyd Doggett,TX37,self,Procter & Gamble Company (PG) [ST],PG,ST,compra,2024-08-15,2024-09-04,2024-09-09,2024-09-10,26,1001,15000.0
+20030998,2025,Rob Bresnahan,PA08,self,"Arlington, TX Municipal Bond [GS]",,GS,compra,2025-08-18,2025-08-26,2025-08-29,2025-09-01,14,50001,100000.0
+20016969,2020,Thomas Massie,KY04,self,"Tesla, Inc. (TSlA) [ST]",TSLA,ST,venta parcial,2020-07-14,2020-07-14,2020-07-16,2020-07-17,3,15001,50000.0
+20018793,2021,Hakeem S. Jeffries,NY08,self,SPblackRock Lifepath Index 2035 KFund [OT],,OT,compra,2021-05-17,2021-05-17,2021-05-30,2021-05-31,14,1001,15000.0
+20018793,2021,Hakeem S. Jeffries,NY08,self,USSPMillennium Trust CompanyTraditional IRA [OT],,OT,venta,2021-05-04,2021-05-04,2021-05-30,2021-05-31,27,1001,15000.0
+20020571,2022,Kevin Hern,OK01,JT,Accenture plc Class A OrdinaryShares (ACN) [ST],ACN,ST,compra,2022-02-15,2022-02-16,2022-03-07,2022-03-08,21,1001,15000.0
+20020571,2022,Kevin Hern,OK01,self,Dividend ReinvestmentJTMagellan Midstream Partners L.P.Limited Partnership (MMP) [ST],MMP,ST,compra,2022-02-14,2022-02-15,2022-03-07,2022-03-08,22,1001,15000.0
+20020571,2022,Kevin Hern,OK01,self,"Return Of Capital ReinvestmentJTONEOK, Inc. (OKE) [ST]",OKE,ST,compra,2022-02-14,2022-02-15,2022-03-07,2022-03-08,22,1001,15000.0
+20020571,2022,Kevin Hern,OK01,self,Dividend ReinvestmentJTTexas Instruments Incorporated(TXN) [ST],TXN,ST,compra,2022-02-07,2022-02-08,2022-03-07,2022-03-08,29,1001,15000.0
+20023537,2023,William R. Keating,MA09,self,PEPSICO INC NOTE CALL MAKE WHOLE 3.90000% 07/18/2032 [CS],,CS,compra,2023-08-10,2023-08-15,2023-08-28,2023-08-29,19,15001,50000.0
+20024862,2024,Shri Thanedar,MI13,self,Alphabet Inc. - Class A Common Stock (GOOGL) [ST],GOOGL,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Alphabet Inc. - Class A Common Stock (GOOGL) [ST],GOOGL,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Alphabet Inc. - Class C Capital Stock (GOOG) [ST],GOOG,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Alphabet Inc. - Class C Capital Stock (GOOG) [ST],GOOG,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,"Amazon.com, Inc. - Common Stock (AMZN) [ST]",AMZN,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,"Amazon.com, Inc. - Common Stock (AMZN) [ST]",AMZN,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Apple Inc. - Common Stock (AAPL) [ST],AAPL,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,15001,50000.0
+20024862,2024,Shri Thanedar,MI13,self,Apple Inc. - Common Stock (AAPL),AAPL,,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,15001,
+20024862,2024,Shri Thanedar,MI13,self,Berkshire Hathaway Inc. New Common Stock (BRK.B) [ST],BRK.B,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Berkshire Hathaway Inc. New Common Stock (BRK.B) [ST],BRK.B,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Microsoft Corporation - Common Stock (MSFT) [ST],MSFT,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20024862,2024,Shri Thanedar,MI13,self,Microsoft Corporation - Common Stock (MSFT) [ST],MSFT,ST,venta parcial,2024-04-02,2024-04-02,2024-05-15,2024-05-16,44,1001,15000.0
+20032256,2025,Tim Moore,NC14,self,"Coinbase Global, Inc. - Class A Common Stock (COIN) [ST]",COIN,ST,compra,2025-09-11,2025-10-04,2025-10-10,2025-10-13,32,15001,50000.0
+20032256,2025,Tim Moore,NC14,self,Colgate-Palmolive Company Common Stock (CL) [ST],CL,ST,venta,2025-09-10,2025-10-04,2025-10-10,2025-10-13,33,1001,15000.0
+20032256,2025,Tim Moore,NC14,self,"Hyster-Yale, Inc. Class A common stock (HY) [ST]",HY,ST,compra,2025-09-11,2025-10-04,2025-10-10,2025-10-13,32,50001,100000.0
+20032256,2025,Tim Moore,NC14,self,"Hyster-Yale, Inc. Class A common stock (HY) [ST]",HY,ST,venta,2025-09-19,2025-10-04,2025-10-10,2025-10-13,24,50001,100000.0
+20032256,2025,Tim Moore,NC14,self,Procter & Gamble Company (PG) [ST],PG,ST,venta,2025-09-10,2025-10-04,2025-10-10,2025-10-13,33,1001,15000.0
+20016961,2020,Nancy Pelosi,CA12,self,"2000060675SP Amazon.com, Inc. (AMZN)[OP]",AMZN,OP,venta,2020-01-16,2020-01-16,2020-07-20,2020-07-21,187,250001,500000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Sold 20 call options with a strike price of $1,700 and an expiration date of 1/17/20.2000060676SP Amazon.com, Inc. (AMZN)[OP]",AMZN,OP,venta,2020-01-16,2020-01-16,2020-07-20,2020-07-21,187,250001,500000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Sold 20 call options with a strike price of $1,600 and an expiration date of 1/17/20.SPAmerican Express Company(AXP) [OP]",AXP,OP,compra,2020-06-24,2020-06-24,2020-07-20,2020-07-21,27,100001,250000.0
+20016961,2020,Nancy Pelosi,CA12,self,Purchased 50 call options with a strike price of $80 and an expiration date of 1/21/2022.SPApple Inc. (AAPl) [OP],AAPL,OP,venta,2020-06-18,2020-06-18,2020-07-20,2020-07-21,33,1000001,5000000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Sold 100 call options with a strike price of $145 and an expiration date of 6/19/2020.SPNetflix, Inc. (NFlX) [ST]",NFLX,ST,compra,2020-06-18,2020-06-18,2020-07-20,2020-07-21,33,1000001,5000000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Exercised 50 call options (5,000 shares) expiring 6/19/2020 at a strike price of $250.SPPayPal Holdings, Inc. (PYPl)[ST]",PYPL,ST,compra,2020-06-12,2020-06-12,2020-07-20,2020-07-21,39,500001,1000000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Purchased 5,000 shares.SPPayPal Holdings, Inc. (PYPl)[ST]",PYPL,ST,compra,2020-06-12,2020-06-12,2020-07-20,2020-07-21,39,500001,1000000.0
+20016961,2020,Nancy Pelosi,CA12,self,"Purchased 5,000 shares.SPPayPal Holdings, Inc. (PYPl)[OP]",PYPL,OP,compra,2020-06-24,2020-06-24,2020-07-20,2020-07-21,27,250001,500000.0
+20016961,2020,Nancy Pelosi,CA12,self,Purchased 50 call options with a strike price of $100 and an expiration date of 1/21/2022.SPSalesforce.com Inc (CRM) [ST],CRM,ST,compra,2020-06-18,2020-06-18,2020-07-20,2020-07-21,33,1000001,5000000.0
+20018757,2021,Kevin Hern,OK01,JT,FS ENERgY & POWER FUNDCOMMON [PS],,PS,compra,2021-04-19,2021-04-20,2021-05-17,2021-05-18,29,1001,15000.0
+20018757,2021,Kevin Hern,OK01,self,Dividend Reinvestment JTFS KKR CAP CORP II COM [PS],,PS,compra,2021-04-02,2021-04-03,2021-05-17,2021-05-18,46,1001,15000.0
+20018757,2021,Kevin Hern,OK01,self,Dividend ReinvestmentJTJNL/Mellon U.S. Stock MKTIndex [VA],,VA,canje,2021-04-23,2021-04-24,2021-05-17,2021-05-18,25,250001,500000.0
+20018757,2021,Kevin Hern,OK01,self,Exchanged JNL/goldman Sachs Div Income & growth for JNL/Mellon U.S. Stock MKT IndexJTJNL/Mellon U.S. Stock MKTIndex [VA],,VA,canje,2021-04-23,2021-04-24,2021-05-17,2021-05-18,25,500001,1000000.0
+20018757,2021,Kevin Hern,OK01,self,Exchanged JNL/ goldman Sachs Dividend Income &growth for JNL/Mellon U.S. Stock MKT IndexJTMORgAN STANLEY FIN LLCSER A MTN 05/06/2026 ZEROCPN [CS],,CS,compra,2021-04-30,2021-05-01,2021-05-17,2021-05-18,18,1000001,5000000.0
+20020179,2022,Zoe Lofgren,CA19,self,SPgeneral Motors Finl Co (corporatebond) [CS],,CS,venta,2021-12-14,2022-01-07,2022-01-07,2022-01-10,27,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,Accenture plc Class A Ordinary Shares (ACN) [ST],ACN,ST,compra,2023-11-15,2023-11-16,2023-12-07,2023-12-08,23,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,FEDL HOME LN MTG CRP 11/6/2023 [GS],,GS,venta,2023-11-06,2023-11-07,2023-12-07,2023-12-08,32,100001,250000.0
+20024104,2023,Kevin Hern,OK01,JT,"Marsh & McLennan Companies, Inc. (MMC) [ST]",MMC,ST,compra,2023-11-15,2023-11-16,2023-12-07,2023-12-08,23,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,"ONEOK, Inc. (OKE) [ST]",OKE,ST,compra,2023-11-14,2023-11-15,2023-12-07,2023-12-08,24,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,"ONEOK, Inc. (OKE) [ST]",OKE,ST,compra,2023-11-14,2023-11-15,2023-12-07,2023-12-08,24,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,Texas Instruments Incorporated (TXN) [ST],TXN,ST,compra,2023-11-14,2023-11-15,2023-12-07,2023-12-08,24,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,Texas Instruments Incorporated (TXN) [ST],TXN,ST,compra,2023-11-14,2023-11-15,2023-12-07,2023-12-08,24,1001,15000.0
+20024104,2023,Kevin Hern,OK01,JT,UNITED STATES TREAS BILLS ZERO CPN 0.00000% 11/30/2023 [GS],,GS,venta,2023-11-30,2023-12-01,2023-12-07,2023-12-08,8,500001,1000000.0
+20024354,2024,Blake Moore,UT01,self,Alibaba Group Holding Limited American Depositary Shares each representing eight Ordinary share (BABA) [ST],BABA,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Alphabet Inc. - Class C Capital Stock (GOOG) [ST],GOOG,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Alphabet Inc. - Class C Capital Stock (GOOG) [ST],GOOG,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,"Amazon.com, Inc. (AMZN) [ST]",AMZN,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,"Amazon.com, Inc. (AMZN) [ST]",AMZN,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,"Amazon.com, Inc. (AMZN) [ST]",AMZN,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,American Express Company (AXP) [ST],AXP,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,American Express Company (AXP) [ST],AXP,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,American Express Company (AXP) [ST],AXP,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,Apple Inc. (AAPL) [ST],AAPL,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,Apple Inc. (AAPL) [ST],AAPL,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Apple Inc. (AAPL) [ST],AAPL,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Apple Inc. (AAPL) [ST],AAPL,ST,compra,2023-12-22,2024-01-01,2024-01-24,2024-01-25,34,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Bank of America Corporation (BAC) [ST],BAC,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Bank of America Corporation (BAC) [ST],BAC,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Bank of America Corporation (BAC),BAC,,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Berkshire Hathaway Inc. New (BRK.B) [ST],BRK.B,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Berkshire Hathaway Inc. New (BRK.B) [ST],BRK.B,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Berkshire Hathaway Inc. New (BRK.B) [ST],BRK.B,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,Boeing Company (BA) [ST],BA,ST,venta,2024-01-09,2024-01-22,2024-01-24,2024-01-25,16,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,"HealthEquity, Inc. (HQY) [ST]",HQY,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,"HealthEquity, Inc. (HQY) [ST]",HQY,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Johnson & Johnson (JNJ) [ST],JNJ,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Johnson & Johnson (JNJ) [ST],JNJ,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,"Meta Platforms, Inc. - Class A (META) [ST]",META,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,"Meta Platforms, Inc. - Class A (META) [ST]",META,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,"Meta Platforms, Inc. - Class A (META) [ST]",META,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Microsoft Corporation (MSFT) [ST],MSFT,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Microsoft Corporation (MSFT) [ST],MSFT,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Microsoft Corporation (MSFT) [ST],MSFT,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,RTX Corporation (RTX) [ST],RTX,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,RTX Corporation (RTX) [ST],RTX,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,SP,DR S&P 500 (SPY) [ST],SPY,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,100001,250000.0
+20024354,2024,Blake Moore,UT01,SP,DR S&P 500 (SPY) [ST],SPY,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,SP,DR S&P 500 (SPY) [ST],SPY,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,15001,50000.0
+20024354,2024,Blake Moore,UT01,self,Vanguard Growth ETF (VUG) [ST],VUG,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Vanguard Growth ETF (VUG) [ST],VUG,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Vanguard Growth ETF (VUG) [ST],VUG,ST,compra,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,100001,250000.0
+20024354,2024,Blake Moore,UT01,self,Walt Disney Company (DIS) [ST],DIS,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20024354,2024,Blake Moore,UT01,self,Walt Disney Company (DIS) [ST],DIS,ST,venta,2024-01-19,2024-01-22,2024-01-24,2024-01-25,6,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,AbbVie Inc. Common Stock (ABBV) [ST],ABBV,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,AbbVie Inc. Common Stock (ABBV) [ST],ABBV,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Alexandria Real Estate Equities, Inc. Common Stock (ARE) [ST]",ARE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Alphabet Inc. - Class A Common Stock (GOOGL) [ST],GOOGL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Alphabet Inc. - Class A Common Stock (GOOGL) [ST],GOOGL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,American Homes 4 Rent Common Shares of Beneficial Interest (AMH) [ST],AMH,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,American Homes 4 Rent Common Shares of Beneficial Interest (AMH) [ST],AMH,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,American Tower Corporation (AMT) [ST],AMT,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,American Tower Corporation (AMT) [ST],AMT,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Apollo Global Management, Inc. (APO) [ST]",APO,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Apollo Global Management, Inc. (APO) [ST]",APO,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Appell Pete Corp (APPL) [ST],APPL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Apple Inc. - Common Stock (AAPL) [ST],AAPL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Ares Management Corporation Class A Common Stock (ARES) [ST],ARES,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Ares Management Corporation Class A Common Stock (ARES) [ST],ARES,ST,compra,2024-10-09,2025-08-01,2025-08-20,2025-08-21,316,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,ASML Holding N.V. - New York Registry Shares (ASML) [ST],ASML,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,ASML Holding N.V. - New York Registry Shares (ASML) [ST],ASML,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,ASML Holding N.V. - New York Registry Shares (ASML) [ST],ASML,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Bank of America Corporation Common Stock (BAC) [ST],BAC,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"BlackRock, Inc. Common Stock (BLK) [ST]",BLK,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"BlackRock, Inc. Common Stock (BLK) [ST]",BLK,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Blackstone Inc. Common Stock (BX) [ST],BX,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Blackstone Inc. Common Stock (BX) [ST],BX,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Blue Owl Capital Inc. Class A Common Stock (OWL) [ST],OWL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Blue Owl Capital Inc. Class A Common Stock (OWL) [ST],OWL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Broadcom Inc. - Common Stock (AVGO) [ST],AVGO,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Broadcom Inc. - Common Stock (AVGO) [ST],AVGO,ST,venta parcial,2025-01-07,2025-08-01,2025-08-20,2025-08-21,226,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Broadcom Inc. - Common Stock (AVGO) [ST],AVGO,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Citigroup, Inc. Common Stock (C) [ST]",C,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Coca-Cola Company (KO) [ST],KO,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Coca-Cola Company (KO) [ST],KO,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Colgate-Palmolive Company Common Stock (CL) [ST],CL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Comcast Corporation - Class A Common Stock (CMCSA) [ST],CMCSA,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,DBA Sempra Common Stock (SRE) [ST],SRE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Eaton Corporation, PLC Ordinary Shares (ETN) [ST]",ETN,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Edison International Common Stock (EIX) [ST],EIX,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Emerson Electric Company Common Stock (EMR) [ST],EMR,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Enbridge Inc Common Stock (ENB) [ST],ENB,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,EQT Corporation Common Stock (EQT) [ST],EQT,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,EQT Corporation Common Stock (EQT) [ST],EQT,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Equinix, Inc. - Common Stock (EQIX) [ST]",EQIX,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Equinix, Inc. - Common Stock (EQIX) [ST]",EQIX,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Equity Lifestyle Properties, Inc. Common Stock (ELS) [ST]",ELS,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Equity Lifestyle Properties, Inc. Common Stock (ELS) [ST]",ELS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Equity Residential Common Shares of Beneficial Interest (EQR) [ST],EQR,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Equity Residential Common Shares of Beneficial Interest (EQR) [ST],EQR,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Freeport-McMoRan, Inc. Common Stock (FCX) [ST]",FCX,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Gaming and Leisure Properties, Inc. - Common Stock (GLPI) [ST]",GLPI,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Goldman Sachs Group, Inc. (GS) [ST]",GS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Hewlett Packard Enterprise Company Common Stock (HPE) [ST],HPE,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Home Depot, Inc. (HD) [ST]",HD,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Home Depot, Inc. (HD) [ST]",HD,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Honeywell International Inc. (HON) [ST],HON,ST,venta,2025-02-28,2025-08-01,2025-08-20,2025-08-21,174,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Intercontinental Exchange Inc. Common Stock (ICE) [ST],ICE,ST,venta,2024-09-26,2025-07-11,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Intercontinental Exchange Inc. Common Stock (ICE) [ST],ICE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Johnson & Johnson Common Stock (JNJ) [ST],JNJ,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,JP Morgan Chase & Co. Common Stock (JPM) [ST],JPM,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,JP Morgan Chase & Co. Common Stock (JPM) [ST],JPM,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Kinder Morgan, Inc. Common Stock (KMI) [ST]",KMI,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Kinder Morgan, Inc. Common Stock (KMI) [ST]",KMI,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"L3Harris Technologies, Inc. Common Stock (LHX) [ST]",LHX,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"L3Harris Technologies, Inc. Common Stock (LHX) [ST]",LHX,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Lennar Corporation Class A Common Stock (LEN) [ST],LEN,ST,venta,2024-09-26,2025-07-11,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Lennar Corporation Class A Common Stock (LEN) [ST],LEN,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Lineage, Inc. - Common Stock (LINE) [ST]",LINE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Lockheed Martin Corporation Common Stock (LMT) [ST],LMT,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Marvell Technology, Inc. - Common Stock (MRVL) [ST]",MRVL,ST,compra,2025-06-06,2025-08-01,2025-08-20,2025-08-21,76,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Marvell Technology, Inc. - Common Stock (MRVL) [ST]",MRVL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"McCormick & Company, Incorporated Common Stock (MKC) [ST]",MKC,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"McCormick & Company, Incorporated Common Stock (MKC) [ST]",MKC,ST,compra,2025-01-07,2025-08-01,2025-08-20,2025-08-21,226,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"McCormick & Company, Incorporated Common Stock (MKC) [ST]",MKC,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,McKesson Corporation Common Stock (MCK) [ST],MCK,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Merck & Company, Inc. Common Stock (MRK) [ST]",MRK,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Merck & Company, Inc. Common Stock (MRK) [ST]",MRK,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Meta Platforms, Inc. - Class A Common Stock (META) [ST]",META,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Meta Platforms, Inc. - Class A Common Stock (META) [ST]",META,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"MetLife, Inc. Common Stock (MET) [ST]",MET,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Microsoft Corporation - Common Stock (MSFT) [ST],MSFT,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Microsoft Corporation - Common Stock (MSFT) [ST],MSFT,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Morgan Stanley Common Stock (MS) [ST],MS,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Morgan Stanley Common Stock (MS) [ST],MS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,NESTLE S.A S/ADR (NSRGY) [ST],NSRGY,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"NextEra Energy, Inc. Common Stock (NEE) [ST]",NEE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"NextEra Energy, Inc. Common Stock (NEE) [ST]",NEE,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Northrop Grumman Corporation Common Stock (NOC) [ST],NOC,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Northrop Grumman Corporation Common Stock (NOC) [ST],NOC,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,NVIDIA Corporation - Common Stock (NVDA) [ST],NVDA,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,NXP Semiconductors N.V. - Common Stock (NXPI) [ST],NXPI,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Old Dominion Freight Line, Inc. - Common Stock (ODFL) [ST]",ODFL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"ONEOK, Inc. Common Stock (OKE) [ST]",OKE,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"ONEOK, Inc. Common Stock (OKE) [ST]",OKE,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Oracle Corporation Common Stock (ORCL) [ST],ORCL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Oracle Corporation Common Stock (ORCL) [ST],ORCL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Otis Worldwide Corporation Common Stock (OTIS) [ST],OTIS,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Otis Worldwide Corporation Common Stock (OTIS) [ST],OTIS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Otis Worldwide Corporation Common Stock (OTIS) [ST],OTIS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Pepsico, Inc. (PEP) [ST]",PEP,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Plains GP Holdings, L.P. - Class A Shares representing limited partner interests (PAGP) [ST]",PAGP,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,PPL Corporation Common Stock (PPL) [ST],PPL,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,PPL Corporation Common Stock (PPL) [ST],PPL,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Procter & Gamble Company (PG) [ST],PG,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Procter & Gamble Company (PG) [ST],PG,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Prologis, Inc. Common Stock (PLD) [ST]",PLD,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Public Service Enterprise Group Incorporated Common Stock (PEG) [ST],PEG,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,QUALCOMM Incorporated - Common Stock (QCOM) [ST],QCOM,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,QUALCOMM Incorporated - Common Stock (QCOM) [ST],QCOM,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,ROCHE HOLDING LTD S/ADR (RHHBY) [ST],RHHBY,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Salesforce, Inc. Common Stock (CRM) [ST]",CRM,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Salesforce, Inc. Common Stock (CRM) [ST]",CRM,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Sherwin-Williams Company (SHW) [ST],SHW,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Sherwin-Williams Company (SHW) [ST],SHW,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,TC Energy Corporation Common Stock (TRP) [ST],TRP,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,TC Energy Corporation Common Stock (TRP) [ST],TRP,ST,compra,2025-04-09,2025-08-01,2025-08-20,2025-08-21,134,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Texas Instruments Incorporated - Common Stock (TXN) [ST],TXN,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"T-Mobile US, Inc. (TMUS) [ST]",TMUS,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"T-Mobile US, Inc. (TMUS) [ST]",TMUS,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,U.S. Bancorp Common Stock (USB) [ST],USB,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Union Pacific Corporation Common Stock (UNP) [ST],UNP,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Union Pacific Corporation Common Stock (UNP) [ST],UNP,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,UnitedHealth Group Incorporated Common Stock (UNH) [ST],UNH,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 9128284V9 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 9128284V9 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 912828P46 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 912828P46 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 912828P469 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CAE1 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CAE1 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CAY7 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CAY75 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CFF3 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CFF3 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CFK2 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CFY2 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CFY2 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CGC91 [GS],,GS,compra,2025-06-06,2025-08-01,2025-08-20,2025-08-21,76,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CGM7 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CGM7 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CGM7 [GS],,GS,compra,2024-12-09,2025-08-01,2025-08-20,2025-08-21,255,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CHA2 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CHA2 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CKY6 [GS],,GS,venta,2025-03-24,2025-08-01,2025-08-20,2025-08-21,150,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CKY6 [GS],,GS,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CLP4 [GS],,GS,compra,2024-10-09,2025-08-01,2025-08-20,2025-08-21,316,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CLP4 [GS],,GS,compra,2025-02-18,2025-08-01,2025-08-20,2025-08-21,184,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CLP40 [GS],,GS,venta,2025-06-06,2025-08-01,2025-08-20,2025-08-21,76,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CMP3 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CMP3 [GS],,GS,compra,2025-03-24,2025-08-01,2025-08-20,2025-08-21,150,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CMU26 [GS],,GS,compra,2025-06-06,2025-08-01,2025-08-20,2025-08-21,76,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CNE7 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,US Treasury Note 91282CNG2 [GS],,GS,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Verizon Communications Inc. Common Stock (VZ) [ST],VZ,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,VICI Properties Inc. Common Stock (VICI) [ST],VICI,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,Walmart Inc. Common Stock (WMT) [ST],WMT,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Waste Connections, Inc. Common Shares (WCN) [ST]",WCN,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Williams Companies, Inc. (WMB) [ST]",WMB,ST,venta,2025-07-11,2025-08-01,2025-08-20,2025-08-21,41,1001,15000.0
+20030930,2025,Ritchie John Torres,NY15,self,"Williams Companies, Inc. (WMB) [ST]",WMB,ST,compra,2024-09-26,2025-08-01,2025-08-20,2025-08-21,329,1001,15000.0
+20016674,2020,Alan S. Lowenthal,CA47,SP,DraftKings Inc. - Class A (DKNg)[ST],DKNG,ST,venta parcial,2020-05-18,2020-05-26,2020-05-28,2020-05-29,11,122,
+20016674,2020,Alan S. Lowenthal,CA47,self,Neuberger Berman - Beneficiary IRASPDraftKings Inc. - Class A (DKNg)[ST],DKNG,ST,venta parcial,2020-05-18,2020-05-26,2020-05-28,2020-05-29,11,91,
+20016674,2020,Alan S. Lowenthal,CA47,self,Neuberger Berman - Beneficiary IRASPDraftKings Inc. - Class A (DKNg)[ST],DKNG,ST,venta parcial,2020-05-20,2020-05-27,2020-05-28,2020-05-29,9,30,
+20016674,2020,Alan S. Lowenthal,CA47,self,Neuberger Berman - Beneficiary IRASPDraftKings Inc. - Class A (DKNg)[ST],DKNG,ST,venta parcial,2020-05-20,2020-05-27,2020-05-28,2020-05-29,9,61,
+20017979,2021,Earl Blumenauer,OR03,SP,Truist Bank 1.5%/25 Due 3/10/25[CS],,CS,compra,2020-12-29,2021-01-06,2021-01-06,2021-01-07,9,15001,50000.0
+20017979,2021,Earl Blumenauer,OR03,self,Part of my spouse's retirement portfolio.SPuS Treasury Bill 20 Due 12/3/20[gS],,GS,venta,2020-12-03,2021-01-06,2021-01-06,2021-01-07,35,15001,50000.0
+20017979,2021,Earl Blumenauer,OR03,self,Full Redemption. Part of my spouse's retirement portfolio.SPuS Treasury NT 2%11/15/21 [gS],,GS,compra,2020-11-30,2021-01-06,2021-01-06,2021-01-07,38,15001,50000.0
+20020401,2022,Lois Frankel,FL21,self,"bWX Technologies, Inc. (bWXT)[ST]",BWXT,ST,venta parcial,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Diamondback Energy, Inc. -Commmon Stock (FANG) [ST]",FANG,ST,compra,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Diamondback Energy, Inc. -Commmon Stock (FANG) [ST]",FANG,ST,compra,2022-01-11,2022-02-15,2022-02-16,2022-02-17,37,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Donaldson Company, Inc. (DCI)[ST]",DCI,ST,venta,2022-01-11,2022-02-15,2022-02-16,2022-02-17,37,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Expeditors International ofWashington, Inc. (EXPD) [ST]",EXPD,ST,venta parcial,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Gartner, Inc. (IT) [ST]",IT,ST,venta parcial,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Hess Corporation (HES) [ST],HES,ST,compra,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Morgan Stanley IRA - X142Hess Corporation (HES) [ST],HES,ST,compra,2022-01-11,2022-02-15,2022-02-16,2022-02-17,37,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Morgan Stanley IRA - X142KKR & Co. Inc. (KKR) [ST],KKR,ST,compra,2022-01-13,2022-02-15,2022-02-16,2022-02-17,35,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Morgan Stanley IRA - X141KKR & Co. Inc. (KKR) [ST],KKR,ST,compra,2022-01-12,2022-02-15,2022-02-16,2022-02-17,36,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Morgan Stanley IRA - X141Lockheed Martin Corporation(LMT) [ST],LMT,ST,venta parcial,2022-01-12,2022-02-15,2022-02-16,2022-02-17,36,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,Morgan Stanley IRA - X141M&T bank Corporation (MTb)[ST],MTB,ST,compra,2022-01-11,2022-02-15,2022-02-16,2022-02-17,37,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Ollie's bargain Outlet Holdings,Inc. (OLLI) [ST]",OLLI,ST,venta,2022-01-11,2022-02-15,2022-02-16,2022-02-17,37,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142Ollie's bargain Outlet Holdings,Inc. (OLLI) [ST]",OLLI,ST,venta parcial,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X142PPG Industries, Inc. (PPG) [ST]",PPG,ST,compra,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20020401,2022,Lois Frankel,FL21,self,"Morgan Stanley IRA - X141SolarEdge Technologies, Inc.(SEDG) [ST]",SEDG,ST,venta parcial,2022-01-10,2022-02-15,2022-02-16,2022-02-17,38,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,AbbVie Inc. (ABBV) [ST],ABBV,ST,venta,2023-11-08,2023-12-05,2023-12-08,2023-12-11,33,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Adobe Inc. (ADBE) [ST],ADBE,ST,compra,2023-11-08,2023-12-05,2023-12-08,2023-12-11,33,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Alphabet Inc. - Class A (GOOGL) [ST],GOOGL,ST,venta parcial,2023-11-29,2023-12-05,2023-12-08,2023-12-11,12,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Alphabet Inc. - Class C Capital Stock (GOOG) [ST],GOOG,ST,venta parcial,2023-11-10,2023-12-05,2023-12-08,2023-12-11,31,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Arista Networks, Inc. (ANET) [ST]",ANET,ST,compra,2023-11-01,2023-12-05,2023-12-08,2023-12-11,40,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,ASML Holding N.V. - New York Registry Shares (ASML) [ST],ASML,ST,venta parcial,2023-11-09,2023-12-05,2023-12-08,2023-12-11,32,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"AutoZone, Inc. (AZO) [ST]",AZO,ST,venta parcial,2023-11-16,2023-12-05,2023-12-08,2023-12-11,25,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Celsius Holdings, Inc. (CELH) [ST]",CELH,ST,compra,2023-11-02,2023-12-05,2023-12-08,2023-12-11,39,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Celsius Holdings, Inc. (CELH) [ST]",CELH,ST,compra,2023-11-20,2023-12-05,2023-12-08,2023-12-11,21,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"DoorDash, Inc. (DASH) [ST]",DASH,ST,compra,2023-11-16,2023-12-05,2023-12-08,2023-12-11,25,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Eli Lilly and Company (LLY) [ST],LLY,ST,compra,2023-11-13,2023-12-05,2023-12-08,2023-12-11,28,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Eli Lilly and Company (LLY) [ST],LLY,ST,compra,2023-11-16,2023-12-05,2023-12-08,2023-12-11,25,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Exact Sciences Corporation (EXAS) [ST],EXAS,ST,venta parcial,2023-11-13,2023-12-05,2023-12-08,2023-12-11,28,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"HCA Healthcare, Inc. (HCA) [ST]",HCA,ST,venta parcial,2023-11-13,2023-12-05,2023-12-08,2023-12-11,28,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"HCA Healthcare, Inc. (HCA) [ST]",HCA,ST,venta parcial,2023-11-28,2023-12-05,2023-12-08,2023-12-11,13,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Intapp, Inc. (INTA) [ST]",INTA,ST,compra,2023-11-15,2023-12-05,2023-12-08,2023-12-11,26,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,McKesson Corporation (MCK) [ST],MCK,ST,venta parcial,2023-11-16,2023-12-05,2023-12-08,2023-12-11,25,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Microsoft Corporation (MSFT) [OP],MSFT,OP,compra,2023-11-14,2023-12-05,2023-12-08,2023-12-11,27,1000001,5000000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Microsoft Corporation (MSFT) [OP],MSFT,OP,compra,2023-11-14,2023-12-05,2023-12-08,2023-12-11,27,5000001,25000000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Microsoft Corporation (MSFT) [OP],MSFT,OP,venta,2023-11-14,2023-12-05,2023-12-08,2023-12-11,27,1000001,5000000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Microsoft Corporation (MSFT) [OP],MSFT,OP,venta,2023-11-14,2023-12-05,2023-12-08,2023-12-11,27,5000001,25000000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Monster Beverage Corporation (MNST) [ST],MNST,ST,venta parcial,2023-11-20,2023-12-05,2023-12-08,2023-12-11,21,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Monster Beverage Corporation (MNST) [ST],MNST,ST,venta parcial,2023-11-09,2023-12-05,2023-12-08,2023-12-11,32,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Palo Alto Networks, Inc. (PANW) [ST]",PANW,ST,compra,2023-11-28,2023-12-05,2023-12-08,2023-12-11,13,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Quanta Services, Inc. (PWR) [ST]",PWR,ST,compra,2023-11-27,2023-12-05,2023-12-08,2023-12-11,14,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Regeneron Pharmaceuticals, Inc. (REGN) [ST]",REGN,ST,venta parcial,2023-11-13,2023-12-05,2023-12-08,2023-12-11,28,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Rockwell Automation, Inc. (ROK) [ST]",ROK,ST,venta,2023-11-27,2023-12-05,2023-12-08,2023-12-11,14,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Salesforce, Inc. (CRM) [ST]",CRM,ST,venta,2023-11-22,2023-12-05,2023-12-08,2023-12-11,19,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"Salesforce, Inc. (CRM) [ST]",CRM,ST,venta parcial,2023-11-08,2023-12-05,2023-12-08,2023-12-11,33,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"ServiceNow, Inc. (NOW) [ST]",NOW,ST,compra,2023-11-08,2023-12-05,2023-12-08,2023-12-11,33,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"ServiceNow, Inc. (NOW) [ST]",NOW,ST,compra,2023-11-22,2023-12-05,2023-12-08,2023-12-11,19,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,"ServiceNow, Inc. (NOW) [ST]",NOW,ST,compra,2023-11-29,2023-12-05,2023-12-08,2023-12-11,12,1001,15000.0
+20024097,2023,Josh Gottheimer,NJ05,JT,Thermo Fisher Scientific Inc (TMO) [ST],TMO,ST,venta,2023-11-28,2023-12-05,2023-12-08,2023-12-11,13,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,"Applied Materials, Inc. - Common Stock (AMAT) [ST]",AMAT,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,Corning Incorporated Common Stock (GLW) [ST],GLW,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,Dell Technologies Inc. Class C Common Stock (DELL) [ST],DELL,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,Duke Energy Corporation (DUK) [ST],DUK,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,JP Morgan Chase & Co. Common Stock (JPM) [ST],JPM,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,"United Parcel Service, Inc. Common Stock (UPS) [ST]",UPS,ST,compra,2024-07-23,2024-07-23,2024-07-24,2024-07-25,2,1001,15000.0
+20025518,2024,Marjorie Taylor Mrs Greene,GA14,self,US Treasury Bill [GS],,GS,compra,2024-07-24,2024-07-24,2024-07-24,2024-07-25,1,250001,500000.0
+20030909,2025,Julie Johnson,TX32,JT,"BlackRock, Inc. Common Stock (BLK) [ST]",BLK,ST,venta parcial,2025-07-22,2025-08-04,2025-08-14,2025-08-15,24,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Chevron Corporation Common Stock (CVX) [ST],CVX,ST,compra,2025-07-25,2025-08-04,2025-08-14,2025-08-15,21,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Chevron Corporation Common Stock (CVX) [ST],CVX,ST,canje,2025-07-21,2025-08-05,2025-08-14,2025-08-15,25,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,CME Group Inc. - Class A Common Stock (CME) [ST],CME,ST,compra,2025-07-22,2025-08-04,2025-08-14,2025-08-15,24,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Exxon Mobil Corporation Common Stock (XOM) [ST],XOM,ST,venta parcial,2025-07-25,2025-08-04,2025-08-14,2025-08-15,21,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Microsoft Corporation - Common Stock (MSFT) [ST],MSFT,ST,venta parcial,2025-07-29,2025-08-04,2025-08-14,2025-08-15,17,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Packaging Corporation of America Common Stock (PKG) [ST],PKG,ST,compra,2025-07-22,2025-08-04,2025-08-14,2025-08-15,24,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Packaging Corporation of America Common Stock (PKG) [ST],PKG,ST,compra,2025-07-25,2025-08-04,2025-08-14,2025-08-15,21,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Parker-Hannifin Corporation Common Stock (PH) [ST],PH,ST,venta parcial,2025-07-25,2025-08-04,2025-08-14,2025-08-15,21,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Philip Morris International Inc Common Stock (PM) [ST],PM,ST,venta parcial,2025-07-22,2025-08-04,2025-08-14,2025-08-15,24,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,Seagate Technology Holdings PLC - Ordinary Shares (STX) [ST],STX,ST,venta parcial,2025-07-29,2025-08-04,2025-08-14,2025-08-15,17,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,"Synopsys, Inc. - Common Stock (SNPS) [ST]",SNPS,ST,canje,2025-07-18,2025-08-05,2025-08-14,2025-08-15,28,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,The Bank of New York Mellon Corporation Common Stock (BK) [ST],BK,ST,compra,2025-07-18,2025-08-04,2025-08-14,2025-08-15,28,1001,15000.0
+20030909,2025,Julie Johnson,TX32,JT,UnitedHealth Group Incorporated Common Stock (UNH) [ST],UNH,ST,venta parcial,2025-07-24,2025-08-04,2025-08-14,2025-08-15,22,1001,15000.0
+20017535,2020,Alan S. Lowenthal,CA47,SP,Activision Blizzard Inc [CS],,CS,venta,2020-09-04,2020-10-15,2020-10-15,2020-10-16,42,15001,50000.0
+20018355,2021,Nancy Pelosi,CA12,SP,AllianceBernstein Holding l.P.units (AB) [ST],AB,ST,compra,2021-02-18,2021-02-18,2021-03-09,2021-03-10,20,500001,1000000.0
+20018355,2021,Nancy Pelosi,CA12,self,"Purchased 15,000 shares.SPAllianceBernstein Holding l.P.units (AB) [ST]",AB,ST,compra,2021-02-23,2021-02-23,2021-03-09,2021-03-10,15,500001,1000000.0
+20020427,2022,Alan S. Lowenthal,CA47,SP,Wells Fargo & Co [CS],,CS,venta,2022-01-26,2022-02-02,2022-02-10,2022-02-11,16,15001,50000.0
+20022900,2023,Scott H. Peters,CA50,SP,Bay Area Toll RV Toll Tran [GS],,GS,venta,2023-04-03,2023-04-30,2023-05-10,2023-05-11,38,250001,500000.0
+20022900,2023,Scott H. Peters,CA50,SP,U.S Treasury Bills [GS],,GS,compra,2023-04-24,2023-04-30,2023-05-10,2023-05-11,17,500001,1000000.0
+20022900,2023,Scott H. Peters,CA50,SP,U.S Treasury Bills [GS],,GS,compra,2023-04-25,2023-04-30,2023-05-10,2023-05-11,16,100001,250000.0
+20022900,2023,Scott H. Peters,CA50,SP,U.S Treasury Bills [GS],,GS,compra,2023-04-25,2023-04-30,2023-05-10,2023-05-11,16,500001,1000000.0
+20024324,2024,Dwight Evans,PA03,self,"Hannon Armstrong Sustainable Infrastructure Capital, Inc. (HASI) [ST]",HASI,ST,venta,2023-12-20,2024-01-08,2024-01-17,2024-01-18,29,1001,15000.0
+20024324,2024,Dwight Evans,PA03,self,"Micron Technology, Inc. (MU) [ST]",MU,ST,compra,2023-12-20,2024-01-08,2024-01-17,2024-01-18,29,1001,15000.0
+20024324,2024,Dwight Evans,PA03,self,"ServiceNow, Inc. (NOW) [ST]",NOW,ST,compra,2023-12-20,2024-01-08,2024-01-17,2024-01-18,29,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,Bio-Techne Corp - Common Stock (TECH) [ST],TECH,ST,venta parcial,2025-05-26,2025-07-01,2025-07-02,2025-07-03,38,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,"Clean Harbors, Inc. Common Stock (CLH) [ST]",CLH,ST,venta parcial,2025-06-20,2025-07-01,2025-07-02,2025-07-03,13,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,Markel Group Inc. Common Stock (MKL) [ST],MKL,ST,compra,2025-06-06,2025-07-01,2025-07-02,2025-07-03,27,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,"Paychex, Inc. - Common Stock (PAYX) [ST]",PAYX,ST,compra,2025-06-26,2025-07-01,2025-07-02,2025-07-03,7,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,STERIS plc (STE) [ST],STE,ST,venta parcial,2025-06-26,2025-07-01,2025-07-02,2025-07-03,7,1001,15000.0
+20030592,2025,April McClain Delaney,MD06,DC,Tractor Supply Company - Common Stock (TSCO) [ST],TSCO,ST,compra,2025-06-06,2025-07-01,2025-07-02,2025-07-03,27,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,abbott laboratories (aBT) [ST],ABT,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,accenture plc Class a OrdinaryShares (aCN) [ST],ACN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"air Products and Chemicals, Inc.(aPD) [ST]",APD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"alexandria Real Estate Equities,Inc. (aRE) [ST]",ARE,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,alibaba group Holding limitedamerican Depositary Shares eachrepresenting eight Ordinary share(BaBa) [ST],BABA,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,alphabet Inc. - Class a (gOOgl)[ST],GOOGL,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,alphabet Inc. - Class C CapitalStock (gOOg) [ST],GOOG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"altria group, Inc. (MO) [ST]",MO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"amazon.com, Inc. (aMZN) [ST]",AMZN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,amgen Inc. (aMgN) [ST],AMGN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"analog Devices, Inc. (aDI) [ST]",ADI,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,apple Inc. (aaPl) [ST],AAPL,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,arthur J. gallagher & Co. (aJg)[ST],AJG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"autodesk, Inc. (aDSK) [ST]",ADSK,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"automatic Data Processing, Inc.(aDP) [ST]",ADP,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"avalonBay Communities, Inc.(aVB) [ST]",AVB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Bank of america Corporation(BaC) [ST],BAC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Becton, Dickinson and Company(BDX) [ST]",BDX,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"BlackRock, Inc. (BlK) [ST]",BLK,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Boston Properties, Inc. (BXP) [ST]",BXP,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Bristol-Myers Squibb Company(BMY) [ST],BMY,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Capital One Financial Corporation(COF) [ST],COF,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Cerner Corporation (CERN) [ST],CERN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Chevron Corporation (CVX) [ST],CVX,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Chubb limited (CB) [ST],CB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Cisco Systems, Inc. (CSCO) [ST]",CSCO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,CME group Inc. - Class a (CME)[ST],CME,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,CMS Energy Corporation (CMS)[ST],CMS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Coca-Cola Company (KO) [ST],KO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Colgate-Palmolive Company (Cl)[ST],CL,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Comcast Corporation - Class a g fedcbID (CMCSa),CMCSA,,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,ConocoPhillips (COP) [ST],COP,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Cullen/Frost Bankers, Inc. (CFR)[ST]",CFR,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,CVS Health Corporation (CVS)[ST],CVS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Danone Sponsored aDR (DaNOY)[ST],DANOY,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Deere & Company (DE) [ST],DE,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Discover Financial Services (DFS)[ST],DFS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Dover Corporation (DOV) [ST],DOV,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"DuPont de Nemours, Inc. (DD)[ST]",DD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Edison International (EIX) [ST],EIX,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Eli lilly and Company (llY) [ST],LLY,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Entergy Corporation (ETR) [ST],ETR,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Expeditors International of Washington, Inc. (EXPD) [ST]",EXPD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Exxon Mobil Corporation (XOM)[ST],XOM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Facebook, Inc. - Class a (FB) [ST]",FB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,FactSet Research Systems Inc.(FDS) [ST],FDS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Fidelity Dividend ETF for RisingRates (FDRR) [ST],FDRR,ST,compra,2020-02-21,2020-03-03,2020-04-05,2020-04-06,45,100001,250000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Fidelity National InformationServices, Inc. (FIS) [ST]",FIS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,general Dynamics Corporation(gD) [ST],GD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"gilead Sciences, Inc. (gIlD) [ST]",GILD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Hartford Financial Services group,Inc. (HIg) [ST]",HIG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Hasbro, Inc. (HaS) [ST]",HAS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Home Depot, Inc. (HD) [ST]",HD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Honeywell International Inc.(HON) [ST],HON,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Illinois Tool Works Inc. (ITW) [ST],ITW,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,International Business MachinesCorporation (IBM) [ST],IBM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,iShares Expanded Tech-SoftwareSector ETF (IgV) [ST],IGV,ST,compra,2020-02-21,2020-03-03,2020-04-05,2020-04-06,45,100001,250000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Johnson & Johnson (JNJ) [ST],JNJ,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,las Vegas Sands Corp. (lVS) [ST],LVS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,M&T Bank Corporation (MTB)[ST],MTB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Marsh & Mclennan Companies,Inc. (MMC) [ST]",MMC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,McDonald's Corporation (MCD)[ST],MCD,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Medtronic plc. Ordinary Shares(MDT) [ST],MDT,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Merck & Company, Inc. CommonStock (MRK) [ST]",MRK,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Metlife, Inc. (MET) [ST]",MET,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Microsoft Corporation (MSFT),MSFT,,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,
+20016323,2020,Mikie Sherrill,NJ11,self,"Mondelez International, Inc. -Class a (MDlZ) [ST]",MDLZ,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Monster Beverage Corporation(MNST) [ST],MNST,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"NextEra Energy, Inc. (NEE) [ST]",NEE,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Norfolk Southern Corporation(NSC) [ST],NSC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Northern Trust Corporation(NTRS) [ST],NTRS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Novartis ag (NVS) [ST],NVS,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Novo Nordisk a/S (NVO) [ST],NVO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Nuveen ESg large-Cap growthETF (Nulg) [ST],NULG,ST,compra,2020-02-21,2020-03-03,2020-04-05,2020-04-06,45,100001,250000.0
+20016323,2020,Mikie Sherrill,NJ11,self,NVIDIa Corporation (NVDa) [ST],NVDA,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Oracle Corporation (ORCl) [ST],ORCL,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Parker-Hannifin Corporation (PH)[ST],PH,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Pepsico, Inc. (PEP) [ST]",PEP,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Pfizer, Inc. (PFE) [ST]",PFE,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Philip Morris International Inc(PM) [ST],PM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"PNC Financial Services group, Inc.(PNC) [ST]",PNC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"PPg Industries, Inc. (PPg) [ST]",PPG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Procter & gamble Company (Pg)[ST],PG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Progressive Corporation (PgR)[ST],PGR,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Prudential Financial, Inc. (PRu)[ST]",PRU,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Public Service Enterprise groupIncorporated (PEg) [ST],PEG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,QualCOMM Incorporated(QCOM) [ST],QCOM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Regeneron Pharmaceuticals, Inc.(REgN) [ST]",REGN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Republic Services, Inc. (RSg) [ST]",RSG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Roche Holdings ag Baselamerican Depositary Shares(RHHBY) [ST],RHHBY,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,RPM International Inc. (RPM) [ST],RPM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Schlumberger N.V. (SlB) [ST],SLB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Schwab uS Dividend Equity ETF(SCHD) [ST],SCHD,ST,compra,2020-02-21,2020-03-03,2020-04-05,2020-04-06,45,100001,250000.0
+20016323,2020,Mikie Sherrill,NJ11,self,SEI Investments Company (SEIC)[ST],SEIC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Simon Property group, Inc. (SPg)[ST]",SPG,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,SP,DR Series Trust SPDR PortfolioS&P 500 growth ETF (SPYg) [ST],SPYG,ST,compra,2020-02-21,2020-03-03,2020-04-05,2020-04-06,45,100001,250000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Stanley Black & Decker, Inc. (SWK)[ST]",SWK,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Starbucks Corporation (SBuX)[ST],SBUX,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"T. Rowe Price group, Inc. (TROW)[ST]",TROW,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Texas Instruments Incorporated(TXN) [ST],TXN,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"The Travelers Companies, Inc. (TRV) [ST]",TRV,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Truist Financial Corporation (TFC)[ST],TFC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,u.S. Bancorp (uSB) [ST],USB,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,united Technologies Corporation(uTX) [ST],UTX,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,unitedHealth group IncorporatedCommon Stock (uNH) [ST],UNH,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,V.F. Corporation (VFC) [ST],VFC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Valero Energy Corporation (VlO)[ST],VLO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Varian Medical Systems, Inc.(VaR) [ST]",VAR,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Ventas, Inc. (VTR) [ST]",VTR,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Verizon Communications Inc. (VZ)[ST],VZ,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Visa Inc. (V) [ST],V,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,15001,50000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Vornado Realty Trust (VNO) [ST],VNO,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Walmart Inc. (WMT) [ST],WMT,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Wells Fargo & Company (WFC)[ST],WFC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Wyndham Hotels & Resorts, Inc.(WH) [ST]",WH,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,Xcel Energy Inc. (XEl) [ST],XEL,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Yum China Holdings, Inc. (YuMC)[ST]",YUMC,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20016323,2020,Mikie Sherrill,NJ11,self,"Yum! Brands, Inc. (YuM) [ST]",YUM,ST,venta,2020-02-20,2020-03-03,2020-04-05,2020-04-06,46,1001,15000.0
+20018542,2021,Chellie Pingree,ME01,self,united States Treasury Notes [gS],,GS,compra,2021-03-03,2021-04-08,2021-04-13,2021-04-14,42,100001,250000.0
+20020943,2022,Earl Blumenauer,OR03,SP,Alleghany Corporation (Y) [ST],Y,ST,venta,2022-04-22,2022-05-04,2022-05-05,2022-05-06,14,1001,15000.0
+20020943,2022,Earl Blumenauer,OR03,SP,Toyota Motor Credit 3%25 Due 04/01/25 [CS],,CS,compra,2022-03-31,2022-05-04,2022-05-05,2022-05-06,36,15001,50000.0
+20020943,2022,Earl Blumenauer,OR03,SP,US Treasu NT 2.375%04/26 [GS],,GS,compra,2022-04-20,2022-05-04,2022-05-05,2022-05-06,16,15001,50000.0
+20020943,2022,Earl Blumenauer,OR03,SP,Vodafone Group Plc - American Depositary Shares each representing ten Ordinary Shares (VOD) [ST],VOD,ST,venta parcial,2022-04-27,2022-05-04,2022-05-05,2022-05-06,9,1001,15000.0
+20022451,2023,Seth Moulton,MA06,self,"2000101388SP Activision Blizzard, Inc (ATVI) [ST]",ATVI,ST,venta parcial,2022-09-16,2023-01-10,2023-02-17,2023-02-20,157,50001,100000.0
+20026203,2024,Thomas R. Suozzi,NY03,self,NVIDIA Corporation - Common Stock (NVDA) [ST],NVDA,ST,venta,2024-10-24,2024-10-25,2024-11-12,2024-11-13,20,15001,50000.0
+20030639,2025,Mike Kelly,PA16,SP,California State GO Call 12/1/27 4% due 12/1/47 [GS],,GS,venta parcial,2025-06-12,2025-07-01,2025-07-09,2025-07-10,28,1001,15000.0
+20030639,2025,Mike Kelly,PA16,SP,Harding Loevner Institutional EM (HLMEX) [OT],HLMEX,OT,venta,2025-06-18,2025-07-01,2025-07-09,2025-07-10,22,100001,250000.0
+20030639,2025,Mike Kelly,PA16,SP,United States Steel Corporation Common Stock (X) [ST],X,ST,compra,2025-06-03,2025-07-01,2025-07-09,2025-07-10,37,15001,50000.0
+20030639,2025,Mike Kelly,PA16,SP,United States Steel Corporation Common Stock (X) [ST],X,ST,venta,2025-06-20,2025-07-01,2025-07-09,2025-07-10,20,15001,50000.0

@@ -1,0 +1,35 @@
+{
+  "fuente": "nyt",
+  "nombre": "NYT Archive API (titular, abstract y lead paragraph desde 1851)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://developer.nytimes.com/docs/archive-product/1/overview",
+  "acceso": "api",
+  "autenticacion": "clave gratuita",
+  "coste": "0 €",
+  "licencia_y_terminos": "NYT APIs Terms of Use: no comercial, atribución, no almacenar más de lo necesario",
+  "cobertura_inicio": "1851-09-18",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "continua",
+  "retraso_publicacion": "mismo día (pub_date con hora); el archivo del mes en curso se completa al cierre",
+  "formato": "json: headline, abstract, lead_paragraph, pub_date, section_name, keywords (sin cuerpo)",
+  "volumen_estimado": "≈5-8 k piezas/mes; ≈2-3 MB de json/mes; 1851-hoy ≈ 4-5 GB (documentado, no medido)",
+  "limites": "10 peticiones/min y 4.000/día; Archive = 1 petición por mes (barato)",
+  "estado_sonda": "no_probada",
+  "mediciones": {
+    "con_clave": false,
+    "piezas": 0,
+    "fechas": "documentadas (no medidas)",
+    "peticiones": 0
+  },
+  "notas": [
+    "sin clave (NYT_API_KEY vacía en .env): decisión del usuario, no se registra cuenta",
+    "Cómo obtener la clave: cuenta en developer.nytimes.com -> crear app -> activar Archive API; NYT_API_KEY en .env."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

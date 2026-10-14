@@ -579,7 +579,7 @@ def _fichas(cfg: base.ConfigSonda, res: base.Resultado, acum: dict[str, Any]) ->
                "(sin contar *.translation.gkg)") if mb_fich else "sin medir"
     res.fichas.append(base.ficha(
         fuente=F_GKG, nombre="GDELT Global Knowledge Graph 2.1 (tono, temas, entidades, titulares)",
-        agentes=["macro", "risk", "equity"], rag="serie", url="https://www.gdeltproject.org/data.html#rawdatafiles",
+        agentes=["macro", "risk", "equity"], rag="cajon", url="https://www.gdeltproject.org/data.html#rawdatafiles",
         acceso="descarga", licencia_y_terminos=LICENCIA, cobertura_inicio=ini_txt, cobertura_fin=fin_txt,
         frecuencia="15 min", retraso_publicacion=f"captura ≈ {lag_gkg} h después de la hora del medio (mediana, "
         "PAGE_PRECISEPUBTIMESTAMP); fichero publicado ≈15 min tras la captura", formato="csv tabulado en zip",
@@ -593,7 +593,7 @@ def _fichas(cfg: base.ConfigSonda, res: base.Resultado, acum: dict[str, Any]) ->
                "Feed principal solo en inglés; el traducido (≈65 idiomas) va en *.translation.gkg.csv.zip."]))
     res.cobertura.append(dict(
         fuente=F_GKG, familia="gdelt_wiki", tipo="titular", inicio=ini_txt, fin=fin_txt, hora=True, idiomas="en",
-        lag_mediana_h=lag_gkg, destino="serie", backtest=True, estado=base.estado(res.registro, F_GKG),
+        lag_mediana_h=lag_gkg, destino="cajon", backtest=True, estado=base.estado(res.registro, F_GKG),
         nota=f"{med_gkg['articulos_por_fichero']} art./15 min, {mb_fich} MB/fichero; titulares + tono desde 2015-02"))
 
     # ---- Events

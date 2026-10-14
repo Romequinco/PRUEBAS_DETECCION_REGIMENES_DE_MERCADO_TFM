@@ -1,0 +1,36 @@
+{
+  "fuente": "predictit",
+  "nombre": "PredictIt (mercados políticos de EE. UU.)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk"
+  ],
+  "rag": "ninguno",
+  "url": "https://www.predictit.org/api/marketdata/all/",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "PredictIt API: uso no comercial con atribución a PredictIt; solo instantánea",
+  "cobertura_inicio": "2026-10-14",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "instantánea (actualiza ~1 min)",
+  "retraso_publicacion": "tiempo real (timeStamp hace 0.0 h)",
+  "formato": "json",
+  "volumen_estimado": "≈ 0.43 MB por instantánea",
+  "limites": "1 petición/min; sin histórico por API (descarga manual de 90 días por contrato)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ts": "2026-10-14T13:16:09+00:00",
+    "ts_fuente": "2026-10-14T13:16:01+00:00",
+    "n_mercados": 203,
+    "n_contratos": 608,
+    "lag_h": 0.0,
+    "mercado_ejemplo": "Republican House Seats won in midterms?",
+    "bytes": 428791,
+    "segundos": 1.1
+  },
+  "notas": [
+    "Solo en vivo: guardar instantáneas propias desde hoy si se quiere serie."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

@@ -1,0 +1,54 @@
+{
+  "fuente": "hf_bloomberg_2006_2013",
+  "nombre": "Bloomberg financial news 2006-2013 (copia en HF del corpus de Ding et al. 2014)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://huggingface.co/datasets/KrossKinetic/Bloomberg_Financial_News",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "declarada en el Hub: apache-2.0; declara apache-2.0 pero el texto es de Bloomberg (copyright): licencia NO fiable",
+  "cobertura_inicio": "2006-10-20",
+  "cobertura_fin": "2013-11-26",
+  "frecuencia": "estático (instantánea)",
+  "retraso_publicacion": "n/a (histórico cerrado)",
+  "formato": "gitattributes,json,md",
+  "volumen_estimado": "1.39 GB en 3 ficheros; filas=no medidas",
+  "limites": "descarga HTTP del Hub (sin clave si no es gated); viewer: 100 filas por petición",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "hub": {
+      "gated": false,
+      "licencia": "apache-2.0",
+      "ficheros": 3,
+      "bytes": 1385740895,
+      "descargas_mes": 27,
+      "modificado": "2024-11-15T19:46:02.000Z",
+      "configs_tarjeta": [],
+      "extensiones": {
+        "gitattributes": 1,
+        "json": 1,
+        "md": 1
+      }
+    },
+    "filas": null,
+    "filas_por_config": {},
+    "fechas": "documentadas",
+    "columnas": "",
+    "tokens_mediana": null,
+    "dominios_top": "",
+    "lag_published_a_crawl_h": null,
+    "errores": {
+      "_error_rows": "500 en https://datasets-server.huggingface.co/first-rows"
+    }
+  },
+  "notas": [
+    "Cubre 2008 con texto completo, que CC-NEWS no cubre: candidato para el backtest de Lehman con advertencia legal explícita."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

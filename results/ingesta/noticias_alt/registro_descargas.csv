@@ -1,0 +1,1026 @@
+fuente,item,dia,url,ok,bytes,segundos,error,modulo
+ccnews,paths_201611,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2016/11/warc.paths.gz,True,296,0.0,,ccnews
+ccnews,warc_elecciones_2016,elecciones_2016,https://data.commoncrawl.org/crawl-data/CC-NEWS/2016/11/CC-NEWS-20161109145340-00023.warc.gz,True,3000000,0.0,,ccnews
+ccnews,paths_202003,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2020/03/warc.paths.gz,True,3525,0.0,,ccnews
+ccnews,warc_covid,covid,https://data.commoncrawl.org/crawl-data/CC-NEWS/2020/03/CC-NEWS-20200316144652-01243.warc.gz,True,3000000,0.0,,ccnews
+ccnews,paths_202303,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2023/03/warc.paths.gz,True,5744,0.0,,ccnews
+ccnews,warc_svb,svb,https://data.commoncrawl.org/crawl-data/CC-NEWS/2023/03/CC-NEWS-20230310141823-01106.warc.gz,True,3000000,0.0,,ccnews
+ccnews,paths_202504,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2025/04/warc.paths.gz,True,3864,0.0,,ccnews
+ccnews,warc_aranceles,aranceles,https://data.commoncrawl.org/crawl-data/CC-NEWS/2025/04/CC-NEWS-20250407132826-01517.warc.gz,True,3000000,0.0,,ccnews
+ccnews,paths_202610,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2026/10/warc.paths.gz,True,1346,0.0,,ccnews
+ccnews,warc_hoy,hoy,https://data.commoncrawl.org/crawl-data/CC-NEWS/2026/10/CC-NEWS-20261014065111-00253.warc.gz,True,3000000,0.0,,ccnews
+ccnews,paths_201608,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2016/08/warc.paths.gz,True,131,0.0,,ccnews
+ccnews,paths_202610,,https://data.commoncrawl.org/crawl-data/CC-NEWS/2026/10/warc.paths.gz,True,1346,0.0,,ccnews
+hf_fnspid,hub,,https://huggingface.co/api/datasets/Zihan1004/FNSPID,True,1801,0.0,,hf_datasets
+hf_fnspid,size,,https://datasets-server.huggingface.co/size,True,317,0.0,,hf_datasets
+hf_fnspid,first-rows_default,,https://datasets-server.huggingface.co/first-rows,True,49293,0.0,,hf_datasets
+hf_ccnews,hub,,https://huggingface.co/api/datasets/stanford-oval/ccnews,True,111235,0.0,,hf_datasets
+hf_ccnews,size,,https://datasets-server.huggingface.co/size,True,4436,0.0,,hf_datasets
+hf_ccnews,first-rows_2020,,https://datasets-server.huggingface.co/first-rows,True,192420,0.0,,hf_datasets
+hf_ccnews,statistics_2020,,https://datasets-server.huggingface.co/statistics,True,17838,0.0,,hf_datasets
+hf_bloomberg_2006_2013,hub,,https://huggingface.co/api/datasets/KrossKinetic/Bloomberg_Financial_News,True,1660,0.0,,hf_datasets
+hf_bloomberg_2006_2013,size,,https://datasets-server.huggingface.co/size,True,359,0.0,,hf_datasets
+hf_bloomberg_2006_2013,first-rows_default,,https://datasets-server.huggingface.co/first-rows,False,0,8.2,500 en https://datasets-server.huggingface.co/first-rows,hf_datasets
+hf_reuters_cnbc_2018,hub,,https://huggingface.co/api/datasets/ashraq/financial-news-articles,True,1597,0.0,,hf_datasets
+hf_reuters_cnbc_2018,size,,https://datasets-server.huggingface.co/size,True,706,0.0,,hf_datasets
+hf_reuters_cnbc_2018,first-rows_default,,https://datasets-server.huggingface.co/first-rows,True,175721,0.0,,hf_datasets
+hf_financial_news_multisource,hub,,https://huggingface.co/api/datasets/Brianferrell787/financial-news-multisource,True,39625,0.0,,hf_datasets
+gdelt_gkg,lastupdate,,https://data.gdeltproject.org/gdeltv2/lastupdate.txt,True,320,1.23,,gdelt
+gdelt_eventos,primer fichero 2.0,,https://data.gdeltproject.org/gdeltv2/20150218230000.export.CSV.zip,True,150383,0.0,,gdelt
+gdelt_eventos,index events 1.0,,https://data.gdeltproject.org/events/index.html,True,573424,0.0,,gdelt
+gdelt_eventos,events1,2008-09-15,https://data.gdeltproject.org/events/200809.zip,True,32922335,0.0,,gdelt
+gdelt_gkg,gkg 0000,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109000000.gkg.csv.zip,True,13602363,0.0,,gdelt
+gdelt_gkg,gkg 0400,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109040000.gkg.csv.zip,True,13278985,0.0,,gdelt
+gdelt_gkg,gkg 0800,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109080000.gkg.csv.zip,True,16381524,0.0,,gdelt
+gdelt_gkg,gkg 1200,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109120000.gkg.csv.zip,True,16929693,0.0,,gdelt
+gdelt_gkg,gkg 1600,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109160000.gkg.csv.zip,True,10716,0.0,,gdelt
+gdelt_gkg,gkg 2000,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109200000.gkg.csv.zip,True,16941413,0.0,,gdelt
+gdelt_eventos,events2 0000,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109000000.export.CSV.zip,True,331842,0.0,,gdelt
+gdelt_eventos,events2 0400,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109040000.export.CSV.zip,True,150484,0.0,,gdelt
+gdelt_eventos,events2 0800,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109080000.export.CSV.zip,True,183476,0.0,,gdelt
+gdelt_eventos,events2 1200,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109120000.export.CSV.zip,True,202942,0.0,,gdelt
+gdelt_eventos,events2 1600,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109160000.export.CSV.zip,True,816,0.0,,gdelt
+gdelt_eventos,events2 2000,2016-11-09,https://data.gdeltproject.org/gdeltv2/20161109200000.export.CSV.zip,True,167127,0.0,,gdelt
+gdelt_gkg,gkg 0000,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316000000.gkg.csv.zip,True,5012520,0.0,,gdelt
+gdelt_gkg,gkg 0400,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316040000.gkg.csv.zip,True,3724823,0.0,,gdelt
+gdelt_gkg,gkg 0800,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316080000.gkg.csv.zip,True,5127117,0.0,,gdelt
+gdelt_gkg,gkg 1200,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316120000.gkg.csv.zip,True,7344817,0.0,,gdelt
+gdelt_gkg,gkg 1600,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316160000.gkg.csv.zip,True,10957320,0.0,,gdelt
+gdelt_gkg,gkg 2000,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316200000.gkg.csv.zip,True,10940139,0.0,,gdelt
+gdelt_eventos,events2 0000,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316000000.export.CSV.zip,True,129946,0.0,,gdelt
+gdelt_eventos,events2 0400,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316040000.export.CSV.zip,True,53429,0.0,,gdelt
+gdelt_eventos,events2 0800,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316080000.export.CSV.zip,True,87397,0.0,,gdelt
+gdelt_eventos,events2 1200,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316120000.export.CSV.zip,True,94963,0.0,,gdelt
+gdelt_eventos,events2 1600,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316160000.export.CSV.zip,True,124868,0.0,,gdelt
+gdelt_eventos,events2 2000,2020-03-16,https://data.gdeltproject.org/gdeltv2/20200316200000.export.CSV.zip,True,124506,0.0,,gdelt
+gdelt_gkg,gkg 0000,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310000000.gkg.csv.zip,True,5715883,0.0,,gdelt
+gdelt_gkg,gkg 0400,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310040000.gkg.csv.zip,True,4115433,0.0,,gdelt
+gdelt_gkg,gkg 0800,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310080000.gkg.csv.zip,True,3222840,0.0,,gdelt
+gdelt_gkg,gkg 1200,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310120000.gkg.csv.zip,True,5070099,0.0,,gdelt
+gdelt_gkg,gkg 1600,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310160000.gkg.csv.zip,True,6655312,0.0,,gdelt
+gdelt_gkg,gkg 2000,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310200000.gkg.csv.zip,True,6821867,0.0,,gdelt
+gdelt_eventos,events2 0000,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310000000.export.CSV.zip,True,138080,0.0,,gdelt
+gdelt_eventos,events2 0400,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310040000.export.CSV.zip,True,53146,0.0,,gdelt
+gdelt_eventos,events2 0800,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310080000.export.CSV.zip,True,53063,0.0,,gdelt
+gdelt_eventos,events2 1200,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310120000.export.CSV.zip,True,69574,0.0,,gdelt
+gdelt_eventos,events2 1600,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310160000.export.CSV.zip,True,76164,0.0,,gdelt
+gdelt_eventos,events2 2000,2023-03-10,https://data.gdeltproject.org/gdeltv2/20230310200000.export.CSV.zip,True,79961,0.0,,gdelt
+gdelt_gkg,gkg 0000,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407000000.gkg.csv.zip,True,2433773,0.0,,gdelt
+gdelt_gkg,gkg 0400,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407040000.gkg.csv.zip,True,3325772,0.0,,gdelt
+gdelt_gkg,gkg 0800,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407080000.gkg.csv.zip,True,4309639,0.0,,gdelt
+gdelt_gkg,gkg 1200,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407120000.gkg.csv.zip,True,6294581,0.0,,gdelt
+gdelt_gkg,gkg 1600,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407160000.gkg.csv.zip,True,7883225,0.0,,gdelt
+gdelt_gkg,gkg 2000,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407200000.gkg.csv.zip,True,7852927,0.0,,gdelt
+gdelt_eventos,events2 0000,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407000000.export.CSV.zip,True,61989,0.0,,gdelt
+gdelt_eventos,events2 0400,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407040000.export.CSV.zip,True,48004,0.0,,gdelt
+gdelt_eventos,events2 0800,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407080000.export.CSV.zip,True,63846,0.0,,gdelt
+gdelt_eventos,events2 1200,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407120000.export.CSV.zip,True,84235,0.0,,gdelt
+gdelt_eventos,events2 1600,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407160000.export.CSV.zip,True,99585,0.0,,gdelt
+gdelt_eventos,events2 2000,2025-04-07,https://data.gdeltproject.org/gdeltv2/20250407200000.export.CSV.zip,True,96940,0.0,,gdelt
+gdelt_gkg,gkg 0000,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014000000.gkg.csv.zip,True,5566883,0.0,,gdelt
+gdelt_gkg,gkg 0400,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014040000.gkg.csv.zip,True,2870569,0.0,,gdelt
+gdelt_gkg,gkg 0800,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014080000.gkg.csv.zip,True,4235029,0.0,,gdelt
+gdelt_gkg,gkg 1200,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014120000.gkg.csv.zip,True,5116941,1.13,,gdelt
+gdelt_eventos,events2 0000,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014000000.export.CSV.zip,True,128402,0.0,,gdelt
+gdelt_eventos,events2 0400,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014040000.export.CSV.zip,True,58902,0.0,,gdelt
+gdelt_eventos,events2 0800,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014080000.export.CSV.zip,True,78656,0.0,,gdelt
+gdelt_eventos,events2 1200,2026-10-14,https://data.gdeltproject.org/gdeltv2/20261014120000.export.CSV.zip,True,65913,0.81,,gdelt
+gdelt_doc,timelinetone,,https://api.gdeltproject.org/api/v2/doc/doc,True,171438,0.0,,gdelt
+gdelt_doc,artlist stock market,2020-03-16,https://api.gdeltproject.org/api/v2/doc/doc,True,35662,0.0,,gdelt
+gdelt_doc,artlist recession,2020-03-16,https://api.gdeltproject.org/api/v2/doc/doc,True,38843,0.0,,gdelt
+gdelt_doc,artlist federal reserve,2020-03-16,https://api.gdeltproject.org/api/v2/doc/doc,True,36610,0.0,,gdelt
+gdelt_doc,artlist stock market,2023-03-10,https://api.gdeltproject.org/api/v2/doc/doc,True,40377,0.0,,gdelt
+gdelt_doc,artlist recession,2023-03-10,https://api.gdeltproject.org/api/v2/doc/doc,True,38944,0.0,,gdelt
+gdelt_doc,artlist federal reserve,2023-03-10,https://api.gdeltproject.org/api/v2/doc/doc,True,38834,0.0,,gdelt
+gdelt_doc,artlist stock market,2025-04-07,https://api.gdeltproject.org/api/v2/doc/doc,True,38201,0.0,,gdelt
+gdelt_doc,artlist recession,2025-04-07,https://api.gdeltproject.org/api/v2/doc/doc,True,39911,0.0,,gdelt
+gdelt_doc,artlist federal reserve,2025-04-07,https://api.gdeltproject.org/api/v2/doc/doc,True,39144,0.0,,gdelt
+gdelt_doc,artlist stock market,2026-10-14,https://api.gdeltproject.org/api/v2/doc/doc,True,2,12.3,,gdelt
+gdelt_doc,artlist recession,2026-10-14,https://api.gdeltproject.org/api/v2/doc/doc,True,2,60.72,,gdelt
+gdelt_doc,artlist federal reserve,2026-10-14,https://api.gdeltproject.org/api/v2/doc/doc,True,2,42.23,,gdelt
+wiki_current_events,revision al cierre,2008-09-15,https://en.wikipedia.org/w/api.php,True,5142,0.0,,wikipedia
+wiki_current_events,primera revision,2008-09-15,https://en.wikipedia.org/w/api.php,True,262,0.0,,wikipedia
+wiki_current_events,revision actual,2008-09-15,https://en.wikipedia.org/w/api.php,True,6464,0.0,,wikipedia
+wiki_current_events,revision al cierre,2016-11-09,https://en.wikipedia.org/w/api.php,True,3358,0.0,,wikipedia
+wiki_current_events,primera revision,2016-11-09,https://en.wikipedia.org/w/api.php,True,260,0.0,,wikipedia
+wiki_current_events,revision actual,2016-11-09,https://en.wikipedia.org/w/api.php,True,4776,0.0,,wikipedia
+wiki_current_events,revision al cierre,2020-03-16,https://en.wikipedia.org/w/api.php,True,11732,0.0,,wikipedia
+wiki_current_events,primera revision,2020-03-16,https://en.wikipedia.org/w/api.php,True,258,0.0,,wikipedia
+wiki_current_events,revision actual,2020-03-16,https://en.wikipedia.org/w/api.php,True,15864,0.0,,wikipedia
+wiki_current_events,revision al cierre,2023-03-10,https://en.wikipedia.org/w/api.php,True,3064,0.0,,wikipedia
+wiki_current_events,primera revision,2023-03-10,https://en.wikipedia.org/w/api.php,True,260,0.0,,wikipedia
+wiki_current_events,revision actual,2023-03-10,https://en.wikipedia.org/w/api.php,True,3841,0.0,,wikipedia
+wiki_current_events,revision al cierre,2025-04-07,https://en.wikipedia.org/w/api.php,True,7634,0.0,,wikipedia
+wiki_current_events,primera revision,2025-04-07,https://en.wikipedia.org/w/api.php,True,259,0.0,,wikipedia
+wiki_current_events,revision actual,2025-04-07,https://en.wikipedia.org/w/api.php,True,8529,0.0,,wikipedia
+wiki_current_events,revision al cierre,2026-10-14,https://en.wikipedia.org/w/api.php,True,2569,0.0,,wikipedia
+wiki_current_events,primera revision,2026-10-14,https://en.wikipedia.org/w/api.php,True,262,0.0,,wikipedia
+wiki_current_events,revision actual,2026-10-14,https://en.wikipedia.org/w/api.php,True,2569,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2004-06-01,https://en.wikipedia.org/w/api.php,True,115,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2004-06-01,https://en.wikipedia.org/w/api.php,True,257,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2005-06-01,https://en.wikipedia.org/w/api.php,True,114,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2005-06-01,https://en.wikipedia.org/w/api.php,True,254,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2006-06-01,https://en.wikipedia.org/w/api.php,True,115,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2006-06-01,https://en.wikipedia.org/w/api.php,True,257,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2006-12-01,https://en.wikipedia.org/w/api.php,True,265,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2006-12-01,https://en.wikipedia.org/w/api.php,True,258,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2007-03-01,https://en.wikipedia.org/w/api.php,True,265,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2007-03-01,https://en.wikipedia.org/w/api.php,True,257,0.0,,wikipedia
+wiki_current_events,sondeo inicio (cierre),2007-06-01,https://en.wikipedia.org/w/api.php,True,265,0.0,,wikipedia
+wiki_current_events,sondeo inicio (creación),2007-06-01,https://en.wikipedia.org/w/api.php,True,257,0.0,,wikipedia
+wiki_pageviews,Recession,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recession/daily/20150701/20261014,True,599178,0.0,,wikipedia
+wiki_pageviews,Bank_run,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Bank_run/daily/20150701/20261014,True,593842,0.0,,wikipedia
+wiki_pageviews,Stock_market_crash,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Stock_market_crash/daily/20150701/20261014,True,635435,0.0,,wikipedia
+wiki_pageviews,Inflation,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Inflation/daily/20150701/20261014,True,601455,0.0,,wikipedia
+wiki_pageviews,Financial_crisis,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Financial_crisis/daily/20150701/20261014,True,626727,0.0,,wikipedia
+wiki_pageviews,Tariff,,https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Tariff/daily/20150701/20261014,True,586545,0.0,,wikipedia
+rss_medios,bbc_business (caché),2026-10-14,https://feeds.bbci.co.uk/news/business/rss.xml,True,37781,1.48,,rss
+rss_medios,guardian_business (caché),2026-10-14,https://www.theguardian.com/business/rss,True,144177,1.41,,rss
+rss_medios,nyt_economy (caché),2026-10-14,https://rss.nytimes.com/services/xml/rss/nyt/Economy.xml,True,42460,1.81,,rss
+rss_medios,nyt_business (caché),2026-10-14,https://rss.nytimes.com/services/xml/rss/nyt/Business.xml,True,105739,0.01,,rss
+rss_medios,bloomberg_markets (caché),2026-10-14,https://feeds.bloomberg.com/markets/news.rss,True,15740,3.78,,rss
+rss_medios,bloomberg_economics (caché),2026-10-14,https://feeds.bloomberg.com/economics/news.rss,True,14899,0.0,,rss
+rss_medios,lemonde_eco (caché),2026-10-14,https://www.lemonde.fr/economie/rss_full.xml,True,27353,1.45,,rss
+rss_medios,lesechos_marches,2026-10-14,https://services.lesechos.fr/rss/les-echos-finance-marches.xml,False,0,4.88,HTTPError: 403 Client Error: Forbidden for url: https://services.lesechos.fr/rss/les-echos-finance-marches.xml,rss
+rss_medios,faz_finanzen (caché),2026-10-14,https://www.faz.net/rss/aktuell/finanzen/,True,45178,1.4,,rss
+rss_medios,handelsblatt_finanzen (caché),2026-10-14,https://www.handelsblatt.com/contentexport/feed/finanzen,True,37074,1.52,,rss
+rss_medios,ilsole_finanza (caché),2026-10-14,https://www.ilsole24ore.com/rss/finanza.xml,True,9360,1.46,,rss
+rss_medios,expansion_mercados (caché),2026-10-14,https://e00-expansion.uecdn.es/rss/mercados.xml,True,94189,1.47,,rss
+rss_medios,europapress_eco (caché),2026-10-14,https://www.europapress.es/rss/rss.aspx?ch=00136,True,11571,1.47,,rss
+rss_medios,elpais_economia,2026-10-14,https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/economia/portada,False,0,1.46,robots.txt,rss
+rss_medios,eleconomista_mx,2026-10-14,https://www.eleconomista.com.mx/rss/mercados,False,0,5.0,HTTPError: 403 Client Error: Forbidden for url: https://www.eleconomista.com.mx/rss/mercados,rss
+rss_medios,infomoney_br (caché),2026-10-14,https://www.infomoney.com.br/feed/,True,133540,1.3,,rss
+rss_medios,nikkei_asia (caché),2026-10-14,https://asia.nikkei.com/rss/feed/nar,True,25466,1.2,,rss
+rss_medios,japantimes,2026-10-14,https://www.japantimes.co.jp/feed/,False,0,1.25,robots.txt,rss
+rss_medios,scmp_business (caché),2026-10-14,https://www.scmp.com/rss/92/feed,True,83800,1.49,,rss
+rss_medios,et_markets (caché),2026-10-14,https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms,True,51767,1.27,,rss
+rss_medios,livemint_markets (caché),2026-10-14,https://www.livemint.com/rss/markets,True,39388,1.4,,rss
+rss_medios,aljazeera (caché),2026-10-14,https://www.aljazeera.com/xml/rss/all.xml,True,17164,1.17,,rss
+rss_medios,arabnews_business,2026-10-14,https://www.arabnews.com/cat/3/rss.xml,False,0,1.17,robots.txt,rss
+rss_medios,moscowtimes (caché),2026-10-14,https://www.themoscowtimes.com/rss/news,True,31138,1.18,,rss
+rss_medios,allafrica_business (caché),2026-10-14,https://allafrica.com/tools/headlines/rdf/business/headlines.rdf,True,25283,1.46,,rss
+rss_medios,reuters_business,2026-10-14,http://feeds.reuters.com/reuters/businessNews,False,0,2.08,"ConnectionError: HTTPConnectionPool(host='feeds.reuters.com', port=80): Max retries exceeded with url: /reuters/businessNews (Caused by NameResolutionError(""<urllib3.connection.HTTPConnection object at 0x000001E0FA3C2AD0>: Failed to resolve 'feeds.reuters.com' ([Errno 11001] getaddrinfo failed)""))",rss
+rss_medios,ft_home (caché),2026-10-14,https://www.ft.com/rss/home,True,8639,1.13,,rss
+rss_medios,ft_markets (caché),2026-10-14,https://www.ft.com/markets?format=rss,True,12234,0.02,,rss
+rss_medios,economist_finance (caché),2026-10-14,https://www.economist.com/finance-and-economics/rss.xml,True,150736,1.18,,rss
+rss_medios,cnbc_top,2026-10-14,https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=100003114,False,0,1.4,robots.txt,rss
+rss_medios,cnbc_finance,2026-10-14,https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664,False,0,0.0,robots.txt,rss
+rss_medios,wsj_markets,2026-10-14,https://feeds.a.dj.com/rss/RSSMarketsMain.xml,False,0,1.44,robots.txt,rss
+rss_medios,marketwatch_top,2026-10-14,https://feeds.content.dowjones.io/public/rss/mw_topstories,False,0,1.79,robots.txt,rss
+rss_medios,yahoo_finance,2026-10-14,https://finance.yahoo.com/news/rssindex,False,0,3.91,HTTPError: 404 Client Error: Not Found for url: https://finance.yahoo.com/news/rssindex,rss
+rss_medios,seekingalpha_currents (caché),2026-10-14,https://seekingalpha.com/market_currents.xml,True,6398,1.4,,rss
+rss_medios,investing_news (caché),2026-10-14,https://www.investing.com/rss/news_25.rss,True,4671,1.03,,rss
+bing_news_rss,bing_stock_market (caché),2026-10-14,https://www.bing.com/news/search?q=stock+market&format=rss&mkt=en-US,True,2733,1.01,,rss
+bing_news_rss,bing_recession (caché),2026-10-14,https://www.bing.com/news/search?q=recession&format=rss&mkt=en-US,True,10106,0.0,,rss
+bing_news_rss,bing_federal_reserve (caché),2026-10-14,https://www.bing.com/news/search?q=federal+reserve&format=rss&mkt=en-US,True,10744,0.0,,rss
+bing_news_rss,bing_bank_failure (caché),2026-10-14,https://www.bing.com/news/search?q=bank+failure&format=rss&mkt=en-US,True,9565,0.0,,rss
+bing_news_rss,bing_tariffs (caché),2026-10-14,https://www.bing.com/news/search?q=tariffs&format=rss&mkt=en-US,True,983,0.0,,rss
+google_news_rss,busqueda crash 2020-03-16,2026-10-14,https://news.google.com/rss/search?q=stock+market+crash+after%3A2020-03-15+before%3A2020-03-17&hl=en-US&gl=US&ceid=US%3Aen,False,0,0.91,robots.txt,rss
+truth_social_trump,truth_archive.json (caché),,https://raw.githubusercontent.com/stiles/trump-truth-social-archive/main/data/truth_archive.json,True,15568111,0.18,,social
+finra_short_volume,2019-01-01 (mensual),2019-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190101.txt,False,0,0.01,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2019-01-02 (mensual) (caché),2019-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190102.txt,True,256933,0.04,,social
+finra_short_volume,2019-02-01 (mensual) (caché),2019-02-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190201.txt,True,254706,0.02,,social
+finra_short_volume,2019-03-01 (mensual) (caché),2019-03-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190301.txt,True,254794,0.02,,social
+finra_short_volume,2019-04-01 (mensual) (caché),2019-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190401.txt,True,258399,0.03,,social
+finra_short_volume,2019-05-01 (mensual) (caché),2019-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190501.txt,True,260863,0.03,,social
+finra_short_volume,2019-06-03 (mensual) (caché),2019-06-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190603.txt,True,262293,0.03,,social
+finra_short_volume,2019-07-01 (mensual) (caché),2019-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190701.txt,True,266519,0.03,,social
+finra_short_volume,2019-08-01 (mensual) (caché),2019-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190801.txt,True,266829,0.03,,social
+finra_short_volume,2019-09-02 (mensual),2019-09-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190902.txt,False,0,0.01,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2019-09-03 (mensual) (caché),2019-09-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20190903.txt,True,262970,0.02,,social
+finra_short_volume,2019-10-01 (mensual) (caché),2019-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20191001.txt,True,264114,0.02,,social
+finra_short_volume,2019-11-01 (mensual) (caché),2019-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20191101.txt,True,265116,0.03,,social
+finra_short_volume,2019-12-02 (mensual) (caché),2019-12-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20191202.txt,True,267285,0.02,,social
+finra_short_volume,2020-01-01 (mensual),2020-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200101.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2020-01-02 (mensual) (caché),2020-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200102.txt,True,274443,0.03,,social
+finra_short_volume,2020-02-03 (mensual) (caché),2020-02-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200203.txt,True,272510,0.02,,social
+finra_short_volume,2020-03-02 (mensual) (caché),2020-03-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200302.txt,True,283178,0.03,,social
+finra_short_volume,2020-04-01 (mensual) (caché),2020-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200401.txt,True,283139,0.02,,social
+finra_short_volume,2020-05-01 (mensual) (caché),2020-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200501.txt,True,280367,0.03,,social
+finra_short_volume,2020-06-01 (mensual) (caché),2020-06-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200601.txt,True,283171,0.05,,social
+finra_short_volume,2020-07-01 (mensual) (caché),2020-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200701.txt,True,285701,0.03,,social
+finra_short_volume,2020-08-03 (mensual) (caché),2020-08-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200803.txt,True,288456,0.03,,social
+finra_short_volume,2020-09-01 (mensual) (caché),2020-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200901.txt,True,287313,0.02,,social
+finra_short_volume,2020-10-01 (mensual) (caché),2020-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20201001.txt,True,288707,0.03,,social
+finra_short_volume,2020-11-02 (mensual) (caché),2020-11-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20201102.txt,True,290514,0.02,,social
+finra_short_volume,2020-12-01 (mensual) (caché),2020-12-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20201201.txt,True,303316,0.03,,social
+finra_short_volume,2021-01-01 (mensual),2021-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210101.txt,False,0,0.01,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2021-01-04 (mensual) (caché),2021-01-04,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210104.txt,True,316221,0.03,,social
+finra_short_volume,2021-02-01 (mensual) (caché),2021-02-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210201.txt,True,319366,0.03,,social
+finra_short_volume,2021-03-01 (mensual) (caché),2021-03-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210301.txt,True,329521,0.03,,social
+finra_short_volume,2021-04-01 (mensual) (caché),2021-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210401.txt,True,328096,0.03,,social
+finra_short_volume,2021-05-03 (mensual) (caché),2021-05-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210503.txt,True,329716,0.05,,social
+finra_short_volume,2021-06-01 (mensual) (caché),2021-06-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210601.txt,True,330679,0.04,,social
+finra_short_volume,2021-07-01 (mensual) (caché),2021-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210701.txt,True,330951,0.03,,social
+finra_short_volume,2021-08-02 (mensual) (caché),2021-08-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210802.txt,True,329715,0.03,,social
+finra_short_volume,2021-09-01 (mensual) (caché),2021-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20210901.txt,True,331147,0.03,,social
+finra_short_volume,2021-10-01 (mensual) (caché),2021-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20211001.txt,True,335022,0.03,,social
+finra_short_volume,2021-11-01 (mensual) (caché),2021-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20211101.txt,True,342981,0.03,,social
+finra_short_volume,2021-12-01 (mensual) (caché),2021-12-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20211201.txt,True,349541,0.03,,social
+finra_short_volume,2022-01-03 (mensual) (caché),2022-01-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220103.txt,True,347246,0.03,,social
+finra_short_volume,2022-02-01 (mensual) (caché),2022-02-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220201.txt,True,347529,0.03,,social
+finra_short_volume,2022-03-01 (mensual) (caché),2022-03-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220301.txt,True,343017,0.03,,social
+finra_short_volume,2022-04-01 (mensual) (caché),2022-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220401.txt,True,345556,0.03,,social
+finra_short_volume,2022-05-02 (mensual) (caché),2022-05-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220502.txt,True,342628,0.03,,social
+finra_short_volume,2022-06-01 (mensual) (caché),2022-06-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220601.txt,True,337869,0.04,,social
+finra_short_volume,2022-07-01 (mensual) (caché),2022-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220701.txt,True,329170,0.03,,social
+finra_short_volume,2022-08-01 (mensual) (caché),2022-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220801.txt,True,333026,0.03,,social
+finra_short_volume,2022-09-01 (mensual) (caché),2022-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20220901.txt,True,335483,0.04,,social
+finra_short_volume,2022-10-03 (mensual) (caché),2022-10-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20221003.txt,True,337163,0.03,,social
+finra_short_volume,2022-11-01 (mensual) (caché),2022-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20221101.txt,True,330313,0.04,,social
+finra_short_volume,2022-12-01 (mensual) (caché),2022-12-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20221201.txt,True,334543,0.06,,social
+finra_short_volume,2023-01-02 (mensual),2023-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230102.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2023-01-03 (mensual) (caché),2023-01-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230103.txt,True,334893,0.05,,social
+finra_short_volume,2023-02-01 (mensual) (caché),2023-02-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230201.txt,True,338817,0.03,,social
+finra_short_volume,2023-03-01 (mensual) (caché),2023-03-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230301.txt,True,331156,0.03,,social
+finra_short_volume,2023-04-03 (mensual) (caché),2023-04-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230403.txt,True,333761,0.04,,social
+finra_short_volume,2023-05-01 (mensual) (caché),2023-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230501.txt,True,326528,0.03,,social
+finra_short_volume,2023-06-01 (mensual) (caché),2023-06-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230601.txt,True,327218,0.03,,social
+finra_short_volume,2023-07-03 (mensual) (caché),2023-07-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230703.txt,True,315349,0.04,,social
+finra_short_volume,2023-08-01 (mensual) (caché),2023-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230801.txt,True,330149,0.03,,social
+finra_short_volume,2023-09-01 (mensual) (caché),2023-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230901.txt,True,319928,0.04,,social
+finra_short_volume,2023-10-02 (mensual) (caché),2023-10-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20231002.txt,True,325273,0.03,,social
+finra_short_volume,2023-11-01 (mensual) (caché),2023-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20231101.txt,True,322078,0.04,,social
+finra_short_volume,2023-12-01 (mensual) (caché),2023-12-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20231201.txt,True,329385,0.03,,social
+finra_short_volume,2024-01-01 (mensual),2024-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240101.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2024-01-02 (mensual) (caché),2024-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240102.txt,True,332699,0.03,,social
+finra_short_volume,2024-02-01 (mensual) (caché),2024-02-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240201.txt,True,327129,0.03,,social
+finra_short_volume,2024-03-01 (mensual) (caché),2024-03-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240301.txt,True,332990,0.04,,social
+finra_short_volume,2024-04-01 (mensual) (caché),2024-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240401.txt,True,333973,0.03,,social
+finra_short_volume,2024-05-01 (mensual) (caché),2024-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240501.txt,True,326417,0.03,,social
+finra_short_volume,2024-06-03 (mensual) (caché),2024-06-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240603.txt,True,331590,0.03,,social
+finra_short_volume,2024-07-01 (mensual) (caché),2024-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240701.txt,True,331117,0.03,,social
+finra_short_volume,2024-08-01 (mensual) (caché),2024-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240801.txt,True,334683,0.03,,social
+finra_short_volume,2024-09-02 (mensual),2024-09-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240902.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2024-09-03 (mensual) (caché),2024-09-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20240903.txt,True,335116,0.04,,social
+finra_short_volume,2024-10-01 (mensual) (caché),2024-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20241001.txt,True,336898,0.04,,social
+finra_short_volume,2024-11-01 (mensual) (caché),2024-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20241101.txt,True,336613,0.04,,social
+finra_short_volume,2024-12-02 (mensual) (caché),2024-12-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20241202.txt,True,346317,0.03,,social
+finra_short_volume,2025-01-01 (mensual),2025-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250101.txt,False,0,0.01,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2025-01-02 (mensual) (caché),2025-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250102.txt,True,349905,0.04,,social
+finra_short_volume,2025-02-03 (mensual) (caché),2025-02-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250203.txt,True,350532,0.04,,social
+finra_short_volume,2025-03-03 (mensual) (caché),2025-03-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250303.txt,True,353635,0.03,,social
+finra_short_volume,2025-04-01 (mensual) (caché),2025-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250401.txt,True,349347,0.03,,social
+finra_short_volume,2025-05-01 (mensual) (caché),2025-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250501.txt,True,348239,0.04,,social
+finra_short_volume,2025-06-02 (mensual) (caché),2025-06-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250602.txt,True,349659,0.06,,social
+finra_short_volume,2025-07-01 (mensual) (caché),2025-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250701.txt,True,358705,0.03,,social
+finra_short_volume,2025-08-01 (mensual) (caché),2025-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250801.txt,True,363388,0.04,,social
+finra_short_volume,2025-09-01 (mensual),2025-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250901.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2025-09-02 (mensual) (caché),2025-09-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250902.txt,True,364183,0.03,,social
+finra_short_volume,2025-10-01 (mensual) (caché),2025-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20251001.txt,True,370318,0.04,,social
+finra_short_volume,2025-11-03 (mensual) (caché),2025-11-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20251103.txt,True,376576,0.04,,social
+finra_short_volume,2025-12-01 (mensual) (caché),2025-12-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20251201.txt,True,375567,0.03,,social
+finra_short_volume,2026-01-01 (mensual),2026-01-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260101.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (día sin sesión),social
+finra_short_volume,2026-01-02 (mensual) (caché),2026-01-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260102.txt,True,379764,0.05,,social
+finra_short_volume,2026-02-02 (mensual) (caché),2026-02-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260202.txt,True,386869,0.04,,social
+finra_short_volume,2026-03-02 (mensual) (caché),2026-03-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260302.txt,True,510199,0.03,,social
+finra_short_volume,2026-04-01 (mensual) (caché),2026-04-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260401.txt,True,504622,0.03,,social
+finra_short_volume,2026-05-01 (mensual) (caché),2026-05-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260501.txt,True,505143,0.04,,social
+finra_short_volume,2026-06-01 (mensual) (caché),2026-06-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260601.txt,True,524314,0.03,,social
+finra_short_volume,2026-07-01 (mensual) (caché),2026-07-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260701.txt,True,542243,0.03,,social
+finra_short_volume,2026-08-03 (mensual) (caché),2026-08-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260803.txt,True,541098,0.05,,social
+finra_short_volume,2026-09-01 (mensual) (caché),2026-09-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20260901.txt,True,544940,0.03,,social
+finra_short_volume,2026-10-01 (mensual) (caché),2026-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20261001.txt,True,551730,0.03,,social
+finra_short_volume,2018-12-03 (mensual) (caché),2018-12-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20181203.txt,True,255667,0.02,,social
+finra_short_volume,2018-11-01 (mensual) (caché),2018-11-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20181101.txt,True,253806,0.03,,social
+finra_short_volume,2018-10-01 (mensual) (caché),2018-10-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20181001.txt,True,255533,0.02,,social
+finra_short_volume,2018-09-03 (mensual),2018-09-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180903.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN o día sin sesión),social
+finra_short_volume,2018-09-04 (mensual) (caché),2018-09-04,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180904.txt,True,252210,0.03,,social
+finra_short_volume,2018-08-01 (mensual) (caché),2018-08-01,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180801.txt,True,249497,0.03,,social
+finra_short_volume,2018-07-02 (mensual),2018-07-02,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180702.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN o día sin sesión),social
+finra_short_volume,2018-07-03 (mensual),2018-07-03,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180703.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN o día sin sesión),social
+finra_short_volume,2018-07-04 (mensual),2018-07-04,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180704.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN o día sin sesión),social
+finra_short_volume,2018-07-05 (mensual),2018-07-05,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180705.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN o día sin sesión),social
+finra_short_volume,2018-07-17 (frontera),2018-07-17,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180717.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN),social
+finra_short_volume,2018-07-25 (frontera),2018-07-25,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180725.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN),social
+finra_short_volume,2018-07-30 (frontera),2018-07-30,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180730.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN),social
+finra_short_volume,2018-07-31 (frontera),2018-07-31,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20180731.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (antes del inicio del CDN),social
+finra_short_volume,2026-10-13 (ultimo) (caché),2026-10-13,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20261013.txt,True,535848,0.04,,social
+finra_short_volume,2008-09-15 (testigo:lehman),2008-09-15,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20080915.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (fuera del CDN),social
+finra_short_volume,2016-11-09 (testigo:elecciones_2016),2016-11-09,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20161109.txt,False,0,0.0,sin cobertura: 403 (caché de ausencias) (fuera del CDN),social
+finra_short_volume,2020-03-16 (testigo:covid) (caché),2020-03-16,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20200316.txt,True,291877,0.04,,social
+finra_short_volume,2023-03-10 (testigo:svb) (caché),2023-03-10,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20230310.txt,True,335169,0.04,,social
+finra_short_volume,2025-04-07 (testigo:aranceles) (caché),2025-04-07,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20250407.txt,True,368130,0.03,,social
+finra_short_volume,2026-10-14 (testigo:hoy),2026-10-14,https://cdn.finra.org/equity/regsho/daily/CNMSshvol20261014.txt,False,0,3.02,sin cobertura: 403 (aún no publicado (≈18:00 ET)),social
+aaii_sentiment,comprobacion,,https://www.aaii.com/files/surveys/sentiment.xls,False,0,0.77,robots.txt (prohíbe la ruta o responde 401/403: anti-bot),social
+cnn_fear_greed,comprobacion,,https://production.dataviz.cnn.io/index/fearandgreed/graphdata,False,0,3.76,HTTPError: 418 Client Error: Unknown Error for url: https://production.dataviz.cnn.io/index/fearandgreed/graphdata,social
+congreso_house_ptr,indice 2014 (caché),2014,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2014FD.zip,True,97024,0.0,,congreso
+congreso_house_ptr,indice 2015 (caché),2015,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2015FD.zip,True,76338,0.0,,congreso
+congreso_house_ptr,indice 2016 (caché),2016,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2016FD.zip,True,92045,0.0,,congreso
+congreso_house_ptr,indice 2017 (caché),2017,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2017FD.zip,True,121192,0.0,,congreso
+congreso_house_ptr,indice 2018 (caché),2018,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2018FD.zip,True,119377,0.0,,congreso
+congreso_house_ptr,indice 2019 (caché),2019,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2019FD.zip,True,127181,0.0,,congreso
+congreso_house_ptr,indice 2020 (caché),2020,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2020FD.zip,True,98082,0.0,,congreso
+congreso_house_ptr,indice 2021 (caché),2021,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2021FD.zip,True,95555,0.0,,congreso
+congreso_house_ptr,indice 2022 (caché),2022,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2022FD.zip,True,95857,0.0,,congreso
+congreso_house_ptr,indice 2023 (caché),2023,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2023FD.zip,True,84880,0.0,,congreso
+congreso_house_ptr,indice 2024 (caché),2024,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2024FD.zip,True,81824,0.0,,congreso
+congreso_house_ptr,indice 2025 (caché),2025,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2025FD.zip,True,106921,0.0,,congreso
+congreso_house_ptr,indice 2026 (caché),2026,https://disclosures-clerk.house.gov/public_disc/financial-pdfs/2026FD.zip,True,63339,0.0,,congreso
+congreso_house_ptr,ptr 20016258 (caché),2020-03-23,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20016258.pdf,True,66963,0.0,,congreso
+congreso_house_ptr,ptr 20019879 (caché),2021-11-24,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20019879.pdf,True,57587,0.0,,congreso
+congreso_house_ptr,ptr 20020473 (caché),2022-03-04,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020473.pdf,True,57375,0.0,,congreso
+congreso_house_ptr,ptr 20023641 (caché),2023-09-07,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20023641.pdf,True,93357,0.0,,congreso
+congreso_house_ptr,ptr 20025486 (caché),2024-07-17,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20025486.pdf,True,68216,0.0,,congreso
+congreso_house_ptr,ptr 20030234 (caché),2025-04-27,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030234.pdf,True,63292,0.0,,congreso
+congreso_house_ptr,ptr 20017174 (caché),2020-08-12,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20017174.pdf,True,57272,0.0,,congreso
+congreso_house_ptr,ptr 20018870 (caché),2021-06-08,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20018870.pdf,True,57856,0.0,,congreso
+congreso_house_ptr,ptr 20020543 (caché),2022-03-07,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020543.pdf,True,68017,0.0,,congreso
+congreso_house_ptr,ptr 20022269 (caché),2023-01-12,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20022269.pdf,True,65131,0.0,,congreso
+congreso_house_ptr,ptr 20025822 (caché),2024-09-09,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20025822.pdf,True,64155,0.0,,congreso
+congreso_house_ptr,ptr 20030998 (caché),2025-08-29,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030998.pdf,True,68145,0.0,,congreso
+congreso_house_ptr,ptr 20016969 (caché),2020-07-16,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20016969.pdf,True,56609,0.0,,congreso
+congreso_house_ptr,ptr 20018793 (caché),2021-05-30,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20018793.pdf,True,57720,0.0,,congreso
+congreso_house_ptr,ptr 20020571 (caché),2022-03-07,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020571.pdf,True,83640,0.0,,congreso
+congreso_house_ptr,ptr 20023537 (caché),2023-08-28,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20023537.pdf,True,64337,0.0,,congreso
+congreso_house_ptr,ptr 20024862 (caché),2024-05-15,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20024862.pdf,True,72039,0.0,,congreso
+congreso_house_ptr,ptr 20032256 (caché),2025-10-10,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20032256.pdf,True,69289,0.0,,congreso
+congreso_house_ptr,ptr 20016961 (caché),2020-07-20,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20016961.pdf,True,62317,0.0,,congreso
+congreso_house_ptr,ptr 20018757 (caché),2021-05-17,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20018757.pdf,True,85244,0.0,,congreso
+congreso_house_ptr,ptr 20020179 (caché),2022-01-07,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020179.pdf,True,57208,0.0,,congreso
+congreso_house_ptr,ptr 20024104 (caché),2023-12-07,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20024104.pdf,True,94213,0.0,,congreso
+congreso_house_ptr,ptr 20024354 (caché),2024-01-24,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20024354.pdf,True,121805,0.0,,congreso
+congreso_house_ptr,ptr 20030930 (caché),2025-08-20,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030930.pdf,True,268544,0.0,,congreso
+congreso_house_ptr,ptr 20016674 (caché),2020-05-28,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20016674.pdf,True,58627,0.0,,congreso
+congreso_house_ptr,ptr 20017979 (caché),2021-01-06,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20017979.pdf,True,57274,0.0,,congreso
+congreso_house_ptr,ptr 20020401 (caché),2022-02-16,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020401.pdf,True,65351,0.0,,congreso
+congreso_house_ptr,ptr 20024097 (caché),2023-12-08,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20024097.pdf,True,96346,0.0,,congreso
+congreso_house_ptr,ptr 20025518 (caché),2024-07-24,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20025518.pdf,True,68013,0.0,,congreso
+congreso_house_ptr,ptr 20030909 (caché),2025-08-14,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030909.pdf,True,79894,0.0,,congreso
+congreso_house_ptr,ptr 20017535 (caché),2020-10-15,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20017535.pdf,True,57476,0.0,,congreso
+congreso_house_ptr,ptr 20018355 (caché),2021-03-09,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20018355.pdf,True,56841,0.0,,congreso
+congreso_house_ptr,ptr 20020427 (caché),2022-02-10,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020427.pdf,True,57453,0.0,,congreso
+congreso_house_ptr,ptr 20022900 (caché),2023-05-10,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20022900.pdf,True,63890,0.0,,congreso
+congreso_house_ptr,ptr 20024324 (caché),2024-01-17,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20024324.pdf,True,65983,0.0,,congreso
+congreso_house_ptr,ptr 20030592 (caché),2025-07-02,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030592.pdf,True,67101,0.0,,congreso
+congreso_house_ptr,ptr 20016323 (caché),2020-04-05,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/20016323.pdf,True,105805,0.0,,congreso
+congreso_house_ptr,ptr 20018542 (caché),2021-04-13,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2021/20018542.pdf,True,56010,0.0,,congreso
+congreso_house_ptr,ptr 20020943 (caché),2022-05-05,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2022/20020943.pdf,True,67175,0.0,,congreso
+congreso_house_ptr,ptr 20022451 (caché),2023-02-17,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2023/20022451.pdf,True,64883,0.0,,congreso
+congreso_house_ptr,ptr 20026203 (caché),2024-11-12,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/20026203.pdf,True,64554,0.0,,congreso
+congreso_house_ptr,ptr 20030639 (caché),2025-07-09,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2025/20030639.pdf,True,69961,0.0,,congreso
+congreso_house_ptr,ptr escaneado 8217812 (caché),,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2020/8217812.pdf,True,223976,0.0,,congreso
+congreso_house_ptr,ptr escaneado 8220214 (caché),,https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/2024/8220214.pdf,True,341095,0.0,,congreso
+congreso_stock_watcher,house,,https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json,False,0,3.13,HTTPError: 403 Client Error: Forbidden for url: https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json,congreso
+congreso_stock_watcher,senate,,https://senate-stock-watcher-data.s3-us-west-2.amazonaws.com/aggregate/all_transactions.json,False,0,3.05,HTTPError: 403 Client Error: Forbidden for url: https://senate-stock-watcher-data.s3-us-west-2.amazonaws.com/aggregate/all_transactions.json,congreso
+congreso_etfs_nanc_kruz,NANC,,yfinance:NANC,True,0,2.32,,congreso
+congreso_etfs_nanc_kruz,KRUZ,,yfinance:KRUZ,False,0,2.32,sin datos,congreso
+sec_form4_insiders,indice 2008-09-15 (caché),2008-09-15,https://www.sec.gov/Archives/edgar/daily-index/2008/QTR3/form.20080915.idx,True,508572,0.0,,insiders
+sec_form4_insiders,indice 2016-11-09 (caché),2016-11-09,https://www.sec.gov/Archives/edgar/daily-index/2016/QTR4/form.20161109.idx,True,581505,0.0,,insiders
+sec_form4_insiders,indice 2020-03-16 (caché),2020-03-16,https://www.sec.gov/Archives/edgar/daily-index/2020/QTR1/form.20200316.idx,True,833071,0.0,,insiders
+sec_form4_insiders,indice 2023-03-10 (caché),2023-03-10,https://www.sec.gov/Archives/edgar/daily-index/2023/QTR1/form.20230310.idx,True,825068,0.0,,insiders
+sec_form4_insiders,indice 2025-04-07 (caché),2025-04-07,https://www.sec.gov/Archives/edgar/daily-index/2025/QTR2/form.20250407.idx,True,765501,0.0,,insiders
+sec_form4_insiders,indice 2026-10-13 (caché),2026-10-13,https://www.sec.gov/Archives/edgar/daily-index/2026/QTR4/form.20261013.idx,True,883215,0.0,,insiders
+sec_form4_insiders,form4 0001235110-08-000168.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1268615/0001235110-08-000168.txt,True,10928,0.0,,insiders
+sec_form4_insiders,form4 0001228379-08-000228.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1228374/0001228379-08-000228.txt,True,6483,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-051968.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1034574/0001209191-08-051968.txt,True,49722,0.0,,insiders
+sec_form4_insiders,form4 0001185737-08-000006.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/896622/0001185737-08-000006.txt,True,6303,0.0,,insiders
+sec_form4_insiders,form4 0001225208-08-014774.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1195706/0001225208-08-014774.txt,True,10244,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053255.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1396033/0001181431-08-053255.txt,True,29109,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-051878.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1100270/0001209191-08-051878.txt,True,5249,0.0,,insiders
+sec_form4_insiders,form4 0001062993-08-004097.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1041514/0001062993-08-004097.txt,True,9226,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053164.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1336920/0001181431-08-053164.txt,True,5581,0.0,,insiders
+sec_form4_insiders,form4 0000918972-08-000007.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/918972/0000918972-08-000007.txt,True,10625,0.0,,insiders
+sec_form4_insiders,form4 0000077360-08-000113.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/77360/0000077360-08-000113.txt,True,8105,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053111.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1335788/0001181431-08-053111.txt,True,8317,0.0,,insiders
+sec_form4_insiders,form4 0001104659-08-058772.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/894237/0001104659-08-058772.txt,True,13579,0.0,,insiders
+sec_form4_insiders,form4 0001417810-08-000014.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1429082/0001417810-08-000014.txt,True,6793,0.0,,insiders
+sec_form4_insiders,form4 0000036104-08-000121.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1086323/0000036104-08-000121.txt,True,6301,0.0,,insiders
+sec_form4_insiders,form4 0001011657-08-000033.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1037854/0001011657-08-000033.txt,True,18123,0.0,,insiders
+sec_form4_insiders,form4 0000919574-08-005087.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1331444/0000919574-08-005087.txt,True,5912,0.0,,insiders
+sec_form4_insiders,form4 0000919574-08-005106.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1371519/0000919574-08-005106.txt,True,73057,0.0,,insiders
+sec_form4_insiders,form4 0001246568-08-000067.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1246556/0001246568-08-000067.txt,True,4761,0.0,,insiders
+sec_form4_insiders,form4 0000916863-08-000318.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1186158/0000916863-08-000318.txt,True,26735,0.0,,insiders
+sec_form4_insiders,form4 0000731766-08-000117.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/905023/0000731766-08-000117.txt,True,7275,0.0,,insiders
+sec_form4_insiders,form4 0001305508-08-000176.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/21665/0001305508-08-000176.txt,True,5854,0.0,,insiders
+sec_form4_insiders,form4 0001425986-08-000009.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1326320/0001425986-08-000009.txt,True,10709,0.0,,insiders
+sec_form4_insiders,form4 0001127602-08-006869.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/701347/0001127602-08-006869.txt,True,9789,0.0,,insiders
+sec_form4_insiders,form4 0000921895-16-006054.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/40888/0000921895-16-006054.txt,True,4960,0.0,,insiders
+sec_form4_insiders,form4 0000921895-08-002378.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1329983/0000921895-08-002378.txt,True,53102,0.0,,insiders
+sec_form4_insiders,form4 0000908551-16-000014.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/47111/0000908551-16-000014.txt,True,8599,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149012.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1096752/0001209191-16-149012.txt,True,8710,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149102.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1586546/0001209191-16-149102.txt,True,10454,0.0,,insiders
+sec_form4_insiders,form4 0001510281-16-000183.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1608233/0001510281-16-000183.txt,True,8956,0.0,,insiders
+sec_form4_insiders,form4 0001437749-16-041497.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1677876/0001437749-16-041497.txt,True,4285,0.0,,insiders
+sec_form4_insiders,form4 0001179110-16-031359.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1282439/0001179110-16-031359.txt,True,4560,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149038.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1250333/0001209191-16-149038.txt,True,10015,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149196.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1280058/0001209191-16-149196.txt,True,8179,0.0,,insiders
+sec_form4_insiders,form4 0000109380-16-000523.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1584716/0000109380-16-000523.txt,True,17023,0.0,,insiders
+sec_form4_insiders,form4 0001513905-16-000068.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1122388/0001513905-16-000068.txt,True,24602,0.0,,insiders
+sec_form4_insiders,form4 0000919574-16-016170.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/792130/0000919574-16-016170.txt,True,17414,0.0,,insiders
+sec_form4_insiders,form4 0000864749-16-000174.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1463150/0000864749-16-000174.txt,True,8178,0.0,,insiders
+sec_form4_insiders,form4 0001225208-16-041403.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1382867/0001225208-16-041403.txt,True,4112,0.0,,insiders
+sec_form4_insiders,form4 0001127602-16-066506.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1286361/0001127602-16-066506.txt,True,5673,0.0,,insiders
+sec_form4_insiders,form4 0001127602-16-066526.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1246238/0001127602-16-066526.txt,True,6310,0.0,,insiders
+sec_form4_insiders,form4 0001179110-16-031386.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1578991/0001179110-16-031386.txt,True,4912,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-148991.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1072813/0001209191-16-148991.txt,True,11164,0.0,,insiders
+sec_form4_insiders,form4 0001212545-16-000473.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1331727/0001212545-16-000473.txt,True,5877,0.0,,insiders
+sec_form4_insiders,form4 0001225208-16-041352.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1135152/0001225208-16-041352.txt,True,5444,0.0,,insiders
+sec_form4_insiders,form4 0001616707-16-000305.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1616707/0001616707-16-000305.txt,True,5326,0.0,,insiders
+sec_form4_insiders,form4 0001606909-16-000284.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1622319/0001606909-16-000284.txt,True,21943,0.0,,insiders
+sec_form4_insiders,form4 0001140361-16-085619.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1581720/0001140361-16-085619.txt,True,5309,0.0,,insiders
+sec_form4_insiders,form4 0001084869-16-000076.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1205164/0001084869-16-000076.txt,True,4736,0.0,,insiders
+sec_form4_insiders,form4 0000899243-16-033054.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1493191/0000899243-16-033054.txt,True,4890,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-010891.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/6951/0001127602-20-010891.txt,True,4767,0.0,,insiders
+sec_form4_insiders,form4 0000899243-20-008509.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1792064/0000899243-20-008509.txt,True,5482,0.0,,insiders
+sec_form4_insiders,form4 0001561660-20-000045.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1561660/0001561660-20-000045.txt,True,9106,0.0,,insiders
+sec_form4_insiders,form4 0001561660-20-000049.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1561660/0001561660-20-000049.txt,True,4982,0.0,,insiders
+sec_form4_insiders,form4 0001401708-20-000074.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1401708/0001401708-20-000074.txt,True,5739,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-019096.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/56873/0001209191-20-019096.txt,True,12561,0.0,,insiders
+sec_form4_insiders,form4 0001561660-20-000037.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1587609/0001561660-20-000037.txt,True,9320,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-010917.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1137774/0001127602-20-010917.txt,True,8099,0.0,,insiders
+sec_form4_insiders,form4 0000751364-20-000050.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1135995/0000751364-20-000050.txt,True,4859,0.0,,insiders
+sec_form4_insiders,form4 0001179110-20-003687.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/793733/0001179110-20-003687.txt,True,4572,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-019087.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1769077/0001209191-20-019087.txt,True,4813,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-010822.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1614143/0001127602-20-010822.txt,True,4446,0.0,,insiders
+sec_form4_insiders,form4 0001213900-20-006503.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1754090/0001213900-20-006503.txt,True,10520,0.0,,insiders
+sec_form4_insiders,form4 0001312109-20-000025.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1232737/0001312109-20-000025.txt,True,11757,0.0,,insiders
+sec_form4_insiders,form4 0000784199-20-000076.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/784199/0000784199-20-000076.txt,True,6313,0.0,,insiders
+sec_form4_insiders,form4 0000899243-20-008360.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1419485/0000899243-20-008360.txt,True,5112,0.0,,insiders
+sec_form4_insiders,form4 0001609804-20-000109.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1609804/0001609804-20-000109.txt,True,4571,0.0,,insiders
+sec_form4_insiders,form4 0001213900-20-006601.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1743725/0001213900-20-006601.txt,True,7328,0.0,,insiders
+sec_form4_insiders,form4 0001567619-20-006468.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1787306/0001567619-20-006468.txt,True,8532,0.0,,insiders
+sec_form4_insiders,form4 0001213900-20-006483.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1397047/0001213900-20-006483.txt,True,5104,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-010895.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1339297/0001127602-20-010895.txt,True,6385,0.0,,insiders
+sec_form4_insiders,form4 0001772695-20-000028.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1512864/0001772695-20-000028.txt,True,7985,0.0,,insiders
+sec_form4_insiders,form4 0001104659-23-031286.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1253986/0001104659-23-031286.txt,True,4846,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-010920.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1137774/0001127602-20-010920.txt,True,5159,0.0,,insiders
+sec_form4_insiders,form4 0001390162-20-000022.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1390162/0001390162-20-000022.txt,True,4270,0.0,,insiders
+sec_form4_insiders,form4 0001127602-23-009799.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1877105/0001127602-23-009799.txt,True,5882,0.0,,insiders
+sec_form4_insiders,form4 0001667731-23-000120.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1792580/0001667731-23-000120.txt,True,7319,0.0,,insiders
+sec_form4_insiders,form4 0001415889-23-004699.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/745732/0001415889-23-004699.txt,True,4689,0.0,,insiders
+sec_form4_insiders,form4 0001437749-23-006131.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1901637/0001437749-23-006131.txt,True,5548,0.0,,insiders
+sec_form4_insiders,form4 0000899243-20-008431.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1054721/0000899243-20-008431.txt,True,21432,0.0,,insiders
+sec_form4_insiders,form4 0001415889-23-004684.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/908315/0001415889-23-004684.txt,True,18415,0.0,,insiders
+sec_form4_insiders,form4 0001214659-23-003743.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1708307/0001214659-23-003743.txt,True,6905,0.0,,insiders
+sec_form4_insiders,form4 0001104659-23-031377.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1675230/0001104659-23-031377.txt,True,38942,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017710.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/736772/0001209191-23-017710.txt,True,5372,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017939.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1359770/0001209191-23-017939.txt,True,10926,0.0,,insiders
+sec_form4_insiders,form4 0001963160-23-000003.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1963160/0001963160-23-000003.txt,True,5491,0.0,,insiders
+sec_form4_insiders,form4 0001104659-23-031376.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1604853/0001104659-23-031376.txt,True,38726,0.0,,insiders
+sec_form4_insiders,form4 0001865187-23-000016.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1865187/0001865187-23-000016.txt,True,7320,0.0,,insiders
+sec_form4_insiders,form4 0001593968-23-000464.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1470518/0001593968-23-000464.txt,True,12692,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017799.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1111485/0001209191-23-017799.txt,True,5753,0.0,,insiders
+sec_form4_insiders,form4 0001654954-23-002676.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1252191/0001654954-23-002676.txt,True,5910,0.0,,insiders
+sec_form4_insiders,form4 0001140361-23-011245.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1789567/0001140361-23-011245.txt,True,15793,0.0,,insiders
+sec_form4_insiders,form4 0001437749-23-006156.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1006830/0001437749-23-006156.txt,True,4295,0.0,,insiders
+sec_form4_insiders,form4 0001214659-23-003737.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1198960/0001214659-23-003737.txt,True,9432,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017832.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/766704/0001209191-23-017832.txt,True,10835,0.0,,insiders
+sec_form4_insiders,form4 0001062993-23-006598.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1201232/0001062993-23-006598.txt,True,16048,0.0,,insiders
+sec_form4_insiders,form4 0000824142-23-000036.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/824142/0000824142-23-000036.txt,True,14630,0.0,,insiders
+sec_form4_insiders,form4 0001062993-23-006644.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1177609/0001062993-23-006644.txt,True,5813,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017832.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1272113/0001209191-23-017832.txt,True,10835,0.0,,insiders
+sec_form4_insiders,form4 0001664272-25-000265.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1706137/0001664272-25-000265.txt,True,8491,0.0,,insiders
+sec_form4_insiders,form4 0000935836-25-000266.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1937653/0000935836-25-000266.txt,True,10532,0.0,,insiders
+sec_form4_insiders,form4 0000794367-25-000081.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/794367/0000794367-25-000081.txt,True,5727,0.0,,insiders
+sec_form4_insiders,form4 0001062993-23-006560.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1411207/0001062993-23-006560.txt,True,4486,0.0,,insiders
+sec_form4_insiders,form4 0001062993-25-007161.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1257324/0001062993-25-007161.txt,True,13679,0.0,,insiders
+sec_form4_insiders,form4 0001641172-25-002997.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1145666/0001641172-25-002997.txt,True,9159,0.0,,insiders
+sec_form4_insiders,form4 0001679788-25-000052.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1679788/0001679788-25-000052.txt,True,16441,0.0,,insiders
+sec_form4_insiders,form4 0001089063-25-000036.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1959516/0001089063-25-000036.txt,True,6104,0.0,,insiders
+sec_form4_insiders,form4 0001528396-25-000107.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1784996/0001528396-25-000107.txt,True,4737,0.0,,insiders
+sec_form4_insiders,form4 0000740260-25-000118.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/740260/0000740260-25-000118.txt,True,5090,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-051751.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1409585/0000950170-25-051751.txt,True,17325,0.0,,insiders
+sec_form4_insiders,form4 0001584509-25-000103.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1584509/0001584509-25-000103.txt,True,5480,0.0,,insiders
+sec_form4_insiders,form4 0001845413-25-000002.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1845413/0001845413-25-000002.txt,True,5500,0.0,,insiders
+sec_form4_insiders,form4 0001641172-25-003109.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1274282/0001641172-25-003109.txt,True,9521,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-051421.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/108516/0000950170-25-051421.txt,True,8861,0.0,,insiders
+sec_form4_insiders,form4 0001415889-25-010265.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1555931/0001415889-25-010265.txt,True,14268,0.0,,insiders
+sec_form4_insiders,form4 0001225208-25-004142.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1383312/0001225208-25-004142.txt,True,6983,0.0,,insiders
+sec_form4_insiders,form4 0001020569-25-000082.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1020569/0001020569-25-000082.txt,True,176987,0.0,,insiders
+sec_form4_insiders,form4 0001415889-25-010280.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1667211/0001415889-25-010280.txt,True,9648,0.0,,insiders
+sec_form4_insiders,form4 0001240461-25-000006.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/55529/0001240461-25-000006.txt,True,4614,0.0,,insiders
+sec_form4_insiders,form4 0000058492-25-000238.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/58492/0000058492-25-000238.txt,True,5796,0.0,,insiders
+sec_form4_insiders,form4 0001062993-25-007132.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1816382/0001062993-25-007132.txt,True,5536,0.0,,insiders
+sec_form4_insiders,form4 0001875444-25-000062.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1875444/0001875444-25-000062.txt,True,8419,0.0,,insiders
+sec_form4_insiders,form4 0001062993-25-007162.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1425292/0001062993-25-007162.txt,True,15022,0.0,,insiders
+sec_form4_insiders,form4 0001127602-25-011783.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1183258/0001127602-25-011783.txt,True,8421,0.0,,insiders
+sec_form4_insiders,form4 0001437749-25-011114.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1499087/0001437749-25-011114.txt,True,4333,0.0,,insiders
+sec_form4_insiders,form4 0002081627-26-000018.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1740604/0002081627-26-000018.txt,True,5064,0.0,,insiders
+sec_form4_insiders,form4 0001171520-26-000302.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1215582/0001171520-26-000302.txt,True,35745,0.0,,insiders
+sec_form4_insiders,form4 0001196690-26-000006.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1196690/0001196690-26-000006.txt,True,5358,0.0,,insiders
+sec_form4_insiders,form4 0001193125-26-420438.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1568876/0001193125-26-420438.txt,True,8741,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065726.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1934114/0001628280-26-065726.txt,True,4872,0.0,,insiders
+sec_form4_insiders,form4 0001778564-26-000182.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1535527/0001778564-26-000182.txt,True,64450,0.0,,insiders
+sec_form4_insiders,form4 0001554855-26-002109.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1712807/0001554855-26-002109.txt,True,7454,0.0,,insiders
+sec_form4_insiders,form4 0001477720-26-000070.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1477720/0001477720-26-000070.txt,True,5398,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065727.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1020859/0001628280-26-065727.txt,True,5119,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065789.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1562088/0001628280-26-065789.txt,True,5141,0.0,,insiders
+sec_form4_insiders,form4 0001326916-26-000008.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1326916/0001326916-26-000008.txt,True,5270,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065805.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1900614/0001628280-26-065805.txt,True,6137,0.0,,insiders
+sec_form4_insiders,form4 0001708441-26-000115.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1759340/0001708441-26-000115.txt,True,5604,0.0,,insiders
+sec_form4_insiders,form4 0001217585-26-000002.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/46619/0001217585-26-000002.txt,True,6191,0.0,,insiders
+sec_form4_insiders,form4 0001787282-26-000002.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1787282/0001787282-26-000002.txt,True,14616,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065729.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1020859/0001628280-26-065729.txt,True,5123,0.0,,insiders
+sec_form4_insiders,form4 0001413631-26-000004.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1413631/0001413631-26-000004.txt,True,16803,0.0,,insiders
+sec_form4_insiders,form4 0001193125-26-420473.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1968487/0001193125-26-420473.txt,True,4767,0.0,,insiders
+sec_form4_insiders,form4 0001193125-26-420444.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1500881/0001193125-26-420444.txt,True,9408,0.0,,insiders
+sec_form4_insiders,form4 0001213900-26-109128.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/2132904/0001213900-26-109128.txt,True,4624,0.0,,insiders
+sec_form4_insiders,form4 0001628280-26-065805.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1555280/0001628280-26-065805.txt,True,6137,0.0,,insiders
+sec_form4_insiders,form4 0001196690-26-000006.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1040896/0001196690-26-000006.txt,True,5358,0.0,,insiders
+sec_form4_insiders,form4 0001140536-26-000236.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1497048/0001140536-26-000236.txt,True,6193,0.0,,insiders
+sec_form4_insiders,form4 0001072613-26-000825.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/887396/0001072613-26-000825.txt,True,13678,0.0,,insiders
+sec_form4_insiders,form4 0001193125-26-420859.txt (caché),2026-10-13,https://www.sec.gov/Archives/edgar/data/1985487/0001193125-26-420859.txt,True,25941,0.0,,insiders
+sec_form4_insiders,indice 2008-09-16 (caché),2008-09-16,https://www.sec.gov/Archives/edgar/daily-index/2008/QTR3/form.20080916.idx,True,446360,0.0,,insiders
+sec_form4_insiders,indice 2008-09-17 (caché),2008-09-17,https://www.sec.gov/Archives/edgar/daily-index/2008/QTR3/form.20080917.idx,True,427636,0.0,,insiders
+sec_form4_insiders,indice 2008-09-18 (caché),2008-09-18,https://www.sec.gov/Archives/edgar/daily-index/2008/QTR3/form.20080918.idx,True,412838,0.0,,insiders
+sec_form4_insiders,indice 2016-11-10 (caché),2016-11-10,https://www.sec.gov/Archives/edgar/daily-index/2016/QTR4/form.20161110.idx,True,708798,0.0,,insiders
+sec_form4_insiders,indice 2016-11-14 (caché),2016-11-14,https://www.sec.gov/Archives/edgar/daily-index/2016/QTR4/form.20161114.idx,True,1350548,0.0,,insiders
+sec_form4_insiders,indice 2020-03-17 (caché),2020-03-17,https://www.sec.gov/Archives/edgar/daily-index/2020/QTR1/form.20200317.idx,True,808156,0.0,,insiders
+sec_form4_insiders,indice 2020-03-18 (caché),2020-03-18,https://www.sec.gov/Archives/edgar/daily-index/2020/QTR1/form.20200318.idx,True,617141,0.0,,insiders
+sec_form4_insiders,indice 2020-03-19 (caché),2020-03-19,https://www.sec.gov/Archives/edgar/daily-index/2020/QTR1/form.20200319.idx,True,582864,0.0,,insiders
+sec_form4_insiders,indice 2023-03-13 (caché),2023-03-13,https://www.sec.gov/Archives/edgar/daily-index/2023/QTR1/form.20230313.idx,True,674672,0.0,,insiders
+sec_form4_insiders,indice 2023-03-14 (caché),2023-03-14,https://www.sec.gov/Archives/edgar/daily-index/2023/QTR1/form.20230314.idx,True,847567,0.0,,insiders
+sec_form4_insiders,indice 2023-03-15 (caché),2023-03-15,https://www.sec.gov/Archives/edgar/daily-index/2023/QTR1/form.20230315.idx,True,747303,0.0,,insiders
+sec_form4_insiders,indice 2025-04-08 (caché),2025-04-08,https://www.sec.gov/Archives/edgar/daily-index/2025/QTR2/form.20250408.idx,True,833306,0.0,,insiders
+sec_form4_insiders,indice 2025-04-09 (caché),2025-04-09,https://www.sec.gov/Archives/edgar/daily-index/2025/QTR2/form.20250409.idx,True,602445,0.0,,insiders
+sec_form4_insiders,indice 2025-04-10 (caché),2025-04-10,https://www.sec.gov/Archives/edgar/daily-index/2025/QTR2/form.20250410.idx,True,666271,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053214.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1375380/0001181431-08-053214.txt,True,6299,0.0,,insiders
+sec_form4_insiders,form4 0001193099-08-000084.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1160193/0001193099-08-000084.txt,True,6965,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-051855.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1096791/0001209191-08-051855.txt,True,9897,0.0,,insiders
+sec_form4_insiders,form4 0001305508-08-000169.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1227251/0001305508-08-000169.txt,True,5859,0.0,,insiders
+sec_form4_insiders,form4 0000919574-16-016170.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1651515/0000919574-16-016170.txt,True,17414,0.0,,insiders
+sec_form4_insiders,form4 0001225208-16-041388.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1175188/0001225208-16-041388.txt,True,4932,0.0,,insiders
+sec_form4_insiders,form4 0001179110-16-031373.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1415887/0001179110-16-031373.txt,True,8599,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149073.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1346738/0001209191-16-149073.txt,True,8764,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-019088.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1386278/0001209191-20-019088.txt,True,5851,0.0,,insiders
+sec_form4_insiders,form4 0001213900-20-006601.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1731166/0001213900-20-006601.txt,True,7328,0.0,,insiders
+sec_form4_insiders,form4 0001603978-20-000066.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1619796/0001603978-20-000066.txt,True,16823,0.0,,insiders
+sec_form4_insiders,form4 0001520006-20-000124.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1520006/0001520006-20-000124.txt,True,6302,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-017895.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1725057/0001209191-23-017895.txt,True,24174,0.0,,insiders
+sec_form4_insiders,form4 0001437749-23-006133.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1685230/0001437749-23-006133.txt,True,7371,0.0,,insiders
+sec_form4_insiders,form4 0001593968-23-000468.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1514954/0001593968-23-000468.txt,True,12780,0.0,,insiders
+sec_form4_insiders,form4 0001651308-23-000038.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1651308/0001651308-23-000038.txt,True,26797,0.0,,insiders
+sec_form4_insiders,form4 0001062993-25-007172.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1653868/0001062993-25-007172.txt,True,9342,0.0,,insiders
+sec_form4_insiders,form4 0001437749-25-011268.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1786248/0001437749-25-011268.txt,True,20595,0.0,,insiders
+sec_form4_insiders,form4 0000905148-25-001129.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1818502/0000905148-25-001129.txt,True,5966,0.0,,insiders
+sec_form4_insiders,form4 0001664272-25-000261.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1544019/0001664272-25-000261.txt,True,8678,0.0,,insiders
+sec_form4_insiders,form4 0000903510-08-000030.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1094348/0000903510-08-000030.txt,True,28817,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052158.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1092796/0001209191-08-052158.txt,True,5882,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053508.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1222715/0001181431-08-053508.txt,True,10571,0.0,,insiders
+sec_form4_insiders,form4 0001068800-08-000370.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1292646/0001068800-08-000370.txt,True,6765,0.0,,insiders
+sec_form4_insiders,form4 0000310354-08-000061.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/310354/0000310354-08-000061.txt,True,5795,0.0,,insiders
+sec_form4_insiders,form4 0001211665-08-000007.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1211665/0001211665-08-000007.txt,True,10672,0.0,,insiders
+sec_form4_insiders,form4 0000313927-08-000483.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1298470/0000313927-08-000483.txt,True,14239,0.0,,insiders
+sec_form4_insiders,form4 0001005477-08-005729.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/724571/0001005477-08-005729.txt,True,7678,0.0,,insiders
+sec_form4_insiders,form4 0000874214-08-000037.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/1412597/0000874214-08-000037.txt,True,5180,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052560.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/1437482/0001209191-08-052560.txt,True,5567,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052461.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/944765/0001209191-08-052461.txt,True,7735,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149420.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1185544/0001209191-16-149420.txt,True,5172,0.0,,insiders
+sec_form4_insiders,form4 0001127602-16-066700.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1568669/0001127602-16-066700.txt,True,8304,0.0,,insiders
+sec_form4_insiders,form4 0001127602-16-066661.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1253903/0001127602-16-066661.txt,True,6396,0.0,,insiders
+sec_form4_insiders,form4 0000899243-16-033205.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1212148/0000899243-16-033205.txt,True,4882,0.0,,insiders
+sec_form4_insiders,form4 0001603715-16-000011.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1642585/0001603715-16-000011.txt,True,13842,0.0,,insiders
+sec_form4_insiders,form4 0001044321-08-000229.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/1046501/0001044321-08-000229.txt,True,6117,0.0,,insiders
+sec_form4_insiders,form4 0001104659-16-156827.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1211146/0001104659-16-156827.txt,True,4522,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149833.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/317788/0001209191-16-149833.txt,True,5534,0.0,,insiders
+sec_form4_insiders,form4 0001225208-20-005191.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/795403/0001225208-20-005191.txt,True,8231,0.0,,insiders
+sec_form4_insiders,form4 0000950103-20-005375.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1671185/0000950103-20-005375.txt,True,27077,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-011011.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1292659/0001127602-20-011011.txt,True,5418,0.0,,insiders
+sec_form4_insiders,form4 0000927066-20-000052.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/927066/0000927066-20-000052.txt,True,5550,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-019913.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/40533/0001209191-20-019913.txt,True,4578,0.0,,insiders
+sec_form4_insiders,form4 0000919574-20-002488.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/792977/0000919574-20-002488.txt,True,10473,0.0,,insiders
+sec_form4_insiders,form4 0001301106-16-000217.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1301106/0001301106-16-000217.txt,True,5135,0.0,,insiders
+sec_form4_insiders,form4 0001225208-20-005358.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/1609772/0001225208-20-005358.txt,True,5640,0.0,,insiders
+sec_form4_insiders,form4 0001562180-20-002639.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1102266/0001562180-20-002639.txt,True,4958,0.0,,insiders
+sec_form4_insiders,form4 0000029534-20-000014.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1646121/0000029534-20-000014.txt,True,5281,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-011430.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/8858/0001127602-20-011430.txt,True,5332,0.0,,insiders
+sec_form4_insiders,form4 0001225208-20-005385.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/895456/0001225208-20-005385.txt,True,5033,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-018152.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/58492/0001209191-23-018152.txt,True,9337,0.0,,insiders
+sec_form4_insiders,form4 0001327811-20-000034.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/1327811/0001327811-20-000034.txt,True,37436,0.0,,insiders
+sec_form4_insiders,form4 0001140361-23-011466.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/1680062/0001140361-23-011466.txt,True,8243,0.0,,insiders
+sec_form4_insiders,form4 0000899243-23-008239.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/1866368/0000899243-23-008239.txt,True,21208,0.0,,insiders
+sec_form4_insiders,form4 0000913144-23-000064.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/913144/0000913144-23-000064.txt,True,7073,0.0,,insiders
+sec_form4_insiders,form4 0001050825-23-000037.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1411282/0001050825-23-000037.txt,True,4401,0.0,,insiders
+sec_form4_insiders,form4 0001144519-23-000055.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1758115/0001144519-23-000055.txt,True,7929,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-018440.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1547434/0001209191-23-018440.txt,True,4419,0.0,,insiders
+sec_form4_insiders,form4 0001214659-23-003848.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1866633/0001214659-23-003848.txt,True,4838,0.0,,insiders
+sec_form4_insiders,form4 0001213900-23-020070.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1751143/0001213900-23-020070.txt,True,8005,0.0,,insiders
+sec_form4_insiders,form4 0001127602-23-010318.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1475922/0001127602-23-010318.txt,True,4423,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-018812.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/792966/0001209191-23-018812.txt,True,6462,0.0,,insiders
+sec_form4_insiders,form4 0001940536-23-000005.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1940536/0001940536-23-000005.txt,True,7668,0.0,,insiders
+sec_form4_insiders,form4 0001638397-25-000010.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1293613/0001638397-25-000010.txt,True,4833,0.0,,insiders
+sec_form4_insiders,form4 0001225208-25-004156.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1711799/0001225208-25-004156.txt,True,5446,0.0,,insiders
+sec_form4_insiders,form4 0001510281-25-000194.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1864290/0001510281-25-000194.txt,True,6148,0.0,,insiders
+sec_form4_insiders,form4 0001641172-25-003193.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1412038/0001641172-25-003193.txt,True,5765,0.0,,insiders
+sec_form4_insiders,form4 0000950103-25-004632.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/1326801/0000950103-25-004632.txt,True,9908,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-052637.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/1828723/0000950170-25-052637.txt,True,4732,0.0,,insiders
+sec_form4_insiders,form4 0001127602-25-011837.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/1763307/0001127602-25-011837.txt,True,4817,0.0,,insiders
+sec_form4_insiders,form4 0001214659-25-005722.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/814547/0001214659-25-005722.txt,True,57404,0.0,,insiders
+sec_form4_insiders,form4 0001706946-25-000057.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/1916877/0001706946-25-000057.txt,True,10788,0.0,,insiders
+sec_form4_insiders,form4 0001583648-25-000025.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1583648/0001583648-25-000025.txt,True,6330,0.0,,insiders
+sec_form4_insiders,form4 0001127602-25-011922.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1288859/0001127602-25-011922.txt,True,5961,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-052896.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1704715/0000950170-25-052896.txt,True,4785,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-051869.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1339947/0001209191-08-051869.txt,True,10057,0.0,,insiders
+sec_form4_insiders,form4 0001223468-08-000003.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1223468/0001223468-08-000003.txt,True,4723,0.0,,insiders
+sec_form4_insiders,form4 0001181431-08-053255.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1235818/0001181431-08-053255.txt,True,29109,0.0,,insiders
+sec_form4_insiders,form4 0001193099-08-000083.txt (caché),2008-09-15,https://www.sec.gov/Archives/edgar/data/1017391/0001193099-08-000083.txt,True,7033,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149055.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/110621/0001209191-16-149055.txt,True,8755,0.0,,insiders
+sec_form4_insiders,form4 0001437749-16-041594.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1019034/0001437749-16-041594.txt,True,4199,0.0,,insiders
+sec_form4_insiders,form4 0001140361-16-085530.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/1238263/0001140361-16-085530.txt,True,5673,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149174.txt (caché),2016-11-09,https://www.sec.gov/Archives/edgar/data/4127/0001209191-16-149174.txt,True,7840,0.0,,insiders
+sec_form4_insiders,form4 0001562180-20-002534.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1605452/0001562180-20-002534.txt,True,6946,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-019276.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1058290/0001209191-20-019276.txt,True,9394,0.0,,insiders
+sec_form4_insiders,form4 0001598014-20-000050.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1598014/0001598014-20-000050.txt,True,5710,0.0,,insiders
+sec_form4_insiders,form4 0001562180-20-002529.txt (caché),2020-03-16,https://www.sec.gov/Archives/edgar/data/1560241/0001562180-20-002529.txt,True,10393,0.0,,insiders
+sec_form4_insiders,form4 0001888316-23-000013.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1290697/0001888316-23-000013.txt,True,5612,0.0,,insiders
+sec_form4_insiders,form4 0001888316-23-000013.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/804328/0001888316-23-000013.txt,True,5612,0.0,,insiders
+sec_form4_insiders,form4 0000899243-23-007909.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1785971/0000899243-23-007909.txt,True,4388,0.0,,insiders
+sec_form4_insiders,form4 0001993004-25-000069.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1182496/0001993004-25-000069.txt,True,4797,0.0,,insiders
+sec_form4_insiders,form4 0001225208-23-003749.txt (caché),2023-03-10,https://www.sec.gov/Archives/edgar/data/1384380/0001225208-23-003749.txt,True,17334,0.0,,insiders
+sec_form4_insiders,form4 0001635282-25-000088.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1717514/0001635282-25-000088.txt,True,11797,0.0,,insiders
+sec_form4_insiders,form4 0001635282-25-000092.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1635282/0001635282-25-000092.txt,True,15489,0.0,,insiders
+sec_form4_insiders,form4 0001467373-25-000106.txt (caché),2025-04-07,https://www.sec.gov/Archives/edgar/data/1783059/0001467373-25-000106.txt,True,4770,0.0,,insiders
+sec_form4_insiders,form4 0001398248-08-000017.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1342960/0001398248-08-000017.txt,True,8951,0.0,,insiders
+sec_form4_insiders,form4 0001179110-08-016875.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1240427/0001179110-08-016875.txt,True,5947,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052054.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1298803/0001209191-08-052054.txt,True,5287,0.0,,insiders
+sec_form4_insiders,form4 0000921895-08-002384.txt (caché),2008-09-16,https://www.sec.gov/Archives/edgar/data/1005784/0000921895-08-002384.txt,True,13329,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052274.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1172139/0001209191-08-052274.txt,True,14108,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052239.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1364709/0001209191-08-052239.txt,True,4950,0.0,,insiders
+sec_form4_insiders,form4 0001209191-08-052217.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1218838/0001209191-08-052217.txt,True,7515,0.0,,insiders
+sec_form4_insiders,form4 0001082331-08-000009.txt (caché),2008-09-17,https://www.sec.gov/Archives/edgar/data/1054097/0001082331-08-000009.txt,True,5892,0.0,,insiders
+sec_form4_insiders,form4 0001225208-08-014906.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/12659/0001225208-08-014906.txt,True,13969,0.0,,insiders
+sec_form4_insiders,form4 0001420506-08-000167.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/1020859/0001420506-08-000167.txt,True,8253,0.0,,insiders
+sec_form4_insiders,form4 0001140361-08-021480.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/109156/0001140361-08-021480.txt,True,9084,0.0,,insiders
+sec_form4_insiders,form4 0001179110-08-016974.txt (caché),2008-09-18,https://www.sec.gov/Archives/edgar/data/1048620/0001179110-08-016974.txt,True,15445,0.0,,insiders
+sec_form4_insiders,form4 0001140361-16-085801.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1158324/0001140361-16-085801.txt,True,4589,0.0,,insiders
+sec_form4_insiders,form4 0001372414-16-000124.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1618558/0001372414-16-000124.txt,True,4997,0.0,,insiders
+sec_form4_insiders,form4 0000877890-16-000342.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1176008/0000877890-16-000342.txt,True,6611,0.0,,insiders
+sec_form4_insiders,form4 0001372414-16-000124.txt (caché),2016-11-10,https://www.sec.gov/Archives/edgar/data/1372414/0001372414-16-000124.txt,True,4997,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149602.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1569375/0001209191-16-149602.txt,True,9786,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149931.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1175522/0001209191-16-149931.txt,True,25983,0.0,,insiders
+sec_form4_insiders,form4 0001209191-16-149622.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1260221/0001209191-16-149622.txt,True,5283,0.0,,insiders
+sec_form4_insiders,form4 0001071739-16-000304.txt (caché),2016-11-14,https://www.sec.gov/Archives/edgar/data/1229100/0001071739-16-000304.txt,True,11364,0.0,,insiders
+sec_form4_insiders,form4 0001364954-20-000073.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1364954/0001364954-20-000073.txt,True,5124,0.0,,insiders
+sec_form4_insiders,form4 0001127602-20-011120.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1191641/0001127602-20-011120.txt,True,4399,0.0,,insiders
+sec_form4_insiders,form4 0001437749-20-005453.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1321738/0001437749-20-005453.txt,True,4875,0.0,,insiders
+sec_form4_insiders,form4 0001225033-20-000016.txt (caché),2020-03-17,https://www.sec.gov/Archives/edgar/data/1063975/0001225033-20-000016.txt,True,6061,0.0,,insiders
+sec_form4_insiders,form4 0001104659-20-035335.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/897723/0001104659-20-035335.txt,True,4927,0.0,,insiders
+sec_form4_insiders,form4 0001562180-20-002634.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/1543151/0001562180-20-002634.txt,True,4772,0.0,,insiders
+sec_form4_insiders,form4 0001094285-20-000050.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/1094285/0001094285-20-000050.txt,True,6781,0.0,,insiders
+sec_form4_insiders,form4 0001493152-20-004247.txt (caché),2020-03-18,https://www.sec.gov/Archives/edgar/data/1498067/0001493152-20-004247.txt,True,6479,0.0,,insiders
+sec_form4_insiders,form4 0001209191-20-020359.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1250261/0001209191-20-020359.txt,True,5008,0.0,,insiders
+sec_form4_insiders,form4 0001239208-20-000004.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1039684/0001239208-20-000004.txt,True,6237,0.0,,insiders
+sec_form4_insiders,form4 0001213900-20-006870.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1800860/0001213900-20-006870.txt,True,4659,0.0,,insiders
+sec_form4_insiders,form4 0001179110-20-003992.txt (caché),2020-03-19,https://www.sec.gov/Archives/edgar/data/1300922/0001179110-20-003992.txt,True,6439,0.0,,insiders
+sec_form4_insiders,form4 0001415889-23-004749.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/1549346/0001415889-23-004749.txt,True,4910,0.0,,insiders
+sec_form4_insiders,form4 0001853904-23-000002.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/1853904/0001853904-23-000002.txt,True,7267,0.0,,insiders
+sec_form4_insiders,form4 0000898174-23-000058.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/898174/0000898174-23-000058.txt,True,7319,0.0,,insiders
+sec_form4_insiders,form4 0000806279-23-000030.txt (caché),2023-03-13,https://www.sec.gov/Archives/edgar/data/806279/0000806279-23-000030.txt,True,7093,0.0,,insiders
+sec_form4_insiders,form4 0001567619-23-005019.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1186818/0001567619-23-005019.txt,True,6784,0.0,,insiders
+sec_form4_insiders,form4 0001127602-23-010177.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1669146/0001127602-23-010177.txt,True,12186,0.0,,insiders
+sec_form4_insiders,form4 0000899243-23-008505.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/1713952/0000899243-23-008505.txt,True,11195,0.0,,insiders
+sec_form4_insiders,form4 0001567619-23-005072.txt (caché),2023-03-14,https://www.sec.gov/Archives/edgar/data/865752/0001567619-23-005072.txt,True,23507,0.0,,insiders
+sec_form4_insiders,form4 0001127602-23-010349.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1703309/0001127602-23-010349.txt,True,4901,0.0,,insiders
+sec_form4_insiders,form4 0000899243-23-008629.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1910950/0000899243-23-008629.txt,True,4840,0.0,,insiders
+sec_form4_insiders,form4 0001209191-23-019058.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/1241248/0001209191-23-019058.txt,True,6179,0.0,,insiders
+sec_form4_insiders,form4 0001104659-23-032913.txt (caché),2023-03-15,https://www.sec.gov/Archives/edgar/data/20520/0001104659-23-032913.txt,True,33965,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-052295.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1319947/0000950170-25-052295.txt,True,44047,0.0,,insiders
+sec_form4_insiders,form4 0001140361-25-012879.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1868946/0001140361-25-012879.txt,True,20946,0.0,,insiders
+sec_form4_insiders,form4 0001415889-25-010398.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1963400/0001415889-25-010398.txt,True,6367,0.0,,insiders
+sec_form4_insiders,form4 0001415889-25-010439.txt (caché),2025-04-08,https://www.sec.gov/Archives/edgar/data/1656634/0001415889-25-010439.txt,True,12741,0.0,,insiders
+sec_form4_insiders,form4 0001641172-25-003463.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/897744/0001641172-25-003463.txt,True,4683,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-052390.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/108312/0000950170-25-052390.txt,True,5944,0.0,,insiders
+sec_form4_insiders,form4 0001010412-25-000006.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/2059185/0001010412-25-000006.txt,True,6549,0.0,,insiders
+sec_form4_insiders,form4 0000950170-25-052597.txt (caché),2025-04-09,https://www.sec.gov/Archives/edgar/data/1832483/0000950170-25-052597.txt,True,5702,0.0,,insiders
+sec_form4_insiders,form4 0001250853-25-000003.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1645738/0001250853-25-000003.txt,True,4428,0.0,,insiders
+sec_form4_insiders,form4 0001574197-25-000040.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1574197/0001574197-25-000040.txt,True,7889,0.0,,insiders
+sec_form4_insiders,form4 0001127602-25-011950.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1539835/0001127602-25-011950.txt,True,5330,0.0,,insiders
+sec_form4_insiders,form4 0001062993-25-007320.txt (caché),2025-04-10,https://www.sec.gov/Archives/edgar/data/1376139/0001062993-25-007320.txt,True,13680,0.0,,insiders
+sec_form345_datasets,listado,,https://www.sec.gov/data-research/sec-markets-data/insider-transactions-data-sets,True,131556,0.9,,insiders
+polymarket,eventos 2020 p0,,https://gamma-api.polymarket.com/events,True,181028,0.0,,prediccion
+polymarket,eventos 2021 p0,,https://gamma-api.polymarket.com/events,True,258106,0.0,,prediccion
+polymarket,eventos 2021 p1,,https://gamma-api.polymarket.com/events,True,243957,0.0,,prediccion
+polymarket,eventos 2021 p2,,https://gamma-api.polymarket.com/events,True,264624,0.0,,prediccion
+polymarket,eventos 2021 p3,,https://gamma-api.polymarket.com/events,True,260985,0.0,,prediccion
+polymarket,eventos 2021 p4,,https://gamma-api.polymarket.com/events,True,257274,0.0,,prediccion
+polymarket,eventos 2021 p5,,https://gamma-api.polymarket.com/events,True,255061,0.0,,prediccion
+polymarket,eventos 2021 p6,,https://gamma-api.polymarket.com/events,True,269305,0.0,,prediccion
+polymarket,eventos 2021 p7,,https://gamma-api.polymarket.com/events,True,264878,0.0,,prediccion
+polymarket,eventos 2021 p8,,https://gamma-api.polymarket.com/events,True,262936,0.0,,prediccion
+polymarket,eventos 2021 p9,,https://gamma-api.polymarket.com/events,True,255676,0.0,,prediccion
+polymarket,eventos 2022 p0,,https://gamma-api.polymarket.com/events,True,242428,0.0,,prediccion
+polymarket,eventos 2022 p1,,https://gamma-api.polymarket.com/events,True,244458,0.0,,prediccion
+polymarket,eventos 2022 p2,,https://gamma-api.polymarket.com/events,True,240746,0.0,,prediccion
+polymarket,eventos 2022 p3,,https://gamma-api.polymarket.com/events,True,247312,0.0,,prediccion
+polymarket,eventos 2022 p4,,https://gamma-api.polymarket.com/events,True,251335,0.0,,prediccion
+polymarket,eventos 2022 p5,,https://gamma-api.polymarket.com/events,True,243783,0.0,,prediccion
+polymarket,eventos 2022 p6,,https://gamma-api.polymarket.com/events,True,249990,0.0,,prediccion
+polymarket,eventos 2022 p7,,https://gamma-api.polymarket.com/events,True,237445,0.0,,prediccion
+polymarket,eventos 2022 p8,,https://gamma-api.polymarket.com/events,True,238079,0.0,,prediccion
+polymarket,eventos 2022 p9,,https://gamma-api.polymarket.com/events,True,237688,0.0,,prediccion
+polymarket,eventos 2023 p0,,https://gamma-api.polymarket.com/events,True,257486,0.0,,prediccion
+polymarket,eventos 2023 p1,,https://gamma-api.polymarket.com/events,True,236266,0.0,,prediccion
+polymarket,eventos 2023 p2,,https://gamma-api.polymarket.com/events,True,233826,0.0,,prediccion
+polymarket,eventos 2023 p3,,https://gamma-api.polymarket.com/events,True,229697,0.0,,prediccion
+polymarket,eventos 2023 p4,,https://gamma-api.polymarket.com/events,True,226607,0.0,,prediccion
+polymarket,eventos 2023 p5,,https://gamma-api.polymarket.com/events,True,228524,0.0,,prediccion
+polymarket,eventos 2023 p6,,https://gamma-api.polymarket.com/events,True,216865,0.0,,prediccion
+polymarket,eventos 2023 p7,,https://gamma-api.polymarket.com/events,True,214469,0.0,,prediccion
+polymarket,eventos 2023 p8,,https://gamma-api.polymarket.com/events,True,217918,0.0,,prediccion
+polymarket,eventos 2023 p9,,https://gamma-api.polymarket.com/events,True,211603,0.0,,prediccion
+polymarket,eventos 2024 p0,,https://gamma-api.polymarket.com/events,True,280632,0.0,,prediccion
+polymarket,eventos 2024 p1,,https://gamma-api.polymarket.com/events,True,261536,0.0,,prediccion
+polymarket,eventos 2024 p2,,https://gamma-api.polymarket.com/events,True,259640,0.0,,prediccion
+polymarket,eventos 2024 p3,,https://gamma-api.polymarket.com/events,True,264542,0.0,,prediccion
+polymarket,eventos 2024 p4,,https://gamma-api.polymarket.com/events,True,261781,0.0,,prediccion
+polymarket,eventos 2024 p5,,https://gamma-api.polymarket.com/events,True,277949,0.0,,prediccion
+polymarket,eventos 2024 p6,,https://gamma-api.polymarket.com/events,True,261259,0.0,,prediccion
+polymarket,eventos 2024 p7,,https://gamma-api.polymarket.com/events,True,279445,0.0,,prediccion
+polymarket,eventos 2024 p8,,https://gamma-api.polymarket.com/events,True,275674,0.0,,prediccion
+polymarket,eventos 2024 p9,,https://gamma-api.polymarket.com/events,True,278273,0.0,,prediccion
+polymarket,eventos 2025 p0,,https://gamma-api.polymarket.com/events,True,332109,0.0,,prediccion
+polymarket,eventos 2025 p1,,https://gamma-api.polymarket.com/events,True,333541,0.0,,prediccion
+polymarket,eventos 2025 p2,,https://gamma-api.polymarket.com/events,True,333334,0.0,,prediccion
+polymarket,eventos 2025 p3,,https://gamma-api.polymarket.com/events,True,329112,0.0,,prediccion
+polymarket,eventos 2025 p4,,https://gamma-api.polymarket.com/events,True,345278,0.0,,prediccion
+polymarket,eventos 2025 p5,,https://gamma-api.polymarket.com/events,True,339212,0.0,,prediccion
+polymarket,eventos 2025 p6,,https://gamma-api.polymarket.com/events,True,363338,0.0,,prediccion
+polymarket,eventos 2025 p7,,https://gamma-api.polymarket.com/events,True,348974,0.0,,prediccion
+polymarket,eventos 2025 p8,,https://gamma-api.polymarket.com/events,True,353527,0.0,,prediccion
+polymarket,eventos 2025 p9,,https://gamma-api.polymarket.com/events,True,354082,0.0,,prediccion
+polymarket,eventos 2026 p0,,https://gamma-api.polymarket.com/events,True,390493,0.0,,prediccion
+polymarket,eventos 2026 p1,,https://gamma-api.polymarket.com/events,True,385477,0.0,,prediccion
+polymarket,eventos 2026 p2,,https://gamma-api.polymarket.com/events,True,393043,0.0,,prediccion
+polymarket,eventos 2026 p3,,https://gamma-api.polymarket.com/events,True,400320,0.0,,prediccion
+polymarket,eventos 2026 p4,,https://gamma-api.polymarket.com/events,True,421746,0.0,,prediccion
+polymarket,eventos 2026 p5,,https://gamma-api.polymarket.com/events,True,429031,0.0,,prediccion
+polymarket,eventos 2026 p6,,https://gamma-api.polymarket.com/events,True,411178,0.0,,prediccion
+polymarket,eventos 2026 p7,,https://gamma-api.polymarket.com/events,True,431012,0.0,,prediccion
+polymarket,eventos 2026 p8,,https://gamma-api.polymarket.com/events,True,412342,0.0,,prediccion
+polymarket,eventos 2026 p9,,https://gamma-api.polymarket.com/events,True,425738,0.0,,prediccion
+polymarket,activos lehman,2008-09-15,https://gamma-api.polymarket.com/events,True,3,0.0,,prediccion
+polymarket,activos elecciones_2016,2016-11-09,https://gamma-api.polymarket.com/events,True,3,0.0,,prediccion
+polymarket,activos covid,2020-03-16,https://gamma-api.polymarket.com/events,True,3,0.0,,prediccion
+polymarket,activos svb,2023-03-10,https://gamma-api.polymarket.com/events,True,127142,0.0,,prediccion
+polymarket,activos aranceles,2025-04-07,https://gamma-api.polymarket.com/events,True,145606,0.0,,prediccion
+polymarket,activos hoy,2026-10-14,https://gamma-api.polymarket.com/events,True,183362,0.0,,prediccion
+polymarket,resueltos 2021 p0,,https://gamma-api.polymarket.com/markets,True,592651,0.0,,prediccion
+polymarket,resueltos 2021 p1,,https://gamma-api.polymarket.com/markets,True,447127,0.0,,prediccion
+polymarket,resueltos 2022 p0,,https://gamma-api.polymarket.com/markets,True,601048,0.0,,prediccion
+polymarket,resueltos 2022 p1,,https://gamma-api.polymarket.com/markets,True,174712,0.0,,prediccion
+polymarket,resueltos 2023 p0,,https://gamma-api.polymarket.com/markets,True,528618,0.0,,prediccion
+polymarket,resueltos 2023 p1,,https://gamma-api.polymarket.com/markets,True,48245,0.0,,prediccion
+polymarket,resueltos 2024 p0,,https://gamma-api.polymarket.com/markets,True,515346,0.0,,prediccion
+polymarket,resueltos 2024 p1,,https://gamma-api.polymarket.com/markets,True,516777,0.0,,prediccion
+polymarket,resueltos 2025 p0,,https://gamma-api.polymarket.com/markets,True,532218,0.0,,prediccion
+polymarket,resueltos 2025 p1,,https://gamma-api.polymarket.com/markets,True,530290,0.0,,prediccion
+polymarket,resueltos 2026 p0,,https://gamma-api.polymarket.com/markets,True,582073,0.0,,prediccion
+polymarket,resueltos 2026 p1,,https://gamma-api.polymarket.com/markets,True,607341,0.0,,prediccion
+polymarket,historial will-benjamin-netanyahu-remain-prime-minister-of-i,,https://clob.polymarket.com/prices-history,True,15,0.0,,prediccion
+polymarket,historial will-the-ethereum-merge-eip-3675-occur-by-septembe,,https://clob.polymarket.com/prices-history,True,3964,0.0,,prediccion
+polymarket,historial will-realdonaldtrump-tweet-in-2022,,https://clob.polymarket.com/prices-history,True,4926,0.0,,prediccion
+polymarket,historial arbitrum-airdrop-by-march-31st,,https://clob.polymarket.com/prices-history,True,3854,0.0,,prediccion
+polymarket,historial will-novak-djokovic-win-wimbledon,,https://clob.polymarket.com/prices-history,True,592,0.0,,prediccion
+polymarket,historial will-there-be-a-us-government-shutdown-by-october-,,https://clob.polymarket.com/prices-history,True,1085,0.0,,prediccion
+polymarket,historial will-the-fed-cut-rates-in-2023,,https://clob.polymarket.com/prices-history,True,16405,0.0,,prediccion
+polymarket,historial is-the-room-temp-superconductor-real,,https://clob.polymarket.com/prices-history,True,8642,0.0,,prediccion
+polymarket,historial will-erdogan-win-the-2023-turkish-presidential-ele,,https://clob.polymarket.com/prices-history,True,5346,0.0,,prediccion
+polymarket,historial will-bitcoin-hit-100k-in-november,,https://clob.polymarket.com/prices-history,True,1048,0.0,,prediccion
+polymarket,historial will-the-panthers-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,8881,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-novem,,https://clob.polymarket.com/prices-history,True,5378,0.0,,prediccion
+polymarket,historial will-mike-tyson-win-his-boxing-match-against-jake-,,https://clob.polymarket.com/prices-history,True,12852,0.0,,prediccion
+polymarket,historial will-donald-trump-win-the-2024-us-presidential-ele,,https://clob.polymarket.com/prices-history,True,16721,0.0,,prediccion
+polymarket,historial will-satoshi-move-any-bitcoin-in-2025,,https://clob.polymarket.com/prices-history,True,9427,0.0,,prediccion
+polymarket,historial will-the-sacramento-kings-win-the-2025-nba-finals,,https://clob.polymarket.com/prices-history,True,11355,0.0,,prediccion
+polymarket,historial fed-decreases-interest-rates-by-50-bps-after-decem,,https://clob.polymarket.com/prices-history,True,7144,0.0,,prediccion
+polymarket,historial tiktok-banned-in-the-us-before-may-2025,,https://clob.polymarket.com/prices-history,True,6715,0.0,,prediccion
+polymarket,historial will-donald-trump-be-inaugurated,,https://clob.polymarket.com/prices-history,True,4478,0.0,,prediccion
+polymarket,historial microstrategy-sells-any-bitcoin-by-may-31-2026,,https://clob.polymarket.com/prices-history,True,1558,0.0,,prediccion
+polymarket,historial will-argentina-win-the-2026-fifa-world-cup-245,,https://clob.polymarket.com/prices-history,True,18823,0.0,,prediccion
+polymarket,historial will-there-be-another-us-government-shutdown-by-ja,,https://clob.polymarket.com/prices-history,True,4454,0.0,,prediccion
+polymarket,historial fed-decreases-interest-rates-by-50-bps-after-janua,,https://clob.polymarket.com/prices-history,True,7280,0.0,,prediccion
+polymarket,historial strait-of-hormuz-traffic-returns-to-normal-by-end-,,https://clob.polymarket.com/prices-history,True,4161,0.0,,prediccion
+polymarket,historial us-forces-enter-iran-by-april-30-899,,https://clob.polymarket.com/prices-history,True,583,0.0,,prediccion
+polymarket,historial will-the-ethereum-merge-eip-3675-occur-by-october-,,https://clob.polymarket.com/prices-history,True,3964,0.0,,prediccion
+polymarket,historial will-sbf-be-federally-indicted-by-eoy,,https://clob.polymarket.com/prices-history,True,4016,0.0,,prediccion
+polymarket,historial layerzero-airdrop-in-2023,,https://clob.polymarket.com/prices-history,True,3383,0.0,,prediccion
+polymarket,historial will-the-nuggets-be-the-2022-23-nba-champion,,https://clob.polymarket.com/prices-history,True,5503,0.0,,prediccion
+polymarket,historial will-there-be-a-us-government-shutdown-by-november,,https://clob.polymarket.com/prices-history,True,2459,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-0-bps-afte,,https://clob.polymarket.com/prices-history,True,2211,0.0,,prediccion
+polymarket,historial will-the-missing-submarine-be-found-by-june-23,,https://clob.polymarket.com/prices-history,True,279,0.0,,prediccion
+polymarket,historial will-donald-trump-be-president-of-the-usa-on-septe,,https://clob.polymarket.com/prices-history,True,10609,0.0,,prediccion
+polymarket,historial will-bitcoin-hit-100k-in-2024,,https://clob.polymarket.com/prices-history,True,14669,0.0,,prediccion
+polymarket,historial will-the-raiders-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,7982,0.0,,prediccion
+polymarket,historial no-change-in-fed-interest-rates-after-2024-septemb,,https://clob.polymarket.com/prices-history,True,3018,0.0,,prediccion
+polymarket,historial will-joker-2-gross-most-in-2024,,https://clob.polymarket.com/prices-history,True,18536,0.0,,prediccion
+polymarket,historial will-kamala-harris-win-the-2024-us-presidential-el,,https://clob.polymarket.com/prices-history,True,16931,0.0,,prediccion
+polymarket,historial monad-market-cap-fdv-4b-one-day-after-launch-532,,https://clob.polymarket.com/prices-history,True,1779,0.0,,prediccion
+polymarket,historial will-the-toronto-raptors-win-the-2025-nba-finals,,https://clob.polymarket.com/prices-history,True,10612,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-decem,,https://clob.polymarket.com/prices-history,True,7318,0.0,,prediccion
+polymarket,historial will-eleven-die-in-stranger-things-season-5,,https://clob.polymarket.com/prices-history,True,1778,0.0,,prediccion
+polymarket,historial will-zelenskyy-wear-a-suit-before-july,,https://clob.polymarket.com/prices-history,True,2590,0.0,,prediccion
+polymarket,historial lighter-market-cap-fdv-1b-one-day-after-launch,,https://clob.polymarket.com/prices-history,True,2585,0.0,,prediccion
+polymarket,historial will-egypt-win-the-2026-fifa-world-cup,,https://clob.polymarket.com/prices-history,True,10589,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-janua,,https://clob.polymarket.com/prices-history,True,7408,0.0,,prediccion
+polymarket,historial ucl-psg-ars-2026-05-30-psg,,https://clob.polymarket.com/prices-history,True,527,0.0,,prediccion
+polymarket,historial us-x-iran-ceasefire-extended-by-april-22-2026,,https://clob.polymarket.com/prices-history,True,541,0.0,,prediccion
+polymarket,historial will-eth-be-above-1200-on-july-1,,https://clob.polymarket.com/prices-history,True,3964,0.0,,prediccion
+polymarket,historial balaji-bet-btc-1m-usd-on-june-17,,https://clob.polymarket.com/prices-history,True,4705,0.0,,prediccion
+polymarket,historial us-debt-ceiling-hike-by-june-1,,https://clob.polymarket.com/prices-history,True,832,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-25-bps-aft,,https://clob.polymarket.com/prices-history,True,4761,0.0,,prediccion
+polymarket,historial arb-above-1-one-week-after-launch,,https://clob.polymarket.com/prices-history,True,2907,0.0,,prediccion
+polymarket,historial will-donald-j-trump-be-indicted-by-march-31-2023,,https://clob.polymarket.com/prices-history,True,5894,0.0,,prediccion
+polymarket,historial ethereum-all-time-high-in-2024,,https://clob.polymarket.com/prices-history,True,17238,0.0,,prediccion
+polymarket,historial will-the-titans-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,8484,0.0,,prediccion
+polymarket,historial fed-rate-cut-by-september-18,,https://clob.polymarket.com/prices-history,True,10584,0.0,,prediccion
+polymarket,historial will-despicable-me-4-gross-most-in-2024,,https://clob.polymarket.com/prices-history,True,18406,0.0,,prediccion
+polymarket,historial will-nicolae-ciuca-win-the-2024-romanian-president,,https://clob.polymarket.com/prices-history,True,9680,0.0,,prediccion
+polymarket,historial will-lighter-perform-an-airdrop-by-december-31,,https://clob.polymarket.com/prices-history,True,9911,0.0,,prediccion
+polymarket,historial will-aston-villa-win-the-uefa-champions-league,,https://clob.polymarket.com/prices-history,True,11652,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-octob,,https://clob.polymarket.com/prices-history,True,7411,0.0,,prediccion
+polymarket,historial will-real-betis-win-la-liga,,https://clob.polymarket.com/prices-history,True,11551,0.0,,prediccion
+polymarket,historial will-zohran-mamdani-win-the-2025-nyc-mayoral-elect,,https://clob.polymarket.com/prices-history,True,10735,0.0,,prediccion
+polymarket,historial will-bitcoin-reach-150k-in-february-2026,,https://clob.polymarket.com/prices-history,True,1301,0.0,,prediccion
+polymarket,historial will-morocco-win-the-2026-fifa-world-cup-464,,https://clob.polymarket.com/prices-history,True,13455,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-25-bps-aft,,https://clob.polymarket.com/prices-history,True,7705,0.0,,prediccion
+polymarket,historial strait-of-hormuz-traffic-returns-to-normal-by-apri,,https://clob.polymarket.com/prices-history,True,2287,0.0,,prediccion
+polymarket,historial us-x-iran-permanent-peace-deal-by-june-15-2026-734,,https://clob.polymarket.com/prices-history,True,1803,0.0,,prediccion
+polymarket,historial will-eth-be-above-1700-on-june-17,,https://clob.polymarket.com/prices-history,True,3939,0.0,,prediccion
+polymarket,historial will-eth-hit-2500-by-eoy,,https://clob.polymarket.com/prices-history,True,2795,0.0,,prediccion
+polymarket,historial us-debt-ceiling-hike-by-july-1,,https://clob.polymarket.com/prices-history,True,2000,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-25-bps-aft,,https://clob.polymarket.com/prices-history,True,2727,0.0,,prediccion
+polymarket,historial will-the-us-confirm-that-aliens-exist-by-august-31,,https://clob.polymarket.com/prices-history,True,3513,0.0,,prediccion
+polymarket,historial will-joe-biden-be-president-of-the-united-states-o,,https://clob.polymarket.com/prices-history,True,5956,0.0,,prediccion
+polymarket,historial will-elizabeth-warren-win-the-2024-democratic-pres,,https://clob.polymarket.com/prices-history,True,11557,0.0,,prediccion
+polymarket,historial will-the-browns-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,8466,0.0,,prediccion
+polymarket,historial will-fed-cut-interest-rates-6-times-by-dec-meeting,,https://clob.polymarket.com/prices-history,True,14990,0.0,,prediccion
+polymarket,historial 2024-balance-of-power-other,,https://clob.polymarket.com/prices-history,True,11276,0.0,,prediccion
+polymarket,historial will-any-other-republican-politician-win-the-2024-,,https://clob.polymarket.com/prices-history,True,16955,0.0,,prediccion
+polymarket,historial lighter-market-cap-fdv-2b-one-day-after-launch-332,,https://clob.polymarket.com/prices-history,True,10109,0.0,,prediccion
+polymarket,historial will-the-washington-wizards-win-the-2025-nba-final,,https://clob.polymarket.com/prices-history,True,9982,0.0,,prediccion
+polymarket,historial no-change-in-fed-interest-rates-after-september-20,,https://clob.polymarket.com/prices-history,True,7131,0.0,,prediccion
+polymarket,historial will-the-charlotte-hornets-win-the-eastern-confere,,https://clob.polymarket.com/prices-history,True,9493,0.0,,prediccion
+polymarket,historial will-frances-fitzgerald-win-the-irish-presidential,,https://clob.polymarket.com/prices-history,True,12106,0.0,,prediccion
+polymarket,historial will-bitcoin-reach-150k-in-january-2026,,https://clob.polymarket.com/prices-history,True,1719,0.0,,prediccion
+polymarket,historial will-spain-win-the-2026-fifa-world-cup-963,,https://clob.polymarket.com/prices-history,True,20374,0.0,,prediccion
+polymarket,historial will-trump-nominate-judy-shelton-as-the-next-fed-c,,https://clob.polymarket.com/prices-history,True,11656,0.0,,prediccion
+polymarket,historial fifwc-bel-sen-2026-07-01-bel,,https://clob.polymarket.com/prices-history,True,203,0.0,,prediccion
+polymarket,historial us-x-iran-ceasefire-by-april-7,,https://clob.polymarket.com/prices-history,True,311,0.0,,prediccion
+polymarket,historial arbitrum-token-fdv-5b-one-week-after-launch,,https://clob.polymarket.com/prices-history,True,2887,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-25-bps-aft,,https://clob.polymarket.com/prices-history,True,2206,0.0,,prediccion
+polymarket,historial will-barbie-gross-over-150m-on-opening-weekend,,https://clob.polymarket.com/prices-history,True,574,0.0,,prediccion
+polymarket,historial will-donald-trump-be-president-of-the-usa-on-may-3,,https://clob.polymarket.com/prices-history,True,6221,0.0,,prediccion
+polymarket,historial will-elizabeth-warren-win-the-2024-us-presidential,,https://clob.polymarket.com/prices-history,True,17086,0.0,,prediccion
+polymarket,historial will-the-giants-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,7936,0.0,,prediccion
+polymarket,historial will-the-fed-change-rates-to-another-level-after-n,,https://clob.polymarket.com/prices-history,True,2792,0.0,,prediccion
+polymarket,historial will-furiosa-a-mad-max-saga-gross-most-in-2024,,https://clob.polymarket.com/prices-history,True,18726,0.0,,prediccion
+polymarket,historial will-kamala-harris-win-the-popular-vote-in-the-202,,https://clob.polymarket.com/prices-history,True,16958,0.0,,prediccion
+polymarket,historial will-trump-create-a-national-bitcoin-reserve-in-hi,,https://clob.polymarket.com/prices-history,True,9347,0.0,,prediccion
+polymarket,historial will-the-utah-jazz-win-the-2025-nba-finals,,https://clob.polymarket.com/prices-history,True,9377,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-septe,,https://clob.polymarket.com/prices-history,True,7392,0.0,,prediccion
+polymarket,historial will-polymarket-us-go-live-in-2025,,https://clob.polymarket.com/prices-history,True,7462,0.0,,prediccion
+polymarket,historial will-lee-jae-myung-be-elected-the-next-president-o,,https://clob.polymarket.com/prices-history,True,3264,0.0,,prediccion
+polymarket,historial will-bitcoin-reach-150k-in-march-2026,,https://clob.polymarket.com/prices-history,True,994,0.0,,prediccion
+polymarket,historial will-usa-win-the-2026-fifa-world-cup-467,,https://clob.polymarket.com/prices-history,True,20517,0.0,,prediccion
+polymarket,historial no-change-in-fed-interest-rates-after-january-2026,,https://clob.polymarket.com/prices-history,True,7130,0.0,,prediccion
+polymarket,historial fifwc-rsa-can-2026-06-28-can,,https://clob.polymarket.com/prices-history,True,203,0.0,,prediccion
+polymarket,historial russia-x-ukraine-ceasefire-by-may-31-2026,,https://clob.polymarket.com/prices-history,True,1306,0.0,,prediccion
+polymarket,historial sui-airdrop-by-may-15,,https://clob.polymarket.com/prices-history,True,1827,0.0,,prediccion
+polymarket,historial will-the-fed-raise-interest-rates-by-25-bps-after-,,https://clob.polymarket.com/prices-history,True,2349,0.0,,prediccion
+polymarket,historial will-nasa-record-2023-as-the-hottest-year-on-recor,,https://clob.polymarket.com/prices-history,True,10949,0.0,,prediccion
+polymarket,historial will-joe-biden-be-president-of-the-united-states-o,,https://clob.polymarket.com/prices-history,True,8852,0.0,,prediccion
+polymarket,historial ethereum-etf-approved-by-may-31,,https://clob.polymarket.com/prices-history,True,7265,0.0,,prediccion
+polymarket,historial will-the-patriots-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,8100,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-septe,,https://clob.polymarket.com/prices-history,True,3061,0.0,,prediccion
+polymarket,historial will-dune-part-2-gross-most-in-2024,,https://clob.polymarket.com/prices-history,True,18691,0.0,,prediccion
+polymarket,historial will-michelle-obama-win-the-2024-us-presidential-e,,https://clob.polymarket.com/prices-history,True,16931,0.0,,prediccion
+polymarket,historial will-the-charlotte-hornets-win-the-2025-nba-finals,,https://clob.polymarket.com/prices-history,True,10092,0.0,,prediccion
+polymarket,historial fed-increases-interest-rates-by-25-bps-after-janua,,https://clob.polymarket.com/prices-history,True,4620,0.0,,prediccion
+polymarket,historial will-the-detroit-pistons-win-the-eastern-conferenc,,https://clob.polymarket.com/prices-history,True,11572,0.0,,prediccion
+polymarket,historial will-kim-moon-soo-be-elected-the-next-president-of,,https://clob.polymarket.com/prices-history,True,3317,0.0,,prediccion
+polymarket,historial will-bitcoin-hit-150k-by-june-30-2026,,https://clob.polymarket.com/prices-history,True,16448,0.0,,prediccion
+polymarket,historial will-mexico-win-the-2026-fifa-world-cup-529,,https://clob.polymarket.com/prices-history,True,19543,0.0,,prediccion
+polymarket,historial fed-decreases-interest-rates-by-25-bps-after-janua,,https://clob.polymarket.com/prices-history,True,7148,0.0,,prediccion
+polymarket,historial fifwc-tur-usa-2026-06-25-usa,,https://clob.polymarket.com/prices-history,True,3536,0.0,,prediccion
+polymarket,historial khamenei-out-as-supreme-leader-of-iran-by-february,,https://clob.polymarket.com/prices-history,True,2680,0.0,,prediccion
+polymarket,historial will-eth-hit-2000-by-eoy,,https://clob.polymarket.com/prices-history,True,5638,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-50-bps-aft,,https://clob.polymarket.com/prices-history,True,4792,0.0,,prediccion
+polymarket,historial will-the-us-rescue-at-least-one-american-hostage-f,,https://clob.polymarket.com/prices-history,True,682,0.0,,prediccion
+polymarket,historial will-joe-biden-be-president-of-the-united-states-o,,https://clob.polymarket.com/prices-history,True,5349,0.0,,prediccion
+polymarket,historial bitcoin-etf-approved-by-jan-15,,https://clob.polymarket.com/prices-history,True,2138,0.0,,prediccion
+polymarket,historial will-the-cardinals-win-super-bowl-2025,,https://clob.polymarket.com/prices-history,True,9201,0.0,,prediccion
+polymarket,historial fed-decreases-interest-rates-by-75-bps-after-novem,,https://clob.polymarket.com/prices-history,True,5337,0.0,,prediccion
+polymarket,historial will-the-jets-win-the-afc-championship,,https://clob.polymarket.com/prices-history,True,5582,0.0,,prediccion
+polymarket,historial will-robert-f-kennedy-jr-win-the-2024-us-president,,https://clob.polymarket.com/prices-history,True,17012,0.0,,prediccion
+polymarket,historial nottingham-forest-wins-the-premier-league,,https://clob.polymarket.com/prices-history,True,12012,0.0,,prediccion
+polymarket,historial fed-decreases-interest-rates-by-25-bps-after-decem,,https://clob.polymarket.com/prices-history,True,7043,0.0,,prediccion
+polymarket,historial us-x-venezuela-military-engagement-by-december-31-,,https://clob.polymarket.com/prices-history,True,6495,0.0,,prediccion
+polymarket,historial will-pierre-poilievre-be-the-next-canadian-prime-m,,https://clob.polymarket.com/prices-history,True,6473,0.0,,prediccion
+polymarket,historial will-norway-win-the-2026-fifa-world-cup-893,,https://clob.polymarket.com/prices-history,True,18749,0.0,,prediccion
+polymarket,historial will-the-fed-decrease-interest-rates-by-25-bps-aft,,https://clob.polymarket.com/prices-history,True,7583,0.0,,prediccion
+polymarket,historial fifwc-can-mar-2026-07-04-mar,,https://clob.polymarket.com/prices-history,True,257,0.0,,prediccion
+polymarket,historial netanyahu-out-by-march-31-854,,https://clob.polymarket.com/prices-history,True,1730,0.0,,prediccion
+polymarket,historial will-the-sec-approve-blackrocks-bitcoin-etf-by-dec,,https://clob.polymarket.com/prices-history,True,9164,0.0,,prediccion
+polymarket,historial will-the-fed-increase-interest-rates-by-0-bps-afte,,https://clob.polymarket.com/prices-history,True,4794,0.0,,prediccion
+polymarket,historial will-a-nuclear-weapon-detonate-by-june-30,,https://clob.polymarket.com/prices-history,True,7488,0.0,,prediccion
+polymarket,historial did-israeli-intelligence-have-advanced-knowledge-o,,https://clob.polymarket.com/prices-history,True,4779,0.0,,prediccion
+polymarket,historial bitcoin-above-100000-on-december-20,,https://clob.polymarket.com/prices-history,True,389,0.0,,prediccion
+polymarket,historial will-slovan-bratislava-win-the-uefa-champions-leag,,https://clob.polymarket.com/prices-history,True,4761,0.0,,prediccion
+polymarket,mercado us-recession-in-2025,,https://gamma-api.polymarket.com/markets/slug/us-recession-in-2025,True,6409,0.0,,prediccion
+polymarket,historial recesion_eeuu_2025,,https://clob.polymarket.com/prices-history,True,19271,0.0,,prediccion
+polymarket,mercado fed-decreases-interest-rates-by-25-bps-after-september-2025-meeting,,https://gamma-api.polymarket.com/markets/slug/fed-decreases-interest-rates-by-25-bps-after-september-2025-meeting,True,6895,0.0,,prediccion
+polymarket,historial fed_recorte25_sep2025,,https://clob.polymarket.com/prices-history,True,7120,0.0,,prediccion
+polymarket,mercado us-recession-by-end-of-2026,,https://gamma-api.polymarket.com/markets/slug/us-recession-by-end-of-2026,True,7849,0.0,,prediccion
+polymarket,historial recesion_eeuu_2026,,https://clob.polymarket.com/prices-history,True,18608,0.86,,prediccion
+polymarket,mercado us-recession-in-2024-1,,https://gamma-api.polymarket.com/markets/slug/us-recession-in-2024-1,True,5877,0.0,,prediccion
+polymarket,historial recesion_eeuu_2024,,https://clob.polymarket.com/prices-history,True,8104,0.0,,prediccion
+polymarket,mercado will-no-fed-rate-cuts-happen-in-2026,,https://gamma-api.polymarket.com/markets/slug/will-no-fed-rate-cuts-happen-in-2026,True,7097,0.0,,prediccion
+polymarket,historial fed_sin_recortes_2026,,https://clob.polymarket.com/prices-history,True,19578,0.72,,prediccion
+polymarket,primer mercado,,https://gamma-api.polymarket.com/markets,True,4533,0.0,,prediccion
+polymarket,trades,,https://data-api.polymarket.com/trades,True,15514,0.75,,prediccion
+kalshi,historical/cutoff,,https://api.elections.kalshi.com/trade-api/v2/historical/cutoff,True,188,1.26,,prediccion
+kalshi,historical/markets KXFED p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,717186,0.0,,prediccion
+kalshi,markets[settled] KXFED p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,20471,0.0,,prediccion
+kalshi,markets[open] KXFED p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,430845,0.9,,prediccion
+kalshi,historical/markets KXFEDDECISION p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,256834,0.0,,prediccion
+kalshi,markets[settled] KXFEDDECISION p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,10193,0.0,,prediccion
+kalshi,markets[open] KXFEDDECISION p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,97396,0.93,,prediccion
+kalshi,historical/markets KXCPIYOY p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,1146274,0.0,,prediccion
+kalshi,markets[settled] KXCPIYOY p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,91176,0.0,,prediccion
+kalshi,markets[open] KXCPIYOY p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,77990,0.83,,prediccion
+kalshi,historical/markets KXCPI p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,932563,0.0,,prediccion
+kalshi,markets[settled] KXCPI p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,50113,0.0,,prediccion
+kalshi,markets[open] KXCPI p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,55908,0.87,,prediccion
+kalshi,historical/markets KXGDP p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,349462,0.0,,prediccion
+kalshi,markets[settled] KXGDP p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,27,0.0,,prediccion
+kalshi,markets[open] KXGDP p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,62678,1.01,,prediccion
+kalshi,historical/markets KXRECSSNBER p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,7271,0.0,,prediccion
+kalshi,markets[settled] KXRECSSNBER p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,27,0.0,,prediccion
+kalshi,markets[open] KXRECSSNBER p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,3835,0.84,,prediccion
+kalshi,historical/markets KXINXY p0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets,True,148125,0.0,,prediccion
+kalshi,markets[settled] KXINXY p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,27,0.0,,prediccion
+kalshi,markets[open] KXINXY p0,,https://api.elections.kalshi.com/trade-api/v2/markets,True,106995,0.85,,prediccion
+kalshi,velas CPI-21OCT-T0.5,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-21OCT-T0.5/candlesticks,True,10692,0.0,,prediccion
+kalshi,velas FED-21JUL-T0.25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-21JUL-T0.25/candlesticks,True,7263,0.0,,prediccion
+kalshi,velas GDP-21SEP30-T6.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/GDP-21SEP30-T6.0/candlesticks,True,10644,0.0,,prediccion
+kalshi,velas CPI-22JUN-T0.9,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-22JUN-T0.9/candlesticks,True,10795,0.0,,prediccion
+kalshi,velas CPIYOY-22NOV-T7.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPIYOY-22NOV-T7.0/candlesticks,True,1329,0.0,,prediccion
+kalshi,velas FED-22SEP-T3.00,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-22SEP-T3.00/candlesticks,True,10844,0.0,,prediccion
+kalshi,velas GDP-22JUN30-T0.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/GDP-22JUN30-T0.0/candlesticks,True,10074,0.0,,prediccion
+kalshi,velas INXY-22DEC30-B3700,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/INXY-22DEC30-B3700/candlesticks,True,9994,0.0,,prediccion
+kalshi,velas RECSSNBER-22,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/RECSSNBER-22/candlesticks,True,9031,0.0,,prediccion
+kalshi,velas CPI-22DEC-T0.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-22DEC-T0.0/candlesticks,True,10065,0.0,,prediccion
+kalshi,velas CPIYOY-23AUG-T3.7,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPIYOY-23AUG-T3.7/candlesticks,True,9979,0.0,,prediccion
+kalshi,velas FED-23MAY-T5.00,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-23MAY-T5.00/candlesticks,True,10854,0.0,,prediccion
+kalshi,velas FEDDECISION-23JUN-H0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FEDDECISION-23JUN-H0/candlesticks,True,10827,0.0,,prediccion
+kalshi,velas GDP-23APR27-T1.9,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/GDP-23APR27-T1.9/candlesticks,True,9248,0.0,,prediccion
+kalshi,velas INXY-23DEC29-B5200,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/INXY-23DEC29-B5200/candlesticks,True,717,0.0,,prediccion
+kalshi,velas CPI-24APR-T0.3,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-24APR-T0.3/candlesticks,True,10039,0.0,,prediccion
+kalshi,velas KXCPIYOY-24NOV-T2.8,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXCPIYOY-24NOV-T2.8/candlesticks,True,10602,0.0,,prediccion
+kalshi,velas FED-24JUN-T5.25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-24JUN-T5.25/candlesticks,True,7109,0.0,,prediccion
+kalshi,velas KXFEDDECISION-24DEC-C25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXFEDDECISION-24DEC-C25/candlesticks,True,10891,0.0,,prediccion
+kalshi,velas GDP-24OCT30-T2.8,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/GDP-24OCT30-T2.8/candlesticks,True,9886,0.0,,prediccion
+kalshi,velas INXD-24DEC31-B3300,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/INXD-24DEC31-B3300/candlesticks,True,49,0.0,,prediccion
+kalshi,velas RECSSNBER-23,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/RECSSNBER-23/candlesticks,True,43,0.0,,prediccion
+kalshi,velas KXCPI-25JUL-T0.2,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXCPI-25JUL-T0.2/candlesticks,True,10807,0.0,,prediccion
+kalshi,velas KXCPIYOY-25APR-T2.5,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXCPIYOY-25APR-T2.5/candlesticks,True,10897,0.0,,prediccion
+kalshi,velas FED-25MAY-T4.25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-25MAY-T4.25/candlesticks,True,10898,0.0,,prediccion
+kalshi,velas KXFEDDECISION-25SEP-H0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXFEDDECISION-25SEP-H0/candlesticks,True,10972,0.0,,prediccion
+kalshi,velas KXGDP-25APR30-T0.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXGDP-25APR30-T0.0/candlesticks,True,10860,0.0,,prediccion
+kalshi,velas KXINXY-25DEC31-B7100,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXINXY-25DEC31-B7100/candlesticks,True,10909,0.0,,prediccion
+kalshi,velas RECSSNBER-24,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/RECSSNBER-24/candlesticks,True,8437,0.0,,prediccion
+kalshi,velas KXCPI-26JUL-T0.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXCPI-26JUL-T0.0/candlesticks,True,10821,0.0,,prediccion
+kalshi,velas KXCPIYOY-26JAN-T2.4,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXCPIYOY-26JAN-T2.4/candlesticks,True,10502,0.0,,prediccion
+kalshi,velas KXFED-26APR-T3.75,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXFED-26APR-T3.75/candlesticks,True,10916,0.0,,prediccion
+kalshi,velas KXFEDDECISION-26SEP-H0,,https://api.elections.kalshi.com/trade-api/v2/series/KXFEDDECISION/markets/KXFEDDECISION-26SEP-H0/candlesticks,True,14755,0.0,,prediccion
+kalshi,velas KXGDP-26JAN30-T3.5,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/KXGDP-26JAN30-T3.5/candlesticks,True,10874,0.0,,prediccion
+kalshi,velas RECSSNBER-25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/RECSSNBER-25/candlesticks,True,10845,0.0,,prediccion
+kalshi,velas CPI-21JUL-T0.7,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-21JUL-T0.7/candlesticks,True,9384,0.0,,prediccion
+kalshi,velas FED-21SEP-T0.25,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/FED-21SEP-T0.25/candlesticks,True,9570,0.0,,prediccion
+kalshi,velas GDP-21JUN30-T6.0,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/GDP-21JUN30-T6.0/candlesticks,True,7663,0.0,,prediccion
+kalshi,velas CPI-22NOV-T0.2,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPI-22NOV-T0.2/candlesticks,True,10810,0.0,,prediccion
+kalshi,velas CPIYOY-22NOV-T7.1,,https://api.elections.kalshi.com/trade-api/v2/historical/markets/CPIYOY-22NOV-T7.1/candlesticks,True,1680,0.0,,prediccion
+kalshi,trades,,https://api.elections.kalshi.com/trade-api/v2/markets/trades,True,6149,0.84,,prediccion
+predictit,instantanea,,https://www.predictit.org/api/marketdata/all/,True,428791,1.08,,prediccion
+gpr,diario (caché),,https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls,True,3272192,0.0,,indices
+gpr,mensual (caché),,https://www.matteoiacoviello.com/gpr_files/data_gpr_export.xls,True,2716160,0.0,,indices
+gpr,listado vintages,,https://api.github.com/repos/iacoviel/iacoviel.github.io/contents/gpr_archive_files,True,765196,1.66,,indices
+gpr,vintage data_gpr_daily_recent_20230313.xls (caché),2023-03-10,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_daily_recent_20230313.xls,True,3118080,0.0,,indices
+gpr,vintage data_gpr_export_202303.xls (caché),2023-03-10,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202303.xls,True,2593792,0.0,,indices
+gpr,vintage data_gpr_export_202304.xls (caché),2023-03-10,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202304.xls,True,2595840,0.0,,indices
+gpr,vintage data_gpr_daily_recent_20250407.xls (caché),2025-04-07,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_daily_recent_20250407.xls,True,3153408,0.0,,indices
+gpr,vintage data_gpr_export_202504.xls (caché),2025-04-07,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202504.xls,True,2678784,0.0,,indices
+gpr,vintage data_gpr_export_202505.xls (caché),2025-04-07,https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202505.xls,True,2680832,0.0,,indices
+epu,diario EE. UU. (caché),,https://www.policyuncertainty.com/media/All_Daily_Policy_Data.csv,True,250359,0.0,,indices
+epu,global mensual (caché),,https://www.policyuncertainty.com/media/Global_Policy_Uncertainty_Data.xlsx,True,18366,0.0,,indices
+cboe_skew,SKEW (caché),,https://cdn.cboe.com/api/global/us_indices/daily_prices/SKEW_History.csv,True,203444,0.0,,indices
+cboe_vix,VIX (caché),,https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv,True,473686,0.0,,indices
+cboe_putcall,totalpc.csv (caché),,https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/totalpc.csv,True,139830,0.0,,indices
+cboe_putcall,equitypc.csv (caché),,https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/equitypc.csv,True,135696,0.0,,indices
+cboe_putcall,indexpc.csv (caché),,https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/indexpc.csv,True,133796,0.0,,indices
+cboe_putcall,json diario covid,2020-03-16,https://cdn.cboe.com/data/us/options/market_statistics/daily/2020-03-16_daily_options,True,3928,1.23,,indices
+cboe_putcall,json diario svb,2023-03-10,https://cdn.cboe.com/data/us/options/market_statistics/daily/2023-03-10_daily_options,True,3962,1.09,,indices
+cboe_putcall,json diario aranceles,2025-04-07,https://cdn.cboe.com/data/us/options/market_statistics/daily/2025-04-07_daily_options,True,4515,1.12,,indices
+cboe_putcall,json diario hoy,2026-10-13,https://cdn.cboe.com/data/us/options/market_statistics/daily/2026-10-13_daily_options,True,6689,1.18,,indices
+cboe_putcall,búsqueda del inicio del json,2019-12-26,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-12-26_daily_options,True,3918,1.16,,indices
+cboe_putcall,búsqueda del inicio del json,2019-11-15,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-11-15_daily_options,True,3938,1.04,,indices
+cboe_putcall,búsqueda del inicio del json,2019-10-25,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-10-25_daily_options,True,3933,1.24,,indices
+cboe_putcall,búsqueda del inicio del json,2019-10-16,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-10-16_daily_options,True,3927,1.25,,indices
+cboe_putcall,búsqueda del inicio del json,2019-10-10,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-10-10_daily_options,True,3922,1.18,,indices
+cboe_putcall,búsqueda del inicio del json,2019-10-08,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-10-08_daily_options,True,3925,1.19,,indices
+cboe_putcall,búsqueda del inicio del json,2019-10-07,https://cdn.cboe.com/data/us/options/market_statistics/daily/2019-10-07_daily_options,True,3920,1.26,,indices
+ews,dashboard.json,2026-10-14,https://pub-49bb6a6f314c47be9b481c25e5f6ca9e.r2.dev/dashboard.json,True,412476,1.16,,ews
+ews,military-dashboard.json,,https://pub-49bb6a6f314c47be9b481c25e5f6ca9e.r2.dev/military-dashboard.json,True,149878,0.98,,ews
+ews,untracked-dashboard.json,,https://pub-49bb6a6f314c47be9b481c25e5f6ca9e.r2.dev/untracked-dashboard.json,True,328493,0.99,,ews
+ews,rss.xml,,https://ews.kylemcdonald.net/rss.xml,True,542,1.96,,ews

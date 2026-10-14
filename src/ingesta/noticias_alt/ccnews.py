@@ -322,6 +322,7 @@ def sondear(cfg: base.ConfigSonda) -> base.Resultado:
         tabla["duplicado"] = [a["con_texto"] and doc_id(clave_url(a["url"])) not in vivos for a in filas]
         for c in ("fecha_meta", "warc_date", "fecha_publicacion"):
             tabla[c] = tabla[c].map(lambda x: x.isoformat() if x is not None else None)
+        tabla["titulo"] = tabla["titulo"].map(base.titular_corto)    # a results solo titulares cortos
     tabla = tabla.reindex(columns=_COLS_ART)
     res.tablas["ccnews_articulos"] = tabla
     res.tablas["ccnews_volumen"] = pd.DataFrame(volumen)

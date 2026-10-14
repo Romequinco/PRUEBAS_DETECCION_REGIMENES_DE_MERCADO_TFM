@@ -34,6 +34,19 @@ def test_posts_por_dia_rellena_ceros_y_serie_valida():
     assert set(serie["serie"]) == {"truth_posts_dia"}
 
 
+def test_serie_truth_quita_huecos_del_archivo():
+    # 3 días con posts, 10 días a 0 (hueco del archivo), 2 días a 0 (silencio real) y 1 día con posts
+    dias = pd.date_range("2024-01-01", periods=16, freq="D")
+    n = pd.Series([5, 4, 6] + [0] * 10 + [0, 0, 7], index=dias)
+    assert social.rachas_hueco(n).sum() == 12                       # la racha de 12 ceros (10 + 2 seguidos)
+    n2 = pd.Series([5, 4, 6] + [0] * 10 + [3, 0, 0, 7], index=pd.date_range("2024-01-01", periods=17, freq="D"))
+    m = social.rachas_hueco(n2)
+    assert m.sum() == 10 and not m.iloc[-3:].any()                 # dos ceros sueltos = silencio, se quedan
+    serie = base.serie_larga(social.serie_truth(n2))
+    assert len(serie) == 7 and (serie["valor"] == 0).sum() == 2
+    assert pd.Timestamp("2024-01-05") not in set(serie["fecha_referencia"])
+
+
 def test_tabla_posts_sin_texto():
     df = social.tabla_posts(_posts())
     assert "content" not in df.columns and "TEXTO-PRIVADO" not in df.to_csv(index=False)

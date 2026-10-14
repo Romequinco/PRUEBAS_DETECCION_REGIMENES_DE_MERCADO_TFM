@@ -1,0 +1,2 @@
+inicio,fin,n_posts,n_posts_vacios,dias,dias_con_posts,posts_dia_media,posts_dia_p90,max_dias_sin_posts,dias_hueco_archivo,n_rachas_hueco,rachas_hueco,ultimo,captura,horas_desde_ultimo,bytes
+2022-02-14T15:54:32.528000+00:00,2026-05-02T23:12:54.339000+00:00,29469,5065,1539,1280,22.97,42.8,184,256,2,2022-02-15..2022-04-27 (72 d); 2025-10-26..2026-04-27 (184 d),2026-05-02T23:12:54.339000+00:00,2026-10-14T11:18:06.709507+00:00,3948.09,15568111

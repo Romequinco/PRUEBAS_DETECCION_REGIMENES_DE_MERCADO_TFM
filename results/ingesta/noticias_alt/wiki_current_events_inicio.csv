@@ -1,0 +1,7 @@
+fecha,existe_hoy,revision_al_cierre,ts_creacion,lag_creacion_dias
+2004-06-01,True,False,2017-09-19T20:03:00Z,4858.8
+2005-06-01,True,False,2005-11-20T14:40:20Z,172.6
+2006-06-01,True,False,2008-06-18T14:39:21Z,748.6
+2006-12-01,True,True,2006-11-30T05:00:48Z,-0.8
+2007-03-01,True,True,2007-02-28T05:00:10Z,-0.8
+2007-06-01,True,True,2007-05-31T03:59:32Z,-0.8

@@ -1,0 +1,191 @@
+plataforma,mercado_id,pregunta,categoria,fecha_cierre,anio,volumen_usd,p_1d,p_7d,p_30d,resultado,n_puntos,inicio_historial
+polymarket,120003,"Will Benjamin Netanyahu remain prime minister of Israel through June 30, 2021?",politica,2021-06-14,2021,163540.06,,,,0,0,
+polymarket,240840,"Will the Ethereum Merge (EIP-3675) occur by September 1, 2022?",cripto,2022-09-01,2022,764809.66,,,,0,158,2023-02-22
+polymarket,244621,Will @realDonaldTrump tweet in 2022?,politica,2022-12-31,2022,362105.18,0.02,0.05,,0,195,2022-12-15
+polymarket,248890,Arbitrum airdrop by March 31st?,cripto,2023-03-23,2023,5477607.91,0.99,0.47,,1,152,2023-02-25
+polymarket,251753,Will Novak Djokovic win Wimbledon?,deportes,2023-07-16,2023,111397.21,0.625,0.53,,0,22,2023-07-06
+polymarket,251892,Will there be a US government shutdown by October 2?,economia,2023-10-02,2023,295580.96,0.915,0.73,,0,40,2023-09-13
+polymarket,248836,Will the Fed cut rates in 2023?,fed,2023-12-31,2023,272977.91,0.006,0.008,0.0335,0,615,2023-02-22
+polymarket,251857,Is the Room-Temp Superconductor real?,otros,2023-12-31,2023,3594399.78,0.0065,0.014,0.019,0,317,2023-07-27
+polymarket,248596,Will Erdoğan win the 2023 Turkish presidential election?,politica,2023-05-28,2023,4820090.91,0.893,0.8135,0.465,1,202,2023-02-08
+polymarket,512600,Will Bitcoin hit $100k in November?,cripto,2024-11-30,2024,28587434.43,0.225,0.84,,0,39,2024-11-12
+polymarket,503301,Will the Panthers win Super Bowl 2025?,deportes,2024-12-16,2024,139314923.97,0.0005,0.0005,0.0035,0,319,2024-07-10
+polymarket,504494,Fed increases interest rates by 25+ bps after November 2024 meeting?,fed,2024-11-07,2024,133955589.25,0.0035,0.002,0.0025,0,194,2024-08-03
+polymarket,255397,Will Mike Tyson win his boxing match against Jake Paul?,otros,2024-07-20,2024,32399877.16,0.215,0.18,0.185,0,484,2024-03-19
+polymarket,253591,Will Donald Trump win the 2024 US Presidential Election?,politica,2024-11-05,2024,1531479284.5,0.5635,0.6585,0.5015,1,614,2024-01-05
+polymarket,563368,Will Satoshi move any Bitcoin in 2025?,cripto,2025-12-31,2025,44180791.51,0.0035,0.0045,0.0095,0,341,2025-07-15
+polymarket,507892,Will the Sacramento Kings win the 2025 NBA Finals?,deportes,2025-04-17,2025,378011506.51,0.0005,0.0005,0.0015,0,409,2024-09-25
+polymarket,570360,Fed decreases interest rates by 50+ bps after December 2025 meeting?,fed,2025-12-10,2025,161574382.13,0.0065,0.0095,0.0255,0,263,2025-08-01
+polymarket,507276,TikTok banned in the US before May 2025?,otros,2025-01-22,2025,119653357.74,0.9955,0.63,0.365,1,252,2024-09-18
+polymarket,511754,Will Donald Trump be inaugurated?,politica,2025-01-20,2025,400409526.89,0.9915,0.9935,0.9615,1,160,2024-11-02
+polymarket,2169995,"MicroStrategy sells any Bitcoin by May 31, 2026?",cripto,2026-06-04,2026,375813104.56,0.0085,0.0705,,0,57,2026-05-06
+polymarket,558938,Will Argentina win the 2026 FIFA World Cup?,deportes,2026-07-20,2026,174315688.26,0.4015,0.1895,0.1175,0,697,2025-07-03
+polymarket,680392,US government shutdown Saturday?,economia,2026-01-31,2026,157296576.45,0.495,0.075,0.28,1,166,2025-11-14
+polymarket,601697,Fed decreases interest rates by 50+ bps after January 2026 meeting?,fed,2026-01-28,2026,235065166.64,0.0015,0.0015,0.0135,0,266,2025-09-18
+polymarket,1971905,Strait of Hormuz traffic returns to normal by end of June?,otros,2026-06-30,2026,44111324.78,0.0125,0.055,0.335,0,153,2026-04-22
+polymarket,1640919,US forces enter Iran by April 30?,politica,2026-04-09,2026,269049107.08,0.915,0.545,,1,21,2026-03-19
+polymarket,243251,"Will the Ethereum Merge (EIP-3675) occur by October 1, 2022?",cripto,2022-09-15,2022,622044.37,,,,1,158,2023-02-22
+polymarket,247835,Will SBF be federally indicted by EOY?,politica,2022-12-13,2022,126126.35,,,,1,160,2022-12-13
+polymarket,252844,LayerZero airdrop in 2023?,cripto,2023-12-31,2023,611011.07,0.006,0.0275,0.225,0,125,2023-10-31
+polymarket,248843,Will the Nuggets be the 2022-23 NBA Champion?,deportes,2023-06-13,2023,100072.3,0.975,0.705,0.305,1,210,2023-02-22
+polymarket,252551,Will there be a US government shutdown by November 19?,economia,2023-11-19,2023,275774.28,0.0005,0.445,0.48,0,92,2023-10-05
+polymarket,250703,Will the Fed increase interest rates by 0 bps after its June meeting?,fed,2023-06-13,2023,243878.27,0.815,0.805,0.83,1,83,2023-05-04
+polymarket,251539,Will the missing submarine be found by June 23?,otros,2023-06-23,2023,2253929.42,0.195,,,1,10,2023-06-21
+polymarket,249164,"Will Donald Trump be President of the USA on September 30, 2023?",politica,2023-09-30,2023,1164870.51,0.0015,0.0015,0.005,0,390,2023-03-14
+polymarket,255229,Will Bitcoin hit $100k in 2024?,cripto,2024-12-05,2024,22807235.89,0.6765,0.7605,0.17,1,551,2024-03-05
+polymarket,503314,Will the Raiders win Super Bowl 2025?,deportes,2024-11-30,2024,123969933.3,0.0035,0.0035,0.0025,0,287,2024-07-10
+polymarket,504071,No change in Fed interest rates after 2024 September meeting?,fed,2024-09-18,2024,23499210.73,0.015,0.0295,0.065,0,110,2024-07-26
+polymarket,254250,Will 'Joker 2' gross most in 2024?,otros,2024-12-29,2024,27351093.51,0.0015,0.0015,0.0015,0,675,2024-02-01
+polymarket,253597,Will Kamala Harris win the 2024 US Presidential Election?,politica,2024-11-04,2024,1037039118.19,0.4415,0.3485,0.4925,0,613,2024-01-05
+polymarket,649847,Monad market cap (FDV) >$4B one day after launch?,cripto,2025-11-28,2025,34894820.55,0.0035,0.305,0.49,0,66,2025-10-26
+polymarket,507894,Will the Toronto Raptors win the 2025 NBA Finals?,deportes,2025-04-02,2025,154220299.96,0.0005,0.0005,0.0015,0,379,2024-09-25
+polymarket,570363,Fed increases interest rates by 25+ bps after December 2025 meeting?,fed,2025-12-10,2025,133173605.45,0.0005,0.0025,0.0095,0,263,2025-08-01
+polymarket,812010,"Will Eleven die in ""Stranger Things: Season 5""?",otros,2025-12-31,2025,80824835.0,0.48,0.51,,0,66,2025-12-04
+polymarket,546814,Will Zelenskyy wear a suit before July?,politica,2025-06-30,2025,242231180.27,0.032,0.0365,0.165,0,95,2025-05-23
+polymarket,686122,Lighter market cap (FDV) >$1B one day after launch?,cripto,2026-01-01,2026,55056697.13,0.9975,0.91,0.645,1,96,2025-11-17
+polymarket,558968,Will Egypt win the 2026 FIFA World Cup?,deportes,2026-07-07,2026,158580818.67,0.0025,0.0015,0.0025,0,378,2025-12-02
+polymarket,601700,Fed increases interest rates by 25+ bps after January 2026 meeting?,fed,2026-01-28,2026,216455743.15,0.0005,0.0005,0.0035,0,266,2025-09-18
+polymarket,2316216,Will Paris Saint-Germain FC win on 2026-05-30?,otros,2026-05-30,2026,38427417.85,0.415,0.415,,0,19,2026-05-21
+polymarket,2036399,"US x Iran ceasefire extended by April 22, 2026?",politica,2026-04-21,2026,203621392.14,,,,0,19,2026-04-22
+polymarket,246589,"Will $ETH be above $1,200 on July 1?",cripto,2022-07-01,2022,353885.11,,,,0,158,2023-02-22
+polymarket,249373,Balaji Bet: BTC > $1m USD on June 17?,cripto,2023-06-17,2023,379670.32,0.005,0.005,0.005,0,176,2023-03-18
+polymarket,251045,US debt ceiling hike by June 1?,economia,2023-06-01,2023,234311.78,0.055,0.405,,0,31,2023-05-18
+polymarket,248566,Will the Fed increase interest rates by 25 bps after its March meeting?,fed,2023-03-22,2023,173828.12,0.64,0.62,0.89,1,187,2023-02-03
+polymarket,249274,$ARB above $1 one week after launch?,otros,2023-03-30,2023,892786.54,0.98,0.7,,1,115,2023-03-17
+polymarket,247266,"Will Donald J. Trump be indicted by March 31, 2023?",politica,2023-03-31,2023,874177.15,0.06,0.68,0.29,1,230,2023-01-10
+polymarket,254432,Ethereum all time high in 2024?,cripto,2024-12-30,2024,19510179.21,0.0035,0.023,0.225,0,647,2024-02-13
+polymarket,503327,Will the Titans win Super Bowl 2025?,deportes,2024-12-08,2024,119500829.41,0.0015,0.0025,0.0025,0,305,2024-07-10
+polymarket,255335,Fed rate cut by September 18?,fed,2024-09-18,2024,20345317.83,0.9835,0.9695,0.9355,1,388,2024-03-09
+polymarket,254252,Will 'Despicable Me 4' gross most in 2024?,otros,2024-12-29,2024,25803996.58,0.0015,0.0015,0.0015,0,675,2024-02-01
+polymarket,512340,Will Nicolae Ciucă win the 2024 Romanian Presidential election?,politica,2024-12-08,2024,326507670.56,0.0105,0.0015,,0,348,2024-11-08
+polymarket,556077,Will lighter perform an airdrop by December 31? ,cripto,2025-12-30,2025,26021665.18,0.845,0.88,0.765,1,373,2025-06-27
+polymarket,507286,Will Aston Villa win the UEFA Champions League?,deportes,2025-04-16,2025,133113813.38,0.012,0.0275,0.028,0,421,2024-09-18
+polymarket,553813,Fed increases interest rates by 25+ bps after October 2025 meeting?,fed,2025-10-29,2025,102216689.13,0.0005,0.0015,0.0055,0,266,2025-06-20
+polymarket,507401,Will Real Betis win La Liga?,otros,2025-04-13,2025,71762810.41,0.001,0.0015,0.0005,0,414,2024-09-19
+polymarket,538932,Will Zohran Mamdani win the 2025 NYC mayoral election?,politica,2025-11-04,2025,143254859.33,0.9375,0.9215,0.914,1,392,2025-04-23
+polymarket,1303355,"Will Bitcoin reach $150,000 in February?",cripto,2026-03-01,2026,28829221.51,0.0005,0.0015,,0,46,2026-01-31
+polymarket,558963,Will Morocco win the 2026 FIFA World Cup?,deportes,2026-07-10,2026,152254451.33,0.0295,0.0235,0.0175,0,482,2025-11-08
+polymarket,654415,Will the Fed increase interest rates by 25+ bps after the March 2026 meeting?,fed,2026-03-18,2026,172972056.63,0.0005,0.0025,0.0065,0,279,2025-10-30
+polymarket,1540766,Strait of Hormuz traffic returns to normal by end of April?,otros,2026-04-30,2026,38005859.14,0.0035,0.095,0.245,0,83,2026-03-10
+polymarket,2270330,"US x Iran permanent peace deal by June 15, 2026?",politica,2026-06-15,2026,177370818.44,0.265,0.065,,1,66,2026-05-16
+polymarket,246527,"Will $ETH be above $1,700 on June 17?",cripto,2022-06-17,2022,125378.06,,,,0,157,2023-02-22
+polymarket,252998,"Will ETH hit $2,500 by EOY?",cripto,2023-12-31,2023,277231.25,0.195,0.27,0.19,0,105,2023-11-10
+polymarket,250328,US debt ceiling hike by July 1?,economia,2023-06-03,2023,108835.7,0.995,0.91,0.725,1,75,2023-04-25
+polymarket,249498,Will the Fed increase interest rates by 25 bps after its May meeting?,fed,2023-05-02,2023,161929.81,0.95,0.95,0.49,1,105,2023-03-23
+polymarket,251369,Will the US confirm that aliens exist by August 31?,otros,2023-08-31,2023,855759.04,0.002,0.003,0.023,0,127,2023-06-30
+polymarket,248509,"Will Joe Biden be President of the United States on June 1, 2023?",politica,2023-06-01,2023,828643.88,0.999,0.9935,0.9855,1,224,2023-01-31
+polymarket,253842,Will Elizabeth Warren win the 2024 Democratic Presidential Nomination?,cripto,2024-08-06,2024,16590051.98,0.0005,0.0005,0.0015,0,413,2024-01-13
+polymarket,503304,Will the Browns win Super Bowl 2025?,deportes,2024-12-09,2024,115257552.26,0.001,0.0005,0.0035,0,305,2024-07-10
+polymarket,254580,Will Fed cut interest rates 6+ times in 2024?,fed,2024-12-18,2024,20169086.26,0.0005,0.0035,0.0045,0,544,2024-03-22
+polymarket,500640,2024 Balance of Power: Other,otros,2024-11-05,2024,24501103.38,0.0035,0.0015,0.0025,0,407,2024-04-25
+polymarket,253642,Will any other Republican Politician win the 2024 US Presidential Election?,politica,2024-11-05,2024,241655099.85,0.0005,0.0005,0.0035,0,610,2024-01-07
+polymarket,556033,Lighter market cap (FDV) >$2B one day after launch?,cripto,2025-12-31,2025,25086666.68,0.725,0.85,0.565,1,380,2025-06-27
+polymarket,507896,Will the Washington Wizards win the 2025 NBA Finals?,deportes,2025-03-22,2025,130194075.55,0.0015,0.0015,0.0015,0,357,2024-09-25
+polymarket,542539,No change in Fed interest rates after September 2025 meeting?,fed,2025-09-17,2025,67368762.5,0.024,0.0395,0.245,0,266,2025-05-08
+polymarket,508802,Will the Charlotte Hornets win the Eastern Conference?,otros,2025-03-24,2025,71286704.69,0.0005,0.0015,0.0035,0,341,2024-10-05
+polymarket,529278,Will Frances Fitzgerald win the Irish Presidential Election?,politica,2025-10-25,2025,115067178.33,0.0005,0.0005,0.0005,0,438,2025-03-21
+polymarket,1082748,"Will Bitcoin reach $150,000 in January?",cripto,2026-02-01,2026,26660909.27,0.0005,0.0015,0.005,0,61,2026-01-02
+polymarket,558934,Will Spain win the 2026 FIFA World Cup?,deportes,2026-07-20,2026,152168021.59,0.5915,0.2005,0.1365,1,749,2025-07-03
+polymarket,572473,Will Trump nominate Judy Shelton as the next Fed chair?,fed,2026-03-04,2026,127684064.95,0.0395,0.0365,0.0095,0,422,2025-08-06
+polymarket,2718907,Will Belgium win on 2026-07-01?,otros,2026-07-01,2026,37800234.64,0.445,,,0,7,2026-06-28
+polymarket,1706788,US x Iran ceasefire by April 7?,politica,2026-04-07,2026,173696184.18,0.105,0.105,,1,11,2026-03-25
+polymarket,249271,Arbitrum token FDV >$5b one week after launch?,cripto,2023-03-30,2023,217504.79,0.99,0.96,,1,114,2023-03-17
+polymarket,250704,Will the Fed increase interest rates by 25 bps after its June meeting?,fed,2023-06-13,2023,141462.93,0.2,0.195,0.175,0,83,2023-05-04
+polymarket,251807,Will 'Barbie' gross over $150m on opening weekend?,otros,2023-07-24,2023,689040.93,0.825,0.22,,1,21,2023-07-15
+polymarket,248444,"Will Donald Trump be President of the USA on May 31, 2023?",politica,2023-05-31,2023,768347.26,0.0005,0.0025,0.0075,0,234,2023-01-24
+polymarket,253639,Will Elizabeth Warren win the 2024 US Presidential Election?,cripto,2024-11-05,2024,14714813.73,0.0005,0.0005,0.0005,0,610,2024-01-07
+polymarket,503320,Will the Giants win Super Bowl 2025?,deportes,2024-11-29,2024,107857306.64,0.0035,0.0035,0.0025,0,285,2024-07-10
+polymarket,507418,Will the FED change rates to another level after Nov meeting?,fed,2024-11-07,2024,19150629.54,0.002,0.0025,0.0025,0,100,2024-09-19
+polymarket,254251,Will 'Furiosa: A Mad Max Saga' gross most in 2024?,otros,2024-12-29,2024,21691619.09,0.0015,0.0015,0.0015,0,675,2024-02-01
+polymarket,253727,Kamala Harris wins the popular vote?,politica,2024-11-05,2024,163779786.65,0.741,0.5705,0.7385,0,615,2024-01-10
+polymarket,512250,Will Trump create Bitcoin reserve in first 100 days?,cripto,2025-04-29,2025,23324353.37,0.065,0.065,0.265,0,349,2024-11-07
+polymarket,507895,Will the Utah Jazz win the 2025 NBA Finals?,deportes,2025-03-11,2025,129911351.47,0.0015,0.0015,0.0015,0,335,2024-09-25
+polymarket,542540,Fed increases interest rates by 25+ bps after September 2025 meeting?,fed,2025-09-17,2025,67002488.5,0.0015,0.0025,0.0055,0,266,2025-05-08
+polymarket,566331,Will Polymarket US go live in 2025?,otros,2025-12-06,2025,65428102.46,0.9925,0.7845,0.8765,1,273,2025-07-22
+polymarket,534189,Will Lee Jae-myung be elected the next president of South Korea?,politica,2025-06-03,2025,88035547.45,0.9465,0.901,0.755,1,120,2025-04-05
+polymarket,1473040,"Will Bitcoin reach $150,000 in March?",cripto,2026-04-01,2026,24149352.75,0.0005,0.0015,0.0045,0,35,2026-03-01
+polymarket,558943,Will USA win the 2026 FIFA World Cup?,deportes,2026-07-07,2026,142460221.87,0.0325,0.0225,0.0115,0,739,2025-07-03
+polymarket,601699,No change in Fed interest rates after January 2026 meeting?,fed,2026-01-28,2026,106767096.07,0.991,0.9705,0.855,1,265,2025-09-18
+polymarket,2680257,Will Canada win on 2026-06-28?,otros,2026-06-28,2026,36162490.19,0.555,,,1,7,2026-06-25
+polymarket,1795527,"Russia x Ukraine ceasefire by May 31, 2026?",politica,2026-05-09,2026,141250712.68,0.0335,0.0605,0.0465,1,47,2026-04-01
+polymarket,249700,Sui Airdrop by May 15?,cripto,2023-05-12,2023,195617.45,0.14,0.045,0.09,1,69,2023-04-11
+polymarket,251450,Will the Fed raise interest rates by 25 bps after its July meeting?,fed,2023-07-25,2023,133986.71,0.985,0.955,0.725,1,88,2023-06-13
+polymarket,251595,Will NASA record 2023 as the hottest year on record? (1.03°C or higher),otros,2023-12-31,2023,668039.76,0.992,0.9905,0.9805,1,406,2023-06-24
+polymarket,251574,"Will Joe Biden be President of the United States on December 1, 2023?",politica,2023-12-01,2023,763354.53,0.9975,0.994,0.988,1,322,2023-06-24
+polymarket,253750,Ethereum ETF approved by May 31?,cripto,2024-05-24,2024,13226512.33,0.65,0.1,0.155,1,271,2024-01-10
+polymarket,503329,Will the Patriots win Super Bowl 2025?,deportes,2024-12-02,2024,74275772.26,0.0035,0.0035,0.0025,0,291,2024-07-10
+polymarket,504072,Fed increases interest rates by 25+ bps after September 2024 meeting?,fed,2024-09-18,2024,17625581.47,0.0005,0.0025,0.0015,0,110,2024-07-26
+polymarket,254249,Will 'Dune: Part 2' gross most in 2024?,otros,2024-12-29,2024,19502938.23,0.0015,0.0015,0.0015,0,675,2024-02-01
+polymarket,253609,Will Michelle Obama win the 2024 US Presidential Election?,politica,2024-11-05,2024,153382275.62,0.0005,0.0005,0.0015,0,612,2024-01-06
+polymarket,507859,Will the Charlotte Hornets win the 2025 NBA Finals?,deportes,2025-03-24,2025,116668813.6,0.0005,0.0005,0.0015,0,361,2024-09-25
+polymarket,512325,Fed increases interest rates by 25+ bps after January 2025 meeting?,fed,2025-01-29,2025,56978076.06,0.0015,0.0025,0.006,0,166,2024-11-08
+polymarket,508805,Will the Detroit Pistons win the Eastern Conference?,otros,2025-05-02,2025,60253518.15,0.0045,0.0135,0.0125,0,419,2024-10-05
+polymarket,534197,Will Kim Moon-soo be elected the next president of South Korea?,politica,2025-06-03,2025,73197949.8,0.052,0.0895,0.0595,0,120,2025-04-05
+polymarket,573655,"Will Bitcoin hit $150k by June 30, 2026?",cripto,2026-07-01,2026,22066951.69,0.0005,0.0015,0.0055,0,608,2025-08-08
+polymarket,558945,Will Mexico win the 2026 FIFA World Cup?,deportes,2026-07-06,2026,137807960.89,0.0345,0.0115,0.0125,0,706,2025-07-03
+polymarket,601698,Fed decreases interest rates by 25 bps after January 2026 meeting?,fed,2026-01-28,2026,101211542.67,0.0075,0.0255,0.125,0,266,2025-09-18
+polymarket,1897356,Will United States win on 2026-06-25?,otros,2026-06-26,2026,36081118.38,0.515,0.425,0.37,0,133,2026-04-08
+polymarket,1180303,Khamenei out as Supreme Leader of Iran by February 28?,politica,2026-02-28,2026,131114970.83,0.0115,0.0475,0.175,1,98,2026-01-14
+polymarket,251855,"Will ETH hit $2,000 by EOY?",cripto,2023-11-09,2023,154313.21,0.695,0.64,0.22,1,212,2023-07-27
+polymarket,248565,Will the Fed increase interest rates by 50 bps after its March meeting?,fed,2023-03-22,2023,131282.01,0.03,0.07,0.1,0,188,2023-02-03
+polymarket,252632,Will the US rescue at least one American hostage from Hamas by Oct 31?,otros,2023-10-24,2023,461764.59,0.95,0.095,,1,25,2023-10-12
+polymarket,250471,"Will Joe Biden be President of the United States on August 1, 2023?",politica,2023-08-01,2023,751905.78,0.9995,0.9985,0.9915,1,194,2023-04-25
+polymarket,253254,Bitcoin ETF approved by Jan 15?,cripto,2024-01-10,2024,12622418.42,0.83,0.835,0.805,1,80,2023-12-02
+polymarket,503297,Will the Cardinals win Super Bowl 2025?,deportes,2024-12-23,2024,43228740.9,0.0035,0.004,0.0195,0,333,2024-07-10
+polymarket,504490,Fed decreases interest rates by 75+ bps after November 2024 meeting?,fed,2024-11-07,2024,15031954.75,0.002,0.003,0.0035,0,194,2024-08-03
+polymarket,506021,Will the Jets win the AFC Championship?,otros,2024-12-09,2024,18544717.0,0.0015,0.001,0.0235,0,205,2024-08-29
+polymarket,253595,Will Robert F. Kennedy Jr. win the 2024 US Presidential Election?,politica,2024-11-04,2024,141605110.75,0.0005,0.0005,0.0015,0,614,2024-01-05
+polymarket,506742,Nottingham Forest wins the Premier League?,deportes,2025-04-13,2025,101429202.23,0.0005,0.0025,0.0035,0,432,2024-09-10
+polymarket,570361,Fed decreases interest rates by 25 bps after December 2025 meeting?,fed,2025-12-10,2025,54634506.68,0.935,0.895,0.705,1,263,2025-08-01
+polymarket,588775,US x Venezuela military engagement by December 31?,otros,2025-12-31,2025,51073020.59,0.1025,0.075,0.52,0,242,2025-09-06
+polymarket,516767,Will Pierre Poilievre be the next Canadian Prime Minister?,politica,2025-04-28,2025,67376035.84,0.229,0.2525,0.385,0,241,2024-12-31
+polymarket,558951,Will Norway win the 2026 FIFA World Cup?,deportes,2026-07-12,2026,137345387.07,0.0605,0.0165,0.0235,0,677,2025-07-03
+polymarket,654413,Will the Fed decrease interest rates by 25 bps after the March 2026 meeting?,fed,2026-03-18,2026,87103283.73,0.0025,0.0075,0.065,0,281,2025-10-30
+polymarket,2740921,Will Morocco win on 2026-07-04?,otros,2026-07-04,2026,35432188.54,0.555,,,1,9,2026-06-30
+polymarket,1484949,Netanyahu out by March 31?,politica,2026-04-01,2026,104205875.49,0.0015,0.0095,,0,62,2026-03-03
+polymarket,251775,Will the SEC approve BlackRock's Bitcoin ETF by December 31?,cripto,2023-12-31,2023,147341.26,0.0365,0.1235,0.08,0,343,2023-07-14
+polymarket,248564,Will the Fed increase interest rates by 0 bps after its March meeting?,fed,2023-03-22,2023,119684.59,0.27,0.31,0.01,0,188,2023-02-03
+polymarket,248311,Will a nuclear weapon detonate by June 30?,otros,2023-06-30,2023,427620.44,0.0035,0.0025,0.015,0,282,2023-01-31
+polymarket,252626,Did Israeli intelligence have advanced knowledge of the Attack?,politica,2023-12-31,2023,598128.83,0.33,0.291,0.1435,0,175,2023-10-11
+polymarket,515539,"Bitcoin above $100,000 on December 20?",cripto,2024-12-20,2024,10202409.08,0.605,,,0,14,2024-12-14
+polymarket,507312,Will Slovan Bratislava win the UEFA Champions League?,deportes,2024-12-11,2024,32130923.32,0.0025,0.0035,0.0035,0,170,2024-09-18
+kalshi,CPI-21OCT-T0.5,Will the Consumer Price Index rise more than 0.5% in October?,macro:KXCPI,2021-11-10,2021,33756.0,0.52,0.5,0.155,1,32,2021-10-09
+kalshi,FED-21JUL-T0.25,Will the target federal funds rate be above 0.25%?,macro:KXFED,2021-07-26,2021,8679.0,0.005,0.01,,0,22,2021-07-03
+kalshi,GDP-21SEP30-T6.0,Will real GDP increase by more than 6% in Q3?,macro:KXGDP,2021-10-27,2021,18815.0,0.05,0.055,0.24,0,32,2021-09-26
+kalshi,CPI-22JUN-T0.9,Will **inflation** rise more than 0.9% in June?,macro:KXCPI,2022-07-13,2022,87135.0,0.73,0.45,0.46,1,32,2022-06-12
+kalshi,CPIYOY-22NOV-T7.0,Will the rate of CPI inflation be above 7.0% for the year ending in November 2022?,macro:KXCPIYOY,2022-12-13,2022,7011.0,0.765,,,1,4,2022-12-08
+kalshi,FED-22SEP-T3.00,Will the federal funds rate be above 3.00% following the Fed's September meeting?,macro:KXFED,2022-09-21,2022,512904.0,0.99,0.95,0.44,1,32,2022-08-21
+kalshi,GDP-22JUN30-T0.0,Will real GDP increase by more than 0.0% in Q2 2022?,macro:KXGDP,2022-07-28,2022,66773.0,0.25,0.225,,0,30,2022-06-29
+kalshi,INXY-22DEC30-B3700,"Will the S&P 500 be between 3600 and 3799.99 at the end of December 30, 2022?",macro:KXINXY,2022-12-30,2022,93618.0,0.61,0.51,0.15,0,30,2022-11-29
+kalshi,RECSSNBER-22,Will there be a recession in 2022?,macro:KXRECSSNBER,2022-07-28,2022,21119.0,0.79,0.84,,1,27,2022-07-02
+kalshi,CPI-22DEC-T0.0,Will **CPI** rise more than 0.0% in December 2022?,macro:KXCPI,2023-01-12,2023,70363.0,0.15,0.13,0.45,0,30,2022-12-12
+kalshi,CPIYOY-23AUG-T3.7,Will the rate of CPI inflation be above 3.7% for the year ending in August 2023?,macro:KXCPIYOY,2023-09-13,2023,34695.0,0.2,0.22,0.16,0,30,2023-08-13
+kalshi,FED-23MAY-T5.00,Will the upper bound of the federal funds rate be above 5.00% following the Fed's May meeting?,macro:KXFED,2023-05-03,2023,834466.0,0.96,0.9,0.62,1,32,2023-04-02
+kalshi,FEDDECISION-23JUN-H0,Will the Federal Reserve Hike rates by 0bps at their June 2023 meeting?,macro:KXFEDDECISION,2023-06-14,2023,187855.0,0.83,0.83,0.83,1,32,2023-05-14
+kalshi,GDP-23APR27-T1.9,Will **real GDP** increase by more than 1.9% in 2023 Q1?,macro:KXGDP,2023-04-27,2023,21419.0,0.72,0.62,0.68,0,28,2023-03-27
+kalshi,INXY-23DEC29-B5200,"Will the S&P 500 be between 5100 and 5299.99 at the end of Dec 29, 2023?",macro:KXINXY,2023-12-29,2023,3444842.0,0.01,0.01,,0,2,2023-12-15
+kalshi,CPI-24APR-T0.3,Will CPI rise more than 0.3% in April 2024?,macro:KXCPI,2024-05-15,2024,74521.0,0.58,0.54,0.75,0,30,2024-04-14
+kalshi,KXCPIYOY-24NOV-T2.8,Will the rate of CPI inflation be above 2.8% for the year ending in November 2024?,macro:KXCPIYOY,2024-12-11,2024,124233.0,0.21,0.24,0.99,0,32,2024-11-10
+kalshi,FED-24JUN-T5.25,Will the upper bound of the federal funds rate be above 5.25% following the Fed's June meeting?,macro:KXFED,2024-06-12,2024,1349824.0,0.99,0.98,,1,21,2024-05-14
+kalshi,KXFEDDECISION-24DEC-C25,Will the Federal Reserve Cut rates by 25bps at their December 2024 meeting?,macro:KXFEDDECISION,2024-12-18,2024,1573321.0,0.96,0.84,0.6,1,32,2024-11-17
+kalshi,GDP-24OCT30-T2.8,Will **real GDP** increase by more than 2.8% in Q3?,macro:KXGDP,2024-10-30,2024,36469.0,0.85,0.73,0.39,0,30,2024-09-29
+kalshi,INXD-24DEC31-B3300,"Will the S&P 500 be between 3200 and 3399.99 at the end of Dec 31, 2024?",macro:KXINXY,2024-12-31,2024,3610075.0,,,,0,0,
+kalshi,RECSSNBER-23,Will there be a recession in 2023?,macro:KXRECSSNBER,2024-01-25,2024,77762.0,,,,0,0,
+kalshi,KXCPI-25JUL-T0.2,Will CPI rise more than 0.2% in July 2025?,macro:KXCPI,2025-08-12,2025,785062.0,0.48,0.48,0.41,0,32,2025-07-12
+kalshi,KXCPIYOY-25APR-T2.5,Will the rate of CPI inflation be above 2.5% for the year ending in April 2025?,macro:KXCPIYOY,2025-05-13,2025,2281624.0,0.1,0.12,0.21,0,32,2025-04-12
+kalshi,FED-25MAY-T4.25,"Will the upper bound of the federal funds rate be above 4.25% following the Fed's May 7, 2025 meeting?",macro:KXFED,2025-05-07,2025,3745708.0,0.98,0.86,0.67,1,32,2025-04-06
+kalshi,KXFEDDECISION-25SEP-H0,Will the Federal Reserve Hike rates by 0bps at their September 2025 meeting?,macro:KXFEDDECISION,2025-09-17,2025,42718863.0,0.03,0.06,0.25,0,32,2025-08-17
+kalshi,KXGDP-25APR30-T0.0,Will **real GDP** increase by more than 0.0% in Q1 2025?,macro:KXGDP,2025-04-30,2025,745945.0,0.7,0.71,0.62,0,32,2025-03-30
+kalshi,KXINXY-25DEC31-B7100,"Will the S&P 500 be between 7000 and 7199.99 at the end of Dec 31, 2025?",macro:KXINXY,2025-12-31,2025,2969359.0,0.06,0.12,0.21,0,32,2025-11-30
+kalshi,RECSSNBER-24,Will there be a recession by the end of 2024?,macro:KXRECSSNBER,2025-01-31,2025,603186.0,0.01,0.01,0.01,0,25,2024-12-31
+kalshi,KXCPI-26JUL-T0.0,Will CPI rise more than 0.0% in July 2026?,macro:KXCPI,2026-08-12,2026,491199.07,0.62,0.64,0.8,1,32,2026-07-12
+kalshi,KXCPIYOY-26JAN-T2.4,Will the rate of CPI inflation be above 2.4% for the year ending in January 2026?,macro:KXCPIYOY,2026-02-13,2026,386739.0,0.56,0.54,0.78,0,31,2026-01-14
+kalshi,KXFED-26APR-T3.75,"Will the upper bound of the federal funds rate be above 3.75% following the Fed's Apr 29, 2026 meeting?",macro:KXFED,2026-04-29,2026,3055286.8,0.01,0.02,0.04,0,32,2026-03-29
+kalshi,KXFEDDECISION-26SEP-H0,Will the Federal Reserve Hike rates by 0bps at their September 2026 meeting?,macro:KXFEDDECISION,2026-09-16,2026,48286115.02,,,,0,0,
+kalshi,KXGDP-26JAN30-T3.5,Will **real GDP** increase by more than 3.5% in Q4 2025?,macro:KXGDP,2026-02-20,2026,592699.0,0.43,0.36,0.61,0,32,2026-01-20
+kalshi,RECSSNBER-25,Will there be a recession in 2025?,macro:KXRECSSNBER,2026-01-31,2026,4780801.0,0.01,0.01,0.01,0,32,2025-12-31
+kalshi,CPI-21JUL-T0.7,Will the Consumer Price Index (CPI) increase by more than 0.7% in July?,macro:KXCPI,2021-08-10,2021,22562.0,0.56,0.52,,0,28,2021-07-14
+kalshi,FED-21SEP-T0.25,Will the target federal funds rate be above 0.25%?,macro:KXFED,2021-09-20,2021,3226.0,0.005,0.015,0.02,0,30,2021-08-20
+kalshi,GDP-21JUN30-T6.0,Will real GDP increase by more than 6%?,macro:KXGDP,2021-07-28,2021,7271.0,0.84,0.87,,1,23,2021-07-01
+kalshi,CPI-22NOV-T0.2,Will **inflation** rise more than 0.2% in November?,macro:KXCPI,2022-12-13,2022,84345.0,0.59,0.53,0.66,0,32,2022-11-12
+kalshi,CPIYOY-22NOV-T7.1,Will the rate of CPI inflation be above 7.1% for the year ending in November 2022?,macro:KXCPIYOY,2022-12-13,2022,2416.0,0.59,,,0,5,2022-12-08

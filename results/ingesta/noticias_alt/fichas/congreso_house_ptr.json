@@ -1,0 +1,51 @@
+{
+  "fuente": "congreso_house_ptr",
+  "nombre": "House Clerk · Periodic Transaction Reports (STOCK Act)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://disclosures-clerk.house.gov/FinancialDisclosure",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "registro público del Gobierno de EE. UU. (sin copyright); uso comercial prohibido por la Ethics in Government Act (5 U.S.C. §13107) salvo prensa",
+  "cobertura_inicio": "2014-01-02",
+  "cobertura_fin": "2026-10-12",
+  "frecuencia": "por evento (≈646 PTR/año)",
+  "retraso_publicacion": "operación -> publicación (FilingDate + 1 hábiles): mediana 41.0 d, p90 329.0 d (límite legal 45 d hasta el FilingDate); FilingDate -> PDF en la web: mediana 0.0 hábiles, p90 1.0 (n=42)",
+  "formato": "zip (xml/txt índice) + pdf por PTR (texto si electrónico, imagen si escaneado)",
+  "volumen_estimado": "8399 PTR × 83 KB ≈ 0.70 GB; ≈12.64 operaciones/PTR electrónico",
+  "limites": "sin clave; 1 petición/s; los PTR escaneados (DocID 8/9…) necesitarían OCR (no se hace)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "indices": 13,
+    "ptr_total": 8399,
+    "pct_electronicos": 70.9,
+    "ptr_leidos": 42,
+    "operaciones": 531,
+    "operaciones_con_ticker": 472,
+    "ops_por_ptr": 12.64,
+    "compras": 212,
+    "ventas": 315,
+    "lag_dias_mediana": 41.0,
+    "lag_dias_p90": 329.0,
+    "bytes_pdf_medio": 83365,
+    "escaneados_sin_texto": 2,
+    "filing_a_web_habiles": {
+      "n": 42,
+      "mediana": 0.0,
+      "p90": 1.0,
+      "k": 1,
+      "origen": "p90 medido"
+    }
+  },
+  "notas": [
+    "fecha_publicacion = FilingDate + 1 días hábiles (p90 medido); la fecha de operación y el FilingDate (fecha_presentacion) van como metadatos.",
+    "El Clerk sube el PDF a la web después del FilingDate: se mide con el Last-Modified de cada PDF de la muestra (descartando > 60 d, regeneraciones).",
+    "Tickers de preferentes con '$' (p. ej. COF$I) y activos sin ticker (bonos, fondos) se conservan; filtrar clase ST sin '$' para la rentabilidad anormal."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

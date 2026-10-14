@@ -1,0 +1,42 @@
+{
+  "fuente": "gdelt_doc",
+  "nombre": "GDELT DOC 2.0 API (búsqueda de titulares y timelines de tono)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://api.gdeltproject.org/api/v2/doc/doc",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "GDELT: uso libre, incluida reutilización y redistribución, citando a GDELT Project (https://www.gdeltproject.org/about.html#termsofuse); las URLs apuntan a contenido con copyright",
+  "cobertura_inicio": "2017-01-01",
+  "cobertura_fin": "2026-10-10",
+  "frecuencia": "15 min (artlist) / diaria (tono)",
+  "retraso_publicacion": "seendate ≈ minutos tras la publicación; índice consultable ≈ 4 días después; tono D+5",
+  "formato": "json (url, título, dominio, idioma, país, seendate)",
+  "volumen_estimado": "máx. 250 artículos por consulta y ventana; tono diario ≈ 3.500 puntos 2017-hoy",
+  "limites": "1 petición / 5 s por IP (429 si se excede o la IP es compartida); máx. 250 por consulta",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "retraso_indice_dias": 4,
+    "hoy_sin_resultados": true,
+    "peticiones": 13,
+    "errores": 0,
+    "articulos_por_consulta": 56.2,
+    "titulares": 657,
+    "puntos_tono": 3533,
+    "mb_descargados": 0.52,
+    "omitidas_por_429": 0
+  },
+  "notas": [
+    "Último dato del índice: 2026-10-10 (4 días antes de la sonda); las consultas de «hoy» no devuelven nada: para vivo, mejor el GKG (≈15 min).",
+    "Sin cuerpo: solo titular + URL + seendate; el texto se busca en CC-NEWS por URL.",
+    "Sin cobertura en la muestra: ['lehman', 'elecciones_2016'] (antes de 2017).",
+    "Serie 'gdelt_tono_economia': query='economy', fecha_publicacion = D+5 (índice DOC ≈4 d por detrás + 1 d de margen); vintage único de hoy, recalculado."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

@@ -1,0 +1,123 @@
+{
+  "fuente": "gdelt_eventos",
+  "nombre": "GDELT Events 1.0 (1979-) y 2.0 (2015-)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.gdeltproject.org/data.html",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "GDELT: uso libre, incluida reutilización y redistribución, citando a GDELT Project (https://www.gdeltproject.org/about.html#termsofuse); las URLs apuntan a contenido con copyright",
+  "cobertura_inicio": "1979-01-01",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "15 min (2.0) / diaria (1.0 desde 2013-04)",
+  "retraso_publicacion": "DATEADDED − SQLDATE: mediana 8.0 h, p90 20.0 h (2.0)",
+  "formato": "csv tabulado en zip",
+  "volumen_estimado": "Events 1.0 completo ≈ 53.6 GB zip; 2.0 ≈ 0,1 MB/15 min",
+  "limites": "sin límite documentado; descarga por fichero",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ficheros_events1": 5038,
+    "primero_events1": "1979.zip",
+    "volumen_events1_gb": 53.6,
+    "mb_descargados": 36.55,
+    "lag_2_0_h": {
+      "n": 43932,
+      "mediana_h": 8.0,
+      "p10_h": 0.0,
+      "p90_h": 20.0
+    },
+    "historico_lehman": {
+      "n": 47908,
+      "pct_sqldate_anterior": 100.0,
+      "lag_dias_mediana": 1602.0,
+      "lag_dias_p90": 1602.0,
+      "lag_dias_max": 1604.0,
+      "pct_con_url": 0.0
+    },
+    "por_dia": [
+      {
+        "clave": "lehman",
+        "dia": "2008-09-15",
+        "version": "1.0_historico",
+        "ficheros": 1,
+        "n": 47908,
+        "pct_sqldate_anterior": 100.0,
+        "lag_dias_mediana": 1602.0,
+        "lag_dias_p90": 1602.0,
+        "lag_dias_max": 1604.0,
+        "pct_con_url": 0.0
+      },
+      {
+        "clave": "elecciones_2016",
+        "dia": "2016-11-09",
+        "version": "2.0",
+        "ficheros": 6,
+        "n": 15180,
+        "pct_sqldate_anterior": 2.51,
+        "lag_dias_mediana": 0.0,
+        "lag_dias_p90": 0.0,
+        "lag_dias_max": 365.0,
+        "pct_con_url": 100.0
+      },
+      {
+        "clave": "covid",
+        "dia": "2020-03-16",
+        "version": "2.0",
+        "ficheros": 6,
+        "n": 9228,
+        "pct_sqldate_anterior": 3.29,
+        "lag_dias_mediana": 0.0,
+        "lag_dias_p90": 0.0,
+        "lag_dias_max": 3650.0,
+        "pct_con_url": 100.0
+      },
+      {
+        "clave": "svb",
+        "dia": "2023-03-10",
+        "version": "2.0",
+        "ficheros": 6,
+        "n": 7213,
+        "pct_sqldate_anterior": 3.01,
+        "lag_dias_mediana": 0.0,
+        "lag_dias_p90": 0.0,
+        "lag_dias_max": 3650.0,
+        "pct_con_url": 100.0
+      },
+      {
+        "clave": "aranceles",
+        "dia": "2025-04-07",
+        "version": "2.0",
+        "ficheros": 6,
+        "n": 7059,
+        "pct_sqldate_anterior": 2.34,
+        "lag_dias_mediana": 0.0,
+        "lag_dias_p90": 0.0,
+        "lag_dias_max": 365.0,
+        "pct_con_url": 100.0
+      },
+      {
+        "clave": "hoy",
+        "dia": "2026-10-14",
+        "version": "2.0",
+        "ficheros": 4,
+        "n": 5252,
+        "pct_sqldate_anterior": 2.17,
+        "lag_dias_mediana": 0.0,
+        "lag_dias_p90": 0.0,
+        "lag_dias_max": 3650.0,
+        "pct_con_url": 100.0
+      }
+    ]
+  },
+  "notas": [
+    "TimeGate: DATEADDED (captura), nunca SQLDATE (fecha del hecho).",
+    "Histórico (antes de 2013-04): DATEADDED = reprocesado de 2013 (mediana 1602 días tras el hecho) y sin SOURCEURL: solo serie de hechos, sin fecha de publicación real.",
+    "Sin texto ni titular: códigos CAMEO, actores, tono, Goldstein y URL (desde 2013-04)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

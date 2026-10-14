@@ -1,0 +1,53 @@
+{
+  "fuente": "hf_reuters_cnbc_2018",
+  "nombre": "Financial news articles (Reuters/CNBC, ene-may 2018)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://huggingface.co/datasets/ashraq/financial-news-articles",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "declarada en el Hub: None; sin licencia declarada; texto de Reuters/CNBC con copyright",
+  "cobertura_inicio": "2018-01-01",
+  "cobertura_fin": "2018-05-31",
+  "frecuencia": "estático (instantánea)",
+  "retraso_publicacion": "n/a (histórico cerrado)",
+  "formato": "gitattributes,md,parquet",
+  "volumen_estimado": "0.49 GB en 4 ficheros; filas=306242",
+  "limites": "descarga HTTP del Hub (sin clave si no es gated); viewer: 100 filas por petición",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "hub": {
+      "gated": false,
+      "licencia": null,
+      "ficheros": 4,
+      "bytes": 492245971,
+      "descargas_mes": 423,
+      "modificado": "2022-10-25T18:01:06.000Z",
+      "configs_tarjeta": [],
+      "extensiones": {
+        "gitattributes": 1,
+        "md": 1,
+        "parquet": 2
+      }
+    },
+    "filas": 306242,
+    "filas_por_config": {},
+    "fechas": "documentadas",
+    "columnas": "title,text,url",
+    "tokens_mediana": 339,
+    "dominios_top": "reuters.com,cnbc.com,uk.reuters.com,wsj.com,in.reuters.com",
+    "lag_published_a_crawl_h": null,
+    "errores": {}
+  },
+  "notas": [
+    "Sin columna de fecha: hay que sacarla de la URL o del texto.",
+    "Ventana de 5 meses: banco de pruebas del troceado, no corpus de backtest."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

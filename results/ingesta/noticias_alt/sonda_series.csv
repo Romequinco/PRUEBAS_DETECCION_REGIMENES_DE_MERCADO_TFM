@@ -1,0 +1,24 @@
+modulo,serie,fuente,n_filas,n_series,referencia_inicio,referencia_fin,publicacion_fin,lag_mediana_d,lag_max_d,metodo_publicacion
+gdelt,gdelt_tono_economia,gdelt_doc,3533,1,2017-01-01,2026-10-10,2026-10-15,5.0,5,índice DOC con ~4 d de retraso -> D+5; vintage único
+wikipedia,wiki_pageviews,wiki_pageviews,24738,6,2015-07-01,2026-10-13,2026-10-14,1.0,1,día UTC cerrado -> D+1
+social,truth_posts_dia,truth_social_trump,1283,1,2022-02-14,2026-05-02,2026-05-03,1.0,1,día UTC cerrado -> D+1
+social,finra_short_ratio_mercado,finra_short_volume,99,1,2018-08-01,2026-10-01,2026-10-02,1.0,3,"D+1 hábil (fichero ≈18:00 ET, tras el cierre; Last-Modified en disponible_utc)"
+congreso,congreso_ptr_diarios,congreso_house_ptr,3236,1,2014-01-02,2026-10-12,2026-10-13,1.0,3,"FilingDate + 1 días hábiles (k = p90 medido, n=42)"
+congreso,congreso_etf_nanc_kruz,congreso_etfs_nanc_kruz,924,1,2023-02-07,2026-10-13,2026-10-13,0.0,0,cierre diario (Yahoo vía yfinance)
+prediccion,polymarket_recesion_eeuu_2025,polymarket,358,1,2025-01-08,2025-12-31,2025-12-31,0.0,0,tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)
+prediccion,polymarket_fed_recorte25_sep2025,polymarket,133,1,2025-05-08,2025-09-17,2025-09-17,0.0,0,tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)
+prediccion,polymarket_recesion_eeuu_2026,polymarket,380,1,2025-09-30,2026-10-14,2026-10-14,0.0,0,tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)
+prediccion,polymarket_recesion_eeuu_2024,polymarket,149,1,2024-08-05,2024-12-31,2024-12-31,0.0,0,tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)
+prediccion,polymarket_fed_sin_recortes_2026,polymarket,380,1,2025-09-30,2026-10-14,2026-10-14,0.0,0,tiempo real; último punto CLOB ≤ 16:30 NY del día (resolución 12 h)
+indices,gpr_diario,gpr,61044,4,1985-01-01,2026-10-13,2026-10-19,4.0,8,vintage_actual_revisable
+indices,gpr_mensual,gpr,7032,12,1900-01-01,2026-09-01,2026-10-01,31.0,34,vintage_actual_revisable
+indices,epu_diario_usa,epu,15261,1,1985-01-01,2026-10-13,2026-10-14,1.0,1,vintage_actual_revisable
+indices,epu_global_mensual,epu,710,2,1997-01-01,2026-07-01,2026-09-30,91.0,91,vintage_actual_revisable
+indices,cboe_skew,cboe_skew,9247,1,1990-01-02,2026-10-13,2026-10-14,1.0,4,fichero_tras_cierre
+indices,cboe_vix,cboe_vix,18586,2,1990-01-02,2026-10-13,2026-10-14,1.0,4,fichero_tras_cierre
+indices,cboe_putcall_total,cboe_putcall,9759,3,2006-11-01,2019-10-04,2019-10-07,1.0,4,fichero_tras_cierre
+indices,cboe_putcall_equity,cboe_putcall,9759,3,2006-11-01,2019-10-04,2019-10-07,1.0,4,fichero_tras_cierre
+indices,cboe_putcall_index,cboe_putcall,9759,3,2006-11-01,2019-10-04,2019-10-07,1.0,4,fichero_tras_cierre
+ews,ews_actividad,ews,14701,2,2025-10-14,2026-10-14,2026-10-15,0.0,1,"lag_fijo,tiempo_real"
+ews,ews_z_publicado,ews,14335,1,2025-10-14,2026-10-14,2026-10-14,216.0,365,vintage_unico
+ews,ews_z_causal,ews,12991,1,2025-11-09,2026-10-14,2026-10-14,0.0,0,calculado_causal
