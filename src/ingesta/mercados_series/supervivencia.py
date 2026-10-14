@@ -6,30 +6,47 @@ etapa en el índice, y cuánto se equivoca un backtest que usa la composición A
 Entrada: ``<corpus>/mercados_series/constituyentes/sp500.parquet`` (tramos point-in-time de
 ``fuentes/constituyentes.py``; si no existe se construye con ``descargar_sp500``).
 
-1. Muestra estratificada (``muestra_salidos``): ``por_anio`` tramos salidos por año de salida
-   (1996-2026, ~60 en total) y ``n_actuales`` miembros actuales al azar (semilla fija).
-2. Descarga (``descargar_muestra``): yfinance con el ritmo del proveedor Yahoo (<= 0,5 tickers/s,
-   timeout 90 s, reintentos SOLO ante excepciones: un ticker sin datos no se reintenta, porque en
-   un deslistado es determinista). Ticker del fichero → Yahoo cambiando ``.`` por ``-``. Se guarda en
-   ``<corpus>/mercados_series/supervivencia/`` SOLO la rentabilidad total diaria derivada
-   (``(Close + Dividends) / Close previo - 1`` sobre la vista de Yahoo con splits ajustados; no es
-   una tabla de precios ni lleva ``Adj Close``) y un registro JSONL reanudable.
-3. Cobertura (``cobertura_tramo``): sesiones con precio dentro de ``[alta, baja)`` frente a las
+Dos vías de precios:
+
+- **Almacén (principal, ``medir_almacen``)**: TODOS los tramos (salidos y actuales) cuyo ticker
+  (``.`` → ``-``) tiene parquet as-traded en ``<corpus>/mercados_series/precios/yahoo/`` (descarga
+  ampliada del bloque 6; solo lectura). La rentabilidad total diaria (``rentabilidad_total_precios``)
+  es la de ``close_aj_total`` de ``timegate.ajustar_a_fecha`` a la última ``fecha_publicacion`` del
+  ticker: split → ``close_t * split_t / close_{t-1}``; dividendo → ``close_t / (close_{t-1} - D_t)``
+  (método multiplicativo, el de ``Adj Close``).
+- **Muestra antigua (respaldo, ``descargar_muestra``)**: 2 tramos salidos por año de salida y 60
+  actuales (122 tramos, semilla fija) pedidos aparte a yfinance (<= 0,5 tickers/s, timeout 90 s,
+  reintentos solo ante excepciones); en ``<corpus>/mercados_series/supervivencia/`` solo la
+  rentabilidad diaria derivada (``(Close + Dividends) / Close previo - 1``) y un registro JSONL.
+
+Pasos comunes:
+
+1. Cobertura (``cobertura_tramo``): sesiones con precio DENTRO de ``[alta, baja)`` frente a las
    sesiones de NYSE (``exchange_calendars`` XNYS; si falta, días hábiles). Clases: ``completa``
-   (>= 95 %), ``parcial``, ``fuera_de_tramo`` (Yahoo tiene el ticker pero solo fuera del tramo:
-   casi siempre ticker reutilizado por otra empresa) y ``sin_datos``.
-4. Sesgo (``estimar_sesgo``): rentabilidad equiponderada mensual de la cartera POINT-IN-TIME con
-   precio (mezcla de la muestra de salidos y la de actuales, ponderada por cuántos miembros de cada
-   grupo había ese mes) frente a la de los miembros ACTUALES con precio (cartera de supervivientes:
-   la composición de hoy aplicada hacia atrás). Limitación DECLARADA: los salidos sin precio (sobre
-   todo quiebras y compras) no entran, y son los peores; el sesgo medido es una COTA INFERIOR.
+   (>= 95 %), ``parcial``, ``fuera_de_tramo`` (el ticker tiene precio, pero solo fuera del tramo)
+   y ``sin_datos``. Existir el fichero no basta.
+2. Sospechas de otra empresa con el mismo ticker (``sospechas_tramo``; columna ``sospecha``):
+   ``empieza_tarde`` (el precio empieza más de ``HOLGURA_INICIO`` después del alta),
+   ``impropio_sp500`` (mediana del cierre as-traded < ``CIERRE_MINIMO`` o del efectivo diario <
+   ``EFECTIVO_MINIMO`` dentro del tramo: un miembro del índice no cotiza así), ``ticker_q`` (sufijo
+   de quiebra posterior al tramo con precio dentro del tramo), ``termina_tarde`` (salido cuya nota
+   dice ticker con varios tramos o sufijo Q y cuyo precio sigue más de ``HOLGURA_FIN`` después de
+   la baja) y ``reutilizado_despues`` (fuera de tramo, Yahoo empieza tras la baja). Las tres
+   primeras sacan el tramo de la estimación principal (``en_estimacion=False``); ``termina_tarde``
+   solo de la variante ``estricta`` (suele ser reentrada de la misma empresa); la variante
+   ``con_sospechas`` las incluye todas.
+3. Sesgo (``estimar_sesgo``): rentabilidad equiponderada mensual de la cartera POINT-IN-TIME con
+   precio (media de los salidos y media de los actuales con precio, ponderadas por cuántos miembros
+   de cada grupo había ese mes) frente a la de los miembros ACTUALES con precio (supervivientes: la
+   composición de hoy aplicada hacia atrás). Limitación DECLARADA: los salidos sin precio en Yahoo
+   (sobre todo quiebras y compras) no entran, y son los peores; el sesgo medido es una COTA INFERIOR.
 
 Opciones de corrección (``OPCIONES_CORRECCION``): WRDS/CRSP (pendiente de la licencia de MIAX),
 Alpha Vantage LISTING_STATUS (solo lista de deslistados, sin precios) y Tiingo (requiere cuenta del
 usuario). CLI::
 
-    python -m ingesta.mercados_series.supervivencia descargar   # reanudable (~5 min)
-    python -m ingesta.mercados_series.supervivencia medir       # CSV de metadatos + ficha
+    python -m ingesta.mercados_series.supervivencia medir                  # vía almacén (CSV + ficha)
+    python -m ingesta.mercados_series.supervivencia descargar --via muestra  # respaldo (~5 min)
 """
 from __future__ import annotations
 
@@ -57,9 +74,27 @@ RITMO = 0.5                       # tickers por segundo, como máximo (igual que
 TIMEOUT = 90
 REINTENTOS = 3
 UMBRAL_COMPLETA = 0.95
+HOLGURA_INICIO = pd.Timedelta(days=31)     # precio que empieza después: sospecha (empieza_tarde)
+HOLGURA_FIN = pd.Timedelta(days=365)       # precio que sigue después de la baja (con nota): termina_tarde
+CIERRE_MINIMO = 1.0                        # USD: mediana del cierre as-traded en el tramo por debajo → impropio
+EFECTIVO_MINIMO = 1e6                      # USD/día: mediana de cierre × volumen en el tramo por debajo → impropio
 CLASES = ("completa", "parcial", "fuera_de_tramo", "sin_datos")
+VIAS = ("almacen", "muestra")
+SOSPECHAS = {
+    "empieza_tarde": (f"el precio empieza más de {HOLGURA_INICIO.days} días después del alta: otra empresa con el "
+                      "mismo ticker o historia incompleta"),
+    "termina_tarde": (f"ticker con varios tramos o sufijo Q (nota) y precio que sigue más de {HOLGURA_FIN.days} días "
+                      "después de la baja: la serie puede ser de la empresa que reutiliza el ticker"),
+    "ticker_q": "sufijo Q/QQ de quiebra posterior al tramo con precio dentro del tramo: identidad dudosa",
+    "impropio_sp500": (f"mediana del cierre < {CIERRE_MINIMO:g} USD o del efectivo diario < {EFECTIVO_MINIMO:,.0f} USD "
+                       "dentro del tramo: impropio de un miembro del S&P 500 (otra empresa, OTC o ADR, con el ticker)"),
+    "reutilizado_despues": "Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)",
+}
+SOSPECHAS_EXCLUYEN = ("empieza_tarde", "impropio_sp500", "ticker_q")   # termina_tarde: solo variante estricta
 COLUMNAS_COBERTURA = ("grupo", "ticker", "ticker_yahoo", "alta", "baja", "anio_salida", "sesiones_esperadas",
-                      "sesiones_con_precio", "fraccion", "clase", "primera_yahoo", "ultima_yahoo", "nota")
+                      "sesiones_con_precio", "fraccion", "clase", "primera_yahoo", "ultima_yahoo", "sospecha",
+                      "en_estimacion", "nota")
+DECADAS = ([1995, 1999, 2009, 2019, 2026], ["1996-1999", "2000-2009", "2010-2019", "2020-2026"])
 OPCIONES_CORRECCION = {
     "wrds_crsp": ("CRSP vía WRDS: precios y rentabilidades de deslistados (PERMNO, DLRET); pendiente de la "
                   "licencia de MIAX. Es la corrección completa."),
@@ -95,10 +130,18 @@ def cargar_tramos(raiz: Path | None = None) -> pd.DataFrame:
     return pd.read_parquet(ruta)
 
 
-# --- Muestra ------------------------------------------------------------------------------------
+# --- Tramos y muestra ---------------------------------------------------------------------------
 def ticker_yahoo(ticker: str) -> str:
     """Ticker del fichero del S&P 500 → símbolo de Yahoo (``BRK.B`` → ``BRK-B``)."""
     return str(ticker).strip().replace(".", "-")
+
+
+def todos_los_tramos(tramos: pd.DataFrame) -> pd.DataFrame:
+    """Todos los tramos con ``grupo`` (``salido``/``actual``) y ``anio_salida`` (vía almacén)."""
+    out = tramos.copy()
+    out["grupo"] = np.where(out["baja"].notna(), "salido", "actual")
+    out["anio_salida"] = out["baja"].dt.year.astype("Int64")
+    return out.sort_values(["grupo", "anio_salida", "ticker", "alta"], na_position="last").reset_index(drop=True)
 
 
 def muestra_salidos(tramos: pd.DataFrame, por_anio: int = POR_ANIO, semilla: int = SEMILLA) -> pd.DataFrame:
@@ -120,14 +163,63 @@ def muestra_actuales(tramos: pd.DataFrame, n: int = N_ACTUALES, semilla: int = S
     return out.sort_values("ticker").reset_index(drop=True)
 
 
-# --- Descarga -----------------------------------------------------------------------------------
+def muestra_antigua(tramos: pd.DataFrame) -> pd.DataFrame:
+    """La muestra de 122 tramos de la vía de respaldo (62 salidos y 60 actuales)."""
+    return pd.concat([muestra_salidos(tramos), muestra_actuales(tramos)], ignore_index=True)
+
+
+# --- Rentabilidad: almacén de precios (vía principal) ------------------------------------------
+def _vacia() -> pd.DataFrame:
+    return pd.DataFrame({"sesion": pd.Series(dtype="datetime64[ns]"), "rentabilidad": pd.Series(dtype=float)})
+
+
+def rentabilidad_total_precios(precios: pd.DataFrame) -> pd.DataFrame:
+    """Precios as-traded de UN ticker (contrato) → ``sesion, rentabilidad`` total diaria.
+
+    Es el cambio de ``close_aj_total`` de ``timegate.ajustar_a_fecha`` a la última
+    ``fecha_publicacion`` del ticker (lo que se sabe hoy): neutra ante splits y con los dividendos
+    reinvertidos (``close_t / (close_{t-1} - D_t)`` en la fecha ex). Rentabilidades no finitas
+    (cierres nulos o <= 0) → NaN. La primera sesión es NaN. Lleva también ``cierre`` (as-traded) y
+    ``efectivo`` (``close * volume``), solo para las sospechas de identidad (no salen del módulo).
+    """
+    if precios is None or precios.empty:
+        return _vacia()
+    from ingesta.mercados_series.timegate import ajustar_a_fecha
+
+    fecha = pd.Timestamp(precios["fecha_publicacion"].max()).normalize()
+    aj = ajustar_a_fecha(precios, fecha, avisar=False)
+    c = aj["close_aj_total"].to_numpy(dtype=float)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        r = np.r_[np.nan, c[1:] / c[:-1] - 1.0] if len(c) else np.array([], dtype=float)
+    r[~np.isfinite(r)] = np.nan
+    return pd.DataFrame({"sesion": pd.DatetimeIndex(aj["sesion"]).normalize(), "rentabilidad": r,
+                         "cierre": aj["close"].to_numpy(dtype=float),
+                         "efectivo": (aj["close"] * aj["volume"]).to_numpy(dtype=float)})
+
+
+def lector_almacen(ruta: Path | None = None) -> Callable[[str], pd.DataFrame | None]:
+    """Lector ``símbolo → rentabilidad total diaria`` sobre ``precios/yahoo`` (o ``ruta``), con caché.
+
+    Solo lectura del almacén (``almacen.leer_precios``). ``None`` si el símbolo no tiene fichero.
+    """
+    from ingesta.mercados_series import almacen
+
+    @functools.lru_cache(maxsize=None)
+    def leer(sym: str) -> pd.DataFrame | None:
+        p = almacen.leer_precios(sym, "yahoo", ruta)
+        return None if p.empty else rentabilidad_total_precios(p)
+
+    return leer
+
+
+# --- Rentabilidad: muestra antigua (vía de respaldo) -------------------------------------------
 def rentabilidad_diaria(vista: pd.DataFrame) -> pd.DataFrame:
     """Vista de Yahoo (``Close`` y ``Dividends`` con splits ajustados) → ``sesion, rentabilidad``.
 
     Rentabilidad total: ``(Close_t + Dividends_t) / Close_{t-1} - 1``. Filas sin ``Close`` fuera.
     """
     if vista is None or vista.empty or "Close" not in vista:
-        return pd.DataFrame({"sesion": pd.Series(dtype="datetime64[ns]"), "rentabilidad": pd.Series(dtype=float)})
+        return _vacia()
     v = vista[vista["Close"].notna()].copy()
     idx = pd.DatetimeIndex(v.index)
     if idx.tz is not None:
@@ -242,36 +334,105 @@ def cobertura_tramo(sesiones_precio: pd.Series | pd.DatetimeIndex | None, alta: 
             "primera_yahoo": str(sp.min().date()), "ultima_yahoo": str(sp.max().date())}
 
 
+def sospechas_tramo(cob: dict[str, Any], alta: Any, baja: Any, nota: Any = None, *,
+                    mediana_cierre: float | None = None, mediana_efectivo: float | None = None) -> list[str]:
+    """Sospechas de identidad de un tramo (claves de ``SOSPECHAS``) a partir de su cobertura y su nota.
+
+    ``mediana_cierre`` y ``mediana_efectivo``: medianas del cierre as-traded y de ``close * volume``
+    DENTRO del tramo (si se conocen). Sacan el tramo de la estimación las de ``SOSPECHAS_EXCLUYEN``;
+    ``termina_tarde`` solo en la variante estricta (casi siempre es una reentrada de la misma
+    empresa, cuya serie empieza antes del alta); ``reutilizado_despues`` es informativa (el tramo
+    no tiene precio).
+    """
+    if not cob.get("primera_yahoo"):
+        return []
+    primera, ultima = pd.Timestamp(cob["primera_yahoo"]), pd.Timestamp(cob["ultima_yahoo"])
+    texto = nota if isinstance(nota, str) else ""
+    nota_reuso = "reutilizado" in texto or "sufijo Q" in texto
+    out = []
+    if cob["clase"] == "fuera_de_tramo":
+        if pd.notna(baja) and primera >= pd.Timestamp(baja):
+            out.append("reutilizado_despues")
+        return out
+    if primera > pd.Timestamp(alta) + HOLGURA_INICIO:
+        out.append("empieza_tarde")
+    if pd.notna(baja) and nota_reuso and ultima > pd.Timestamp(baja) + HOLGURA_FIN:
+        out.append("termina_tarde")
+    if "sufijo Q" in texto:
+        out.append("ticker_q")
+    if (mediana_cierre is not None and mediana_cierre < CIERRE_MINIMO) or             (mediana_efectivo is not None and mediana_efectivo < EFECTIVO_MINIMO):
+        out.append("impropio_sp500")
+    return out
+
+
+def _medianas_tramo(rent: pd.DataFrame | None, alta: Any, baja: Any) -> dict[str, float | None]:
+    """Medianas de ``cierre`` y ``efectivo`` dentro de ``[alta, baja)`` (``None`` si no hay columnas)."""
+    if rent is None or rent.empty or "cierre" not in rent:
+        return {"mediana_cierre": None, "mediana_efectivo": None}
+    dentro = rent["sesion"] >= pd.Timestamp(alta)
+    if pd.notna(baja):
+        dentro &= rent["sesion"] < pd.Timestamp(baja)
+    q = rent.loc[dentro]
+    if q.empty:
+        return {"mediana_cierre": None, "mediana_efectivo": None}
+    ef = q["efectivo"].median() if "efectivo" in q else np.nan
+    return {"mediana_cierre": float(q["cierre"].median()),
+            "mediana_efectivo": float(ef) if np.isfinite(ef) else None}
+
+
 def tabla_cobertura(muestra: pd.DataFrame, raiz: Path | None = None, hoy: Any = None,
                     lector: Callable[[str], pd.DataFrame | None] | None = None) -> pd.DataFrame:
-    """Una fila de METADATOS por tramo de la muestra (sin valores de precio)."""
+    """Una fila de METADATOS por tramo (sin valores de precio), con sospechas y ``en_estimacion``."""
     lector = lector or (lambda s: leer_rentabilidad(s, raiz))
     filas = []
     for r in muestra.itertuples(index=False):
         sym = ticker_yahoo(r.ticker)
         rent = lector(sym)
         cob = cobertura_tramo(None if rent is None else rent["sesion"], r.alta, r.baja, hoy=hoy)
-        notas = [str(r.nota)] if isinstance(r.nota, str) and r.nota else []
-        if cob["clase"] == "fuera_de_tramo" and cob["primera_yahoo"] and pd.notna(r.baja) \
-                and pd.Timestamp(cob["primera_yahoo"]) >= pd.Timestamp(r.baja):
-            notas.append("Yahoo empieza después de la baja: ticker reutilizado por otra empresa (probable)")
-        if cob["clase"] in ("completa", "parcial") and pd.notna(r.baja):
+        nota = getattr(r, "nota", None)
+        sosp = sospechas_tramo(cob, r.alta, r.baja, nota, **_medianas_tramo(rent, r.alta, r.baja))
+        notas = [str(nota)] if isinstance(nota, str) and nota else []
+        notas += [SOSPECHAS[k] for k in sosp]
+        if cob["clase"] in ("completa", "parcial") and pd.notna(r.baja) and not sosp:
             notas.append("identidad no verificable sin PERMNO/CIK: puede ser otra empresa con el mismo ticker")
+        usable = cob["clase"] in ("completa", "parcial") and not set(sosp) & set(SOSPECHAS_EXCLUYEN)
         filas.append({"grupo": r.grupo, "ticker": r.ticker, "ticker_yahoo": sym, "alta": r.alta, "baja": r.baja,
-                      "anio_salida": r.anio_salida, **cob, "nota": "; ".join(notas) or None})
+                      "anio_salida": r.anio_salida, **cob, "sospecha": "+".join(sosp) or None,
+                      "en_estimacion": bool(usable), "nota": "; ".join(notas) or None})
     return pd.DataFrame(filas, columns=list(COLUMNAS_COBERTURA))
 
 
 def resumen_por_anio(cob: pd.DataFrame) -> pd.DataFrame:
-    """Por año de salida: n, fracción media de sesiones con precio y reparto por clase."""
+    """Por año de salida: n, fracción media de sesiones con precio, reparto por clase y tramos usados."""
     s = cob[cob["grupo"] == "salido"]
     if s.empty:
         return pd.DataFrame()
-    t = s.groupby("anio_salida").agg(n=("ticker", "size"), fraccion_media=("fraccion", "mean"))
+    t = s.groupby("anio_salida").agg(n=("ticker", "size"), fraccion_media=("fraccion", "mean"),
+                                     en_estimacion=("en_estimacion", "sum"))
     clases = s.pivot_table(index="anio_salida", columns="clase", values="ticker", aggfunc="size", fill_value=0)
     t = t.join(clases.reindex(columns=list(CLASES), fill_value=0))
     t["con_precio_completo"] = t["completa"] / t["n"]
     return t.reset_index()
+
+
+def _resumen_grupo(g: pd.DataFrame) -> dict[str, Any]:
+    util = g["fraccion"].where(g["en_estimacion"], 0.0)
+    return {"n": int(len(g)), "con_fichero": int(g["primera_yahoo"].notna().sum()),
+            "con_precio_en_tramo": int(g["clase"].isin(["completa", "parcial"]).sum()),
+            "completa": int((g["clase"] == "completa").sum()),
+            "sospechosos_excluidos": int((g["clase"].isin(["completa", "parcial"]) & ~g["en_estimacion"]).sum()),
+            "en_estimacion": int(g["en_estimacion"].sum()),
+            "fraccion_media": round(float(g["fraccion"].mean()), 3),
+            "fraccion_media_util": round(float(util.mean()), 3)}
+
+
+def resumen_por_decada(cob: pd.DataFrame) -> dict[str, dict[str, Any]]:
+    """Salidos por década de salida: cobertura dentro del tramo y tramos usados en la estimación."""
+    s = cob[cob["grupo"] == "salido"]
+    if s.empty:
+        return {}
+    dec = pd.cut(s["anio_salida"].astype(int), DECADAS[0], labels=DECADAS[1])
+    return {str(k): _resumen_grupo(g) for k, g in s.groupby(dec, observed=True)}
 
 
 # --- Sesgo --------------------------------------------------------------------------------------
@@ -288,82 +449,125 @@ def rentabilidad_mensual(rent: pd.DataFrame, alta: Any = None, baja: Any = None)
     return (1.0 + s).groupby(s.index.to_period("M")).prod() - 1.0
 
 
-def _miembros_mes(tramos: pd.DataFrame, inicio_mes: pd.Timestamp) -> pd.Series:
-    viva = (tramos["alta"] <= inicio_mes) & (tramos["baja"].isna() | (tramos["baja"] > inicio_mes))
-    return viva
-
-
 def estimar_sesgo(tramos: pd.DataFrame, muestra: pd.DataFrame,
                   lector: Callable[[str], pd.DataFrame | None]) -> pd.DataFrame:
     """Rentabilidad equiponderada mensual PIT (con precio) frente a la de los miembros actuales.
 
     Mes ``m``: miembros PIT = tramos vivos el primer día del mes, en dos grupos (``salido``: tramo ya
     cerrado; ``actual``: tramo abierto) con ``n_salidos`` y ``n_actuales`` miembros. La media de cada
-    grupo se estima con su muestra (tramos de la muestra vivos ese mes con rentabilidad); la cartera
-    PIT pondera ambas por ``n``. Supervivientes = media de la muestra de actuales con rentabilidad ese
-    mes, SIN mirar cuándo entraron (la composición de hoy aplicada hacia atrás). Si el grupo salido no
-    tiene ningún dato ese mes, la PIT usa solo los actuales (``pit_solo_actuales=True``).
+    grupo se estima con los tramos de ``muestra`` (la muestra antigua o todos los usables del
+    almacén) vivos ese mes con rentabilidad; la cartera PIT pondera ambas por ``n``.
+    Supervivientes = media de los actuales de ``muestra`` con rentabilidad ese mes, SIN mirar cuándo
+    entraron (la composición de hoy aplicada hacia atrás). Si el grupo salido no tiene ningún dato
+    ese mes, la PIT usa solo los actuales (``pit_solo_actuales=True``). ``cobertura_pit``: fracción
+    de los miembros PIT del mes con rentabilidad en la estimación.
     """
     mens: dict[int, pd.Series] = {}
     completas: dict[int, pd.Series] = {}
+    grupos: dict[int, str] = {}
     for i, r in enumerate(muestra.itertuples(index=False)):
         rent = lector(ticker_yahoo(r.ticker))
         if rent is None or rent.empty:
             continue
-        mens[i] = rentabilidad_mensual(rent, r.alta, r.baja)
+        s = rentabilidad_mensual(rent, r.alta, r.baja)
+        if len(s):
+            mens[i], grupos[i] = s, r.grupo
         if r.grupo == "actual":
-            completas[i] = rentabilidad_mensual(rent)
+            c = rentabilidad_mensual(rent)
+            if len(c):
+                completas[i] = c
     if not mens:
         return pd.DataFrame()
-    mens = {i: s for i, s in mens.items() if len(s)}
-    if not mens:
-        return pd.DataFrame()
-    todos = pd.concat(list(mens.values()))
-    inicio = max(todos.index.min(), tramos["alta"].min().to_period("M"))
-    periodos = pd.period_range(inicio, todos.index.max(), freq="M")
-    grupo = muestra["grupo"].to_numpy()
-    filas = []
-    for p in periodos:
-        im = p.to_timestamp()
-        viva = _miembros_mes(tramos, im)
-        n_sal = int((viva & tramos["baja"].notna()).sum())
-        n_act = int((viva & tramos["baja"].isna()).sum())
-        med: dict[str, list[float]] = {"salido": [], "actual": []}
-        for i, s in mens.items():
-            if p in s.index and np.isfinite(s[p]):
-                med[grupo[i]].append(float(s[p]))
-        sup = [float(s[p]) for s in completas.values() if p in s.index and np.isfinite(s[p])]
-        m_sal = float(np.mean(med["salido"])) if med["salido"] else np.nan
-        m_act = float(np.mean(med["actual"])) if med["actual"] else np.nan
-        if np.isfinite(m_sal) and np.isfinite(m_act):
-            pit = (n_sal * m_sal + n_act * m_act) / (n_sal + n_act) if (n_sal + n_act) else np.nan
-        else:
-            pit = m_act if np.isfinite(m_act) else m_sal
-        filas.append({"mes": p.to_timestamp(how="end").normalize(), "n_salidos_pit": n_sal, "n_actuales_pit": n_act,
-                      "muestra_salidos_con_precio": len(med["salido"]),
-                      "muestra_actuales_pit_con_precio": len(med["actual"]),
-                      "muestra_supervivientes_con_precio": len(sup),
-                      "pit": pit, "supervivientes": float(np.mean(sup)) if sup else np.nan,
-                      "pit_solo_actuales": not np.isfinite(m_sal)})
-    out = pd.DataFrame(filas)
+    m = pd.DataFrame(mens).replace([np.inf, -np.inf], np.nan)
+    inicio = max(m.index.min(), tramos["alta"].min().to_period("M"))
+    periodos = pd.period_range(inicio, m.index.max(), freq="M")
+    m = m.reindex(periodos)
+    sup = (pd.DataFrame(completas).replace([np.inf, -np.inf], np.nan).reindex(periodos) if completas
+           else pd.DataFrame(index=periodos))
+    m_sal = m[[i for i in m.columns if grupos[i] == "salido"]]
+    m_act = m[[i for i in m.columns if grupos[i] == "actual"]]
+
+    inicios = periodos.to_timestamp().to_numpy()[:, None]
+    alta = tramos["alta"].to_numpy()[None, :]
+    baja = tramos["baja"].to_numpy()[None, :]
+    abierto = tramos["baja"].isna().to_numpy()[None, :]
+    viva = (alta <= inicios) & (abierto | (baja > inicios))
+    n_sal = (viva & ~abierto).sum(axis=1)
+    n_act = (viva & abierto).sum(axis=1)
+
+    media_sal, media_act = m_sal.mean(axis=1).to_numpy(), m_act.mean(axis=1).to_numpy()
+    con_sal, con_act = m_sal.notna().sum(axis=1).to_numpy(), m_act.notna().sum(axis=1).to_numpy()
+    ambos = np.isfinite(media_sal) & np.isfinite(media_act)
+    total = n_sal + n_act
+    with np.errstate(invalid="ignore", divide="ignore"):
+        mezcla = np.where(total > 0, (n_sal * np.nan_to_num(media_sal) + n_act * np.nan_to_num(media_act)) / total,
+                          np.nan)
+        cobertura = np.where(total > 0, (con_sal + con_act) / total, np.nan)
+    pit = np.where(ambos, mezcla, np.where(np.isfinite(media_act), media_act, media_sal))
+    out = pd.DataFrame({
+        "mes": periodos.to_timestamp(how="end").normalize(), "n_salidos_pit": n_sal, "n_actuales_pit": n_act,
+        "muestra_salidos_con_precio": con_sal, "muestra_actuales_pit_con_precio": con_act,
+        "muestra_supervivientes_con_precio": sup.notna().sum(axis=1).to_numpy(),
+        "pit": pit, "supervivientes": sup.mean(axis=1).to_numpy() if sup.shape[1] else np.nan,
+        "pit_solo_actuales": ~np.isfinite(media_sal), "cobertura_pit": cobertura,
+    })
     out["diferencia"] = out["supervivientes"] - out["pit"]
     return out
 
 
-def resumen_sesgo(sesgo: pd.DataFrame) -> dict[str, Any]:
-    """Medias anualizadas (×12) de PIT, supervivientes y diferencia en los meses con ambos datos."""
+def resumen_sesgo(sesgo: pd.DataFrame, limitacion: bool = True) -> dict[str, Any]:
+    """Medias anualizadas (×12) de PIT, supervivientes y diferencia en los meses con ambos datos.
+
+    ``sesgo_ic95_anual_pct``: intervalo al 95 % de la media de la diferencia mensual (normal, sin
+    corrección por autocorrelación), anualizado ×12.
+    """
+    if sesgo is None or sesgo.empty:
+        return {"meses": 0}
     s = sesgo.dropna(subset=["pit", "supervivientes"])
-    s = s[~s["pit_solo_actuales"]]
+    s = s[~s["pit_solo_actuales"].astype(bool)]
     if s.empty:
         return {"meses": 0}
-    t = np.sqrt(len(s))
     dif = s["diferencia"]
-    return {"meses": int(len(s)), "desde": str(s["mes"].min().date()), "hasta": str(s["mes"].max().date()),
-            "pit_anual_pct": round(float(s["pit"].mean() * 1200), 2),
-            "supervivientes_anual_pct": round(float(s["supervivientes"].mean() * 1200), 2),
-            "sesgo_anual_pct": round(float(dif.mean() * 1200), 2),
-            "sesgo_t": round(float(dif.mean() / dif.std(ddof=1) * t), 2) if dif.std(ddof=1) > 0 else None,
-            "limitacion": NOTA_LIMITACION}
+    sd = float(dif.std(ddof=1)) if len(s) > 1 else 0.0
+    ee = sd / np.sqrt(len(s)) if sd > 0 else 0.0
+    out = {"meses": int(len(s)), "desde": str(s["mes"].min().date()), "hasta": str(s["mes"].max().date()),
+           "pit_anual_pct": round(float(s["pit"].mean() * 1200), 2),
+           "supervivientes_anual_pct": round(float(s["supervivientes"].mean() * 1200), 2),
+           "sesgo_anual_pct": round(float(dif.mean() * 1200), 2),
+           "sesgo_ic95_anual_pct": [round(float((dif.mean() - 1.96 * ee) * 1200), 2),
+                                    round(float((dif.mean() + 1.96 * ee) * 1200), 2)],
+           "sesgo_t": round(float(dif.mean() / ee), 2) if ee > 0 else None}
+    if "cobertura_pit" in s:
+        out["cobertura_pit_media"] = round(float(s["cobertura_pit"].mean()), 3)
+    if limitacion:
+        out["limitacion"] = NOTA_LIMITACION
+    return out
+
+
+# --- Medición completa (vía almacén) ------------------------------------------------------------
+def medir_almacen(tramos: pd.DataFrame | None = None, *, ruta: Path | None = None, hoy: Any = None,
+                  con_muestra_antigua: bool = True) -> dict[str, Any]:
+    """Cobertura de TODOS los tramos y sesgo con el almacén de precios (más variantes de contraste).
+
+    Devuelve ``{"cobertura", "sesgo", "variantes", "mediciones"}``. Variantes: ``sin_sospechas``
+    (principal: ``en_estimacion``), ``estricta`` (excluye además ``termina_tarde``),
+    ``con_sospechas`` (todos los tramos con precio en el tramo) y, si hay registro de la vía de
+    respaldo y ``con_muestra_antigua``, ``muestra_122`` (la estimación anterior, sobre la muestra
+    descargada aparte).
+    """
+    tramos = cargar_tramos() if tramos is None else tramos
+    lector = lector_almacen(ruta)
+    cob = tabla_cobertura(todos_los_tramos(tramos), hoy=hoy, lector=lector)
+    con_precio = cob[cob["clase"].isin(["completa", "parcial"])]
+    estricta = cob["en_estimacion"] & ~cob["sospecha"].fillna("").str.contains("termina_tarde")
+    variantes = {"sin_sospechas": estimar_sesgo(tramos, cob[cob["en_estimacion"]], lector),
+                 "estricta": estimar_sesgo(tramos, cob[estricta], lector),
+                 "con_sospechas": estimar_sesgo(tramos, con_precio, lector)}
+    reg = leer_registro() if con_muestra_antigua else pd.DataFrame()
+    if len(reg):
+        variantes["muestra_122"] = estimar_sesgo(tramos, muestra_antigua(tramos), leer_rentabilidad)
+    med = mediciones(cob, variantes["sin_sospechas"], pd.DataFrame(), via="almacen", variantes=variantes)
+    return {"cobertura": cob, "sesgo": variantes["sin_sospechas"], "variantes": variantes, "mediciones": med}
 
 
 # --- Ficha y CLI --------------------------------------------------------------------------------
@@ -377,7 +581,10 @@ def guardar_tabla(cob: pd.DataFrame) -> Path:
     return destino
 
 
-def mediciones(cob: pd.DataFrame, sesgo: pd.DataFrame, reg: pd.DataFrame) -> dict[str, Any]:
+def mediciones(cob: pd.DataFrame, sesgo: pd.DataFrame, reg: pd.DataFrame, *, via: str = "muestra",
+               variantes: dict[str, pd.DataFrame] | None = None) -> dict[str, Any]:
+    if via not in VIAS:
+        raise ValueError(f"vía desconocida {via!r}; se espera una de {VIAS}")
     sal = cob[cob["grupo"] == "salido"]
     act = cob[cob["grupo"] == "actual"]
     por_anio = resumen_por_anio(cob)
@@ -388,19 +595,33 @@ def mediciones(cob: pd.DataFrame, sesgo: pd.DataFrame, reg: pd.DataFrame) -> dic
         for k, g in sal.groupby(tramo, observed=True):
             periodos[str(k)] = {"n": int(len(g)), "completa": int((g["clase"] == "completa").sum()),
                                 "fraccion_media": round(float(g["fraccion"].mean()), 3)}
-    return {
+    sosp = cob["sospecha"].dropna().str.split("+").explode() if "sospecha" in cob else pd.Series(dtype=str)
+    out = {
+        "via": via,
         "salidos_muestra": int(len(sal)), "actuales_muestra": int(len(act)),
         "salidos_por_clase": {k: int((sal["clase"] == k).sum()) for k in CLASES},
         "actuales_por_clase": {k: int((act["clase"] == k).sum()) for k in CLASES},
         "salidos_fraccion_media_sesiones": round(float(sal["fraccion"].mean()), 3) if len(sal) else None,
+        "tramos_en_estimacion": {"salidos": int(sal["en_estimacion"].sum()), "actuales": int(act["en_estimacion"].sum())}
+        if "en_estimacion" in cob else {},
+        "sospechas": {k: int((sosp == k).sum()) for k in SOSPECHAS},
+        "salidos_por_decada_de_salida": resumen_por_decada(cob) if "en_estimacion" in cob else {},
         "salidos_por_periodo_de_salida": periodos,
         "salidos_por_anio": por_anio[["anio_salida", "n", "completa", "fraccion_media"]]
-        .assign(fraccion_media=lambda x: x["fraccion_media"].round(3)).to_dict("records") if len(por_anio) else [],
+        .assign(fraccion_media=lambda x: x["fraccion_media"].round(3), anio_salida=lambda x: x["anio_salida"].astype(int))
+        .to_dict("records") if len(por_anio) else [],
         "sesgo": resumen_sesgo(sesgo) if len(sesgo) else {"meses": 0},
-        "simbolos_sin_descargar": sorted(set(cob["ticker_yahoo"]) - set(reg["ticker_yahoo"])) if len(reg) else [],
-        "descargas": {"simbolos": int(len(reg)), "por_estado": reg["estado"].value_counts().to_dict() if len(reg) else {},
-                      "segundos_medios": round(float(reg["segundos"].mean()), 2) if len(reg) else None},
+        "sesgo_variantes": {k: resumen_sesgo(v, limitacion=False) for k, v in (variantes or {}).items()},
     }
+    if via == "muestra":
+        out["simbolos_sin_descargar"] = sorted(set(cob["ticker_yahoo"]) - set(reg["ticker_yahoo"])) if len(reg) else []
+        out["descargas"] = {"simbolos": int(len(reg)), "por_estado": reg["estado"].value_counts().to_dict() if len(reg) else {},
+                            "segundos_medios": round(float(reg["segundos"].mean()), 2) if len(reg) else None}
+    else:
+        out["almacen"] = {"tramos_con_fichero": int(cob["primera_yahoo"].notna().sum()),
+                          "salidos_con_fichero": int(sal["primera_yahoo"].notna().sum()),
+                          "actuales_con_fichero": int(act["primera_yahoo"].notna().sum())}
+    return out
 
 
 def guardar_ficha_supervivencia(med: dict[str, Any], cob: pd.DataFrame) -> Path:
@@ -409,6 +630,30 @@ def guardar_ficha_supervivencia(med: dict[str, Any], cob: pd.DataFrame) -> Path:
 
     sal = cob[cob["grupo"] == "salido"]
     completa = med["salidos_por_clase"].get("completa", 0)
+    almacen = med.get("via", "muestra") == "almacen"
+    if almacen:
+        volumen = (f"{len(cob)} tramos (todos: {len(sal)} salidos y {len(cob) - len(sal)} actuales); "
+                   f"{med['almacen']['tramos_con_fichero']} con parquet as-traded en el almacén")
+        formato = "parquet as-traded del almacén de precios (solo lectura) + csv de metadatos"
+        limites = "sin red (lee el almacén del bloque 6); Yahoo no sirve la mayoría de deslistados"
+        metodo = ("Módulo: ingesta.mercados_series.supervivencia, vía almacén (todos los tramos con precio; rentabilidad "
+                  "total de close_aj_total de timegate.ajustar_a_fecha a la última fecha)")
+        usados = med.get("tramos_en_estimacion", {})
+        extra = [f"Tramos en la estimación: {usados.get('salidos', 0)} salidos y {usados.get('actuales', 0)} actuales; "
+                 "los tramos con sospecha de otra empresa con el mismo ticker (empieza_tarde, impropio_sp500, ticker_q) "
+                 "se excluyen de la principal; la variante estricta excluye además termina_tarde y con_sospechas los "
+                 "incluye todos",
+                 f"Sospechas heurísticas: precio que empieza > {HOLGURA_INICIO.days} días tras el alta; mediana del "
+                 f"cierre < {CIERRE_MINIMO:g} USD o del efectivo diario < {EFECTIVO_MINIMO:,.0f} USD en el tramo; nota "
+                 f"de varios tramos o sufijo Q y precio > {HOLGURA_FIN.days} días tras la baja",
+                 "Vía de respaldo: muestra de 122 tramos descargada aparte (variante muestra_122)"]
+    else:
+        volumen = f"{len(cob)} tramos muestreados; {len(sal)} salidos en la muestra"
+        formato = "parquet (rentabilidad diaria derivada) + csv de metadatos"
+        limites = f"<= {RITMO} tickers/s, timeout {TIMEOUT} s; Yahoo no sirve la mayoría de deslistados"
+        metodo = "Módulo: ingesta.mercados_series.supervivencia (muestra estratificada por año de salida, semilla fija)"
+        extra = ["La muestra de salidos está estratificada por año de salida, no por mes: la media de los salidos de "
+                 "cada mes es una estimación con pocos datos (ruido alto)"]
     return guardar_ficha(FichaFuente(
         fuente="supervivencia",
         nombre="Sesgo de supervivencia del S&P 500: cobertura de Yahoo para los miembros salidos",
@@ -420,18 +665,18 @@ def guardar_ficha_supervivencia(med: dict[str, Any], cob: pd.DataFrame) -> Path:
         cobertura_fin=str(pd.to_datetime(sal["baja"]).max().date()) if len(sal) else None,
         frecuencia="diaria (rentabilidad) → mensual (sesgo)",
         retraso_publicacion="no aplica (medición); los precios de Yahoo, cierre local + 30 min (ficha yahoo)",
-        formato="parquet (rentabilidad diaria derivada) + csv de metadatos",
-        volumen_estimado=f"{len(cob)} tramos muestreados; 759 tramos salidos en total (1996-2026)",
-        limites=f"<= {RITMO} tickers/s, timeout {TIMEOUT} s; Yahoo no sirve la mayoría de deslistados",
+        formato=formato,
+        volumen_estimado=volumen,
+        limites=limites,
         estado_sonda="ok" if len(sal) else "fallo",
         mediciones=med,
         notas=[
-            "Módulo: ingesta.mercados_series.supervivencia (muestra estratificada por año de salida, semilla fija)",
+            metodo,
             f"Salidos con precio completo en su tramo: {completa} de {len(sal)}",
             NOTA_LIMITACION,
-            "La muestra de salidos está estratificada por año de salida, no por mes: la media de los salidos de "
-            "cada mes es una estimación con pocos datos (ruido alto)",
+            *extra,
             "Un ticker con datos dentro del tramo puede ser otra empresa (sin PERMNO/CIK no se verifica)",
+            "Intervalo del sesgo: 95 % normal sobre la diferencia mensual, sin corregir autocorrelación",
             *[f"Corrección '{k}': {v}" for k, v in OPCIONES_CORRECCION.items()],
             "Decisión: WRDS pendiente de MIAX; mientras tanto el sesgo se DECLARA y se MIDE con esta cota",
         ],
@@ -441,22 +686,30 @@ def guardar_ficha_supervivencia(med: dict[str, Any], cob: pd.DataFrame) -> Path:
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("accion", choices=["descargar", "medir", "todo"])
+    p.add_argument("--via", choices=VIAS, default="almacen",
+                   help="almacen: parquet as-traded de todos los tramos; muestra: 122 tramos descargados aparte")
     p.add_argument("--por-anio", type=int, default=POR_ANIO)
     p.add_argument("--actuales", type=int, default=N_ACTUALES)
     a = p.parse_args(argv)
     logging.basicConfig(level=logging.INFO)
     tramos = cargar_tramos()
     muestra = pd.concat([muestra_salidos(tramos, a.por_anio), muestra_actuales(tramos, a.actuales)], ignore_index=True)
-    if a.accion in ("descargar", "todo"):
+    if a.accion in ("descargar", "todo") and a.via == "muestra":
         reg = descargar_muestra([ticker_yahoo(t) for t in muestra["ticker"]])
         print(reg["estado"].value_counts().to_dict())
+    elif a.accion == "descargar":
+        print("vía almacén: nada que descargar (los precios vienen del bloque 6)")
     if a.accion in ("medir", "todo"):
-        cob = tabla_cobertura(muestra)
+        if a.via == "almacen":
+            res = medir_almacen(tramos)
+            cob, med = res["cobertura"], res["mediciones"]
+        else:
+            cob = tabla_cobertura(muestra)
+            sesgo = estimar_sesgo(tramos, muestra, leer_rentabilidad)
+            med = mediciones(cob, sesgo, leer_registro().drop_duplicates("ticker_yahoo", keep="last"))
         print(guardar_tabla(cob))
-        sesgo = estimar_sesgo(tramos, muestra, leer_rentabilidad)
-        med = mediciones(cob, sesgo, leer_registro().drop_duplicates("ticker_yahoo", keep="last"))
-        print(json.dumps({k: med[k] for k in ("salidos_por_clase", "actuales_por_clase", "sesgo")}, indent=1,
-                         ensure_ascii=False))
+        print(json.dumps({k: med[k] for k in ("salidos_por_clase", "actuales_por_clase", "sesgo", "sesgo_variantes")},
+                         indent=1, ensure_ascii=False))
         print(guardar_ficha_supervivencia(med, cob))
 
 

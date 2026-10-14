@@ -13,280 +13,396 @@
   "coste": "0 €",
   "licencia_y_terminos": "Yahoo (yfinance): uso personal, sin redistribuir; composición del S&P 500 de fja05680/sp500 (MIT). Solo metadatos en el repositorio.",
   "cobertura_inicio": "1996-01-02",
-  "cobertura_fin": "2026-08-05",
+  "cobertura_fin": "2026-08-18",
   "frecuencia": "diaria (rentabilidad) → mensual (sesgo)",
   "retraso_publicacion": "no aplica (medición); los precios de Yahoo, cierre local + 30 min (ficha yahoo)",
-  "formato": "parquet (rentabilidad diaria derivada) + csv de metadatos",
-  "volumen_estimado": "122 tramos muestreados; 759 tramos salidos en total (1996-2026)",
-  "limites": "<= 0.5 tickers/s, timeout 90 s; Yahoo no sirve la mayoría de deslistados",
+  "formato": "parquet as-traded del almacén de precios (solo lectura) + csv de metadatos",
+  "volumen_estimado": "1262 tramos (todos: 759 salidos y 503 actuales); 803 con parquet as-traded en el almacén",
+  "limites": "sin red (lee el almacén del bloque 6); Yahoo no sirve la mayoría de deslistados",
   "estado_sonda": "ok",
   "mediciones": {
-    "salidos_muestra": 62,
-    "actuales_muestra": 60,
+    "via": "almacen",
+    "salidos_muestra": 759,
+    "actuales_muestra": 503,
     "salidos_por_clase": {
-      "completa": 14,
-      "parcial": 1,
-      "fuera_de_tramo": 7,
-      "sin_datos": 40
+      "completa": 150,
+      "parcial": 16,
+      "fuera_de_tramo": 134,
+      "sin_datos": 459
     },
     "actuales_por_clase": {
-      "completa": 59,
-      "parcial": 1,
+      "completa": 496,
+      "parcial": 7,
       "fuera_de_tramo": 0,
       "sin_datos": 0
     },
-    "salidos_fraccion_media_sesiones": 0.226,
+    "salidos_fraccion_media_sesiones": 0.206,
+    "tramos_en_estimacion": {
+      "salidos": 144,
+      "actuales": 496
+    },
+    "sospechas": {
+      "empieza_tarde": 22,
+      "termina_tarde": 32,
+      "ticker_q": 0,
+      "impropio_sp500": 15,
+      "reutilizado_despues": 134
+    },
+    "salidos_por_decada_de_salida": {
+      "1996-1999": {
+        "n": 120,
+        "con_fichero": 50,
+        "con_precio_en_tramo": 10,
+        "completa": 6,
+        "sospechosos_excluidos": 6,
+        "en_estimacion": 4,
+        "fraccion_media": 0.068,
+        "fraccion_media_util": 0.033
+      },
+      "2000-2009": {
+        "n": 276,
+        "con_fichero": 94,
+        "con_precio_en_tramo": 33,
+        "completa": 31,
+        "sospechosos_excluidos": 4,
+        "en_estimacion": 29,
+        "fraccion_media": 0.115,
+        "fraccion_media_util": 0.105
+      },
+      "2010-2019": {
+        "n": 221,
+        "con_fichero": 83,
+        "con_precio_en_tramo": 56,
+        "completa": 49,
+        "sospechosos_excluidos": 8,
+        "en_estimacion": 48,
+        "fraccion_media": 0.238,
+        "fraccion_media_util": 0.217
+      },
+      "2020-2026": {
+        "n": 142,
+        "con_fichero": 73,
+        "con_precio_en_tramo": 67,
+        "completa": 64,
+        "sospechosos_excluidos": 4,
+        "en_estimacion": 63,
+        "fraccion_media": 0.451,
+        "fraccion_media_util": 0.444
+      }
+    },
     "salidos_por_periodo_de_salida": {
       "1996-2000": {
-        "n": 10,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 174,
+        "completa": 10,
+        "fraccion_media": 0.074
       },
       "2001-2005": {
-        "n": 10,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 90,
+        "completa": 6,
+        "fraccion_media": 0.068
       },
       "2006-2010": {
-        "n": 10,
-        "completa": 2,
-        "fraccion_media": 0.2
+        "n": 148,
+        "completa": 22,
+        "fraccion_media": 0.151
       },
       "2011-2015": {
-        "n": 10,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 97,
+        "completa": 17,
+        "fraccion_media": 0.198
       },
       "2016-2020": {
-        "n": 10,
-        "completa": 6,
-        "fraccion_media": 0.6
+        "n": 128,
+        "completa": 39,
+        "fraccion_media": 0.312
       },
       "2021-2026": {
-        "n": 12,
-        "completa": 6,
-        "fraccion_media": 0.5
+        "n": 122,
+        "completa": 56,
+        "fraccion_media": 0.459
       }
     },
     "salidos_por_anio": [
       {
         "anio_salida": 1996,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 18,
+        "completa": 1,
+        "fraccion_media": 0.107
       },
       {
         "anio_salida": 1997,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 28,
+        "completa": 1,
+        "fraccion_media": 0.036
       },
       {
         "anio_salida": 1998,
-        "n": 2,
+        "n": 33,
         "completa": 0,
-        "fraccion_media": 0.0
+        "fraccion_media": 0.039
       },
       {
         "anio_salida": 1999,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 41,
+        "completa": 4,
+        "fraccion_media": 0.098
       },
       {
         "anio_salida": 2000,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 54,
+        "completa": 4,
+        "fraccion_media": 0.085
       },
       {
         "anio_salida": 2001,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 26,
+        "completa": 2,
+        "fraccion_media": 0.077
       },
       {
         "anio_salida": 2002,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 23,
+        "completa": 1,
+        "fraccion_media": 0.048
       },
       {
         "anio_salida": 2003,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 9,
+        "completa": 1,
+        "fraccion_media": 0.111
       },
       {
         "anio_salida": 2004,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 18,
+        "completa": 2,
+        "fraccion_media": 0.111
       },
       {
         "anio_salida": 2005,
-        "n": 2,
+        "n": 14,
         "completa": 0,
         "fraccion_media": 0.0
       },
       {
         "anio_salida": 2006,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 32,
+        "completa": 2,
+        "fraccion_media": 0.062
       },
       {
         "anio_salida": 2007,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 38,
+        "completa": 2,
+        "fraccion_media": 0.053
       },
       {
         "anio_salida": 2008,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 34,
+        "completa": 12,
+        "fraccion_media": 0.353
       },
       {
         "anio_salida": 2009,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 28,
+        "completa": 5,
+        "fraccion_media": 0.179
       },
       {
         "anio_salida": 2010,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 16,
+        "completa": 1,
+        "fraccion_media": 0.087
       },
       {
         "anio_salida": 2011,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 19,
+        "completa": 1,
+        "fraccion_media": 0.071
       },
       {
         "anio_salida": 2012,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 18,
+        "completa": 1,
+        "fraccion_media": 0.115
       },
       {
         "anio_salida": 2013,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 19,
+        "completa": 7,
+        "fraccion_media": 0.368
       },
       {
         "anio_salida": 2014,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 14,
+        "completa": 4,
+        "fraccion_media": 0.286
       },
       {
         "anio_salida": 2015,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 27,
+        "completa": 4,
+        "fraccion_media": 0.178
       },
       {
         "anio_salida": 2016,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 27,
+        "completa": 6,
+        "fraccion_media": 0.222
       },
       {
         "anio_salida": 2017,
-        "n": 2,
-        "completa": 2,
-        "fraccion_media": 1.0
+        "n": 28,
+        "completa": 9,
+        "fraccion_media": 0.321
       },
       {
         "anio_salida": 2018,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 24,
+        "completa": 6,
+        "fraccion_media": 0.25
       },
       {
         "anio_salida": 2019,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 29,
+        "completa": 10,
+        "fraccion_media": 0.375
       },
       {
         "anio_salida": 2020,
-        "n": 2,
-        "completa": 2,
-        "fraccion_media": 1.0
+        "n": 20,
+        "completa": 8,
+        "fraccion_media": 0.4
       },
       {
         "anio_salida": 2021,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 21,
+        "completa": 9,
+        "fraccion_media": 0.429
       },
       {
         "anio_salida": 2022,
-        "n": 2,
-        "completa": 0,
-        "fraccion_media": 0.0
+        "n": 24,
+        "completa": 5,
+        "fraccion_media": 0.208
       },
       {
         "anio_salida": 2023,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 19,
+        "completa": 10,
+        "fraccion_media": 0.526
       },
       {
         "anio_salida": 2024,
-        "n": 2,
-        "completa": 2,
-        "fraccion_media": 1.0
+        "n": 20,
+        "completa": 11,
+        "fraccion_media": 0.55
       },
       {
         "anio_salida": 2025,
-        "n": 2,
-        "completa": 2,
-        "fraccion_media": 1.0
+        "n": 21,
+        "completa": 13,
+        "fraccion_media": 0.619
       },
       {
         "anio_salida": 2026,
-        "n": 2,
-        "completa": 1,
-        "fraccion_media": 0.5
+        "n": 17,
+        "completa": 8,
+        "fraccion_media": 0.471
       }
     ],
     "sesgo": {
-      "meses": 362,
+      "meses": 365,
       "desde": "1996-02-29",
-      "hasta": "2026-03-31",
-      "pit_anual_pct": 11.7,
-      "supervivientes_anual_pct": 18.61,
-      "sesgo_anual_pct": 6.91,
-      "sesgo_t": 4.17,
+      "hasta": "2026-06-30",
+      "pit_anual_pct": 10.93,
+      "supervivientes_anual_pct": 18.2,
+      "sesgo_anual_pct": 7.28,
+      "sesgo_ic95_anual_pct": [
+        5.74,
+        8.81
+      ],
+      "sesgo_t": 9.31,
+      "cobertura_pit_media": 0.662,
       "limitacion": "Cota inferior: los salidos sin precio en Yahoo (quiebras, compras, tickers reutilizados) no entran en la cartera PIT; son los de peor rentabilidad, así que el sesgo real es mayor."
     },
-    "simbolos_sin_descargar": [],
-    "descargas": {
-      "simbolos": 121,
-      "por_estado": {
-        "ok": 81,
-        "sin_datos": 40
+    "sesgo_variantes": {
+      "sin_sospechas": {
+        "meses": 365,
+        "desde": "1996-02-29",
+        "hasta": "2026-06-30",
+        "pit_anual_pct": 10.93,
+        "supervivientes_anual_pct": 18.2,
+        "sesgo_anual_pct": 7.28,
+        "sesgo_ic95_anual_pct": [
+          5.74,
+          8.81
+        ],
+        "sesgo_t": 9.31,
+        "cobertura_pit_media": 0.662
       },
-      "segundos_medios": 0.43
+      "estricta": {
+        "meses": 365,
+        "desde": "1996-02-29",
+        "hasta": "2026-06-30",
+        "pit_anual_pct": 10.77,
+        "supervivientes_anual_pct": 18.2,
+        "sesgo_anual_pct": 7.43,
+        "sesgo_ic95_anual_pct": [
+          5.73,
+          9.13
+        ],
+        "sesgo_t": 8.57,
+        "cobertura_pit_media": 0.642
+      },
+      "con_sospechas": {
+        "meses": 365,
+        "desde": "1996-02-29",
+        "hasta": "2026-06-30",
+        "pit_anual_pct": 18.45,
+        "supervivientes_anual_pct": 18.16,
+        "sesgo_anual_pct": -0.29,
+        "sesgo_ic95_anual_pct": [
+          -13.78,
+          13.2
+        ],
+        "sesgo_t": -0.04,
+        "cobertura_pit_media": 0.675
+      },
+      "muestra_122": {
+        "meses": 362,
+        "desde": "1996-02-29",
+        "hasta": "2026-03-31",
+        "pit_anual_pct": 11.7,
+        "supervivientes_anual_pct": 18.61,
+        "sesgo_anual_pct": 6.91,
+        "sesgo_ic95_anual_pct": [
+          3.66,
+          10.16
+        ],
+        "sesgo_t": 4.17,
+        "cobertura_pit_media": 0.079
+      }
+    },
+    "almacen": {
+      "tramos_con_fichero": 803,
+      "salidos_con_fichero": 300,
+      "actuales_con_fichero": 503
     }
   },
   "notas": [
-    "Módulo: ingesta.mercados_series.supervivencia (muestra estratificada por año de salida, semilla fija)",
-    "Salidos con precio completo en su tramo: 14 de 62",
+    "Módulo: ingesta.mercados_series.supervivencia, vía almacén (todos los tramos con precio; rentabilidad total de close_aj_total de timegate.ajustar_a_fecha a la última fecha)",
+    "Salidos con precio completo en su tramo: 150 de 759",
     "Cota inferior: los salidos sin precio en Yahoo (quiebras, compras, tickers reutilizados) no entran en la cartera PIT; son los de peor rentabilidad, así que el sesgo real es mayor.",
-    "La muestra de salidos está estratificada por año de salida, no por mes: la media de los salidos de cada mes es una estimación con pocos datos (ruido alto)",
+    "Tramos en la estimación: 144 salidos y 496 actuales; los tramos con sospecha de otra empresa con el mismo ticker (empieza_tarde, impropio_sp500, ticker_q) se excluyen de la principal; la variante estricta excluye además termina_tarde y con_sospechas los incluye todos",
+    "Sospechas heurísticas: precio que empieza > 31 días tras el alta; mediana del cierre < 1 USD o del efectivo diario < 1,000,000 USD en el tramo; nota de varios tramos o sufijo Q y precio > 365 días tras la baja",
+    "Vía de respaldo: muestra de 122 tramos descargada aparte (variante muestra_122)",
     "Un ticker con datos dentro del tramo puede ser otra empresa (sin PERMNO/CIK no se verifica)",
+    "Intervalo del sesgo: 95 % normal sobre la diferencia mensual, sin corregir autocorrelación",
     "Corrección 'wrds_crsp': CRSP vía WRDS: precios y rentabilidades de deslistados (PERMNO, DLRET); pendiente de la licencia de MIAX. Es la corrección completa.",
     "Corrección 'alpha_vantage_listing_status': Alpha Vantage LISTING_STATUS (state=delisted): solo la LISTA de deslistados con fechas, sin precios. Sirve para identificar, no para corregir rentabilidades.",
     "Corrección 'tiingo': Tiingo EOD incluye muchos deslistados, pero exige una cuenta (y clave) del usuario; plan gratuito con límites diarios. No se ha probado aquí.",
     "Corrección 'imputacion_delisting': Sin precios: imputar la rentabilidad de salida (p. ej. -30 % en bajas por quiebra, Shumway 1997) solo como análisis de sensibilidad, declarado.",
     "Decisión: WRDS pendiente de MIAX; mientras tanto el sesgo se DECLARA y se MIDE con esta cota"
   ],
-  "fecha_sonda": "2026-10-13"
+  "fecha_sonda": "2026-10-14"
 }

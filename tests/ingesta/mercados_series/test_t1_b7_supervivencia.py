@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from ingesta.mercados_series import almacen, sinteticos
 from ingesta.mercados_series import supervivencia as sv
 
 
@@ -152,6 +153,134 @@ def test_mediciones_y_fragmento(tmp_path):
     med = sv.mediciones(cob, sesgo, reg)
     assert med["salidos_muestra"] == 4 and med["salidos_por_clase"]["completa"] == 4
     assert "limitacion" in med["sesgo"]
+
+
+# --- Vía almacén (parquet as-traded del bloque 6) ------------------------------------------------
+def _rent(inicio: str, fin: str, cierre: float = 50.0, volumen: float = 1e6) -> pd.DataFrame:
+    """Salida de ``lector_almacen`` sintética: rentabilidad nula, cierre y efectivo constantes."""
+    idx = pd.bdate_range(inicio, fin)
+    return pd.DataFrame({"sesion": idx, "rentabilidad": 0.0, "cierre": cierre, "efectivo": cierre * volumen})
+
+
+def _tramo(ticker: str, alta: str, baja: str | None, nota: str | None = None) -> dict:
+    return {"indice": "sp500", "ticker": ticker, "alta": pd.Timestamp(alta),
+            "baja": pd.Timestamp(baja) if baja else pd.NaT, "nota": nota}
+
+
+def test_rentabilidad_total_con_split_y_dividendo():
+    p = sinteticos.accion_con_eventos()
+    r = sv.rentabilidad_total_precios(p).set_index("sesion")
+    c = p.set_index("sesion")
+    assert {"rentabilidad", "cierre", "efectivo"} <= set(r.columns)
+    # Split 2:1: el cierre as-traded cae a la mitad, la rentabilidad total no
+    s = sinteticos.SESION_SPLIT
+    previa = c.index[c.index.get_loc(s) - 1]
+    esperado = c.loc[s, "close"] * sinteticos.RATIO_SPLIT / c.loc[previa, "close"] - 1
+    assert r.loc[s, "rentabilidad"] == pytest.approx(esperado)
+    assert abs(r.loc[s, "rentabilidad"]) < 0.2
+    # Dividendo en la fecha ex: close_t / (close_{t-1} - D_t) - 1 (método multiplicativo)
+    ex = c.index[(c["dividendo"] > 0) & (c.index < s)][0]
+    previa = c.index[c.index.get_loc(ex) - 1]
+    esperado = c.loc[ex, "close"] / (c.loc[previa, "close"] - c.loc[ex, "dividendo"]) - 1
+    assert r.loc[ex, "rentabilidad"] == pytest.approx(esperado)
+    # Coherente con timegate.ajustar_a_fecha a la última fecha (= Adj Close de la vista de hoy)
+    adj = sinteticos.vista_yahoo_hoy(p)["Adj Close"].pct_change()
+    np.testing.assert_allclose(r["rentabilidad"].to_numpy()[1:], adj.to_numpy()[1:], rtol=1e-9)
+    assert np.isnan(r["rentabilidad"].iloc[0])
+    assert sv.rentabilidad_total_precios(pd.DataFrame()).empty
+
+
+def test_lector_almacen_solo_lectura(tmp_path):
+    p = sinteticos.accion_con_eventos()
+    almacen.escribir_precios(p, "yahoo", ruta=tmp_path)
+    antes = {f.name: f.stat().st_mtime_ns for f in tmp_path.iterdir()}
+    leer = sv.lector_almacen(tmp_path)
+    r = leer(sinteticos.TICKER_ACCION)
+    assert len(r) == len(p) and r["sesion"].is_monotonic_increasing
+    assert leer(sinteticos.TICKER_ACCION) is r                     # caché
+    assert leer("NO-EXISTE") is None
+    assert {f.name: f.stat().st_mtime_ns for f in tmp_path.iterdir()} == antes
+
+
+def test_cobertura_dentro_del_tramo_y_sospechas():
+    reuso = "ticker con 2 tramos: reentrada o ticker reutilizado por otra empresa (sin CIK/PERMNO)"
+    tramos = pd.DataFrame([
+        _tramo("OK", "2000-01-03", "2005-01-03"),                       # completo; el fichero sigue después
+        _tramo("TARDE", "2000-01-03", "2012-01-03"),                    # precio solo desde 2010
+        _tramo("FUERA", "2000-01-03", "2004-01-02"),                    # precio solo tras la baja
+        _tramo("REENT", "2000-01-03", "2005-01-03", reuso),             # sigue años tras la baja, con nota
+        _tramo("CENT", "2000-01-03", "2005-01-03"),                     # céntimos: otra empresa
+        _tramo("ILIQ", "2000-01-03", "2005-01-03"),                     # efectivo mínimo
+        _tramo("BKQ", "2000-01-03", "2005-01-03", "ticker con sufijo Q/QQ de quiebra"),
+        _tramo("ACT", "2001-01-02", None),
+    ])
+    datos = {"OK": _rent("1995-01-02", "2006-01-02"), "TARDE": _rent("2010-01-04", "2026-01-02"),
+             "FUERA": _rent("2015-01-02", "2026-01-02"), "REENT": _rent("1995-01-02", "2026-01-02"),
+             "CENT": _rent("1995-01-02", "2026-01-02", cierre=0.2, volumen=1e8),
+             "ILIQ": _rent("1995-01-02", "2026-01-02", cierre=20.0, volumen=1e3),
+             "BKQ": _rent("1995-01-02", "2005-01-01"), "ACT": _rent("1990-01-02", "2026-10-09")}
+    tabla = sv.tabla_cobertura(sv.todos_los_tramos(tramos), hoy="2026-10-09", lector=datos.get)
+    assert list(tabla.columns) == list(sv.COLUMNAS_COBERTURA)
+    cob = tabla.set_index("ticker")
+    # La cobertura se mide DENTRO del tramo, no por existir el fichero
+    assert cob.loc["OK", "clase"] == "completa" and cob.loc["OK", "sospecha"] is None and cob.loc["OK", "en_estimacion"]
+    esperadas = len(sv.sesiones_nyse("2000-01-03", "2012-01-02"))
+    con = len(sv.sesiones_nyse("2010-01-04", "2012-01-02"))
+    assert cob.loc["TARDE", "clase"] == "parcial"
+    assert cob.loc["TARDE", "fraccion"] == pytest.approx(con / esperadas, abs=1e-4)
+    assert cob.loc["TARDE", "sospecha"] == "empieza_tarde" and not cob.loc["TARDE", "en_estimacion"]
+    assert cob.loc["FUERA", "clase"] == "fuera_de_tramo" and cob.loc["FUERA", "sesiones_con_precio"] == 0
+    assert cob.loc["FUERA", "sospecha"] == "reutilizado_despues" and not cob.loc["FUERA", "en_estimacion"]
+    assert "reutilizado" in cob.loc["FUERA", "nota"]
+    # Reentrada: se marca, pero solo la variante estricta la excluye
+    assert cob.loc["REENT", "sospecha"] == "termina_tarde" and cob.loc["REENT", "en_estimacion"]
+    assert cob.loc["CENT", "sospecha"] == "impropio_sp500" and not cob.loc["CENT", "en_estimacion"]
+    assert cob.loc["ILIQ", "sospecha"] == "impropio_sp500" and not cob.loc["ILIQ", "en_estimacion"]
+    assert cob.loc["BKQ", "sospecha"] == "ticker_q" and not cob.loc["BKQ", "en_estimacion"]
+    assert cob.loc["ACT", "grupo"] == "actual" and cob.loc["ACT", "en_estimacion"]
+    assert not {"cierre", "efectivo", "rentabilidad", "close"} & set(cob.columns)   # solo metadatos
+    dec = sv.resumen_por_decada(tabla)
+    assert dec["2000-2009"]["n"] == 6 and dec["2000-2009"]["en_estimacion"] == 2        # OK y REENT
+    assert dec["2000-2009"]["sospechosos_excluidos"] == 3                              # CENT, ILIQ y BKQ
+    assert dec["2010-2019"] == {**dec["2010-2019"], "n": 1, "con_precio_en_tramo": 1, "sospechosos_excluidos": 1,
+                                "en_estimacion": 0, "fraccion_media_util": 0.0}       # TARDE
+
+
+def test_sospechas_tramo_sin_medianas_ni_precio():
+    vacio = sv.cobertura_tramo(None, "2000-01-03", "2001-01-02", esperadas=pd.bdate_range("2000-01-03", "2000-12-29"))
+    assert sv.sospechas_tramo(vacio, "2000-01-03", "2001-01-02") == []
+    cob = {"clase": "completa", "primera_yahoo": "2000-01-03", "ultima_yahoo": "2000-12-29"}
+    assert sv.sospechas_tramo(cob, "2000-01-03", "2001-01-02", mediana_cierre=None, mediana_efectivo=None) == []
+    assert sv.sospechas_tramo(cob, "2000-01-03", "2001-01-02", mediana_efectivo=5e5) == ["impropio_sp500"]
+
+
+def test_medir_almacen_extremo_a_extremo(tmp_path):
+    base = sinteticos.accion_con_eventos()
+    for tk in ("AAA", "CCC", "DDD"):
+        p = base.copy()
+        p["ticker"] = tk
+        if tk == "AAA":                                   # el salido rinde menos (pierde tres cuartos)
+            caida = np.linspace(1.0, 0.25, len(p))
+            for c in ("open", "high", "low", "close"):
+                p[c] = p[c] * caida
+            p["dividendo"] = 0.0
+        almacen.escribir_precios(p, "yahoo", ruta=tmp_path)
+    tramos = pd.DataFrame([_tramo("AAA", "2022-01-03", "2023-09-01"), _tramo("BBB", "2022-01-03", "2023-01-03"),
+                           _tramo("CCC", "2022-06-01", None), _tramo("DDD", "2022-01-03", None)])
+    res = sv.medir_almacen(tramos, ruta=tmp_path, hoy="2024-12-31", con_muestra_antigua=False)
+    cob = res["cobertura"].set_index("ticker")
+    assert len(cob) == 4 and cob.loc["BBB", "clase"] == "sin_datos" and cob.loc["AAA", "clase"] == "completa"
+    assert set(res["variantes"]) == {"sin_sospechas", "estricta", "con_sospechas"}
+    med = res["mediciones"]
+    assert med["via"] == "almacen" and med["tramos_en_estimacion"] == {"salidos": 1, "actuales": 2}
+    assert med["almacen"]["tramos_con_fichero"] == 3
+    s = med["sesgo"]
+    assert s["meses"] > 0 and s["sesgo_anual_pct"] > 0
+    lo, hi = s["sesgo_ic95_anual_pct"]
+    assert lo <= s["sesgo_anual_pct"] <= hi and 0 < s["cobertura_pit_media"] <= 1
+    ses = res["sesgo"].set_index("mes")
+    assert ses.loc[pd.Timestamp("2022-03-31"), "n_salidos_pit"] == 2           # AAA y BBB vivos; BBB sin precio
+    assert ses.loc[pd.Timestamp("2022-03-31"), "cobertura_pit"] == pytest.approx(2 / 3)
 
 
 @pytest.mark.live

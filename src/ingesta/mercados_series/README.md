@@ -434,14 +434,20 @@ Recorrido: [`06_precios_cobertura.ipynb`](../../../notebooks/fase2/mercados_seri
 
 ## Supervivencia (bloque 7)
 
-[`supervivencia`](supervivencia.py): el sesgo se **declara y se mide**. Sobre una muestra estratificada de tramos del
-S&P 500 (62 salidos y 60 actuales), Yahoo cubre completos 59 de 60 actuales y solo 14 de 62 salidos (40 sin datos); la
-fracción media de sesiones cubiertas de los salidos es 0,23 y es nula para las salidas anteriores a 2006
+[`supervivencia`](supervivencia.py): el sesgo se **declara y se mide** con TODOS los tramos del S&P 500 que tienen
+parquet as-traded en el almacén de precios (descarga ampliada, solo lectura; rentabilidad total de `close_aj_total`
+de `timegate.ajustar_a_fecha` a la última fecha). La cobertura se mide dentro de cada tramo `[alta, baja)` frente a las
+sesiones de NYSE: de 759 tramos salidos, 300 tienen fichero pero solo 166 tienen precio dentro del tramo (150
+completos) y 134 solo fuera (ticker reutilizado); la fracción media de sesiones cubiertas va de 0,07 (salidas de
+1996-1999) a 0,45 (2020-2026). Los tramos con sospecha de otra empresa con el mismo ticker (precio que empieza más de
+31 días tras el alta, mediana del cierre < 1 USD o del efectivo diario < 1 M USD, sufijo Q) salen de la estimación:
+entran 144 salidos y 496 actuales. Sesgo supervivientes − PIT con precio: **7,3 p. p. anuales** (IC 95 % 5,7–8,8;
+1996-02 a 2026-06), frente a 6,9 (3,7–10,2) con la muestra antigua de 122 tramos, que queda como respaldo (`descargar
+--via muestra`). Es una cota inferior: los salidos sin precio en Yahoo siguen fuera
 (`tablas/supervivencia_cobertura.csv`, ficha `supervivencia`). Corrección completa: CRSP vía WRDS (pendiente de la
-licencia de MIAX); alternativa: Tiingo (exige cuenta propia; sin probar). Comandos: `python -m
-ingesta.mercados_series.supervivencia descargar` (reanudable) y `... medir`. Es una medición: no añade series,
-publicadores ni mercados, y la rentabilidad diaria de la muestra vive en `<corpus>/mercados_series/supervivencia/` (no
-entra en la base ni en `get_serie`/`get_precios`). Recorrido:
+licencia de MIAX); alternativa: Tiingo (exige cuenta propia; sin probar). Comando: `python -m
+ingesta.mercados_series.supervivencia medir`. Es una medición: no añade series, publicadores ni mercados ni escribe en
+el almacén. Recorrido:
 [`07_supervivencia.ipynb`](../../../notebooks/fase2/mercados_series/07_supervivencia.ipynb).
 
 ## Cartera: libre de riesgo, baselines y costes (bloque 8)
@@ -509,9 +515,12 @@ japonés (2026-10-09) se veía en el festivo (15 filas; test de regresión) y el
 el empalme del PIB de EE. UU. después de escribir la base (test de regresión).
 
 Precios y universo:
-- **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX (Tiingo, alternativa sin probar). Al terminar el
-  ampliado, contar los tramos salidos con parquet y, si mejora la muestra (hoy 122 tramos), leer esos parquet
-  as-traded en `supervivencia.py` en lugar de pedir otra vez a yfinance.
+- **Supervivencia**: WRDS/CRSP pendiente de la licencia de MIAX (Tiingo, alternativa sin probar). Ya se leen los
+  parquet as-traded del ampliado (todos los tramos con precio): 459 de 759 salidos siguen sin precio en Yahoo y 134
+  más solo lo tienen fuera de su tramo, así que la PIT cubre de media el 66 % de los miembros de cada mes (37 % en
+  1996) y el sesgo medido (7,3 p. p./año, IC 95 % 5,7–8,8) es una cota inferior. Las sospechas de ticker reutilizado
+  son heurísticas (fechas, nivel de precio y efectivo, nota del tramo) y sin CIK/PERMNO no se verifican; el IC no
+  corrige autocorrelación.
 - S&P 500: 28 tramos con el ticker posterior de quiebra (sufijo Q/QQ); el mapeo exige CIK/PERMNO (WRDS).
 - VSTOXX (`^V2TX`) no está en Yahoo; constituyentes de Nikkei 225 e Ibovespa sin fuente. ISIN sin verificar: NGAS.L
   y CPER, BITO, VIXY y VBMFX (señal, no se invierten). AIGA.L: Yahoo solo da una vela (otra línea o inactivo).
