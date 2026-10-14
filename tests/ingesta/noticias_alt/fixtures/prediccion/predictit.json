@@ -1,0 +1,39 @@
+{
+ "markets": [
+  {
+   "id": 1,
+   "name": "Mercado político ficticio 1",
+   "shortName": "Ficticio 1",
+   "url": "https://www.predictit.org/markets/detail/1",
+   "status": "Open",
+   "timeStamp": "2026-10-14T07:21:59.6585345",
+   "contracts": [
+    {
+     "id": 11,
+     "name": "Sí",
+     "lastTradePrice": 0.41
+    },
+    {
+     "id": 12,
+     "name": "No",
+     "lastTradePrice": 0.6
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Mercado político ficticio 2",
+   "shortName": "Ficticio 2",
+   "url": "https://www.predictit.org/markets/detail/2",
+   "status": "Open",
+   "timeStamp": "2026-10-14T07:20:00",
+   "contracts": [
+    {
+     "id": 21,
+     "name": "Candidato X",
+     "lastTradePrice": 0.1
+    }
+   ]
+  }
+ ]
+}

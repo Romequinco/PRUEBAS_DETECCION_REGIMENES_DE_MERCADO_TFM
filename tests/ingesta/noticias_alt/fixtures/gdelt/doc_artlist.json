@@ -1,0 +1,39 @@
+{
+ "articles": [
+  {
+   "url": "https://example-news.com/2020/03/16/stocks-fall",
+   "url_mobile": "",
+   "title": "Stocks fall sharply at the open",
+   "seendate": "20200316T143000Z",
+   "socialimage": "",
+   "domain": "example-news.com",
+   "language": "English",
+   "sourcecountry": "United States"
+  },
+  {
+   "url": "https://example-wire.org/markets/halt",
+   "url_mobile": "",
+   "title": "Trading halted after circuit breaker",
+   "seendate": "20200316T133500Z",
+   "socialimage": "",
+   "domain": "example-wire.org",
+   "language": "English",
+   "sourcecountry": "United Kingdom"
+  },
+  {
+   "url": "https://ejemplo.es/bolsa",
+   "url_mobile": "",
+   "title": "La bolsa cae en la apertura",
+   "seendate": "20200316T150000Z",
+   "socialimage": "",
+   "domain": "ejemplo.es",
+   "language": "Spanish",
+   "sourcecountry": "Spain"
+  },
+  {
+   "url": "https://example-news.com/sin-fecha",
+   "title": "Sin seendate",
+   "domain": "example-news.com"
+  }
+ ]
+}

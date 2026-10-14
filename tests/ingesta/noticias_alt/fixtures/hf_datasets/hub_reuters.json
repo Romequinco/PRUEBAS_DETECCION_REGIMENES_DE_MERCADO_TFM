@@ -1,0 +1,11 @@
+{
+ "gated": false,
+ "downloads": 7,
+ "cardData": {},
+ "siblings": [
+  {
+   "rfilename": "data/train.parquet",
+   "size": 490000000
+  }
+ ]
+}

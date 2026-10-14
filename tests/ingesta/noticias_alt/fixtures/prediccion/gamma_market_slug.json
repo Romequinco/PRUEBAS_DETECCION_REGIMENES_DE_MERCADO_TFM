@@ -1,0 +1,16 @@
+{
+ "id": "7",
+ "question": "Will the US enter a recession in 2025? (ficticio)",
+ "slug": "mercado-ficticio-7",
+ "conditionId": "0x0000000000000000000000000000000000000000000000000000000000000007",
+ "outcomes": "[\"Yes\", \"No\"]",
+ "outcomePrices": "[\"0\", \"1\"]",
+ "volumeNum": 900000.0,
+ "volume": "900000.0",
+ "endDate": "2025-12-31T00:00:00Z",
+ "closedTime": "2026-01-01 09:00:00+00",
+ "closed": true,
+ "clobTokenIds": "[\"333\", \"444\"]",
+ "umaResolutionStatus": "resolved",
+ "enableOrderBook": true
+}

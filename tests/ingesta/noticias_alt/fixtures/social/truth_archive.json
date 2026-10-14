@@ -1,0 +1,7 @@
+[
+ {"id": "1005", "created_at": "2023-03-12T01:30:00.000Z", "content": "<p>TEXTO-PRIVADO invented post five</p>", "url": "https://truthsocial.example/@x/1005", "media": "[]", "replies_count": "1", "reblogs_count": "2", "favourites_count": "3"},
+ {"id": "1004", "created_at": "2023-03-10T22:15:00.000Z", "content": "", "url": "https://truthsocial.example/@x/1004", "media": "[\"img\"]", "replies_count": "1", "reblogs_count": "2", "favourites_count": "3"},
+ {"id": "1003", "created_at": "2023-03-10T15:00:00.000Z", "content": "TEXTO-PRIVADO invented post about invented banks", "url": "https://truthsocial.example/@x/1003", "media": "[]", "replies_count": "1", "reblogs_count": "2", "favourites_count": "3"},
+ {"id": "1002", "created_at": "2023-03-10T13:00:00.000Z", "content": "TEXTO-PRIVADO invented post two &amp; more", "url": "https://truthsocial.example/@x/1002", "media": "[]", "replies_count": "1", "reblogs_count": "2", "favourites_count": "3"},
+ {"id": "1001", "created_at": "2023-03-08T12:00:00.000Z", "content": "TEXTO-PRIVADO invented post one", "url": "https://truthsocial.example/@x/1001", "media": "[]", "replies_count": "1", "reblogs_count": "2", "favourites_count": "3"}
+]

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Feed INVENTADO para tests (formato RSS 1.0 / RDF real; textos ficticios) -->
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel rdf:about="https://rdf.example.za/business"><title>Ejemplo RDF</title></channel>
+  <item rdf:about="https://rdf.example.za/business/1">
+    <title>Invented miner raises output</title>
+    <link>https://rdf.example.za/business/1</link>
+    <description>EXTRACTO-SECRETO Fictional mining story.</description>
+    <dc:date>2020-03-16T06:00:00Z</dc:date>
+  </item>
+</rdf:RDF>

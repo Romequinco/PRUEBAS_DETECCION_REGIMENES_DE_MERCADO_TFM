@@ -1,0 +1,56 @@
+<SEC-DOCUMENT>0009000003-20-000005.txt : 20200316
+<SEC-HEADER>0009000003-20-000005.hdr.sgml : 20200316
+<ACCEPTANCE-DATETIME>20200316090102
+ACCESSION NUMBER:		0009000003-20-000005
+CONFORMED SUBMISSION TYPE:	4
+FILED AS OF DATE:		20200316
+</SEC-HEADER>
+<DOCUMENT>
+<TYPE>4
+<TEXT>
+<XML>
+<ownershipDocument>
+    <documentType>4</documentType>
+    <periodOfReport>2020-03-11</periodOfReport>
+    <issuer>
+        <issuerCik>0009000003</issuerCik>
+        <issuerName>GAMMA FALSA HOLDINGS, INC.</issuerName>
+        <issuerTradingSymbol>GFH</issuerTradingSymbol>
+    </issuer>
+    <reportingOwner>
+        <reportingOwnerId><rptOwnerName>LOPEZ IMAGINARIA ANA</rptOwnerName></reportingOwnerId>
+        <reportingOwnerRelationship><isDirector>true</isDirector></reportingOwnerRelationship>
+    </reportingOwner>
+    <reportingOwner>
+        <reportingOwnerId><rptOwnerName>FONDO INVENTADO LP</rptOwnerName></reportingOwnerId>
+        <reportingOwnerRelationship><isTenPercentOwner>1</isTenPercentOwner></reportingOwnerRelationship>
+    </reportingOwner>
+    <nonDerivativeTable>
+        <nonDerivativeTransaction>
+            <securityTitle><value>Common Stock</value></securityTitle>
+            <transactionDate><value>2020-03-11-05:00</value></transactionDate>
+            <transactionCoding><transactionCode>S</transactionCode></transactionCoding>
+            <transactionAmounts>
+                <transactionShares><value>1000</value></transactionShares>
+                <transactionPricePerShare><footnoteId id="F1"/></transactionPricePerShare>
+                <transactionAcquiredDisposedCode><value>D</value></transactionAcquiredDisposedCode>
+            </transactionAmounts>
+        </nonDerivativeTransaction>
+    </nonDerivativeTable>
+    <derivativeTable>
+        <derivativeTransaction>
+            <securityTitle><value>Stock Option (right to buy)</value></securityTitle>
+            <transactionDate><value>2020-03-11</value></transactionDate>
+            <transactionCoding><transactionCode>M</transactionCode></transactionCoding>
+            <transactionAmounts>
+                <transactionShares><value>1000</value></transactionShares>
+                <transactionPricePerShare><value>0</value></transactionPricePerShare>
+                <transactionAcquiredDisposedCode><value>D</value></transactionAcquiredDisposedCode>
+            </transactionAmounts>
+        </derivativeTransaction>
+    </derivativeTable>
+</ownershipDocument>
+</XML>
+</TEXT>
+</DOCUMENT>
+</SEC-DOCUMENT>

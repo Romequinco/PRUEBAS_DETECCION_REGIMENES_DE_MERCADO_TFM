@@ -1,0 +1,32 @@
+[
+ {
+  "name": "data_gpr_daily_recent_20230306.xls",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_daily_recent_20230306.xls"
+ },
+ {
+  "name": "data_gpr_daily_recent_20230313.xls",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_daily_recent_20230313.xls"
+ },
+ {
+  "name": "data_gpr_daily_recent_20230313.dta",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_daily_recent_20230313.dta"
+ },
+ {
+  "name": "data_gpr_export_202303.xls",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202303.xls"
+ },
+ {
+  "name": "data_gpr_export_202304.xls",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/data_gpr_export_202304.xls"
+ },
+ {
+  "name": "README.md",
+  "size": 1000,
+  "download_url": "https://raw.githubusercontent.com/iacoviel/iacoviel.github.io/master/gpr_archive_files/README.md"
+ }
+]

@@ -1,0 +1,29 @@
+[
+ {
+  "id": "9001",
+  "slug": "evento-ficticio-a",
+  "title": "Evento ficticio A: recorte de tipos",
+  "startDate": "2023-02-01T00:00:00Z",
+  "endDate": "2023-12-31T00:00:00Z",
+  "volume": 2500000.5,
+  "closed": true
+ },
+ {
+  "id": "9002",
+  "slug": "evento-ficticio-b",
+  "title": "Evento ficticio B: recesión",
+  "startDate": "2023-05-01T00:00:00Z",
+  "endDate": "2026-12-31T00:00:00Z",
+  "volume": 400000.0,
+  "closed": false
+ },
+ {
+  "id": "9003",
+  "slug": "evento-ficticio-c",
+  "title": "Evento ficticio C: cripto",
+  "startDate": "2024-01-10T00:00:00Z",
+  "endDate": "2024-06-30T00:00:00Z",
+  "volume": "150000",
+  "closed": true
+ }
+]

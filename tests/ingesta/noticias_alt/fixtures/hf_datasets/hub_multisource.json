@@ -1,0 +1,21 @@
+{
+ "gated": "auto",
+ "downloads": 3,
+ "cardData": {
+  "license": "other",
+  "configs": [
+   {
+    "config_name": "sub_a"
+   },
+   {
+    "config_name": "sub_b"
+   }
+  ]
+ },
+ "siblings": [
+  {
+   "rfilename": "data/sub_a/sub_a.000.parquet",
+   "size": 900000000
+  }
+ ]
+}

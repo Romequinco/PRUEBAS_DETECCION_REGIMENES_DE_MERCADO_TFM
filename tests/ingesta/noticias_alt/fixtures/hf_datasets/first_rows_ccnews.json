@@ -1,0 +1,27 @@
+{
+ "features": [],
+ "rows": [
+  {
+   "row_idx": 0,
+   "row": {
+    "requested_url": "https://www.ejemplo-uno.example/a",
+    "plain_text": "Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba Texto inventado de prueba ",
+    "published_date": "2017-03-01",
+    "crawl_date": "2017-03-02T10:00:00+00:00",
+    "sitename": "Ejemplo Uno",
+    "language": "es"
+   }
+  },
+  {
+   "row_idx": 1,
+   "row": {
+    "requested_url": "https://ejemplo-dos.example/b",
+    "plain_text": "Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text Invented test text ",
+    "published_date": "2017-03-05",
+    "crawl_date": "2017-03-02T10:00:00+00:00",
+    "sitename": "Ejemplo Dos",
+    "language": "en"
+   }
+  }
+ ]
+}

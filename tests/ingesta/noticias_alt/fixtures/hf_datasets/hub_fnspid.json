@@ -1,0 +1,16 @@
+{
+ "gated": false,
+ "downloads": 10,
+ "lastModified": "2024-04-09T18:22:07.000Z",
+ "cardData": null,
+ "siblings": [
+  {
+   "rfilename": "Stock_news/All_external.csv",
+   "size": 5700000000
+  },
+  {
+   "rfilename": "README.md",
+   "size": 2000
+  }
+ ]
+}

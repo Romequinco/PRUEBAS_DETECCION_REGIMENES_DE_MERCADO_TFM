@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Feed INVENTADO para tests (formato RSS 2.0 real; textos ficticios) -->
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+<title>Ejemplo Business</title>
+<link>https://news.example.org/business</link>
+<item>
+  <title>Central bank of Ruritania holds rates steady</title>
+  <link>https://news.example.org/business/ruritania-rates?utm_source=rss</link>
+  <description>&lt;p&gt;EXTRACTO-SECRETO The fictional central bank kept its policy rate unchanged &amp;amp; signalled patience. This sentence only exists to make the summary long enough to be cut by the extract limit of the module, which keeps three hundred characters at most and never more than that in the corpus document text.&lt;/p&gt;</description>
+  <pubDate>Mon, 16 Mar 2020 21:05:00 GMT</pubDate>
+</item>
+<item>
+  <title>Imaginary Corp shares rally after earnings</title>
+  <link>https://news.example.org/business/imaginary-corp</link>
+  <description>EXTRACTO-SECRETO Invented results beat invented estimates.</description>
+  <pubDate>Mon, 16 Mar 2020 09:30:00 +0100</pubDate>
+</item>
+<item>
+  <title>Undated wire story about invented markets</title>
+  <link>https://news.example.org/business/undated</link>
+  <description>EXTRACTO-SECRETO No date in this item.</description>
+</item>
+<item>
+  <title>Story from the future with a broken clock</title>
+  <link>https://news.example.org/business/future</link>
+  <description>EXTRACTO-SECRETO The publisher declared a date in 2099.</description>
+  <pubDate>Wed, 01 Jan 2099 10:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

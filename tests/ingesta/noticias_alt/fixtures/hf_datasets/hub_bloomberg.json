@@ -1,0 +1,13 @@
+{
+ "gated": false,
+ "downloads": 5,
+ "cardData": {
+  "license": "apache-2.0"
+ },
+ "siblings": [
+  {
+   "rfilename": "Bloomberg_Financial_News.json",
+   "size": 1400000000
+  }
+ ]
+}

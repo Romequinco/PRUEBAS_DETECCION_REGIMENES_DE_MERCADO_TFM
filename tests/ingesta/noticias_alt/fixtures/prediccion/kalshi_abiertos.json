@@ -1,0 +1,16 @@
+{
+ "cursor": "",
+ "markets": [
+  {
+   "ticker": "KXFED-27JAN-T4.00",
+   "event_ticker": "KXFED-27JAN",
+   "title": "Mercado Kalshi ficticio KXFED-27JAN-T4.00",
+   "open_time": "2026-01-01T00:00:00Z",
+   "close_time": "2027-01-27T19:00:00Z",
+   "result": "",
+   "volume_fp": "2500.00",
+   "settlement_ts": null,
+   "status": "finalized"
+  }
+ ]
+}

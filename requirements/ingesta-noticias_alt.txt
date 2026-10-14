@@ -1,3 +1,8 @@
 # Dependencias propias del Tema 4 · Noticias y datos alternativos (buscar_noticias, get_polymarket).
 # Instalar: python -m pip install -r requirements/ingesta-noticias_alt.txt
 # Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
+#
+# Ligeras: no tocan numpy, pandas ni torch (la huella de la Fase 1 sigue igual).
+xlrd>=2.0          # GPR de Caldara-Iacoviello (.xls)
+pypdf>=4.0         # texto de los PTR electrónicos de la Cámara
+# yfinance (precios para la validez) ya está en el entorno principal (0.2.66, Tema 1).

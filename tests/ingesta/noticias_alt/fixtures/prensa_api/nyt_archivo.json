@@ -1,0 +1,41 @@
+{
+ "response": {
+  "docs": [
+   {
+    "web_url": "https://www.nytimes.example/2020/03/16/business/inventado.html",
+    "pub_date": "2020-03-16T04:00:09+0000",
+    "headline": {
+     "main": "Titular inventado de mercados"
+    },
+    "abstract": "Resumen inventado.",
+    "lead_paragraph": "Primer párrafo inventado.",
+    "section_name": "Business Day",
+    "document_type": "article",
+    "word_count": 900,
+    "keywords": [
+     {
+      "value": "Bolsa"
+     }
+    ]
+   },
+   {
+    "web_url": "https://www.nytimes.example/2020/03/15/world/otro.html",
+    "pub_date": "2020-03-15T22:10:00+0000",
+    "headline": {
+     "main": "Otro titular inventado"
+    },
+    "abstract": "Igual.",
+    "lead_paragraph": "Igual.",
+    "section_name": "World",
+    "document_type": "article"
+   },
+   {
+    "web_url": "",
+    "pub_date": "2020-03-16T05:00:00+0000",
+    "headline": {
+     "main": "Sin URL"
+    }
+   }
+  ]
+ }
+}

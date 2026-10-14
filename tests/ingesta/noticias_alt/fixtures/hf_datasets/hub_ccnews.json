@@ -1,0 +1,30 @@
+{
+ "id": "stanford-oval/ccnews",
+ "gated": false,
+ "downloads": 1234,
+ "lastModified": "2024-08-31T17:28:13.000Z",
+ "cardData": {
+  "configs": [
+   {
+    "config_name": "2016"
+   },
+   {
+    "config_name": "2017"
+   }
+  ]
+ },
+ "siblings": [
+  {
+   "rfilename": "2016/a.parquet",
+   "size": 2000000000
+  },
+  {
+   "rfilename": "2017/b.parquet",
+   "size": 3000000000
+  },
+  {
+   "rfilename": "README.md",
+   "size": 1000
+  }
+ ]
+}

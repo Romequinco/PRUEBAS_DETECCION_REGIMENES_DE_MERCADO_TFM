@@ -1,0 +1,15 @@
+{
+ "size": {
+  "dataset": {
+   "num_rows": 0,
+   "estimated_num_rows": null
+  },
+  "configs": [],
+  "splits": []
+ },
+ "failed": [
+  {
+   "kind": "config-size"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "response": {
+  "status": "ok",
+  "total": 2,
+  "results": [
+   {
+    "type": "article",
+    "sectionName": "Business",
+    "webPublicationDate": "2020-03-16T08:00:00Z",
+    "webTitle": "Titular inventado",
+    "webUrl": "https://www.theguardian.example/business/2020/mar/16/inventado",
+    "fields": {
+     "headline": "Titular inventado",
+     "bodyText": "Cuerpo inventado de la pieza.",
+     "firstPublicationDate": "2020-03-16T06:30:00Z"
+    }
+   },
+   {
+    "type": "article",
+    "sectionName": "Business",
+    "webPublicationDate": "2020-03-16T09:00:00Z",
+    "webTitle": "Sin campos",
+    "webUrl": "https://www.theguardian.example/business/2020/mar/16/otro"
+   }
+  ]
+ }
+}
