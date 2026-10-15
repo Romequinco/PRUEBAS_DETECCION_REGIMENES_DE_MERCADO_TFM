@@ -25,7 +25,9 @@ El repositorio existente utiliza `main` y está conectado a
 El notebook, a cargo de **Fernando Dapena Tauste**, mantiene sus 14 apartados
 independientes y consulta 94 familias de documentos, filas de datos y metadatos.
 Muestra cobertura de la muestra, retrasos, fechas de publicación/aplicación,
-calidad de extracción, volumen y errores. No representa el histórico completo.
+calidad de extracción, volumen y errores. Conserva los gráficos de publicaciones
+y volumen textual; añade un único gráfico de días entre evento y publicación
+cuando hay pares de fechas verificables. No representa el histórico completo.
 
 Para probarlo, ejecuta la configuración común y después el apartado que te
 interese. `MODO_RAPIDO=True` limita las muestras descubiertas a tres por familia

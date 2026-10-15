@@ -1,6 +1,6 @@
 # Bancos centrales, riesgo sistémico y literatura — sonda de fuentes y disponibilidad temporal
 
-**Fase 2 del TFM · Responsable: Fernando Dapena Tauste · Revisión: 14 de octubre de 2026.**
+**Fase 2 del TFM · Responsable: Fernando Dapena Tauste · Revisión: 15 de octubre de 2026.**
 
 Antes de ampliar el corpus, probamos cada fuente con poco volumen y medimos **qué entrega, qué fechas acredita, con qué retraso publica, cuánto texto se puede extraer, cuánto ocupa y qué falla**. La estructura sigue la [sonda de empresas de Daniel](https://github.com/Romequinco/PRUEBAS_DETECCION_REGIMENES_DE_MERCADO_TFM/blob/fase2/t3-empresas/notebooks/fase2/t3_01_sonda_empresas.ipynb): configuración común, adquisición, cobertura, auditoría temporal, texto, volumen y resumen calculado.
 
@@ -99,14 +99,23 @@ Los HTML/PDF actuales de los portales conservan su publicación conocida, pero p
 
 1. Inventario y descarga limitada por familia.
 2. Cobertura de la muestra: primera/última publicación, pares válidos, mediana y P10–P90 de retrasos, extracción y volumen.
-3. Gráficos de cobertura temporal, retraso frente al evento, retraso frente a aplicación, fechas de publicación y palabras extraídas. **Sin fechas no hay un cero ficticio:** se marca «sin par de fechas» o «no consta / no procede».
-4. Documento/fila de ejemplo con URL y hash, errores y TimeGate al corte. Cuando hay dos textos completos de la misma familia se compara su vocabulario; es una medida descriptiva, no sentimiento ni señal predictiva.
+3. Se conservan los gráficos de **publicaciones y volumen textual observado**. La cobertura y los retrasos respecto a aplicación quedan en las tablas.
+4. Un único gráfico de **retraso entre evento y publicación** muestra una fila por documento: fuente y familia, fechas «evento → publicación» y días transcurridos. **0 días** significa publicación el mismo día; un valor negativo indica que se publicó antes del evento. Solo se dibuja cuando hay pares de fechas precisos y verificables; una fecha ausente no se transforma en cero. En familias sin evento asociado, sin ambas fechas o con un corte meramente ilustrativo se omite el gráfico y se explica el motivo.
+5. Documento/fila de ejemplo con URL y hash, errores y TimeGate al corte. Cuando hay dos textos completos de la misma familia se compara su vocabulario; es una medida descriptiva, no sentimiento ni señal predictiva.
 
 Los PDFs se leen hasta el límite configurado; las tablas conservan filas y unidades cuando las entrega la fuente. El número de palabras mide extracción, no calidad científica. Las primeras/últimas publicaciones de una muestra pequeña no permiten extrapolar cobertura ni GB del histórico.
+
+**Ejemplo de lectura:** si una reunión se celebra el 28/01 y sus actas se publican el 18/02, la barra indica **21 días**. La fecha de aplicación de una decisión, el fin de un periodo estadístico y un corte elegido para analizar una crisis son referencias diferentes; no sustituyen a la fecha del evento. Las fechas del gráfico tienen precisión diaria y no permiten inferir un retraso en horas.
+
+**Figuras de esta revisión (15/10/2026):** regeneradas a partir de los CSV y JSONL locales de la muestra guardada, sin repetir las descargas. Esta revisión actualiza la presentación; las fechas de consulta de cada registro se conservan.
 
 ## 1. Fed
 
 <a id="fed"></a>
+
+**Qué es y qué decide.** La [Reserva Federal o Fed](https://www.federalreserve.gov/aboutthefed.htm) es el banco central de Estados Unidos. Busca mantener los precios estables y favorecer el máximo empleo. Dentro de la Fed, el **FOMC** (Comité Federal de Mercado Abierto) es el comité que toma las principales decisiones de política monetaria, como el nivel objetivo del tipo de interés a corto plazo y las medidas sobre su cartera de activos.
+
+**Cómo influye.** Sus decisiones afectan al coste de los préstamos en dólares, la financiación de empresas y las condiciones de ahorro. Una subida de tipos tiende a frenar el gasto y la inversión; una bajada tiende a facilitarlos. También pueden cambiar las valoraciones de bonos y acciones, el dólar y la financiación internacional. Las actas y los discursos ayudan a entender qué preocupa a la Fed y qué podría decidir después; el mercado reacciona especialmente a lo que cambia respecto a lo esperado.
 
 **Elección:** Federal Reserve como fuente principal. Conserva el documento institucional y permite relacionarlo con la reunión correspondiente. Los datasets externos sirven de complemento.
 
@@ -139,6 +148,10 @@ resumen_01 = mostrar_apartado(sonda, 1, '1. Fed')
 
 <a id="bce"></a>
 
+**Qué es y qué decide.** El [Banco Central Europeo (BCE)](https://www.ecb.europa.eu/ecb/orga/tasks/html/index.en.html) dirige la política monetaria de los países que utilizan el euro. Junto con sus bancos centrales nacionales forma el **Eurosistema**. Su objetivo principal es mantener la estabilidad de precios. El Consejo de Gobierno decide los tipos oficiales y otras medidas que influyen en las condiciones de financiación.
+
+**Cómo influye.** Sus decisiones se transmiten al coste del crédito para familias, empresas y Estados, y pueden afectar al euríbor, las hipotecas variables, los bonos y el euro. Por ejemplo, unos tipos más altos tienden a encarecer los nuevos préstamos y a moderar la demanda. Las comparecencias y las actas resumidas permiten interpretar cómo valora la inflación y el crecimiento. Esta [transmisión a la economía](https://www.ecb.europa.eu/mopo/intro/transmission/html/index.en.html) lleva tiempo y depende también de la situación de los bancos y de los prestatarios.
+
 **Elección:** portal del BCE. Mantiene decisiones, comparecencias y deliberaciones como series distintas, evitando mezclar documentos de la misma reunión.
 
 | Información solicitada | Fuente recomendada | ¿Gratis? | Acceso previsto |
@@ -167,6 +180,10 @@ resumen_02 = mostrar_apartado(sonda, 2, '2. BCE')
 ## 3. BoE y BoJ
 
 <a id="boe-boj"></a>
+
+**Qué entidades son.** El [Bank of England (BoE)](https://www.bankofengland.co.uk/about) es el banco central del Reino Unido; su **MPC**, o Comité de Política Monetaria, decide el tipo oficial. El [Bank of Japan (BoJ)](https://www.boj.or.jp/en/about/outline/index.htm) es el banco central de Japón y decide su política monetaria mediante su Consejo de Política. Ambos trabajan por la estabilidad de precios y del sistema financiero, con instrumentos y contextos económicos propios.
+
+**Cómo influyen.** El BoE afecta al crédito y las hipotecas británicas, la libra y los bonos del Reino Unido. El BoJ influye en los tipos japoneses, el yen y el coste de financiarse en esa moneda. Los cambios en la financiación en yenes también pueden afectar a inversores que piden prestado en Japón para invertir en otros mercados. Sus informes y actas ayudan a distinguir una decisión puntual de un cambio más duradero en la orientación de la política monetaria.
 
 **Elección:** Bank of England y Bank of Japan, respectivamente. Para análisis textual, sus informes y actas completos tienen más valor que un resumen de prensa externo.
 
@@ -199,6 +216,10 @@ resumen_03 = mostrar_apartado(sonda, 3, '3. BoE y BoJ')
 
 <a id="discursos-bis"></a>
 
+**Qué es.** El **BIS**, llamado en español [Banco de Pagos Internacionales](https://www.bis.org/about), facilita la cooperación entre bancos centrales y les presta servicios financieros. También produce investigación y alberga comités que trabajan sobre estabilidad y regulación financiera. Su archivo de discursos reúne intervenciones de responsables de distintos bancos: cada intervención debe atribuirse a su autor y a su institución.
+
+**Cómo influye.** Su influencia procede de la cooperación, el análisis y el trabajo sobre estándares que después pueden incorporar las autoridades competentes. Los discursos permiten conocer cómo interpretan los bancos la inflación, el crédito o los riesgos. El **Annual Economic Report** analiza la economía y el sistema financiero; el **Annual Report** explica la actividad de la propia institución. Para el TFM, esta diferencia ayuda a separar información sobre la economía de información sobre el funcionamiento del BIS.
+
 **Elección para un corpus internacional:** descarga oficial del BIS. Para el texto definitivo de un discurso concreto, contrastar con el banco emisor si hay discrepancias.
 
 | Información solicitada | Fuente recomendada | ¿Gratis? | Acceso previsto |
@@ -227,6 +248,24 @@ resumen_04 = mostrar_apartado(sonda, 4, '4. Discursos BIS y Annual Report')
 ## 5. Otros bancos centrales
 
 <a id="otros-bancos"></a>
+
+**Qué entidades son.** Este grupo amplía la muestra a bancos centrales de distintas economías. En general, sus decisiones sobre tipos y condiciones de financiación influyen en el crédito, el gasto, la inflación y su moneda. La tabla resume qué representa cada uno y un canal por el que sus decisiones pueden llegar a los mercados.
+
+| Entidad | Explicación sencilla | Dónde pueden sentirse sus decisiones |
+|---|---|---|
+| **BCB — Banco Central do Brasil** | Banco central de Brasil; su comité Copom decide el tipo Selic. | Crédito en reales, deuda brasileña y valor del real. |
+| **BoC — Bank of Canada** | Banco central de Canadá. | Hipotecas y financiación canadienses, bonos y dólar canadiense. |
+| **SNB — Swiss National Bank** | Banco central de Suiza. | Tipos en francos suizos y condiciones monetarias que influyen en el franco. |
+| **Riksbank** | Banco central de Suecia. | Coste del crédito, mercado de vivienda y corona sueca. |
+| **Norges Bank** | Banco central de Noruega. | Financiación en coronas noruegas, demanda interna y tipo de cambio. |
+| **RBNZ — Reserve Bank of New Zealand** | Banco central de Nueva Zelanda. | Hipotecas, actividad económica y dólar neozelandés. |
+| **RBI — Reserve Bank of India** | Banco central de India. | Condiciones de crédito y liquidez en rupias y financiación de su economía. |
+| **Banxico — Banco de México** | Banco central de México. | Tipos en pesos, inflación y valor del peso mexicano. |
+| **Banco de España** | Banco central español, integrante del Eurosistema; participa en sus decisiones y tiene funciones de supervisión y análisis. | Aplicación de la política del euro en España, vigilancia bancaria y análisis del crédito y los riesgos. |
+| **RBA — Reserve Bank of Australia** | Banco central de Australia. | Préstamos e hipotecas, demanda interna y dólar australiano. |
+| **PBoC — People's Bank of China** | Banco central de China; utiliza diversos instrumentos para influir en las condiciones monetarias y el crédito. | Financiación de empresas y hogares chinos, liquidez y condiciones del renminbi o yuan. |
+
+**Cómo interpretar el conjunto.** Una decisión local también puede afectar a otros países a través del comercio, los flujos de inversión y las divisas. Estos son canales de influencia, no predicciones sobre la dirección de cada mercado. El Banco de España participa en la política común del euro; los tipos oficiales de esa moneda se deciden en el BCE.
 
 **Elección:** emisor original para decisiones, actas, informes y discursos. Las publicaciones digitales públicas indicadas son la primera ruta gratuita; no se ha probado todavía una descarga masiva de cada banco.
 
@@ -264,6 +303,10 @@ resumen_05 = mostrar_apartado(sonda, 5, '5. Otros bancos centrales')
 
 <a id="organismos"></a>
 
+**Qué entidades son.** El [Banco Mundial](https://www.worldbank.org/ext/en/who-we-are) financia proyectos de desarrollo y publica análisis de la economía mundial. El [Fondo Monetario Internacional (FMI)](https://www.imf.org/en/About) vigila la evolución económica, asesora a los países y puede prestar apoyo financiero ante dificultades externas. La [OCDE](https://www.oecd.org/en/about.html), Organización para la Cooperación y el Desarrollo Económicos, compara economías y elabora datos y recomendaciones de políticas públicas.
+
+**Cómo influyen.** Los préstamos y proyectos del Banco Mundial pueden facilitar inversión y desarrollo. Los programas del FMI pueden afectar a la financiación de un país y a las políticas acordadas dentro del programa. La OCDE influye principalmente mediante análisis y recomendaciones. Sus informes **GEP**, **WEO** y **Economic Outlook** presentan perspectivas de crecimiento y riesgos: pueden ayudar a gobiernos e inversores a revisar sus escenarios, aunque una previsión publicada es una estimación, no una decisión de tipos ni un resultado asegurado.
+
 **Elección:** informe original más los datos de su edición. El texto explica supuestos y riesgos; las tablas permiten conservar valores y proyecciones sin errores de extracción de PDF.
 
 | Información solicitada | Fuente recomendada | ¿Gratis? | Acceso previsto |
@@ -296,6 +339,10 @@ resumen_06 = mostrar_apartado(sonda, 6, '6. Organismos: Banco Mundial, FMI WEO y
 
 <a id="datasets"></a>
 
+**Qué son estas fuentes.** **Hugging Face** es una plataforma donde distintos autores comparten modelos y conjuntos de datos. Los datasets de este apartado recopilan comunicaciones de bancos centrales y, en algunos casos, etiquetas sobre su tono. El **FOMC** es el comité de política monetaria de la Fed. El **Beige Book** es un informe de la Fed que describe la actividad económica de sus regiones a partir de contactos con empresas y otras organizaciones.
+
+**Para qué sirven.** Estos materiales permiten estudiar si una comunicación muestra más preocupación por la inflación o por la debilidad económica. Por ejemplo, **hawkish** suele señalar preferencia por una política más restrictiva y **dovish**, por una más expansiva. Las etiquetas las asignan los autores del dataset; la plataforma y el dataset no deciden los tipos. En el TFM ayudan a analizar comunicaciones que pueden cambiar expectativas sobre futuras decisiones, mientras que el Beige Book aporta contexto sobre empleo, precios y actividad.
+
 **Elección:** útiles para prototipos y anotaciones; las fuentes oficiales de los apartados anteriores siguen siendo la referencia para texto y fechas.
 
 | Dataset o tipo | Fuente recomendada | ¿Gratis? | Calidad, licencia y limitación |
@@ -326,6 +373,10 @@ resumen_07 = mostrar_apartado(sonda, 7, '7. Datasets abiertos: Hugging Face, FOM
 ## 8. Estabilidad financiera
 
 <a id="estabilidad"></a>
+
+**Qué vigilan estas entidades.** La **estabilidad financiera** consiste en que bancos, mercados y sistemas de pago puedan seguir funcionando incluso ante dificultades. Fed, BCE y BoE estudian estas amenazas en sus respectivas economías. La [Junta Europea de Riesgo Sistémico (ESRB)](https://www.esrb.europa.eu/about/html/index.en.html) vigila riesgos del conjunto del sistema financiero de la UE. La [Office of Financial Research (OFR)](https://www.financialresearch.gov/about/) aporta datos e investigación a las autoridades estadounidenses. El [Financial Stability Board (FSB), o Consejo de Estabilidad Financiera](https://www.fsb.org/about/), coordina a autoridades de distintos países para abordar vulnerabilidades financieras.
+
+**Cómo influyen.** Sus análisis pueden orientar medidas de las autoridades, como exigir más recursos propios a los bancos para absorber pérdidas o limitar determinadas exposiciones. El ESRB emite alertas y recomendaciones; la OFR aporta evidencia y el FSB promueve coordinación y recomendaciones internacionales. Los informes ayudan a interpretar problemas como endeudamiento excesivo, dificultades para obtener efectivo o contagio entre entidades. Publicar una advertencia y adoptar una medida son hechos distintos, con fechas y efectos diferentes.
 
 **Elección:** informe completo de la institución que lo produce, junto con tablas y anexos publicados. Son fuentes primarias para saber qué riesgos comunicaba cada organismo.
 
@@ -358,6 +409,10 @@ resumen_08 = mostrar_apartado(sonda, 8, '8. Estabilidad financiera')
 
 <a id="bis-papers"></a>
 
+**Qué publica el BIS.** El Banco de Pagos Internacionales, presentado en el apartado 4, también difunde investigación sobre bancos y mercados. Su **Quarterly Review** es una revisión trimestral de los acontecimientos financieros y de temas relevantes. Los **Working Papers** son trabajos de investigación que estudian preguntas concretas mediante datos, modelos o análisis económico.
+
+**Cómo influyen.** Estas publicaciones aportan explicaciones sobre crédito, deuda, movimientos de capital y riesgos que pueden utilizar bancos centrales, supervisores e inversores. Por ejemplo, un estudio puede ayudar a entender por qué el endeudamiento en dólares vuelve vulnerable a una economía. Su utilidad para el TFM es ofrecer mecanismos y evidencia con los que interpretar los cambios de mercado. Las conclusiones de un trabajo deben atribuirse a sus autores; no constituyen por sí mismas una decisión de política del BIS ni de los bancos centrales.
+
 **Elección:** catálogo oficial BIS, tanto para el documento como para número de serie, autores y fecha.
 
 | Información solicitada | Fuente recomendada | ¿Gratis? | Acceso previsto |
@@ -384,6 +439,10 @@ resumen_09 = mostrar_apartado(sonda, 9, '9. BIS Quarterly Review y Working Paper
 ## 10. FMI Global Financial Stability Report — GFSR
 
 <a id="gfsr"></a>
+
+**Qué entidad y qué informe son.** El **Fondo Monetario Internacional (FMI)** es el organismo de cooperación económica y apoyo financiero descrito en el apartado 6. Su **Global Financial Stability Report (GFSR)** examina la salud del sistema financiero mundial: bancos, deuda, mercados y conexiones por las que un problema puede propagarse entre sectores o países.
+
+**Cómo influye.** El informe puede ayudar a autoridades e inversores a identificar vulnerabilidades y revisar sus medidas o su exposición al riesgo. Por ejemplo, puede analizar cómo unos costes de financiación elevados dificultan el pago de deudas. El **WEO** se centra en las perspectivas de la economía; el **GFSR**, en los riesgos financieros que pueden afectarla. Las recomendaciones del GFSR orientan el debate, pero no cambian automáticamente las normas o los tipos oficiales de los países.
 
 **Elección:** FMI como editor original. Es una fuente central para riesgos financieros globales y debe formar parte del corpus aunque alguna ruta de acceso automático falle.
 
@@ -414,6 +473,10 @@ resumen_10 = mostrar_apartado(sonda, 10, '10. FMI Global Financial Stability Rep
 ## 11. Papers de crisis
 
 <a id="papers-crisis"></a>
+
+**Quién produce y quién distribuye estos trabajos.** Los **papers de crisis** son investigaciones sobre las causas, el desarrollo y las consecuencias de episodios financieros. BIS, BCE y universidades publican estudios propios. El **NBER** es una organización estadounidense de investigación económica. **arXiv** y **SSRN** difunden manuscritos; **Crossref** mantiene identificadores DOI y metadatos bibliográficos, y **Unpaywall** ayuda a localizar copias de acceso abierto. Estas últimas herramientas facilitan encontrar un trabajo, pero no son sus autores ni avalan por sí solas sus conclusiones.
+
+**Cómo pueden influir.** La investigación aporta evidencia para diseñar regulación, evaluar respuestas a crisis y construir modelos de riesgo. Para el TFM permite relacionar señales observadas con mecanismos como quiebras bancarias, exceso de deuda o contagio. Su influencia suele ser indirecta y gradual: un artículo puede cambiar cómo se entiende un problema, pero no equivale a un anuncio de política económica ni demuestra que un patrón vaya a repetirse.
 
 **Elección:** buscar primero el documento publicado por su institución o una versión autorizada del autor. La calidad científica depende de cada trabajo; el proveedor de descarga, por sí solo, no demuestra revisión o robustez.
 
@@ -448,6 +511,10 @@ resumen_11 = mostrar_apartado(sonda, 11, '11. Papers de crisis')
 
 <a id="huellas"></a>
 
+**Qué significa «huella de crisis».** Es un conjunto de rasgos con los que describimos un episodio: por ejemplo, expansión previa del crédito, caída de activos, problemas bancarios y contracción económica. El **ESRB** aporta una base de episodios europeos; los investigadores del **FMI** documentan crisis bancarias internacionales. La **Jordà–Schularick–Taylor Macrohistory Database** es una base académica de series económicas y financieras de largo plazo que permite estudiar esos procesos.
+
+**Para qué sirve.** Comparar estas huellas ayuda a investigar qué señales aparecen antes, durante o después de distintos tipos de crisis y a evaluar modelos de detección de regímenes. Son herramientas de análisis: la clasificación de un episodio puede conocerse años después. En el TFM hay que distinguir entre utilizar esa clasificación para evaluar un modelo y tratarla como información que un inversor ya conocía al comienzo de la crisis.
+
 **Elección:** bases documentadas de crisis como referencia, y construcción propia de las “huellas”. Las 18 crisis y 7 familias de la captura son una selección/taxonomía del proyecto; no identifican por sí mismas una descarga existente.
 
 | Información necesaria | Fuente recomendada | ¿Gratis? | Calidad y limitación |
@@ -479,6 +546,10 @@ resumen_12 = mostrar_apartado(sonda, 12, '12. Huellas de crisis')
 ## 13. Literatura de cartera y CIO
 
 <a id="cartera"></a>
+
+**Qué entidades y conceptos aparecen aquí.** **CIO** significa *Chief Investment Officer*: la persona responsable de orientar las inversiones de una organización. La literatura de cartera estudia cómo combinar activos y gestionar riesgos. La **Kenneth French Data Library** ofrece series académicas para contrastar modelos de rentabilidad. **EUR-Lex** es el portal de legislación de la UE; **MiFID II** es un marco normativo sobre servicios de inversión. La [ESMA](https://www.esma.europa.eu/about-esma) es la autoridad europea de mercados de valores y la [Comisión Nacional del Mercado de Valores (CNMV)](https://www.cnmv.es/portal/quees/funciones-cnmv?lang=es), el supervisor de los mercados de valores en España.
+
+**Cómo influyen.** La investigación puede orientar la diversificación, la distribución entre activos y la medición del riesgo. La normativa y las directrices condicionan cómo se prestan y comercializan los servicios de inversión, qué información se ofrece y cómo se evalúa si una recomendación resulta adecuada para un cliente. Para el TFM, la literatura ayuda a fundamentar decisiones de cartera; los textos normativos aportan el contexto de las obligaciones y la protección del inversor.
 
 **Elección:** textos académicos originales o versiones autorizadas para construcción de carteras; organismos oficiales para normativa y guías de idoneidad. Son dos grupos relacionados, con criterios de calidad distintos.
 
@@ -512,6 +583,10 @@ resumen_13 = mostrar_apartado(sonda, 13, '13. Literatura de cartera y CIO')
 
 <a id="literatura-tarde"></a>
 
+**Qué se analiza aquí.** Este apartado estudia cuándo pudo conocerse una explicación sobre una crisis. Intervienen los autores, las revistas y los repositorios que publican distintas versiones de un trabajo. Un primer manuscrito puede aparecer antes que el artículo definitivo, y cada versión puede contener información diferente. Por eso importa la fecha pública de la versión concreta utilizada.
+
+**Por qué afecta al análisis de decisiones.** Un estudio publicado después de una crisis puede explicar muy bien lo ocurrido y resultar útil para decisiones futuras. Sin embargo, incorporarlo a una simulación como si ya existiera antes daría al modelo conocimiento del futuro y podría exagerar sus resultados. En el TFM, esta auditoría permite separar lo que hoy sabemos de lo que podía saberse al decidir en cada fecha.
+
 **Elección:** construir una auditoría de disponibilidad por versión. Esta tarjeta describe un análisis derivado, no un proveedor adicional del que descargar un corpus ya terminado.
 
 **Prioridad actual:** conservar fechas y versiones durante la ingesta, pero posponer esta auditoría detallada hasta que se necesite un estudio histórico. Un paper posterior a una crisis puede aportar mucho a la biblioteca actual de los agentes.
@@ -529,7 +604,9 @@ Para comprobar “18 de 77 disponibles el 15-09-2008”, primero necesitamos los
 
 ### Sonda: adquisición y mediciones
 
-**Medición específica.** Se usa el corte ilustrativo **15 de septiembre de 2008** como referencia en el retraso de publicación. Los valores negativos indican publicaciones anteriores al corte; los positivos, posteriores. La tabla incluye evidencia y estado de cada versión; un paper anterior puede quedar excluido si no se acredita su texto. No se reproducen «18 de 77» ni «+1,6 años» sin los identificadores y el historial del corpus completo.
+**Medición específica.** Se usa el corte ilustrativo **15 de septiembre de 2008** como referencia de comparación con la publicación. Los valores negativos indican publicaciones anteriores al corte; los positivos, posteriores. La tabla incluye evidencia y estado de cada versión; un paper anterior puede quedar excluido si no se acredita su texto. No se reproducen «18 de 77» ni «+1,6 años» sin los identificadores y el historial del corpus completo.
+
+No se muestra aquí el gráfico de retraso evento → publicación: el corte de 2008 es una referencia ilustrativa y no acredita el evento que origina cada paper. La distancia al corte se conserva en la tabla; las figuras muestran publicaciones y volumen textual observado.
 
 ```python
 inventario_14 = sonda.inventario(14)

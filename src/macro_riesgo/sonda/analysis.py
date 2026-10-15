@@ -1,12 +1,13 @@
 """Tablas y gráficos por institución/familia, solo sobre mediciones obtenidas."""
 
 import re
+from textwrap import fill
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from IPython.display import display
 
-from .temporal import vista_a_fecha
+from .temporal import add_metrics, vista_a_fecha
 
 
 def cobertura(frame):
@@ -28,39 +29,68 @@ def cobertura(frame):
     return pd.DataFrame(rows)
 
 
-def graficos(frame, title):
-    summary = cobertura(frame)
-    labels = (summary['fuente'] + ' · ' + summary['tipo']).tolist()
-    # A separate point/series for every family; absence of lag is never zero.
-    height = max(4, len(summary) * .37)
-    fig, axes = plt.subplots(1, 3, figsize=(18, height), sharey=True)
-    y = list(range(len(labels)))
-    dated = summary['OK'] - summary['sin_fecha_dia']
-    axes[0].barh(y, dated, label='Publicación con día/hora', color='#3274a1')
-    axes[0].barh(y, summary['sin_fecha_dia'], left=dated, label='Sin fecha precisa', color='#e5a134')
-    axes[0].barh(y, summary['intentos'] - summary['OK'], left=summary['OK'], label='Fallo/pendiente', color='#c9c9c9')
-    axes[0].set_yticks(y, labels, fontsize=8)
-    axes[0].set_xlabel('Muestras (denominador explícito)')
-    axes[0].legend(fontsize=8)
-    for row_number, row in summary.iterrows():
-        if row['n_retrasos']:
-            axes[1].plot([row['retraso_p10_d'], row['retraso_p90_d']], [row_number, row_number], color='#3274a1')
-            axes[1].scatter(row['retraso_mediana_d'], row_number, color='#3274a1', s=25)
-        else:
-            axes[1].text(.02, row_number, 'sin par de fechas', transform=axes[1].get_yaxis_transform(), fontsize=7)
-        if pd.notna(row['aplicacion_mediana_d']):
-            axes[2].scatter(row['aplicacion_mediana_d'], row_number, color='#438b59', s=25)
-        else:
-            axes[2].text(.02, row_number, 'no consta / no procede', transform=axes[2].get_yaxis_transform(), fontsize=7)
-    axes[1].set_xlabel('Publicación − evento/periodo/corte (días)\nMediana y P10–P90; n en tabla')
-    axes[2].set_xlabel('Publicación − aplicación (días)\nNegativo: anuncio anterior a la aplicación')
-    for ax in axes[1:]:
-        ax.axvline(0, color='gray', linewidth=.6)
-        ax.grid(axis='x', alpha=.2)
-    axes[0].invert_yaxis()
-    fig.suptitle(title + ' · cobertura temporal y retrasos de la muestra')
+def datos_retraso_evento(frame):
+    """Pares observados por documento; un corte analítico no es un evento causal."""
+    measured = add_metrics(frame)
+    valid = measured['estado'].eq('OK') & measured['retraso_evento_dias'].notna()
+    # El apartado 14 asigna 2008-09-15 como corte ilustrativo a todos los papers.
+    # Las etiquetas retrospectivas de bases de crisis tampoco fechan su creación.
+    if 'apartado' in measured:
+        valid &= ~measured['apartado'].isin([12, 14])
+    return measured.loc[valid].copy()
+
+
+def grafico_retraso_evento(frame, title):
+    """Una fila por publicación: evento → publicación y diferencia en días."""
+    measured = datos_retraso_evento(frame)
+    if measured.empty:
+        print('Retraso entre evento y publicación: sin gráfico; no hay pares de fechas '
+              'verificados de un evento y su publicación. Un corte de análisis '
+              'o una fecha de aplicación no sustituyen al evento.')
+        return None
+
+    fig, ax = plt.subplots(figsize=(13, max(3.2, len(measured) * .78 + 1.2)))
+    labels = []
+    for pos, (_, row) in enumerate(measured.iterrows()):
+        lag = row['retraso_evento_dias']
+        color = '#3274a1' if lag >= 0 else '#c0782a'
+        ax.barh(pos, lag, color=color, height=.45, alpha=.8)
+        # El punto permite ver las publicaciones del mismo día (barra de ancho 0).
+        ax.scatter(lag, pos, color=color, s=30, zorder=3)
+        annotation = '0 d · mismo día' if lag == 0 else f'{lag:g} d'
+        ax.annotate(annotation, (lag, pos), xytext=(7 if lag >= 0 else -7, 0),
+                    textcoords='offset points', ha='left' if lag >= 0 else 'right',
+                    va='center', fontsize=9)
+        event = str(row['fecha_evento'])[:10]
+        publication = str(row['fecha_publicacion'])[:10]
+        labels.append(fill(f'{row["fuente"]} · {row["tipo"]}', width=48)
+                      + f'\n{event} → {publication}')
+    ax.set_yticks(range(len(labels)), labels, fontsize=8)
+    ax.invert_yaxis()
+    ax.axvline(0, color='gray', linewidth=.8)
+    ax.grid(axis='x', alpha=.2)
+    left, right = measured['retraso_evento_dias'].min(), measured['retraso_evento_dias'].max()
+    padding = max(1, (max(0, right) - min(0, left)) * .22)
+    ax.set_xlim(min(0, left) - padding, max(0, right) + padding)
+    ax.set_xlabel('Días de calendario desde el evento hasta la publicación\n'
+                  '0 = mismo día · positivo = después · negativo = antes')
+    ax.set_title(title + '\nRetraso de publicación respecto al evento')
     fig.tight_layout()
     plt.show()
+    plt.close(fig)
+    omitted = frame['estado'].eq('OK').sum() - len(measured)
+    if omitted:
+        print(f'{omitted} muestras obtenidas quedan fuera del gráfico de retraso: '
+              'sin par de fechas preciso o sin evento asociado verificable; véase la tabla.')
+    return fig
+
+
+def graficos(frame, title):
+    grafico_retraso_evento(frame, title)
+    summary = cobertura(frame)
+    labels = (summary['fuente'] + ' · ' + summary['tipo']).tolist()
+    height = max(4, len(summary) * .37)
+    y = list(range(len(labels)))
     fig2, axes2 = plt.subplots(1, 2, figsize=(15, height), sharey=True)
     for pos, (source, family) in enumerate(zip(summary['fuente'], summary['tipo'])):
         group = frame.loc[frame['fuente'].eq(source) & frame['tipo'].eq(family) & frame['estado'].eq('OK')]
@@ -75,7 +105,6 @@ def graficos(frame, title):
     fig2.suptitle(title + ' · publicaciones y volumen textual observado')
     fig2.tight_layout()
     plt.show()
-    plt.close(fig)
     plt.close(fig2)
 
 

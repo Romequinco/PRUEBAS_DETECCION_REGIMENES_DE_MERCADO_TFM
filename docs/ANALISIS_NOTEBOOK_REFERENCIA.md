@@ -1,7 +1,7 @@
 # Lectura y adaptación de la sonda de Daniel
 
 Referencia: [t3_01_sonda_empresas.ipynb, rama fase2/t3-empresas](https://github.com/Romequinco/PRUEBAS_DETECCION_REGIMENES_DE_MERCADO_TFM/blob/fase2/t3-empresas/notebooks/fase2/t3_01_sonda_empresas.ipynb).
-Leídas las **29 celdas**, tanto Markdown como código, el 14 de octubre de 2026.
+Releídas las **29 celdas**, tanto Markdown como código, el 15 de octubre de 2026.
 La lectura del notebook no verifica por sí sola sus módulos externos ni sus
 afirmaciones empíricas; no se han ejecutado las consultas de empresas.
 
@@ -33,7 +33,7 @@ La extrapolación de volumen aclara cuándo procede de un subconjunto.
 ## Adaptación a fuentes textuales
 
 Se aplica la misma organización, conservando los 14 apartados originales:
-inventario de familias; adquisición limitada; cobertura temporal; gráficos;
+inventario de familias; adquisición limitada; cobertura en tablas; gráficos;
 texto/fila de ejemplo; calidad de extracción; errores; volumen; exportación
 y resumen calculado. Cada institución y familia sigue siendo identificable
 en sus propias filas. Configuración, HTTP, adaptadores, extracción, fechas,
@@ -44,6 +44,26 @@ reunión/publicación; para normativa, anuncio/aplicación cuando lo declara el
 texto. Para papers o informes sin aplicación se muestra la ausencia: no se
 inventa ese campo ni se interpreta automáticamente la edición como publicación.
 Las fechas parciales no producen lags ni horas ficticias.
+
+La revisión del 15 de octubre simplifica la presentación de los 14 apartados.
+Se conservan los gráficos de **publicaciones y volumen textual observado**.
+Los tres paneles de cobertura y retrasos se sustituyen por un solo gráfico
+de barras horizontales: una fila por documento con fuente, familia, fecha del
+evento, fecha de publicación y diferencia en días de calendario. Un punto
+hace visible el retraso cero; los valores negativos indican publicación previa
+al evento. No se sustituyen las fechas ausentes por ceros ni se usan la fecha
+de descarga o de aplicación como evento.
+
+El gráfico de retraso se omite cuando no existen pares precisos y verificables.
+En las muestras locales actuales puede mostrarse en los apartados 1, 2, 3 y 5;
+el resto conserva sus mediciones en tablas y los gráficos de publicaciones y
+volumen. Los apartados 12 y 14 no entran en ese gráfico: una etiqueta de crisis
+retrospectiva o el corte ilustrativo del 15-09-2008 no acreditan el evento que
+origina una publicación. La distancia de los papers al corte sigue en la tabla
+del apartado 14, claramente identificada como comparación analítica.
+
+Las figuras guardadas se regeneran con los CSV y JSONL de la misma muestra
+local, sin repetir la adquisición ni presentar esas descargas como nuevas.
 
 No se traslada la regla del cierre de Nueva York a comunicaciones mundiales.
 El notebook de Daniel describe una política de uso diario de filings; esa
@@ -62,8 +82,9 @@ con vínculo al original, sin construir un RAG ni entrenar un clasificador.
 - Sustituir la gran celda de funciones auxiliares por módulos reutilizables.
 - Medir varios documentos cuando el listado lo permite, sin confundir
   primera/última muestra con inicio/fin del histórico.
-- Mostrar gráficos en todos los apartados, incluyendo casos sin fechas
-  y acceso fallido; ausencia de medición no significa retraso cero.
+- Conservar publicaciones y volumen por apartado; mostrar retraso respecto
+  al evento solo cuando procede y existen fechas verificables. La cobertura,
+  los fallos y los retrasos respecto a aplicación permanecen en las tablas.
 - Fijar arXiv a v1 para evitar fechar el PDF revisado con `published` de v1.
 - No pasar la fecha de la última ficha GFSR a un PDF de edición fija diferente.
 - No usar periodo observado, reunión, fecha del nombre del archivo, registro

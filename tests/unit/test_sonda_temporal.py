@@ -74,6 +74,13 @@ class TemporalTests(unittest.TestCase):
                           fecha_evento='2026-10-14', fecha_aplicacion=None)
         self.assertEqual(add_metrics(pd.DataFrame([row])).iloc[0]['retraso_evento_dias'], 0)
 
+    def test_partial_reference_date_does_not_become_first_day(self):
+        rows = [self.record(fecha_evento=partial, fecha_aplicacion=partial)
+                for partial in ('2026', '2026-10')]
+        result = add_metrics(pd.DataFrame(rows))
+        self.assertTrue(result['retraso_evento_dias'].isna().all())
+        self.assertTrue(result['retraso_aplicacion_dias'].isna().all())
+
     def test_meeting_and_publication_are_separate(self):
         event, _ = event_date('https://www.federalreserve.gov/monetarypolicy/fomcminutes20260128.htm',
                               '', 'Fed', 'Actas FOMC')

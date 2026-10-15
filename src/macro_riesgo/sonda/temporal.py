@@ -62,8 +62,11 @@ def add_metrics(frame):
     for target, reference in [('retraso_evento_dias', 'fecha_evento'),
                               ('retraso_aplicacion_dias', 'fecha_aplicacion')]:
         # Calendar lags use the source's local date, not the date after UTC conversion.
-        pub = pd.to_datetime(frame['fecha_publicacion'].astype('string').str[:10], errors='coerce', format='mixed')
-        ref = pd.to_datetime(frame[reference].astype('string').str[:10], errors='coerce', format='mixed')
+        pub_raw = frame['fecha_publicacion'].astype('string').str[:10]
+        ref_raw = frame[reference].astype('string').str[:10]
+        full_day = r'\d{4}-\d{2}-\d{2}'
+        pub = pd.to_datetime(pub_raw.where(pub_raw.str.fullmatch(full_day)), errors='coerce', format='mixed')
+        ref = pd.to_datetime(ref_raw.where(ref_raw.str.fullmatch(full_day)), errors='coerce', format='mixed')
         # Partial dates must not silently turn into the first of a month/year.
         valid = frame['precision_publicacion'].isin(['día', 'hora', 'hora_sin_zona']) & ref.notna()
         frame[target] = (pub.dt.normalize() - ref.dt.normalize()).dt.days.where(valid)
