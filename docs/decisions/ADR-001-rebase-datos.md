@@ -122,7 +122,7 @@ Tras la Fase 3 se hizo una **limpieza intensa** del repo para dejar solo lo rele
 - **Retirada la maquinaria de builders**: de v2 y de `capa1_exploracion/scripts/` (Capa 1 está
   congelada; sus notebooks ya están ejecutados). El histórico íntegro sigue en la rama
   `backup-main-pre-datos-v2` (la Capa 1 congelada, en el tag `capa1-final`).
-- **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/datos/SOTA_datos.md`).
+- **Traza temporal fuera**: `data/_catalog_research/` (consolidado en `docs/datos/SOTA_datos.md`, hoy [`docs/estado_del_arte/fuentes_datos.md`](../estado_del_arte/fuentes_datos.md)).
 - **`docs/` = hogar único del conocimiento** (ver `docs/README.md`): decisiones, datos, EDA, teoría.
   Ningún hallazgo, decisión ni teoría se perdió: se preservó en `docs/` antes de borrar.
 - **Capa 1 se mantiene intacta** (decisión del usuario) salvo la retirada de `scripts/`.

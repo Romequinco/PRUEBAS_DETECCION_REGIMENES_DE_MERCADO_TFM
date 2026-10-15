@@ -1,0 +1,484 @@
+{
+  "fuente": "bce",
+  "nombre": "Banco Central Europeo: Data Portal (EXR, EST, EON, FM, HICP 4D0, LFSI, MNA)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://data-api.ecb.europa.eu/",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "BCE: reutilización libre con cita de la fuente (ecb.europa.eu, «Reuse of ECB statistics»); EONIA: datos de EMMI/EBF, solo local",
+  "cobertura_inicio": "1995-01-01",
+  "cobertura_fin": "2026-10-12",
+  "frecuencia": "diaria (FX, €STR, EONIA, tipos oficiales), mensual (HICP, paro), trimestral (PIB)",
+  "retraso_publicacion": "FX: mismo día 16:00 Berlin (visible en la decisión del día); €STR: 08:00 Berlin del hábil TARGET siguiente; HICP/paro/PIB: VALID_FROM medido por versión (ver mediciones.series.*.retraso_primera_version_dias)",
+  "formato": "csv (SDMX csvdata)",
+  "volumen_estimado": "15.7 MB de CSV por descarga completa (~10 peticiones)",
+  "limites": "sin límite publicado; 1 petición/s por host; robots.txt permite /service/data",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_series": 52,
+    "n_filas": 272188,
+    "n_divisas_fx": 44,
+    "include_history_sin_startPeriod": {
+      "n_filas": 568,
+      "acciones": {
+        "Replace": 348,
+        "Delete": 220
+      },
+      "versiones_por_obs_max": 1,
+      "obs_con_mas_de_una_version": 0,
+      "primera_version": "2015-11-04T17:21:26+00:00",
+      "ultima_version": "2026-01-19T10:05:23+00:00",
+      "dias_con_version": 104,
+      "clave": "ICP/M.U2.N.000000.4.ANR",
+      "n_obs_vigentes": 348,
+      "devuelve_historia": false
+    },
+    "series": {
+      "ecb:ESTR": {
+        "n_filas": 1801,
+        "n_obs": 1801,
+        "inicio": "2019-10-01",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 1.0
+      },
+      "ecb:EONIA": {
+        "n_filas": 5890,
+        "n_obs": 5890,
+        "inicio": "1999-01-04",
+        "fin": "2021-12-31",
+        "retraso_dias_mediana": 1.0
+      },
+      "ecb:DFR": {
+        "n_filas": 69,
+        "n_obs": 69,
+        "inicio": "1999-01-01",
+        "fin": "2026-09-16",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:MRO": {
+        "n_filas": 48,
+        "n_obs": 48,
+        "inicio": "1999-01-01",
+        "fin": "2026-09-16",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:HICP.M.U2.N.000000.4D0.ANR": {
+        "include_history": {
+          "n_filas": 429,
+          "acciones": {
+            "Replace": 428,
+            "Delete": 1
+          },
+          "versiones_por_obs_max": 1,
+          "obs_con_mas_de_una_version": 0,
+          "primera_version": "2026-01-28T10:00:04+00:00",
+          "ultima_version": "2026-10-02T09:07:14+00:00",
+          "dias_con_version": 12
+        },
+        "n_filas": 357,
+        "n_obs": 357,
+        "inicio": "1997-01-01",
+        "fin": "2026-09-01",
+        "retraso_primera_version_dias": {
+          "mediana": 46.0,
+          "min": 31,
+          "max": 49
+        },
+        "n_previa_regla": 348
+      },
+      "ecb:HICP.M.U2.N.XEF000.4D0.ANR": {
+        "include_history": {
+          "n_filas": 429,
+          "acciones": {
+            "Replace": 428,
+            "Delete": 1
+          },
+          "versiones_por_obs_max": 1,
+          "obs_con_mas_de_una_version": 0,
+          "primera_version": "2026-01-28T10:00:04+00:00",
+          "ultima_version": "2026-10-02T09:07:14+00:00",
+          "dias_con_version": 13
+        },
+        "n_filas": 357,
+        "n_obs": 357,
+        "inicio": "1997-01-01",
+        "fin": "2026-09-01",
+        "retraso_primera_version_dias": {
+          "mediana": 46.5,
+          "min": 31,
+          "max": 58
+        },
+        "n_previa_regla": 347
+      },
+      "ecb:LFSI.M.U2.S.UNEHRT.TOTAL0.15_74.T": {
+        "include_history": {
+          "n_filas": 381,
+          "acciones": {
+            "Replace": 380,
+            "Delete": 1
+          },
+          "versiones_por_obs_max": 1,
+          "obs_con_mas_de_una_version": 0,
+          "primera_version": "2026-01-23T18:39:29+00:00",
+          "ultima_version": "2026-10-01T09:00:00+00:00",
+          "dias_con_version": 8
+        },
+        "n_filas": 380,
+        "n_obs": 380,
+        "inicio": "1995-01-01",
+        "fin": "2026-08-01",
+        "retraso_primera_version_dias": {
+          "mediana": 61.5,
+          "min": 61,
+          "max": 62
+        },
+        "n_previa_regla": 378
+      },
+      "ecb:MNA.Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY": {
+        "include_history": {
+          "n_filas": 122,
+          "acciones": {
+            "Replace": 122
+          },
+          "versiones_por_obs_max": 1,
+          "obs_con_mas_de_una_version": 0,
+          "primera_version": "2026-09-07T09:19:29+00:00",
+          "ultima_version": "2026-09-07T09:19:29+00:00",
+          "dias_con_version": 1
+        },
+        "n_filas": 122,
+        "n_obs": 122,
+        "inicio": "1996-01-01",
+        "fin": "2026-04-01",
+        "retraso_dias_mediana": 122.0
+      },
+      "ecb:EXR.D.ARS.EUR": {
+        "n_filas": 5296,
+        "n_obs": 5296,
+        "inicio": "2000-01-13",
+        "fin": "2020-10-30",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.AUD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.BGN.EUR": {
+        "n_filas": 6515,
+        "n_obs": 6515,
+        "inicio": "2000-07-19",
+        "fin": "2025-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.BRL.EUR": {
+        "n_filas": 6845,
+        "n_obs": 6845,
+        "inicio": "2000-01-13",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.CAD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.CHF.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.CNY.EUR": {
+        "n_filas": 6845,
+        "n_obs": 6845,
+        "inicio": "2000-01-13",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.CYP.EUR": {
+        "n_filas": 2304,
+        "n_obs": 2304,
+        "inicio": "1999-01-04",
+        "fin": "2007-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.CZK.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.DKK.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.DZD.EUR": {
+        "n_filas": 5321,
+        "n_obs": 5321,
+        "inicio": "2000-01-13",
+        "fin": "2020-10-30",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.EEK.EUR": {
+        "n_filas": 3074,
+        "n_obs": 3074,
+        "inicio": "1999-01-04",
+        "fin": "2010-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.GBP.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.GRD.EUR": {
+        "n_filas": 514,
+        "n_obs": 514,
+        "inicio": "1999-01-04",
+        "fin": "2000-12-29",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.HKD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.HRK.EUR": {
+        "n_filas": 5880,
+        "n_obs": 5880,
+        "inicio": "2000-01-13",
+        "fin": "2022-12-30",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.HUF.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.IDR.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.ILS.EUR": {
+        "n_filas": 6844,
+        "n_obs": 6844,
+        "inicio": "2000-01-13",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.INR.EUR": {
+        "n_filas": 6845,
+        "n_obs": 6845,
+        "inicio": "2000-01-13",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.ISK.EUR": {
+        "n_filas": 4767,
+        "n_obs": 4767,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.JPY.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.KRW.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.LTL.EUR": {
+        "n_filas": 4097,
+        "n_obs": 4097,
+        "inicio": "1999-01-04",
+        "fin": "2014-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.LVL.EUR": {
+        "n_filas": 3842,
+        "n_obs": 3842,
+        "inicio": "1999-01-04",
+        "fin": "2013-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.MAD.EUR": {
+        "n_filas": 5320,
+        "n_obs": 5320,
+        "inicio": "2000-01-13",
+        "fin": "2020-10-30",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.MTL.EUR": {
+        "n_filas": 2304,
+        "n_obs": 2304,
+        "inicio": "1999-01-04",
+        "fin": "2007-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.MXN.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.MYR.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.NOK.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.NZD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.PHP.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.PLN.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.RON.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.RUB.EUR": {
+        "n_filas": 5932,
+        "n_obs": 5932,
+        "inicio": "1999-01-04",
+        "fin": "2022-03-01",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.SEK.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.SGD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.SIT.EUR": {
+        "n_filas": 2049,
+        "n_obs": 2049,
+        "inicio": "1999-01-04",
+        "fin": "2006-12-29",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.SKK.EUR": {
+        "n_filas": 2560,
+        "n_obs": 2560,
+        "inicio": "1999-01-04",
+        "fin": "2008-12-31",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.THB.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.TRY.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.TWD.EUR": {
+        "n_filas": 5322,
+        "n_obs": 5322,
+        "inicio": "2000-01-13",
+        "fin": "2020-10-30",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.USD.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      },
+      "ecb:EXR.D.ZAR.EUR": {
+        "n_filas": 7112,
+        "n_obs": 7112,
+        "inicio": "1999-01-04",
+        "fin": "2026-10-12",
+        "retraso_dias_mediana": 0.0
+      }
+    },
+    "peticiones": 0,
+    "bytes": 15740566
+  },
+  "notas": [
+    "EONIA ya no está en FM (404): se sirve en el flujo EON (EON.D.EONIA_TO.RATE), 1999-2021",
+    "HICP: flujo NUEVO HICP con proveedor 4D0 (ECOICOP v2, U2 = composición cambiante); el flujo ICP antiguo queda como referencia de la ruptura de 2026",
+    "PIB: MNA no publica U2; se usa I10 (zona euro 21, composición fija desde el 1-1-2026)",
+    "includeHistory=true (sin startPeriod ni updatedAfter) responde con ACTION/VALID_FROM/VALID_TO, pero en HICP 4D0, LFSI y MNA da UNA versión por observación (la vigente): no hay historia de revisiones; en el flujo ICP antiguo, ver include_history_sin_startPeriod",
+    "Revisables: observación con regla de publicación anterior a su VALID_FROM → fechada con la regla (lag_fijo, valor revisado, nota); si no, VALID_FROM (instante real de carga)",
+    "Tipos oficiales: una fila por fecha de efecto; visibles ese día (la decisión se anuncia antes)",
+    "TWD y otras divisas no están en el fijado de referencia del BCE"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

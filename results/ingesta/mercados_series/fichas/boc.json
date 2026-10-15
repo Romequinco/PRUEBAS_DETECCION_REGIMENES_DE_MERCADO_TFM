@@ -1,0 +1,51 @@
+{
+  "fuente": "boc",
+  "nombre": "Banco de Canadá (Valet)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.bankofcanada.ca/valet/docs",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos del Banco de Canadá (https://www.bankofcanada.ca/terms/): uso libre citando la fuente",
+  "cobertura_inicio": "2001-01-02",
+  "cobertura_fin": "2026-10-09",
+  "frecuencia": "diaria",
+  "retraso_publicacion": "medido en la sonda: días naturales del último dato a la fecha de la sonda: V39079 4; BD.CDN.10YR.DQ.YLD 5. Regla conservadora: hábil siguiente a las 12:00 locales",
+  "formato": "json",
+  "volumen_estimado": "1.38 MB (2 series)",
+  "limites": "sin clave; 1 petición/s; reintento único ante error",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "series": {
+      "boc:V39079": {
+        "inicio": "2009-04-21",
+        "fin": "2026-10-09",
+        "n_obs": 4545,
+        "filas_contrato": 4545,
+        "bytes": 536827,
+        "dias_naturales_ultimo_dato_a_sonda": 4,
+        "fecha_publicacion_mediana_menos_fecha_dias": 1.0
+      },
+      "boc:BD.CDN.10YR.DQ.YLD": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6444,
+        "filas_contrato": 6444,
+        "bytes": 838314,
+        "dias_naturales_ultimo_dato_a_sonda": 5,
+        "fecha_publicacion_mediana_menos_fecha_dias": 1.0
+      }
+    },
+    "descarga": {}
+  },
+  "notas": [
+    "vintage 'unico': series de mercado/política monetaria sin revisiones",
+    "huecos de la fuente (festivos, '.') descartados: no se inventan filas"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

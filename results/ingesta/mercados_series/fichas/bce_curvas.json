@@ -1,0 +1,260 @@
+{
+  "fuente": "bce_curvas",
+  "nombre": "BCE · curvas de rendimiento de la zona euro (Svensson; AAA y todos los emisores)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://data.ecb.europa.eu/data/datasets/YC",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "reutilización libre citando la fuente (ECB Data Portal, condiciones de uso del BCE)",
+  "cobertura_inicio": "2004-09-06",
+  "cobertura_fin": "2026-10-12",
+  "frecuencia": "diaria (hábiles del publicador)",
+  "retraso_publicacion": "dato de D publicado a las 12:00 Europe/Berlin del hábil TARGET siguiente → decisión D+1; medido en la tabla: mediana 1 días naturales, máximo 6",
+  "formato": "csv SDMX",
+  "volumen_estimado": "12.16 MB de crudos descargados (1 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "descargas": [
+      {
+        "clave": "yc_svensson.csv",
+        "estado": 200,
+        "bytes": 12163756,
+        "descargado_utc": "2026-10-13T11:49:15.412744+00:00",
+        "error": null,
+        "last_modified": "Tue, 13 Oct 2026 10:00:00 GMT"
+      }
+    ],
+    "series": {
+      "ecb:YC.AAA.10Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.15Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.1Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.20Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.2Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.30Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.3M": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.3Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.5Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.6M": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.AAA.7Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.10Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.15Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.1Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.20Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.2Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.30Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.3M": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.3Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.5Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.6M": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      },
+      "ecb:YC.ALL.7Y": {
+        "inicio": "2004-09-06",
+        "fin": "2026-10-12",
+        "n_obs": 5650,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "10:00"
+      }
+    },
+    "retraso_dias_mediana": 1.0,
+    "retraso_dias_max": 6,
+    "sondas": {
+      "bundesbank": {
+        "estado": 200,
+        "bytes": 1305,
+        "tipo": "application/vnd.bbk.data+csv;version=1.0.0;charset=UTF-8",
+        "last_modified": null
+      },
+      "rba": {
+        "estado": 200,
+        "bytes": 201240,
+        "tipo": "application/octet-stream",
+        "last_modified": "Fri, 09 Oct 2026 02:46:21 GMT"
+      }
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.curvas (crudos en <corpus>/mercados_series/crudo/bce_curvas/; tabla en <corpus>/mercados_series/series/curvas_b6.parquet)",
+    "Vintage 'unico' y metodo 'calendario': las curvas no se revisan tras publicarse",
+    "Ids ecb:YC.AAA.<plazo> (G_N_A) y ecb:YC.ALL.<plazo> (G_N_C): Svensson, tipos al contado (SR_), composición cambiante de la zona euro (U2); plazos 3M a 30Y",
+    "Hora: Last-Modified de la API 12:00 Europe/Berlin con el dato del hábil anterior (medido el 2026-10-13)",
+    "Bundesbank y RBA: una petición cada una para documentar el acceso (ver mediciones.sondas); no se cargan (Alemania queda cubierta por la curva del BCE; Australia fuera del universo de países)"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

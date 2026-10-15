@@ -30,6 +30,13 @@ Recuerda que cada agente tiene **dos RAG**:
 - [ ] Literatura de cartera (risk parity, mínima varianza…) e idoneidad (ESMA, CNMV)
 - [ ] Datasets abiertos ya construidos (Hugging Face, Kaggle): licencias y si traen fecha de publicación
 
+> **Acceso legal.** Las sondas del plan ya descartaron algunas de estas fuentes: el **PBoC** (robots.txt con
+> `Disallow: /`) y el **GFSR del FMI** (el WAF del FMI bloquea a los clientes que no son navegador) no se descargan
+> de forma automática. El PBoC se cubre con los discursos del BIS y datasets abiertos con fecha estimada; el GFSR,
+> solo si se aprueba la descarga manual (Q5). Lista completa y motivos:
+> [plan de datos §3.4](../../../docs/fase2/plan_datos.md#34-acceso-legal-fuentes-excluidas); puntos abiertos del
+> tema: [anexo B](../../../docs/fase2/plan_datos.md#anexo-b-puntos-abiertos-por-tema).
+
 ## Entregables
 
 1. Un extractor por fuente con su ficha y sus tests; documentos como `Documento` en jsonl con su `fecha_publicacion`

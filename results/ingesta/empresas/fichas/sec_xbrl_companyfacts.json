@@ -1,0 +1,32 @@
+{
+  "fuente": "sec_xbrl_companyfacts",
+  "nombre": "SEC XBRL · companyfacts (fundamentales point-in-time)",
+  "tema": "empresas",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.sec.gov/edgar",
+  "acceso": "api",
+  "autenticacion": "ninguna (User-Agent con email)",
+  "coste": "0 €",
+  "licencia_y_terminos": "Documentos oficiales de dominio público; acceso según las normas de acceso justo de la SEC (≤10 peticiones/s)",
+  "cobertura_inicio": "2009-07-23",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "por filing",
+  "retraso_publicacion": "el del filing que la contiene (10-K / 10-Q)",
+  "formato": "json -> parquet largo",
+  "volumen_estimado": "258799 cifras en 10 empresas",
+  "limites": "10 peticiones/s por IP; User-Agent obligatorio",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_cifras": 258799,
+    "n_conceptos": 2469
+  },
+  "notas": [
+    "Cada cifra se guarda una vez por publicación: las reexpresiones quedan visibles",
+    "Antes de 2009 no hay XBRL: hará falta Compustat (WRDS) o extraer de los textos"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

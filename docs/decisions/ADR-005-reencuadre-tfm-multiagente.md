@@ -1,8 +1,12 @@
 # ADR-005 — El TFM es un sistema multi-agente; el régimen es su Fase 1
 
 - **Estado:** Aceptada · 2026-10-06 (tras la reunión con el tutor; decisión del equipo).
-- **Fuentes:** [`docs/context/TFM_Reunion_Tutor.pdf`](../context/TFM_Reunion_Tutor.pdf) (presentación al
-  tutor, octubre de 2026) y [`docs/context/TFM_Proposal_v2.pdf`](../context/TFM_Proposal_v2.pdf)
+- **Estado actual (2026-10-14):** la Fase 2 ya está en marcha y su ubicación quedó decidida en
+  [ADR-007](ADR-007-fase2-ingesta-y-docs.md) (`src/ingesta`, cuatro temas con una rama cada uno, documentación en
+  `docs/fase2/`), lo que cierra el punto abierto de §3 para la Fase 2. El estado de cada fase se mantiene en
+  [`docs/tfm/README.md`](../tfm/README.md), no en esta ADR.
+- **Fuentes:** [`docs/tfm/fuentes/reunion_tutor.pdf`](../tfm/fuentes/reunion_tutor.pdf) (presentación al
+  tutor, octubre de 2026) y [`docs/tfm/fuentes/propuesta_v2.pdf`](../tfm/fuentes/propuesta_v2.pdf)
   (propuesta original, parcialmente superada por esta ADR).
 - **Corrige:** [ADR-004](ADR-004-unificacion.md) §2 (*"todo el TFM vive en `regimenes`"*): `regimenes` es
   el código de la Fase 1. ADR-001 a ADR-004 siguen vigentes dentro de la Fase 1.
@@ -22,20 +26,18 @@ tutor se fijó el alcance final y se añadieron requisitos nuevos.
 ## 2. Decisión
 
 **El TFM es *Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence*:** un equipo de agentes
-LLM (Macro, Equity, Risk, Portfolio y CIO, orquestados con LangGraph) que lee información financiera
-heterogénea mediante RAG y, sabiendo en qué régimen está el mercado, construye carteras y redacta un
-*investment memo* con citas a las fuentes. No predice precios: detecta el estado del mercado, lo
-contextualiza con evidencia y gestiona el riesgo. Visión completa en [`docs/tfm/`](../tfm/README.md).
+LLM con RAG que, sabiendo en qué régimen está el mercado, construye carteras y las explica con citas. La
+visión del sistema se mantiene en un solo sitio, [`docs/tfm/README.md`](../tfm/README.md), y no se repite aquí.
 
-Se trabaja en **cinco fases**:
+Se trabaja en **cinco fases** (su estado actual, en [`docs/tfm/README.md`](../tfm/README.md) §3):
 
-| Fase | Qué | Estado |
-|:---:|---|---|
-| 1 | Régimen de mercado: base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | 🟡 en curso (este repositorio, paquete `regimenes`) |
-| 2 | Ingesta, RAG y tools: corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | 🔜 |
-| 3 | Agentes Macro, Equity y Risk en LangGraph, salidas estructuradas y trazables | 🔜 |
-| 4 | Cartera y memo: Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | 🔜 |
-| 5 | Evaluación: backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos | 🔜 |
+| Fase | Qué |
+|:---:|---|
+| 1 | Régimen de mercado: base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` (paquete `regimenes`) |
+| 2 | Ingesta, RAG y tools: corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS |
+| 3 | Agentes Macro, Equity y Risk en LangGraph, salidas estructuradas y trazables |
+| 4 | Cartera y memo: Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas |
+| 5 | Evaluación: backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos |
 
 Las etapas internas de la Fase 1 conservan sus nombres históricos (fases 1–4 del re-base de datos de
 ADR-001, y D detectores, E fusión, S sintéticos, F decisión final + validación) y pasan a leerse como
@@ -92,7 +94,8 @@ con el tag y la historia; el GLOSARIO lo aclara.
 - README, índice de `docs/`, GLOSARIO y descripciones del paquete presentan el TFM completo y sitúan
   este repositorio como su Fase 1.
 - Dónde vivirá el código de las fases 2–5 (paquetes nuevos en este repositorio o un repositorio aparte)
-  queda **abierto**; se decidirá en una ADR propia.
+  queda **abierto**; se decidirá en una ADR propia. *(Para la Fase 2 lo decide [ADR-007](ADR-007-fase2-ingesta-y-docs.md);
+  las fases 3–5 siguen abiertas.)*
 - El objetivo de `19_decision_final` y `20_pseudolive` deja de ser «el sistema final del TFM» y pasa a
   ser la señal de régimen que consumirán los agentes.
 - El notebook `18_sinteticos_aumento` se mantiene.

@@ -1,0 +1,910 @@
+serie,fuente,frecuencia,inicio,fin,n_obs,n_vintages,retraso_observado_dias,lag_mediano_dias,unidad
+bis:WS_CBPOL.M.CA,bis,mensual,1960-07-01,2026-09-01,795,1,13,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.CN,bis,mensual,1996-01-01,2026-09-01,369,1,13,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.DE,bis,mensual,1948-07-01,1998-12-01,606,1,10148,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.FR,bis,mensual,1945-01-01,1998-12-01,648,1,10148,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.GB,bis,mensual,1946-01-01,2026-09-01,969,1,13,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.IT,bis,mensual,1945-01-01,1998-12-01,648,1,10148,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.JP,bis,mensual,1946-01-01,2026-09-01,853,1,13,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.US,bis,mensual,1954-07-01,2026-09-01,867,1,13,7.0,% anual (fin de mes)
+bis:WS_CBPOL.M.XM,bis,mensual,1999-01-01,2026-09-01,333,1,13,7.0,% anual (fin de mes)
+bis:WS_CREDIT_GAP.Q.CA.P.A.C,bis,trimestral,1965-10-01,2026-01-01,242,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.CN.P.A.C,bis,trimestral,1995-10-01,2026-01-01,122,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.DE.P.A.C,bis,trimestral,1970-10-01,2026-01-01,222,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.FR.P.A.C,bis,trimestral,1979-10-01,2026-01-01,186,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.GB.P.A.C,bis,trimestral,1973-01-01,2026-01-01,213,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.IT.P.A.C,bis,trimestral,1970-10-01,2026-01-01,222,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.JP.P.A.C,bis,trimestral,1974-10-01,2026-01-01,206,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.US.P.A.C,bis,trimestral,1957-10-01,2026-01-01,274,1,196,183.0,puntos porcentuales del PIB
+bis:WS_CREDIT_GAP.Q.XM.P.A.C,bis,trimestral,2009-01-01,2026-01-01,69,1,196,183.0,puntos porcentuales del PIB
+bis:WS_DSR.Q.CA.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.CN.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.DE.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.FR.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.GB.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.IT.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.JP.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_DSR.Q.US.P,bis,trimestral,1999-01-01,2026-01-01,109,1,196,183.0,% de la renta disponible
+bis:WS_EER.M.R.B.CA,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.CN,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.DE,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.FR,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.GB,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.IT,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.JP,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.US,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+bis:WS_EER.M.R.B.XM,bis,mensual,1994-01-01,2026-08-01,392,1,43,31.0,índice (2020 = 100)
+imf:WEO.CAN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CAN.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.CAN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CAN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CAN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.GGXCNL_NGDP,imf_weo,anual,1982-01-01,2025-01-01,44,1,286,8139.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP,imf_weo,anual,1995-01-01,2025-01-01,31,1,286,5765.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.CHN.LUR,imf_weo,anual,2017-01-01,2025-01-01,9,1,286,1747.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.CHN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH,imf_weo,anual,1981-01-01,2025-01-01,45,1,286,8322.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.CHN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.GGXCNL_NGDP,imf_weo,anual,1991-01-01,2025-01-01,35,1,286,6495.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP,imf_weo,anual,1991-01-01,2025-01-01,35,1,286,6495.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.DEU.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.DEU.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.DEU.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.DEU.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.FRA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.FRA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.FRA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.FRA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.GBR.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.GBR.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.GBR.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.GBR.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.GGXCNL_NGDP,imf_weo,anual,1988-01-01,2025-01-01,38,1,286,7043.5,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP,imf_weo,anual,1988-01-01,2025-01-01,38,1,286,7043.5,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.ITA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.ITA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.ITA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.ITA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.GGXCNL_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.JPN.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.JPN.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.JPN.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.JPN.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.GGXCNL_NGDP,imf_weo,anual,2001-01-01,2025-01-01,25,1,286,4669.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXCNL_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP,imf_weo,anual,2001-01-01,2025-01-01,25,1,286,4669.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.GGXWDG_NGDP.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% del PIB
+imf:WEO.USA.LUR,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% de la población activa
+imf:WEO.USA.LUR.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.LUR.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% de la población activa
+imf:WEO.USA.NGDP_RPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.NGDP_RPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH,imf_weo,anual,1980-01-01,2025-01-01,46,1,286,8504.5,% anual
+imf:WEO.USA.PCPIPCH.PROY.H0,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H1,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H2,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H3,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H4,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+imf:WEO.USA.PCPIPCH.PROY.H5,imf_weo,anual,2026-01-01,2026-01-01,1,1,-79,-79.0,% anual
+wb:ABW.FP.CPI.TOTL.ZG,worldbank,anual,1985-01-01,2019-01-01,35,1,2478,365.0,% anual
+wb:ABW.NY.GDP.MKTP.KD.ZG,worldbank,anual,1987-01-01,2024-01-01,38,1,651,365.0,% anual
+wb:AFG.FP.CPI.TOTL.ZG,worldbank,anual,2005-01-01,2024-01-01,20,1,651,365.0,% anual
+wb:AFG.NY.GDP.MKTP.KD.ZG,worldbank,anual,2001-01-01,2024-01-01,24,1,651,365.0,% anual
+wb:AFG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:AGO.FP.CPI.TOTL.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:AGO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:AGO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ALB.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:ALB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:ALB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:AND.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:ARE.FP.CPI.TOTL.ZG,worldbank,anual,2008-01-01,2025-01-01,18,1,286,365.0,% anual
+wb:ARE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2024-01-01,54,1,651,365.0,% anual
+wb:ARE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ARG.FP.CPI.TOTL.ZG,worldbank,anual,2018-01-01,2024-01-01,7,1,651,365.0,% anual
+wb:ARG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ARG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ARM.FP.CPI.TOTL.ZG,worldbank,anual,1994-01-01,2025-01-01,32,1,286,365.0,% anual
+wb:ARM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:ARM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ASM.NY.GDP.MKTP.KD.ZG,worldbank,anual,2003-01-01,2022-01-01,20,1,1382,365.0,% anual
+wb:ATG.FP.CPI.TOTL.ZG,worldbank,anual,1999-01-01,2025-01-01,27,1,286,365.0,% anual
+wb:ATG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1978-01-01,2025-01-01,48,1,286,365.0,% anual
+wb:AUS.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:AUS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:AUS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:AUT.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:AUT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:AUT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:AZE.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:AZE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:AZE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BDI.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:BDI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BDI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BEL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:BEL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BEL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BEN.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:BEN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BEN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BFA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:BFA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BFA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BGD.FP.CPI.TOTL.ZG,worldbank,anual,1987-01-01,2025-01-01,39,1,286,365.0,% anual
+wb:BGD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BGD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BGR.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:BGR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:BGR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BHR.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:BHR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:BHR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BHS.FP.CPI.TOTL.ZG,worldbank,anual,1967-01-01,2025-01-01,59,1,286,365.0,% anual
+wb:BHS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2024-01-01,64,1,651,365.0,% anual
+wb:BHS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BIH.FP.CPI.TOTL.ZG,worldbank,anual,2006-01-01,2025-01-01,20,1,286,365.0,% anual
+wb:BIH.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:BIH.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BLR.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:BLR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:BLR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BLZ.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:BLZ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BLZ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BMU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2024-01-01,64,1,651,365.0,% anual
+wb:BOL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:BOL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BOL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BRA.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:BRA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BRA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BRB.FP.CPI.TOTL.ZG,worldbank,anual,1967-01-01,2025-01-01,56,1,286,365.0,% anual
+wb:BRB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BRB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BRN.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:BRN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1975-01-01,2025-01-01,51,1,286,365.0,% anual
+wb:BRN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BTN.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:BTN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:BTN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:BWA.FP.CPI.TOTL.ZG,worldbank,anual,1975-01-01,2025-01-01,51,1,286,365.0,% anual
+wb:BWA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:BWA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CAF.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:CAF.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CAF.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CAN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:CAN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CAN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CHE.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:CHE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CHE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CHI.NY.GDP.MKTP.KD.ZG,worldbank,anual,2010-01-01,2023-01-01,14,1,1017,365.0,% anual
+wb:CHI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CHL.FP.CPI.TOTL.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:CHL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CHL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CHN.FP.CPI.TOTL.ZG,worldbank,anual,1987-01-01,2025-01-01,39,1,286,365.0,% anual
+wb:CHN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CHN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CIV.FP.CPI.TOTL.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CIV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CIV.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CMR.FP.CPI.TOTL.ZG,worldbank,anual,1969-01-01,2025-01-01,57,1,286,365.0,% anual
+wb:CMR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CMR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:COD.FP.CPI.TOTL.ZG,worldbank,anual,1964-01-01,2016-01-01,53,1,3573,365.0,% anual
+wb:COD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:COD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:COG.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,38,1,286,365.0,% anual
+wb:COG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:COG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:COL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:COL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:COL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:COM.FP.CPI.TOTL.ZG,worldbank,anual,2001-01-01,2025-01-01,25,1,286,365.0,% anual
+wb:COM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:COM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CPV.FP.CPI.TOTL.ZG,worldbank,anual,1984-01-01,2025-01-01,42,1,286,365.0,% anual
+wb:CPV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:CPV.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CRI.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:CRI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:CRI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CUB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2024-01-01,54,1,651,365.0,% anual
+wb:CUB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CUW.FP.CPI.TOTL.ZG,worldbank,anual,2001-01-01,2019-01-01,19,1,2478,365.0,% anual
+wb:CUW.NY.GDP.MKTP.KD.ZG,worldbank,anual,2001-01-01,2024-01-01,24,1,651,365.0,% anual
+wb:CYM.FP.CPI.TOTL.ZG,worldbank,anual,2010-01-01,2016-01-01,7,1,3573,365.0,% anual
+wb:CYM.NY.GDP.MKTP.KD.ZG,worldbank,anual,2007-01-01,2024-01-01,18,1,651,365.0,% anual
+wb:CYP.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:CYP.NY.GDP.MKTP.KD.ZG,worldbank,anual,1976-01-01,2025-01-01,50,1,286,365.0,% anual
+wb:CYP.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:CZE.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:CZE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:CZE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:DEU.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:DEU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:DEU.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:DJI.FP.CPI.TOTL.ZG,worldbank,anual,1980-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:DJI.NY.GDP.MKTP.KD.ZG,worldbank,anual,2014-01-01,2025-01-01,12,1,286,365.0,% anual
+wb:DJI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:DMA.FP.CPI.TOTL.ZG,worldbank,anual,1967-01-01,2025-01-01,57,1,286,365.0,% anual
+wb:DMA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1978-01-01,2025-01-01,48,1,286,365.0,% anual
+wb:DNK.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:DNK.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:DNK.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:DOM.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:DOM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:DOM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:DZA.FP.CPI.TOTL.ZG,worldbank,anual,1970-01-01,2025-01-01,56,1,286,365.0,% anual
+wb:DZA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:DZA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ECU.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ECU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ECU.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:EGY.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:EGY.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:EGY.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ERI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1993-01-01,2011-01-01,19,1,5400,365.0,% anual
+wb:ERI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ESP.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ESP.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ESP.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:EST.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:EST.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:EST.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ETH.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:ETH.NY.GDP.MKTP.KD.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:ETH.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:FIN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:FIN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:FIN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:FJI.FP.CPI.TOTL.ZG,worldbank,anual,1970-01-01,2025-01-01,56,1,286,365.0,% anual
+wb:FJI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:FJI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:FRA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:FRA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:FRA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:FRO.NY.GDP.MKTP.KD.ZG,worldbank,anual,2009-01-01,2024-01-01,16,1,651,365.0,% anual
+wb:FSM.FP.CPI.TOTL.ZG,worldbank,anual,2000-01-01,2022-01-01,23,1,1382,365.0,% anual
+wb:FSM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:GAB.FP.CPI.TOTL.ZG,worldbank,anual,1963-01-01,2025-01-01,63,1,286,365.0,% anual
+wb:GAB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GAB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GBR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:GBR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GBR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GEO.FP.CPI.TOTL.ZG,worldbank,anual,1995-01-01,2025-01-01,31,1,286,365.0,% anual
+wb:GEO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GEO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GHA.FP.CPI.TOTL.ZG,worldbank,anual,1965-01-01,2025-01-01,61,1,286,365.0,% anual
+wb:GHA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GHA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GIN.FP.CPI.TOTL.ZG,worldbank,anual,2005-01-01,2025-01-01,21,1,286,365.0,% anual
+wb:GIN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:GIN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GMB.FP.CPI.TOTL.ZG,worldbank,anual,1962-01-01,2024-01-01,63,1,651,365.0,% anual
+wb:GMB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1967-01-01,2025-01-01,59,1,286,365.0,% anual
+wb:GMB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GNB.FP.CPI.TOTL.ZG,worldbank,anual,1988-01-01,2025-01-01,38,1,286,365.0,% anual
+wb:GNB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:GNB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GNQ.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2024-01-01,39,1,651,365.0,% anual
+wb:GNQ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:GNQ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GRC.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:GRC.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GRC.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GRD.FP.CPI.TOTL.ZG,worldbank,anual,1977-01-01,2025-01-01,49,1,286,365.0,% anual
+wb:GRD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1978-01-01,2025-01-01,48,1,286,365.0,% anual
+wb:GRL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2023-01-01,53,1,1017,365.0,% anual
+wb:GTM.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:GTM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GTM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GUM.NY.GDP.MKTP.KD.ZG,worldbank,anual,2003-01-01,2022-01-01,20,1,1382,365.0,% anual
+wb:GUM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:GUY.FP.CPI.TOTL.ZG,worldbank,anual,1995-01-01,2025-01-01,31,1,286,365.0,% anual
+wb:GUY.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:GUY.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:HKG.FP.CPI.TOTL.ZG,worldbank,anual,1982-01-01,2025-01-01,44,1,286,365.0,% anual
+wb:HKG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:HKG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:HND.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:HND.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:HND.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:HRV.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:HRV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:HRV.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:HTI.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:HTI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:HTI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:HUN.FP.CPI.TOTL.ZG,worldbank,anual,1973-01-01,2025-01-01,53,1,286,365.0,% anual
+wb:HUN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:HUN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:IDN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:IDN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:IDN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:IMN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1985-01-01,2023-01-01,39,1,1017,365.0,% anual
+wb:IND.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:IND.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:IND.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:IRL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:IRL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:IRL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:IRN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:IRN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:IRN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:IRQ.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,54,1,286,365.0,% anual
+wb:IRQ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:IRQ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ISL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ISL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ISL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ISR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ISR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ISR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ITA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ITA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ITA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:JAM.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:JAM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1967-01-01,2025-01-01,59,1,286,365.0,% anual
+wb:JAM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:JOR.FP.CPI.TOTL.ZG,worldbank,anual,1970-01-01,2025-01-01,56,1,286,365.0,% anual
+wb:JOR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1977-01-01,2025-01-01,49,1,286,365.0,% anual
+wb:JOR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:JPN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:JPN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:JPN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KAZ.FP.CPI.TOTL.ZG,worldbank,anual,1994-01-01,2025-01-01,32,1,286,365.0,% anual
+wb:KAZ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:KAZ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KEN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:KEN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:KEN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KGZ.FP.CPI.TOTL.ZG,worldbank,anual,1996-01-01,2025-01-01,30,1,286,365.0,% anual
+wb:KGZ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1987-01-01,2025-01-01,39,1,286,365.0,% anual
+wb:KGZ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KHM.FP.CPI.TOTL.ZG,worldbank,anual,1995-01-01,2025-01-01,31,1,286,365.0,% anual
+wb:KHM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1976-01-01,2025-01-01,50,1,286,365.0,% anual
+wb:KHM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KIR.FP.CPI.TOTL.ZG,worldbank,anual,2007-01-01,2025-01-01,19,1,286,365.0,% anual
+wb:KIR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:KNA.FP.CPI.TOTL.ZG,worldbank,anual,1980-01-01,2023-01-01,44,1,1017,365.0,% anual
+wb:KNA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1978-01-01,2025-01-01,48,1,286,365.0,% anual
+wb:KOR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:KOR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:KOR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:KWT.FP.CPI.TOTL.ZG,worldbank,anual,1973-01-01,2025-01-01,53,1,286,365.0,% anual
+wb:KWT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:KWT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LAO.FP.CPI.TOTL.ZG,worldbank,anual,1989-01-01,2025-01-01,37,1,286,365.0,% anual
+wb:LAO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1985-01-01,2025-01-01,41,1,286,365.0,% anual
+wb:LAO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LBN.FP.CPI.TOTL.ZG,worldbank,anual,2009-01-01,2025-01-01,17,1,286,365.0,% anual
+wb:LBN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1989-01-01,2024-01-01,36,1,651,365.0,% anual
+wb:LBN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2023-01-01,33,1,1017,365.0,% de la población activa
+wb:LBR.FP.CPI.TOTL.ZG,worldbank,anual,2002-01-01,2025-01-01,24,1,286,365.0,% anual
+wb:LBR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:LBR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LBY.FP.CPI.TOTL.ZG,worldbank,anual,1965-01-01,2025-01-01,61,1,286,365.0,% anual
+wb:LBY.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:LBY.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LCA.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:LCA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1978-01-01,2025-01-01,48,1,286,365.0,% anual
+wb:LCA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LIE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2009-01-01,39,1,6130,365.0,% anual
+wb:LKA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:LKA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:LKA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LSO.FP.CPI.TOTL.ZG,worldbank,anual,1974-01-01,2025-01-01,49,1,286,365.0,% anual
+wb:LSO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:LSO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LTU.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:LTU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:LTU.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LUX.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:LUX.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:LUX.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:LVA.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:LVA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:LVA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MAC.FP.CPI.TOTL.ZG,worldbank,anual,1989-01-01,2025-01-01,37,1,286,365.0,% anual
+wb:MAC.NY.GDP.MKTP.KD.ZG,worldbank,anual,1983-01-01,2025-01-01,43,1,286,365.0,% anual
+wb:MAC.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MAF.NY.GDP.MKTP.KD.ZG,worldbank,anual,2015-01-01,2021-01-01,7,1,1747,365.0,% anual
+wb:MAR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:MAR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1967-01-01,2025-01-01,59,1,286,365.0,% anual
+wb:MAR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MCO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2024-01-01,54,1,651,365.0,% anual
+wb:MDA.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:MDA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:MDA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MDG.FP.CPI.TOTL.ZG,worldbank,anual,1965-01-01,2025-01-01,61,1,286,365.0,% anual
+wb:MDG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MDG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MDV.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:MDV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:MDV.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MEX.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:MEX.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MEX.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MHL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:MKD.FP.CPI.TOTL.ZG,worldbank,anual,1994-01-01,2025-01-01,32,1,286,365.0,% anual
+wb:MKD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:MKD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MLI.FP.CPI.TOTL.ZG,worldbank,anual,1989-01-01,2025-01-01,37,1,286,365.0,% anual
+wb:MLI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1968-01-01,2025-01-01,58,1,286,365.0,% anual
+wb:MLI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MLT.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:MLT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:MLT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MMR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2019-01-01,60,1,2478,365.0,% anual
+wb:MMR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MMR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MNE.FP.CPI.TOTL.ZG,worldbank,anual,2006-01-01,2025-01-01,20,1,286,365.0,% anual
+wb:MNE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1998-01-01,2025-01-01,28,1,286,365.0,% anual
+wb:MNE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MNG.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:MNG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1982-01-01,2025-01-01,44,1,286,365.0,% anual
+wb:MNG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MNP.NY.GDP.MKTP.KD.ZG,worldbank,anual,2003-01-01,2022-01-01,20,1,1382,365.0,% anual
+wb:MOZ.FP.CPI.TOTL.ZG,worldbank,anual,2005-01-01,2025-01-01,21,1,286,365.0,% anual
+wb:MOZ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:MOZ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MRT.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:MRT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:MRT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MUS.FP.CPI.TOTL.ZG,worldbank,anual,1964-01-01,2025-01-01,62,1,286,365.0,% anual
+wb:MUS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MUS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MWI.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:MWI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MWI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:MYS.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:MYS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:MYS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NAM.FP.CPI.TOTL.ZG,worldbank,anual,2003-01-01,2025-01-01,23,1,286,365.0,% anual
+wb:NAM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:NAM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NCL.FP.CPI.TOTL.ZG,worldbank,anual,2011-01-01,2016-01-01,6,1,3573,365.0,% anual
+wb:NCL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1966-01-01,2024-01-01,42,1,651,365.0,% anual
+wb:NCL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NER.FP.CPI.TOTL.ZG,worldbank,anual,1964-01-01,2025-01-01,62,1,286,365.0,% anual
+wb:NER.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NER.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NGA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:NGA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NGA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NIC.FP.CPI.TOTL.ZG,worldbank,anual,2000-01-01,2025-01-01,26,1,286,365.0,% anual
+wb:NIC.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NIC.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NLD.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:NLD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NLD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NOR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:NOR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NOR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NPL.FP.CPI.TOTL.ZG,worldbank,anual,1965-01-01,2025-01-01,61,1,286,365.0,% anual
+wb:NPL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NPL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:NRU.FP.CPI.TOTL.ZG,worldbank,anual,2011-01-01,2012-01-01,2,1,5034,365.5,% anual
+wb:NRU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:NZL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:NZL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:NZL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:OMN.FP.CPI.TOTL.ZG,worldbank,anual,2001-01-01,2025-01-01,25,1,286,365.0,% anual
+wb:OMN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:OMN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PAK.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PAK.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PAK.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PAN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PAN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PAN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PER.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PER.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PER.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PHL.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PHL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PHL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PLW.FP.CPI.TOTL.ZG,worldbank,anual,2002-01-01,2025-01-01,24,1,286,365.0,% anual
+wb:PLW.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:PNG.FP.CPI.TOTL.ZG,worldbank,anual,1972-01-01,2025-01-01,54,1,286,365.0,% anual
+wb:PNG.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PNG.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:POL.FP.CPI.TOTL.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:POL.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:POL.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PRI.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PRI.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PRK.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PRT.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PRT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PRT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PRY.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:PRY.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:PRY.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:PSE.FP.CPI.TOTL.ZG,worldbank,anual,1997-01-01,2025-01-01,29,1,286,365.0,% anual
+wb:PSE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1995-01-01,2025-01-01,31,1,286,365.0,% anual
+wb:PSE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2022-01-01,32,1,1382,365.0,% de la población activa
+wb:PYF.NY.GDP.MKTP.KD.ZG,worldbank,anual,1966-01-01,2024-01-01,59,1,651,365.0,% anual
+wb:PYF.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:QAT.FP.CPI.TOTL.ZG,worldbank,anual,1980-01-01,2024-01-01,45,1,651,365.0,% anual
+wb:QAT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:QAT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ROU.FP.CPI.TOTL.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:ROU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:ROU.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:RUS.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:RUS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1990-01-01,2025-01-01,36,1,286,365.0,% anual
+wb:RUS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:RWA.FP.CPI.TOTL.ZG,worldbank,anual,1967-01-01,2025-01-01,57,1,286,365.0,% anual
+wb:RWA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:RWA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SAU.FP.CPI.TOTL.ZG,worldbank,anual,1964-01-01,2025-01-01,62,1,286,365.0,% anual
+wb:SAU.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SAU.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SDN.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2022-01-01,63,1,1382,365.0,% anual
+wb:SDN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SDN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2022-01-01,32,1,1382,365.0,% de la población activa
+wb:SEN.FP.CPI.TOTL.ZG,worldbank,anual,1968-01-01,2025-01-01,58,1,286,365.0,% anual
+wb:SEN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SEN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SGP.FP.CPI.TOTL.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SGP.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SGP.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SLB.FP.CPI.TOTL.ZG,worldbank,anual,1972-01-01,2025-01-01,54,1,286,365.0,% anual
+wb:SLB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:SLB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SLE.FP.CPI.TOTL.ZG,worldbank,anual,2007-01-01,2025-01-01,19,1,286,365.0,% anual
+wb:SLE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SLE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SLV.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:SLV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:SLV.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SMR.FP.CPI.TOTL.ZG,worldbank,anual,2004-01-01,2025-01-01,22,1,286,365.0,% anual
+wb:SMR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1998-01-01,2023-01-01,26,1,1017,365.0,% anual
+wb:SOM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SOM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SRB.FP.CPI.TOTL.ZG,worldbank,anual,1995-01-01,2025-01-01,31,1,286,365.0,% anual
+wb:SRB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1996-01-01,2025-01-01,30,1,286,365.0,% anual
+wb:SRB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SSD.FP.CPI.TOTL.ZG,worldbank,anual,2009-01-01,2024-01-01,16,1,651,365.0,% anual
+wb:SSD.NY.GDP.MKTP.KD.ZG,worldbank,anual,2009-01-01,2015-01-01,7,1,3939,365.0,% anual
+wb:SSD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2023-01-01,33,1,1017,365.0,% de la población activa
+wb:STP.FP.CPI.TOTL.ZG,worldbank,anual,1997-01-01,2025-01-01,29,1,286,365.0,% anual
+wb:STP.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:STP.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SUR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:SUR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SUR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SVK.FP.CPI.TOTL.ZG,worldbank,anual,1992-01-01,2025-01-01,34,1,286,365.0,% anual
+wb:SVK.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:SVK.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SVN.FP.CPI.TOTL.ZG,worldbank,anual,1981-01-01,2025-01-01,45,1,286,365.0,% anual
+wb:SVN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:SVN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SWE.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:SWE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SWE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SWZ.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2019-01-01,54,1,2478,365.0,% anual
+wb:SWZ.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:SWZ.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:SXM.FP.CPI.TOTL.ZG,worldbank,anual,2006-01-01,2017-01-01,12,1,3208,365.0,% anual
+wb:SXM.NY.GDP.MKTP.KD.ZG,worldbank,anual,2010-01-01,2025-01-01,16,1,286,365.0,% anual
+wb:SYC.FP.CPI.TOTL.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:SYC.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:SYR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2019-01-01,60,1,2478,365.0,% anual
+wb:SYR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2022-01-01,62,1,1382,365.0,% anual
+wb:SYR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TCA.NY.GDP.MKTP.KD.ZG,worldbank,anual,2008-01-01,2024-01-01,17,1,651,365.0,% anual
+wb:TCD.FP.CPI.TOTL.ZG,worldbank,anual,1984-01-01,2025-01-01,42,1,286,365.0,% anual
+wb:TCD.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:TCD.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TGO.FP.CPI.TOTL.ZG,worldbank,anual,1967-01-01,2025-01-01,59,1,286,365.0,% anual
+wb:TGO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:TGO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:THA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:THA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:THA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TJK.FP.CPI.TOTL.ZG,worldbank,anual,2001-01-01,2025-01-01,25,1,286,365.0,% anual
+wb:TJK.NY.GDP.MKTP.KD.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:TJK.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TKM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1988-01-01,2025-01-01,38,1,286,365.0,% anual
+wb:TKM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TLS.FP.CPI.TOTL.ZG,worldbank,anual,2003-01-01,2025-01-01,23,1,286,365.0,% anual
+wb:TLS.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% anual
+wb:TLS.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TON.FP.CPI.TOTL.ZG,worldbank,anual,1976-01-01,2025-01-01,50,1,286,365.0,% anual
+wb:TON.NY.GDP.MKTP.KD.ZG,worldbank,anual,1982-01-01,2025-01-01,44,1,286,365.0,% anual
+wb:TON.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TTO.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:TTO.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:TTO.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TUN.FP.CPI.TOTL.ZG,worldbank,anual,1984-01-01,2025-01-01,42,1,286,365.0,% anual
+wb:TUN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:TUN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TUR.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:TUR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:TUR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:TUV.FP.CPI.TOTL.ZG,worldbank,anual,2011-01-01,2011-01-01,1,1,5400,366.0,% anual
+wb:TUV.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:TZA.FP.CPI.TOTL.ZG,worldbank,anual,1966-01-01,2025-01-01,60,1,286,365.0,% anual
+wb:TZA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:TZA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:UGA.FP.CPI.TOTL.ZG,worldbank,anual,1994-01-01,2025-01-01,32,1,286,365.0,% anual
+wb:UGA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1983-01-01,2025-01-01,43,1,286,365.0,% anual
+wb:UGA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:UKR.FP.CPI.TOTL.ZG,worldbank,anual,1993-01-01,2025-01-01,33,1,286,365.0,% anual
+wb:UKR.NY.GDP.MKTP.KD.ZG,worldbank,anual,1988-01-01,2025-01-01,38,1,286,365.0,% anual
+wb:UKR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2021-01-01,31,1,1747,365.0,% de la población activa
+wb:URY.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:URY.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:URY.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:USA.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2024-01-01,65,1,651,365.0,% anual
+wb:USA.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:USA.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:UZB.FP.CPI.TOTL.ZG,worldbank,anual,2011-01-01,2025-01-01,15,1,286,365.0,% anual
+wb:UZB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1988-01-01,2025-01-01,38,1,286,365.0,% anual
+wb:UZB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:VCT.FP.CPI.TOTL.ZG,worldbank,anual,1975-01-01,2025-01-01,51,1,286,365.0,% anual
+wb:VCT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:VCT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:VEN.FP.CPI.TOTL.ZG,worldbank,anual,2009-01-01,2016-01-01,8,1,3573,365.0,% anual
+wb:VEN.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:VEN.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:VIR.NY.GDP.MKTP.KD.ZG,worldbank,anual,2003-01-01,2022-01-01,20,1,1382,365.0,% anual
+wb:VIR.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:VNM.FP.CPI.TOTL.ZG,worldbank,anual,1996-01-01,2025-01-01,30,1,286,365.0,% anual
+wb:VNM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1985-01-01,2025-01-01,41,1,286,365.0,% anual
+wb:VNM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:VUT.FP.CPI.TOTL.ZG,worldbank,anual,1977-01-01,2025-01-01,49,1,286,365.0,% anual
+wb:VUT.NY.GDP.MKTP.KD.ZG,worldbank,anual,1980-01-01,2025-01-01,46,1,286,365.0,% anual
+wb:VUT.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:WSM.FP.CPI.TOTL.ZG,worldbank,anual,1962-01-01,2025-01-01,64,1,286,365.0,% anual
+wb:WSM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1971-01-01,2025-01-01,55,1,286,365.0,% anual
+wb:WSM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:XKX.FP.CPI.TOTL.ZG,worldbank,anual,2003-01-01,2025-01-01,23,1,286,365.0,% anual
+wb:XKX.NY.GDP.MKTP.KD.ZG,worldbank,anual,2009-01-01,2025-01-01,17,1,286,365.0,% anual
+wb:YEM.FP.CPI.TOTL.ZG,worldbank,anual,1991-01-01,2014-01-01,24,1,4304,365.0,% anual
+wb:YEM.NY.GDP.MKTP.KD.ZG,worldbank,anual,1991-01-01,2018-01-01,28,1,2843,365.0,% anual
+wb:YEM.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ZAF.FP.CPI.TOTL.ZG,worldbank,anual,1960-01-01,2025-01-01,66,1,286,365.0,% anual
+wb:ZAF.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ZAF.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ZMB.FP.CPI.TOTL.ZG,worldbank,anual,1986-01-01,2025-01-01,40,1,286,365.0,% anual
+wb:ZMB.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ZMB.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa
+wb:ZWE.FP.CPI.TOTL.ZG,worldbank,anual,2010-01-01,2022-01-01,13,1,1382,365.0,% anual
+wb:ZWE.NY.GDP.MKTP.KD.ZG,worldbank,anual,1961-01-01,2025-01-01,65,1,286,365.0,% anual
+wb:ZWE.SL.UEM.TOTL.ZS,worldbank,anual,1991-01-01,2025-01-01,35,1,286,365.0,% de la población activa

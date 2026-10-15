@@ -1,0 +1,33 @@
+{
+  "fuente": "sec_10k_10q",
+  "nombre": "SEC EDGAR · 10-K y 10-Q por secciones",
+  "tema": "empresas",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "base+cajon",
+  "url": "https://www.sec.gov/edgar",
+  "acceso": "api",
+  "autenticacion": "ninguna (User-Agent con email)",
+  "coste": "0 €",
+  "licencia_y_terminos": "Documentos oficiales de dominio público; acceso según las normas de acceso justo de la SEC (≤10 peticiones/s)",
+  "cobertura_inicio": "1994-03-11",
+  "cobertura_fin": "2026-07-29",
+  "frecuencia": "anual / trimestral",
+  "retraso_publicacion": "10-K mediana 58.0 d tras el cierre del ejercicio; 10-Q 35.5 d",
+  "formato": "html (txt antes de ~2001)",
+  "volumen_estimado": "7.0 GB crudo / 0.4 GB gzip para 500 empresas (10-K); 4.8 GB crudo / 0.2 GB gzip para 500 empresas (10-Q)",
+  "limites": "10 peticiones/s por IP; User-Agent obligatorio",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_empresas": 10,
+    "n_filings": 60,
+    "pct_ok": 0.95
+  },
+  "notas": [
+    "TimeGate: filingDate, o día hábil siguiente si la aceptación es ≥16:00 ET (hora oficial de .hdr.sgml; acceptanceDateTime de la API no es fiable)",
+    "Secciones: tramo más largo por Item; 'por_referencia' marca MD&A remitido al anexo 13"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

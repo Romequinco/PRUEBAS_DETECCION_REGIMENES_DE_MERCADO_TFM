@@ -4,7 +4,7 @@
 de cataclismo) · **Tools:** `buscar_noticias(q, fecha)`, `get_polymarket(evento, fecha)` y las de alternativos ·
 **Destino:** noticias al cajón, hechos del día al RAG base, alternativos a la base de series. Reglas comunes:
 [`docs/fase2/README.md`](../../../docs/fase2/README.md). Candidatas de la tutoría:
-[`docs/tfm/DATOS_ALTERNATIVOS.md`](../../../docs/tfm/DATOS_ALTERNATIVOS.md).
+[`docs/fase2/datos_alternativos.md`](../../../docs/fase2/datos_alternativos.md).
 
 ## Estado: sonda pequeña sobre días testigo + validez de los alternativos
 

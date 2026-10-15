@@ -1,0 +1,302 @@
+# Universo de instrumentos del Tema 1 (bloque 5). Lo carga y valida universo.cargar_universo().
+#
+# Estructura: 'grupos' con 'defaults' (campos comunes) e 'instrumentos'; cada instrumento hereda
+# los defaults de su grupo y puede sobrescribirlos. Campos de cada instrumento:
+#   id:                      id canónico con prefijo de fuente ('yf:SPY', 'coinbase:BTC-USD')
+#   nombre:                  nombre legible
+#   clase:                   etf | etp | indice | volatilidad | divisa | futuro | cripto | fondo
+#   bucket:                  agrupación económica (rv_eeuu, rv_europa, rf_gobierno_eeuu, oro...)
+#   capa:                    estrategica | tactica | contexto | baseline
+#   invertible_minorista_ue: true si un minorista de la UE puede comprarlo (UCITS o ETP con KID
+#                            PRIIPs; cripto al contado). Los ETF domiciliados en EE. UU. no
+#                            publican KID: false (se usan como señal y referencia, no se invierten)
+#   tickers:                 {proveedor: ticker}; si el id es 'yf:X' y falta 'yahoo', se deduce
+#   isin:                    ISIN o null (índices, futuros, divisas, cripto). Validado con su dígito de
+#                            control; en los ETF de EE. UU. no se contrasta con el emisor (son señal,
+#                            no se invierten): null donde el dígito de control fallaba
+#   mercado:                 clave de mercados.yaml
+#   divisa:                  ISO 4217 o subunidad (GBp, ZAc, ILA, USX: centésimas), la de la línea cotizada
+#   indice_referencia:       índice que replica o null
+#   inicio_esperado:         primera cotización esperada (AAAA-MM-DD) o null; en los UCITS, la
+#                            fecha de lanzamiento VERIFICADA en justETF (mediciones en la ficha
+#                            'universo'); null + nota si no se pudo verificar
+#   equivalente_ucits:       id del UCITS equivalente (solo en los de EE. UU.)
+#   proxy_previo:            id con el que se empalma la historia anterior a inicio_esperado
+#   fondo_indexado_equivalente: fondo indexado UCITS de referencia (texto, sin verificar salvo nota)
+#   estado:                  activo | proxy | por_verificar | inactivo
+#   notas:                   lista de aclaraciones
+#
+# Divisa base USD: se guarda la original y se convierte al leer (divisas.SERIE_FX, BCE en fecha).
+# Precios AS-TRADED (ver el adaptador de yfinance): nunca Adj Close.
+version: 1
+
+fondos_por_que_no_entran: >-
+  Los fondos de inversión indexados (Vanguard, iShares, Fidelity, Amundi...) no entran en la
+  optimización: (1) solo publican un valor liquidativo diario calculado después del cierre y
+  difundido horas más tarde (visible en t+1), sin precio intradía ni spread observable; (2) las
+  órdenes se ejecutan a un NAV desconocido en el momento de decidir (forward pricing), lo que rompe
+  la regla de decidir a las 16:30 NY con información visible; (3) su historia en Yahoo es corta,
+  incompleta o inexistente para las clases en EUR, y no hay series de NAV point-in-time gratuitas;
+  (4) replican los mismos índices que los ETF UCITS del universo, que sí cotizan y tienen coste
+  observable (DEGIRO/IBKR). Se anotan como 'fondo_indexado_equivalente' a título informativo
+  (alternativa de implementación para el usuario final) y VBMFX solo como proxy previo de AGG.
+
+notas_generales:
+  - "Supervivencia: el universo es el de HOY (ETF vivos); la ausencia de ETF cerrados se declara y se mide (WRDS pendiente de MIAX)"
+  - "Futuros: solo contexto (vela de Yahoo del contrato continuo, sin roll documentado); no se invierten"
+  - "Cripto: Coinbase (USD) principal y Binance Vision de control; vela diaria UTC visible en D+1"
+  - "Índices: precio (sin dividendos) salvo nota; solo señal y contexto, no invertibles"
+
+grupos:
+  # --- ETF de la propuesta (42) -----------------------------------------------------------------
+  - nombre: etf_propuesta
+    defaults: {clase: etf, capa: tactica, invertible_minorista_ue: false, mercado: ARCX, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:SPY", nombre: SPDR S&P 500 ETF Trust, bucket: rv_eeuu, capa: estrategica, isin: US78462F1030, indice_referencia: S&P 500, inicio_esperado: "1993-01-29", equivalente_ucits: "yf:CSPX.L", fondo_indexado_equivalente: "Vanguard U.S. 500 Stock Index Fund (sin verificar)"}
+      - {id: "yf:QQQ", nombre: Invesco QQQ Trust, bucket: rv_eeuu, mercado: XNAS, isin: US46090E1038, indice_referencia: Nasdaq-100, inicio_esperado: "1999-03-10", equivalente_ucits: "yf:CNDX.L"}
+      - {id: "yf:IWM", nombre: iShares Russell 2000 ETF, bucket: rv_eeuu, isin: US4642876555, indice_referencia: Russell 2000, inicio_esperado: "2000-05-26", equivalente_ucits: "yf:ZPRR.DE"}
+      - {id: "yf:VGK", nombre: Vanguard FTSE Europe ETF, bucket: rv_europa, capa: estrategica, isin: US9220428745, indice_referencia: FTSE Developed Europe All Cap, inicio_esperado: "2005-03-10", equivalente_ucits: "yf:EUNK.DE", proxy_previo: "yf:^STOXX", fondo_indexado_equivalente: "Vanguard European Stock Index Fund (sin verificar)"}
+      - {id: "yf:EWJ", nombre: iShares MSCI Japan ETF, bucket: rv_japon, capa: estrategica, isin: US46434G8226, indice_referencia: MSCI Japan, inicio_esperado: "1996-03-18", equivalente_ucits: "yf:SJPA.L", proxy_previo: "yf:^N225"}
+      - {id: "yf:EEM", nombre: iShares MSCI Emerging Markets ETF, bucket: rv_emergentes, capa: estrategica, isin: US4642872349, indice_referencia: MSCI Emerging Markets, inicio_esperado: "2003-04-14", equivalente_ucits: "yf:EIMI.L", fondo_indexado_equivalente: "Vanguard Emerging Markets Stock Index Fund (sin verificar)"}
+      - {id: "yf:FXI", nombre: iShares China Large-Cap ETF, bucket: rv_china, isin: US4642871846, indice_referencia: FTSE China 50, inicio_esperado: "2004-10-08", equivalente_ucits: "yf:FXC.L"}
+      - {id: "yf:EWZ", nombre: iShares MSCI Brazil ETF, bucket: rv_emergentes, isin: US4642864007, indice_referencia: MSCI Brazil 25/50, inicio_esperado: "2000-07-14", equivalente_ucits: "yf:IBZL.L", proxy_previo: "yf:^BVSP"}
+      - {id: "yf:MCHI", nombre: iShares MSCI China ETF, bucket: rv_china, mercado: XNAS, isin: US46429B6719, indice_referencia: MSCI China, inicio_esperado: "2011-03-31", equivalente_ucits: "yf:XCS6.DE", proxy_previo: "yf:FXI"}
+      - {id: "yf:VPL", nombre: Vanguard FTSE Pacific ETF, bucket: rv_asia_pacifico, isin: US9220428661, indice_referencia: FTSE Developed Asia Pacific All Cap, inicio_esperado: "2005-03-10", equivalente_ucits: "yf:CPXJ.L", notas: ["El UCITS (CPXJ) excluye Japón: equivalencia aproximada"]}
+      - {id: "yf:XLK", nombre: Technology Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y8030, indice_referencia: Technology Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLK.L"}
+      - {id: "yf:XLF", nombre: Financial Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y6059, indice_referencia: Financial Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLF.L", notas: ["Escisión de XLRE en 2016-09: salto de composición"]}
+      - {id: "yf:XLE", nombre: Energy Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y5069, indice_referencia: Energy Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLE.L"}
+      - {id: "yf:XLV", nombre: Health Care Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y2090, indice_referencia: Health Care Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLV.L"}
+      - {id: "yf:XLC", nombre: Communication Services Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y8527, indice_referencia: Communication Services Select Sector Index, inicio_esperado: "2018-06-19", equivalente_ucits: "yf:SXLC.L", notas: ["Sector GICS creado en 2018-09: sin historia previa (momentum sectorial con 10 sectores antes)"]}
+      - {id: "yf:XLI", nombre: Industrial Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y7040, indice_referencia: Industrial Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLI.L", notas: ["ISIN de la ficha del emisor (ssga.com), consultada el 2026-10-13"]}
+      - {id: "yf:XLY", nombre: Consumer Discretionary Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y4070, indice_referencia: Consumer Discretionary Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLY.L"}
+      - {id: "yf:XLP", nombre: Consumer Staples Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y3080, indice_referencia: Consumer Staples Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLP.L"}
+      - {id: "yf:XLRE", nombre: Real Estate Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y8600, indice_referencia: Real Estate Select Sector Index, inicio_esperado: "2015-10-08", proxy_previo: "yf:VNQ"}
+      - {id: "yf:XLB", nombre: Materials Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y1001, indice_referencia: Materials Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLB.L"}
+      - {id: "yf:XLU", nombre: Utilities Select Sector SPDR, bucket: sector_eeuu, isin: US81369Y8865, indice_referencia: Utilities Select Sector Index, inicio_esperado: "1998-12-22", equivalente_ucits: "yf:SXLU.L"}
+      - {id: "yf:TLT", nombre: iShares 20+ Year Treasury Bond ETF, bucket: rf_gobierno_eeuu, capa: estrategica, mercado: XNAS, isin: US4642874329, indice_referencia: ICE US Treasury 20+ Year, inicio_esperado: "2002-07-30", equivalente_ucits: "yf:IDTL.L"}
+      - {id: "yf:IEF", nombre: iShares 7-10 Year Treasury Bond ETF, bucket: rf_gobierno_eeuu, capa: estrategica, mercado: XNAS, isin: US4642874402, indice_referencia: ICE US Treasury 7-10 Year, inicio_esperado: "2002-07-30", equivalente_ucits: "yf:IBTM.L"}
+      - {id: "yf:SHY", nombre: iShares 1-3 Year Treasury Bond ETF, bucket: rf_gobierno_eeuu, mercado: XNAS, isin: US4642874576, indice_referencia: ICE US Treasury 1-3 Year, inicio_esperado: "2002-07-30", equivalente_ucits: "yf:IBTS.L"}
+      - {id: "yf:TIP", nombre: iShares TIPS Bond ETF, bucket: rf_ligada_inflacion, isin: US4642871762, indice_referencia: ICE US Treasury Inflation Linked, inicio_esperado: "2003-12-05", equivalente_ucits: "yf:ITPS.L"}
+      - {id: "yf:LQD", nombre: iShares iBoxx $ Investment Grade Corporate Bond ETF, bucket: rf_credito_ig, isin: US4642872422, indice_referencia: iBoxx USD Liquid Investment Grade, inicio_esperado: "2002-07-30", equivalente_ucits: "yf:LQDE.L"}
+      - {id: "yf:HYG", nombre: iShares iBoxx $ High Yield Corporate Bond ETF, bucket: rf_credito_hy, isin: US4642885135, indice_referencia: iBoxx USD Liquid High Yield, inicio_esperado: "2007-04-11", equivalente_ucits: "yf:IHYU.L"}
+      - {id: "yf:EMB", nombre: iShares J.P. Morgan USD Emerging Markets Bond ETF, bucket: rf_emergentes, mercado: XNAS, isin: US4642882819, indice_referencia: J.P. Morgan EMBI Global Core, inicio_esperado: "2007-12-19", equivalente_ucits: "yf:IEMB.L"}
+      - {id: "yf:BNDX", nombre: Vanguard Total International Bond ETF, bucket: rf_global, mercado: XNAS, isin: US92203J4076, indice_referencia: Bloomberg Global Aggregate ex-USD (USD hedged), inicio_esperado: "2013-06-04", equivalente_ucits: "yf:EUNA.DE"}
+      - {id: "yf:GLD", nombre: SPDR Gold Shares, bucket: oro, capa: estrategica, isin: US78463V1070, indice_referencia: LBMA Gold Price PM, inicio_esperado: "2004-11-18", equivalente_ucits: "yf:IGLN.L"}
+      - {id: "yf:SLV", nombre: iShares Silver Trust, bucket: metales_preciosos, isin: US46428Q1094, indice_referencia: LBMA Silver Price, inicio_esperado: "2006-04-28", equivalente_ucits: "yf:SSLN.L"}
+      - {id: "yf:USO", nombre: United States Oil Fund, bucket: energia, isin: US91232N2071, indice_referencia: Futuro WTI de mes próximo, inicio_esperado: "2006-04-10", equivalente_ucits: "yf:CRUD.L", notas: ["Contrasplit 1:8 en 2020-04-29: el adaptador AS-TRADED lo deshace", "Cambió la regla de roll en 2020 (contango extremo)"]}
+      - {id: "yf:UNG", nombre: United States Natural Gas Fund, bucket: energia, isin: US9123183009, indice_referencia: Futuro Henry Hub de mes próximo, inicio_esperado: "2007-04-18", equivalente_ucits: "yf:NGAS.L", notas: ["Varios contrasplits (2018, 2020, 2024): el adaptador los deshace"]}
+      - {id: "yf:PDBC", nombre: Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF, bucket: materias_primas, mercado: XNAS, isin: US46090F1003, indice_referencia: DBIQ Optimum Yield Diversified Commodity, inicio_esperado: "2014-11-07", equivalente_ucits: "yf:ICOM.L", proxy_previo: "yf:DBC"}
+      - {id: "yf:DBA", nombre: Invesco DB Agriculture Fund, bucket: materias_primas, isin: US46140H1068, indice_referencia: DBIQ Diversified Agriculture, inicio_esperado: "2007-01-05", equivalente_ucits: "yf:AIGA.L"}
+      - {id: "yf:CPER", nombre: United States Copper Index Fund, bucket: metales_industriales, isin: null, indice_referencia: SummerHaven Copper Index, inicio_esperado: "2011-11-15", equivalente_ucits: "yf:COPA.L", proxy_previo: "yf:HG=F"}
+      - {id: "yf:VNQ", nombre: Vanguard Real Estate ETF, bucket: inmobiliario, isin: US9229085538, indice_referencia: MSCI US IMI Real Estate 25/50, inicio_esperado: "2004-09-29", equivalente_ucits: "yf:IUSP.L"}
+      - {id: "yf:VNQI", nombre: Vanguard Global ex-U.S. Real Estate ETF, bucket: inmobiliario, mercado: XNAS, isin: US9220426764, indice_referencia: S&P Global ex-U.S. Property, inicio_esperado: "2010-11-01", equivalente_ucits: "yf:IWDP.L", notas: ["El UCITS (IWDP) incluye EE. UU.: equivalencia aproximada"]}
+      - {id: "yf:BITO", nombre: ProShares Bitcoin Strategy ETF, bucket: cripto, isin: null, indice_referencia: Futuros CME de bitcoin, inicio_esperado: "2021-10-20", equivalente_ucits: "yf:ABTC.SW", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); el emisor da el 2021-10-19 como lanzamiento", "Futuros (no contado): coste de roll; desde 2024 se prefiere IBIT"]}
+      - {id: "yf:ETHE", nombre: Grayscale Ethereum Trust ETF, bucket: cripto, isin: US3896381072, indice_referencia: CoinDesk Ether Price Index, inicio_esperado: "2024-07-23", equivalente_ucits: "yf:AETH.SW", notas: ["Yahoo devuelve historia desde 2019-06-14 (etapa OTC): recortar a inicio_esperado", "Antes de 2024-07-23 cotizaba en OTC (OTCQX) con primas y descuentos de hasta ±50 % sobre el NAV: no usar como precio de ETH", "Comisión 2,5 %: preferir ETHA desde 2024"]}
+      - {id: "yf:VIXY", nombre: ProShares VIX Short-Term Futures ETF, bucket: volatilidad, mercado: CBOE_IDX, isin: null, indice_referencia: S&P 500 VIX Short-Term Futures, inicio_esperado: "2011-01-04", notas: ["Cotiza en Cboe BZX (cierre 16:00, se usa CBOE_IDX por conservador)", "Varios contrasplits: el adaptador los deshace", "Sin equivalente UCITS (no hay ETP de VIX con KID en la UE de forma estable)"]}
+      - {id: "yf:SHV", nombre: iShares Short Treasury Bond ETF, bucket: liquidez_usd, mercado: XNAS, isin: US4642886794, indice_referencia: ICE Short US Treasury Securities, inicio_esperado: "2007-01-11", equivalente_ucits: "yf:IB01.L"}
+
+  # --- Baselines --------------------------------------------------------------------------------
+  - nombre: baselines
+    defaults: {clase: etf, capa: baseline, invertible_minorista_ue: false, mercado: ARCX, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:AGG", nombre: iShares Core U.S. Aggregate Bond ETF, bucket: rf_agregado_eeuu, isin: US4642872265, indice_referencia: Bloomberg US Aggregate, inicio_esperado: "2003-09-29", equivalente_ucits: "yf:IUAA.L", proxy_previo: "yf:VBMFX", notas: ["60/40 SPY/AGG: VBMFX antes de 2003-09"]}
+      - {id: "yf:RSP", nombre: Invesco S&P 500 Equal Weight ETF, bucket: rv_eeuu, isin: US46137V3574, indice_referencia: S&P 500 Equal Weight, inicio_esperado: "2003-05-01", equivalente_ucits: "yf:XDEW.DE"}
+      - {id: "yf:VBMFX", nombre: Vanguard Total Bond Market Index Fund Investor Shares, clase: fondo, bucket: rf_agregado_eeuu, mercado: NAV_US, estado: proxy, isin: null, indice_referencia: Bloomberg US Aggregate Float Adjusted, inicio_esperado: "1986-12-11", notas: ["Solo proxy previo de AGG (antes de 2003-09); NAV visible en t+1", "Fondo: no entra en la optimización (ver fondos_por_que_no_entran)"]}
+
+  # --- Ampliación: región, factor, renta fija y materias primas (EE. UU.) -----------------------
+  - nombre: ampliacion
+    defaults: {clase: etf, capa: tactica, invertible_minorista_ue: false, mercado: ARCX, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:VTI", nombre: Vanguard Total Stock Market ETF, bucket: rv_eeuu, isin: US9229087690, indice_referencia: CRSP US Total Market, inicio_esperado: "2001-06-15", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); lanzamiento anotado antes: 2001-05-31"]}
+      - {id: "yf:DIA", nombre: SPDR Dow Jones Industrial Average ETF, bucket: rv_eeuu, isin: US78467X1090, indice_referencia: Dow Jones Industrial Average, inicio_esperado: "1998-01-20"}
+      - {id: "yf:IJH", nombre: iShares Core S&P Mid-Cap ETF, bucket: rv_eeuu, isin: US4642875078, indice_referencia: S&P MidCap 400, inicio_esperado: "2000-05-26"}
+      - {id: "yf:IJR", nombre: iShares Core S&P Small-Cap ETF, bucket: rv_eeuu, isin: US4642878049, indice_referencia: S&P SmallCap 600, inicio_esperado: "2000-05-26"}
+      - {id: "yf:IWD", nombre: iShares Russell 1000 Value ETF, bucket: factor_eeuu, isin: US4642875987, indice_referencia: Russell 1000 Value, inicio_esperado: "2000-05-26"}
+      - {id: "yf:IWF", nombre: iShares Russell 1000 Growth ETF, bucket: factor_eeuu, isin: US4642876142, indice_referencia: Russell 1000 Growth, inicio_esperado: "2000-05-26"}
+      - {id: "yf:VTV", nombre: Vanguard Value ETF, bucket: factor_eeuu, isin: US9229087443, indice_referencia: CRSP US Large Cap Value, inicio_esperado: "2004-01-30"}
+      - {id: "yf:VUG", nombre: Vanguard Growth ETF, bucket: factor_eeuu, isin: US9229087369, indice_referencia: CRSP US Large Cap Growth, inicio_esperado: "2004-01-30"}
+      - {id: "yf:MTUM", nombre: iShares MSCI USA Momentum Factor ETF, bucket: factor_eeuu, mercado: XNYS, isin: US46432F3964, indice_referencia: MSCI USA Momentum, inicio_esperado: "2013-04-18", equivalente_ucits: "yf:IWMO.L"}
+      - {id: "yf:QUAL", nombre: iShares MSCI USA Quality Factor ETF, bucket: factor_eeuu, mercado: XNYS, isin: US46432F3394, indice_referencia: MSCI USA Sector Neutral Quality, inicio_esperado: "2013-07-18", equivalente_ucits: "yf:IWQU.L"}
+      - {id: "yf:USMV", nombre: iShares MSCI USA Min Vol Factor ETF, bucket: factor_eeuu, mercado: XNYS, isin: US46429B6974, indice_referencia: MSCI USA Minimum Volatility, inicio_esperado: "2011-10-20", equivalente_ucits: "yf:MVOL.L"}
+      - {id: "yf:VLUE", nombre: iShares MSCI USA Value Factor ETF, bucket: factor_eeuu, mercado: XNYS, isin: US46432F3881, indice_referencia: MSCI USA Enhanced Value, inicio_esperado: "2013-04-18", equivalente_ucits: "yf:IWVL.L"}
+      - {id: "yf:SIZE", nombre: iShares MSCI USA Size Factor ETF, bucket: factor_eeuu, mercado: XNYS, isin: US46432F3709, indice_referencia: MSCI USA Low Size, inicio_esperado: "2013-04-18", equivalente_ucits: "yf:IWSZ.L"}
+      - {id: "yf:EFA", nombre: iShares MSCI EAFE ETF, bucket: rv_desarrollados_ex_eeuu, isin: US4642874659, indice_referencia: MSCI EAFE, inicio_esperado: "2001-08-27", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); lanzamiento anotado antes: 2001-08-17"]}
+      - {id: "yf:VEA", nombre: Vanguard FTSE Developed Markets ETF, bucket: rv_desarrollados_ex_eeuu, isin: US9219438580, indice_referencia: FTSE Developed All Cap ex US, inicio_esperado: "2007-07-26", proxy_previo: "yf:EFA"}
+      - {id: "yf:VWO", nombre: Vanguard FTSE Emerging Markets ETF, bucket: rv_emergentes, isin: US9220428588, indice_referencia: FTSE Emerging Markets All Cap China A Inclusion, inicio_esperado: "2005-03-10"}
+      - {id: "yf:ACWI", nombre: iShares MSCI ACWI ETF, bucket: rv_global, mercado: XNAS, isin: US4642882579, indice_referencia: MSCI ACWI, inicio_esperado: "2008-03-28", equivalente_ucits: "yf:SWDA.L", notas: ["El UCITS (SWDA, MSCI World) excluye emergentes: equivalencia aproximada"]}
+      - {id: "yf:VT", nombre: Vanguard Total World Stock ETF, bucket: rv_global, isin: US9220427424, indice_referencia: FTSE Global All Cap, inicio_esperado: "2008-06-26", equivalente_ucits: "yf:VWRA.L"}
+      - {id: "yf:VXUS", nombre: Vanguard Total International Stock ETF, bucket: rv_desarrollados_ex_eeuu, mercado: XNAS, isin: US9219097683, indice_referencia: FTSE Global All Cap ex US, inicio_esperado: "2011-01-28"}
+      - {id: "yf:EZU", nombre: iShares MSCI Eurozone ETF, bucket: rv_europa, mercado: XNYS, isin: US4642866085, indice_referencia: MSCI EMU, inicio_esperado: "2000-07-31", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); lanzamiento anotado antes: 2000-07-28"]}
+      - {id: "yf:EWG", nombre: iShares MSCI Germany ETF, bucket: rv_pais_g7, isin: US4642868065, indice_referencia: MSCI Germany, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWQ", nombre: iShares MSCI France ETF, bucket: rv_pais_g7, isin: US4642867075, indice_referencia: MSCI France, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWI", nombre: iShares MSCI Italy ETF, bucket: rv_pais_g7, isin: US46434G8309, indice_referencia: MSCI Italy 25/50, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWU", nombre: iShares MSCI United Kingdom ETF, bucket: rv_pais_g7, isin: US46435G3341, indice_referencia: MSCI United Kingdom, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWC", nombre: iShares MSCI Canada ETF, bucket: rv_pais_g7, isin: US4642865095, indice_referencia: MSCI Canada, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWP", nombre: iShares MSCI Spain ETF, bucket: rv_europa, isin: US4642867646, indice_referencia: MSCI Spain 25/50, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWA", nombre: iShares MSCI Australia ETF, bucket: rv_asia_pacifico, isin: US4642861037, indice_referencia: MSCI Australia, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWH", nombre: iShares MSCI Hong Kong ETF, bucket: rv_asia_pacifico, isin: US4642868719, indice_referencia: MSCI Hong Kong 25/50, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EWT", nombre: iShares MSCI Taiwan ETF, bucket: rv_emergentes, isin: US46434G7723, indice_referencia: MSCI Taiwan 25/50, inicio_esperado: "2000-06-23"}
+      - {id: "yf:EWY", nombre: iShares MSCI South Korea ETF, bucket: rv_emergentes, isin: US4642867729, indice_referencia: MSCI Korea 25/50, inicio_esperado: "2000-05-12"}
+      - {id: "yf:INDA", nombre: iShares MSCI India ETF, bucket: rv_emergentes, mercado: XNAS, isin: US46429B5984, indice_referencia: MSCI India, inicio_esperado: "2012-02-03", equivalente_ucits: "yf:NDIA.L"}
+      - {id: "yf:EWW", nombre: iShares MSCI Mexico ETF, bucket: rv_emergentes, isin: US4642868222, indice_referencia: MSCI Mexico IMI 25/50, inicio_esperado: "1996-03-18"}
+      - {id: "yf:EZA", nombre: iShares MSCI South Africa ETF, bucket: rv_emergentes, isin: US4642867802, indice_referencia: MSCI South Africa 25/50, inicio_esperado: "2003-02-07"}
+      - {id: "yf:BND", nombre: Vanguard Total Bond Market ETF, bucket: rf_agregado_eeuu, mercado: XNAS, isin: US9219378356, indice_referencia: Bloomberg US Aggregate Float Adjusted, inicio_esperado: "2007-04-10", proxy_previo: "yf:VBMFX"}
+      - {id: "yf:GOVT", nombre: iShares U.S. Treasury Bond ETF, bucket: rf_gobierno_eeuu, mercado: XNAS, isin: US46429B2676, indice_referencia: ICE US Treasury Core, inicio_esperado: "2012-02-24"}
+      - {id: "yf:IEI", nombre: iShares 3-7 Year Treasury Bond ETF, bucket: rf_gobierno_eeuu, mercado: XNAS, isin: US4642886612, indice_referencia: ICE US Treasury 3-7 Year, inicio_esperado: "2007-01-11"}
+      - {id: "yf:EDV", nombre: Vanguard Extended Duration Treasury ETF, bucket: rf_gobierno_eeuu, isin: US9219107094, indice_referencia: Bloomberg US Treasury STRIPS 20-30 Year, inicio_esperado: "2008-01-29", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); lanzamiento anotado antes: 2007-12-10"]}
+      - {id: "yf:BIL", nombre: SPDR Bloomberg 1-3 Month T-Bill ETF, bucket: liquidez_usd, isin: US78468R6633, indice_referencia: Bloomberg 1-3 Month US Treasury Bill, inicio_esperado: "2007-05-30"}
+      - {id: "yf:SCHP", nombre: Schwab U.S. TIPS ETF, bucket: rf_ligada_inflacion, isin: US8085248701, indice_referencia: Bloomberg US Treasury Inflation-Linked (Series-L), inicio_esperado: "2010-08-05"}
+      - {id: "yf:MBB", nombre: iShares MBS ETF, bucket: rf_titulizaciones, mercado: XNAS, isin: US4642885887, indice_referencia: Bloomberg US MBS, inicio_esperado: "2007-03-16"}
+      - {id: "yf:VCIT", nombre: Vanguard Intermediate-Term Corporate Bond ETF, bucket: rf_credito_ig, mercado: XNAS, isin: US92206C8709, indice_referencia: Bloomberg US 5-10 Year Corporate, inicio_esperado: "2009-11-23"}
+      - {id: "yf:VCSH", nombre: Vanguard Short-Term Corporate Bond ETF, bucket: rf_credito_ig, mercado: XNAS, isin: US92206C4096, indice_referencia: Bloomberg US 1-5 Year Corporate, inicio_esperado: "2009-11-23"}
+      - {id: "yf:JNK", nombre: SPDR Bloomberg High Yield Bond ETF, bucket: rf_credito_hy, isin: US78468R6229, indice_referencia: Bloomberg High Yield Very Liquid, inicio_esperado: "2007-12-04"}
+      - {id: "yf:FLOT", nombre: iShares Floating Rate Bond ETF, bucket: rf_credito_ig, mercado: XNYS, isin: US46429B6552, indice_referencia: Bloomberg US Floating Rate Note < 5 Years, inicio_esperado: "2011-06-17"}
+      - {id: "yf:MUB", nombre: iShares National Muni Bond ETF, bucket: rf_municipal, isin: US4642884146, indice_referencia: ICE AMT-Free US National Municipal, inicio_esperado: "2007-09-10"}
+      - {id: "yf:BWX", nombre: SPDR Bloomberg International Treasury Bond ETF, bucket: rf_global, isin: US78464A5166, indice_referencia: Bloomberg Global Treasury ex-US Capped, inicio_esperado: "2007-10-11", notas: ["inicio_esperado = primer día con datos en Yahoo (medido el 2026-10-13, tablas/universo_yahoo.csv); lanzamiento anotado antes: 2007-10-05"]}
+      - {id: "yf:EMLC", nombre: VanEck J.P. Morgan EM Local Currency Bond ETF, bucket: rf_emergentes, isin: US92189H3003, indice_referencia: J.P. Morgan GBI-EMG Core, inicio_esperado: "2010-07-23"}
+      - {id: "yf:DBC", nombre: Invesco DB Commodity Index Tracking Fund, bucket: materias_primas, isin: US46138B1035, indice_referencia: DBIQ Optimum Yield Diversified Commodity, inicio_esperado: "2006-02-06"}
+      - {id: "yf:IAU", nombre: iShares Gold Trust, bucket: oro, isin: US4642852044, indice_referencia: LBMA Gold Price PM, inicio_esperado: "2005-01-28", notas: ["Desdoblamientos (2010 10:1, 2021 1:2 contrasplit): el adaptador AS-TRADED los deshace"]}
+
+  # --- Equivalentes UCITS (invertibles por un minorista de la UE) ---------------------------------
+  # inicio_esperado: fecha de lanzamiento de justETF medida (fichero
+  # results/ingesta/mercados_series/tablas/universo_ucits_verificacion.csv); los null no se pudieron verificar.
+  # Divisa: la de la línea de Yahoo (medida en tablas/universo_yahoo.csv): varias líneas de LSE cotizan
+  # en GBp o GBP aunque el fondo sea en USD. Yahoo empieza muchas líneas de LSE en 2008-01-02 o
+  # 2009-01-02 aunque el lanzamiento sea anterior: la historia previa al primer día de Yahoo se empalma
+  # con el proxy.
+  - nombre: ucits
+    defaults: {clase: etf, capa: estrategica, invertible_minorista_ue: true, mercado: XLON, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:CSPX.L", nombre: iShares Core S&P 500 UCITS ETF USD (Acc), bucket: rv_eeuu, isin: IE00B5BMR087, tickers: {yahoo: CSPX.L, xetra: SXR8.DE}, indice_referencia: S&P 500, inicio_esperado: "2010-05-19", proxy_previo: "yf:SPY"}
+      - {id: "yf:CNDX.L", nombre: iShares Nasdaq 100 UCITS ETF (Acc), bucket: rv_eeuu, isin: IE00B53SZB19, tickers: {yahoo: CNDX.L, xetra: SXRV.DE}, indice_referencia: Nasdaq-100, inicio_esperado: "2010-01-26", proxy_previo: "yf:QQQ"}
+      - {id: "yf:ZPRR.DE", nombre: SPDR Russell 2000 US Small Cap UCITS ETF, bucket: rv_eeuu, mercado: XETR, divisa: EUR, isin: IE00BJ38QD84, indice_referencia: Russell 2000, inicio_esperado: "2014-06-30", proxy_previo: "yf:IWM"}
+      - {id: "yf:EUNK.DE", nombre: iShares Core MSCI Europe UCITS ETF EUR (Acc), bucket: rv_europa, mercado: XETR, divisa: EUR, isin: IE00B4K48X80, indice_referencia: MSCI Europe, inicio_esperado: "2009-09-25", proxy_previo: "yf:VGK"}
+      - {id: "yf:SJPA.L", nombre: iShares Core MSCI Japan IMI UCITS ETF (Acc), bucket: rv_japon, isin: IE00B4L5YX21, indice_referencia: MSCI Japan IMI, inicio_esperado: "2009-09-25", proxy_previo: "yf:EWJ", divisa: GBp}
+      - {id: "yf:EIMI.L", nombre: iShares Core MSCI EM IMI UCITS ETF (Acc), bucket: rv_emergentes, isin: IE00BKM4GZ66, indice_referencia: MSCI Emerging Markets IMI, inicio_esperado: "2014-05-30", proxy_previo: "yf:EEM"}
+      - {id: "yf:FXC.L", nombre: iShares China Large Cap UCITS ETF, bucket: rv_china, isin: IE00B02KXK85, indice_referencia: FTSE China 50, inicio_esperado: "2004-10-21", proxy_previo: "yf:FXI", divisa: GBp}
+      - {id: "yf:XCS6.DE", nombre: Xtrackers MSCI China UCITS ETF 1C, bucket: rv_china, mercado: XETR, divisa: EUR, isin: LU0514695690, indice_referencia: MSCI China, inicio_esperado: "2010-06-24", proxy_previo: "yf:MCHI"}
+      - {id: "yf:IBZL.L", nombre: iShares MSCI Brazil UCITS ETF (Dist), bucket: rv_emergentes, capa: tactica, isin: IE00B0M63516, indice_referencia: MSCI Brazil, inicio_esperado: "2005-11-18", proxy_previo: "yf:EWZ", divisa: GBp}
+      - {id: "yf:CPXJ.L", nombre: iShares Core MSCI Pacific ex Japan UCITS ETF, bucket: rv_asia_pacifico, capa: tactica, isin: IE00B52MJY50, indice_referencia: MSCI Pacific ex Japan, inicio_esperado: "2010-01-12", proxy_previo: "yf:VPL"}
+      - {id: "yf:NDIA.L", nombre: iShares MSCI India UCITS ETF, bucket: rv_emergentes, capa: tactica, isin: IE00BZCQB185, indice_referencia: MSCI India, inicio_esperado: "2018-05-24", proxy_previo: "yf:INDA"}
+      - {id: "yf:SWDA.L", nombre: iShares Core MSCI World UCITS ETF (Acc), bucket: rv_global, isin: IE00B4L5Y983, tickers: {yahoo: SWDA.L, xetra: EUNL.DE}, indice_referencia: MSCI World, inicio_esperado: "2009-09-25", proxy_previo: "yf:ACWI", fondo_indexado_equivalente: "iShares Developed World Index Fund (sin verificar)", divisa: GBp}
+      - {id: "yf:VWRA.L", nombre: Vanguard FTSE All-World UCITS ETF (USD) Accumulating, bucket: rv_global, isin: IE00BK5BQT80, indice_referencia: FTSE All-World, inicio_esperado: "2019-07-23", proxy_previo: "yf:VT"}
+      - {id: "yf:XDEW.DE", nombre: Xtrackers S&P 500 Equal Weight UCITS ETF 1C, bucket: rv_eeuu, capa: baseline, mercado: XETR, divisa: EUR, isin: IE00BLNMYC90, indice_referencia: S&P 500 Equal Weight, inicio_esperado: "2014-06-10", proxy_previo: "yf:RSP"}
+      - {id: "yf:SXLK.L", nombre: SPDR S&P U.S. Technology Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM948, indice_referencia: S&P Technology Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLK"}
+      - {id: "yf:SXLF.L", nombre: SPDR S&P U.S. Financials Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM500, indice_referencia: S&P Financial Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLF"}
+      - {id: "yf:SXLE.L", nombre: SPDR S&P U.S. Energy Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM492, indice_referencia: S&P Energy Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLE"}
+      - {id: "yf:SXLV.L", nombre: SPDR S&P U.S. Health Care Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM617, indice_referencia: S&P Health Care Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLV"}
+      - {id: "yf:SXLC.L", nombre: SPDR S&P U.S. Communication Services Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BFWFPX50, indice_referencia: S&P Communication Services Select Sector Daily Capped 25/20, inicio_esperado: "2018-08-15", proxy_previo: "yf:XLC"}
+      - {id: "yf:SXLI.L", nombre: SPDR S&P U.S. Industrials Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM724, indice_referencia: S&P Industrial Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLI"}
+      - {id: "yf:SXLY.L", nombre: SPDR S&P U.S. Consumer Discretionary Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM278, indice_referencia: S&P Consumer Discretionary Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLY"}
+      - {id: "yf:SXLP.L", nombre: SPDR S&P U.S. Consumer Staples Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM385, indice_referencia: S&P Consumer Staples Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLP"}
+      - {id: "yf:SXLB.L", nombre: SPDR S&P U.S. Materials Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXM831, indice_referencia: S&P Materials Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLB"}
+      - {id: "yf:SXLU.L", nombre: SPDR S&P U.S. Utilities Select Sector UCITS ETF, bucket: sector_eeuu, capa: tactica, isin: IE00BWBXMB69, indice_referencia: S&P Utilities Select Sector Daily Capped 25/20, inicio_esperado: "2015-07-07", proxy_previo: "yf:XLU"}
+      - {id: "yf:IDTL.L", nombre: iShares $ Treasury Bond 20+yr UCITS ETF, bucket: rf_gobierno_eeuu, isin: IE00BSKRJZ44, indice_referencia: ICE US Treasury 20+ Year, inicio_esperado: "2015-01-20", proxy_previo: "yf:TLT"}
+      - {id: "yf:IBTM.L", nombre: iShares $ Treasury Bond 7-10yr UCITS ETF, bucket: rf_gobierno_eeuu, isin: IE00B1FZS798, indice_referencia: ICE US Treasury 7-10 Year, inicio_esperado: "2006-12-08", proxy_previo: "yf:IEF", divisa: GBP}
+      - {id: "yf:IBTS.L", nombre: iShares $ Treasury Bond 1-3yr UCITS ETF, bucket: rf_gobierno_eeuu, isin: IE00B14X4S71, indice_referencia: ICE US Treasury 1-3 Year, inicio_esperado: "2006-06-02", proxy_previo: "yf:SHY", divisa: GBP}
+      - {id: "yf:IB01.L", nombre: iShares $ Treasury Bond 0-1yr UCITS ETF, bucket: liquidez_usd, isin: IE00BGSF1X88, indice_referencia: ICE US Treasury Short Bond, inicio_esperado: "2019-02-20", proxy_previo: "yf:SHV"}
+      - {id: "yf:ITPS.L", nombre: iShares $ TIPS UCITS ETF, bucket: rf_ligada_inflacion, isin: IE00B1FZSC47, indice_referencia: ICE US Treasury Inflation Linked, inicio_esperado: "2006-12-08", proxy_previo: "yf:TIP", divisa: GBP}
+      - {id: "yf:LQDE.L", nombre: iShares $ Corp Bond UCITS ETF, bucket: rf_credito_ig, isin: IE0032895942, indice_referencia: Markit iBoxx USD Liquid Investment Grade, inicio_esperado: "2003-05-16", proxy_previo: "yf:LQD"}
+      - {id: "yf:IHYU.L", nombre: iShares $ High Yield Corp Bond UCITS ETF, bucket: rf_credito_hy, isin: IE00B4PY7Y77, indice_referencia: Markit iBoxx USD Liquid High Yield Capped, inicio_esperado: "2011-09-13", proxy_previo: "yf:HYG"}
+      - {id: "yf:IEMB.L", nombre: iShares J.P. Morgan $ EM Bond UCITS ETF, bucket: rf_emergentes, isin: IE00B2NPKV68, indice_referencia: J.P. Morgan EMBI Global Core, inicio_esperado: "2008-02-15", proxy_previo: "yf:EMB"}
+      - {id: "yf:IUAA.L", nombre: iShares US Aggregate Bond UCITS ETF (Dist), bucket: rf_agregado_eeuu, capa: baseline, isin: IE00B44CGS96, indice_referencia: Bloomberg US Aggregate, inicio_esperado: "2011-09-13", proxy_previo: "yf:AGG", notas: ["ISIN, nombre y lanzamiento verificados en justETF el 2026-10-13 (el ISIN probado antes, IE00B3F81409, era el Core Global Aggregate)"]}
+      - {id: "yf:EUNA.DE", nombre: iShares Core Global Aggregate Bond UCITS ETF EUR Hedged (Acc), bucket: rf_global, mercado: XETR, divisa: EUR, isin: IE00BDBRDM35, indice_referencia: Bloomberg Global Aggregate (EUR hedged), inicio_esperado: "2017-11-21", proxy_previo: "yf:BNDX"}
+      - {id: "yf:IGLN.L", nombre: iShares Physical Gold ETC, clase: etp, bucket: oro, isin: IE00B4ND3602, indice_referencia: LBMA Gold Price PM, inicio_esperado: "2011-04-08", proxy_previo: "yf:GLD", notas: ["ETC (no UCITS) con KID PRIIPs"]}
+      - {id: "yf:SSLN.L", nombre: iShares Physical Silver ETC, clase: etp, bucket: metales_preciosos, capa: tactica, isin: IE00B4NCWG09, indice_referencia: LBMA Silver Price, inicio_esperado: "2011-04-08", proxy_previo: "yf:SLV", notas: ["ETC (no UCITS) con KID PRIIPs"], divisa: GBp}
+      - {id: "yf:CRUD.L", nombre: WisdomTree WTI Crude Oil, clase: etp, bucket: energia, capa: tactica, isin: GB00B15KXV33, indice_referencia: Bloomberg WTI Crude Oil Subindex, inicio_esperado: "2006-09-27", proxy_previo: "yf:USO", notas: ["ETC (no UCITS) con KID PRIIPs"]}
+      - {id: "yf:NGAS.L", nombre: WisdomTree Natural Gas, clase: etp, bucket: energia, capa: tactica, isin: null, indice_referencia: Bloomberg Natural Gas Subindex, inicio_esperado: null, proxy_previo: "yf:UNG", estado: por_verificar, notas: ["ISIN sin verificar: los ISIN GB00B15K... probados en justETF (2026-10-13) son plata, azúcar, cereales y café; falta el ISIN del emisor (WisdomTree)"]}
+      - {id: "yf:ICOM.L", nombre: iShares Diversified Commodity Swap UCITS ETF, bucket: materias_primas, capa: tactica, isin: IE00BDFL4P12, indice_referencia: Bloomberg Commodity, inicio_esperado: "2017-07-18", proxy_previo: "yf:PDBC"}
+      - {id: "yf:AIGA.L", nombre: WisdomTree Agriculture, clase: etp, bucket: materias_primas, capa: tactica, isin: GB00B15KYH63, indice_referencia: Bloomberg Agriculture Subindex, inicio_esperado: "2006-09-27", proxy_previo: "yf:DBA", estado: por_verificar, notas: ["Yahoo solo devuelve una vela (2026-10-13): ticker sin historia, por verificar", "ISIN y lanzamiento verificados en justETF el 2026-10-13 (WisdomTree Agriculture); sigue por_verificar por el ticker de Yahoo"]}
+      - {id: "yf:COPA.L", nombre: WisdomTree Copper, clase: etp, bucket: metales_industriales, capa: tactica, isin: GB00B15KXQ89, indice_referencia: Bloomberg Copper Subindex, inicio_esperado: "2006-09-27", proxy_previo: "yf:CPER", notas: ["ETC (no UCITS) con KID PRIIPs"]}
+      - {id: "yf:IUSP.L", nombre: iShares US Property Yield UCITS ETF, bucket: inmobiliario, capa: tactica, isin: IE00B1FZSF77, indice_referencia: FTSE EPRA Nareit United States Dividend+, inicio_esperado: "2006-11-03", proxy_previo: "yf:VNQ", divisa: GBp}
+      - {id: "yf:IWDP.L", nombre: iShares Developed Markets Property Yield UCITS ETF, bucket: inmobiliario, capa: tactica, isin: IE00B1FZS350, indice_referencia: FTSE EPRA Nareit Developed Dividend+, inicio_esperado: "2006-10-20", proxy_previo: "yf:VNQI", divisa: GBp}
+      - {id: "yf:IWMO.L", nombre: iShares Edge MSCI World Momentum Factor UCITS ETF, bucket: factor_global, capa: tactica, isin: IE00BP3QZ825, indice_referencia: MSCI World Momentum, inicio_esperado: "2014-10-03", proxy_previo: "yf:MTUM"}
+      - {id: "yf:IWQU.L", nombre: iShares Edge MSCI World Quality Factor UCITS ETF, bucket: factor_global, capa: tactica, isin: IE00BP3QZ601, indice_referencia: MSCI World Sector Neutral Quality, inicio_esperado: "2014-10-03", proxy_previo: "yf:QUAL"}
+      - {id: "yf:MVOL.L", nombre: iShares Edge MSCI World Minimum Volatility UCITS ETF, bucket: factor_global, capa: tactica, isin: IE00B8FHGS14, indice_referencia: MSCI World Minimum Volatility, inicio_esperado: "2012-11-30", proxy_previo: "yf:USMV"}
+      - {id: "yf:IWVL.L", nombre: iShares Edge MSCI World Value Factor UCITS ETF, bucket: factor_global, capa: tactica, isin: IE00BP3QZB59, indice_referencia: MSCI World Enhanced Value, inicio_esperado: "2014-10-03", proxy_previo: "yf:VLUE"}
+      - {id: "yf:IWSZ.L", nombre: iShares MSCI World Mid-Cap Equal Weight UCITS ETF (antes Edge MSCI World Size Factor), bucket: factor_global, capa: tactica, isin: IE00BP3QZD73, indice_referencia: MSCI World Mid-Cap Equal Weighted, inicio_esperado: "2014-10-03", proxy_previo: "yf:SIZE"}
+      - {id: "yf:ABTC.SW", nombre: 21Shares Bitcoin ETP, clase: etp, bucket: cripto, capa: tactica, mercado: XSWX, isin: CH0454664001, indice_referencia: Bitcoin, inicio_esperado: "2019-02-26", proxy_previo: "coinbase:BTC-USD", notas: ["ETP (no UCITS) con KID PRIIPs; línea de SIX en CHF (medido en Yahoo)"], divisa: CHF}
+      - {id: "yf:AETH.SW", nombre: 21Shares Ethereum Staking ETP, clase: etp, bucket: cripto, capa: tactica, mercado: XSWX, isin: CH0454664027, indice_referencia: Ether, inicio_esperado: "2019-03-05", proxy_previo: "coinbase:ETH-USD", notas: ["ETP (no UCITS) con KID PRIIPs; línea de SIX en CHF (medido en Yahoo)"], divisa: CHF}
+
+  # --- Índices (señal y contexto; no invertibles) -----------------------------------------------
+  - nombre: indices
+    defaults: {clase: indice, capa: contexto, invertible_minorista_ue: false, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:^GSPC", nombre: S&P 500, bucket: rv_eeuu, mercado: XNYS, indice_referencia: S&P 500, inicio_esperado: "1927-12-30", notas: ["Antes de 1957-03 es el S&P 90 enlazado"]}
+      - {id: "yf:^NDX", nombre: Nasdaq-100, bucket: rv_eeuu, mercado: XNAS, indice_referencia: Nasdaq-100, inicio_esperado: "1985-10-01"}
+      - {id: "yf:^RUT", nombre: Russell 2000, bucket: rv_eeuu, mercado: XNYS, indice_referencia: Russell 2000, inicio_esperado: "1987-09-10"}
+      - {id: "yf:^DJI", nombre: Dow Jones Industrial Average, bucket: rv_eeuu, mercado: XNYS, indice_referencia: Dow Jones Industrial Average, inicio_esperado: "1992-01-02"}
+      - {id: "yf:^GSPTSE", nombre: S&P/TSX Composite, bucket: rv_pais_g7, mercado: XTSE, divisa: CAD, indice_referencia: S&P/TSX Composite, inicio_esperado: "1979-06-29"}
+      - {id: "yf:^STOXX50E", nombre: EURO STOXX 50, bucket: rv_europa, mercado: STOXX_IDX, divisa: EUR, indice_referencia: EURO STOXX 50, inicio_esperado: "2007-03-30", notas: ["En Yahoo la historia diaria empieza hacia 2007 (el índice existe desde 1998)"]}
+      - {id: "yf:^STOXX", nombre: STOXX Europe 600, bucket: rv_europa, mercado: STOXX_IDX, divisa: EUR, indice_referencia: STOXX Europe 600, inicio_esperado: null, notas: ["Inicio en Yahoo por medir"]}
+      - {id: "yf:^GDAXI", nombre: DAX, bucket: rv_pais_g7, mercado: XETR, divisa: EUR, indice_referencia: DAX (rendimiento total), inicio_esperado: "1987-12-30", notas: ["El DAX es un índice de rendimiento total (reinvierte dividendos)"]}
+      - {id: "yf:^FCHI", nombre: CAC 40, bucket: rv_pais_g7, mercado: XPAR, divisa: EUR, indice_referencia: CAC 40, inicio_esperado: "1990-03-01"}
+      - {id: "yf:FTSEMIB.MI", nombre: FTSE MIB, bucket: rv_pais_g7, mercado: XMIL, divisa: EUR, indice_referencia: FTSE MIB, inicio_esperado: null, notas: ["Inicio en Yahoo por medir"]}
+      - {id: "yf:^FTSE", nombre: FTSE 100, bucket: rv_pais_g7, mercado: XLON, divisa: GBP, indice_referencia: FTSE 100, inicio_esperado: "1984-01-03"}
+      - {id: "yf:^IBEX", nombre: IBEX 35, bucket: rv_europa, mercado: XMAD, divisa: EUR, indice_referencia: IBEX 35, inicio_esperado: "1993-07-12"}
+      - {id: "yf:^AEX", nombre: AEX, bucket: rv_europa, mercado: XAMS, divisa: EUR, indice_referencia: AEX, inicio_esperado: "1992-10-12"}
+      - {id: "yf:^SSMI", nombre: Swiss Market Index, bucket: rv_europa, mercado: XSWX, divisa: CHF, indice_referencia: SMI, inicio_esperado: "1990-11-09"}
+      - {id: "yf:^N225", nombre: Nikkei 225, bucket: rv_japon, mercado: XTKS, divisa: JPY, indice_referencia: Nikkei 225, inicio_esperado: "1965-01-05"}
+      - {id: "yf:^HSI", nombre: Hang Seng, bucket: rv_china, mercado: XHKG, divisa: HKD, indice_referencia: Hang Seng, inicio_esperado: "1986-12-31"}
+      - {id: "yf:000001.SS", nombre: SSE Composite, bucket: rv_china, mercado: XSHG, divisa: CNY, indice_referencia: SSE Composite, inicio_esperado: "1997-07-02"}
+      - {id: "yf:^BVSP", nombre: Ibovespa, bucket: rv_emergentes, mercado: BVMF, divisa: BRL, indice_referencia: Ibovespa, inicio_esperado: "1993-04-27"}
+      - {id: "yf:^NSEI", nombre: NIFTY 50, bucket: rv_emergentes, mercado: XNSE, divisa: INR, indice_referencia: NIFTY 50, inicio_esperado: "2007-09-17"}
+      - {id: "yf:^KS11", nombre: KOSPI Composite, bucket: rv_emergentes, mercado: XKRX, divisa: KRW, indice_referencia: KOSPI, inicio_esperado: "1996-07-01"}
+      - {id: "yf:^TWII", nombre: TAIEX, bucket: rv_emergentes, mercado: XTAI, divisa: TWD, indice_referencia: TAIEX, inicio_esperado: "1997-07-02"}
+      - {id: "yf:^AXJO", nombre: S&P/ASX 200, bucket: rv_asia_pacifico, mercado: XASX, divisa: AUD, indice_referencia: S&P/ASX 200, inicio_esperado: "1992-11-23"}
+
+  # --- Volatilidad ------------------------------------------------------------------------------
+  - nombre: volatilidad
+    defaults: {clase: volatilidad, capa: contexto, invertible_minorista_ue: false, mercado: CBOE_IDX, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:^VIX", nombre: Cboe Volatility Index, bucket: volatilidad, indice_referencia: VIX, inicio_esperado: "1990-01-02"}
+      - {id: "yf:^VVIX", nombre: Cboe VVIX Index, bucket: volatilidad, indice_referencia: VVIX, inicio_esperado: "2007-01-03"}
+      - {id: "yf:^VIX3M", nombre: Cboe 3-Month Volatility Index, bucket: volatilidad, indice_referencia: VIX3M, inicio_esperado: "2007-12-04", notas: ["Yahoo tiene datos desde 2006-07-17, antes del lanzamiento oficial (2007-12): valores retroactivos de Cboe"]}
+      - {id: "yf:^VXN", nombre: Cboe Nasdaq-100 Volatility Index, bucket: volatilidad, indice_referencia: VXN, inicio_esperado: "2001-02-02"}
+      - {id: "yf:^MOVE", nombre: ICE BofA MOVE Index, bucket: volatilidad_tipos, mercado: ICE_MOVE, indice_referencia: MOVE, inicio_esperado: null, notas: ["Inicio en Yahoo por medir"]}
+      - {id: "yf:^V2TX", nombre: VSTOXX (EURO STOXX 50 Volatility), bucket: volatilidad, mercado: STOXX_IDX, divisa: EUR, indice_referencia: VSTOXX, inicio_esperado: null, estado: por_verificar, notas: ["Yahoo no tiene ^V2TX (404 medido el 2026-10-13); alternativa: stoxx.com (V2TX)"]}
+
+  # --- Divisas (contexto; la conversión usa el BCE) ---------------------------------------------
+  - nombre: divisas
+    defaults: {clase: divisa, capa: contexto, invertible_minorista_ue: false, mercado: FX_YAHOO, estado: activo, bucket: divisas}
+    instrumentos:
+      - {id: "yf:EURUSD=X", nombre: EUR/USD, divisa: USD, inicio_esperado: "2003-12-01"}
+      - {id: "yf:GBPUSD=X", nombre: GBP/USD, divisa: USD, inicio_esperado: "2003-12-01"}
+      - {id: "yf:USDJPY=X", nombre: USD/JPY, divisa: JPY, tickers: {yahoo: JPY=X}, inicio_esperado: "1996-10-30"}
+      - {id: "yf:USDCHF=X", nombre: USD/CHF, divisa: CHF, tickers: {yahoo: CHF=X}, inicio_esperado: null}
+      - {id: "yf:USDCAD=X", nombre: USD/CAD, divisa: CAD, tickers: {yahoo: CAD=X}, inicio_esperado: null}
+      - {id: "yf:AUDUSD=X", nombre: AUD/USD, divisa: USD, inicio_esperado: null}
+      - {id: "yf:USDCNY=X", nombre: USD/CNY, divisa: CNY, tickers: {yahoo: CNY=X}, inicio_esperado: null}
+      - {id: "yf:DX-Y.NYB", nombre: ICE US Dollar Index, mercado: ICE_DXY, divisa: USD, inicio_esperado: "1971-01-04"}
+
+  # --- Futuros (solo contexto) ------------------------------------------------------------------
+  - nombre: futuros
+    defaults: {clase: futuro, capa: contexto, invertible_minorista_ue: false, mercado: CME, divisa: USD, estado: activo}
+    instrumentos:
+      - {id: "yf:ES=F", nombre: E-mini S&P 500 (continuo), bucket: rv_eeuu, indice_referencia: S&P 500, inicio_esperado: "2000-09-18"}
+      - {id: "yf:NQ=F", nombre: E-mini Nasdaq-100 (continuo), bucket: rv_eeuu, indice_referencia: Nasdaq-100, inicio_esperado: "2000-09-18"}
+      - {id: "yf:RTY=F", nombre: E-mini Russell 2000 (continuo), bucket: rv_eeuu, indice_referencia: Russell 2000, inicio_esperado: null}
+      - {id: "yf:YM=F", nombre: E-mini Dow (continuo), bucket: rv_eeuu, indice_referencia: Dow Jones Industrial Average, inicio_esperado: null}
+      - {id: "yf:CL=F", nombre: Crudo WTI (continuo), bucket: energia, indice_referencia: NYMEX WTI, inicio_esperado: "2000-08-23", notas: ["2020-04-20: cierre negativo (-37,63 $) real, no es un error"]}
+      - {id: "yf:BZ=F", nombre: Crudo Brent (continuo), bucket: energia, indice_referencia: Brent, inicio_esperado: null}
+      - {id: "yf:NG=F", nombre: Gas natural Henry Hub (continuo), bucket: energia, indice_referencia: NYMEX Henry Hub, inicio_esperado: "2000-08-30"}
+      - {id: "yf:GC=F", nombre: Oro (continuo), bucket: oro, indice_referencia: COMEX Gold, inicio_esperado: "2000-08-30"}
+      - {id: "yf:SI=F", nombre: Plata (continuo), bucket: metales_preciosos, indice_referencia: COMEX Silver, inicio_esperado: "2000-08-30"}
+      - {id: "yf:HG=F", nombre: Cobre (continuo), bucket: metales_industriales, indice_referencia: COMEX Copper, inicio_esperado: "2000-08-30"}
+      - {id: "yf:ZT=F", nombre: Treasury 2 años (continuo), bucket: rf_gobierno_eeuu, indice_referencia: CBOT 2-Year T-Note, inicio_esperado: null}
+      - {id: "yf:ZF=F", nombre: Treasury 5 años (continuo), bucket: rf_gobierno_eeuu, indice_referencia: CBOT 5-Year T-Note, inicio_esperado: null}
+      - {id: "yf:ZN=F", nombre: Treasury 10 años (continuo), bucket: rf_gobierno_eeuu, indice_referencia: CBOT 10-Year T-Note, inicio_esperado: "2000-09-21"}
+      - {id: "yf:ZB=F", nombre: Treasury Bond (continuo), bucket: rf_gobierno_eeuu, indice_referencia: CBOT US Treasury Bond, inicio_esperado: "2000-09-21"}
+      - {id: "yf:ZC=F", nombre: Maíz (continuo), bucket: materias_primas, indice_referencia: CBOT Corn, inicio_esperado: "2000-07-17", divisa: USX, notas: ["Cotiza en centavos de dólar (USX, medido en Yahoo)"]}
+      - {id: "yf:ZW=F", nombre: Trigo (continuo), bucket: materias_primas, indice_referencia: CBOT Wheat, inicio_esperado: "2000-07-17", divisa: USX, notas: ["Cotiza en centavos de dólar (USX, medido en Yahoo)"]}
+      - {id: "yf:ZS=F", nombre: Soja (continuo), bucket: materias_primas, indice_referencia: CBOT Soybeans, inicio_esperado: "2000-09-15", divisa: USX, notas: ["Cotiza en centavos de dólar (USX, medido en Yahoo)"]}
+      - {id: "yf:6E=F", nombre: Euro FX (continuo), bucket: divisas, indice_referencia: CME Euro FX, inicio_esperado: null}
+
+  # --- Cripto -----------------------------------------------------------------------------------
+  - nombre: cripto
+    defaults: {clase: cripto, capa: tactica, invertible_minorista_ue: true, mercado: CRYPTO, divisa: USD, estado: activo, bucket: cripto}
+    instrumentos:
+      - {id: "coinbase:BTC-USD", nombre: "Bitcoin (Coinbase, USD)", tickers: {coinbase: BTC-USD, binance: BTCUSDT, yahoo: BTC-USD}, indice_referencia: Bitcoin, inicio_esperado: "2015-07-20", notas: ["BTC-USD de Yahoo (CoinMarketCap) empieza en 2014-09-17; Coinbase desde 2015-07-20", "Binance Vision (BTCUSDT, desde 2017-08) de control; vela diaria UTC visible en D+1"]}
+      - {id: "coinbase:ETH-USD", nombre: "Ether (Coinbase, USD)", tickers: {coinbase: ETH-USD, binance: ETHUSDT, yahoo: ETH-USD}, indice_referencia: Ether, inicio_esperado: "2016-05-18", notas: ["ETH-USD de Yahoo empieza en 2017-11-09: para 2016-2017 solo Coinbase", "Binance Vision (ETHUSDT, desde 2017-08) de control"]}
+      - {id: "yf:IBIT", nombre: iShares Bitcoin Trust ETF, clase: etf, mercado: XNAS, invertible_minorista_ue: false, isin: US46438F1012, indice_referencia: CME CF Bitcoin Reference Rate NY, inicio_esperado: "2024-01-11", equivalente_ucits: "yf:ABTC.SW", proxy_previo: "coinbase:BTC-USD", notas: ["ETF al contado desde 2024-01-11"]}
+      - {id: "yf:ETHA", nombre: iShares Ethereum Trust ETF, clase: etf, mercado: XNAS, invertible_minorista_ue: false, isin: US46438R1059, indice_referencia: CME CF Ether-Dollar Reference Rate NY, inicio_esperado: "2024-07-23", equivalente_ucits: "yf:AETH.SW", proxy_previo: "coinbase:ETH-USD"}
