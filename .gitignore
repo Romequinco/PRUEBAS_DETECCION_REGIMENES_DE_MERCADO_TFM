@@ -279,3 +279,4 @@ docs/tfm/internos/
 results/sinteticos/aumento/filas/
 results/sinteticos/aumento/*.log*
 results/sinteticos/aumento/.ejecutando
+results/sinteticos/aumento/estado_*.txt
