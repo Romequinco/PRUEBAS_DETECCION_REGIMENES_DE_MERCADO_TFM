@@ -1,0 +1,58 @@
+{
+ "accessionNumber": [
+  "0000320193-96-000023",
+  "0000320193-94-000016"
+ ],
+ "filingDate": [
+  "1996-12-19",
+  "1994-12-13"
+ ],
+ "reportDate": [
+  "1996-09-27",
+  "1994-09-30"
+ ],
+ "acceptanceDateTime": [
+  "",
+  ""
+ ],
+ "act": [
+  "",
+  ""
+ ],
+ "form": [
+  "10-K",
+  "10-K"
+ ],
+ "fileNumber": [
+  "",
+  ""
+ ],
+ "filmNumber": [
+  "",
+  ""
+ ],
+ "items": [
+  "",
+  ""
+ ],
+ "size": [
+  500000,
+  400000
+ ],
+ "isXBRL": [
+  0,
+  0
+ ],
+ "isInlineXBRL": [
+  0,
+  0
+ ],
+ "primaryDocument": [
+  "",
+  ""
+ ],
+ "primaryDocDescription": [
+  "",
+  ""
+ ]
+}

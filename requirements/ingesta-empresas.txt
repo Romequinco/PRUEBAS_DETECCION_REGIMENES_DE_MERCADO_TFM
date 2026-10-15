@@ -1,3 +1,7 @@
 # Dependencias propias del Tema 3 · Empresas: filings, fundamentales y sentimiento (buscar_filings, get_fundamentales).
 # Instalar: python -m pip install -r requirements/ingesta-empresas.txt
 # Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
+#
+# Sonda actual (sec_edgar, secciones, xbrl, sentimiento): sin dependencias extra; usa solo la librería estándar
+# y pandas / pyarrow / requests del paquete principal.
+# Diccionario Loughran-McDonald: descarga manual (ver src/ingesta/empresas/sentimiento.py), no es un paquete.

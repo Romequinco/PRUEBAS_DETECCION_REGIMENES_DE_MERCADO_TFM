@@ -1,0 +1,28 @@
+{
+  "fuente": "loughran_mcdonald",
+  "nombre": "Diccionario Loughran-McDonald",
+  "tema": "empresas",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "ninguno",
+  "url": "https://sraf.nd.edu/loughranmcdonald-master-dictionary/",
+  "acceso": "descarga manual",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Gratis para uso académico; no redistribuir",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "atemporal (versión anual)",
+  "retraso_publicacion": "no aplica",
+  "formato": "csv",
+  "volumen_estimado": "~9 MB",
+  "limites": "enlace de descarga en Google Drive (no automatizable de forma fiable)",
+  "estado_sonda": "ok",
+  "mediciones": {},
+  "notas": [
+    "Se aplica al ingerir: proporciones por categoría, tono y risk_delta del Item 1A"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

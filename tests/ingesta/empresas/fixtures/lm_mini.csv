@@ -1,0 +1,10 @@
+Word,Seq_num,Word Count,Negative,Positive,Uncertainty,Litigious,Strong_Modal,Weak_Modal,Constraining,Syllables,Source
+LOSSES,1,0,2009,0,0,0,0,0,0,2,12of12inf
+ADVERSELY,2,0,2009,0,0,0,0,0,0,4,12of12inf
+LITIGATION,3,0,2009,0,0,2009,0,0,0,4,12of12inf
+UNCERTAIN,4,0,0,0,2009,0,0,0,0,3,12of12inf
+UNCERTAINTY,5,0,0,0,2009,0,0,0,0,5,12of12inf
+IMPROVE,6,0,0,2009,0,0,0,0,0,2,12of12inf
+STRONGLY,7,0,0,2009,0,0,0,0,0,2,12of12inf
+COULD,8,0,0,0,2009,0,0,2009,0,1,12of12inf
+OLDWORD,9,0,-2020,0,0,0,0,0,0,2,12of12inf
