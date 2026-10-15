@@ -247,8 +247,8 @@ Tools `buscar_noticias`, `get_polymarket` y las de alternativos. Detalle:
 - **Limpieza:** duplicados por URL, titular y SimHash, conservando la versión más antigua.
 - **Historia corta:** Polymarket (útil desde 2024), EWS (desde octubre de 2025) y los ETF del Congreso (desde 2023)
   solo en vivo o en la ventana reciente del backtest.
-- **Operaciones del Congreso:** el informe (PTR) se publica una mediana de +28 días después de la operación, y su
-  `fecha_publicacion` es la del informe.
+- **Operaciones del Congreso:** el informe (PTR) se publica una mediana de +41 días después de la operación (sonda del
+  Tema 4, 531 operaciones; el 38,6 % fuera del plazo legal de 45 días), y su `fecha_publicacion` es la del informe.
 
 ## 5. Tratamiento RAG
 
@@ -448,7 +448,7 @@ con vintages de ALFRED. Bancos centrales y EDGAR, desde 1993–1994. Gasto en da
 | PDF de las ruedas de prensa de la Fed | +7 a +18 días (el vídeo, el mismo día) | la rueda |
 | 10-K | +58 días | el cierre del ejercicio |
 | 10-Q | +34 días | el cierre del trimestre |
-| PTR del Congreso | +28 días | la operación |
+| PTR del Congreso | +41 días (mediana medida; plazo legal 45) | la operación |
 | Transcripciones del FOMC | ≈ +6 años | la reunión |
 
 **Vintages y lags.**
