@@ -429,6 +429,9 @@ def test_h1_familia_fija_cuenta_los_ausentes():
     d = an_.DatosPista("B", senales, st, nulo, an_.replicas_bootstrap(3, 200, 0), ["c1", "c2", "c3"])
     t = an_.h1({"B": d})
     assert len(t) == 10 and (t["veredicto"] == "falta").sum() == 9
+    # errata 2026-10-15: Holm por pista, con el global como sensibilidad al lado
+    assert config_aumento()["contrastes"]["familia_holm"] == "pista"
+    assert {"holm", "holm_global", "veredicto_global"} <= set(t.columns)
     assert t.set_index("detector").loc["D02" if "D02" in t["detector"].values else "D03", "p"] == 1.0
     assert t.set_index("detector").loc["D01", "veredicto"] in {"sin efecto detectable", "empeora", "mejora"}
 

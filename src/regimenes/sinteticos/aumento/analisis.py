@@ -531,10 +531,18 @@ def h1(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
         if col not in tabla:
             tabla[col] = np.nan
     familia = c.get("familia_holm", "global")
-    tabla["holm"] = False
-    grupos = [tabla.index] if familia == "global" else [g.index for _, g in tabla.groupby("pista")]
-    for idx in grupos:
-        tabla.loc[idx, "holm"] = holm(tabla.loc[idx, "p"], c["alfa"])
+
+    def _holm(fam: str) -> pd.Series:
+        rechazo = pd.Series(False, index=tabla.index)
+        grupos = [tabla.index] if fam == "global" else [g.index for _, g in tabla.groupby("pista")]
+        for idx in grupos:
+            rechazo.loc[idx] = holm(tabla.loc[idx, "p"], c["alfa"])
+        return rechazo
+
+    tabla["holm"] = _holm(familia)
+    # sensibilidad (errata del 2026-10-15): la otra familia, publicada al lado
+    otra = "global" if familia == "pista" else "pista"
+    tabla[f"holm_{otra}"] = _holm(otra)
     requiere = tabla["requiere_suelo"].astype("boolean").fillna(False).astype(bool)
     # condiciones (a)-(e) de «mejora», por separado para poder leer cual falla
     tabla["a_holm"] = tabla["holm"] & (tabla["delta"] > 0)
@@ -546,6 +554,11 @@ def h1(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
     empeora = tabla["holm"] & (tabla["delta"] < 0)
     tabla["veredicto"] = np.select([tabla["falta"].astype(bool), mejora, empeora],
                                    ["falta", "mejora", "empeora"], "sin efecto detectable")
+    resto = tabla[["b_minima", "c_nivel", "d_generadores", "e_suelo"]].all(axis=1)
+    h_otra = tabla[f"holm_{otra}"]
+    tabla[f"veredicto_{otra}"] = np.select(
+        [tabla["falta"].astype(bool), h_otra & (tabla["delta"] > 0) & resto, h_otra & (tabla["delta"] < 0)],
+        ["falta", "mejora", "empeora"], "sin efecto detectable")
     return tabla
 
 

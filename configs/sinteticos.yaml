@@ -296,7 +296,7 @@ laboratorio:
 #   intercambio total dan |T| = |T_obs|), no 1/2^S. En B (S = 9) es 2/512 ~ 0,0039, mayor que 0,05/22;
 #   ademas el primer segmento de B (flash_crash_euro1_2010) va casi sin aumento (la primera ancla
 #   con crisis reconocida, 2009-12-31, solo se usa desde ~julio de 2010), asi que la potencia de H1
-#   en B es practicamente nula. Ver contrastes.familia_holm.
+#   en B es practicamente nula. Corregido con Holm por pista (ver contrastes.familia_holm).
 # - Fuga de diseno (no de deteccion): la familia de generadores y sus parametros se fijaron en el 15-16
 #   con datos hasta 2006 (A) y 2017 (B), posteriores a los primeros pliegues. Se publica como
 #   sensibilidad EXPLORATORIA la Delta de H1 solo en las crisis que empiezan despues de fin_train +
@@ -447,7 +447,13 @@ aumento:
     # Concrecion de implementacion (2026-10-15, antes de ejecutar nada): H1 usa la repeticion 0 (la
     # unica en A); la 2.a repeticion de B se publica como replica (exploratoria).
     h1: {brazo: completas, proporcion: 1.0, senal: voto_mayoritario, voto_min: 3, correccion: holm}
-    familia_holm: global          # los 22 contrastes juntos (global) o por pista
+    # Errata fechada (2026-10-15, decidida por el usuario ANTES de ver ningun resultado del plan, por
+    # aritmetica: con Holm global sobre 22 contrastes el umbral es 0,05/22 ~ 0,0023 y en B el p minimo
+    # alcanzable es 2/512 ~ 0,0039, asi que H1 en B no podia salir nunca): Holm por PISTA (12 contrastes en A,
+    # 10 en B; en B el primer umbral es 0,005). Coherente con la regla del 19, que decide por pista.
+    # Se publica al lado el Holm global como sensibilidad (columnas holm_global y veredicto_global).
+    # Antes: familia_holm: global.
+    familia_holm: pista
     grupos_h4:
       aprende_estado: [D03, D04, D05, D08, D09, D11, D12]   # mezclas, HMM, Markov-switching, jump, AE
       umbral: [D01, D02]                                     # umbral por percentil de una senal fija
