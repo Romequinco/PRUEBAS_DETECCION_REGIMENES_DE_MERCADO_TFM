@@ -1,0 +1,48 @@
+id,clave_sdmx,nombre,frecuencia,unidad,lag_clave,estado,inicio,fin,n_obs
+eurostat:HICP_EMP.DE,HICP_EMP/DE,HICP general empalmado v1→v2 por fecha de publicación (DE),mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:HICP_EMP.EA,HICP_EMP/EA,HICP general empalmado v1→v2 por fecha de publicación (EA),mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:HICP_EMP.EA20,HICP_EMP/EA20,HICP general empalmado v1→v2 por fecha de publicación (EA20),mensual,% interanual,CPIAUCSL,activa,2000-12-01,2026-09-01,310
+eurostat:HICP_EMP.EU27_2020,HICP_EMP/EU27_2020,HICP general empalmado v1→v2 por fecha de publicación (EU27_2020),mensual,% interanual,CPIAUCSL,activa,2000-12-01,2026-08-01,309
+eurostat:HICP_EMP.FR,HICP_EMP/FR,HICP general empalmado v1→v2 por fecha de publicación (FR),mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:HICP_EMP.IT,HICP_EMP/IT,HICP general empalmado v1→v2 por fecha de publicación (IT),mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:HICP_EMP.UK,HICP_EMP/UK,HICP general empalmado v1→v2 por fecha de publicación (UK),mensual,% interanual,CPIAUCSL,activa,1997-01-01,2020-11-01,287
+eurostat:HICP_EMP.US,HICP_EMP/US,HICP general empalmado v1→v2 por fecha de publicación (US),mensual,% interanual,CPIAUCSL,activa,2002-12-01,2024-12-01,265
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.DE,ei_bssi_m_r2/M.BS-ESI-I.SA.DE,"Indicador de sentimiento económico (ESI), desestacionalizado (DE)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1980-01-01,2026-09-01,561
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EA20,ei_bssi_m_r2/M.BS-ESI-I.SA.EA20,"Indicador de sentimiento económico (ESI), desestacionalizado (EA20)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1980-01-01,2025-12-01,552
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EA21,ei_bssi_m_r2/M.BS-ESI-I.SA.EA21,"Indicador de sentimiento económico (ESI), desestacionalizado (EA21)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1980-01-01,2026-09-01,561
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.EU27_2020,ei_bssi_m_r2/M.BS-ESI-I.SA.EU27_2020,"Indicador de sentimiento económico (ESI), desestacionalizado (EU27_2020)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1980-01-01,2026-09-01,561
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.FR,ei_bssi_m_r2/M.BS-ESI-I.SA.FR,"Indicador de sentimiento económico (ESI), desestacionalizado (FR)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1985-01-01,2026-09-01,501
+eurostat:ei_bssi_m_r2.M.BS-ESI-I.SA.IT,ei_bssi_m_r2/M.BS-ESI-I.SA.IT,"Indicador de sentimiento económico (ESI), desestacionalizado (IT)",mensual,índice (media de largo plazo = 100),UMCSENT,activa,1980-01-01,2026-09-01,560
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.DE,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.DE,"PIB real, tasa interanual (desestacionalizado) (DE)",trimestral,% interanual,EUROSTAT_PIB_PAISES,activa,1992-01-01,2026-04-01,138
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA,"PIB real, tasa interanual (desestacionalizado) (EA)",trimestral,% interanual,EUROSTAT_PIB,activa,1996-01-01,2026-04-01,122
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA20,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA20,"PIB real, tasa interanual (desestacionalizado) (EA20)",trimestral,% interanual,EUROSTAT_PIB,activa,1996-01-01,2026-04-01,122
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EA21,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EA21,"PIB real, tasa interanual (desestacionalizado) (EA21)",trimestral,% interanual,EUROSTAT_PIB,activa,1996-01-01,2026-04-01,122
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.EU27_2020,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.EU27_2020,"PIB real, tasa interanual (desestacionalizado) (EU27_2020)",trimestral,% interanual,EUROSTAT_PIB,activa,1996-01-01,2026-04-01,122
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.FR,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.FR,"PIB real, tasa interanual (desestacionalizado) (FR)",trimestral,% interanual,EUROSTAT_PIB_PAISES,activa,1981-01-01,2026-04-01,182
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.IT,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.IT,"PIB real, tasa interanual (desestacionalizado) (IT)",trimestral,% interanual,EUROSTAT_PIB_PAISES,activa,1997-01-01,2026-04-01,118
+eurostat:namq_10_gdp.Q.CLV_PCH_SM.SCA.B1GQ.UK,namq_10_gdp/Q.CLV_PCH_SM.SCA.B1GQ.UK,"PIB real, tasa interanual (desestacionalizado) (UK)",trimestral,% interanual,EUROSTAT_PIB_PAISES,activa,1975-01-01,2020-07-01,183
+eurostat:prc_hicp_manr.M.RCH_A.CP00.DE,prc_hicp_manr/M.RCH_A.CP00.DE,"HICP general (ECOICOP v1, serie antigua), tasa anual (DE)",mensual,% interanual,CPIAUCSL,retirada,1997-01-01,2025-12-01,348
+eurostat:prc_hicp_manr.M.RCH_A.CP00.EA,prc_hicp_manr/M.RCH_A.CP00.EA,"HICP general (ECOICOP v1, serie antigua), tasa anual (EA)",mensual,% interanual,CPIAUCSL,retirada,1997-01-01,2025-12-01,348
+eurostat:prc_hicp_manr.M.RCH_A.CP00.EA20,prc_hicp_manr/M.RCH_A.CP00.EA20,"HICP general (ECOICOP v1, serie antigua), tasa anual (EA20)",mensual,% interanual,CPIAUCSL,retirada,2000-12-01,2025-12-01,301
+eurostat:prc_hicp_manr.M.RCH_A.CP00.EU27_2020,prc_hicp_manr/M.RCH_A.CP00.EU27_2020,"HICP general (ECOICOP v1, serie antigua), tasa anual (EU27_2020)",mensual,% interanual,CPIAUCSL,retirada,2000-12-01,2025-12-01,301
+eurostat:prc_hicp_manr.M.RCH_A.CP00.FR,prc_hicp_manr/M.RCH_A.CP00.FR,"HICP general (ECOICOP v1, serie antigua), tasa anual (FR)",mensual,% interanual,CPIAUCSL,retirada,1997-01-01,2025-12-01,348
+eurostat:prc_hicp_manr.M.RCH_A.CP00.IT,prc_hicp_manr/M.RCH_A.CP00.IT,"HICP general (ECOICOP v1, serie antigua), tasa anual (IT)",mensual,% interanual,CPIAUCSL,retirada,1997-01-01,2025-12-01,348
+eurostat:prc_hicp_manr.M.RCH_A.CP00.UK,prc_hicp_manr/M.RCH_A.CP00.UK,"HICP general (ECOICOP v1, serie antigua), tasa anual (UK)",mensual,% interanual,CPIAUCSL,retirada,1997-01-01,2020-11-01,287
+eurostat:prc_hicp_manr.M.RCH_A.CP00.US,prc_hicp_manr/M.RCH_A.CP00.US,"HICP general (ECOICOP v1, serie antigua), tasa anual (US)",mensual,% interanual,CPIAUCSL,retirada,2002-12-01,2024-12-01,265
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.DE,prc_hicp_minr/M.RCH_A.TOTAL.DE,"HICP general (ECOICOP v2), tasa anual (DE)",mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA,prc_hicp_minr/M.RCH_A.TOTAL.EA,"HICP general (ECOICOP v2), tasa anual (EA)",mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA20,prc_hicp_minr/M.RCH_A.TOTAL.EA20,"HICP general (ECOICOP v2), tasa anual (EA20)",mensual,% interanual,CPIAUCSL,activa,2000-12-01,2026-09-01,310
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EA21,prc_hicp_minr/M.RCH_A.TOTAL.EA21,"HICP general (ECOICOP v2), tasa anual (EA21)",mensual,% interanual,CPIAUCSL,activa,2000-12-01,2026-09-01,310
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.EU27_2020,prc_hicp_minr/M.RCH_A.TOTAL.EU27_2020,"HICP general (ECOICOP v2), tasa anual (EU27_2020)",mensual,% interanual,CPIAUCSL,activa,2000-12-01,2026-08-01,309
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.FR,prc_hicp_minr/M.RCH_A.TOTAL.FR,"HICP general (ECOICOP v2), tasa anual (FR)",mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.IT,prc_hicp_minr/M.RCH_A.TOTAL.IT,"HICP general (ECOICOP v2), tasa anual (IT)",mensual,% interanual,CPIAUCSL,activa,1997-01-01,2026-09-01,357
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.UK,prc_hicp_minr/M.RCH_A.TOTAL.UK,"HICP general (ECOICOP v2), tasa anual (UK)",mensual,% interanual,CPIAUCSL,activa,1997-01-01,2020-11-01,287
+eurostat:prc_hicp_minr.M.RCH_A.TOTAL.US,prc_hicp_minr/M.RCH_A.TOTAL.US,"HICP general (ECOICOP v2), tasa anual (US)",mensual,% interanual,CPIAUCSL,activa,2002-12-01,2024-12-01,265
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.DE,une_rt_m/M.SA.TOTAL.PC_ACT.T.DE,"Tasa de paro 15-74, desestacionalizada (DE)",mensual,% población activa,EUROSTAT_PARO,activa,1991-01-01,2026-08-01,428
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.EA21,une_rt_m/M.SA.TOTAL.PC_ACT.T.EA21,"Tasa de paro 15-74, desestacionalizada (EA21)",mensual,% población activa,EUROSTAT_PARO,activa,2000-01-01,2026-08-01,320
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.EU27_2020,une_rt_m/M.SA.TOTAL.PC_ACT.T.EU27_2020,"Tasa de paro 15-74, desestacionalizada (EU27_2020)",mensual,% población activa,EUROSTAT_PARO,activa,2000-01-01,2026-08-01,320
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.FR,une_rt_m/M.SA.TOTAL.PC_ACT.T.FR,"Tasa de paro 15-74, desestacionalizada (FR)",mensual,% población activa,EUROSTAT_PARO,activa,1983-01-01,2026-08-01,524
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.IT,une_rt_m/M.SA.TOTAL.PC_ACT.T.IT,"Tasa de paro 15-74, desestacionalizada (IT)",mensual,% población activa,EUROSTAT_PARO,activa,1983-01-01,2026-08-01,524
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.JP,une_rt_m/M.SA.TOTAL.PC_ACT.T.JP,"Tasa de paro 15-74, desestacionalizada (JP)",mensual,% población activa,EUROSTAT_PARO,activa,1983-01-01,2026-08-01,524
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.UK,une_rt_m/M.SA.TOTAL.PC_ACT.T.UK,"Tasa de paro 15-74, desestacionalizada (UK)",mensual,% población activa,EUROSTAT_PARO_UK,activa,1983-01-01,2020-09-01,453
+eurostat:une_rt_m.M.SA.TOTAL.PC_ACT.T.US,une_rt_m/M.SA.TOTAL.PC_ACT.T.US,"Tasa de paro 15-74, desestacionalizada (US)",mensual,% población activa,EUROSTAT_PARO,activa,1983-01-01,2026-08-01,523

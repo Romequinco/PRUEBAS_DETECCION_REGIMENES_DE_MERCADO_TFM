@@ -2,6 +2,11 @@
 #
 # - Python 3.13, ``pip install -e .[dev]`` SIN los extras [deep] (torch) ni [jump]
 #   (jumpmodels): los tests que los necesitan se saltan con ``pytest.importorskip``.
+# - Fase 2: ademas, las dependencias propias de cada tema (``requirements/ingesta-<tema>.txt`` con
+#   alguna linea efectiva). El del Tema 1 aplica su candado de versiones
+#   (``-c ingesta-mercados_series.constraints.txt``): los paquetes de la Fase 1 que toque quedan en
+#   las versiones fijadas. Asi corren en la CI las propiedades con hypothesis, el contrato pandera,
+#   duckdb y exchange_calendars.
 # - ``data/raw`` y ``data/processed`` estan gitignored: los tests marcados ``datos``
 #   se saltan con motivo (``skipif``/``skipUnless``). Los marcados ``resultados``
 #   SI corren, contra ``results/benchmark`` versionado (metricas, ranking, manifest).
@@ -40,6 +45,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[dev]"
+
+      - name: Dependencias de los temas de la Fase 2 (con su candado de versiones)
+        shell: bash
+        run: |
+          for f in requirements/ingesta-*.txt; do
+            case "$f" in *.constraints.txt) continue ;; esac
+            if grep -qvE '^[[:space:]]*(#|$)' "$f"; then
+              echo "::group::$f"
+              python -m pip install -r "$f"
+              echo "::endgroup::"
+            fi
+          done
 
       - name: Lint minimo (ruff)
         run: python -m ruff check src tests

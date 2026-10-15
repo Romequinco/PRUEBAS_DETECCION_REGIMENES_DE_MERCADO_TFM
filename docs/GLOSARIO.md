@@ -1,35 +1,37 @@
-# Glosario — conceptos del proyecto (fuente canónica)
+# Glosario — términos del proyecto
 
-> Definiciones **echadas a tierra** de los términos que gobiernan todo el repo. Es la **fuente
-> única**: los notebooks (`00`–`20`) y el resto de docs enlazan aquí en vez de redefinir.
-> Incluye también los **términos del TFM** completo (multi-agente, [ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md)),
-> **dónde está cada cosa** (rutas y módulos del paquete `regimenes`, [ADR-004](decisions/ADR-004-unificacion.md))
-> y el **pipeline 00–20** de la Fase 1 (al final).
+> Definiciones **echadas a tierra** de los términos que gobiernan todo el repositorio. Es la **fuente
+> única** de definiciones: los notebooks y el resto de documentos enlazan aquí en vez de redefinir.
+> Solo contiene términos. El pipeline de notebooks `00`–`20`, el orden de ejecución y el mapa del código y de
+> las rutas están en [`fase1/README.md`](fase1/README.md); la visión del TFM, en [`tfm/README.md`](tfm/README.md);
+> el índice de la documentación, en [`README.md`](README.md).
 
 ---
 
 ## Términos del TFM
 
-El TFM es *Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence*; este repositorio es su
-Fase 1 ([ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md), visión completa en [`tfm/`](tfm/README.md)).
+Visión del sistema y estado de cada fase: [`tfm/README.md`](tfm/README.md). Encuadre: [ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md).
 
 | Término | Definición |
 |---|---|
-| **TFM · fases 1–5** | 1 régimen de mercado (este repositorio) · 2 ingesta, RAG y tools · 3 agentes Macro, Equity y Risk · 4 cartera y memo (Portfolio y CIO) · 5 evaluación (backtest con TimeGate frente a *baselines*). Las etapas internas de la Fase 1 (1–4 de datos, D, E, S, F) son **sub-fases** de la Fase 1 |
-| **agentes** | LLM orquestados con LangGraph: **Macro** (contexto macroeconómico), **Equity** (acciones y sectores), **Risk** (riesgo, usa el régimen), **Portfolio** (propone la cartera) y **CIO** (decide y redacta el memo, aplicando los límites del cliente). Detalle en [`tfm/ARQUITECTURA.md`](tfm/ARQUITECTURA.md) |
+| **TFM · fases 1–5** | 1 régimen de mercado (`src/regimenes`) · 2 ingesta, RAG y tools (`src/ingesta`) · 3 agentes Macro, Equity y Risk · 4 cartera y memo (Portfolio y CIO) · 5 evaluación (backtest con TimeGate frente a *baselines*). Las etapas internas de la Fase 1 (1–4 de datos, D, E, S, F) son **sub-fases** de la Fase 1; ver [abajo](#fase-no-es-siempre-la-fase-del-tfm) los otros usos de «fase» |
+| **agentes** | LLM orquestados con LangGraph: **Macro** (contexto macroeconómico), **Equity** (acciones y sectores), **Risk** (riesgo, usa el régimen), **Portfolio** (propone la cartera) y **CIO** (decide y redacta el memo, aplicando los límites del cliente). Detalle en [`tfm/arquitectura.md`](tfm/arquitectura.md) |
 | **RAG** | *retrieval-augmented generation*: el agente recupera pasajes de un corpus con fecha de publicación y los cita en lugar de responder de memoria |
 | **tool** | función que un agente puede invocar (p. ej. `get_regimen(fecha)` o una búsqueda sobre el corpus) |
 | **skill** | paquete reutilizable de instrucciones y procedimientos que un agente carga para una tarea concreta |
-| **TimeGate** | barrera temporal dentro de cada tool: solo devuelve información **publicada** hasta la fecha consultada. Es el mismo principio que el **lag de publicación** (`LAG_PUBLICACION`, [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md)) pero aplicado al corpus de los agentes y no a las series de los detectores |
+| **TimeGate** | barrera temporal dentro de cada tool: solo devuelve información **publicada** hasta la fecha consultada. Es el mismo principio que el **lag de publicación** (`LAG_PUBLICACION`, [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md)) pero aplicado al corpus y a las series de los agentes y no a los paneles de los detectores. Contrato común en [`fase2/README.md`](fase2/README.md) §4 |
+| **`fecha_publicacion`** | día en que un dato o documento se hizo público (no el del hecho); el campo que filtra el TimeGate. Su contrapartida es `fecha_referencia`, el periodo al que se refiere |
+| **vintage** | versión de un dato tal como se publicó en una fecha (p. ej. ALFRED guarda cada revisión del empleo de EE. UU.); permite leer una serie revisable como se conocía en el pasado |
+| **RAG base / cajón** | los dos índices de cada agente: la **base** es fija y se prepara antes del backtest; el **cajón** se llena con lo que traen sus tools y persiste entre ejecuciones ([`fase2/plan_datos.md`](fase2/plan_datos.md)) |
 | **`get_regimen(fecha)`** | tool de salida de la Fase 1: estado, probabilidad y días en el estado, con solo información publicada hasta `fecha`. Los estados los fija el detector final (notebook 19, futura ADR-006); **equivalencia provisional**: calma / alerta / crisis ↔ normal / vigilancia / confirmado de `regimenes.fusion` |
 | **investment memo** | informe final del CIO Agent con la decisión de cartera, su justificación y citas a las fuentes |
-| **perfil de cliente** | formulario (idea: cuestionario de idoneidad tipo MiFID II, diseño abierto) cuyas respuestas son los **límites** del CIO Agent. Ver [`tfm/CLIENTE_Y_CARTERAS.md`](tfm/CLIENTE_Y_CARTERAS.md) |
+| **perfil de cliente** | formulario (idea: cuestionario de idoneidad tipo MiFID II, diseño abierto) cuyas respuestas son los **límites** del CIO Agent. Ver [`tfm/cliente_y_carteras.md`](tfm/cliente_y_carteras.md) |
 | **cartera con límites / en bruto** | las dos carteras por decisión: la que respeta los límites del perfil del cliente y la que recomiendan los agentes sin ellos (qué restricciones conserva, por decidir) |
 | **memoria de cartera** | estado persistente: cada cartera conoce la anterior como entrada de los agentes (formato por decidir) |
 | **botón de cataclismo** | alerta automática (modo broma) a partir de [ews.kylemcdonald.net](https://ews.kylemcdonald.net), que vigila vuelos de jets privados: si «los millonarios huyen», se desinvierte todo. Histórico desde octubre de 2025: solo en vivo o demostración |
-| **System One** | línea de investigación: modelos de decisión rápidos y tipados que resuelven decisiones simples antes de escalar al LLM («System Two»). Ver [`tfm/LINEAS_ABIERTAS.md`](tfm/LINEAS_ABIERTAS.md) |
+| **System One** | línea de investigación: modelos de decisión rápidos y tipados que resuelven decisiones simples antes de escalar al LLM («System Two»). Ver [`tfm/lineas_abiertas.md`](tfm/lineas_abiertas.md) |
 
-Otros materiales abiertos: [`tfm/DATOS_ALTERNATIVOS.md`](tfm/DATOS_ALTERNATIVOS.md).
+Datos alternativos candidatos: [`fase2/datos_alternativos.md`](fase2/datos_alternativos.md).
 
 ### Capa 1 del repositorio (no es la «Capa 1» de la propuesta)
 
@@ -37,6 +39,27 @@ Otros materiales abiertos: [`tfm/DATOS_ALTERNATIVOS.md`](tfm/DATOS_ALTERNATIVOS.
 ([`historia/capa1/`](historia/capa1/README.md), tag `capa1-final`). **No** es la «Capa 1» de la propuesta
 (universo de 42 ETFs) ni guarda relación con su «Capa 2» (~1.300 acciones). Se mantiene el nombre por
 coherencia con el tag y la historia ([ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md) §2.4).
+
+### «Fase» no es siempre la fase del TFM
+
+En el repositorio conviven cinco numeraciones de fases. Sin más contexto, «Fase 2» es la del TFM. **P1–P5 solo
+designa fases del TFM**; las demás listas numeradas usan otra letra (última tabla de esta sección).
+
+| Uso | Dónde aparece | Qué significa |
+|---|---|---|
+| **Fase 1–5 del TFM** | `tfm/`, `fase1/`, `fase2/`, ADR-005 y ADR-007 | las cinco fases del sistema multi-agente; **Fase 2** = ingesta, RAG y tools (`src/ingesta`) |
+| **FASE 0–5 de la Capa 1** (en mayúsculas) | documentos heredados de la Capa 1: fichas de familia, narrativa v1 de los detectores, estado del arte v1 | etapas de la primera vuelta ([`historia/capa1`](historia/capa1/README.md) §1): 0 estructura y evaluador · 1 datos y EDA · **2 estado del arte** · 3 implementación de los 12 detectores · 4 síntesis comparativa · 5 pulido |
+| **fases 1–4 del re-base de datos** | [ADR-001](decisions/ADR-001-rebase-datos.md) §6 | 1 reorganización · 2 datos (estado del arte y descarga) · 3 EDA y banco congelado · 4 preprocesado |
+| **sub-fases D, E, S, F** | notebooks `04`–`20`, [`fase1/README.md`](fase1/README.md) | detectores, fusión, sintéticos y cierre de la Fase 1 |
+| **P1–P5** | [`estado_del_arte/`](estado_del_arte/README.md): dossier, `obras.csv` (`relevancia_fase`), `fichas.json` y notas de `references.bib` | alias de las Fases 1–5 del TFM, para no chocar con las familias F1–F7 ni con la sub-fase F: P1 régimen · P2 ingesta, RAG y tools · P3 agentes · P4 cartera y memo · P5 evaluación y backtest |
+
+Otras listas numeradas que no son fases:
+
+| Uso | Dónde aparece | Qué significa |
+|---|---|---|
+| **L1–L5** | [`fase2/plan_datos.md`](fase2/plan_datos.md) §7.1 | pruebas del protocolo de look-ahead del LLM: L1 sondas · L2 datación · L3 ablación · L4 fuera del corte · L5 modelo con corte |
+| **Q1–Q11** | [`fase2/plan_datos.md`](fase2/plan_datos.md) §8 | preguntas abiertas del plan de datos (en el LaTeX local del plan se numeraban P1–P11) |
+| **P1–P6 de *The Alpha Illusion*** | [`estado_del_arte/estado_del_arte.md`](estado_del_arte/estado_del_arte.md) | protocolo de una obra citada; se nombra siempre con la obra, nunca solo |
 
 ---
 
@@ -111,8 +134,9 @@ Hay que distinguir dos niveles:
 ## Métricas del benchmark (lectura correcta)
 
 - **`false_alarm_rate`** es en realidad **1 − precisión** (fracción de días marcados como crisis que
-  caen fuera de ventana de crisis), no FP/(FP+TN). La tasa base de marcar siempre crisis es ≈0,81 (A)
-  y ≈0,83 (B).
+  caen fuera de ventana de crisis), no FP/(FP+TN). La línea base que marca *siempre* crisis tiene un
+  `false_alarm_rate` ≈ 0,81 (A) y ≈ 0,83 (B), porque su precisión es la **tasa base** (`det_base_rate`
+  de `ranking_v2.csv`): ≈ 0,19 en A y ≈ 0,17 en B.
 - **Ranking principal (ADR-003):** `score_deteccion` = F1 entre precisión diaria y **recall por
   evento** (crisis detectada = ≥ 3 sesiones consecutivas marcadas dentro de su ventana), tras filtrar
   por niveles (precisión que no supera al azar, parpadeo, salida degenerada).
@@ -182,7 +206,7 @@ Fase D: un detector puede cambiar su algoritmo, pero **no** estas ventanas/etiqu
 ## Generadores sintéticos (fase S)
 
 Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
-[`teoria/F8_generadores_sinteticos.md`](teoria/F8_generadores_sinteticos.md).
+[`fase1/sinteticos.md`](fase1/sinteticos.md).
 
 | Término | Definición |
 |---|---|
@@ -206,68 +230,10 @@ Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
 | **retraso** | en el laboratorio, sesiones entre el inicio de un episodio de crisis impuesto y la primera detección (`retraso_medio`, `laboratorio.metricas`) |
 | **fechas sintéticas** | días hábiles de lunes a viernes posteriores al corte; son una etiqueta ordenada, **no** el calendario de la NYSE: no se cruzan por fecha con datos reales |
 
----
+## Familias e IDs de detectores
 
-## Dónde está cada cosa (rutas y módulos)
-
-Todo el código es el paquete **`regimenes`** (`src/regimenes/`, instalado con `pip install -e .`).
-Las rutas en disco salen **siempre** de `regimenes.rutas` (ningún módulo ni notebook calcula rutas
-con `Path(__file__)`):
-
-| Constante (`regimenes.rutas`) | Ruta | Contenido |
-|---|---|---|
-| `ROOT` | raíz del checkout | — |
-| `CONFIGS` · `CATALOG` · `BENCHMARK_SPEC` · `SINTETICOS_CONFIG` | `configs/` | `catalog.yaml`, `benchmark_spec.yaml`, `sinteticos.yaml` |
-| `DATA_RAW` · `DATA_PROCESSED` · `DATA_SINTETICOS` | `data/raw/` · `data/processed/` · `data/sinteticos/` | series crudas · paneles por pista · trayectorias sintéticas |
-| `RESULTS_BENCHMARK` | `results/benchmark/` | `metrics/`, `status/`, `panels/`, `manifest.json`, `ranking_v2.csv`, `metrics_master_v2.csv` |
-| `RESULTS_FUSION` · `RESULTS_FUSION_D07_D08` · `RESULTS_FUSION_D02_D06` | `results/fusion/{d07_d08,d02_d06}/` | tablas de las fusiones |
-| `RESULTS_DETECTORES` | `results/detectores/<fk_nombre>/` | figuras de los notebooks de familia |
-| `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | fases S y F; `results/sinteticos/generadores/` (notebook 15), `results/sinteticos/validacion/` (notebook 16: tablas largas por dimensión y pista, veredicto, ficha JSON; las PNG no se versionan) y `results/sinteticos/laboratorio/` (notebook 17: filas por trabajo, tablas H1–H4, figuras) |
-| `DOCS` · `ENV_FILE` | `docs/` · `.env` | — |
-
-| Módulo | Qué contiene |
-|---|---|
-| `regimenes.datos` (`catalogo`, `descarga`, `fuentes`) | descarga dirigida por catálogo · `python -m regimenes.datos` |
-| `regimenes.features` (`transformaciones`, `lags`, `paneles`, `causalidad`) | primitivas causales, `LAG_PUBLICACION`, `construir_paneles`, `assert_causal` |
-| `regimenes.detectores` (`base`, `registry`, `f1_reglas` … `f7_deep`) | `RegimeDetector`, `detector_specs`/`specs_table`, los 12 detectores + D13 |
-| `regimenes.evaluacion` (`walk_forward`, `metricas`, `ranking`) | el juez: walk-forward, métricas, ventanas de crisis, ranking ADR-003 |
-| `regimenes.benchmark` (`ejecucion`, `cache`, `cli`) | ejecución y caché por huella · `python -m regimenes.benchmark` |
-| `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado |
-| `regimenes.viz` (`figuras`) | estilo de casa de figuras |
-| `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
-| `regimenes.sinteticos` (`base`, `comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`, `parametricos/`, `neuronales/`, `validacion`, `laboratorio`) | interfaz `Generador` y base común `GeneradorBase`, régimen de referencia y cadena de regímenes, espacio de generación y re-derivación, bloques y encadenado, registro perezoso (`registry.crear`) y 10 generadores (6 paramétricos; 4 neuronales con el extra `[deep]`). `validacion/` (notebook 16) es un subpaquete con un módulo por dimensión: `fidelidad`, `discriminador`, `memorizacion`, `utilidad` y `veredicto`. `laboratorio/` (notebook 17) contiene `escenarios`, `metricas`, `ejecucion` (CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
-
-La historia de la Capa 1 (decisiones, hallazgos, memoria, informe y métricas v1) está en
-[`historia/capa1/`](historia/capa1/README.md); su código y notebooks originales, en el tag `capa1-final`.
-
-**Familias e IDs.** `Fk` = familia de la teoría (F1 reglas/umbrales, F2 clustering, F3 HMM, F4
-Markov-Switching, F5 GARCH, F6 change-point, F7 redes; F8 no es una familia de detectores sino la
-de los generadores sintéticos). `Dnn` = detector (D01–D12 en el benchmark;
-D13 `hsmm_tstudent` solo como ablación de D08, fuera del ranking y de la huella de caché). El reparto
-por familia es el de los subpaquetes `f1_reglas` … `f7_deep` y de los notebooks 05–11.
-
----
-
-## Pipeline 00–20 (Fase 1 del TFM)
-
-Los notebooks 00–20 son el pipeline de la **Fase 1** (el régimen); las «fases» de la tabla son sus sub-fases.
-
-| Fase | Notebooks | Qué produce |
-|---|---|---|
-| **Datos** | `00_descarga` → `01_eda` | `data/raw/` + informe EDA |
-| **Features** | `02_diseno_preprocesado` → `03_preprocesado` | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels |
-| **D — detectores** | `04_protocolo_evaluacion` → `12_comparativa` → `05`–`11` (una familia cada uno) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/detectores/` |
-| **E — fusión** | `13_fusion_d07_d08` · `14_fusion_d02_d06` | `results/fusion/` |
-| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `15`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste + historial de convergencia + tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `16`). `16`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `17`: laboratorio de detectores con régimen conocido (simulación controlada con `gaussiano_regimen`, `var_regimen` y `garch_regimen`; CLI `python -m regimenes.sinteticos.laboratorio`) en `results/sinteticos/laboratorio/`. `18`: esqueleto (aumento) |
-| **F — cierre** | `19_decision_final` → `20_pseudolive` | `19`: decisión final del detector de régimen y contrato de `get_regimen` (futura ADR-006); `20`: validación de la tool sobre datos no usados en `results/pseudolive/` (esqueletos) |
-
-**Orden de ejecución en la fase D.** La numeración es de *lectura* (familias antes de la comparativa),
-pero tras un benchmark nuevo hay que ejecutar `12_comparativa` **antes** que `05`–`11`: es 12 quien
-escribe `results/benchmark/ranking*.csv`, y los notebooks de familia lo leen
-(`regimenes.informes.cargar_resultados_familia`) y fallan pidiendo re-ejecutar 12 si no corresponde a
-las métricas en caché. Los notebooks de fusión no verifican la huella: `13_fusion_d07_d08` lee
-directamente los paneles OOS (`load_panel`) y `14_fusion_d02_d06` usa el cribado versionado si faltan
-paneles.
-
-Los notebooks v1 de la Capa 1 (un notebook por detector) se resumen en los notebooks de familia
-05–11 y quedan íntegros en el tag `capa1-final`.
+`Fk` = familia de la teoría (F1 reglas/umbrales, F2 clustering, F3 HMM, F4 Markov-Switching, F5 GARCH, F6
+change-point, F7 redes). `Dnn` = detector: D01–D12 en el benchmark; D13 `hsmm_tstudent` solo como ablación de D08,
+fuera del ranking y de la huella de caché. Los generadores sintéticos no son una familia de detectores (antes se
+numeraban «F8»; hoy están en [`fase1/sinteticos.md`](fase1/sinteticos.md)). Qué detector pertenece a cada familia,
+con su código y su notebook: [`fase1/README.md`](fase1/README.md#índice-de-detectores-por-familia).

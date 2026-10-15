@@ -271,3 +271,7 @@ results/sinteticos/laboratorio/*.log*
 # Fase 2 (ingesta): corpus pesado local y entornos aparte
 /corpus/
 .venv-*/
+
+# Documentación interna del TFM (presentación, plan de datos histórico, diario
+# del estado del arte): solo local, nunca se versiona
+docs/tfm/internos/

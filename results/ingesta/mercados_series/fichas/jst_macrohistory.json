@@ -1,0 +1,64 @@
+{
+  "fuente": "jst_macrohistory",
+  "nombre": "Jordà-Schularick-Taylor Macrohistory Database R6",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.macrohistory.net/database/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Jordà-Schularick-Taylor Macrohistory Database: Creative Commons BY-NC-SA 4.0 (uso no comercial con cita; prohibido integrarla en servicios comerciales): solo local",
+  "cobertura_inicio": "1870-01-01",
+  "cobertura_fin": "2020-12-31",
+  "frecuencia": "anual; ediciones R1-R6 (R6 de 2022, reeditada en 2024)",
+  "retraso_publicacion": "R6 (datos hasta 2020) editada el 2024-07-10 (Last-Modified); creada en 2022",
+  "formato": "xlsx",
+  "volumen_estimado": "1.41 MB por edición (1 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ediciones": {
+      "JSTdatasetR6.xlsx": [
+        {
+          "etiqueta": "2024-07",
+          "fecha_edicion": "2024-07-10T08:29:43+00:00",
+          "fuente_fecha": "last_modified",
+          "visto": "2026-10-12T16:05:21.020537+00:00",
+          "bytes": 1408158,
+          "xlsx_modificado": "2024-07-03T13:11:20+00:00"
+        }
+      ]
+    },
+    "descargas": [
+      {
+        "clave": null,
+        "estado": 200,
+        "bytes": 1408158,
+        "descargado_utc": "2026-10-12T16:05:21.020537+00:00",
+        "error": null
+      }
+    ],
+    "filas": 2718,
+    "paises": 18,
+    "columnas": 59,
+    "usa_anios": 151,
+    "usa_crisis": [
+      1873,
+      1893,
+      1907,
+      1930,
+      1984,
+      2007
+    ]
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.academicos (crudos en <corpus>/mercados_series/crudo/jst_macrohistory/, un fichero por día de descarga con su .meta.json)",
+    "Fuera del catálogo: tabla_jst (ids jst:<ISO>.<col>), fecha = primera decisión tras la edición (Last-Modified) para todos los años",
+    "La Fase 1 falló al descargarla; reintento OK"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

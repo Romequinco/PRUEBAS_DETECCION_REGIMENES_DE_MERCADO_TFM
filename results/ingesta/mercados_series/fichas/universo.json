@@ -1,0 +1,87 @@
+{
+  "fuente": "universo",
+  "nombre": "Universo de instrumentos del Tema 1 (ETF, UCITS, índices, volatilidad, FX, futuros, cripto)",
+  "tema": "mercados_series",
+  "agentes": [
+    "portfolio",
+    "equity",
+    "risk",
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "src/ingesta/mercados_series/config/universo.yaml",
+  "acceso": "libreria",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Yahoo Finance (yfinance): uso personal, sin redistribuir; justETF: consulta puntual de fichas públicas",
+  "cobertura_inicio": "1927-12-30",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria",
+  "retraso_publicacion": "cierre de mercado + 30 min → primera decisión 16:30 NY (precios); el universo no tiene retraso propio; medido: mediana de 1 días entre la última vela de Yahoo y el día de consulta (NY)",
+  "formato": "yaml + csv de metadatos",
+  "volumen_estimado": "202 instrumentos",
+  "limites": "yfinance <= 0,5 tickers/s, timeout 90 s; justETF 1 petición/s",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "n_instrumentos": 202,
+    "por_clase": {
+      "etf": 137,
+      "indice": 22,
+      "futuro": 18,
+      "etp": 8,
+      "divisa": 8,
+      "volatilidad": 6,
+      "cripto": 2,
+      "fondo": 1
+    },
+    "por_capa": {
+      "tactica": 116,
+      "contexto": 54,
+      "estrategica": 27,
+      "baseline": 5
+    },
+    "invertibles_ue": 52,
+    "con_equivalente_ucits": 52,
+    "con_proxy_previo": 62,
+    "justetf": {
+      "consultados": 49,
+      "con_fecha": 49,
+      "errores": 0
+    },
+    "yahoo": {
+      "consultados": 202,
+      "con_datos": 201,
+      "sin_datos": [
+        "^V2TX"
+      ],
+      "divisas": {
+        "USD": 159,
+        "EUR": 12,
+        "GBp": 7,
+        "GBP": 4,
+        "CHF": 4,
+        "USX": 3,
+        "CAD": 2,
+        "JPY": 2,
+        "CNY": 2,
+        "BRL": 1,
+        "HKD": 1,
+        "INR": 1,
+        "KRW": 1,
+        "TWD": 1,
+        "AUD": 1
+      },
+      "dias_desde_ultima_vela_mediana": 1.0
+    }
+  },
+  "notas": [
+    "Fondos: por qué no entran. Los fondos de inversión indexados (Vanguard, iShares, Fidelity, Amundi...) no entran en la optimización: (1) solo publican un valor liquidativo diario calculado después del cierre y difundido horas más tarde (visible en t+1), sin precio intradía ni spread observable; (2) las órdenes se ejecutan a un NAV desconocido en el momento de decidir (forward pricing), lo que rompe la regla de decidir a las 16:30 NY con información visible; (3) su historia en Yahoo es corta, incompleta o inexistente para las clases en EUR, y no hay series de NAV point-in-time gratuitas; (4) replican los mismos índices que los ETF UCITS del universo, que sí cotizan y tienen coste observable (DEGIRO/IBKR). Se anotan como 'fondo_indexado_equivalente' a título informativo (alternativa de implementación para el usuario final) y VBMFX solo como proxy previo de AGG.",
+    "universo de hoy: los ETF cerrados o fusionados no están (sesgo de supervivencia declarado; WRDS/CRSP pendiente de MIAX)",
+    "Supervivencia: el universo es el de HOY (ETF vivos); la ausencia de ETF cerrados se declara y se mide (WRDS pendiente de MIAX)",
+    "Futuros: solo contexto (vela de Yahoo del contrato continuo, sin roll documentado); no se invierten",
+    "Cripto: Coinbase (USD) principal y Binance Vision de control; vela diaria UTC visible en D+1",
+    "Índices: precio (sin dividendos) salvo nota; solo señal y contexto, no invertibles",
+    "inicio_esperado de los UCITS = lanzamiento según justETF (tablas/universo_ucits_verificacion.csv); null si no se pudo verificar"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

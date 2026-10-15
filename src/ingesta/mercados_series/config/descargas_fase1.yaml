@@ -1,0 +1,19 @@
+# Instantes de descarga de data/raw (Fase 1, solo lectura), hora de Nueva York.
+#
+# Medidos el 2026-10-12 con el mtime de cada parquet (el único registro: data/raw/provenance.json no
+# guarda la hora de descarga; su campo 'fin' coincide con la barra intradía de yfinance). Se
+# declaran aquí para que el cargador no dependa del mtime: si data/raw se copia, se restaura de una
+# copia de seguridad o se descomprime, el mtime cambia y la barra intradía del 2026-07-20 (descarga
+# a las 15:37-15:39 NY, antes del cierre) entraría en silencio.
+# fuentes.fase1.instante_descarga usa lo declarado y avisa si el mtime difiere más de
+# 'tolerancia_min' (y también la edición de data/raw que ven los académicos).
+version: 1
+huso: America/New_York
+tolerancia_min: 10
+por_defecto: "2026-07-20 15:39"     # 161 parquet entre las 15:37 y las 15:39 NY
+ficheros:                            # recargas del 2026-09-29 (Ken French diario, Shiller, vol. realizada)
+  academico/FF_5_INDUSTRY.parquet: "2026-09-29 04:21"
+  academico/FF_FACTORS_3_DAILY.parquet: "2026-09-29 04:21"
+  academico/FF_FACTORS_5_DAILY.parquet: "2026-09-29 04:21"
+  academico/SHILLER_SP500_CAPE.parquet: "2026-09-29 04:21"
+  yfinance/REALIZED_VOL_SP500.parquet: "2026-09-29 04:21"

@@ -1,0 +1,921 @@
+# Lags de publicación del Tema 1 (bloque 2) para los métodos lag_fijo y fichero del catálogo.
+#
+# 1) 'lag_publicacion_fase1': copia CONGELADA (2026-10-12) de LAG_PUBLICACION de la Fase 1
+#    (src/regimenes/features/lags.py, commit 6012f03, ADR-003: lags de publicación por serie).
+#    Se copian TODAS sus entradas con su texto 'fuente', 'meses', 'dias' y 'tipo' tal cual; no se
+#    actualiza si cambia la Fase 1 (tests/ingesta/mercados_series/test_t1_catalogo.py avisa).
+# 2) 'adicionales': series no diarias de data/raw que LAG_PUBLICACION no cubre (y reglas de
+#    fichero de los académicos), con su justificación conservadora y verificado: false.
+#
+# Semántica (¡distinta en cada bloque!):
+#   meses/dias (solo Fase 1): desplazamiento desde el DÍA 1 del periodo de referencia (mes o
+#     trimestre) o desde la fecha de la fuente (semanales: sábado/viernes de fin de semana):
+#     visible = inicio + DateOffset(months=meses, days=dias).
+#   lag (todas): retraso desde el FIN del periodo, el mismo campo 'lag' de publicaciones.yaml:
+#     fin = último día natural del periodo indicado en 'fin_periodo' que contiene la
+#           fecha_referencia (mes | trimestre | anio), o la propia fecha (fecha);
+#     "nM" = n fines de mes después de 'fin' (pd.offsets.MonthEnd(n)); "nD" = n días naturales;
+#     "nMmD" = primero los n fines de mes y después los m días.
+#     fecha_publicacion = fin + lag (fecha de decisión desde la que el dato es visible;
+#     disponible_utc nulo: solo se conoce el día).
+#   Conversión exacta: inicio + k meses + d días = fin + (k - meses_del_periodo) M + (1 + d) D
+#     (meses_del_periodo: 1 mensual, 3 trimestral). Ejemplos: k=1 → "1D"; k=2 → "1M1D";
+#     WTI (k=1, d=10) → "11D"; PIB trimestral (k=4) → "1M1D"; semanales (k=0, d) → "<d>D".
+#     Lo comprueba un test contra LAG_PUBLICACION para todas las entradas.
+#   habiles (opcional: semana | us_federal | target): la fecha se lleva al primer hábil >= ella.
+#   tramos (opcional): lista ordenada de {desde, hasta, lag, habiles, n_habiles, verificado, fuente, muestras}:
+#     la regla cambia con la FECHA DE REFERENCIA del periodo (desde/hasta inclusivos); fuera de todo tramo rige
+#     la regla general. muestras = publicaciones reales {periodo, publicado, fuente}: un test exige regla >=
+#     publicado (catalogo.fecha_publicacion_tramos / fecha_publicacion_clave / validar_muestras_tramos).
+#   n_habiles (opcional, con habiles): nunca antes del n-ésimo hábil tras el fin del periodo.
+#   correccion: por qué el bloque 2 añade habiles/n_habiles a una entrada (el lag no cambia).
+#   (catalogo.fecha_publicacion_regla aplica lag + habiles + n_habiles.)
+# Excepciones medidas: config/excepciones_publicacion.csv (python -m ingesta.mercados_series
+#   excepciones-alfred) guarda, por serie y periodo, la primera vintage de ALFRED (output_type=4)
+#   cuando es POSTERIOR a la regla (cierres del Gobierno de 1995-96, 2013, 2018-19 y 2025; Moody's
+#   fuera de FRED de oct-2016 a mar-2017; medias de H.15 de 1997-2016...). La base usa
+#   fecha_publicacion = max(regla, excepción) (catalogo.aplicar_excepciones). Hay que regenerarla si
+#   cambian las reglas o llegan periodos nuevos. Antes de la primera vintage de cada serie en ALFRED
+#   no hay medición: la regla puede adelantar la publicación real en los periodos anómalos.
+# Aviso medido (bloque 2): las medias mensuales de H.15 publicaban con la edición semanal hasta 2016
+# (ALFRED: 259 de 354 meses con fuga de 1 a 13 días en GS10, GS5, GS1, TB3MS y FEDFUNDS; 272 de 354
+# en BAA y AAA): corregido por periodo con las excepciones desde 1997 y con habiles: us_federal.
+
+version: 1
+lag_publicacion_fase1:
+  GS10:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED/H.15: media mensual de DGS10 (02 §3.2: MAE 0,003 pp vs media de M)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  GS5:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED/H.15: media mensual de DGS5'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  GS1:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED/H.15: media mensual de DGS1'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  TB3MS:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED/H.15: media mensual del T-bill 3m (mercado secundario)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  FEDFUNDS:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED/H.15: media mensual de la EFFR diaria'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  TBILL3M_MINUS_FEDFUNDS:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: FRED TB3SMFFM = TB3MS - FEDFUNDS (medias mensuales)
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  MOODYS_BAA:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED BAA: ''averages of daily data'' (Moody''s)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  MOODYS_AAA:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'FRED AAA: ''averages of daily data'' (Moody''s)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  BAAFFM:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: FRED BAAFFM = BAA - FEDFUNDS (medias mensuales)
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: la media de M sale con el dato del último hábil de M (H.15, hábil siguiente): si el día
+      1 de M+1 no es hábil, el primer hábil siguiente. ALFRED (output_type=4) midió fugas de 1-2 días en esos días 1
+      desde 2017 y de 1-13 días entre 1997 y 2016 (H.15 semanal): config/excepciones_publicacion.csv las fija
+      por periodo. Antes de 1997 (sin ALFRED) puede quedar hasta ~2 semanas de adelanto.'
+  SHILLER_SP500_CAPE:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'Shiller ie_data.xls: P = media de cierres diarios de M; E10 con los últimos beneficios estimados/interpolados
+      (peso 1/120)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+  GW_PREDICTORS_MONTHLY:
+    meses: 1
+    dias: 0
+    tipo: media_mes
+    fuente: 'Goyal-Welch b/m: valor contable del año previo / precio de FIN de M (fechado el 1 de M)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+  WTI_SPOT_MONTHLY:
+    meses: 1
+    dias: 10
+    tipo: media_mes
+    fuente: 'FRED WTISPLC: media mensual del spot diario; el spot diario de la EIA se publica con ~1 semana de retraso'
+    fin_periodo: mes
+    lag: 11D
+    verificado: false
+  INDPRO:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'Fed G.17: ~día 15-17 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  PPI_ALL_COMMODITIES:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS PPI: ~día 11-15 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  PPI_FUELS:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS PPI: ~día 11-15 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  PPI_METALS:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS PPI: ~día 11-15 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  CPIAUCSL:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS CPI: ~día 10-15 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  CPILFESL:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS CPI: ~día 10-15 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  UNRATE:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS Employment Situation: 1er viernes de M+1, a veces día 8-10 o más tarde (cierres de gobierno) ->
+      +1 mes filtraría ~1 semana; se redondea a M+2'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  PAYEMS:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS Employment Situation: idem UNRATE'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  MANEMP:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BLS Employment Situation: idem UNRATE'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  HOUST:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'Census New Residential Construction: ~día 17-19 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  CFNAI:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'Chicago Fed: ~día 20-25 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  CFNAIMA3:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'Chicago Fed: ~día 20-25 de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  RNUSBIS:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BIS effective exchange rates (media mensual): publicados ~mitad de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  NNUSBIS:
+    meses: 2
+    dias: 0
+    tipo: macro
+    fuente: 'BIS effective exchange rates (media mensual): publicados ~mitad de M+1'
+    fin_periodo: mes
+    lag: 1M1D
+    verificado: false
+  UMCSENT:
+    meses: 1
+    dias: 0
+    tipo: encuesta_en_mes
+    fuente: 'U. Michigan: preliminar ~2º viernes de M, final ~último viernes de M (FRED guarda el final)'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+  PMI_PROXY_PHILLY:
+    meses: 1
+    dias: 0
+    tipo: encuesta_en_mes
+    fuente: 'Philadelphia Fed Manufacturing Business Outlook Survey: 3er jueves de M'
+    fin_periodo: mes
+    lag: 1D
+    verificado: false
+  GDP_GROWTH_QOQ:
+    meses: 4
+    dias: 0
+    tipo: trimestral
+    fuente: 'BEA avance: ~día 25-30 del mes siguiente al cierre del trimestre = inicio + 1 trimestre + 1 mes. Excepciones
+      por cierre de gobierno: Q3-2013 (7-nov), Q4-2018 (28-feb-2019), Q3-2025 (23-dic)'
+    fin_periodo: trimestre
+    lag: 1M1D
+    verificado: false
+  GDPC1:
+    meses: 4
+    dias: 0
+    tipo: trimestral
+    fuente: BEA avance (idem GDP_GROWTH_QOQ); insumo solo-raw
+    fin_periodo: trimestre
+    lag: 1M1D
+    verificado: false
+  ICSA:
+    meses: 0
+    dias: 5
+    tipo: semanal
+    fuente: 'DOL Unemployment Insurance Weekly Claims: jueves siguiente al sábado de referencia (8:30 ET, antes
+      de la apertura)'
+    fin_periodo: fecha
+    lag: 5D
+    verificado: false
+  NFCI:
+    meses: 0
+    dias: 5
+    tipo: semanal
+    fuente: 'Chicago Fed NFCI: semana que acaba el viernes, publicado el miércoles siguiente (rol=validation)'
+    fin_periodo: fecha
+    lag: 5D
+    verificado: false
+    habiles: us_federal
+    n_habiles: 3
+    correccion: 'Bloque 2: el miércoles es el tercer hábil tras el viernes; en las semanas con festivo (lunes o
+      miércoles) sale el jueves. ALFRED 2024-2026: 18 de 132 semanas con +1 día con la regla de 5D (p. ej.
+      2024-12-20 -> 2024-12-26, 2025-10-10 -> 2025-10-16). Tercer hábil us_federal (conservador).'
+  STLFSI4:
+    meses: 0
+    dias: 6
+    tipo: semanal
+    fuente: 'St. Louis Fed FSI: semana que acaba el viernes, publicado el jueves siguiente (rol=validation)'
+    fin_periodo: fecha
+    lag: 6D
+    verificado: false
+adicionales:
+  FF_MENSUAL:
+    fin_periodo: mes
+    lag: 45D
+    tipo: fichero
+    justificacion: 'Ken French publica cada mes el fichero con los datos hasta el fin del mes anterior; regla del
+      tema: fin del mes de referencia + 45 días (vale para los ficheros diarios y mensuales). Medido en data/raw:
+      agosto-2026 ya estaba en el fichero el 2026-09-29 (<= 29 días) y junio-2026 aún no el 2026-07-20 (> 20 días).'
+    verificado: false
+  GW_ANUAL:
+    fin_periodo: anio
+    lag: 7M1D
+    tipo: fichero
+    justificacion: 'Goyal-Welch actualiza la hoja una vez al año con el año natural completo. Medido: 2025 completo
+      ya estaba el 2026-07-20 (<= 201 días desde el 31-dic); fecha de edición exacta desconocida -> 1 de agosto
+      del año siguiente (conservador).'
+    verificado: false
+  SHILLER_LONGRATE:
+    fin_periodo: mes
+    lag: 1D
+    tipo: fichero
+    justificacion: 'ie_data.xls de Shiller: el tipo largo de M es la media de GS10 (desde 1953), conocida al cerrar
+      M; mismo criterio que SHILLER_SP500_CAPE. Medido con CAPE: la fila de septiembre-2026 ya estaba en el fichero
+      el 2026-09-29 (antes de cerrar el mes, provisional).'
+    verificado: false
+  SHILLER_FICHERO:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: fichero
+    justificacion: 'ie_data.xls de Shiller (shillerdata.com), edición irregular. Medido (bloque 2): Last-Modified
+      2026-09-02 17:51 UTC con agosto completo (2 días tras su fin, después del día 1 que daba la regla 1D) y
+      septiembre provisional; a 2026-10-12 sin edición nueva (41 días). Día 1 de M+2 (conservador). Sustituye a
+      SHILLER_SP500_CAPE y SHILLER_LONGRATE en el catálogo.'
+    verificado: false
+  SHILLER_DE:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: fichero
+    justificacion: 'D y E de Shiller llegan con retraso trimestral. Medido (bloque 2): la edición del 2026-09-02
+      llega hasta junio-2026 (julio y agosto vacíos), >= 2 meses y 2 días. Los dos primeros meses de cada
+      trimestre son interpolaciones lineales hacia el dato del fin del trimestre (E: 134 y 135 de 146
+      trimestres; D: 117 de 146): no existen antes que él. Por eso el lag cuenta desde el FIN DEL TRIMESTRE
+      y los tres meses comparten fecha: día 1 del cuarto mes tras el fin del trimestre (conservador).'
+    verificado: false
+  IRLTLT01USM156N:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: 'OCDE (MEI) tipo a largo de EE. UU., media mensual idéntica a GS10 (medido 879/879); la OCDE
+      la publica a mitad de M+1. Medido: junio-2026 ya estaba en FRED el 2026-07-20 (<= 20 días). Se toma el día
+      1 de M+2 (conservador).'
+    verificado: false
+  TWEXMMTH:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: media_mes
+    justificacion: Fed G.5 (media mensual del índice dólar major de H.10); G.5 sale a primeros de M+1. Retirada
+      en 2019. Día 1 de M+2 (conservador).
+    verificado: false
+  TWEXAFEGSMTH:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: media_mes
+    justificacion: 'Fed G.5 (media mensual del índice dólar AFE de H.10). Medido: junio-2026 ya estaba en FRED el
+      2026-07-20 (<= 20 días). Día 1 de M+2 (conservador).'
+    verificado: false
+  NBER_NY_COMMERCIAL_PAPER:
+    fin_periodo: mes
+    lag: 1D
+    tipo: media_mes
+    justificacion: 'NBER Macrohistory: media mensual de tipos de papel comercial cotizados a diario en prensa; criterio
+      media_mes de ADR-003 (visible al cerrar M). Serie histórica cerrada en 1971.'
+    verificado: false
+  LIBOR_3M_QUARTERLY:
+    fin_periodo: trimestre
+    lag: 1M1D
+    tipo: media_mes
+    justificacion: 'FRED LIOR3M (OCDE): LIBOR 3M trimestral (media del trimestre). Visible al cerrar el trimestre;
+      se añade un mes por la publicación de la OCDE (conservador). Retirada en 2016.'
+    verificado: false
+  GH_US10Y_MONTHLY:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: fichero
+    justificacion: 'Espejo datahub de GS10 (idéntico, medido 878/878) con actualización periódica. Medido: el 2026-07-20
+      tenía mayo-2026 y no junio -> retraso de 20 a 50 días; día 1 de M+3 (conservador).'
+    verificado: false
+  SP500_MONTHLY_DEEP_SRC:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: fichero
+    justificacion: 'Espejo datahub del precio medio mensual de Shiller. Medido: junio-2026 ya estaba el 2026-07-20
+      (<= 20 días); día 1 de M+2 (conservador).'
+    verificado: false
+  ANFCI:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: semanal
+    justificacion: 'Chicago Fed, mismo release que NFCI: semana que acaba el viernes, publicado el miércoles siguiente.
+      Medido: FRED NFCI last_updated 2026-10-07 08:36 NY (miércoles) con la observación del viernes 2026-10-02.'
+    verificado: false
+    habiles: us_federal
+    n_habiles: 3
+    correccion: 'Bloque 2 (mismo release que NFCI): el miércoles es el tercer hábil tras el viernes; en las semanas con festivo (lunes o
+      miércoles) sale el jueves. ALFRED 2024-2026: 18 de 132 semanas con +1 día con la regla de 5D (p. ej.
+      2024-12-20 -> 2024-12-26, 2025-10-10 -> 2025-10-16). Tercer hábil us_federal (conservador).'
+  NFCI_RISK:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: semanal
+    justificacion: 'Subíndice del NFCI: mismo release (miércoles 08:30 NY).'
+    verificado: false
+    habiles: us_federal
+    n_habiles: 3
+    correccion: 'Bloque 2 (mismo release que NFCI): el miércoles es el tercer hábil tras el viernes; en las semanas con festivo (lunes o
+      miércoles) sale el jueves. ALFRED 2024-2026: 18 de 132 semanas con +1 día con la regla de 5D (p. ej.
+      2024-12-20 -> 2024-12-26, 2025-10-10 -> 2025-10-16). Tercer hábil us_federal (conservador).'
+  NFCI_CREDIT:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: semanal
+    justificacion: 'Subíndice del NFCI: mismo release (miércoles 08:30 NY).'
+    verificado: false
+    habiles: us_federal
+    n_habiles: 3
+    correccion: 'Bloque 2 (mismo release que NFCI): el miércoles es el tercer hábil tras el viernes; en las semanas con festivo (lunes o
+      miércoles) sale el jueves. ALFRED 2024-2026: 18 de 132 semanas con +1 día con la regla de 5D (p. ej.
+      2024-12-20 -> 2024-12-26, 2025-10-10 -> 2025-10-16). Tercer hábil us_federal (conservador).'
+  NFCI_LEVERAGE:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: semanal
+    justificacion: 'Subíndice del NFCI: mismo release (miércoles 08:30 NY).'
+    verificado: false
+    habiles: us_federal
+    n_habiles: 3
+    correccion: 'Bloque 2 (mismo release que NFCI): el miércoles es el tercer hábil tras el viernes; en las semanas con festivo (lunes o
+      miércoles) sale el jueves. ALFRED 2024-2026: 18 de 132 semanas con +1 día con la regla de 5D (p. ej.
+      2024-12-20 -> 2024-12-26, 2025-10-10 -> 2025-10-16). Tercer hábil us_federal (conservador).'
+  KCFSI:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: 'Kansas City Fed, mensual. Medido: junio-2026 ya estaba en FRED el 2026-07-20 (<= 20 días). Día
+      1 de M+2 (conservador).'
+    verificado: false
+  NBER_RECESSION_MONTHLY:
+    fin_periodo: mes
+    lag: 24M
+    tipo: fechado_retroactivo
+    justificacion: 'USREC: el comité del NBER fecha picos y valles con 6-21 meses de retraso (valle de marzo-1991
+      anunciado el 22-dic-1992); 24 fines de mes tras M (conservador). Los meses recientes valen 0 hasta que se
+      fecha una recesión: revisable.'
+    verificado: false
+  NBER_RECESSION_DAILY:
+    fin_periodo: mes
+    lag: 24M
+    tipo: fechado_retroactivo
+    justificacion: 'USRECD: mismo fechado que USREC (idéntica en los días 1, medido 2059/2059); se ancla al fin
+      del mes del día.'
+    verificado: false
+  RECESSION_PROB_SMOOTHED:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: 'Chauvet-Piger (RECPROUSM156N): usa datos hasta M y sale unas semanas después. Medido: el 2026-07-20
+      había mayo-2026 y no junio (20-50 días). Día 1 de M+3 (conservador).'
+    verificado: false
+    habiles: us_federal
+    correccion: 'Bloque 2: ALFRED midió fugas de 1-2 días cuando el día 1 cae en fin de semana; primer hábil.'
+  SAHM_RULE_REALTIME:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: 'Se calcula con el paro de la Employment Situation (BLS, primer viernes de M+1 o más tarde):
+      mismo lag que UNRATE.'
+    verificado: false
+  SAHM_RULE_CURRENT:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: 'Ídem SAHM_RULE_REALTIME (pero con el paro revisado: revisable).'
+    verificado: false
+  GDP_RECESSION_HAMILTON:
+    fin_periodo: trimestre
+    lag: 6M1D
+    tipo: trimestral
+    justificacion: 'Hamilton publica el índice del trimestre Q tras el avance del PIB de Q+1 (~4 meses tras el fin
+      de Q; medido: Q4-2025 actualizado el 2026-04-30). Con el cierre del Gobierno de 2025 el avance del Q3 salió
+      el 23-dic -> 6 fines de mes + 1 día (conservador).'
+    verificado: false
+  OFR_FSI:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: diaria_retrasada
+    justificacion: 'OFR publica el FSI con unos 2 días hábiles de retraso. Medido: en la descarga del 2026-07-20
+      15:37 NY (lunes) el último dato era el jueves 2026-07-16 (el viernes aún no estaba). 5 días naturales cubren
+      fin de semana y un festivo (conservador).'
+    verificado: false
+  CFSI:
+    fin_periodo: fecha
+    lag: 5D
+    tipo: diaria_retrasada
+    justificacion: 'Cleveland Fed FSI diario (retirado en 2016); sin calendario conservado: mismo criterio que el
+      OFR FSI (conservador).'
+    verificado: false
+  # Bloque 3: reglas previas a ALFRED (regla_previa_alfred del catálogo): fechan las observaciones
+  # anteriores al primer vintage de cada serie, cargadas con el valor de ese vintage. Por release.
+  CLAIMS_CONTINUADAS:
+    fin_periodo: fecha
+    lag: 13D
+    tipo: semanal
+    justificacion: "DOL: las peticiones continuadas de la semana que acaba el sábado S salen el jueves S+12 (una semana después que las iniciales); 13 días cubren el retraso a viernes por festivo."
+    verificado: false
+  JOLTS:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "BLS JOLTS: el mes M sale hacia el quinto-sexto martes tras su fin (julio -> 3 de septiembre); día 1 de M+3 (conservador)."
+    verificado: false
+  ECI:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "BLS Employment Cost Index: el último día del mes siguiente al trimestre (con retrasos por cierres del gobierno); 2 fines de mes + 1 día (conservador)."
+    verificado: false
+  PRODUCTIVIDAD_COSTES:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "BLS Productivity and Costs: preliminar a principios del segundo mes tras el trimestre; 2 fines de mes + 1 día (conservador)."
+    verificado: false
+  PRECIOS_IMPORTACION:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BLS Import/Export Price Indexes: mitad de M+1; día 1 de M+2."
+    verificado: false
+  BEA_RENTA_GASTO:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BEA Personal Income and Outlays (y medidas derivadas el mismo día, como la PCE media recortada de Dallas): última semana de M+1 (cierres del gobierno: más tarde); día 1 de M+2 (mismo criterio que el PIB de la Fase 1)."
+    verificado: false
+  BEA_PIB_SEGUNDA:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "BEA: la renta interior (GDI) y los beneficios empresariales salen con la segunda estimación del PIB (la tercera en el cuarto trimestre, finales de marzo); 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  COMERCIO_EXTERIOR:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "BEA/Census U.S. International Trade in Goods and Services: hacia el día 5 de M+2; día 1 de M+3 (conservador)."
+    verificado: false
+  TRANSACCIONES_INTERNACIONALES:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "BEA U.S. International Transactions: hacia el día 20-25 del tercer mes tras el trimestre; 3 fines de mes + 1 día."
+    verificado: false
+  BEA_VEHICULOS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "BEA Supplemental Estimates (Motor Vehicles): primeros días de M+1; día 1 de M+2 (conservador)."
+    verificado: false
+  BEA_MTIS_REAL:
+    fin_periodo: mes
+    lag: 3M1D
+    tipo: macro
+    justificacion: "BEA ventas reales de manufacturas y comercio (deflacta el MTIS del Census, que sale hacia la mitad de M+2): día 1 de M+4 (conservador)."
+    verificado: false
+  CENSUS_M3:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census M3: informe completo en los primeros hábiles de M+2 (avance de duraderos hacia el día 25 de M+1); día 1 de M+3 (conservador)."
+    verificado: false
+  CENSUS_MTIS:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census Manufacturing and Trade Inventories and Sales: mitad de M+2; día 1 de M+3."
+    verificado: false
+  CENSUS_VENTAS_MINORISTAS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Census Advance Monthly Retail Sales: hacia el día 15 de M+1; día 1 de M+2."
+    verificado: false
+  CENSUS_VIVIENDA_NUEVA:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Census New Residential Sales: hacia el día 25 de M+1; día 1 de M+2."
+    verificado: false
+  CENSUS_VIVIENDA_NUEVA_TRIMESTRAL:
+    fin_periodo: trimestre
+    lag: 1M1D
+    tipo: trimestral
+    justificacion: "Census New Residential Sales (precio mediano trimestral): con el dato del último mes del trimestre, hacia el día 25 del mes siguiente; 1 fin de mes + 1 día."
+    verificado: false
+  CENSUS_CONSTRUCCION:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Census Construction Spending: primer hábil de M+2 (si el día 1 es festivo, después); día 1 de M+3 (conservador)."
+    verificado: false
+  FHFA_HPI:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "FHFA HPI mensual: último martes de M+2; día 1 de M+3."
+    verificado: false
+  FHFA_HPI_TRIMESTRAL:
+    fin_periodo: trimestre
+    lag: 2M1D
+    tipo: trimestral
+    justificacion: "FHFA HPI trimestral: último martes del segundo mes tras el trimestre; 2 fines de mes + 1 día."
+    verificado: false
+  CASE_SHILLER:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "S&P Cotality Case-Shiller: último martes de M+2; día 1 de M+3."
+    verificado: false
+  FED_H6:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Fed H.6: cuarto martes de M+1 (antes de 2021, semanal los jueves); día 1 de M+2."
+    verificado: false
+  FED_H8_MENSUAL:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Fed H.8: las medias mensuales de M salen con la edición semanal de mediados de M+1; día 1 de M+2 (conservador)."
+    verificado: false
+  FED_H8_SEMANAL:
+    fin_periodo: fecha
+    lag: 13D
+    tipo: semanal
+    justificacion: "Fed H.8 semanal: semana que acaba el miércoles W, publicada el viernes W+9 a las 16:15 NY (visible el sábado); 13 días y primer hábil cubren el viernes festivo."
+    verificado: false
+    habiles: us_federal
+  FED_H41:
+    fin_periodo: fecha
+    lag: 3D
+    tipo: semanal
+    justificacion: "Fed H.4.1: nivel del miércoles W publicado el jueves W+1 a las 16:30 NY (visible el viernes); 3 días y primer hábil (el lunes) cubren el jueves festivo."
+    verificado: false
+    habiles: us_federal
+  FED_G19:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Fed G.19: quinto hábil de M+2; día 1 de M+3 (conservador)."
+    verificado: false
+  FED_Z1:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Fed Z.1: hacia la segunda semana del tercer mes tras el trimestre; 3 fines de mes + 1 día."
+    verificado: false
+  FED_MOROSIDAD:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Fed Charge-Off and Delinquency Rates: hacia el final del segundo mes tras el trimestre; 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  FED_DSR:
+    fin_periodo: trimestre
+    lag: 6M1D
+    tipo: trimestral
+    justificacion: "Fed Household Debt Service Ratios: sin calendario fijo (se publica con un trimestre o más de retraso); 6 fines de mes + 1 día (conservador)."
+    verificado: false
+  CHICAGO_BBK:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Brave-Butters-Kelley (Fed de Chicago): mensual, sin calendario conservado; día 1 de M+3 (conservador)."
+    verificado: false
+  KC_LMCI:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Kansas City Fed LMCI: tras la Employment Situation de M (primer viernes de M+1 o más tarde); día 1 de M+2."
+    verificado: false
+  PHILLY_COINCIDENTES:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "Philadelphia Fed State Coincident Indexes: tras el empleo por estados (tercera-cuarta semana de M+1); día 1 de M+3 (conservador)."
+    verificado: false
+  EMPIRE:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "NY Fed Empire State Manufacturing Survey: hacia el día 15 de M; día 1 de M+1."
+    verificado: false
+  DALLAS_TMOS:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "Dallas Fed Texas Manufacturing Outlook Survey: último lunes de M; día 1 de M+1."
+    verificado: false
+  IPC_DERIVADOS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Medidas del IPC de las Feds de Cleveland (mediana, media recortada) y Atlanta (precios rígidos): el día del IPC (mitad de M+1); día 1 de M+2."
+    verificado: false
+  CLEVELAND_EXPINF:
+    fin_periodo: mes
+    lag: 1D
+    tipo: encuesta_en_mes
+    justificacion: "Cleveland Fed Inflation Expectations: la estimación de M sale a mediados de M (medido: septiembre-2026 el 2026-09-11); día 1 de M+1."
+    verificado: false
+  TESORO_MTS:
+    fin_periodo: mes
+    lag: 1M1D
+    tipo: macro
+    justificacion: "Monthly Treasury Statement: octavo hábil de M+1; día 1 de M+2."
+    verificado: false
+  TESORO_DEUDA:
+    fin_periodo: trimestre
+    lag: 3M1D
+    tipo: trimestral
+    justificacion: "Deuda pública federal total (Tesoro, trimestral): sin calendario conservado; 3 fines de mes + 1 día (conservador)."
+    verificado: false
+  OCDE_CLI:
+    fin_periodo: mes
+    lag: 2M1D
+    tipo: macro
+    justificacion: "OCDE Composite Leading Indicators: hacia la segunda semana de M+1 (en verano, julio y agosto juntos en septiembre); día 1 de M+3 (conservador)."
+    verificado: false
+  CBO:
+    fin_periodo: trimestre
+    lag: 6M1D
+    tipo: trimestral
+    justificacion: "CBO Budget and Economic Outlook (enero-febrero) y su actualización (verano): la estimación de un trimestre se conoce en el informe siguiente; 6 fines de mes + 1 día (conservador). Los valores previos al primer vintage son estimaciones posteriores."
+    verificado: false
+
+  # --- Bloque 4 (BIS y Banco Mundial; fundido desde config/fragmentos/b4_bis_fmi_bm.yaml) ---
+  BIS_WS_CBPOL:
+    lag: 7D
+    fin_periodo: mes
+    verificado: false
+    justificacion: 'el tipo se conoce el día de la decisión; el BIS lo recopila con retraso de días: 7 días tras el fin de mes
+      (conservador)'
+  BIS_WS_CREDIT_GAP:
+    lag: 6M
+    fin_periodo: trimestre
+    verificado: false
+    justificacion: 'publicación trimestral del BIS (crédito total) con 3-6 meses de retraso: 6 fines de mes tras el trimestre
+      (conservador)'
+  BIS_WS_DSR:
+    lag: 6M
+    fin_periodo: trimestre
+    verificado: false
+    justificacion: 'se publica con el crédito total: 6 fines de mes tras el trimestre'
+  BIS_WS_EER:
+    lag: 1M
+    fin_periodo: mes
+    verificado: false
+    justificacion: 'publicación mensual hacia mediados del mes siguiente: fin del mes siguiente'
+  WB_ANUAL:
+    lag: 12M
+    fin_periodo: anio
+    verificado: false
+    justificacion: 'WDI: el año t sale entre abril y julio de t+1; fin de t+1 (conservador)'
+
+  # --- Corrección (paro y PIB de Eurostat/BCE: antes reutilizaban UNRATE y GDPC1, que adelantaban la publicación) ---
+  # Tramos por época (catalogo.fecha_publicacion_tramos): 'desde'/'hasta' son fechas de REFERENCIA; fuera de todo
+  # tramo rige el lag general (el conservador). 'muestras' = publicaciones reales comprobadas en las notas de prensa
+  # archivadas de Eurostat (ec.europa.eu/eurostat/documents/2995521/..., el nombre del PDF lleva la fecha); un test
+  # (catalogo.validar_muestras_tramos) exige regla >= publicación real en todas, incluidas las fronteras de tramo.
+  EUROSTAT_PARO:
+    lag: 2M
+    fin_periodo: mes
+    tipo: macro
+    verificado: false
+    justificacion: 'Paro mensual de Eurostat (une_rt_m, BCE LFSI U2). Antes de 2012 (sin muestra suficiente): fin de
+      M+2 (conservador; noviembre de 2009 salió el 2010-01-08). Desde 2012 sale entre t+30 y t+40: el día 30-31 de M+1
+      o los primeros días de M+2, y el dato de noviembre en la segunda semana de enero (2014-01-08, 2019-01-09,
+      2024-01-09). El "1M5D" que se anotó como deuda adelantaba esos eneros (5 de enero): tramo 1M10D + hábil TARGET.
+      La regla de UNRATE (1M1D) lo veía antes de publicarse.'
+    tramos:
+    - desde: '2012-01-01'
+      lag: 1M10D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (euro indicators, paro): muestras abajo; noviembre es el mes más tardío'
+      muestras:
+      - {periodo: '2012-11-01', publicado: '2013-01-08', fuente: 'Eurostat, nota de 8-ene-2013 (paro de noviembre de 2012)'}
+      - {periodo: '2013-11-01', publicado: '2014-01-08', fuente: 'Eurostat 3-08012014-BP-EN.PDF'}
+      - {periodo: '2018-10-01', publicado: '2018-11-30', fuente: 'Eurostat 3-30112018-BP-EN.pdf'}
+      - {periodo: '2018-11-01', publicado: '2019-01-09', fuente: 'Eurostat 3-09012019-AP-DE.pdf'}
+      - {periodo: '2018-12-01', publicado: '2019-01-31', fuente: 'Eurostat 3-31012019-BP-EN.pdf'}
+      - {periodo: '2023-09-01', publicado: '2023-11-03', fuente: 'Eurostat 3-03112023-AP-EN.pdf'}
+      - {periodo: '2023-11-01', publicado: '2024-01-09', fuente: 'Eurostat 3-09012024-AP-EN.pdf'}
+      - {periodo: '2026-01-01', publicado: '2026-03-04', fuente: 'BCE LFSI U2, VALID_FROM de la ronda de enero de 2026'}
+  EUROSTAT_PARO_UK:
+    lag: 3M
+    fin_periodo: mes
+    tipo: macro
+    verificado: false
+    justificacion: 'Reino Unido en une_rt_m: LFS de la ONS (media móvil de 3 meses) publicada a mediados de M+2 (julio a
+      septiembre de 2020 salió el 2020-11-10) y Eurostat la incorporaba 1-2 meses más tarde: fin de M+3.'
+  EUROSTAT_PIB:
+    lag: 2M10D
+    fin_periodo: trimestre
+    tipo: trimestral
+    verificado: false
+    justificacion: 'PIB trimestral de los AGREGADOS de Eurostat (namq_10_gdp EA/EU/EA20/EA21) y BCE MNA I10. Antes
+      de 2003 (sin flash; primera estimación hacia t+60-70, sin muestra): 2 fines de mes + 10 días (t+71,
+      conservador). 2003-2015: flash a t+45 (la primera, del primer trimestre de 2003, el 2003-05-15): tramo 1M18D +
+      hábil TARGET. Desde 2016: flash preliminar a t+30 (la primera, del primer trimestre de 2016, el 2016-04-29;
+      la del cuarto trimestre de 2020 salió el 2021-02-02, t+33): tramo 1M5D + hábil TARGET. El "t+31" anotado
+      como deuda adelantaba ese febrero de 2021. La regla de GDPC1 (1M1D) adelantaba la publicación.'
+    tramos:
+    - desde: '2003-01-01'
+      hasta: '2015-12-31'
+      lag: 1M18D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (flash estimate t+45): muestras abajo'
+      muestras:
+      - {periodo: '2003-01-01', publicado: '2003-05-15', fuente: 'Eurostat: primera flash de la zona euro (t+45), 15-may-2003'}
+      - {periodo: '2007-04-01', publicado: '2007-08-14', fuente: 'Eurostat flash del segundo trimestre de 2007 (Haver, 14-ago-2007)'}
+      - {periodo: '2008-10-01', publicado: '2009-02-13', fuente: 'Eurostat 2-13022009-AP-DE.PDF'}
+      - {periodo: '2015-10-01', publicado: '2016-02-12', fuente: 'Eurostat nota 32/2016 (flash del cuarto trimestre de 2015)'}
+    - desde: '2016-01-01'
+      lag: 1M5D
+      habiles: target
+      verificado: true
+      fuente: 'Notas de prensa de Eurostat (preliminary flash t+30): muestras abajo'
+      muestras:
+      - {periodo: '2016-01-01', publicado: '2016-04-29', fuente: 'Eurostat 2-29042016-CP-EN.pdf (primera flash preliminar t+30)'}
+      - {periodo: '2020-10-01', publicado: '2021-02-02', fuente: 'Eurostat 2-02022021-AP-EN.pdf'}
+  EUROSTAT_PIB_PAISES:
+    lag: 2M10D
+    fin_periodo: trimestre
+    tipo: trimestral
+    verificado: false
+    justificacion: 'PIB trimestral de Eurostat por PAÍS (namq_10_gdp DE, FR, IT, UK): lo publica antes el instituto
+      nacional (Destatis flash t+45 desde 2003 y t+30 desde 2020; INSEE e Istat t+30 desde 2016; ONS preliminar t+25
+      hasta 2018 y t+40/45 después). Antes de 2003 (sin muestra): t+71 (conservador). Desde 2003: tramo 1M18D + hábil
+      TARGET (t+45-50), que cubre el más lento de los cuatro; no aprovecha los t+30 recientes (conservador). Sin
+      muestras propias por país: verificado false.'
+    tramos:
+    - desde: '2003-01-01'
+      lag: 1M18D
+      habiles: target
+      verificado: false
+      fuente: 'Calendarios nacionales (Destatis, INSEE, Istat, ONS) resumidos en la justificación; sin muestra archivada'

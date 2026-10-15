@@ -1,0 +1,35 @@
+# Candado de versiones del Tema 1 · Mercados y series numéricas.
+#
+# Fija las versiones EXACTAS del entorno principal (python 3.13) en el momento de arrancar el
+# tema, para que instalar las dependencias de ingesta no actualice los paquetes de la Fase 1 que
+# importan: los de la huella de caché y los de lectura y notebooks (lista de abajo). NO es un
+# pip freeze completo: las dependencias transitivas no están fijadas.
+# packaging, en concreto, no está fijado: sdmx1 2.27 exige packaging>=26 y al instalar el tema
+# (2026-10-12) pasó de 25.0 a 26.3. No afecta a la huella: cache.py solo hashea las versiones de
+# los ocho paquetes de abajo (_runtime_versions), y la huella salió idéntica. Fijarlo chocaría con
+# sdmx1; si algún día hace falta un candado estricto, sería un freeze completo con sdmx1 fuera.
+# Protege la huella de caché del benchmark: src/regimenes/benchmark/cache.py hashea las
+# versiones de numpy, pandas, scipy, scikit-learn, hmmlearn, arch, torch y jumpmodels; si
+# cualquiera cambia, todas las entradas de caché del benchmark quedan invalidadas.
+# El resto (statsmodels, pyarrow, pydantic, matplotlib, seaborn) se fija para no alterar los
+# notebooks 00–20 ni la lectura de los parquet existentes.
+# yfinance se mantiene en 0.2.66 a propósito: es la versión con la que se descargó y validó
+# el corpus de precios de la Fase 1.
+#
+# Se usa vía "-c ingesta-mercados_series.constraints.txt" desde ingesta-mercados_series.txt.
+# Para cambiar una versión: decisión explícita y volver a ejecutar el benchmark.
+
+numpy==2.3.3
+pandas==2.3.2
+scipy==1.16.2
+scikit-learn==1.8.0
+hmmlearn==0.3.3
+arch==8.0.0
+statsmodels==0.14.6
+torch==2.13.0
+jumpmodels==0.1.1
+pyarrow==23.0.1
+yfinance==0.2.66
+pydantic==2.13.3
+matplotlib==3.10.6
+seaborn==0.13.2

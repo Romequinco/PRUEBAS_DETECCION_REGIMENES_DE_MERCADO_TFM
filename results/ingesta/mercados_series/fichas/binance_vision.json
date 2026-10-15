@@ -1,0 +1,126 @@
+{
+  "fuente": "binance_vision",
+  "nombre": "Binance Vision: klines diarias BTCUSDT y ETHUSDT (control)",
+  "tema": "mercados_series",
+  "agentes": [
+    "risk"
+  ],
+  "rag": "ninguno",
+  "url": "https://data.binance.vision/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "CC BY-NC-SA 4.0 (Binance Vision): uso no comercial con atribución; solo local",
+  "cobertura_inicio": "2017-08-17",
+  "cobertura_fin": "2026-09-30",
+  "frecuencia": "diaria (vela UTC), un ZIP por mes",
+  "retraso_publicacion": "medido con Last-Modified de 220 ZIP mensuales: mediana 10.03 días tras el fin de mes (mín 0.16, máx 1390.48; desde 2023, mediana 4.62); solo control, no entra en el TimeGate",
+  "formato": "zip con CSV sin cabecera (open_time en ms hasta 2024, en µs desde 2025)",
+  "volumen_estimado": "unos 3 KB por ZIP mensual; < 1 MB por símbolo",
+  "limites": "1 pet/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "simbolos": {
+      "BTCUSDT": {
+        "velas": 3332,
+        "cobertura": [
+          "2017-08-17",
+          "2026-09-30"
+        ],
+        "dias_sin_vela": 0,
+        "ejemplos_sin_vela": []
+      },
+      "ETHUSDT": {
+        "velas": 3332,
+        "cobertura": [
+          "2017-08-17",
+          "2026-09-30"
+        ],
+        "dias_sin_vela": 0,
+        "ejemplos_sin_vela": []
+      }
+    },
+    "comparacion_con_coinbase": {
+      "BTC-USD": {
+        "sesiones_comunes": 3332,
+        "solo_coinbase_en_periodo_comun": 0,
+        "solo_binance_en_periodo_comun": 0,
+        "desde": "2017-08-17",
+        "hasta": "2026-09-30",
+        "close": {
+          "mediana_abs_pb": 5.53,
+          "p95_abs_pb": 93.65,
+          "mediana_pb": -1.46,
+          "max_abs_pb": 1177.97,
+          "sesion_max": "2017-12-23",
+          "sesiones_mas_de_100_pb": 157,
+          "desde_2020": {
+            "sesiones": 2465,
+            "mediana_abs_pb": 4.12,
+            "p95_abs_pb": 17.12
+          }
+        },
+        "open": {
+          "mediana_abs_pb": 5.58,
+          "p95_abs_pb": 95.49,
+          "mediana_pb": -1.41,
+          "max_abs_pb": 1177.97,
+          "sesion_max": "2017-12-24",
+          "sesiones_mas_de_100_pb": 155,
+          "desde_2020": {
+            "sesiones": 2465,
+            "mediana_abs_pb": 4.11,
+            "p95_abs_pb": 17.12
+          }
+        }
+      },
+      "ETH-USD": {
+        "sesiones_comunes": 3332,
+        "solo_coinbase_en_periodo_comun": 0,
+        "solo_binance_en_periodo_comun": 0,
+        "desde": "2017-08-17",
+        "hasta": "2026-09-30",
+        "close": {
+          "mediana_abs_pb": 5.67,
+          "p95_abs_pb": 98.31,
+          "mediana_pb": -1.15,
+          "max_abs_pb": 1261.74,
+          "sesion_max": "2017-12-23",
+          "sesiones_mas_de_100_pb": 161,
+          "desde_2020": {
+            "sesiones": 2465,
+            "mediana_abs_pb": 3.92,
+            "p95_abs_pb": 17.0
+          }
+        },
+        "open": {
+          "mediana_abs_pb": 5.57,
+          "p95_abs_pb": 99.01,
+          "mediana_pb": -1.11,
+          "max_abs_pb": 1261.4,
+          "sesion_max": "2017-12-24",
+          "sesiones_mas_de_100_pb": 164,
+          "desde_2020": {
+            "sesiones": 2465,
+            "mediana_abs_pb": 4.02,
+            "p95_abs_pb": 17.0
+          }
+        }
+      }
+    },
+    "retraso_last_modified": {
+      "n": 220,
+      "mediana_dias": 10.03,
+      "min_dias": 0.16,
+      "max_dias": 1390.48,
+      "mediana_dias_desde_2023": 4.62
+    }
+  },
+  "notas": [
+    "Divisa USDT: el contrato solo admite ISO de 3 letras y get_precios no tiene FX del BCE para USDT; el control se guarda fuera de precios/ (control/binance/) y se valida con todo el contrato salvo la divisa",
+    "Solo meses cerrados (data/spot/monthly); el mes en curso estaría en data/spot/daily (no se descarga)",
+    "No se comprueban los .CHECKSUM de Binance; se guarda el sha256 propio de cada ZIP",
+    "Retraso: los meses anteriores a la apertura de Binance Vision (2021) se subieron después (Last-Modified de hasta años): la mediana desde 2023 es la representativa"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

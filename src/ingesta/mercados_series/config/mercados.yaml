@@ -1,0 +1,322 @@
+# Mercados del Tema 1: hora de cierre LOCAL de la sesión, con vigencias.
+#
+# Un cierre es visible a la hora de cierre + MARGEN_CIERRE (30 min, visibilidad.py) y su
+# fecha_publicacion es la primera decisión (16:30 America/New_York) posterior o igual.
+#
+# Estructura (una entrada por mercado; clave = código MIC o convención propia: CME, CRYPTO...):
+#   nombre:     nombre legible
+#   huso:       huso IANA (zoneinfo); el DST lo pone el huso, no se escribe a mano
+#   cierres:    tramos sin solapes ni huecos, ordenados por 'desde'
+#               - desde: "AAAA-MM-DD"   (incluido)
+#                 hasta: "AAAA-MM-DD" | null  (incluido; null = vigente)
+#                 hora:  "HH:MM"  (24:00 = fin del día local, p. ej. velas diarias UTC)
+#   fuente:     URL o documento que respalda las horas
+#   verificado: true solo si se ha contrastado con la fuente oficial
+#   notas:      (opcional) lista de aclaraciones
+#
+# Convenciones:
+# - Las horas van SIEMPRE entre comillas: YAML 1.1 lee 16:00 sin comillas como el entero 960.
+# - El primer tramo empieza en 1900-01-01 por convención: cubre todo el histórico con la hora
+#   indicada. Donde el cierre histórico fue ANTERIOR (p. ej. NYSE a las 15:30 hasta 1974) la hora
+#   actual es más tardía, luego conservadora. Solo se abren tramos para cambios documentados.
+# - Días de cierre anticipado: se usa el cierre ordinario (más tarde que el real: conservador).
+# - Subastas de cierre con final aleatorio (Xetra, Euronext, LSE, ASX...): se declara el inicio
+#   de la subasta; el margen de 30 min cubre el final aleatorio (unos minutos).
+# - Nada de esto está contrastado aún con la fuente oficial: verificado: false en todos.
+
+# --- América ------------------------------------------------------------------------------------
+XNYS:
+  nombre: New York Stock Exchange
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.nyse.com/markets/hours-calendars
+  verificado: false
+  notas:
+    - "16:00 desde 1974-10-01; antes 15:30 (o antes): 16:00 es conservador para todo el histórico"
+
+XNAS:
+  nombre: Nasdaq Stock Market
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.nasdaq.com/market-activity/stock-market-holiday-schedule
+  verificado: false
+
+CBOE_IDX:
+  nombre: Índices Cboe (VIX y demás índices de volatilidad)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:15"}
+  fuente: https://www.cboe.com/tradable_products/vix/
+  verificado: false
+  notas:
+    - "El VIX se calcula hasta las 16:15 NY (fin de la sesión de opciones sobre índices)"
+    - "16:15 + 30 min = 16:45 NY > 16:30: el cierre de la sesión t es visible en la decisión de t+1"
+
+ICE_DXY:
+  nombre: ICE US Dollar Index (DXY)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:00"}
+  fuente: https://www.ice.com/products/194/US-Dollar-Index-Futures
+  verificado: false
+  notas:
+    - "Vela diaria cerrada a las 17:00 NY (fin del día de negociación de ICE Futures US)"
+
+CME:
+  nombre: CME Globex (vela diaria de Yahoo de futuros)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:00"}
+  fuente: https://www.cmegroup.com/trading-hours.html
+  verificado: false
+  notas:
+    - "17:00 NY = 16:00 Chicago (ambos husos cambian de hora el mismo día): fin del día Globex"
+    - "La vela de Yahoo de la sesión t es visible en la decisión de t+1"
+
+XTSE:
+  nombre: Toronto Stock Exchange
+  huso: America/Toronto
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.tsx.com/trading/calendars-and-trading-hours
+  verificado: false
+
+BVMF:
+  nombre: B3 (Brasil, Bolsa, Balcão)
+  huso: America/Sao_Paulo
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "18:00"}
+  fuente: https://www.b3.com.br/en_us/solutions/platforms/puma-trading-system/for-members-and-traders/trading-hours/
+  verificado: false
+  notas:
+    - "Conservador: el cierre de B3 se mueve entre 17:00 y 18:00 según el DST de EE. UU."
+    - "Coste aceptado: con el horario de verano de EE. UU. (cierre real 17:00 BRT = 16:00 NY) la sesión t se publica en t+1 aunque sería visible en t; el YAML no expresa horas ligadas al DST de otro huso"
+
+# --- Europa -------------------------------------------------------------------------------------
+XLON:
+  nombre: London Stock Exchange
+  huso: Europe/London
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:30"}
+  fuente: https://www.londonstockexchange.com/equities-trading/business-days
+  verificado: false
+  notas:
+    - "Subasta de cierre 16:30-16:35 con final aleatorio"
+
+XETR:
+  nombre: Xetra (Deutsche Börse)
+  huso: Europe/Berlin
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.xetra.com/xetra-en/trading/trading-calendar-and-trading-hours
+  verificado: false
+  notas:
+    - "Subasta de cierre desde las 17:30 con final aleatorio (unos minutos)"
+
+XPAR:
+  nombre: Euronext Paris
+  huso: Europe/Paris
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.euronext.com/en/trade/trading-hours-holidays
+  verificado: false
+  notas:
+    - "Subasta de cierre 17:30-17:35"
+
+XAMS:
+  nombre: Euronext Amsterdam
+  huso: Europe/Amsterdam
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.euronext.com/en/trade/trading-hours-holidays
+  verificado: false
+  notas:
+    - "Subasta de cierre 17:30-17:35"
+
+XMAD:
+  nombre: Bolsa de Madrid (BME, SIBE)
+  huso: Europe/Madrid
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.bolsasymercados.es/bme-exchange/en/Mercados-y-Cotizaciones/Horarios
+  verificado: false
+  notas:
+    - "Subasta de cierre 17:30-17:35"
+
+XMIL:
+  nombre: Borsa Italiana (Euronext Milan)
+  huso: Europe/Rome
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.borsaitaliana.it/borsaitaliana/calendario-e-orari-di-negoziazione/calendario-borsa-orari-di-negoziazione.en.htm
+  verificado: false
+  notas:
+    - "Subasta de cierre 17:30-17:35"
+
+XSWX:
+  nombre: SIX Swiss Exchange
+  huso: Europe/Zurich
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:30"}
+  fuente: https://www.six-group.com/en/products-services/the-swiss-stock-exchange/trading/trading-provisions/trading-hours.html
+  verificado: false
+
+# --- Asia, Oceanía y África ---------------------------------------------------------------------
+XTKS:
+  nombre: Tokyo Stock Exchange
+  huso: Asia/Tokyo
+  cierres:
+    - {desde: "1900-01-01", hasta: "2024-11-04", hora: "15:00"}
+    - {desde: "2024-11-05", hasta: null, hora: "15:30"}   # ampliación de la sesión de tarde
+  fuente: https://www.jpx.co.jp/english/corporate/news-releases/
+  verificado: false
+
+XHKG:
+  nombre: Hong Kong Stock Exchange
+  huso: Asia/Hong_Kong
+  cierres:
+    - {desde: "1900-01-01", hasta: "2016-07-24", hora: "16:00"}
+    - {desde: "2016-07-25", hasta: null, hora: "16:10"}   # sesión de subasta de cierre (CAS)
+  fuente: https://www.hkex.com.hk/Services/Trading-hours-and-Severe-Weather-Arrangements/Trading-Hours/Securities-Market
+  verificado: false
+  notas:
+    - "CAS 16:00-16:10 con final aleatorio entre 16:08 y 16:10"
+
+XSHG:
+  nombre: Shanghai Stock Exchange
+  huso: Asia/Shanghai
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "15:00"}
+  fuente: https://english.sse.com.cn/start/trading/schedule/
+  verificado: false
+
+XNSE:
+  nombre: National Stock Exchange of India
+  huso: Asia/Kolkata
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "15:30"}
+  fuente: https://www.nseindia.com/market-data/market-timings
+  verificado: false
+
+XBOM:
+  nombre: BSE (Bombay Stock Exchange)
+  huso: Asia/Kolkata
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "15:30"}
+  fuente: https://www.bseindia.com/static/markets/marketinfo/MarketTiming.aspx
+  verificado: false
+
+XKRX:
+  nombre: Korea Exchange
+  huso: Asia/Seoul
+  cierres:
+    - {desde: "1900-01-01", hasta: "2016-07-31", hora: "15:00"}
+    - {desde: "2016-08-01", hasta: null, hora: "15:30"}   # ampliación de 30 min
+  fuente: https://global.krx.co.kr/contents/GLB/06/0602/0602010000/GLB0602010000.jsp
+  verificado: false
+
+XTAI:
+  nombre: Taiwan Stock Exchange
+  huso: Asia/Taipei
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "13:30"}
+  fuente: https://www.twse.com.tw/en/page/trading/introduction.html
+  verificado: false
+
+XASX:
+  nombre: Australian Securities Exchange
+  huso: Australia/Sydney
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:10"}
+  fuente: https://www.asx.com.au/markets/market-resources/trading-hours-calendar
+  verificado: false
+  notas:
+    - "Subasta de cierre (CSPA) desde las 16:10 con final aleatorio"
+
+XTAE:
+  nombre: Tel Aviv Stock Exchange
+  huso: Asia/Jerusalem
+  cierres:
+    - {desde: "1900-01-01", hasta: "2026-01-04", hora: "17:30"}
+    - {desde: "2026-01-05", hasta: null, hora: "17:35"}
+  fuente: https://www.tase.co.il/en/content/knowledge_center/trading_hours
+  verificado: false
+  notas:
+    - "Hasta 2026-01-04: sesiones de domingo a jueves; 17:30 conservador (el cierre ordinario rondaba las 17:25)"
+    - "Desde 2026-01-05 (según prensa, sin contrastar con TASE): lunes a viernes; lunes-jueves hasta 17:35, viernes hasta 13:50 (se usa 17:35 todos los días: conservador)"
+    - "Sin efecto en el TimeGate: 17:35 Israel + 30 min queda muy antes de las 16:30 de Nueva York"
+
+XJSE:
+  nombre: Johannesburg Stock Exchange
+  huso: Africa/Johannesburg
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:00"}
+  fuente: https://www.jse.co.za/trade/equity-market/trading-hours
+  verificado: false
+  notas:
+    - "Subasta de cierre 16:50-17:00"
+
+# --- 24 horas -----------------------------------------------------------------------------------
+CRYPTO:
+  nombre: Criptoactivos (vela diaria UTC)
+  huso: UTC
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "24:00"}
+  fuente: Convención de los proveedores de velas diarias (Yahoo, Binance, Coinbase) - día UTC
+  verificado: false
+  notas:
+    - "La vela de la sesión t cierra a las 00:00 UTC de t+1: visible en la decisión de t+1"
+
+# --- Bloque 5 (universo; fundido desde config/fragmentos/b5_universo.yaml) ---
+ARCX:
+  nombre: NYSE Arca (ETF cotizados en EE. UU.)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.nyse.com/markets/nyse-arca
+  verificado: false
+  notas:
+    - "Sesión principal hasta las 16:00 NY (la sesión ampliada hasta las 20:00 no fija el cierre oficial)"
+
+NAV_US:
+  nombre: Valor liquidativo diario de fondos de inversión de EE. UU. (mutual funds)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "18:00"}
+  fuente: https://www.sec.gov/rules/final/ic-26288.htm
+  verificado: false
+  notas:
+    - "El NAV se calcula con los cierres de las 16:00 NY y se difunde (NASDAQ MFQS) hacia las 18:00: visible en la decisión de t+1"
+
+STOXX_IDX:
+  nombre: Índices STOXX (EURO STOXX 50, STOXX Europe 600, VSTOXX)
+  huso: Europe/Berlin
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "17:50"}
+  fuente: https://www.stoxx.com/rulebooks
+  verificado: false
+  notas:
+    - "El valor de cierre se fija tras la subasta de cierre de Xetra (17:30-17:35); 17:50 cubre el retraso del cálculo"
+
+ICE_MOVE:
+  nombre: ICE BofA MOVE Index (volatilidad implícita del Tesoro de EE. UU.)
+  huso: America/New_York
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "16:00"}
+  fuente: https://www.theice.com/market-data/indices/fixed-income-indices
+  verificado: false
+  notas:
+    - "Calculado con opciones sobre futuros del Tesoro (cierre CBOT 14:00 Chicago = 15:00 NY); 16:00 es conservador"
+
+FX_YAHOO:
+  nombre: Vela diaria de divisas de Yahoo Finance (EURUSD=X...)
+  huso: Europe/London
+  cierres:
+    - {desde: "1900-01-01", hasta: null, hora: "24:00"}
+  fuente: https://finance.yahoo.com/markets/currencies/
+  verificado: false
+  notas:
+    - "Yahoo cierra la vela diaria de FX a medianoche de Londres: la vela del día t se ve en la decisión de t+1"
+    - "Solo contexto: la conversión a USD usa el FX del BCE (divisas.SERIE_FX)"

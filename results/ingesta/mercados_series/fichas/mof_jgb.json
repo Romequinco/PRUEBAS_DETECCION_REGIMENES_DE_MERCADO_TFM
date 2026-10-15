@@ -1,0 +1,191 @@
+{
+  "fuente": "mof_jgb",
+  "nombre": "Ministerio de Finanzas de Japón · JGB Interest Rate (rendimientos de referencia)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/index.htm",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "condiciones de uso del sitio del MoF (reutilización compatible con CC BY 4.0, citando la fuente)",
+  "cobertura_inicio": "1974-09-24",
+  "cobertura_fin": "2026-10-09",
+  "frecuencia": "diaria (hábiles del publicador)",
+  "retraso_publicacion": "dato de D publicado el hábil japonés siguiente (08:30 JST, Last-Modified) → decisión D+1 en NY; medido en la tabla: mediana 1 días naturales, máximo 11",
+  "formato": "csv",
+  "volumen_estimado": "1.20 MB de crudos descargados (2 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "descargas": [
+      {
+        "clave": "jgbcme.csv",
+        "estado": 200,
+        "bytes": 945,
+        "descargado_utc": "2026-10-13T11:49:26.970352+00:00",
+        "error": null,
+        "last_modified": "Mon, 12 Oct 2026 23:30:37 GMT"
+      },
+      {
+        "clave": "jgbcme_all.csv",
+        "estado": 200,
+        "bytes": 1195548,
+        "descargado_utc": "2026-10-13T11:49:25.589822+00:00",
+        "error": null,
+        "last_modified": "Thu, 01 Oct 2026 23:30:14 GMT"
+      }
+    ],
+    "series": {
+      "mof:JGB.10Y": {
+        "inicio": "1986-07-05",
+        "fin": "2026-10-09",
+        "n_obs": 9955,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.15Y": {
+        "inicio": "1991-08-30",
+        "fin": "2026-10-09",
+        "n_obs": 8614,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.1Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 12668,
+        "n_huecos": 648,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.20Y": {
+        "inicio": "1986-12-01",
+        "fin": "2026-10-09",
+        "n_obs": 9842,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.25Y": {
+        "inicio": "2004-03-22",
+        "fin": "2026-10-09",
+        "n_obs": 5521,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.2Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 12955,
+        "n_huecos": 361,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.30Y": {
+        "inicio": "1999-09-02",
+        "fin": "2026-10-09",
+        "n_obs": 6639,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.3Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13240,
+        "n_huecos": 76,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.40Y": {
+        "inicio": "2007-11-06",
+        "fin": "2026-10-09",
+        "n_obs": 4627,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.4Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.5Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.6Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.7Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.8Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      },
+      "mof:JGB.9Y": {
+        "inicio": "1974-09-24",
+        "fin": "2026-10-09",
+        "n_obs": 13316,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 1.0,
+        "retraso_dias_max": 11,
+        "hora_utc_mediana": "23:30"
+      }
+    },
+    "retraso_dias_mediana": 1.0,
+    "retraso_dias_max": 11
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.curvas (crudos en <corpus>/mercados_series/crudo/mof_jgb/; tabla en <corpus>/mercados_series/series/curvas_b6.parquet)",
+    "Vintage 'unico' y metodo 'calendario': las curvas no se revisan tras publicarse",
+    "jgbcme_all.csv (histórico, rehecho a primeros de mes) + jgbcme.csv (mes en curso): el mensual pisa al histórico en sus días",
+    "Formato: título y '(Unit : %)' en la primera fila, cabecera Date,1Y..40Y en la segunda; '-' es faltante (plazos que aún no existían: 15Y a 40Y en los años setenta y ochenta); al pie, una fila vacía y una nota sobre la caché del navegador que se descartan",
+    "Hora: Last-Modified de jgbcme.csv 2026-10-12 23:30 UTC (08:30 JST del 13) con el dato del 9 (el 12 fue festivo en Japón): el dato sale el hábil japonés siguiente"
+  ],
+  "fecha_sonda": "2026-10-13"
+}
