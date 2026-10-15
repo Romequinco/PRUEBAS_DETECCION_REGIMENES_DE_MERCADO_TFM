@@ -17,7 +17,9 @@ Modulos:
 - ``ejecucion``: trabajos, cache por huella, piloto de coste y ejecucion
   paralela con presupuesto de horas (CLI ``python -m regimenes.sinteticos.aumento``).
 - ``analisis``: senal de voto, segmentos, exceso sobre el nulo, permutacion
-  exacta con Holm, bootstrap pareado e hipotesis H1-H5.
+  exacta con Holm, bootstrap pareado e hipotesis H1-H5; lecturas del notebook
+  (cobertura, anclas, mapa, dosis-respuesta, diagnosticos) sobre resultados parciales.
+- ``figuras``: figuras del notebook 18 (diseno, H1, mapa, H2, H3-H5, diagnosticos).
 
 No modifica ``regimenes.evaluacion`` ni los detectores: ``walk_forward`` se usa
 tal cual con una fabrica que devuelve el envoltorio, asi que la huella del

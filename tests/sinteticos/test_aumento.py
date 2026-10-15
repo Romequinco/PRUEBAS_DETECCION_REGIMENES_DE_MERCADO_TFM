@@ -453,3 +453,148 @@ def test_un_hilo_reproduce_d03_sin_variables_de_entorno():
                                                             "OPENBLAS_NUM_THREADS")}
     res = subprocess.run([sys.executable, "-c", codigo], capture_output=True, text=True, env=env, timeout=900)
     assert res.returncode == 0 and "ok" in res.stdout, res.stderr[-2000:]
+
+
+# --------------------------------------------------------------------------- lecturas y figuras del notebook
+def _datos_juguete(pista: str = "B", detectores=("D01", "D04"), reps: int = 2) -> an_.DatosPista:
+    """DatosPista con base, cada fuente, voto y suelo para todas las proporciones y brazos."""
+    cfg = config_aumento()
+    idx, ventanas = _toy()
+    seg = an_.segmentos(idx, ventanas)
+    nulo = an_.Nulo(an_.tabla_nulo(idx, ventanas, n_sims=10, tasas=np.linspace(0, 1, 6), rachas=[1.0, 50.0]))
+    rng = np.random.default_rng(7)
+    st, filas = {}, []
+
+    def nueva(clave, **meta):
+        f = an_._flags_markov(len(idx), rng.uniform(0.1, 0.3), 20, rng)
+        st[clave] = an_.estadisticos_segmento(f, idx, ventanas, seg)
+        filas.append({"senal": clave, "detector": None, "tipo": None, "fuente": None, "brazo": None,
+                      "proporcion": np.nan, "rep": np.nan, "nivel": 0, "tasa": f.mean(),
+                      "precision": rng.uniform(), "recall": rng.uniform(), "score": rng.uniform(), **meta})
+
+    for det in detectores:
+        nueva(f"{det}__base", detector=det, tipo="base")
+        for s in (7, 1234):
+            nueva(f"{det}__suelo__s{s}", detector=det, tipo="suelo", fuente="ninguna", brazo="-", proporcion=0.0,
+                  rep=0)
+        for rep in range(reps):
+            for brazo in ("completas", "crisis"):
+                for p in cfg["proporciones"]:
+                    for f in [*cfg["generadores"], cfg["control"]]:
+                        tipo = "control" if f == cfg["control"] else "fuente"
+                        nueva(f"{det}__{f}__{brazo}__p{p:.2f}__r{rep}", detector=det, tipo=tipo, fuente=f,
+                              brazo=brazo, proporcion=float(p), rep=rep)
+                    nueva(f"{det}__voto__{brazo}__p{p:.2f}__r{rep}", detector=det, tipo="voto", fuente="voto",
+                          brazo=brazo, proporcion=float(p), rep=rep)
+    return an_.DatosPista(pista, pd.DataFrame(filas), st, nulo, an_.replicas_bootstrap(3, 200, 0), ["c1", "c2", "c3"])
+
+
+def test_cobertura_por_lote(tmp_path):
+    from regimenes.sinteticos.aumento.ejecucion import trabajos
+
+    lista = trabajos(["B"])
+    pd.DataFrame([{"pista": "B", "clave": t.clave} for t in lista[:3]]).to_csv(tmp_path / "filas_B.csv",
+                                                                                 index=False)
+    cob = an_.cobertura(["B"], tmp_path, horas=False)
+    assert cob["trabajos"].sum() == len(lista) and cob["hechos"].sum() == 3
+    assert (cob["pendientes"] == cob["trabajos"] - cob["hechos"]).all()
+    assert cob.loc[cob["lote"] == 0, "contenido"].iloc[0] == "pista B | repeticion 0"
+    vacia = an_.cobertura(["B"], tmp_path / "no_existe", horas=False)
+    assert vacia["hechos"].sum() == 0
+
+
+def test_categoria_y_resumen_anclas():
+    reg = pd.DataFrame({"fuente": ["g"] * 5, "tau": pd.to_datetime(["2001-12-31", "2002-12-31", "2003-12-31",
+                                                                       "2004-12-31", "2005-12-31"]),
+                        "valida": [False, False, False, True, False],
+                        "motivo": ["pocas crisis en el ajuste", "no pasa memorizacion y condicionamiento",
+                                   "no pasa condicionamiento", np.nan, "error: ValueError: x"]})
+    assert an_.categoria_ancla(reg).tolist() == ["pocas crisis", "no pasa ambas", "no pasa condicionamiento",
+                                                 "valida", "error"]
+    res = an_.resumen_anclas({"B": reg}).loc[("B", "g")]
+    assert res["candidatas"] == 5 and res["valida"] == 1 and str(res["primera_valida"]) == "2004-12-31"
+
+
+def test_lecturas_del_notebook_con_datos_de_juguete():
+    cfg = config_aumento()
+    d = _datos_juguete()
+    datos = {"B": d}
+    mapa = an_.mapa_deltas(datos, cfg=cfg)
+    assert len(mapa) == 2 * (len(cfg["generadores"]) + 2) and mapa["delta"].notna().all()
+    fila = mapa[(mapa["detector"] == "D04") & (mapa["fuente"] == "voto")]["delta"].iloc[0]
+    assert fila == pytest.approx(d.delta("D04__voto__completas__p1.00__r0", "D04__base"))
+    dosis = an_.dosis_respuesta(datos, cfg)
+    assert (dosis.loc[dosis["p"] == 0, "delta"] == 0).all()
+    media = dosis[(dosis["detector"] == "(media)") & (dosis["brazo"] == "completas") & (dosis["grupo"] == "umbral")]
+    assert len(media) == 4 and (media["ic_inf"] <= media["ic_sup"]).all()
+    dm = an_.deltas_metricas(datos)
+    assert len(dm) == len(d.senales) - 2 and np.isfinite(dm["d_exceso"]).all()
+    rep = an_.replica(datos, cfg)
+    assert len(rep) == 2 * 2 * len(cfg["proporciones"])
+    suelo = an_.suelo_ruido(datos, cfg)
+    assert set(suelo["detector"]) == set(cfg["suelo_ruido"]["detectores"]["B"])
+    assert suelo.set_index("detector").loc["D04", "suelo"] > 0
+    assert np.isnan(suelo.set_index("detector").loc["D03", "suelo"])
+    t2 = an_.h2(datos, cfg)
+    tabla = an_.con_ic(t2, "pendiente", columnas="brazo")
+    assert tabla.shape == (2, 2) and tabla.iloc[0, 0].count("[") == 1
+    assert an_.con_ic(pd.DataFrame(), "pendiente").empty
+
+
+def test_ocupacion_y_regla_19_sin_h3():
+    filas = pd.DataFrame({"pista": ["B"] * 3, "detector": ["D04"] * 3, "fuente": ["rbig", "rbig", "ninguna"],
+                          "brazo": ["completas", "crisis", "-"], "proporcion": [1.0, 1.0, 0.0], "rep": [0, 0, 0],
+                          "pliegues_estado_solo_sint": [2, 0, np.nan], "pliegues_ocupacion": [10, 10, np.nan],
+                          "ocup_crisis_sint_media": [0.3, 0.9, np.nan], "ocup_crisis_real_media": [0.2, 0.2, np.nan]})
+    o = an_.ocupacion(filas)
+    assert o["frac_solo_sint"].tolist() == [0.2, 0.0]
+    assert an_.ocupacion(pd.DataFrame()).empty
+    t1 = pd.DataFrame({"pista": ["B"], "detector": ["D04"], "veredicto": ["mejora"]})
+    assert not an_.regla_19(t1, pd.DataFrame())["adoptar"].any()
+
+
+def test_figuras_con_tablas_vacias_y_de_juguete():
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from regimenes.sinteticos.aumento import figuras as fg
+
+    cfg = config_aumento()
+    assert fg.etiqueta("D04") == "D4 hmm-g" and fg.etiqueta("D12") == "D12 ae"
+    vacio = pd.DataFrame()
+    for fig in (fg.fig_h1(vacio, cfg), fg.fig_mapa(an_.mapa_deltas({}), cfg), fg.fig_dosis(an_.dosis_respuesta({}), cfg),
+                fg.fig_contrastes(vacio, vacio, vacio, cfg),
+                fg.fig_diagnosticos(an_.deltas_metricas({}), an_.ocupacion(vacio), cfg),
+                fg.fig_robustez(vacio, vacio, an_.suelo_ruido({}), an_.replica({}))):
+        plt.close(fig)
+    datos = {"B": _datos_juguete()}
+    t1 = an_.h1(datos, cfg)
+    t3, t4, t5 = an_.h3(datos, cfg), an_.h4(datos, cfg), an_.h5(datos, cfg)
+    assert {"a_holm", "b_minima", "c_nivel", "d_generadores", "e_suelo"} <= set(t1.columns)
+    for fig in (fg.fig_h1(t1, cfg), fg.fig_mapa(an_.mapa_deltas(datos, cfg=cfg), cfg),
+                fg.fig_dosis(an_.dosis_respuesta(datos, cfg), cfg), fg.fig_contrastes(t3, t5, t4, cfg),
+                fg.fig_diagnosticos(an_.deltas_metricas(datos), vacio, cfg),
+                fg.fig_robustez(t1, vacio, an_.suelo_ruido(datos, cfg), an_.replica(datos, cfg))):
+        assert fig.axes
+        plt.close(fig)
+
+
+@pytest.mark.datos
+def test_fig_diseno_con_registro_de_juguete():
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    from regimenes.sinteticos.aumento import figuras as fg
+
+    cfg = config_aumento()
+    taus = pd.to_datetime([f"{a}-12-31" for a in range(2010, 2020)])
+    reg = pd.DataFrame([{"pista": "B", "fuente": f, "tau": t, "valida": t.year % 3 != 0,
+                         "motivo": "" if t.year % 3 else "no pasa condicionamiento"}
+                        for f in fuentes(cfg) for t in taus])
+    fig = fg.fig_diseno({"B": reg}, cfg)
+    assert len(fig.axes) == 2
+    plt.close(fig)

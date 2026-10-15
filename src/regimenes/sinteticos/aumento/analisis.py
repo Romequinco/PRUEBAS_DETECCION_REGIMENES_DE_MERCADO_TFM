@@ -478,6 +478,14 @@ class DatosPista:
         return bootstrap([self.st[k] for k, _ in pares], [w for _, w in pares], self.replicas, self.nulo)
 
 
+def _suelo(d: DatosPista, det: str, base: str) -> float:
+    """Mayor |Delta| entre semillas del detector con p = 0 (frente a la base y entre si); NaN si no hay."""
+    claves = d.senales.loc[(d.senales["detector"] == det) & (d.senales["tipo"] == "suelo"), "senal"].tolist()
+    difs = [abs(d.delta(k, base)) for k in claves]
+    difs += [abs(d.delta(a, b)) for i, a in enumerate(claves) for b in claves[i + 1:]]
+    return max(difs) if difs else np.nan
+
+
 def h1(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
     """Contraste principal por pista y detector (voto, completas, p = 1, repeticion 0).
 
@@ -510,30 +518,31 @@ def h1(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
                 k = d.clave(det, tipo="fuente", fuente=g, brazo=c["h1"]["brazo"], p=c["h1"]["proporcion"])
                 if k is not None:
                     peor_gen = np.nanmin([peor_gen, ic(d.boot([(k, 1.0), (base, -1.0)]), c["alfa"])[1]])
-            claves_suelo = d.senales.loc[(d.senales["detector"] == det) & (d.senales["tipo"] == "suelo"),
-                                         "senal"].tolist()
-            difs = [abs(d.delta(k, base)) for k in claves_suelo]
-            difs += [abs(d.delta(a, b)) for i, a in enumerate(claves_suelo) for b in claves_suelo[i + 1:]]
             niv = d.senales.set_index("senal")["nivel"]
             filas.append({**fila, "delta": t_obs, "p": p, "ic_inf": lo, "ic_sup": hi,
                           "nivel_base": int(niv[base]), "nivel_aumento": int(niv[voto]),
                           "peor_ic_sup_generador": peor_gen,
                           "requiere_suelo": det in suelo_cfg.get(pista, []),
-                          "suelo_ruido": max(difs) if difs else np.nan, "falta": False})
+                          "suelo_ruido": _suelo(d, det, base), "falta": False})
     tabla = pd.DataFrame(filas)
     if tabla.empty:
         return tabla
+    for col in ("delta", "ic_inf", "ic_sup", "nivel_base", "nivel_aumento", "peor_ic_sup_generador", "suelo_ruido"):
+        if col not in tabla:
+            tabla[col] = np.nan
     familia = c.get("familia_holm", "global")
     tabla["holm"] = False
     grupos = [tabla.index] if familia == "global" else [g.index for _, g in tabla.groupby("pista")]
     for idx in grupos:
         tabla.loc[idx, "holm"] = holm(tabla.loc[idx, "p"], c["alfa"])
     requiere = tabla["requiere_suelo"].astype("boolean").fillna(False).astype(bool)
-    suelo_ok = ~requiere | (tabla["delta"] > tabla["suelo_ruido"])
-    mejora = (tabla["holm"] & (tabla["delta"] > 0) & (tabla["delta"] >= c["mejora_minima"])
-              & (tabla["nivel_aumento"] <= tabla["nivel_base"])
-              & ~(tabla["peor_ic_sup_generador"] < 0)
-              & suelo_ok)
+    # condiciones (a)-(e) de «mejora», por separado para poder leer cual falla
+    tabla["a_holm"] = tabla["holm"] & (tabla["delta"] > 0)
+    tabla["b_minima"] = tabla["delta"] >= c["mejora_minima"]
+    tabla["c_nivel"] = tabla["nivel_aumento"] <= tabla["nivel_base"]
+    tabla["d_generadores"] = ~(tabla["peor_ic_sup_generador"] < 0) & tabla["delta"].notna()
+    tabla["e_suelo"] = (~requiere | (tabla["delta"] > tabla["suelo_ruido"])) & tabla["delta"].notna()
+    mejora = tabla[["a_holm", "b_minima", "c_nivel", "d_generadores", "e_suelo"]].all(axis=1)
     empeora = tabla["holm"] & (tabla["delta"] < 0)
     tabla["veredicto"] = np.select([tabla["falta"].astype(bool), mejora, empeora],
                                    ["falta", "mejora", "empeora"], "sin efecto detectable")
@@ -674,8 +683,264 @@ def regla_19(t1: pd.DataFrame, t3: pd.DataFrame) -> pd.DataFrame:
     """El aumento se adopta solo si H1 = «mejora» y H3 tiene IC > 0 en esa pista."""
     if t1.empty:
         return t1
+    if t3.empty or "ic_inf" not in t3:                 # H3 aun sin calcular: no se adopta nada
+        t3 = pd.DataFrame(columns=["pista", "detector", "ic_inf"])
     out = t1[["pista", "detector", "veredicto"]].merge(t3[["pista", "detector", "ic_inf"]]
                                                        .rename(columns={"ic_inf": "h3_ic_inf"}),
                                                        on=["pista", "detector"], how="left")
+    out["h3_ic_inf"] = out["h3_ic_inf"].astype(float)
     out["adoptar"] = out["veredicto"].eq("mejora") & out["h3_ic_inf"].gt(0)
     return out
+
+
+# --------------------------------------------------------------------------- lecturas del notebook
+# Todo lo que sigue es lectura de los CSV de resultados (sin ajustar nada); funciona con resultados
+# PARCIALES: lo que falta sale como ausente, nunca como cero.
+CATEGORIAS_ANCLA = ("valida", "pocas crisis", "no pasa memorizacion", "no pasa condicionamiento",
+                    "no pasa ambas", "error")
+
+
+def cargar(pistas: Iterable[str] | None = None, base_res: Path | None = None) -> dict[str, DatosPista]:
+    """``DatosPista`` de las pistas ya consolidadas; las que no lo estan se omiten con aviso."""
+    cfg = config_aumento()
+    base_res = DIR_RESULTADOS if base_res is None else Path(base_res)
+    datos = {}
+    for pista in (pistas or cfg["pistas"]):
+        pista = pista.upper()
+        faltan = [n for n in ("senales", "segmentos", "nulo") if not (base_res / f"{n}_{pista}.csv").exists()]
+        if faltan:
+            print(f"[aviso] pista {pista}: sin {', '.join(f'{n}_{pista}.csv' for n in faltan)} "
+                  "(ejecuta `python -m regimenes.sinteticos.aumento consolidar`)", flush=True)
+            continue
+        datos[pista] = DatosPista.cargar(pista, base_res)
+    return datos
+
+
+def cargar_filas(pistas: Iterable[str] | None = None, base_res: Path | None = None) -> pd.DataFrame:
+    """``filas_<P>.csv`` (resumen y diagnosticos por trabajo) de las pistas que lo tengan."""
+    cfg = config_aumento()
+    base_res = DIR_RESULTADOS if base_res is None else Path(base_res)
+    tablas = [pd.read_csv(base_res / f"filas_{p.upper()}.csv") for p in (pistas or cfg["pistas"])
+              if (base_res / f"filas_{p.upper()}.csv").exists()]
+    return pd.concat(tablas, ignore_index=True) if tablas else pd.DataFrame(columns=["pista", "clave"])
+
+
+def describir_lote(regla: dict) -> str:
+    """Texto corto de un lote de ``ejecucion.prioridad``."""
+    partes = [f"pista {regla['pista']}"] if "pista" in regla else []
+    if "detectores" in regla:
+        partes.append(",".join(regla["detectores"]))
+    if "brazo" in regla:
+        partes.append(f"brazo {regla['brazo']}")
+    if "repeticion" in regla:
+        partes.append(f"repeticion {regla['repeticion']}")
+    return " | ".join(partes)
+
+
+def cobertura(pistas: Iterable[str] | None = None, base_res: Path | None = None, cfg: dict | None = None,
+              horas: bool = True) -> pd.DataFrame:
+    """Trabajos esperados, hechos (presentes en ``filas_<P>.csv``) y pendientes por lote y pista.
+
+    ``horas_cpu_pendientes`` usa la estimacion de ``ejecucion.estimacion`` (benchmark
+    x multiplicador del piloto); NaN si no se puede estimar.
+    """
+    from regimenes.sinteticos.aumento import ejecucion as ej
+
+    cfg = config_aumento() if cfg is None else cfg
+    filas = cargar_filas(pistas, base_res)
+    hechas = set(zip(filas["pista"].astype(str), filas["clave"].astype(str)))
+    prioridad = cfg["ejecucion"]["prioridad"]
+    registros = []
+    for tr in ej.trabajos(pistas, cfg):
+        hecho = (tr.pista, tr.clave) in hechas
+        h = 0.0
+        if not hecho and horas:
+            try:
+                h = ej.estimacion(tr) / 3600.0
+            except Exception:  # noqa: BLE001 - sin benchmark o piloto locales no hay estimacion
+                h = np.nan
+        registros.append({"pista": tr.pista, "lote": ej.lote(tr, cfg), "hecho": hecho, "horas": h})
+    t = pd.DataFrame(registros)
+    out = (t.groupby(["lote", "pista"])
+           .agg(trabajos=("hecho", "size"), hechos=("hecho", "sum"),
+                horas_cpu_pendientes=("horas", lambda s: s.sum(min_count=1)))
+           .reset_index())
+    out["pendientes"] = out["trabajos"] - out["hechos"]
+    out["contenido"] = [describir_lote(prioridad[k]) if k < len(prioridad) else "fuera de la prioridad"
+                        for k in out["lote"]]
+    return out[["lote", "pista", "contenido", "trabajos", "hechos", "pendientes", "horas_cpu_pendientes"]]
+
+
+def categoria_ancla(registro: pd.DataFrame) -> pd.Series:
+    """Categoria de cada fila del registro de anclas (``CATEGORIAS_ANCLA``)."""
+    def una(fila) -> str:
+        if bool(fila["valida"]):
+            return "valida"
+        m = "" if pd.isna(fila.get("motivo")) else str(fila.get("motivo"))
+        if m.startswith("error"):
+            return "error"
+        if "memorizacion" in m and "condicionamiento" in m:
+            return "no pasa ambas"
+        if "memorizacion" in m:
+            return "no pasa memorizacion"
+        if "condicionamiento" in m:
+            return "no pasa condicionamiento"
+        return "pocas crisis"
+    return registro.apply(una, axis=1).rename("categoria")
+
+
+def resumen_anclas(registros: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Por pista y fuente: anclas por categoria y primera ancla valida."""
+    filas = []
+    for pista, reg in registros.items():
+        reg = reg.assign(categoria=categoria_ancla(reg))
+        for fuente, g in reg.groupby("fuente", sort=False):
+            cuenta = g["categoria"].value_counts()
+            validas = pd.to_datetime(g.loc[g["valida"].astype(bool), "tau"])
+            filas.append({"pista": pista, "fuente": fuente, "candidatas": len(g),
+                          **{c: int(cuenta.get(c, 0)) for c in CATEGORIAS_ANCLA},
+                          "primera_valida": validas.min().date() if len(validas) else None})
+    return pd.DataFrame(filas).set_index(["pista", "fuente"]) if filas else pd.DataFrame()
+
+
+def con_ic(tabla: pd.DataFrame, col: str, lo: str = "ic_inf", hi: str = "ic_sup", columnas: str | None = None,
+           indice: tuple[str, ...] = ("pista", "detector"), decimales: int = 3) -> pd.DataFrame:
+    """Tabla para mostrar con textos ``'+v [+lo, +hi]'`` (ancha si se da ``columnas``); vacia si no hay datos."""
+    if tabla.empty or col not in tabla:
+        return pd.DataFrame()
+    d = int(decimales)
+    texto = [f"{v:+.{d}f} [{a:+.{d}f}, {b:+.{d}f}]" for v, a, b in zip(tabla[col], tabla[lo], tabla[hi])]
+    t = tabla.assign(**{col + " [IC 95 %]": texto})
+    if columnas is None:
+        return t.set_index(list(indice))[[col + " [IC 95 %]"]]
+    return t.pivot_table(index=list(indice), columns=columnas, values=col + " [IC 95 %]", aggfunc="first")
+
+
+def mapa_deltas(datos: dict[str, DatosPista], brazo: str = "completas", p: float = 1.0, rep: int = 0,
+                cfg: dict | None = None) -> pd.DataFrame:
+    """EXPLORATORIO: Delta de cada generador, del voto y del control por detector (formato largo)."""
+    cfg = config_aumento() if cfg is None else cfg
+    columnas = [*[(g, "fuente") for g in cfg["generadores"]], ("voto", "voto"), (cfg["control"], "control")]
+    filas = []
+    for pista, d in datos.items():
+        for det in sorted(d.senales["detector"].unique()):
+            base = d.clave(det, tipo="base")
+            for fuente, tipo in columnas:
+                k = d.clave(det, tipo=tipo, fuente=fuente, brazo=brazo, p=p, rep=rep)
+                filas.append({"pista": pista, "detector": det, "fuente": fuente,
+                              "delta": d.delta(k, base) if k is not None else np.nan})
+    return pd.DataFrame(filas, columns=["pista", "detector", "fuente", "delta"])
+
+
+def dosis_respuesta(datos: dict[str, DatosPista], cfg: dict | None = None, rep: int = 0) -> pd.DataFrame:
+    """Delta(voto) frente a la proporcion (0 incluida) por detector y media por grupo de H4 con IC.
+
+    Filas con ``detector = '(media)'`` = media del grupo (detectores con las tres
+    proporciones), con IC bootstrap pareado por segmentos; las de cada detector no
+    llevan IC. Con p = 0 la Delta es 0 por definicion.
+    """
+    cfg = config_aumento() if cfg is None else cfg
+    ps = [float(x) for x in cfg["proporciones"]]
+    alfa = cfg["contrastes"]["alfa"]
+    filas = []
+    for pista, d in datos.items():
+        for brazo in ("completas", "crisis"):
+            for grupo, dets in cfg["contrastes"]["grupos_h4"].items():
+                presentes = []
+                for det in dets:
+                    base = d.clave(det, tipo="base")
+                    claves = [d.clave(det, tipo="voto", brazo=brazo, p=p, rep=rep) for p in ps]
+                    if base is None or any(k is None for k in claves):
+                        continue
+                    presentes.append((base, claves))
+                    filas.append({"pista": pista, "brazo": brazo, "grupo": grupo, "detector": det, "p": 0.0,
+                                  "delta": 0.0})
+                    filas += [{"pista": pista, "brazo": brazo, "grupo": grupo, "detector": det, "p": p,
+                               "delta": d.delta(k, base)} for p, k in zip(ps, claves)]
+                if not presentes:
+                    continue
+                n = len(presentes)
+                filas.append({"pista": pista, "brazo": brazo, "grupo": grupo, "detector": "(media)", "p": 0.0,
+                              "delta": 0.0, "ic_inf": 0.0, "ic_sup": 0.0, "n_detectores": n})
+                for i, p in enumerate(ps):
+                    pares = [x for base, claves in presentes for x in ((claves[i], 1 / n), (base, -1 / n))]
+                    lo, hi = ic(d.boot(pares), alfa)
+                    filas.append({"pista": pista, "brazo": brazo, "grupo": grupo, "detector": "(media)", "p": p,
+                                  "delta": float(np.mean([d.delta(c[i], b) for b, c in presentes])),
+                                  "ic_inf": lo, "ic_sup": hi, "n_detectores": n})
+    return pd.DataFrame(filas, columns=["pista", "brazo", "grupo", "detector", "p", "delta", "ic_inf", "ic_sup",
+                                        "n_detectores"])
+
+
+def deltas_metricas(datos: dict[str, DatosPista]) -> pd.DataFrame:
+    """EXPLORATORIO: cambio de tasa de marcado, precision, recall, score crudo y exceso frente a la base.
+
+    Separa recalibracion (marcar mas dias sube el score crudo y el recall sin
+    aprender nada) de aprendizaje (sube el exceso sobre el nulo, que ya descuenta la
+    tasa y la racha de la propia senal).
+    """
+    filas = []
+    for pista, d in datos.items():
+        s = d.senales.set_index("senal")
+        ex = {k: float(exceso(agregar(v), d.nulo)) for k, v in d.st.items()}
+        for clave, r in s[s["tipo"] != "base"].iterrows():
+            base = d.clave(r["detector"], tipo="base")
+            if base is None:
+                continue
+            b = s.loc[base]
+            filas.append({"pista": pista, "detector": r["detector"], "tipo": r["tipo"], "fuente": r["fuente"],
+                          "brazo": r["brazo"], "proporcion": r["proporcion"], "rep": r["rep"],
+                          "d_tasa": r["tasa"] - b["tasa"], "d_precision": r["precision"] - b["precision"],
+                          "d_recall": r["recall"] - b["recall"], "d_score": r["score"] - b["score"],
+                          "d_exceso": ex[clave] - ex[base]})
+    return pd.DataFrame(filas, columns=["pista", "detector", "tipo", "fuente", "brazo", "proporcion", "rep",
+                                        "d_tasa", "d_precision", "d_recall", "d_score", "d_exceso"])
+
+
+def suelo_ruido(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
+    """Suelo de ruido por detector: mayor |Delta| entre semillas con p = 0 (NaN si aun no esta)."""
+    cfg = config_aumento() if cfg is None else cfg
+    filas = []
+    for pista, d in datos.items():
+        for det in cfg["suelo_ruido"]["detectores"].get(pista, []):
+            base = d.clave(det, tipo="base")
+            n = int(((d.senales["detector"] == det) & (d.senales["tipo"] == "suelo")).sum())
+            filas.append({"pista": pista, "detector": det, "n_semillas": n,
+                          "suelo": _suelo(d, det, base) if base is not None else np.nan})
+    return pd.DataFrame(filas, columns=["pista", "detector", "n_semillas", "suelo"])
+
+
+def replica(datos: dict[str, DatosPista], cfg: dict | None = None) -> pd.DataFrame:
+    """EXPLORATORIO: Delta(voto) en la repeticion 0 y en la 1 (pistas con dos repeticiones)."""
+    cfg = config_aumento() if cfg is None else cfg
+    filas = []
+    for pista, d in datos.items():
+        if int(cfg["repeticiones"][pista]) < 2:
+            continue
+        for det in sorted(d.senales["detector"].unique()):
+            base = d.clave(det, tipo="base")
+            for brazo in ("completas", "crisis"):
+                for p in cfg["proporciones"]:
+                    k0 = d.clave(det, tipo="voto", brazo=brazo, p=p, rep=0)
+                    k1 = d.clave(det, tipo="voto", brazo=brazo, p=p, rep=1)
+                    if k0 is None or k1 is None:
+                        continue
+                    filas.append({"pista": pista, "detector": det, "brazo": brazo, "proporcion": float(p),
+                                  "delta_r0": d.delta(k0, base), "delta_r1": d.delta(k1, base)})
+    return pd.DataFrame(filas, columns=["pista", "detector", "brazo", "proporcion", "delta_r0", "delta_r1"])
+
+
+def ocupacion(filas: pd.DataFrame) -> pd.DataFrame:
+    """EXPLORATORIO: ocupacion de estados por trabajo (de ``filas_<P>.csv``).
+
+    ``frac_solo_sint`` = fraccion de pliegues diagnosticados en que algun estado
+    aparece en el bloque sintetico y nunca en el train real (queda al final del
+    orden, es decir, como crisis).
+    """
+    cols = ["pista", "detector", "fuente", "brazo", "proporcion", "rep", "frac_solo_sint",
+            "ocup_crisis_sint_media", "ocup_crisis_real_media"]
+    if filas.empty or "pliegues_ocupacion" not in filas:
+        return pd.DataFrame(columns=cols)
+    f = filas[(filas["proporcion"] > 0) & (filas["pliegues_ocupacion"].fillna(0) > 0)].copy()
+    f["frac_solo_sint"] = f["pliegues_estado_solo_sint"] / f["pliegues_ocupacion"]
+    return f[cols].reset_index(drop=True)
