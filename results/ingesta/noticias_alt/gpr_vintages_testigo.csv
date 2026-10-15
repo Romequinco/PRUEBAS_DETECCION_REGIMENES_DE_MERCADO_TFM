@@ -1,0 +1,11 @@
+dia,fecha,tipo,resolucion,vintage,fecha_vintage,lag_dias,valor_vintage,valor_hoy,revision_pct,estado
+lehman,2008-09-15,diario,día,,,,,,,sin cobertura de vintages
+lehman,2008-09-15,mensual,mes,,,,,,,sin cobertura de vintages
+elecciones_2016,2016-11-09,diario,día,,,,,,,sin cobertura de vintages
+elecciones_2016,2016-11-09,mensual,mes,,,,,,,sin cobertura de vintages
+covid,2020-03-16,diario,día,,,,,,,sin cobertura de vintages
+covid,2020-03-16,mensual,mes,,,,,,,sin cobertura de vintages
+svb,2023-03-10,diario,día,data_gpr_daily_recent_20230313.xls,2023-03-13,3.0,98.046,113.444,15.7,ok
+svb,2023-03-10,mensual,mes,data_gpr_export_202304.xls,2023-04-01,0.0,105.686,105.38,-0.29,ok
+aranceles,2025-04-07,diario,día,data_gpr_daily_recent_20250407.xls,2025-04-07,0.0,150.932,125.714,-16.71,ok
+aranceles,2025-04-07,mensual,mes,data_gpr_export_202505.xls,2025-05-01,0.0,136.521,141.185,3.42,ok

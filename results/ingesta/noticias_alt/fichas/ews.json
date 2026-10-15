@@ -1,0 +1,105 @@
+{
+  "fuente": "ews",
+  "nombre": "EWS · Apocalypse Early Warning System (jets privados, ADS-B)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "cio",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://ews.kylemcdonald.net",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "código MIT; datos derivados de ADS-B Exchange (términos de ADSBx: uso no comercial); feed no documentado",
+  "cobertura_inicio": "2025-10-14",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "30 min nominal (irregular: 86.96 % de pasos de 30 min)",
+  "retraso_publicacion": "0.07 h de la muestra a la instantánea; 166.7 min de antigüedad en la sonda",
+  "formato": "json (bucket R2) + rss",
+  "volumen_estimado": "0.41 MB por instantánea (≈20 MB/día archivando cada 30 min)",
+  "limites": "bucket R2 público sin límites documentados; puede cambiar de URL sin aviso (no es una API)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "actual": {
+      "asOf": "2026-10-14T10:29:50+00:00",
+      "concurrentCount": 213,
+      "baselineMean": 220.6818576074305,
+      "baselineStdDev": 35.70188534464478,
+      "zScore": -0.21516672112059068,
+      "alertLevel": "normal",
+      "emergencyLevel": 1,
+      "alarmSigmaThreshold": 4.7,
+      "elevatedSigmaThreshold": 2.35
+    },
+    "cohorte": 31904,
+    "cadencia_nominal_min": 30,
+    "proveedor": "ADS-B Exchange heatmap",
+    "modelo": "weekly-baseline-us-holiday-adjusted",
+    "puntos_archivo": 14335,
+    "inicio_archivo": "2025-10-14T10:29:50+00:00",
+    "fin_archivo": "2026-10-14T10:29:50+00:00",
+    "pct_intervalos_30min": 86.96,
+    "intervalo_max_h": 9.5,
+    "z_max_publicado": 5.74,
+    "z_max_causal": 13.54,
+    "z_min_causal": -59.57,
+    "z_max_causal_piso": 6.28,
+    "z_min_causal_piso": -7.36,
+    "alarmas_z47": {
+      "publicado": 1,
+      "causal": 107,
+      "causal_piso": 12
+    },
+    "corr_z_publicado_causal": 0.491,
+    "minutos_desde_ultima_muestra": 166.7,
+    "horas_muestra_a_instantanea": 0.07,
+    "bytes": 412476,
+    "desde_cache": false,
+    "revision": [
+      {
+        "instantanea_a": "dashboard_20261006T092320Z.json",
+        "instantanea_b": "dashboard_20261014T103410Z.json",
+        "t0_a": "2025-10-06T08:59:50+00:00",
+        "t0_b": "2025-10-14T10:29:50+00:00",
+        "n_comunes": 14296,
+        "pct_conteo_cambia": 0.0,
+        "max_dif_conteo": 0.0,
+        "pct_esperado_cambia": 10.42,
+        "max_dif_esperado": 1.2,
+        "pct_sd_cambia": 8.85,
+        "max_dif_sd": 0.53,
+        "pct_z_publicado_cambia": 2.81,
+        "max_dif_z_publicado": 0.04,
+        "primer_cambio": "2025-10-14T14:29:50+00:00",
+        "ultimo_cambio": "2026-10-03T05:29:50+00:00"
+      }
+    ],
+    "otros_paneles": {
+      "militar": {
+        "asOf": "2026-10-14T10:29:50+00:00",
+        "cohorte": 23008,
+        "puntos": 3648
+      },
+      "sin_icao": {
+        "asOf": "2026-10-14T10:29:50+00:00",
+        "cohorte": null,
+        "puntos": 14329
+      }
+    },
+    "robots_rss": true,
+    "rss_items": 0,
+    "rss_last_build": "Thu, 01 Jan 1970 00:00:00 GMT",
+    "segundos": 5.94
+  },
+  "notas": [
+    "Revisión ex post confirmada: entre dashboard_20261006T092320Z.json y dashboard_20261014T103410Z.json cambia 'esperado' en el 10.42 % de los instantes comunes (máx. 1.2 aviones) y z en el 2.81 % (máx. 0.04); el conteo no cambia (0.0 %). El z del archivo NO es el que se vio en vivo: usa información posterior.",
+    "El archivo es un año móvil (t0 2025-10-14): lo anterior se pierde si no se archivan instantáneas (se guardan en el corpus con su hora).",
+    "Muestreo irregular: 86.96 % de pasos de 30 min; hueco máximo 9.5 h.",
+    "Alarmas z>=4,7: publicado 1 medias horas, causal simple 107, causal con suelo de desviación 12. La serie ews_z_causal es la del suelo (0.12 × media): la simple da z absurdos (mín. -59.57) al dividir por desviaciones casi nulas.",
+    "El RSS de alertas de nivel 5 está vacío (lastBuildDate 1970): nunca ha saltado una alerta.",
+    "Uso: solo vivo/demo con el emergencyLevel PUBLICADO (botón de cataclismo del CIO); backtest=False.",
+    "liveAircraft trae matrículas y posiciones: solo en el corpus, nunca a results."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

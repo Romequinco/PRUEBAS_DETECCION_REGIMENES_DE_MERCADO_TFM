@@ -74,7 +74,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── src/regimenes/      el paquete (tabla de arriba)
 ├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
 ├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos) · ingesta/ (Fase 2)
-├── notebooks/          00–20, planos y ordenados (ver docs/fase1) · fase2/<tema>/ (notebooks de la Fase 2)
+├── notebooks/          00–20, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)

@@ -1,0 +1,91 @@
+{
+  "fuente": "rss_medios",
+  "nombre": "RSS de medios financieros y generalistas (mundial, en vivo)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "(lista FEEDS en noticias_alt/rss.py)",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "RSS para uso personal/no comercial según cada medio; al corpus titular + extracto + enlace, nunca el cuerpo; a results solo titulares",
+  "cobertura_inicio": "2025-12-11",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "minutos",
+  "retraso_publicacion": "minutos (ítem más reciente con 0.46 h de mediana en la captura)",
+  "formato": "rss 2.0 / atom / rdf",
+  "volumen_estimado": "991 ítems por pasada (982 únicos, 1.2 MB de XML); ≈2249 titulares nuevos/día -> ≈821 k/año si se captura a diario",
+  "limites": "sin clave; 1 petición/s por host; sin histórico (profundidad de horas a pocos días)",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "feeds": 36,
+    "vivos": 25,
+    "robots_prohibe": 7,
+    "errores": 4,
+    "items": 991,
+    "titulares_unicos": 982,
+    "titulares_dia_estimados": 2249,
+    "paises_vivos": [
+      "BR",
+      "DE",
+      "ES",
+      "FR",
+      "GB",
+      "HK",
+      "IN",
+      "IT",
+      "JP",
+      "QA",
+      "RU",
+      "US",
+      "ZA"
+    ],
+    "idiomas_vivos": {
+      "en": 18,
+      "fr": 1,
+      "de": 2,
+      "it": 1,
+      "es": 2,
+      "pt": 1
+    },
+    "profundidad_h": {
+      "n": 24,
+      "mediana_h": 27.1,
+      "p10_h": 2.03,
+      "p90_h": 642.04
+    },
+    "edad_item_mas_reciente_h": {
+      "n": 24,
+      "mediana_h": 0.46,
+      "p10_h": 0.1,
+      "p90_h": 2.22
+    },
+    "mb_por_pasada": 1.18,
+    "feeds_robots_prohibe": [
+      "elpais_economia",
+      "japantimes",
+      "arabnews_business",
+      "cnbc_top",
+      "cnbc_finance",
+      "wsj_markets",
+      "marketwatch_top"
+    ],
+    "feeds_con_error": {
+      "lesechos_marches": "HTTPError: 403 Client Error: Forbidden for url: https://services.lesechos.fr/rss/les-echos-finance-marches.xml",
+      "eleconomista_mx": "HTTPError: 403 Client Error: Forbidden for url: https://www.eleconomista.com.mx/rss/mercados",
+      "reuters_business": "ConnectionError: HTTPConnectionPool(host='feeds.reuters.com', port=80): Max retries exceeded with url: /reuters/business",
+      "yahoo_finance": "HTTPError: 404 Client Error: Not Found for url: https://finance.yahoo.com/news/rssindex"
+    },
+    "segundos": 56.9
+  },
+  "notas": [
+    "Sin histórico: solo vale en vivo. Para backtest futuro, capturar a diario (la caché por día del corpus ya es ese archivo) y usar fecha_captura como fecha de publicación conservadora.",
+    "Los feeds prohibidos por robots.txt se miden sin descargarse (Reuters cerró sus RSS públicos en 2020).",
+    "Destino: cajón dinámico del modo en vivo (titular + extracto corto)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

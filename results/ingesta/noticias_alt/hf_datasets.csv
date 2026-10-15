@@ -1,0 +1,6 @@
+fuente,dataset,inicio,fin,fechas,filas,gb,licencia,gated,ficheros,descargas_mes,modificado,viewer,columnas,tokens_mediana,dominios_top
+hf_fnspid,Zihan1004/FNSPID,1999-01-01,2023-12-31,documentadas,,29.55,,False,4,9906,2024-04-09T18:22:07.000Z,True,"Date,Article_title,Stock_symbol,Url,Publisher,Author,Article,Lsa_summary,Luhn_summary,Textrank_summary,Lexrank_summary",,benzinga.com
+hf_ccnews,stanford-oval/ccnews,2016-08-24,2024-06-30,medidas (configs por año) y acotadas por la tarjeta,893240667.0,966.82,,False,481,8360,2024-08-31T17:28:13.000Z,True,"requested_url,plain_text,published_date,title,tags,categories,author,sitename,image_url,language,language_score,responded_url,publisher,warc_path,crawl_date",346.0,"tf1.fr,gympietimes.com.au,self.com,parkcitiespeople.com,srpressgazette.com"
+hf_bloomberg_2006_2013,KrossKinetic/Bloomberg_Financial_News,2006-10-20,2013-11-26,documentadas,,1.39,apache-2.0,False,3,27,2024-11-15T19:46:02.000Z,False,,,
+hf_reuters_cnbc_2018,ashraq/financial-news-articles,2018-01-01,2018-05-31,documentadas,306242.0,0.49,,False,4,423,2022-10-25T18:01:06.000Z,True,"title,text,url",339.0,"reuters.com,cnbc.com,uk.reuters.com,wsj.com,in.reuters.com"
+hf_financial_news_multisource,Brianferrell787/financial-news-multisource,1990-01-01,2025-11-29,documentadas,,21.41,other,auto,157,1106,2025-11-29T21:31:56.000Z,False,,,

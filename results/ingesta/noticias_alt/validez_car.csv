@@ -1,0 +1,13 @@
+grupo,referencia_fecha,horizonte,n,car_medio,lo,hi,pct_positivos,n_eventos,n_sin_precio,pct_sin_precio,n_semanas
+congreso,publicacion,5,141,-0.0043,-0.0097,0.0076,39.7163,152,10,0.0658,22
+congreso,publicacion,20,141,-0.0124,-0.0208,0.0039,35.461,152,10,0.0658,22
+congreso,publicacion,60,141,-0.0013,-0.0376,0.0629,43.9716,152,10,0.0658,22
+congreso,operacion,5,141,0.0045,-0.008,0.0114,55.3191,152,10,0.0658,33
+congreso,operacion,20,141,0.008,-0.0011,0.0184,50.3546,152,10,0.0658,33
+congreso,operacion,60,141,-0.0083,-0.0273,0.0308,44.6809,152,10,0.0658,33
+insiders,publicacion,5,30,0.0608,-0.0035,0.1401,60.0,60,27,0.45,7
+insiders,publicacion,20,30,0.0298,-0.0652,0.1079,46.6667,60,27,0.45,7
+insiders,publicacion,60,30,0.2556,-0.1361,0.6247,43.3333,60,27,0.45,7
+insiders,operacion,5,31,0.0267,-0.0221,0.0947,51.6129,60,27,0.45,12
+insiders,operacion,20,30,0.0932,-0.0206,0.306,53.3333,60,27,0.45,11
+insiders,operacion,60,30,0.2087,0.0093,0.4596,46.6667,60,27,0.45,11

@@ -1,0 +1,16 @@
+Description:           Daily Index of EDGAR Dissemination Feed by Form Type
+Last Data Received:    Mar 16, 2020
+Comments:              webmaster@sec.gov
+Anonymous FTP:         ftp://ftp.sec.gov/edgar/
+ 
+ 
+ 
+ 
+Form Type   Company Name                                                  CIK
+      Date Filed  File Name
+---------------------------------------------------------------------------------------------------------------------------------------------
+10-K        Empresa Inventada Uno Inc                                     9000001     20200316    edgar/data/9000001/0009000001-20-000001.txt  
+4           Empresa Inventada Uno Inc                                     9000001     20200316    edgar/data/9000001/0009000001-20-000002.txt         
+4           Banco Ficticio Corp                                           9000002     20200316    edgar/data/9000002/0009000002-20-000003.txt         
+4/A         Banco Ficticio Corp                                           9000002     20200316    edgar/data/9000002/0009000002-20-000004.txt         
+4           Gamma Falsa Holdings, Inc.                                    9000003     20200316    edgar/data/9000003/0009000003-20-000005.txt         

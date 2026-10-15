@@ -1,0 +1,44 @@
+{
+  "fuente": "cboe_skew",
+  "nombre": "CBOE SKEW Index",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.cboe.com/tradable_products/vix/skew/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "datos de CBOE para conveniencia del visitante, sin garantía; términos de CBOE",
+  "cobertura_inicio": "1990-01-02",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (hábiles)",
+  "retraso_publicacion": "cboe_skew: D+1 hábil (fichero ~5 h tras el cierre) | medido (mediana): 4.93 h",
+  "formato": "csv",
+  "volumen_estimado": "0.20 MB en esta sonda; 9247 observaciones",
+  "limites": "sin clave",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "filas": 9247,
+    "inicio": "1990-01-02",
+    "fin": "2026-10-13",
+    "last_modified": "Wed, 14 Oct 2026 01:11:00 GMT",
+    "bytes": 203444,
+    "series": [
+      {
+        "serie": "skew",
+        "inicio": "1990-01-02",
+        "fin": "2026-10-13",
+        "n": 9247,
+        "huecos": 6
+      }
+    ],
+    "segundos": 0.39
+  },
+  "notas": [
+    "Riesgo de cola; la misma serie se descarga también en el Tema 1 (mercados).",
+    "Huecos > 4 días naturales (cierres excepcionales, p. ej. 11-S): 1 series; huecos (> 4 días): [6]"
+  ],
+  "fecha_sonda": "2026-10-14"
+}

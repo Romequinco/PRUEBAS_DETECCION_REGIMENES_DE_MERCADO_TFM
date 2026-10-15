@@ -1,0 +1,31 @@
+{
+  "fuente": "reddit",
+  "nombre": "Reddit (r/wallstreetbets, r/investing...)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://www.reddit.com/dev/api",
+  "acceso": "api",
+  "autenticacion": "clave gratuita (OAuth, no comercial ≤100 req/min) / pago",
+  "coste": "0 €",
+  "licencia_y_terminos": "Reddit Data API Terms (2023): prohíbe entrenar modelos sin acuerdo; el histórico solo en dumps comunitarios (Arctic Shift, Academic Torrents) de licencia dudosa",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "continua",
+  "retraso_publicacion": "tiempo real",
+  "formato": "json",
+  "volumen_estimado": "WSB 2019-2024 en dumps ≈ decenas de GB",
+  "limites": "OAuth; 100 req/min",
+  "estado_sonda": "no_probada",
+  "mediciones": {
+    "robots_permite_json": false
+  },
+  "notas": [
+    "No probada: sin OAuth no se consulta. Cómo: app «script» en reddit.com/prefs/apps (gratis, uso personal).",
+    "Valor: menciones de tickers (meme stocks 2021). Riesgo legal medio-alto para el histórico."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

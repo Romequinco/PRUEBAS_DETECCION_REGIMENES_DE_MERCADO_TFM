@@ -1,0 +1,31 @@
+{
+  "fuente": "google_trends",
+  "nombre": "Google Trends",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity"
+  ],
+  "rag": "serie",
+  "url": "https://trends.google.com",
+  "acceso": "manual",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de Google; API alfa oficial solo por solicitud",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "semanal (diaria en ventanas < 9 meses)",
+  "retraso_publicacion": "≈1-3 días",
+  "formato": "csv manual / json interno",
+  "volumen_estimado": "pequeño (series de 0-100)",
+  "limites": "429 frecuentes; endpoints internos (pytrends) no oficiales",
+  "estado_sonda": "no_probada",
+  "mediciones": {
+    "robots_permite_api": true
+  },
+  "notas": [
+    "No probada: sin API pública; los endpoints internos (pytrends) no son oficiales y dan 429.",
+    "Riesgo de look-ahead: cada consulta se reescala a 0-100 sobre la ventana pedida y la muestra cambia entre descargas; bajar la serie entera hoy «mira el futuro». Solución: ventanas que terminan en la fecha de decisión, o visitas de Wikipedia (absolutas)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

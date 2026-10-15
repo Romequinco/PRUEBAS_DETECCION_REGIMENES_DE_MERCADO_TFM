@@ -1,0 +1,87 @@
+{
+  "fuente": "ccnews",
+  "nombre": "Common Crawl CC-NEWS (WARC, texto completo, mundial)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://commoncrawl.org/blog/news-dataset-available",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Common Crawl Terms of Use (uso libre de los datos de rastreo); el texto de cada artículo conserva el copyright de su medio: solo corpus local, nunca al repo",
+  "cobertura_inicio": "2016-08-26",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "continua (un WARC cada pocas horas)",
+  "retraso_publicacion": "rastreo: mediana 1.58 h tras el metadato (p90 12.02 h)",
+  "formato": "warc.gz (HTTP crudo con HTML)",
+  "volumen_estimado": "≈799.2 GB/mes y ≈20.0 M respuestas/mes (máximo de los meses medidos)",
+  "limites": "sin clave; HTTP con Range sobre data.commoncrawl.org; WARC de ~1 GB: filtrar por dominio antes de parsear",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "dias": 5,
+    "respuestas": 436,
+    "con_texto": 369,
+    "tokens_mediana": 502,
+    "reglas_fecha": {
+      "meta": 242,
+      "rastreo_sin_meta": 180,
+      "rastreo_meta_posterior": 14
+    },
+    "retraso_rastreo_h": {
+      "n": 206,
+      "mediana_h": 1.58,
+      "p10_h": 0.32,
+      "p90_h": 12.02
+    },
+    "con_fecha_meta": 217,
+    "idiomas": [
+      [
+        "en",
+        178
+      ],
+      [
+        "es",
+        37
+      ],
+      [
+        "ru",
+        21
+      ],
+      [
+        "fr",
+        18
+      ],
+      [
+        "de",
+        18
+      ],
+      [
+        "it",
+        15
+      ],
+      [
+        "und",
+        8
+      ],
+      [
+        "tr",
+        8
+      ]
+    ],
+    "documentos": 350,
+    "gb_mes_max_est": 799.2,
+    "respuestas_mes_max_est": 19979410,
+    "bytes_descargados": 15016252,
+    "modo_rapido": false
+  },
+  "notas": [
+    "lehman (2008-09-15): sin cobertura (CC-NEWS empieza en 2016-08)",
+    "Para el histórico 2016-2024/06 conviene la versión ya extraída stanford-oval/ccnews (ver hf_datasets); WARC solo para meses posteriores.",
+    "Texto con copyright: solo en el corpus local; al repo, metadatos y titulares."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

@@ -1,0 +1,33 @@
+{
+  "fuente": "google_news_rss",
+  "nombre": "Google News RSS (búsqueda; after:/before:)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://news.google.com/rss/search",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de Google (sin API oficial de noticias); titulares de terceros",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "minutos",
+  "retraso_publicacion": "minutos (en vivo)",
+  "formato": "rss (título, medio, fecha, enlace cifrado)",
+  "volumen_estimado": "≤100 ítems por consulta; sin paginación",
+  "limites": "robots.txt no permite /rss/search a robots genéricos; CAPTCHA si se abusa",
+  "estado_sonda": "fallo",
+  "mediciones": {
+    "robots_permite": false
+  },
+  "notas": [
+    "Comprobado con robots_permite: no se descarga el feed si robots.txt lo prohíbe.",
+    "Medición previa (rama fase2/datos, una petición exploratoria): fechas históricas truncadas al día (36/37 ítems a las 07:00 GMT) -> no apto para el TimeGate del backtest aunque fuera accesible.",
+    "Sustitutos: GDELT DOC (titular + URL + seendate) y los RSS directos de FEEDS."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

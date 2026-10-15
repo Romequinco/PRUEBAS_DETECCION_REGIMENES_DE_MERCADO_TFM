@@ -1,0 +1,195 @@
+{
+  "fuente": "gpr",
+  "nombre": "Geopolitical Risk Index (Caldara e Iacoviello, 2022)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.matteoiacoviello.com/gpr.htm",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "libre para investigación citando Caldara e Iacoviello (2022, AER)",
+  "cobertura_inicio": "1900-01-01",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (desde 1985) y mensual (desde 1900; 44 países)",
+  "retraso_publicacion": "gpr_diario: lunes hábil siguiente al día (D+1..D+7; festivo federal -> siguiente hábil); gpr_mensual: primer día hábil del mes siguiente | medido (mediana): 15.76 h",
+  "formato": "xls (+ vintages xls en GitHub)",
+  "volumen_estimado": "23.57 MB en esta sonda; 68076 observaciones",
+  "limites": "servidor personal (la sonda de 2026-10-06 tardó ≈700 s; hoy ≈2 s); API de GitHub 60 pet./h sin clave",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "diario": {
+      "filas": 15261,
+      "inicio": "1985-01-01",
+      "fin": "2026-10-13",
+      "last_modified": "Tue, 13 Oct 2026 15:45:31 GMT"
+    },
+    "mensual": {
+      "filas": 1521,
+      "inicio": "1900-01-01",
+      "fin": "2026-09-01",
+      "columnas": 112,
+      "n_paises": 44,
+      "last_modified": "Tue, 13 Oct 2026 15:45:31 GMT"
+    },
+    "bytes": 5988352,
+    "vintages": {
+      "n_diarios": 292,
+      "n_mensuales": 60,
+      "primer_diario": "2022-02-24",
+      "primer_mensual": "2021-10-01",
+      "dias_entre_vintages_diarios_ult_ano": 7.0,
+      "pct_lunes_ult_ano": 72.1,
+      "lag_testigo_dias": [
+        {
+          "dia": "svb",
+          "tipo": "diario",
+          "lag_dias": 3.0,
+          "revision_pct": 15.7
+        },
+        {
+          "dia": "svb",
+          "tipo": "mensual",
+          "lag_dias": 0.0,
+          "revision_pct": -0.29
+        },
+        {
+          "dia": "aranceles",
+          "tipo": "diario",
+          "lag_dias": 0.0,
+          "revision_pct": -16.71
+        },
+        {
+          "dia": "aranceles",
+          "tipo": "mensual",
+          "lag_dias": 0.0,
+          "revision_pct": 3.42
+        }
+      ]
+    },
+    "series": [
+      {
+        "serie": "gprd",
+        "inicio": "1985-01-01",
+        "fin": "2026-10-13",
+        "n": 15261,
+        "huecos": 0
+      },
+      {
+        "serie": "gprd_act",
+        "inicio": "1985-01-01",
+        "fin": "2026-10-13",
+        "n": 15261,
+        "huecos": 0
+      },
+      {
+        "serie": "gprd_threat",
+        "inicio": "1985-01-01",
+        "fin": "2026-10-13",
+        "n": 15261,
+        "huecos": 0
+      },
+      {
+        "serie": "n10d",
+        "inicio": "1985-01-01",
+        "fin": "2026-10-13",
+        "n": 15261,
+        "huecos": 0
+      },
+      {
+        "serie": "gpr",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gpra",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_chn",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_deu",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_esp",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_gbr",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_isr",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_rus",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_ukr",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprc_usa",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      },
+      {
+        "serie": "gprh",
+        "inicio": "1900-01-01",
+        "fin": "2026-09-01",
+        "n": 1521,
+        "huecos": 0
+      },
+      {
+        "serie": "gprt",
+        "inicio": "1985-01-01",
+        "fin": "2026-09-01",
+        "n": 501,
+        "huecos": 0
+      }
+    ],
+    "segundos": 5.12
+  },
+  "notas": [
+    "La web documenta: mensual 'updated at the beginning of each month'; diario 'updated every Monday' (festivo federal -> siguiente hábil). Los datos recientes son preliminares y se revisan.",
+    "vintages diarios desde 2022-02-24 (cada 7.0 días el último año); retraso medido en testigo: [{'dia': 'svb', 'tipo': 'diario', 'lag_dias': 3.0, 'revision_pct': 15.7}, {'dia': 'svb', 'tipo': 'mensual', 'lag_dias': 0.0, 'revision_pct': -0.29}, {'dia': 'aranceles', 'tipo': 'diario', 'lag_dias': 0.0, 'revision_pct': -16.71}, {'dia': 'aranceles', 'tipo': 'mensual', 'lag_dias': 0.0, 'revision_pct': 3.42}]",
+    "Revisiones: el GPRD diario del primer vintage difiere del de hoy un [15.7, -16.71] % en los días testigo; el dato del propio lunes ya sale ese lunes (preliminar). La regla del lunes SIGUIENTE es conservadora y la serie guardada es el vintage de hoy (revisado)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

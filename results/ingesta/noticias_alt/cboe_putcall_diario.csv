@@ -1,0 +1,8 @@
+dia,fecha,origen,total,equity,index,vix,last_modified,lag_h
+lehman,2008-09-15,csv,1.46,,,,,
+elecciones_2016,2016-11-09,csv,1.07,,,,,
+covid,2020-03-16,json_diario,1.28,1.1,1.25,0.82,"Tue, 13 Aug 2024 15:04:46 GMT",38658.83
+svb,2023-03-10,json_diario,1.23,1.11,1.11,0.42,"Mon, 12 Aug 2024 16:44:23 GMT",12499.49
+aranceles,2025-04-07,json_diario,1.2,0.63,1.58,0.78,"Tue, 08 Apr 2025 02:18:31 GMT",6.06
+hoy,2026-10-13,json_diario,0.83,0.54,1.06,0.29,"Wed, 14 Oct 2026 01:31:07 GMT",5.27
+inicio_json,2019-10-07,json_diario (primer día),,,,,,

@@ -1,0 +1,41 @@
+{
+  "fuente": "truth_social_trump",
+  "nombre": "Truth Social de Donald Trump (archivo público comunitario)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://github.com/stiles/trump-truth-social-archive",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "archivo comunitario (código MIT); posts públicos de un cargo político; términos de Truth Social. Al repo solo recuentos; el texto solo al corpus",
+  "cobertura_inicio": "2022-02-14",
+  "cobertura_fin": "2026-05-02",
+  "frecuencia": "por evento (posts)",
+  "retraso_publicacion": "0 h: created_at es la publicación; el archivo se refresca cada pocas horas (hoy lleva 165 días sin actualizarse)",
+  "formato": "json (id, created_at, content, url, media, recuentos)",
+  "volumen_estimado": "29469 posts, 15.6 MB (fichero único)",
+  "limites": "sin clave; un fichero; robots.txt de raw.githubusercontent.com no existe (404 = permitido)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "posts": 29469,
+    "posts_vacios": 5065,
+    "posts_dia_media": 22.968823070927513,
+    "max_dias_sin_posts": 184,
+    "dias_hueco_archivo": 256,
+    "rachas_hueco": "2022-02-15..2022-04-27 (72 d); 2025-10-26..2026-04-27 (184 d)",
+    "horas_desde_ultimo": 3948.09,
+    "bytes": 15568111,
+    "segundos": 0.47
+  },
+  "notas": [
+    "Marca temporal exacta: sirve para atribuir saltos de mercado o de Polymarket (aranceles 2025).",
+    "Serie diaria en UTC: un post de las 17:00 ET cae en el mismo día UTC que el cierre; para decisiones al cierre, filtrar por hora (created_at) antes de agregar.",
+    "Posts vacíos = solo imagen, vídeo o repost.",
+    "El archivo comunitario ha dejado de actualizarse: para el vivo haría falta otra vía (no hay API pública)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

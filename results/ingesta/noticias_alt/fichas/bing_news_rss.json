@@ -1,0 +1,60 @@
+{
+  "fuente": "bing_news_rss",
+  "nombre": "Bing News RSS (búsqueda en vivo)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://www.bing.com/news/search",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de Microsoft (el propio feed: solo para un agregador RSS personal, no comercial); la API oficial Bing News Search se retiró en 2025",
+  "cobertura_inicio": null,
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "minutos",
+  "retraso_publicacion": "minutos (ítem más reciente con 13.57 h de mediana)",
+  "formato": "rss (título, extracto, enlace apiclick, News:Source)",
+  "volumen_estimado": "≈9 ítems por consulta; sin paginación",
+  "limites": "sin clave; sin histórico ni filtro de fechas; no documentado",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "feeds": 5,
+    "vivos": 4,
+    "robots_prohibe": 0,
+    "errores": 0,
+    "items": 35,
+    "titulares_unicos": 34,
+    "titulares_dia_estimados": 5,
+    "paises_vivos": [
+      "US"
+    ],
+    "idiomas_vivos": {
+      "en": 4
+    },
+    "profundidad_h": {
+      "n": 4,
+      "mediana_h": 3794.5,
+      "p10_h": 106.32,
+      "p90_h": 12089.24
+    },
+    "edad_item_mas_reciente_h": {
+      "n": 4,
+      "mediana_h": 13.57,
+      "p10_h": 7.61,
+      "p90_h": 41.89
+    },
+    "mb_por_pasada": 0.03,
+    "feeds_robots_prohibe": [],
+    "feeds_con_error": {},
+    "segundos": 1.0
+  },
+  "notas": [
+    "Enlaces envueltos en bing.com/news/apiclick.aspx: se desenvuelven al parámetro url.",
+    "Útil en vivo para buscar_noticias(q) cuando no hay feed del medio; mismo papel que en Briefly."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

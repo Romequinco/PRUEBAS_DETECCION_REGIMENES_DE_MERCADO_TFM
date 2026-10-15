@@ -1,0 +1,22 @@
+{
+ "size": {
+  "dataset": {
+   "num_rows": 1000,
+   "estimated_num_rows": 5000
+  },
+  "configs": [
+   {
+    "config": "default",
+    "num_rows": 10
+   },
+   {
+    "config": "2016",
+    "estimated_num_rows": 1500
+   },
+   {
+    "config": "2017",
+    "num_rows": 3500
+   }
+  ]
+ }
+}

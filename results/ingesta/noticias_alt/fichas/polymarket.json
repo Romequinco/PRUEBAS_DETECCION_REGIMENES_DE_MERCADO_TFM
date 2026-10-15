@@ -1,0 +1,206 @@
+{
+  "fuente": "polymarket",
+  "nombre": "Polymarket (Gamma + CLOB prices-history + Data API)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk",
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://docs.polymarket.com",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Polymarket Terms of Use: datos públicos de API sin clave; uso no comercial/académico; no se opera (las restricciones geográficas afectan a operar, no a leer)",
+  "cobertura_inicio": "2020-10-02",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "continua (operaciones al segundo; historial 12 h con interval=max, 1 min en ventanas ≤ 14 días)",
+  "retraso_publicacion": "tiempo real (última operación hace 0.07 h, mediana); resultado 25.66 h después del fin programado (mediana, closedTime)",
+  "formato": "json",
+  "volumen_estimado": "historial a 12 h ≈ 6.6 KB/mercado (mediana); ≥ 1018 mercados resueltos > 100 k USD listados (tope de la muestra) -> ≈ 6.6 MB; página de 100 eventos sin mercados ≈ 255.6 KB",
+  "limites": "sin clave; /events y /markets máx. 100 por página (limit/offset); prices-history: interval=max solo con fidelity ≥ 720, startTs/endTs ≤ 14 días (400 si no); límites por IP según docs",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "liquidez_por_anio": [
+      {
+        "anio": 2020,
+        "n_eventos": 73,
+        "volumen_usd": 76536903.48,
+        "n_mayor_1m": 11,
+        "mediana_volumen_usd": 143938.78,
+        "techo_muestra": 1000,
+        "truncado": false,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2021,
+        "n_eventos": 1000,
+        "volumen_usd": 92686103.68,
+        "n_mayor_1m": 12,
+        "mediana_volumen_usd": 25238.03,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2022,
+        "n_eventos": 1000,
+        "volumen_usd": 80391172.75,
+        "n_mayor_1m": 5,
+        "mediana_volumen_usd": 19195.87,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2023,
+        "n_eventos": 1000,
+        "volumen_usd": 162620342.7,
+        "n_mayor_1m": 18,
+        "mediana_volumen_usd": 14678.64,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2024,
+        "n_eventos": 1000,
+        "volumen_usd": 18453773568.46,
+        "n_mayor_1m": 623,
+        "mediana_volumen_usd": 1333814.05,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2025,
+        "n_eventos": 1000,
+        "volumen_usd": 26047897442.59,
+        "n_mayor_1m": 1000,
+        "mediana_volumen_usd": 5530189.42,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      },
+      {
+        "anio": 2026,
+        "n_eventos": 1000,
+        "volumen_usd": 17461371977.53,
+        "n_mayor_1m": 1000,
+        "mediana_volumen_usd": 9651363.84,
+        "techo_muestra": 1000,
+        "truncado": true,
+        "criterio": "startDate"
+      }
+    ],
+    "calibracion": {
+      "n": 150,
+      "n_con_precio": 143,
+      "inicio_historial_min": "2022-12-13",
+      "por_categoria": {
+        "politica": 32,
+        "cripto": 31,
+        "otros": 29,
+        "fed": 29,
+        "deportes": 24,
+        "economia": 5
+      },
+      "por_anio": {
+        "2021": 1,
+        "2022": 6,
+        "2023": 38,
+        "2024": 37,
+        "2025": 33,
+        "2026": 35
+      },
+      "brier_1d": 0.0771,
+      "brier_7d": 0.0958,
+      "brier_30d": 0.0933
+    },
+    "calib_por_anio": {
+      "2021": {
+        "listados": 179,
+        "binarios": 133,
+        "sin_clob": 132,
+        "candidatos": 1
+      },
+      "2022": {
+        "listados": 129,
+        "binarios": 111,
+        "sin_clob": 105,
+        "candidatos": 6
+      },
+      "2023": {
+        "listados": 110,
+        "binarios": 104,
+        "sin_clob": 5,
+        "candidatos": 98
+      },
+      "2024": {
+        "listados": 200,
+        "binarios": 197,
+        "sin_clob": 0,
+        "candidatos": 197
+      },
+      "2025": {
+        "listados": 200,
+        "binarios": 198,
+        "sin_clob": 0,
+        "candidatos": 198
+      },
+      "2026": {
+        "listados": 200,
+        "binarios": 189,
+        "sin_clob": 0,
+        "candidatos": 189
+      }
+    },
+    "primer_mercado": "2020-10-02T16:10:01.467Z",
+    "lag_resolucion": {
+      "n": 102,
+      "mediana_h": 25.66,
+      "p10_h": 7.2,
+      "p90_h": 128.5
+    },
+    "frescura_h": 0.07,
+    "series": [
+      "polymarket_recesion_eeuu_2025",
+      "polymarket_fed_recorte25_sep2025",
+      "polymarket_recesion_eeuu_2026",
+      "polymarket_recesion_eeuu_2024",
+      "polymarket_fed_sin_recortes_2026"
+    ],
+    "n_saltos_15pp": 5,
+    "trades_campos": [
+      "asset",
+      "bio",
+      "conditionId",
+      "eventSlug",
+      "icon",
+      "name",
+      "outcome",
+      "outcomeIndex",
+      "price",
+      "profileImage",
+      "profileImageOptimized",
+      "proxyWallet",
+      "pseudonym",
+      "side",
+      "size",
+      "slug",
+      "timestamp",
+      "title",
+      "transactionHash"
+    ],
+    "bytes": 25057698,
+    "segundos": 2.3,
+    "historial_kb_mediana": 6.6
+  },
+  "notas": [
+    "Liquidez por año (top por volumen, año de startDate): 2020: 77 M USD (11 ev. >1M); 2021: 93 M USD (12 ev. >1M); 2022: 80 M USD (5 ev. >1M); 2023: 163 M USD (18 ev. >1M); 2024: 18,454 M USD (623 ev. >1M); 2025: 26,048 M USD (1000 ev. >1M); 2026: 17,461 M USD (1000 ev. >1M).",
+    "Mercados AMM (2020-2022, enableOrderBook ≠ True) sin historial en el CLOB: calibración y series desde 2023.",
+    "TimeGate: precio a una fecha = último punto ≤ 16:30 NY; el resultado se conoce en closedTime, no en endDate.",
+    "Divergencia = salto ≥ 15 pp en un día (o compras grandes en Data API) antes de la primera noticia -> alerta Risk."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

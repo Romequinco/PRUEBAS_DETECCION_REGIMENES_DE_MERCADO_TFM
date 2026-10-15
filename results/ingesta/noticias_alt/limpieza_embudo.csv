@@ -1,0 +1,21 @@
+dia,fecha,etapa,orden,n,eliminados,pct_restante,fuentes,nota
+elecciones_2016,2016-11-09,bruto,0,111,0,100.0,ccnews:111,
+elecciones_2016,2016-11-09,tras_url,1,111,0,100.0,ccnews:111,
+elecciones_2016,2016-11-09,tras_jaccard,2,111,0,100.0,ccnews:111,
+elecciones_2016,2016-11-09,tras_simhash,3,111,0,100.0,ccnews:111,
+covid,2020-03-16,bruto,0,800,0,100.0,gdelt_gkg:500; gdelt_doc:222; ccnews:78,gdelt_gkg_titulares: 500 de 10964 (muestra fija por doc_id)
+covid,2020-03-16,tras_url,1,796,4,99.5,gdelt_gkg:500; gdelt_doc:222; ccnews:78,gdelt_gkg_titulares: 500 de 10964 (muestra fija por doc_id)
+covid,2020-03-16,tras_jaccard,2,721,75,90.1,gdelt_gkg:500; gdelt_doc:222; ccnews:78,gdelt_gkg_titulares: 500 de 10964 (muestra fija por doc_id)
+covid,2020-03-16,tras_simhash,3,721,0,90.1,gdelt_gkg:500; gdelt_doc:222; ccnews:78,gdelt_gkg_titulares: 500 de 10964 (muestra fija por doc_id)
+svb,2023-03-10,bruto,0,785,0,100.0,gdelt_gkg:500; gdelt_doc:223; ccnews:62,gdelt_gkg_titulares: 500 de 7690 (muestra fija por doc_id)
+svb,2023-03-10,tras_url,1,780,5,99.4,gdelt_gkg:500; gdelt_doc:223; ccnews:62,gdelt_gkg_titulares: 500 de 7690 (muestra fija por doc_id)
+svb,2023-03-10,tras_jaccard,2,707,73,90.1,gdelt_gkg:500; gdelt_doc:223; ccnews:62,gdelt_gkg_titulares: 500 de 7690 (muestra fija por doc_id)
+svb,2023-03-10,tras_simhash,3,707,0,90.1,gdelt_gkg:500; gdelt_doc:223; ccnews:62,gdelt_gkg_titulares: 500 de 7690 (muestra fija por doc_id)
+aranceles,2025-04-07,bruto,0,765,0,100.0,gdelt_gkg:500; gdelt_doc:212; ccnews:53,gdelt_gkg_titulares: 500 de 7753 (muestra fija por doc_id)
+aranceles,2025-04-07,tras_url,1,763,2,99.7,gdelt_gkg:500; gdelt_doc:212; ccnews:53,gdelt_gkg_titulares: 500 de 7753 (muestra fija por doc_id)
+aranceles,2025-04-07,tras_jaccard,2,705,58,92.2,gdelt_gkg:500; gdelt_doc:212; ccnews:53,gdelt_gkg_titulares: 500 de 7753 (muestra fija por doc_id)
+aranceles,2025-04-07,tras_simhash,3,705,0,92.2,gdelt_gkg:500; gdelt_doc:212; ccnews:53,gdelt_gkg_titulares: 500 de 7753 (muestra fija por doc_id)
+hoy,2026-10-14,bruto,0,1564,0,100.0,rss_medios:983; gdelt_gkg:500; ccnews:46; bing_news_rss:35,gdelt_gkg_titulares: 500 de 4146 (muestra fija por doc_id)
+hoy,2026-10-14,tras_url,1,1563,1,99.9,rss_medios:983; gdelt_gkg:500; ccnews:46; bing_news_rss:35,gdelt_gkg_titulares: 500 de 4146 (muestra fija por doc_id)
+hoy,2026-10-14,tras_jaccard,2,1513,50,96.7,rss_medios:983; gdelt_gkg:500; ccnews:46; bing_news_rss:35,gdelt_gkg_titulares: 500 de 4146 (muestra fija por doc_id)
+hoy,2026-10-14,tras_simhash,3,1513,0,96.7,rss_medios:983; gdelt_gkg:500; ccnews:46; bing_news_rss:35,gdelt_gkg_titulares: 500 de 4146 (muestra fija por doc_id)

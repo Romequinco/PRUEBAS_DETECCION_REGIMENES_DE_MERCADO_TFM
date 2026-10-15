@@ -1,0 +1,17 @@
+{
+ "num_examples": 100,
+ "partial": true,
+ "statistics": [
+  {
+   "column_name": "language",
+   "column_type": "string_label",
+   "column_statistics": {
+    "frequencies": {
+     "en": 60,
+     "es": 30,
+     "fr": 10
+    }
+   }
+  }
+ ]
+}

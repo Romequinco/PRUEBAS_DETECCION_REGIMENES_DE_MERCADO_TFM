@@ -1,0 +1,184 @@
+{
+  "fuente": "cboe_putcall",
+  "nombre": "CBOE ratios put/call (total, equity, index)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.cboe.com/us/options/market_statistics/historical_data/",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "datos de CBOE para conveniencia del visitante, sin garantía; términos de CBOE",
+  "cobertura_inicio": "2006-11-01",
+  "cobertura_fin": "2019-10-04",
+  "frecuencia": "diaria (hábiles)",
+  "retraso_publicacion": "cboe_putcall_equity: D+1 hábil (fichero ~5 h tras el cierre); cboe_putcall_index: D+1 hábil (fichero ~5 h tras el cierre); cboe_putcall_total: D+1 hábil (fichero ~5 h tras el cierre) | medido (mediana): 5.66 h",
+  "formato": "csv (hasta 2019) + json diario",
+  "volumen_estimado": "0.46 MB en esta sonda; 29277 observaciones",
+  "limites": "CSV históricos congelados; después, un JSON por día (≈1.750 peticiones para rehacer 2019-2026); robots.txt de cdn.cboe.com responde 403 (S3)",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "total": {
+      "filas": 3253,
+      "inicio": "2006-11-01",
+      "fin": "2019-10-04",
+      "columnas": [
+        "CALLS",
+        "PUTS",
+        "TOTAL",
+        "P/C Ratio"
+      ],
+      "last_modified": "Fri, 30 Oct 2020 12:31:08 GMT"
+    },
+    "equity": {
+      "filas": 3253,
+      "inicio": "2006-11-01",
+      "fin": "2019-10-04",
+      "columnas": [
+        "CALL",
+        "PUT",
+        "TOTAL",
+        "P/C Ratio"
+      ],
+      "last_modified": "Fri, 30 Oct 2020 12:31:08 GMT"
+    },
+    "index": {
+      "filas": 3253,
+      "inicio": "2006-11-01",
+      "fin": "2019-10-04",
+      "columnas": [
+        "CALL",
+        "PUT",
+        "TOTAL",
+        "P/C Ratio"
+      ],
+      "last_modified": "Fri, 30 Oct 2020 12:31:08 GMT"
+    },
+    "json_diario": [
+      {
+        "dia": "lehman",
+        "fecha": "2008-09-15",
+        "origen": "csv",
+        "total": 1.46,
+        "lag_h": null
+      },
+      {
+        "dia": "elecciones_2016",
+        "fecha": "2016-11-09",
+        "origen": "csv",
+        "total": 1.07,
+        "lag_h": null
+      },
+      {
+        "dia": "covid",
+        "fecha": "2020-03-16",
+        "origen": "json_diario",
+        "total": 1.28,
+        "lag_h": 38658.83
+      },
+      {
+        "dia": "svb",
+        "fecha": "2023-03-10",
+        "origen": "json_diario",
+        "total": 1.23,
+        "lag_h": 12499.49
+      },
+      {
+        "dia": "aranceles",
+        "fecha": "2025-04-07",
+        "origen": "json_diario",
+        "total": 1.2,
+        "lag_h": 6.06
+      },
+      {
+        "dia": "hoy",
+        "fecha": "2026-10-13",
+        "origen": "json_diario",
+        "total": 0.83,
+        "lag_h": 5.27
+      },
+      {
+        "dia": "inicio_json",
+        "fecha": "2019-10-07",
+        "origen": "json_diario (primer día)",
+        "total": null,
+        "lag_h": null
+      }
+    ],
+    "robots_pagina_diaria": true,
+    "robots_cdn": false,
+    "series": [
+      {
+        "serie": "pc_total_calls",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_total_puts",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_total_ratio",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_equity_calls",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_equity_puts",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_equity_ratio",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_index_calls",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_index_puts",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      },
+      {
+        "serie": "pc_index_ratio",
+        "inicio": "2006-11-01",
+        "fin": "2019-10-04",
+        "n": 3253,
+        "huecos": 2
+      }
+    ],
+    "segundos": 16.2
+  },
+  "notas": [
+    "CSV terminan en ['2019-10-04']; JSON diario desde 2019-10-07 (días testigo con JSON: ['covid', 'svb', 'aranceles', 'hoy']); sin solape CSV/JSON para validar el empalme",
+    "Después de 2019-10-04 no hay CSV histórico público: la página diaria de estadísticas (robots.txt de www.cboe.com la permite) carga un JSON por fecha; reconstruir la serie exige una petición por día hábil (no se hace en la sonda)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

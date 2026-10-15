@@ -1,0 +1,31 @@
+{
+  "fuente": "congreso_senate_efd",
+  "nombre": "Senate eFD (Electronic Financial Disclosures)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "ninguno",
+  "url": "https://efdsearch.senate.gov/search/home/",
+  "acceso": "scraping",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "puerta de aceptación: 'Prohibition Against Use of Financial Disclosure Reports' (5 U.S.C. §13107); uso no comercial",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "por evento",
+  "retraso_publicacion": "≤45 días tras la operación (STOCK Act)",
+  "formato": "html (PTR electrónicos) + pdf/gif escaneados",
+  "volumen_estimado": "no medido",
+  "limites": "aceptación de condiciones por sesión + protección anti-bot",
+  "estado_sonda": "no_probada",
+  "mediciones": {
+    "robots_permite": false
+  },
+  "notas": [
+    "Exige aceptar condiciones a mano en cada sesión: no se automatiza (regla ética del proyecto).",
+    "Alternativa: descarga manual por el usuario de los PTR del periodo, o un agregador con licencia."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

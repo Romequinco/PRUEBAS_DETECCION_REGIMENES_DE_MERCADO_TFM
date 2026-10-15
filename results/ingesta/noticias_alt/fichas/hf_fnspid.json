@@ -1,0 +1,53 @@
+{
+  "fuente": "hf_fnspid",
+  "nombre": "FNSPID (Dong et al. 2024): noticias de empresas del S&P 500",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity"
+  ],
+  "rag": "cajon",
+  "url": "https://huggingface.co/datasets/Zihan1004/FNSPID",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "declarada en el Hub: None; sin licencia en el Hub (paper: CC BY-NC 4.0); texto de Nasdaq.com/Benzinga… con copyright",
+  "cobertura_inicio": "1999-01-01",
+  "cobertura_fin": "2023-12-31",
+  "frecuencia": "estático (instantánea)",
+  "retraso_publicacion": "n/a (histórico cerrado)",
+  "formato": "md,csv,zip",
+  "volumen_estimado": "29.55 GB en 4 ficheros; filas=no medidas",
+  "limites": "descarga HTTP del Hub (sin clave si no es gated); viewer: 100 filas por petición",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "hub": {
+      "gated": false,
+      "licencia": null,
+      "ficheros": 4,
+      "bytes": 29553904244,
+      "descargas_mes": 9906,
+      "modificado": "2024-04-09T18:22:07.000Z",
+      "configs_tarjeta": [],
+      "extensiones": {
+        "md": 1,
+        "csv": 2,
+        "zip": 1
+      }
+    },
+    "filas": null,
+    "filas_por_config": {},
+    "fechas": "documentadas",
+    "columnas": "Date,Article_title,Stock_symbol,Url,Publisher,Author,Article,Lsa_summary,Luhn_summary,Textrank_summary,Lexrank_summary",
+    "tokens_mediana": null,
+    "dominios_top": "benzinga.com",
+    "lag_published_a_crawl_h": null,
+    "errores": {}
+  },
+  "notas": [
+    "15,7 M filas según el paper (el viewer no calcula el tamaño).",
+    "nasdaq_exteral_data.csv trae el cuerpo (Article) en la parte reciente; All_external.csv es sobre todo titular + URL.",
+    "Sesgo: EE. UU. y tickers del S&P 500; poco texto antes de 2009 según el paper.",
+    "el viewer no da filas: tamaño en filas documentado, no medido"
+  ],
+  "fecha_sonda": "2026-10-14"
+}

@@ -1,0 +1,63 @@
+<SEC-DOCUMENT>0009000001-20-000002.txt : 20200316
+<SEC-HEADER>0009000001-20-000002.hdr.sgml : 20200316
+<ACCEPTANCE-DATETIME>20200316163015
+ACCESSION NUMBER:		0009000001-20-000002
+CONFORMED SUBMISSION TYPE:	4
+PUBLIC DOCUMENT COUNT:		1
+CONFORMED PERIOD OF REPORT:	20200313
+FILED AS OF DATE:		20200316
+DATE AS OF CHANGE:		20200316
+</SEC-HEADER>
+<DOCUMENT>
+<TYPE>4
+<SEQUENCE>1
+<FILENAME>form4.xml
+<TEXT>
+<XML>
+<?xml version="1.0"?>
+<ownershipDocument>
+    <schemaVersion>X0306</schemaVersion>
+    <documentType>4</documentType>
+    <periodOfReport>2020-03-13</periodOfReport>
+    <issuer>
+        <issuerCik>0009000001</issuerCik>
+        <issuerName>EMPRESA INVENTADA UNO INC</issuerName>
+        <issuerTradingSymbol>eiu</issuerTradingSymbol>
+    </issuer>
+    <reportingOwner>
+        <reportingOwnerId>
+            <rptOwnerCik>0009100001</rptOwnerCik>
+            <rptOwnerName>PEREZ FICTICIO JUAN</rptOwnerName>
+        </reportingOwnerId>
+        <reportingOwnerRelationship>
+            <isDirector>1</isDirector>
+            <isOfficer>1</isOfficer>
+            <isTenPercentOwner>0</isTenPercentOwner>
+            <isOther>0</isOther>
+            <officerTitle>CEO &amp; Chair</officerTitle>
+        </reportingOwnerRelationship>
+    </reportingOwner>
+    <nonDerivativeTable>
+        <nonDerivativeTransaction>
+            <securityTitle><value>Common Stock</value></securityTitle>
+            <transactionDate><value>2020-03-12</value></transactionDate>
+            <transactionCoding>
+                <transactionFormType>4</transactionFormType>
+                <transactionCode>P</transactionCode>
+                <equitySwapInvolved>0</equitySwapInvolved>
+            </transactionCoding>
+            <transactionAmounts>
+                <transactionShares><value>2,500</value></transactionShares>
+                <transactionPricePerShare><value>32.28</value></transactionPricePerShare>
+                <transactionAcquiredDisposedCode><value>A</value></transactionAcquiredDisposedCode>
+            </transactionAmounts>
+        </nonDerivativeTransaction>
+        <nonDerivativeHolding>
+            <securityTitle><value>Common Stock</value></securityTitle>
+        </nonDerivativeHolding>
+    </nonDerivativeTable>
+</ownershipDocument>
+</XML>
+</TEXT>
+</DOCUMENT>
+</SEC-DOCUMENT>

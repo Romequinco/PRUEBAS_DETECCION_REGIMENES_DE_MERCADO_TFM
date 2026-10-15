@@ -1,0 +1,22 @@
+{
+ "rows": [
+  {
+   "row": {
+    "Date": "2020-06-05 06:30:54 UTC",
+    "Article_title": "Titular inventado A",
+    "Stock_symbol": "AAA",
+    "Url": "https://noticias-falsas.example/1",
+    "Article": "None"
+   }
+  },
+  {
+   "row": {
+    "Date": "2020-06-03 06:45:20 UTC",
+    "Article_title": "Titular inventado B",
+    "Stock_symbol": "AAA",
+    "Url": "https://noticias-falsas.example/2",
+    "Article": "Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado Cuerpo inventado "
+   }
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "fuente": "aaii_sentiment",
+  "nombre": "AAII Investor Sentiment Survey (semanal, desde 1987)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.aaii.com/sentimentsurvey",
+  "acceso": "descarga",
+  "autenticacion": "socio (descarga)",
+  "coste": "0 €",
+  "licencia_y_terminos": "AAII: datos para socios; redistribución no permitida",
+  "cobertura_inicio": null,
+  "cobertura_fin": null,
+  "frecuencia": "semanal (jueves)",
+  "retraso_publicacion": "mismo día",
+  "formato": "xls",
+  "volumen_estimado": "< 1 MB",
+  "limites": "403 al robot (protección anti-bot / socios)",
+  "estado_sonda": "fallo",
+  "mediciones": {
+    "robots_permite": false,
+    "error": "robots.txt prohíbe o bloquea (401/403)"
+  },
+  "notas": [
+    "Bloqueado al robot: no se esquiva. Opciones: descarga manual por un socio o Nasdaq Data Link (pago).",
+    "Documentado: serie semanal desde 1987-07-24.",
+    "Alternativa abierta: NAAIM Exposure Index (csv público semanal)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

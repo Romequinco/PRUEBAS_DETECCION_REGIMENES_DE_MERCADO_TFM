@@ -1,0 +1,126 @@
+{
+  "fuente": "kalshi",
+  "nombre": "Kalshi (mercado de eventos regulado por la CFTC)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "risk",
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://docs.kalshi.com",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Kalshi API / Market Data Terms: datos de mercado públicos sin autenticación; uso no comercial",
+  "cobertura_inicio": "2021-06-30",
+  "cobertura_fin": "2026-09-16",
+  "frecuencia": "continua (velas de 1 min, 1 h y 1 día)",
+  "retraso_publicacion": "tiempo real (última operación hace 0.0 h); liquidación 4.07 h después de close_time (mediana, settlement_ts)",
+  "formato": "json",
+  "volumen_estimado": "1983 mercados en 7 series macro; velas diarias de 32 días ≈ 10.3 KB por mercado (mediana) -> ≈ 239.4 MB con un año de velas por mercado",
+  "limites": "lectura sin clave; /historical/markets hasta el corte 2026-08-15T00:00:00Z, después /markets?status=settled; cursor, 1000 por página",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "liquidez_por_anio": [
+      {
+        "anio": 2021,
+        "n_mercados": 15,
+        "volumen_contratos": 171282.0,
+        "n_mayor_100k": 0,
+        "n_series": 3
+      },
+      {
+        "anio": 2022,
+        "n_mercados": 232,
+        "volumen_contratos": 9997279.0,
+        "n_mayor_100k": 16,
+        "n_series": 6
+      },
+      {
+        "anio": 2023,
+        "n_mercados": 568,
+        "volumen_contratos": 28865848.0,
+        "n_mayor_100k": 39,
+        "n_series": 6
+      },
+      {
+        "anio": 2024,
+        "n_mercados": 399,
+        "volumen_contratos": 44538602.0,
+        "n_mayor_100k": 59,
+        "n_series": 7
+      },
+      {
+        "anio": 2025,
+        "n_mercados": 376,
+        "volumen_contratos": 373135116.0,
+        "n_mayor_100k": 170,
+        "n_series": 7
+      },
+      {
+        "anio": 2026,
+        "n_mercados": 393,
+        "volumen_contratos": 340919549.0,
+        "n_mayor_100k": 144,
+        "n_series": 6
+      }
+    ],
+    "n_liquidados": 1983,
+    "n_abiertos": 471,
+    "calibracion": {
+      "n": 40,
+      "n_con_precio": 37,
+      "inicio_historial_min": "2021-07-01",
+      "por_categoria": {
+        "macro:KXCPI": 8,
+        "macro:KXFED": 7,
+        "macro:KXGDP": 7,
+        "macro:KXCPIYOY": 6,
+        "macro:KXINXY": 4,
+        "macro:KXRECSSNBER": 4,
+        "macro:KXFEDDECISION": 4
+      },
+      "por_anio": {
+        "2021": 6,
+        "2022": 8,
+        "2023": 6,
+        "2024": 7,
+        "2025": 7,
+        "2026": 6
+      },
+      "brier_1d": 0.1343,
+      "brier_7d": 0.1199,
+      "brier_30d": 0.2282
+    },
+    "lag_liquidacion": {
+      "n": 1983,
+      "mediana_h": 4.07,
+      "p10_h": 0.36,
+      "p90_h": 10.68
+    },
+    "frescura_h": 0.0,
+    "corte": {
+      "market_positions_last_updated_ts": "2026-08-15T00:00:00Z",
+      "market_settled_ts": "2026-08-15T00:00:00Z",
+      "orders_updated_ts": "2026-09-30T00:00:00Z",
+      "trades_created_ts": "2026-08-15T00:00:00Z"
+    },
+    "series": [
+      "KXFED",
+      "KXFEDDECISION",
+      "KXCPIYOY",
+      "KXCPI",
+      "KXGDP",
+      "KXRECSSNBER",
+      "KXINXY"
+    ],
+    "bytes": 4934308,
+    "segundos": 8.3
+  },
+  "notas": [
+    "El histórico 2021-2024 está en /historical/markets bajo las series KX* (tickers antiguos FED-, CPI-, GDP-...).",
+    "volume_fp = contratos (cada uno paga 1 USD): en prediccion_calibracion, volumen_usd de Kalshi = contratos.",
+    "Precio de vela: último negociado; sin operaciones, punto medio bid/ask; si no, el previo."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

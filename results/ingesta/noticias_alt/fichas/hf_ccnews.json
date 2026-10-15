@@ -1,0 +1,80 @@
+{
+  "fuente": "hf_ccnews",
+  "nombre": "CC-NEWS limpio y deduplicado (stanford-oval/ccnews)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "equity",
+    "risk"
+  ],
+  "rag": "cajon",
+  "url": "https://huggingface.co/datasets/stanford-oval/ccnews",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "declarada en el Hub: None; Common Crawl Terms of Use; texto con copyright de cada medio: solo local",
+  "cobertura_inicio": "2016-08-24",
+  "cobertura_fin": "2024-06-30",
+  "frecuencia": "estático (instantánea)",
+  "retraso_publicacion": "rastreo: mediana 26.66 h tras published_date",
+  "formato": "gitattributes,parquet,md",
+  "volumen_estimado": "966.82 GB en 481 ficheros; filas=893240667",
+  "limites": "descarga HTTP del Hub (sin clave si no es gated); viewer: 100 filas por petición",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "hub": {
+      "gated": false,
+      "licencia": null,
+      "ficheros": 481,
+      "bytes": 966822270118,
+      "descargas_mes": 8360,
+      "modificado": "2024-08-31T17:28:13.000Z",
+      "configs_tarjeta": [
+        "default",
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024"
+      ],
+      "extensiones": {
+        "gitattributes": 1,
+        "parquet": 479,
+        "md": 1
+      }
+    },
+    "filas": 893240667,
+    "filas_por_config": {
+      "2016": 2129355,
+      "2017": 26428398,
+      "2018": 40318606,
+      "2019": 51532254,
+      "2020": 72235994,
+      "2021": 71355909,
+      "2022": 72716156,
+      "2023": 67039875,
+      "2024": 28393128
+    },
+    "fechas": "medidas (configs por año) y acotadas por la tarjeta",
+    "columnas": "requested_url,plain_text,published_date,title,tags,categories,author,sitename,image_url,language,language_score,responded_url,publisher,warc_path,crawl_date",
+    "tokens_mediana": 346,
+    "dominios_top": "tf1.fr,gympietimes.com.au,self.com,parkcitiespeople.com,srpressgazette.com",
+    "lag_published_a_crawl_h": {
+      "n": 15,
+      "mediana_h": 26.66,
+      "p10_h": 2.66,
+      "p90_h": 26.66
+    },
+    "errores": {}
+  },
+  "notas": [
+    "Configs por AÑO DE RASTREO (no de publicación): usar published_date ≤ crawl_date.",
+    "published_date es solo el día: el lag hasta crawl_date se mide desde las 00:00 UTC (cota superior).",
+    "Mejor relación coste/beneficio para 2016-2024: texto ya extraído, idioma y sitename; filtrar por medio e idioma fichero a fichero (pyarrow por row group)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

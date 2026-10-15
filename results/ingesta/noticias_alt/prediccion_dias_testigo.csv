@@ -1,0 +1,13 @@
+plataforma,dia,fecha,n_activos,techo,volumen_usd,max_volumen_usd,titular_top,cobertura
+polymarket,lehman,2008-09-15,0,50.0,0.0,0.0,,sin cobertura
+polymarket,elecciones_2016,2016-11-09,0,50.0,0.0,0.0,,sin cobertura
+polymarket,covid,2020-03-16,0,50.0,0.0,0.0,,sin cobertura
+polymarket,svb,2023-03-10,50,50.0,43995129.6,8828319.28,Which party wins 2024 US Presidential Election?,ok
+polymarket,aranceles,2025-04-07,50,50.0,8351043940.63,1712132663.96,NBA Champion,ok
+polymarket,hoy,2026-10-14,50,50.0,6673465584.15,1294018748.28,Democratic Presidential Nominee 2028,ok
+kalshi,lehman,2008-09-15,0,,0.0,0.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",sin cobertura
+kalshi,elecciones_2016,2016-11-09,0,,0.0,0.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",sin cobertura
+kalshi,covid,2020-03-16,0,,0.0,0.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",sin cobertura
+kalshi,svb,2023-03-10,434,,25726347.0,3444842.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",ok
+kalshi,aranceles,2025-04-07,133,,90260258.0,17739576.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",ok
+kalshi,hoy,2026-10-14,471,,26874729.0,4684176.0,"series macro KXFED,KXFEDDECISION,KXCPIYOY,KXCPI,KXGDP,KXRECSSNBER,KXINXY",ok

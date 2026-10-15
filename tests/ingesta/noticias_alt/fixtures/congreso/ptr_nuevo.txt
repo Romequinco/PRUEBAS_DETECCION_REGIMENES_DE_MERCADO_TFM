@@ -1,0 +1,43 @@
+P T R
+Clerk of the House of Representatives • Legislative Resource Center
+F I
+Name: Hon. Ana Ejemplo
+Status: Member
+State/District:ZZ01
+T
+ID Owner Asset Transaction
+Type
+Date Notification
+Date
+Amount Cap.
+Gains >
+$200?
+SP Empresa Inventada Uno Inc. (EIU)
+[ST]
+P 12/18/202312/19/2023$1,001 - $15,000
+F S: New
+S O: Cuenta IRA ficticia
+Compania Ficticia Dos Corp.
+Depositary Shares Series A
+(CFD$A) [ST]
+S (partial) 12/20/202312/21/2023$15,001 - $50,000
+F S: New
+Bono Municipal Imaginario [GS] P 12/22/202312/22/2023 $50,001 - $100,000
+F S: New
+D: Compra de prueba
+JT Holding Imaginaria Plc
+P 12/27/202312/28/2023Over $1,000,000
+Filing ID #20099901
+ID Owner Asset Transaction
+Type
+Date Notification
+Date
+Amount Cap.
+Gains >
+$200?
+Ordinary Shares (HIMG) [ST]
+F S: New
+Tercera Empresa Falsa (TEF) [ST]E 01/02/202401/03/2024$1,001 - $15,000
+F S: New
+* For the complete list of asset type abbreviations, please visit https://fd.house.gov/reference/asset-type-codes.aspx.
+Digitally Signed: Hon. Ana Ejemplo , 01/11/2024

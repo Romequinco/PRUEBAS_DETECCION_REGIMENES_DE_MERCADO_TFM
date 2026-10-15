@@ -1,0 +1,3 @@
+80000 abc http://data.gdeltproject.org/gdeltv2/20261014110000.export.CSV.zip
+90000 def http://data.gdeltproject.org/gdeltv2/20261014110000.mentions.CSV.zip
+5000000 ghi http://data.gdeltproject.org/gdeltv2/20261014110000.gkg.csv.zip

@@ -1,0 +1,57 @@
+{
+  "fuente": "sec_form4_insiders",
+  "nombre": "SEC Form 4 · operaciones de insiders (EDGAR)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "equity",
+    "risk"
+  ],
+  "rag": "serie",
+  "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "dominio público (SEC EDGAR); User-Agent con contacto; ≤10 peticiones/s",
+  "cobertura_inicio": "2008-09-15",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "diaria (≈1634 Form 4/día medido)",
+  "retraso_publicacion": "transacción -> publicación (aceptación, corte 16:00 ET): mediana 4.0 d, p90 5.0 d (límite legal de presentación 2 días hábiles desde 2002)",
+  "formato": "idx (anchos fijos) + txt SGML con XML ownershipDocument",
+  "volumen_estimado": "≈9.7 M Form 4 desde 2003-06 × 11 KB ≈ 102 GB (mejor el dataset trimestral DERA)",
+  "limites": "≤10 peticiones/s con User-Agent con contacto (aquí 5/s); sin clave",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "indices": 20,
+    "form4_por_dia_medio": 1634,
+    "form4_leidos": 302,
+    "con_xml": 302,
+    "transacciones": 716,
+    "codigos": {
+      "S": 218,
+      "A": 152,
+      "M": 107,
+      "P": 93,
+      "F": 57,
+      "D": 32,
+      "J": 25,
+      "C": 12,
+      "O": 10,
+      "G": 8,
+      "Z": 1,
+      "U": 1
+    },
+    "form4_con_compra_p_y_ticker": 63,
+    "lag_dias_mediana": 4.0,
+    "lag_dias_p90": 5.0,
+    "hora_aceptacion_mediana_et": 16.48,
+    "pct_aceptados_tras_cierre": 0.659,
+    "bytes_form4_medio": 10560
+  },
+  "notas": [
+    "fecha_publicacion = día de aceptación EDGAR si fue antes de las 16:00 ET; si no, el día hábil siguiente (la fecha del índice / FILED AS OF se guarda como fecha_presentacion). La fecha de transacción va como metadato.",
+    "El XML (ownershipDocument) existe desde 2003-06-30; antes, Form 4 en texto libre.",
+    "Señal típica: compras abiertas (código P), sobre todo varias de un mismo emisor (cluster buying); las ventas S son ruidosas (planes 10b5-1).",
+    "Muestra: 25 por día testigo y, en la sonda completa, búsqueda de compras P en 3 días hábiles tras cada día testigo (techo 400 XML)."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

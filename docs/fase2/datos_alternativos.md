@@ -1,5 +1,7 @@
 # Datos alternativos candidatos
 
+Resultados medidos de la sonda y semáforo de validez: [README del Tema 4](../../src/ingesta/noticias_alt/README.md).
+
 Candidatas a datos alternativos pedidas en la tutoría ([ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md) §2.2).
 Los detalles proceden de una primera consulta de documentación (octubre de 2026); las sondas del plan de datos ya
 midieron algunas (Polymarket, EWS, informes del Congreso) y sus conclusiones prevalecen sobre el estado «a investigar»

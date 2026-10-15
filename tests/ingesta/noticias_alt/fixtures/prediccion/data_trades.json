@@ -1,0 +1,16 @@
+[
+ {
+  "proxyWallet": "0xficticio",
+  "side": "BUY",
+  "asset": "111",
+  "conditionId": "0x01",
+  "size": 10,
+  "price": 0.42,
+  "timestamp": 1790000000,
+  "title": "Mercado ficticio",
+  "slug": "mercado-ficticio-1",
+  "outcome": "Yes",
+  "outcomeIndex": 0,
+  "transactionHash": "0xabc"
+ }
+]

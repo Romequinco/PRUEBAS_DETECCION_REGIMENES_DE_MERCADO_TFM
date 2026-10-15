@@ -1,0 +1,32 @@
+fichero,serie,fuente,inicio,fin,n,frecuencia,huecos,lag_publicacion,metodo,lag_mediano_regla_dias,valor_min,valor_max,valor_ultimo
+gpr_diario,gprd,gpr,1985-01-01,2026-10-13,15261,D,0,lunes hábil siguiente al día (D+1..D+7; festivo federal -> siguiente hábil),vintage_actual_revisable,4.0,0.0,1045.604,342.405
+gpr_diario,gprd_act,gpr,1985-01-01,2026-10-13,15261,D,0,lunes hábil siguiente al día (D+1..D+7; festivo federal -> siguiente hábil),vintage_actual_revisable,4.0,0.0,1627.428,444.55
+gpr_diario,gprd_threat,gpr,1985-01-01,2026-10-13,15261,D,0,lunes hábil siguiente al día (D+1..D+7; festivo federal -> siguiente hábil),vintage_actual_revisable,4.0,0.0,809.487,317.827
+gpr_diario,n10d,gpr,1985-01-01,2026-10-13,15261,D,0,lunes hábil siguiente al día (D+1..D+7; festivo federal -> siguiente hábil),vintage_actual_revisable,4.0,151.0,1416.0,416.0
+gpr_mensual,gpr,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,39.046,512.53,146.21
+gpr_mensual,gpra,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,28.455,854.075,144.288
+gpr_mensual,gprc_chn,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.07,2.475,1.188
+gpr_mensual,gprc_deu,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.082,2.662,0.49
+gpr_mensual,gprc_esp,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.017,1.15,0.094
+gpr_mensual,gprc_gbr,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.234,5.995,1.433
+gpr_mensual,gprc_isr,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.054,6.391,1.606
+gpr_mensual,gprc_rus,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.205,8.801,1.476
+gpr_mensual,gprc_ukr,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.0,8.705,1.087
+gpr_mensual,gprc_usa,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,0.751,13.229,3.91
+gpr_mensual,gprh,gpr,1900-01-01,2026-09-01,1521,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,21.812,484.188,136.797
+gpr_mensual,gprt,gpr,1985-01-01,2026-09-01,501,M,0,primer día hábil del mes siguiente,vintage_actual_revisable,31.0,36.686,403.714,173.087
+epu_diario_usa,epu_usa_diario,epu,1985-01-01,2026-10-13,15261,D,0,D+1,vintage_actual_revisable,1.0,3.32,1048.95,216.72
+epu_global_mensual,gepu_current,epu,1997-01-01,2026-07-01,355,M,0,último día del mes m+2 (publicación irregular),vintage_actual_revisable,91.0,47.589,620.883,241.69
+epu_global_mensual,gepu_ppp,epu,1997-01-01,2026-07-01,355,M,0,último día del mes m+2 (publicación irregular),vintage_actual_revisable,91.0,51.233,575.255,236.256
+cboe_skew,skew,cboe_skew,1990-01-02,2026-10-13,9247,B,6,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,101.23,183.12,154.74
+cboe_vix,vix_cierre,cboe_vix,1990-01-02,2026-10-13,9293,B,3,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,9.14,82.69,15.27
+cboe_vix,vix_maximo,cboe_vix,1990-01-02,2026-10-13,9293,B,3,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,9.31,89.53,15.61
+cboe_putcall_total,pc_total_calls,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,443244.0,6035199.0,2175006.0
+cboe_putcall_total,pc_total_puts,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,358654.0,6938258.0,2289715.0
+cboe_putcall_total,pc_total_ratio,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,0.55,1.82,1.05
+cboe_putcall_equity,pc_equity_calls,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,182169.0,3325895.0,916877.0
+cboe_putcall_equity,pc_equity_puts,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,111008.0,2020646.0,598296.0
+cboe_putcall_equity,pc_equity_ratio,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,0.32,1.34,0.65
+cboe_putcall_index,pc_index_calls,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,47194.0,3925628.0,783827.0
+cboe_putcall_index,pc_index_puts,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,72659.0,3304629.0,1180047.0
+cboe_putcall_index,pc_index_ratio,cboe_putcall,2006-11-01,2019-10-04,3253,B,2,D+1 hábil (fichero ~5 h tras el cierre),fichero_tras_cierre,1.0,0.35,3.5,1.51

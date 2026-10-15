@@ -1,0 +1,38 @@
+{
+ "cursor": "",
+ "markets": [
+  {
+   "ticker": "FED-23MAY-T5.00",
+   "event_ticker": "FED-23MAY",
+   "title": "Mercado Kalshi ficticio FED-23MAY-T5.00",
+   "open_time": "2023-03-01T14:00:00Z",
+   "close_time": "2023-05-03T17:55:00Z",
+   "result": "yes",
+   "volume_fp": "834466.00",
+   "settlement_ts": "2023-05-03T20:01:00Z",
+   "status": "finalized"
+  },
+  {
+   "ticker": "FED-23MAY-T5.25",
+   "event_ticker": "FED-23MAY",
+   "title": "Mercado Kalshi ficticio FED-23MAY-T5.25",
+   "open_time": "2023-03-01T14:00:00Z",
+   "close_time": "2023-05-03T17:55:00Z",
+   "result": "no",
+   "volume_fp": "120000.00",
+   "settlement_ts": "2023-05-03T20:01:00Z",
+   "status": "finalized"
+  },
+  {
+   "ticker": "CPI-21JUL-T0.5",
+   "event_ticker": "CPI-21JUL",
+   "title": "Mercado Kalshi ficticio CPI-21JUL-T0.5",
+   "open_time": "2021-07-02T14:00:00Z",
+   "close_time": "2021-08-11T12:25:00Z",
+   "result": "no",
+   "volume_fp": "500.00",
+   "settlement_ts": "2021-08-11T13:00:00Z",
+   "status": "finalized"
+  }
+ ]
+}

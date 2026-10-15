@@ -1,0 +1,53 @@
+{
+  "fuente": "gdelt_gkg",
+  "nombre": "GDELT Global Knowledge Graph 2.1 (tono, temas, entidades, titulares)",
+  "tema": "noticias_alt",
+  "agentes": [
+    "macro",
+    "risk",
+    "equity"
+  ],
+  "rag": "cajon",
+  "url": "https://www.gdeltproject.org/data.html#rawdatafiles",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "GDELT: uso libre, incluida reutilización y redistribución, citando a GDELT Project (https://www.gdeltproject.org/about.html#termsofuse); las URLs apuntan a contenido con copyright",
+  "cobertura_inicio": "2015-02-18",
+  "cobertura_fin": "2026-10-14",
+  "frecuencia": "15 min",
+  "retraso_publicacion": "captura ≈ 2.33 h después de la hora del medio (mediana, PAGE_PRECISEPUBTIMESTAMP); fichero publicado ≈15 min tras la captura",
+  "formato": "csv tabulado en zip",
+  "volumen_estimado": "≈0.69 GB zip/día medidos -> ≈2.9 TB 2015-hoy (sin contar *.translation.gkg)",
+  "limites": "sin límite documentado; un zip por cuarto de hora (descarga masiva = TB)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "ficheros": 28,
+    "mb_zip_por_fichero": 7.21,
+    "mb_descargados": 201.74,
+    "articulos_por_fichero": 1784.7,
+    "medios_por_fichero": 402.6,
+    "pct_con_titular": 78.4,
+    "pct_con_pubts": 48.6,
+    "lag_pub_captura_mediana_h": 2.33,
+    "ultimo_fichero": "2026-10-14T13:15:00+00:00",
+    "tono_por_dia": {
+      "2016-11-09": -0.292,
+      "2020-03-16": -1.28,
+      "2023-03-10": -0.618,
+      "2025-04-07": -0.672,
+      "2026-10-14": -0.828
+    },
+    "dias_sin_titular": [
+      "2016-11-09"
+    ]
+  },
+  "notas": [
+    "Sin cobertura en la muestra: ['lehman'].",
+    "78.4 % de filas con <PAGE_TITLE>: titular sin descargar la página (ninguno en ['2016-11-09']: el campo aún no existía).",
+    "Ficheros con huecos: algunos cuartos de hora traen muy pocas filas (caídas de GDELT).",
+    "V2Tone: tono medio, % positivo, % negativo, polaridad, densidad, autorreferencia, nº palabras.",
+    "Feed principal solo en inglés; el traducido (≈65 idiomas) va en *.translation.gkg.csv.zip."
+  ],
+  "fecha_sonda": "2026-10-14"
+}

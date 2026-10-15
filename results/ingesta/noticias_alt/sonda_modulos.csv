@@ -1,0 +1,13 @@
+modulo,ok,segundos,error,n_peticiones,n_fichas,n_tablas,n_series,n_jsonl
+ccnews,True,22.36,,12,1,3,0,1
+hf_datasets,True,8.33,,14,5,3,0,0
+prensa_api,True,0.0,,0,2,0,0,0
+gdelt,True,151.73,,73,3,5,1,2
+wikipedia,True,0.56,,36,2,4,1,1
+rss,True,15.63,,42,3,2,0,2
+social,True,13.35,,128,7,3,2,1
+congreso,True,15.44,,61,5,5,2,0
+insiders,True,7.99,,323,2,3,0,0
+prediccion,True,13.27,,305,3,8,5,0
+indices,True,23.49,,27,5,6,9,0
+ews,True,5.95,,4,1,5,3,0

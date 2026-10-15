@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Feed INVENTADO para tests (formato Atom real; textos ficticios) -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ejemplo Atom</title>
+  <entry>
+    <title>Les marchés imaginaires reculent</title>
+    <link href="https://atom.example.fr/eco/marches-reculent"/>
+    <published>2020-03-15T08:00:00+01:00</published>
+    <summary>EXTRACTO-SECRETO Les indices fictifs ont baissé dans la séance de la journée pour la banque.</summary>
+  </entry>
+  <entry>
+    <title>La banque centrale fictive agit</title>
+    <link href="https://atom.example.fr/eco/banque-agit"/>
+    <updated>2020-03-16T12:00:00Z</updated>
+    <summary>EXTRACTO-SECRETO Une mesure inventée pour le test.</summary>
+  </entry>
+</feed>
