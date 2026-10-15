@@ -36,6 +36,8 @@ La lectura completa de la referencia y las decisiones de adaptación están en [
 | [13. Literatura de cartera y CIO](#cartera) | Autores/instituciones y EUR-Lex, ESMA, CNMV | Mixto en literatura; normativa propuesta gratuita | Alta: selección abierta desde el piloto |
 | [14. La literatura llega tarde](#literatura-tarde) | Historial de versiones y evidencia de publicación | Metadatos gratuitos; análisis propio | Opcional: evaluación histórica posterior |
 
+**Escaneo histórico: 15/10/2026.** Cada apartado añade «Historia y recuperabilidad» con evidencia oficial o del autor. Los años miden alcance aproximado hasta 2026, no continuidad comprobada. «Al menos» señala la edición antigua localizada; los HTTP citados corresponden a la sonda guardada, no a una nueva descarga masiva. Recuperable indica la ruta disponible; completar el archivo y cargar la base siguen pendientes.
+
 ## Configuración común
 
 Los apartados comparten únicamente la configuración y las funciones de medición. Cada apartado se puede ejecutar por separado después de esta celda. `CORTE_UTC` incluye zona horaria; el corte es una elección del análisis, no la hora de descarga.
@@ -130,6 +132,11 @@ Los PDFs se leen hasta el límite configurado; las tablas conservan filas y unid
 
 **Calidad y tiempo:** preferir HTML para extraer párrafos y conservar el PDF original cuando exista. Las actas actuales suelen publicarse unas tres semanas después; las transcripciones completas se publican con aproximadamente cinco años de retraso. Usar la fecha efectiva de cada publicación: los “+21 días” y “+6 años” de la captura no son reglas universales para todo el histórico. El archivo enlazado documenta el régimen de publicación.
 
+### Historia y recuperabilidad
+
+- **Historia:** [actas históricas desde 1936](https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm) (90 años de alcance hasta 2026), actas modernas desde 1993, comunicados desde 1994 y Beige Book desde 1983. [Discursos digitales al menos desde 1996](https://www.federalreserve.gov/newsevents/speech/1996speech.htm); ruedas de prensa desde 2011.
+- **Recuperable: sí**, HTML/PDF por año y reunión; la sonda guardada descargó muestras. Las transcripciones tienen retraso de publicación y los documentos antiguos pueden requerir OCR. Falta recorrer y reconciliar todo el archivo.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Comunicado, actas, rueda de prensa, Beige Book, transcripción histórica y discurso son series distintas. En las actas se cruza el identificador oficial de la reunión con la etiqueta **Released** del calendario; no se suma una constante de 21 días. Un aviso `For release at` con EST/EDT permite conservar la hora real del comunicado. La publicación de una transcripción histórica no se obtiene sumando cinco años ni usando el año de su carpeta.
@@ -162,6 +169,11 @@ resumen_01 = mostrar_apartado(sonda, 1, '1. Fed')
 | Discursos | [Speeches](https://www.ecb.europa.eu/press/key/html/index.en.html) | Sí | HTML/PDF según documento |
 
 **Calidad y tiempo:** guardar el idioma original y vincular traducciones como versiones relacionadas. Las accounts están disponibles después de la reunión; usar la fecha real de publicación, sin imponer “+28 días” a todas las ediciones. La fecha de reunión identifica el evento; la fecha de publicación decide cuándo podía conocerlo el pipeline.
+
+### Historia y recuperabilidad
+
+- **Historia:** [comparecencias desde junio de 1998](https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/1998/html/is980609.en.html) (28 años de alcance); decisiones y discursos requieren inventario por familia. Las [accounts empiezan con la reunión de enero de 2015](https://www.ecb.europa.eu/press/pr/date/2014/html/pr141218.en.html) (11 años), sin serie equivalente anterior.
+- **Recuperable: sí**, HTML/PDF; muestras descargadas en la sonda guardada. Hay que recorrer años/listados y comprobar por separado la presencia de Q&A y traducciones.
 
 ### Sonda: adquisición y mediciones
 
@@ -198,6 +210,12 @@ resumen_02 = mostrar_apartado(sonda, 2, '2. BCE')
 
 **Calidad y tiempo:** en BoJ, las opiniones y las actas son documentos diferentes. Su [explicación oficial del procedimiento](https://www.boj.or.jp/en/about/education/oshiete/seisaku/b20.htm) vincula la publicación de actas a su aprobación en una reunión posterior. El “+44 días” de la captura no debe convertirse en retraso fijo. Las traducciones al inglés pueden aparecer después del original japonés.
 
+### Historia y recuperabilidad
+
+- **BoE:** [Inflation Report desde febrero de 1993](https://www.bankofengland.co.uk/sitemap/inflation-report) (33 años) y [actas MPC desde junio de 1997](https://www.bankofengland.co.uk/sitemap/minutes) (29 años). El informe actual debe enlazarse con su serie predecesora.
+- **BoJ:** [actas desde 1998](https://www.boj.or.jp/en/mopo/mpmsche_minu/minu_all/index.htm) (28 años), [Outlook desde octubre de 2000](https://www.boj.or.jp/en/mopo/outlook/index.htm) y [Summary of Opinions desde 2015](https://www.boj.or.jp/en/mopo/mpmsche_minu/past.htm). Inicio de discursos y decisiones por certificar.
+- **Recuperable: sí**, HTML/PDF por año; muestras de ambos bancos descargadas. La descarga completa sigue pendiente.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** BoE y BoJ conservan filas distintas. En BoJ se leen por separado las columnas **Date of MPM** y **Release Schedule** del calendario: Summary of Opinions y Minutes pueden salir en días distintos. No se interpreta la fecha de reunión codificada en el nombre del PDF como publicación. La fecha del texto inglés no se presume idéntica a la del original japonés.
@@ -230,6 +248,11 @@ resumen_03 = mostrar_apartado(sonda, 3, '3. BoE y BoJ')
 | Informe institucional anual | [Annual Report](https://www.bis.org/about/areport/index.htm) | Sí | Informe de actividad institucional |
 
 **Calidad:** el paquete es especialmente útil para empezar sin reconstruir miles de páginas. BIS advierte que la cobertura no es exhaustiva y que la conversión automática puede introducir errores. Validar muestras contra los originales y guardar la fecha/versión de la descarga. Annual Economic Report y Annual Report tienen objetivos diferentes: catalogarlos por separado. No asumir que todas las publicaciones BIS comparten la licencia del paquete de discursos.
+
+### Historia y recuperabilidad
+
+- **Historia:** [discursos desde 1996](https://www.bis.org/speeches/central-bank/download) (30 años); [Annual Report desde 1931](https://www.bis.org/publ/arpdf/archive/ar1931_en.pdf) (95 años). El [Annual Economic Report es un título separado desde 2018](https://www.bis.org/publications/aer); el análisis económico anterior está en el Annual Report.
+- **Recuperable: sí**, discursos en paquete CSV comprimido completo o por año; informes en PDF. La sonda guardada recuperó muestras. El paquete admite uso no comercial y BIS advierte que su cobertura no es exhaustiva.
 
 ### Sonda: adquisición y mediciones
 
@@ -285,6 +308,24 @@ resumen_04 = mostrar_apartado(sonda, 4, '4. Discursos BIS y Annual Report')
 
 **Calidad:** registrar país, institución, idioma y tipo de documento. Banco de España pertenece al Eurosistema: las decisiones monetarias del euro se obtienen del BCE; una traducción o republicación no es una decisión adicional. Para discursos internacionales, BIS es una alternativa gratuita útil, con cobertura parcial. Preferir descargas o feeds oficialmente ofrecidos antes de desarrollar extracción de páginas; no presuponer que todos ofrecen JSON/RSS/API.
 
+### Historia y recuperabilidad
+
+El inicio localizado varía por serie; «al menos» identifica una edición antigua comprobada, no el primer documento de toda la institución.
+
+| Banco | Historia localizada | Recuperación |
+|---|---|---|
+| BCB | [Actas al menos desde 1999](https://www.bcb.gov.br/publicacoes/atascopom/23061999); [informes desde 1999](https://www.bcb.gov.br/publicacoes/rpm) (27 años) | PDF/HTML; muestras sí, descubrimiento de comunicados pendiente. |
+| BoC | [MPR desde mayo de 1995](https://www.bankofcanada.ca/1995/05/may-1995/) (31 años); [deliberaciones desde 2023](https://www.bankofcanada.ca/2023/02/summary-governing-council-deliberations-fixed-announcement-date-january-25-2023/) | Sí; archivo antiguo también en repositorio institucional. |
+| SNB | [Decisión localizada en diciembre de 1999](https://www.snb.ch/en/publications/communication/press-releases/1999/pre_19991210) (al menos 27 años) | Sí, HTML/PDF; inicio completo pendiente. |
+| Riksbank | [Actas documentadas desde 1999](https://archive.riksbank.se/Upload/Dokument_riksbank/Kat_publicerat/PoV_sve/eng/1999/qr99_3.pdf) (27 años); [Inflation Report desde 1993](https://www.riksbank.se/globalassets/media/rapporter/working-papers/2023/no.-429-monetary-policy-in-sweden-after-the-end-of-bretton-woods.pdf) | Sí; combinar portal actual y archivo anterior. |
+| Norges | [Inflation Report localizado en 1996](https://www.norges-bank.no/contentassets/ab5ac95feb4c4a34a8f3fdb14898f211/ir-1996-03-en.pdf) (al menos 30 años) | Sí; informes antiguos también en repositorio. |
+| RBNZ | [MPS documentado desde abril de 1990](https://www.rbnz.govt.nz/-/media/fa029fd84299459bba8f21a72f658607.ashx?sc_lang=en) (36 años de serie) | Parcial: sonda guardada con HTTP 403; archivo descargable completo pendiente. |
+| RBI | [MPR documentado en 2014](https://www.rbi.org.in/scripts/BS_ViewBulletin.aspx?Id=22120); [MPC desde 2016](https://systemhealth.rbi.org.in/Scripts/PublicationsView.aspx_id%3D17385.html) | Muestras sí; inicio de discursos y recorrido histórico pendientes. |
+| Banxico | [Informes desde 2000](https://www.banxico.org.mx/publicaciones-y-prensa/informes-trimestrales/informes-trimestrales-precios.html) (26 años); [minutas desde 2011](https://www.banxico.org.mx/publicaciones-y-prensa/minutas-de-las-decisiones-de-politica-monetaria/minutas-politica-monetaria-ta.html) | Sí, PDFs; anuncios con inicio por certificar. |
+| Banco de España | [Estabilidad financiera desde noviembre de 2002](https://www.bde.es/wbe/es/publicaciones/estabilidad-financiera-politica-macroprudencial/informe-estabilidad-financiera/) (24 años); [proyecciones localizadas en 2009](https://www.bde.es/f/webbde/SES/Secciones/Publicaciones/InformesBoletinesRevistas/BoletinEconomico/09/Mar/Ficheros/art2.pdf) | Sí; primer año de proyecciones/documentos ocasionales por certificar. |
+| RBA | [SMP desde 1997](https://www.rba.gov.au/publications/smp/) (29 años); [actas de reuniones desde octubre de 2006, publicadas desde diciembre de 2007](https://www.rba.gov.au/monetary-policy/rba-board-minutes/2006/index.html) | Parcial: archivos oficiales, pero HTTP 403 en la sonda guardada. |
+| PBoC | [Informe monetario localizado en 2002](https://www.pbc.gov.cn/english/130721/2025080815062678929/index.html) (al menos 24 años) | Parcial: PDF de 2025 recuperado; archivo antiguo/idiomas por inventariar. |
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Cada banco y cada tipo conserva su propia fila en tablas y gráficos. Se consulta la edición o el listado indicado; el modo ampliado no reconstruye todo el archivo de esos bancos. Un PDF sin fecha explícita, un portal JavaScript o un bloqueo HTTP queda pendiente, sin inventar retrasos comunes. Banco de España se mantiene como fuente de análisis del Eurosistema; sus documentos no se cuentan como otra decisión monetaria del BCE.
@@ -321,6 +362,12 @@ resumen_05 = mostrar_apartado(sonda, 5, '5. Otros bancos centrales')
 
 **Tiempo:** preservar cada edición o vintage. Una serie revisada hoy no reproduce lo conocido en 2008; una proyección WEO tampoco es un dato observado. Conservar unidad, país, periodo, condición observado/proyectado y edición.
 
+### Historia y recuperabilidad
+
+- **Banco Mundial:** [GEP desde 1991](https://thedocs.worldbank.org/en/doc/4aa0b654ecdbaf8302d5901aaada3fbf-0350012021/) (35 años), PDFs recuperables; las tablas históricas deben verificarse por edición.
+- **FMI:** [WEO publicado desde mayo de 1980](https://www.imf.org/external/pubs/ft/history/2001/ch05.pdf) (46 años); [vintages de la base desde abril de 1999 y observaciones desde 1980](https://www.imf.org/en/Publications/WEO/frequently-asked-questions). Recuperación automática pendiente: la sonda guardada recibió HTTP 403.
+- **OCDE:** [Economic Outlook desde 1967](https://www.oecd.org/en/publications/oecd-economic-outlook-volume-1967-issue-1_eco_outlook-v1967-1-en.html) (59 años), ediciones digitales recuperables; muestra de 2025 descargada. Año del dato y año de publicación se conservan separados.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Texto y datos de GEP, WEO y Economic Outlook tienen filas distintas. El periodo de una cifra y su condición observado/proyectado no son publicación. DataMapper sirve datos actuales revisables: sin vintage acreditado no hay point-in-time. Los anexos GEP consultados no heredan la fecha de una edición distinta.
@@ -355,6 +402,11 @@ resumen_06 = mostrar_apartado(sonda, 6, '6. Organismos: Banco Mundial, FMI WEO y
 **Calidad y tiempo:** una etiqueta de sentimiento es una interpretación, no una afirmación oficial del banco. Registrar quién anotó, método y versión. Si un dataset contiene `meeting_date` pero no evidencia de publicación, esa fecha no basta para TimeGate. Usarlo como semilla y reconstruir la disponibilidad desde el original. No atribuir CC BY a todos los datasets de una plataforma.
 
 Para la biblioteca general, aceptar textos cuya procedencia, licencia y extracción se hayan validado aunque su fecha exacta sea desconocida. Reconstruir la disponibilidad precisa solo cuando haga falta para el modo histórico; no dejar estos corpus fuera únicamente por ese dato ausente.
+
+### Historia y recuperabilidad
+
+- **Historia declarada:** [aufklarer](https://huggingface.co/datasets/aufklarer/central-bank-communications), fechas de evento visibles **1995–2026** (31 años de alcance); [FOMC anotado](https://aclanthology.org/2023.acl-long.368.pdf), material original **1996–2022**, con selección de frases; [istat-ai](https://huggingface.co/datasets/istat-ai/cb-speeches), discursos **1996–septiembre de 2024**. No acreditan por sí solos la publicación de cada versión.
+- **Recuperable:** archivos de los dos primeros accesibles; istat exige aceptar condiciones y la sonda guardada recibió HTTP 401. El [Beige Book oficial empieza en 1983](https://www.federalreserve.gov/monetarypolicy/fomc_historical.htm); no hay un dataset HF de Beige Book identificado en este inventario.
 
 ### Sonda: adquisición y mediciones
 
@@ -391,6 +443,19 @@ resumen_07 = mostrar_apartado(sonda, 7, '7. Datasets abiertos: Hugging Face, FOM
 
 **Calidad:** conservar gráficos y referencias a tablas junto al texto. “Estabilidad financiera” agrupa series distintas: no tratar un informe anual OFR y un FSR semestral como observaciones idénticas. Deduplicar informe completo y capítulos, sin perder su relación. Los recuentos de la captura no representan necesariamente todo el archivo actual.
 
+### Historia y recuperabilidad
+
+| Serie | Historia y alcance hasta 2026 | Recuperable |
+|---|---|---|
+| Fed FSR | [Desde noviembre de 2018](https://www.federalreserve.gov/newsevents/speech/powell20181128a.htm), 8 años aproximados | Sí, HTML/PDF. |
+| BCE FSR | [Desde diciembre de 2004](https://www.ecb.europa.eu/press/key/date/2005/html/sp050531_1.en.html), 22 años aproximados | Sí, informes/capítulos. |
+| BoE | [Review desde 1996](https://www.bankofengland.co.uk/-/media/boe/files/financial-stability-report/1996/autumn-1996.pdf), 30 años; enlazar con Report | Sí, PDF. |
+| ESRB | [Annual Report 2011 y Risk Dashboard desde 2012](https://www.esrb.europa.eu/pub/pubbydate/2012/html/index.en.html), 14–15 años | Sí; informes temáticos con inicio variable. |
+| OFR | [Annual Report desde julio de 2012](https://www.financialresearch.gov/annual-reports/), 14 años | Sí, PDF. |
+| FSB | [Documentos al menos desde 2009](https://www.fsb.org/publications/?dps_paged=89&mt_page=49&policy_=), 17 años; hay materiales del FSF predecesor | Sí; inicio exacto del archivo por certificar. |
+
+La sonda guardada recuperó muestras de las seis instituciones; no certifica continuidad ni descarga íntegra de esos periodos.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Fed, BCE, BoE, ESRB, OFR y FSB conservan series separadas. Fecha de edición, fin del periodo analizado, corte de datos y publicación no se intercambian. Se miden páginas, palabras y tamaño; un informe que exceda el límite de páginas se señala como extracción parcial. Los gráficos no atribuyen igual frecuencia a todas las instituciones.
@@ -421,6 +486,11 @@ resumen_08 = mostrar_apartado(sonda, 8, '8. Estabilidad financiera')
 | Working Papers | [BIS Working Papers](https://www.bis.org/publications/working-paper) | Sí | Catálogo y PDFs individuales |
 
 **Calidad y tiempo:** separar el informe trimestral de sus artículos y vincularlos con un documento padre. Un Working Paper no equivale automáticamente a un artículo revisado por una revista. Guardar la versión y el número de la serie. Para TimeGate, contrastar la fecha de lanzamiento con la portada y la ficha: la fecha de modificación de una página migrada puede ser posterior a la publicación original.
+
+### Historia y recuperabilidad
+
+- **Historia:** [Working Paper n.º 1, abril de 1980](https://www.bis.org/publ/work1.htm) (46 años); Quarterly Review localizado [al menos en agosto de 1996](https://www.bis.org/publ/r_qa9608.pdf) (anexo estadístico) y [noviembre de 1996](https://www.bis.org/publ/r_qt9611.htm) (edición). El inicio absoluto de QR no queda certificado.
+- **Recuperable: sí**, fichas y PDFs por número/edición. La sonda guardada recuperó muestras, pero un enlace de artículo devolvió HTTP 404; hay que reconciliar enlaces antiguos y verificar texto completo frente a resumen.
 
 ### Sonda: adquisición y mediciones
 
@@ -455,6 +525,11 @@ resumen_09 = mostrar_apartado(sonda, 9, '9. BIS Quarterly Review y Working Paper
 **Calidad y acceso:** la captura marca “BLOQUEADA” por WAF; eso describe un obstáculo de adquisición, no un precio. Si falla la descarga automática, usar el enlace oficial al PDF o descarga manual con registro de procedencia. No es necesario empezar comprando el informe impreso. Una traducción de un resumen ejecutivo no sustituye el informe completo en inglés.
 
 **Tiempo:** ciertos registros de ediciones antiguas pueden reflejar la incorporación al portal. Comprobar fecha original de edición/lanzamiento y conservar evidencia; no usar sin más la fecha reciente de la ficha migrada.
+
+### Historia y recuperabilidad
+
+- **Historia:** GFSR localizado desde [marzo de 2002](https://www.imf.org/-/media/websites/imf/imported-flagship-issues/external/pubs/ft/gfsr/2002/01/pdf/_chp1pdf.pdf) (24 años de alcance hasta 2026). Las ediciones ofrecen capítulos y materiales asociados.
+- **Recuperable, con acceso automático pendiente:** existen PDFs oficiales históricos, pero las tres rutas de la sonda guardada devolvieron HTTP 403. Usar una ruta oficial accesible o descarga manual; no se ha demostrado la recuperación automática completa ni la disponibilidad de todos los anexos.
 
 ### Sonda: adquisición y mediciones
 
@@ -493,6 +568,11 @@ resumen_10 = mostrar_apartado(sonda, 10, '10. FMI Global Financial Stability Rep
 
 **Alcance:** la imagen no aporta la bibliografía de sus 386 papers/37 crisis. No se puede afirmar que se haya localizado ese conjunto exacto. Antes de recolectarlo, definir crisis, criterios de inclusión y lista de referencias. Deduplicar por DOI y conservar separadas las versiones que cambian resultados.
 
+### Historia y recuperabilidad
+
+- **Historia:** no hay un inicio único del corpus. Las series de búsqueda incluyen [BIS desde 1980](https://www.bis.org/publ/work1.htm), [BCE desde 1999](https://www.ecb.europa.eu/press/pr/date/1999/html/pr990602_2.en.html) y [NBER desde 1973](https://www.nber.org/news/working-paper-series-crosses-30000-mark). Son fechas de las series, no cobertura demostrada de papers de crisis.
+- **Recuperable: parcial:** textos institucionales/arXiv y metadatos accesibles; NBER/editoriales según acceso. En la sonda guardada SSRN dio HTTP 403 y Unpaywall quedó pendiente de email. Sin la bibliografía de los 386 papers no puede fijarse su rango ni porcentaje recuperable.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Texto institucional, preprint, ficha SSRN/NBER, metadatos Crossref y copia localizada por Unpaywall tienen registros independientes. Crossref conserva online/print por separado; no acredita acceso al PDF. arXiv fija el documento a v1. Unpaywall localiza acceso abierto actual, pero no demuestra cuándo se abrió esa copia. La bibliografía completa de la captura sigue pendiente.
@@ -528,6 +608,11 @@ resumen_11 = mostrar_apartado(sonda, 11, '11. Papers de crisis')
 **Tiempo:** una crisis identificada retrospectivamente en una base publicada en 2026 no era una etiqueta disponible para operar en 2008. Separar el catálogo ex post para evaluación de los indicadores y documentos disponibles en cada fecha. Reconciliar diferencias de definición entre fuentes; no fusionar episodios solo por compartir año.
 
 En consulta general, el análisis retrospectivo es conocimiento útil para los agentes y puede incorporarse con su metodología y procedencia. La restricción de disponibilidad anterior al evento se reserva a backtests o simulaciones históricas.
+
+### Historia y recuperabilidad
+
+- **Historia de los datos:** [ESRB original: 1970–2016](https://www.esrb.europa.eu/pub/pdf/occasional/esrb.op13.en.pdf), con [actualización publicada en diciembre de 2023](https://www.esrb.europa.eu/pub/financial-crises/html/index.en.html) cuyo extremo final debe leerse en el fichero; [FMI: 1970–2025](https://www.imf.org/en/publications/wp/issues/2026/05/14/systemic-banking-crises-database-1970-2025-576036); [Macrohistory desde 1870](https://www.macrohistory.net/database/) (más de 150 años, según variable/versión).
+- **Recuperable:** ESRB y Macrohistory ofrecen ficheros completos y la sonda guardada leyó muestras; FMI requiere resolver HTTP 403 o descarga manual. Son periodos de observaciones/episodios, no fechas de publicación. Las huellas y familias se construyen después.
 
 ### Sonda: adquisición y mediciones
 
@@ -565,6 +650,11 @@ resumen_12 = mostrar_apartado(sonda, 12, '12. Huellas de crisis')
 
 **Tiempo:** conservar versiones históricas de normativa, guías y literatura. Un texto actualizado no representa automáticamente las reglas o conocimientos disponibles años antes; los datasets empíricos también pueden sufrir revisiones.
 
+### Historia y recuperabilidad
+
+- **Historia:** referencia de cartera de **1952** en el inventario; [factores French mensuales desde julio de 1926 hasta agosto de 2026](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library/f-f_factors.html) (100 años de datos); [MiFID II de 2014](https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32014L0065). ESMA/CNMV se recuperan por edición, sin inicio global certificado.
+- **Recuperable: parcial:** ZIP de factores y PDFs ESMA/CNMV accesibles en la sonda guardada; EUR-Lex respondió vacío y la literatura depende del acceso al texto. Los factores actuales están revisados. Falta la bibliografía para certificar las 34 + 20 referencias originales.
+
 ### Sonda: adquisición y mediciones
 
 **Medición específica.** Literatura, factores empíricos y normativa tienen filas distintas. MiFID II requiere distinguir publicación, entrada en vigor, aplicación y versión consolidada; el extractor solo registra la aplicación cuando encuentra una frase explícita. La traducción ESMA conserva su propia versión. Los factores de French actuales no son un vintage histórico; su mes de observación no se usa como publicación.
@@ -601,6 +691,11 @@ resumen_13 = mostrar_apartado(sonda, 13, '13. Literatura de cartera y CIO')
 **Regla:** incluir solo la versión cuya disponibilidad pública anterior o igual al corte esté respaldada por evidencia. Una copia encontrada hoy no prueba que pudiera descargarse entonces. Si falta la fecha, marcar “incierta” y excluir de la evaluación histórica estricta hasta resolverla; no inventar un retraso medio.
 
 Para comprobar “18 de 77 disponibles el 15-09-2008”, primero necesitamos los 77 identificadores y su historial. Tampoco se ha verificado el “+1,6 años” de la imagen. Informar denominador, tratamiento de versiones y casos inciertos antes de presentar esos valores como resultado.
+
+### Historia y recuperabilidad
+
+- **Historia:** sin rango global hasta disponer de la bibliografía y sus versiones. Como evidencia concreta, [arXiv 0905.0220v1 se publicó el 02/05/2009 a las 17:34:38 UTC](https://arxiv.org/abs/0905.0220v1), después del corte ilustrativo de 2008; no es el primer paper de todo el corpus.
+- **Recuperable: parcial:** arXiv permite enlazar versión, fecha y PDF; Crossref aporta metadatos. SSRN y Unpaywall siguen con las limitaciones indicadas en el apartado 11. Los recuentos y retrasos se calculan después, no son una descarga histórica independiente.
 
 ### Sonda: adquisición y mediciones
 
