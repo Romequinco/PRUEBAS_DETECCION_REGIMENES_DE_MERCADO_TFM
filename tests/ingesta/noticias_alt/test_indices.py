@@ -11,6 +11,20 @@ import pytest
 from ingesta.noticias_alt import base, indices
 from ingesta.noticias_alt.muestra import DiaTestigo
 
+
+def _hay(modulo: str) -> bool:
+    try:
+        __import__(modulo)
+    except ImportError:
+        return False
+    return True
+
+
+# GPR (.xls) y EPU global (.xlsx) necesitan xlrd y openpyxl (requirements/ingesta-noticias_alt.txt); la CI
+# solo instala [dev]: sin ellas, estos tests se saltan en vez de fallar.
+requiere_xlrd = pytest.mark.skipif(not _hay("xlrd"), reason="falta xlrd (requirements/ingesta-noticias_alt.txt)")
+requiere_openpyxl = pytest.mark.skipif(not _hay("openpyxl"), reason="falta openpyxl (requirements/ingesta-noticias_alt.txt)")
+
 FX = Path(__file__).parent / "fixtures" / "indices"
 
 RUTAS = {
@@ -45,6 +59,7 @@ def sin_robots(monkeypatch):
 
 # --------------------------------------------------------------------------- parseo
 
+@requiere_xlrd
 def test_leer_gpr_diario_quita_metadatos():
     df = indices.leer_gpr((FX / "gpr_diario.xlsx").read_bytes())
     assert isinstance(df.index, pd.DatetimeIndex) and df.index.is_monotonic_increasing
@@ -53,6 +68,7 @@ def test_leer_gpr_diario_quita_metadatos():
     assert df.at[pd.Timestamp("2023-03-10"), "GPRD"] == pytest.approx(113.444)
 
 
+@requiere_xlrd
 def test_leer_gpr_mensual():
     df = indices.leer_gpr((FX / "gpr_mensual.xlsx").read_bytes())
     assert df.index.min() == pd.Timestamp("2022-01-01") and "GPRC_ESP" in df.columns
@@ -67,6 +83,7 @@ def test_leer_csv_cboe_con_aviso_legal_y_espacios():
     assert sk.index.min() == pd.Timestamp("2023-02-01")
 
 
+@requiere_openpyxl
 def test_leer_epu_diario_y_global_sin_cita():
     s = indices.leer_epu_diario("day,month,year,daily_policy_index\n1,1,1985,103.83\n2,1,1985,296.43\n")
     assert s.index[0] == pd.Timestamp("1985-01-01") and s.iloc[1] == pytest.approx(296.43)
@@ -146,6 +163,7 @@ def test_tabla_testigo_causal_solo_usa_lo_publicado():
     assert base.a_fecha_publicacion(larga, "2023-03-13", excluir_revisables=True).empty
 
 
+@requiere_xlrd
 def test_tabla_larga_valida_y_vista_timegate():
     df = indices.leer_gpr((FX / "gpr_diario.xlsx").read_bytes())
     larga = indices.a_larga(df, {"GPRD": "gprd"}, unidad="indice", fuente="gpr",
@@ -166,6 +184,8 @@ def test_huecos_por_frecuencia():
 
 # --------------------------------------------------------------------------- punta a punta sin red
 
+@requiere_xlrd
+@requiere_openpyxl
 def test_sondear_sin_red_modo_rapido(sin_red, red_falsa, sin_robots):
     red_falsa(indices, RUTAS)
     res = indices.sondear(_cfg(modo_rapido=True))
@@ -207,6 +227,8 @@ def test_sondear_sin_red_modo_rapido(sin_red, red_falsa, sin_robots):
     assert any("(caché)" in r["item"] for r in res2.registro)
 
 
+@requiere_xlrd
+@requiere_openpyxl
 def test_fuente_que_falla_no_detiene(sin_red, red_falsa, sin_robots):
     rutas = {**RUTAS, "All_Daily_Policy_Data.csv": (500, b"")}
     red_falsa(indices, rutas)
