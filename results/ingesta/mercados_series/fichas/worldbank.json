@@ -1,0 +1,81 @@
+{
+  "fuente": "worldbank",
+  "nombre": "Banco Mundial, World Development Indicators (API v2)",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro"
+  ],
+  "rag": "serie",
+  "url": "https://api.worldbank.org/v2/",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "CC BY 4.0 (términos de datos abiertos del Banco Mundial)",
+  "cobertura_inicio": "1960-01-01",
+  "cobertura_fin": "2025-01-01",
+  "frecuencia": "anual",
+  "retraso_publicacion": "sin vintages: lag fijo 12M desde el fin del año (fin de t+1); medido: último año publicado por indicador en 'ultimo_anio' (retraso observado mínimo 286 días desde el fin de ese año)",
+  "formato": "json",
+  "volumen_estimado": "27090 filas en 594 series",
+  "limites": "sin clave; per_page hasta 20000 (una página por indicador)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "cobertura_inicio": "1960-01-01",
+    "cobertura_fin": "2025-01-01",
+    "series": 594,
+    "observaciones": 27090,
+    "retraso_observado_dias_min": 286,
+    "retraso_observado_dias_mediana": 286.0,
+    "lag_aplicado_dias_mediana": 365.0,
+    "errores": {},
+    "ultimo_anio": {
+      "NY.GDP.MKTP.KD.ZG": {
+        "ultimo_anio": 2025,
+        "paises_ultimo_anio": 186,
+        "paises_penultimo_anio": 200
+      },
+      "FP.CPI.TOTL.ZG": {
+        "ultimo_anio": 2025,
+        "paises_ultimo_anio": 169,
+        "paises_penultimo_anio": 176
+      },
+      "SL.UEM.TOTL.ZS": {
+        "ultimo_anio": 2025,
+        "paises_ultimo_anio": 182,
+        "paises_penultimo_anio": 182
+      }
+    },
+    "informe": {
+      "paises": {
+        "n_paises": 217,
+        "n_agregados": 79
+      },
+      "NY.GDP.MKTP.KD.ZG": {
+        "error": null,
+        "bytes": 3820100,
+        "segundos": 1.37,
+        "total": 17556,
+        "lastupdated": "2026-10-08"
+      },
+      "FP.CPI.TOTL.ZG": {
+        "error": null,
+        "bytes": 4012597,
+        "segundos": 1.04,
+        "total": 17556,
+        "lastupdated": "2026-10-08"
+      },
+      "SL.UEM.TOTL.ZS": {
+        "error": null,
+        "bytes": 4426832,
+        "segundos": 1.25,
+        "total": 17556,
+        "lastupdated": "2026-10-08"
+      }
+    }
+  },
+  "notas": [
+    "solo países: agregados (region.id 'NA') descartados",
+    "paro: estimación modelizada de la OIT, muy revisada; inflación y PIB revisados en cada actualización del WDI (lastupdated en informe)"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

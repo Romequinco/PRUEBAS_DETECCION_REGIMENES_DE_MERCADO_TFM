@@ -8,12 +8,18 @@ reparte en **cuatro temas**: cada uno tiene responsable, rama y carpetas propias
 
 | Tema | Carpeta | Rama | Agentes | Tools que alimenta | Responsable |
 |---|---|---|---|---|---|
-| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | _por asignar_ |
+| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | Romen (@Romequinco) |
 | 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `fase2/t2-bancos-riesgo` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | _por asignar_ |
 | 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | `fase2/t3-empresas` | Equity, Risk | `buscar_filings`, `get_fundamentales` | _por asignar_ |
 | 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `fase2/t4-noticias-alt` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | _por asignar_ |
 
-Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas.
+**Ramas publicadas** (estado a 2026-10-14, `git branch -r`): `origin/fase2/t1-mercados-series` (Tema 1, completado) y
+`origin/fase2/t3-empresas` (Tema 3, primera sonda EDGAR). Los temas 2 y 4 aún no han publicado su rama. Cada
+responsable rellena su celda de la tabla.
+
+Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas. El plan de datos común (arquitectura,
+TimeGate, tratamiento RAG, look-ahead del LLM, evaluación y preguntas abiertas) está en [`plan_datos.md`](plan_datos.md);
+las candidatas a datos alternativos, en [`datos_alternativos.md`](datos_alternativos.md).
 
 ## 2. Dónde escribe cada tema
 
@@ -21,6 +27,7 @@ Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiert
 src/ingesta/<tema>/                código del tema (un módulo por fuente)
 tests/ingesta/<tema>/              sus tests (sin red por defecto; los de red con @pytest.mark.live)
 results/ingesta/<tema>/            salidas pequeñas versionadas: fichas/, catálogos, tablas
+notebooks/fase2/<tema>/            notebooks del tema (p. ej. notebooks/fase2/mercados_series/)
 requirements/ingesta-<tema>.txt    dependencias propias del tema
 <INGESTA_CORPUS_DIR>/<tema>/       corpus pesado, FUERA del repo (por defecto ./corpus, ignorado)
 ```
@@ -45,7 +52,11 @@ git push -u origin fase2/t1-mercados-series   # y PR a main cuando una pieza est
 ## 4. Contrato común (para poder juntarlo todo después)
 
 1. **TimeGate.** Todo dato lleva `fecha_publicacion` (día en que se hizo público, no el del hecho). Una tool con
-   `fecha` nunca devuelve nada publicado después.
+   `fecha` nunca devuelve nada publicado después. **Hora de decisión común (propuesta):** las 16:30
+   America/New_York del día `fecha`, la que ya usa el Tema 1; es visible lo que se hizo público antes de esa hora.
+   Una fuente puede ser más conservadora, nunca menos: los filings de EDGAR aceptados a partir de las 16:00 ET pasan
+   al día hábil siguiente porque la hora de aceptación del JSON trae desfases de horas ([plan de
+   datos](plan_datos.md) §3.1).
 2. **Textos** → objetos `Documento` (`ingesta.comun.esquema`) guardados en jsonl: un documento por línea con todos sus
    metadatos. El troceado y los vectores se deciden después, en común.
 3. **Series** → parquet en tabla larga: `serie, fecha_referencia, fecha_publicacion, valor, unidad, fuente` (+ `vintage`
@@ -53,7 +64,9 @@ git push -u origin fase2/t1-mercados-series   # y PR a main cuando una pieza est
 4. **Cada fuente tiene una ficha** (`FichaFuente`, `ingesta.comun.fichas.guardar_ficha`): qué es, cómo se consigue,
    cobertura, retraso, volumen, licencia y estado.
 5. **Acceso legal y educado.** Usar `ingesta.comun.http.get`, respetar robots.txt (`robots_permite`) y los límites de
-   cada API, y no esquivar CAPTCHAs, logins ni muros de pago. Las claves van en `.env`, nunca en el código.
+   cada API, y no esquivar CAPTCHAs, logins ni muros de pago. Las claves van en `.env`, nunca en el código. Las
+   fuentes que ya se descartaron por acceso o términos de uso (Google News, SEDAR+, PBoC…) están en el
+   [plan de datos](plan_datos.md#34-acceso-legal-fuentes-excluidas).
 6. **Copyright.** El texto con derechos solo se guarda en local (corpus). Al repo van código, fichas y metadatos.
 7. **Dependencias pesadas** (torch, transformers, bases vectoriales) en un entorno aparte. Cambiar torch, numpy o
    pandas en el entorno principal invalida la caché del benchmark de la Fase 1.

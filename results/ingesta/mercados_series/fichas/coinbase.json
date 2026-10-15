@@ -1,0 +1,75 @@
+{
+  "fuente": "coinbase",
+  "nombre": "Coinbase Exchange: velas diarias BTC-USD y ETH-USD",
+  "tema": "mercados_series",
+  "agentes": [
+    "risk",
+    "portfolio",
+    "cio"
+  ],
+  "rag": "serie",
+  "url": "https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductcandles",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Términos de Coinbase (Exchange API): datos de mercado públicos sin clave; sin redistribución: solo local",
+  "cobertura_inicio": "2015-07-20",
+  "cobertura_fin": "2026-10-12",
+  "frecuencia": "diaria (vela UTC, 7 días a la semana)",
+  "retraso_publicacion": "medido: la vela de D es definitiva a las 00:00 UTC de D+1 y ya está en la API (la vela del día en curso aparece incompleta y se descarta); visible en la decisión de D+1 (00:30 UTC con el margen de 30 min)",
+  "formato": "json ([time, low, high, open, close, volume], descendente)",
+  "volumen_estimado": "< 1 MB por par (unas 4.000 velas)",
+  "limites": "≤300 velas por petición; ritmo propio 3 pet/s; robots.txt no aplica (API; /robots.txt responde 401 JSON)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "pares": {
+      "BTC-USD": {
+        "velas": 4103,
+        "cobertura": [
+          "2015-07-20",
+          "2026-10-12"
+        ],
+        "dias_sin_vela": 0,
+        "ejemplos_sin_vela": []
+      },
+      "ETH-USD": {
+        "velas": 3798,
+        "cobertura": [
+          "2016-05-18",
+          "2026-10-12"
+        ],
+        "dias_sin_vela": 2,
+        "ejemplos_sin_vela": [
+          "2016-05-21",
+          "2016-05-22"
+        ]
+      }
+    },
+    "ultima_descarga": {
+      "BTC-USD": {
+        "par": "BTC-USD",
+        "peticiones": 1,
+        "velas": 1,
+        "descargado": "2026-10-13T11:52:47.875861+00:00",
+        "desde": "2026-10-13",
+        "hasta": "2026-10-13",
+        "filas_nuevas": 0
+      },
+      "ETH-USD": {
+        "par": "ETH-USD",
+        "peticiones": 1,
+        "velas": 1,
+        "descargado": "2026-10-13T11:52:48.972579+00:00",
+        "desde": "2026-10-13",
+        "hasta": "2026-10-13",
+        "filas_nuevas": 0
+      }
+    }
+  },
+  "notas": [
+    "Precios as-traded sin ajustes (cripto: sin dividendos ni splits; dividendo=0, split=1)",
+    "Ticker canónico cb:<par>; mercado CRYPTO de config/mercados.yaml (24:00 UTC + 30 min → D+1)",
+    "Días sin vela = días sin operaciones o incidencias de Coinbase: no se rellenan (lista en mediciones)"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

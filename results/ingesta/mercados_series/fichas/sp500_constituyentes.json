@@ -1,0 +1,52 @@
+{
+  "fuente": "sp500_constituyentes",
+  "nombre": "S&P 500: composición histórica point-in-time (fja05680/sp500)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://github.com/fja05680/sp500",
+  "acceso": "descarga",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Código y datos del repositorio con licencia MIT; la composición es de S&P Dow Jones Indices (solo local)",
+  "cobertura_inicio": "1996-01-02",
+  "cobertura_fin": "2026-08-18",
+  "frecuencia": "por evento (cambios del índice)",
+  "retraso_publicacion": "fecha_publicacion = fecha efectiva del cambio (S&P lo anuncia antes: conservador, sin fuga: solo se pierde la información del anuncio); medido: el último cambio del fichero es de hace 56 días",
+  "formato": "csv → parquet",
+  "volumen_estimado": "5.5 MB de CSV; 1262 tramos",
+  "limites": "raw.githubusercontent.com, 1 petición/s; actualización manual del autor (irregular)",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "bytes": 5530907,
+    "crudo": "20261013_sp500_historico.csv",
+    "n_instantaneas": 2720,
+    "n_tramos": 1262,
+    "n_tickers": 1209,
+    "tickers_varios_tramos": 52,
+    "miembros_min": 487,
+    "miembros_max": 507,
+    "miembros_ultimo": 503,
+    "inicio": "1996-01-02",
+    "fin": "2026-08-18",
+    "dias_desde_ultimo_cambio": 56,
+    "tramos_ticker_posterior": 28,
+    "tramos_q_cotejados_con_fichero_original": {
+      "tramos": 28,
+      "con_ticker_de_epoca": 0,
+      "formato_en_original": "mismo ticker Q con mes de exclusión (p. ej. AAMRQ-201312, ENRNQ-200411)"
+    }
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.constituyentes (descargar_sp500, miembros_en)",
+    "Un ticker con varios tramos puede ser reentrada o ticker reutilizado por otra empresa: sin CIK/PERMNO no se distingue (WRDS pendiente de MIAX)",
+    "Los miembros a 1996-01-02 tienen el alta truncada al inicio del fichero",
+    "28 tramos con ticker posterior al tramo (sufijo Q/QQ de quiebra: ENRNQ, AAMRQ...): nota en el tramo. Cotejado (2026-10-13) con el fichero sin actualizar del repositorio (S&P 500 Historical Components & Changes.csv): lleva los mismos tickers Q con el mes de exclusión (AAMRQ-201312), no el de la época; el mapeo exige CIK/PERMNO (WRDS)",
+    "Fechas de anuncio: sin fuente pública histórica y reutilizable (las notas de S&P DJI no se pueden archivar en bloque); la fecha efectiva es conservadora y sin fuga: deuda cerrada",
+    "Sin datos de precios de los miembros: solo pertenencia (supervivencia de la sección cruzada medida aquí)"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

@@ -71,6 +71,13 @@ results/ingesta/empresas/                 (versionado: solo mediciones)
 - [ ] Transcripciones de calls (Alpha Vantage con clave), FinBERT
 - [ ] Fuera de EE. UU.: ESEF (UE), CNMV, Companies House, EDINET, DART…
 
+> **Acceso legal.** Las sondas del plan ya descartaron **SEDAR+** (redirección anti-bot) y **BSE/NSE y HKEX**
+> (anti-bot o términos que lo prohíben): no se descargan de forma automática. Tampoco se usan **Motley Fool** ni
+> **Seeking Alpha** (sus términos lo prohíben); para los resultados trimestrales, la fuente legal es el 8-K Item 2.02
+> con su anexo 99.1. Lista completa y motivos:
+> [plan de datos §3.4](../../../docs/fase2/plan_datos.md#34-acceso-legal-fuentes-excluidas); puntos abiertos del
+> tema: [anexo B](../../../docs/fase2/plan_datos.md#anexo-b-puntos-abiertos-por-tema).
+
 ## Preguntas abiertas
 
 - ¿Universo de empresas (S&P 500 histórico con constituyentes por fecha, STOXX 600, emergentes)?

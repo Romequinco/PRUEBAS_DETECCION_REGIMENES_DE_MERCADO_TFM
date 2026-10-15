@@ -1,27 +1,20 @@
 # Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence — TFM (MIAX)
 
-El TFM es un **sistema multi-agente con RAG**: un equipo de agentes LLM (Macro, Equity, Risk, Portfolio y
-CIO, orquestados con LangGraph) que lee información financiera heterogénea, sabe en qué **régimen** está
-el mercado y, con ello, construye carteras y redacta un *investment memo* con citas a las fuentes. No
-predice precios: detecta el estado del mercado, lo contextualiza con evidencia y gestiona el riesgo. La
-visión completa está en [`docs/tfm/README.md`](docs/tfm/README.md) y la decisión de alcance en
-[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md).
-
-| Fase | Qué | Estado |
-|:---:|---|---|
-| 1 | Régimen de mercado: base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | 🟡 en curso (**este repositorio**, paquete `regimenes`) |
-| 2 | Ingesta, RAG y tools: corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | 🔜 |
-| 3 | Agentes Macro, Equity y Risk en LangGraph, salidas estructuradas y trazables | 🔜 |
-| 4 | Cartera y memo: Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | 🔜 |
-| 5 | Evaluación: backtest con TimeGate frente a *baselines* (buy & hold, 60/40, momentum), calidad de los memos | 🔜 |
+El TFM es un **sistema multi-agente con RAG** (agentes Macro, Equity, Risk, Portfolio y CIO en LangGraph) que lee
+información financiera con fecha de publicación, sabe en qué **régimen** está el mercado y con ello construye carteras
+explicadas en un *investment memo* con citas. La visión, las cinco fases y su estado real están en
+[`docs/tfm/README.md`](docs/tfm/README.md); la decisión de alcance, en [ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md).
 
 Requisitos añadidos en la tutoría, todos con el diseño abierto: cliente minorista con formulario de perfil
 que fija los límites del CIO, dos carteras (con límites y «en bruto»), memoria de la cartera anterior, datos
 alternativos (operaciones del Congreso, divergencias en Polymarket…), un «botón de cataclismo» automático
 (EWS, modo broma) y los *System One decision agents* como línea de investigación. Detalle en
-[`docs/tfm/`](docs/tfm/README.md).
+[`docs/tfm/cliente_y_carteras.md`](docs/tfm/cliente_y_carteras.md) y
+[`docs/tfm/lineas_abiertas.md`](docs/tfm/lineas_abiertas.md).
 
-**Este repositorio contiene hoy la Fase 1** (el régimen). No busca un detector concreto, sino el **marco
+**Este repositorio contiene la Fase 1** (el régimen, paquete `regimenes`) y el arranque de la **Fase 2**
+(ingesta de datos de los agentes, paquete `src/ingesta`; ver [ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
+La Fase 1 no busca un detector concreto, sino el **marco
 de evaluación causal y comparable** que juzga a muchos detectores, la **base de datos sólida** sobre la que
 hacerlo y, a partir de ahí, un sistema de alerta + confirmación validado con datos sintéticos y en
 pseudolive. Su salida es la tool **`get_regimen(fecha)`**: estado, probabilidad y días en el estado, con
@@ -36,17 +29,8 @@ solo información publicada hasta `fecha`.
 > `capa1-final`); **no** es la «Capa 1/Capa 2» de la propuesta (42 ETFs / ~1.300 acciones). Ver el
 > [GLOSARIO](docs/GLOSARIO.md#capa-1-del-repositorio-no-es-la-capa-1-de-la-propuesta).
 
-**Si acabas de llegar:** el índice de la documentación y el **orden de lectura** están en
-[`docs/README.md`](docs/README.md#orden-de-lectura). Visita rápida:
-[`docs/tfm/README.md`](docs/tfm/README.md) (el TFM completo) →
-[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) →
-[`docs/GLOSARIO.md`](docs/GLOSARIO.md) (pistas, métricas, rutas) →
-[`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) (de dónde venimos) → decisiones
-[ADR-001](docs/decisions/ADR-001-rebase-datos.md) (re-base de datos) ·
-[ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) (ventanas) ·
-[ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) (causalidad y ranking) ·
-[ADR-004](docs/decisions/ADR-004-unificacion.md) (estructura del repo y del paquete) ·
-[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md) (el TFM es multi-agente; el régimen es la Fase 1).
+**Si acabas de llegar:** el índice de la documentación y el **único orden de lectura** (por público: equipo, tutor
+y memoria, más una visita rápida) están en [`docs/README.md`](docs/README.md#orden-de-lectura).
 
 ---
 
@@ -89,50 +73,23 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── configs/            catalog.yaml (universo + crisis) · benchmark_spec.yaml (banco congelado) · sinteticos.yaml
 ├── src/regimenes/      el paquete (tabla de arriba)
 ├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
-├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos)
-├── notebooks/          00–20, planos y ordenados (tabla abajo)
+├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos) · ingesta/ (Fase 2)
+├── notebooks/          00–20, planos y ordenados (ver docs/fase1) · fase2/<tema>/ (notebooks de la Fase 2)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
 │   ├── fusion/         d07_d08/ · d02_d06/
 │   └── detectores/ · sinteticos/ (generadores/ · validacion/ · laboratorio/) · pseudolive/
-└── docs/               README (índice) · GLOSARIO · references.bib · tfm/ (el TFM completo) · decisions/ (ADR-001…005) · datos/ · teoria/ · detectores/ · historia/capa1/ · context/
+└── docs/               README (índice) · GLOSARIO · references.bib · decisions/ (ADR-001…005, 007)
+                    tfm/ (visión del TFM, fuentes/) · estado_del_arte/ · fase1/ (pipeline, EDA, F1–F7 con sus detectores, sintéticos)
+                    fase2/ (reglas, plan de datos) · historia/ (Capa 1, fichas v1, tarea previa)
 ```
 
 ## Notebooks 00–20
 
-Son el pipeline de la Fase 1.
-
-| Nº | Notebook | Fase | Qué hace |
-|---|---|---|---|
-| 00 | [`00_descarga`](notebooks/00_descarga.ipynb) | datos | panorámica de las 166 series, cobertura y descarga |
-| 01 | [`01_eda`](notebooks/01_eda.ipynb) | datos | EDA maestro (12 secciones) |
-| 02 | [`02_diseno_preprocesado`](notebooks/02_diseno_preprocesado.ipynb) | features | decisiones del preprocesado (features, frecuencias, alineación causal) |
-| 03 | [`03_preprocesado`](notebooks/03_preprocesado.ipynb) | features | paneles causales `pista{A,B}_{diaria,mensual}` + labels, con gates |
-| 04 | [`04_protocolo_evaluacion`](notebooks/04_protocolo_evaluacion.ipynb) | D | protocolo walk-forward, gate/preflight, caché por huella, CLI paralela |
-| 05 | [`05_familia_F1_reglas`](notebooks/05_familia_F1_reglas.ipynb) | D | D01 umbral de volatilidad (VIX solo en B) · D02 riesgo compuesto · D10 turbulencia Mahalanobis |
-| 06 | [`06_familia_F2_clustering`](notebooks/06_familia_F2_clustering.ipynb) | D | D03 GMM · D09 Statistical Jump Model |
-| 07 | [`07_familia_F3_hmm`](notebooks/07_familia_F3_hmm.ipynb) | D | D04 HMM gaussiano · D08 HMM t-Student · D13 HSMM (ablación) |
-| 08 | [`08_familia_F4_markov_switching`](notebooks/08_familia_F4_markov_switching.ipynb) | D | D05 Markov-Switching de media y varianza (univariante; pese al nombre `markov_switching_var`, no es un VAR) |
-| 09 | [`09_familia_F5_garch`](notebooks/09_familia_F5_garch.ipynb) | D | D06 GJR-GARCH-t · D11 MS-GARCH |
-| 10 | [`10_familia_F6_changepoint`](notebooks/10_familia_F6_changepoint.ipynb) | D | D07 CUSUM online robusto |
-| 11 | [`11_familia_F7_deep`](notebooks/11_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
-| 12 | [`12_comparativa`](notebooks/12_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
-| 13 | [`13_fusion_d07_d08`](notebooks/13_fusion_d07_d08.ipynb) | E | D7 alerta + D8 confirma |
-| 14 | [`14_fusion_d02_d06`](notebooks/14_fusion_d02_d06.ipynb) | E | selección auditable: D2 alerta + D6 confirma |
-| 15 | [`15_sinteticos_generadores`](notebooks/15_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 16) |
-| 16 | [`16_sinteticos_validacion`](notebooks/16_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
-| 17 | [`17_sinteticos_laboratorio`](notebooks/17_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 16): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
-| 18 | [`18_sinteticos_aumento`](notebooks/18_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto; se mantiene, ADR-005) |
-| 19 | [`19_decision_final`](notebooks/19_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
-| 20 | [`20_pseudolive`](notebooks/20_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
-
-Los notebooks de familia (05–11) siguen una plantilla común: teoría de la familia, configuración
-desde el registro, ejecución con `EJECUTAR = False` (lee la caché de `results/benchmark`), estados OOS
-por pista con franjas de crisis, diagnóstico propio, métricas y puesto en el ranking, hallazgos de la
-Capa 1 y conclusión. Sus figuras van a `results/detectores/<fk_nombre>/`. La numeración es de
-lectura: tras un benchmark nuevo, `12_comparativa` se ejecuta **antes** que 05–11, porque escribe el
-`ranking*.csv` que estos leen (ver «Cómo reproducir»).
+Son el pipeline de la Fase 1, en `notebooks/` (planos y numerados). La tabla notebook a notebook, la plantilla
+común de los notebooks de familia y el **orden de ejecución** están en
+[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0020).
 
 ## Las dos pistas de datos (ADR-001, ventanas reajustadas por ADR-002)
 
@@ -223,49 +180,16 @@ make help                          # lista los objetivos del Makefile (GNU Make;
 ² Suma de `elapsed_seconds` de `results/benchmark/ranking_v2.csv`: ≈6,6 h en A y ≈0,8 h en B; solo
 D04-A tarda ≈1,8 h, que es el mínimo con cualquier número de procesos (con 9 procesos, ≈2 h).
 
-**Qué comprueba cada notebook sobre la caché** (la huella cubre código, datos, especificación y
-versiones):
-
-- `04_protocolo_evaluacion` (por defecto solo caché) **no falla**: lista las combinaciones sin caché
-  vigente e imprime el comando `python -m regimenes.benchmark ... --detector ...` para regenerarlas.
-- `12_comparativa` verifica la huella; si no es vigente **no falla**: lo avisa y usa las métricas
-  versionadas, comprobando su procedencia contra `manifest.json`.
-- `05`–`11` verifican la huella (`run_benchmark(cache_only=True)`) **y** que el `ranking*.csv` que
-  escribe `12_comparativa` corresponde a esas métricas; si no, fallan pidiendo re-ejecutar 12. Por
-  eso, tras un benchmark nuevo, el orden es `04` → `12` → `05`–`11` → `13`–`14`.
-- `13_fusion_d07_d08` lee los paneles OOS directamente (`load_panel`) **sin** verificar la huella, y
-  `14_fusion_d02_d06` recurre al cribado versionado si faltan paneles: con una caché obsoleta no
-  fallan, así que hay que asegurarse antes de que el benchmark está vigente.
-
-`make notebooks` ejecuta 00–14 en orden numérico: sirve cuando caché y ranking ya son coherentes;
-tras un benchmark nuevo, ejecuta antes `12_comparativa` a mano. Los paneles OOS
-(`results/benchmark/panels/*.parquet`) no se versionan: se regeneran con el benchmark.
-Los notebooks 15–17 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
-(~1 GB, no versionado), que genera `15_sinteticos_generadores` con `EJECUTAR = True`; después, 15 y
-16 se ejecutan a mano con `EJECUTAR = False` (16 lee además sus tablas de `results/sinteticos/validacion/`).
-El laboratorio (17) se ejecuta con su CLI, reanudable y con caché por huella:
-`python -m regimenes.sinteticos.laboratorio` (el notebook 17 lee `results/sinteticos/laboratorio/`).
+Qué comprueba cada notebook sobre la caché, en qué orden se ejecutan tras un benchmark nuevo y cómo se
+ejecutan los de sintéticos (15–17): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
 
 ## Estado del proyecto
 
-Este repositorio es la **Fase 1** del TFM (ver la tabla de fases arriba y [ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md)).
-Sus etapas internas conservan los nombres históricos y se leen como **sub-fases de la Fase 1**:
-**1–4** son las del re-base de datos ([ADR-001](docs/decisions/ADR-001-rebase-datos.md)): 1 reorganización,
-2 datos, 3 EDA + banco congelado, 4 diseño y preprocesado causal; las posteriores se nombran por letra:
-**D** detectores (benchmark), **E** fusión *early warning* (alerta + confirmación), **S** sintéticos,
-**F** final (decisión + validación pseudolive).
-
-| Sub-fase | Qué | Estado |
-|---|---|---|
-| Capa 1 | 12 detectores v1 sobre 9 series (exploración) | ✅ congelada 2026-07-18 · [historia](docs/historia/capa1/README.md) |
-| 1–3 | Reorganización · datos (166/174 series) · EDA + banco congelado | ✅ [ADR-001](docs/decisions/ADR-001-rebase-datos.md) · [ADR-002](docs/decisions/ADR-002-ajuste-ventanas.md) |
-| 4 | Diseño + preprocesado causal v2 | ✅ notebooks 02–03 |
-| D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](docs/decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 04–12 |
-| — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](docs/decisions/ADR-004-unificacion.md) |
-| E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 13–14) |
-| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores, validación y laboratorio hechos (notebooks 15–17); aumento pendiente (18, esqueleto) · `regimenes.sinteticos` · [teoría F8](docs/teoria/F8_generadores_sinteticos.md) |
-| F | Decisión final del detector y contrato de `get_regimen` (futura ADR-006) + validación pseudolive de la tool | 🔜 notebooks 19–20 (esqueletos) |
-| Fases 2–5 | Ingesta y RAG, agentes, cartera y memo, evaluación | 🔜 diseño abierto en [`docs/tfm/`](docs/tfm/README.md) (cliente y carteras, datos alternativos, líneas abiertas); dónde vivirá su código, por decidir |
+El estado de las cinco fases del TFM está en [`docs/tfm/README.md`](docs/tfm/README.md#3-plan-de-trabajo-cinco-fases-y-su-estado)
+y el de las sub-fases internas de la Fase 1 (Capa 1, 1–4, D, E, S, F), en
+[`docs/fase1/README.md`](docs/fase1/README.md#estado-de-las-sub-fases). En una línea: la Fase 1 tiene hechos
+datos, preprocesado, benchmark, fusiones y sintéticos (notebooks 00–17) y le faltan el aumento (18), la decisión
+final (19) y el pseudolive (20); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
 
 Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
 `capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).

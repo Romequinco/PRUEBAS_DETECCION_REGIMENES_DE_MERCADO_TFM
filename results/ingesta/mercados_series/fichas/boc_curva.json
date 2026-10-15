@@ -1,0 +1,111 @@
+{
+  "fuente": "boc_curva",
+  "nombre": "Banco de Canadá · Valet, rendimientos de bonos de referencia",
+  "tema": "mercados_series",
+  "agentes": [
+    "macro",
+    "risk",
+    "portfolio"
+  ],
+  "rag": "serie",
+  "url": "https://www.bankofcanada.ca/valet/docs",
+  "acceso": "api",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "términos del Banco de Canadá (https://www.bankofcanada.ca/terms/): uso no comercial citando",
+  "cobertura_inicio": "2001-01-02",
+  "cobertura_fin": "2026-10-08",
+  "frecuencia": "diaria (hábiles del publicador)",
+  "retraso_publicacion": "dato de D publicado el hábil canadiense siguiente; se fija a las 18:00 Toronto (conservador) → decisión D+2; medido en la tabla: mediana 2 días naturales, máximo 6",
+  "formato": "csv (Valet)",
+  "volumen_estimado": "0.41 MB de crudos descargados (1 fichero(s))",
+  "limites": "1 petición/s por host; robots.txt permite la descarga",
+  "estado_sonda": "ok",
+  "mediciones": {
+    "descargas": [
+      {
+        "clave": "bond_yields_benchmark.csv",
+        "estado": 200,
+        "bytes": 408591,
+        "descargado_utc": "2026-10-13T11:49:29.492659+00:00",
+        "error": null,
+        "last_modified": null
+      }
+    ],
+    "series": {
+      "boc:BOND.10Y": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6444,
+        "n_huecos": 0,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.2Y": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.3Y": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.5Y": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.7Y": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.LONG": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      },
+      "boc:BOND.RRB": {
+        "inicio": "2001-01-02",
+        "fin": "2026-10-08",
+        "n_obs": 6443,
+        "n_huecos": 1,
+        "retraso_dias_mediana": 2.0,
+        "retraso_dias_max": 6,
+        "hora_utc_mediana": "22:00"
+      }
+    },
+    "retraso_dias_mediana": 2.0,
+    "retraso_dias_max": 6
+  },
+  "notas": [
+    "Cargador: ingesta.mercados_series.fuentes.curvas (crudos en <corpus>/mercados_series/crudo/boc_curva/; tabla en <corpus>/mercados_series/series/curvas_b6.parquet)",
+    "Vintage 'unico' y metodo 'calendario': las curvas no se revisan tras publicarse",
+    "Grupo Valet bond_yields_benchmark: 2, 3, 5, 7 y 10 años, LONG (largo de referencia) y RRB (bono real); los datos van tras el marcador \"OBSERVATIONS\"",
+    "Hora no verificada: el 2026-10-13 a las 07:44 Toronto el último dato era el del 8 (viernes 9 aún sin publicar tras el festivo del 12): se fija a las 18:00 Toronto del hábil siguiente (conservador)",
+    "Solo curva: los tipos oficiales del Banco de Canadá los carga otro bloque"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

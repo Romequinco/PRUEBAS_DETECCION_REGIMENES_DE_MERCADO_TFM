@@ -1,0 +1,138 @@
+{
+  "fuente": "indices_constituyentes",
+  "nombre": "Composición ACTUAL de índices no estadounidenses (Wikipedia)",
+  "tema": "mercados_series",
+  "agentes": [
+    "equity"
+  ],
+  "rag": "serie",
+  "url": "https://en.wikipedia.org/",
+  "acceso": "scraping",
+  "autenticacion": "ninguna",
+  "coste": "0 €",
+  "licencia_y_terminos": "Wikipedia CC BY-SA 4.0 (texto); la composición oficial es de cada proveedor de índices",
+  "cobertura_inicio": "2026-10-13",
+  "cobertura_fin": "2026-10-13",
+  "frecuencia": "foto puntual (día de descarga)",
+  "retraso_publicacion": "desconocido: Wikipedia se edita a mano tras cada revisión del índice; fecha_publicacion = día de la foto",
+  "formato": "html → parquet",
+  "volumen_estimado": "635 filas en 10 índices",
+  "limites": "1 petición/s; robots.txt consultado",
+  "estado_sonda": "parcial",
+  "mediciones": {
+    "indices": [
+      {
+        "indice": "dax",
+        "url": "https://en.wikipedia.org/wiki/DAX",
+        "esperado": 40,
+        "estado": 200,
+        "n_filas": 40,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "cac40",
+        "url": "https://en.wikipedia.org/wiki/CAC_40",
+        "esperado": 40,
+        "estado": 200,
+        "n_filas": 40,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "ibex35",
+        "url": "https://en.wikipedia.org/wiki/IBEX_35",
+        "esperado": 35,
+        "estado": 200,
+        "n_filas": 35,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "ftse_mib",
+        "url": "https://en.wikipedia.org/wiki/FTSE_MIB",
+        "esperado": 40,
+        "estado": 200,
+        "n_filas": 40,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "aex",
+        "url": "https://en.wikipedia.org/wiki/AEX_index",
+        "esperado": 25,
+        "estado": 200,
+        "n_filas": 25,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "ftse100",
+        "url": "https://en.wikipedia.org/wiki/FTSE_100_Index",
+        "esperado": 100,
+        "estado": 200,
+        "n_filas": 100,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "smi",
+        "url": "https://en.wikipedia.org/wiki/Swiss_Market_Index",
+        "esperado": 20,
+        "estado": 200,
+        "n_filas": 20,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "nikkei225",
+        "url": "https://en.wikipedia.org/wiki/Nikkei_225",
+        "esperado": 225,
+        "estado": 200,
+        "n_filas": null,
+        "error": "ninguna tabla con columna de ticker y ~225 filas (16 tablas)"
+      },
+      {
+        "indice": "ibovespa",
+        "url": "https://en.wikipedia.org/wiki/Ibovespa",
+        "esperado": 85,
+        "estado": 200,
+        "n_filas": null,
+        "error": "ninguna tabla con columna de ticker y ~85 filas (18 tablas)"
+      },
+      {
+        "indice": "nifty50",
+        "url": "https://en.wikipedia.org/wiki/NIFTY_50",
+        "esperado": 50,
+        "estado": 200,
+        "n_filas": 50,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "hang_seng",
+        "url": "https://en.wikipedia.org/wiki/Hang_Seng_Index",
+        "esperado": 85,
+        "estado": 200,
+        "n_filas": 85,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      },
+      {
+        "indice": "kospi200",
+        "url": "https://en.wikipedia.org/wiki/KOSPI_200",
+        "esperado": 200,
+        "estado": 200,
+        "n_filas": 200,
+        "error": null,
+        "fecha_foto": "2026-10-13"
+      }
+    ]
+  },
+  "notas": [
+    "foto ACTUAL de la composición: no vale para fechas pasadas (sesgo de supervivencia); solo el S&P 500 es point-in-time",
+    "Nº de filas medido frente al nº de miembros esperado; tabla elegida por columna de ticker",
+    "Sin historia point-in-time gratuita para estos índices: solo contexto, nunca para backtests de selección"
+  ],
+  "fecha_sonda": "2026-10-13"
+}

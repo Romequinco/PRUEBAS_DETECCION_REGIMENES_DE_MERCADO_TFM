@@ -1,0 +1,10 @@
+# Resultados del Tema 1 · Mercados y series numéricas.
+# Aquí solo se versiona lo ligero y revisable: fichas/*.json de cada fuente y tablas CSV
+# pequeñas de resumen. Los datos pesados (parquet, cachés HTTP en SQLite, descargas
+# comprimidas, gráficos) viven fuera del repo, en D:/tfm_corpus/mercados_series/.
+# git no filtra por tamaño: se ignoran por extensión y los CSV pequeños SÍ se versionan.
+*.parquet
+*.png
+*.sqlite
+*.zip
+*.tmp
