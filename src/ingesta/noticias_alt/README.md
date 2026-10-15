@@ -97,7 +97,8 @@ No tocan numpy, pandas ni torch, así que la huella de la Fase 1 no cambia.
   | Form 4 | 96 h |
   | PTR del Congreso | 41 días desde la operación (el 38,6 % fuera del plazo de 45 días) |
 - **Mercados de predicción:**
-  - Liquidez de Polymarket despreciable antes de 2024: 7,7 M USD en 2020, frente a 18.500 M en 2024 y 26.000 M en 2025.
+  - Liquidez de Polymarket despreciable antes de 2024: 76,5 M USD en 2020 (73 eventos), frente a 18.450 M en 2024 y
+    26.050 M en 2025 (1.000 eventos con más volumen de cada año).
   - Brier a 7 días en mercados indecisos: Polymarket 0,200 frente a 0,249 climatológico (n = 57); Kalshi 0,150 frente
     a 0,230 (n = 28).
 - **Señal frente a crisis:**
