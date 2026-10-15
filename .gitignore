@@ -275,3 +275,7 @@ results/sinteticos/laboratorio/*.log*
 # Documentación interna del TFM (presentación, plan de datos histórico, diario
 # del estado del arte): solo local, nunca se versiona
 docs/tfm/internos/
+# Aumento (notebook 18): filas JSON por trabajo (se consolidan en filas_<P>.csv), logs y cerrojo
+results/sinteticos/aumento/filas/
+results/sinteticos/aumento/*.log*
+results/sinteticos/aumento/.ejecutando

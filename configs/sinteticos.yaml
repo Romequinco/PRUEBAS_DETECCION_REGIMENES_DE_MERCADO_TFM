@@ -285,6 +285,36 @@ laboratorio:
 # el aumento introduce en el ajuste las etiquetas del juez (de forma causal: solo crisis ya
 # reconocidas en el ancla). El control bootstrap_regimen comparte esas etiquetas, de modo que H3 aisla
 # el efecto del generador.
+# Declarado el 2026-10-15 (implementacion, ANTES de ejecutar el plan): una prueba de humo del
+# envoltorio imprimio precision y recall de D01, D03 y D07 en B aumentados con flow_matching y UNA
+# sola ancla (2009-12-31) en todos los pliegues, un montaje que no es el pre-registrado. Con proporcion 1
+# el recall por evento caia con fuerza (p. ej. D01 de 6/9 a 1/9). No se cambio nada del pre-registro
+# por ello; queda declarado porque es una mirada a metricas antes de ejecutar. Lo que se vio: precision
+# y recall de esas tres senales. Sus salidas no se guardaron ni se reutilizan.
+# Concreciones y erratas tras la revision del codigo (3 criticos), 2026-10-15, ANTES de ejecutar el plan:
+# - Errata aritmetica: en la permutacion exacta el p minimo es 2/2^S (el patron identidad y el
+#   intercambio total dan |T| = |T_obs|), no 1/2^S. En B (S = 9) es 2/512 ~ 0,0039, mayor que 0,05/22;
+#   ademas el primer segmento de B (flash_crash_euro1_2010) va casi sin aumento (la primera ancla
+#   con crisis reconocida, 2009-12-31, solo se usa desde ~julio de 2010), asi que la potencia de H1
+#   en B es practicamente nula. Ver contrastes.familia_holm.
+# - Fuga de diseno (no de deteccion): la familia de generadores y sus parametros se fijaron en el 15-16
+#   con datos hasta 2006 (A) y 2017 (B), posteriores a los primeros pliegues. Se publica como
+#   sensibilidad EXPLORATORIA la Delta de H1 solo en las crisis que empiezan despues de fin_train +
+#   margen_reconocimiento.
+# - El recorte en ventanas abiertas usa el pico del catalogo, fijado a posteriori (en 1968 y 1980 el
+#   drawdown visible era de ~8 %): quita ~1 mes de calma del ajuste; es conservador y se declara.
+# - El control (bootstrap_regimen) no pasa la validacion por ancla: memoriza por diseno.
+# - Ocupacion de estados: cada 12 pliegues.
+# - Nivel ADR-003 de una senal: duracion media de regimen sobre la senal binaria crisis / no crisis
+#   (ADR-003 la mide sobre los K estados); es la unica comun a la base y al voto. Umbrales de
+#   ranking.DETECTION_DEFAULTS.
+# - Condicion (d) de H1: el LIMITE SUPERIOR del IC de Delta de ningun generador es < 0.
+# - Suelo de ruido: el mayor |Delta| entre semillas, frente a la base y entre las dos semillas.
+# - H3: se publica tambien la media de los 5 Delta(generador) - Delta(control) (el voto promedia 5
+#   ajustes y el control es uno solo).
+# - Nulo: rejilla densa en tasas bajas (0,001-0,05) y los mismos numeros aleatorios en todas las
+#   celdas; la racha media por segmento es exacta (se restan las rachas que cruzan fronteras).
+# - H1 con familia FIJA: un contraste ausente cuenta con p = 1 (nunca encoge la familia).
 aumento:
   semilla: 42
   pistas: [A, B]
@@ -315,6 +345,10 @@ aumento:
     min_episodios_crisis: 1
     min_dias_crisis: 100
     validar: [memorizacion, condicionamiento]
+    # Concrecion de implementacion (2026-10-15, antes de ejecutar nada): la validacion por ancla usa
+    # 20 trayectorias de muestreo.length sesiones (cadena simulada con arranque estacionario y
+    # duraciones empiricas), como el brazo completas.
+    validar_n_trayectorias: 20
 
   # -- Que se anade (dos brazos) -----------------------------------------------------------------
   # El bloque sintetico va DELANTE del train real del pliegue, con fechas habiles ficticias que acaban
@@ -380,8 +414,9 @@ aumento:
   # rodea hasta el punto medio con la vecina; los extremos van con su crisis mas cercana). Las mismas
   # replicas de segmentos se usan para todos los detectores, generadores, brazos y proporciones.
   # - p-valor (confirmatorio): permutacion pareada EXACTA intercambiando las dos senales dentro de cada
-  #   segmento (2^17 combinaciones en A, 2^9 en B), bilateral. En B el p minimo es 1/512 ~ 0,002,
-  #   apenas por debajo de alfa/22: B solo puede salir significativa si todos sus segmentos coinciden.
+  #   segmento (2^17 combinaciones en A, 2^9 en B), bilateral. p minimo = 2/2^S (errata: antes decia
+  #   1/512 en B; es 2/512 ~ 0,0039): B solo puede salir significativa si su asignacion observada es la
+  #   mas extrema de las 512.
   # - Intervalo (descriptivo): bootstrap pareado por segmentos, percentiles al 95 %.
   contrastes:
     medida: exceso_sobre_nulo
@@ -409,7 +444,10 @@ aumento:
     # H5 brazos: Delta(crisis) - Delta(completas) con proporcion 1. Con la misma p, «completas» anade en
     #    esperanza los mismos dias de crisis MAS la calma: el estimando es el «efecto de anadir calma»
     #    (con signo cambiado). Sin prediccion de signo.
+    # Concrecion de implementacion (2026-10-15, antes de ejecutar nada): H1 usa la repeticion 0 (la
+    # unica en A); la 2.a repeticion de B se publica como replica (exploratoria).
     h1: {brazo: completas, proporcion: 1.0, senal: voto_mayoritario, voto_min: 3, correccion: holm}
+    familia_holm: global          # los 22 contrastes juntos (global) o por pista
     grupos_h4:
       aprende_estado: [D03, D04, D05, D08, D09, D11, D12]   # mezclas, HMM, Markov-switching, jump, AE
       umbral: [D01, D02]                                     # umbral por percentil de una senal fija
