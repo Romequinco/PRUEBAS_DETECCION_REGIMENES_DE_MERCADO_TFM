@@ -275,3 +275,19 @@ results/sinteticos/laboratorio/*.log*
 # Documentación interna del TFM (presentación, plan de datos histórico, diario
 # del estado del arte): solo local, nunca se versiona
 docs/tfm/internos/
+
+# Bancos centrales: credenciales, herramientas locales y cobertura
+*.lcov
+celerybeat-schedule*
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+.wrangler/
+node_modules/
+.DS_Store
+*.sqlite
+*.sqlite3
+*.db

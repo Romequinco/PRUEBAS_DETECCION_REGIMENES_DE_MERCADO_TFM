@@ -48,3 +48,68 @@ Recuerda que cada agente tiene **dos RAG**:
 
 - ¿Qué hacer con PDFs que bloquean la descarga automática (descarga manual)?
 - ¿Qué modelo para el tono hawkish/dovish (licencia)?
+
+## Sonda de fuentes implementada
+
+**Responsable: Fernando Dapena Tauste.** El
+[notebook de fuentes](../../../notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb)
+conserva sus 14 apartados independientes y un inventario de 94 familias de documentos,
+filas de datos y metadatos. Mide cobertura de la muestra, fechas, retrasos, extracción,
+volumen y errores; sus resultados no representan el histórico completo.
+
+El código reutilizable está en `sonda/`, el inventario en `config/sonda_fuentes.json`
+y las pruebas sin red en `tests/ingesta/bancos_riesgo/`. El modo rápido limita cada
+familia descubierta a tres muestras y la extracción a 40 páginas por PDF.
+`HF_TOKEN` y `UNPAYWALL_EMAIL` se leen del entorno cuando hacen falta. Los errores
+de acceso quedan registrados sin detener las demás fuentes. El TimeGate histórico
+exige acreditar la versión textual, además de la fecha de publicación.
+
+Desde la raíz del repositorio, con el entorno Python del TFM:
+
+```powershell
+python -m pip install -e ".[dev]"
+python -m pip install -r requirements/ingesta-bancos_riesgo.txt
+python -m jupyterlab notebooks/fase2/bancos_riesgo
+```
+
+Selecciona el kernel de ese entorno. Las dependencias comunes pertenecen al paquete
+del repo; la sonda usa pandas `>=2.1,<3`, compatible con la Fase 1. El proyecto de origen
+fijaba pandas 3; ese pin se adapta al integrar la sonda. No se requiere actualizar el
+entorno numérico de la Fase 1.
+
+Los originales, versiones, JSONL y CSV se guardan bajo
+`<INGESTA_CORPUS_DIR>/bancos_riesgo/{cache,local,exports}/sonda/`. La ruta se resuelve
+con `ingesta.comun.rutas`; por defecto usa `./corpus`, ignorado por Git. No se
+escribe en `data/`, reservado a la Fase 1. `directorio_corpus` en `ConfigSonda`
+permite aislar los archivos durante las pruebas. Las muestras pequeñas autorizadas
+para tests pertenecen a `tests/ingesta/bancos_riesgo/fixtures/`.
+
+Para ejecutar el cuaderno completo o regenerar sus versiones de lectura:
+
+```powershell
+python -m ingesta.bancos_riesgo.jobs.ejecutar_notebook_sonda
+python -m ingesta.bancos_riesgo.jobs.exportar_notebook
+python -m pytest tests/ingesta/bancos_riesgo -q
+```
+
+El ejecutor acepta `--kernel nombre` y por defecto usa `python3`. La exportación
+no consulta la red y escribe HTML y Markdown en
+`<INGESTA_CORPUS_DIR>/bancos_riesgo/exports/notebooks/`; la carpeta del notebook
+contiene únicamente el `.ipynb`.
+
+## Diseño y próximos pasos
+
+Hay una sonda ejecutable, pero la recolección masiva, los contratos de producción,
+las migraciones SQL y los servicios Cloudflare todavía están pendientes. El diseño
+propone Python por lotes, R2 para objetos, D1 para el catálogo y GitHub Actions como
+ejecutor inicial. Worker e índice vectorial quedan sujetos a validar el piloto.
+Las carpetas vacías del proyecto original se han retirado; sus planes se conservan
+en la documentación:
+
+- [Objetivo del corpus y consulta por agentes](../../../docs/fase2/bancos_riesgo/corpus_para_agentes.md).
+- [Arquitectura, módulos, contratos y validación](../../../docs/fase2/bancos_riesgo/arquitectura.md).
+- [Inventario de fuentes](../../../docs/fase2/bancos_riesgo/fuentes.md).
+- [Modelo de datos y TimeGate](../../../docs/fase2/bancos_riesgo/modelo_y_timegate.md).
+- [Preparación de Cloudflare](../../../docs/fase2/bancos_riesgo/cloudflare.md).
+- [Orden de implementación](../../../docs/fase2/bancos_riesgo/roadmap.md).
+- [Análisis del notebook de referencia](../../../docs/fase2/bancos_riesgo/analisis_notebook_referencia.md).

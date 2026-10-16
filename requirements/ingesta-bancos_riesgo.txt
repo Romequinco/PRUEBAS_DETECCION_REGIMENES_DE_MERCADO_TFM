@@ -1,3 +1,15 @@
 # Dependencias propias del Tema 2 · Bancos centrales, riesgo sistémico y literatura (buscar_macro, buscar_riesgo).
 # Instalar: python -m pip install -r requirements/ingesta-bancos_riesgo.txt
 # Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
+
+# Dependencias comunes (requests, pandas<3, openpyxl, matplotlib y herramientas
+# Jupyter): pyproject.toml y su extra dev. No se duplican los pins del proyecto
+# de origen, para respetar las versiones del entorno principal y la CI.
+# Consultas y lectura de las muestras del notebook.
+beautifulsoup4==4.15.0
+pypdf==6.20.1
+tzdata==2026.5
+
+# Ejecución interactiva, kernel Python y exportación del notebook.
+jupyterlab==4.6.4
+nbclient==0.11.0
