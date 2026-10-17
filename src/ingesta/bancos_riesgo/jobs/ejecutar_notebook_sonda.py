@@ -12,7 +12,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--kernel', default='python3', help='Kernel Jupyter del entorno de la sonda.')
     args = parser.parse_args()
-    path = ROOT / 'notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb'
+    path = ROOT / 'notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb'
     notebook = nbformat.read(path, as_version=4)
 
     def progress(cell, cell_index, **kwargs):

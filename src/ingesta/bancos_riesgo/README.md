@@ -32,7 +32,8 @@ Recuerda que cada agente tiene **dos RAG**:
 
 > **Acceso legal.** Las sondas del plan ya descartaron algunas de estas fuentes: el **PBoC** (robots.txt con
 > `Disallow: /`) y el **GFSR del FMI** (el WAF del FMI bloquea a los clientes que no son navegador) no se descargan
-> de forma automática. El PBoC se cubre con los discursos del BIS y datasets abiertos con fecha estimada; el GFSR,
+> de forma automática; en el inventario figuran como `"excluida"` con su motivo. El resto del rastreo consulta
+> robots.txt con `ingesta.comun.http.robots_permite` y lo prohibido queda como `BLOQUEADA_ROBOTS`, sin descargarse. El PBoC se cubre con los discursos del BIS y datasets abiertos con fecha estimada; el GFSR,
 > solo si se aprueba la descarga manual (Q5). Lista completa y motivos:
 > [plan de datos §3.4](../../../docs/fase2/plan_datos.md#34-acceso-legal-fuentes-excluidas); puntos abiertos del
 > tema: [anexo B](../../../docs/fase2/plan_datos.md#anexo-b-puntos-abiertos-por-tema).
@@ -51,14 +52,21 @@ Recuerda que cada agente tiene **dos RAG**:
 
 ## Sonda de fuentes implementada
 
-**Responsable: Fernando Dapena Tauste.** El
-[notebook de fuentes](../../../notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb)
+**Responsable: Fernando Dapena Tauste.** Procede del repositorio
+`feraltauste1/Bancos-centrales-riesgo-sistem-tico-y-literatura`, integrado en `main` el 16 de octubre de 2026.
+Su referencia inicial es la imagen «Bancos centrales, riesgo sistémico y literatura» del 11 de octubre de 2026:
+las cantidades, las etiquetas OK/MIXTO/BLOQUEADA y los retrasos de esa imagen son objetivos o referencias por
+verificar, no resultados de una recolección ejecutada. El
+[notebook de fuentes](../../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb)
 conserva sus 14 apartados independientes y un inventario de 94 familias de documentos,
 filas de datos y metadatos. Mide cobertura de la muestra, fechas, retrasos, extracción,
 volumen y errores; sus resultados no representan el histórico completo.
 
 El código reutilizable está en `sonda/`, el inventario en `config/sonda_fuentes.json`
-y las pruebas sin red en `tests/ingesta/bancos_riesgo/`. El modo rápido limita cada
+y las pruebas sin red en `tests/ingesta/bancos_riesgo/`. La red pasa por `ingesta.comun.http.get`
+(User-Agent común, ritmo por host y reintentos); la caché de originales por hash es propia de la sonda.
+Las APIs documentadas (arXiv, Crossref, Hugging Face, Unpaywall, DataMapper) siguen sus términos y límites,
+no robots.txt; arXiv, a una petición cada 3 s. El modo rápido limita cada
 familia descubierta a tres muestras y la extracción a 40 páginas por PDF.
 `HF_TOKEN` y `UNPAYWALL_EMAIL` se leen del entorno cuando hacen falta. Los errores
 de acceso quedan registrados sin detener las demás fuentes. El TimeGate histórico
@@ -69,7 +77,7 @@ Desde la raíz del repositorio, con el entorno Python del TFM:
 ```powershell
 python -m pip install -e ".[dev]"
 python -m pip install -r requirements/ingesta-bancos_riesgo.txt
-python -m jupyterlab notebooks/fase2/bancos_riesgo
+python -m jupyter lab notebooks/fase2
 ```
 
 Selecciona el kernel de ese entorno. Las dependencias comunes pertenecen al paquete
@@ -94,15 +102,28 @@ python -m pytest tests/ingesta/bancos_riesgo -q
 
 El ejecutor acepta `--kernel nombre` y por defecto usa `python3`. La exportación
 no consulta la red y escribe HTML y Markdown en
-`<INGESTA_CORPUS_DIR>/bancos_riesgo/exports/notebooks/`; la carpeta del notebook
-contiene únicamente el `.ipynb`.
+`<INGESTA_CORPUS_DIR>/bancos_riesgo/exports/notebooks/`; en el repositorio solo se versiona el `.ipynb`.
+En Windows, si el repositorio está en una ruta profunda, conviene un `INGESTA_CORPUS_DIR` corto: la caché
+(`cache/sonda/objects/<sha256>`) puede superar los 260 caracteres de MAX_PATH.
 
 ## Diseño y próximos pasos
 
 Hay una sonda ejecutable, pero la recolección masiva, los contratos de producción,
 las migraciones SQL y los servicios Cloudflare todavía están pendientes. El diseño
 propone Python por lotes, R2 para objetos, D1 para el catálogo y GitHub Actions como
-ejecutor inicial. Worker e índice vectorial quedan sujetos a validar el piloto.
+ejecutor inicial. Worker e índice vectorial quedan sujetos a validar el piloto. Es una propuesta de arquitectura,
+no servicios ya contratados; R2 solo almacena objetos y no ejecuta los jobs.
+
+Diseño elegido en el proyecto de origen:
+
+- Python para recolectores, descargas, PDF/HTML y normalización por lotes.
+- Cloudflare R2 para originales, texto extraído, JSONL y resultados derivados.
+- Cloudflare D1 para catálogo de documentos, versiones, procedencia y ejecuciones.
+- GitHub Actions como primer ejecutor de lotes pequeños, manuales y programados.
+- Catálogo y búsqueda de texto para todo el corpus validado; acceso al documento completo.
+- RAG progresivo sobre las familias prioritarias, ampliable al medir utilidad y coste.
+- Refrescos semanales o mensuales como punto de partida, según familia de fuentes.
+- Worker de consulta e índice vectorial opcionales cuando exista un corpus validado.
 Las carpetas vacías del proyecto original se han retirado; sus planes se conservan
 en la documentación:
 
