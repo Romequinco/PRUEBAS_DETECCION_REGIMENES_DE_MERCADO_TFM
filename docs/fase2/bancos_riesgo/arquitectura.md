@@ -238,10 +238,14 @@ python -m pytest tests/ingesta/bancos_riesgo -q
 La ejecución real de los 14 apartados comprueba sus adaptadores y gráficos;
 los errores HTTP quedan en los resultados y no se confunden con éxitos.
 
-- `unit/`: extracción, normalización, hashing, claves, fechas, TimeGate y reglas
-  de fragmentación con muestras pequeñas.
-- `integration/`: subida/descarga R2, catálogo D1, reejecución y recuperación de
-  escrituras parciales, solo contra desarrollo.
+Hoy los tests están en una sola carpeta, `tests/ingesta/bancos_riesgo/`, sin red
+(`unittest.mock` sobre `ingesta.comun.http`): adquisición, robots.txt y exclusiones,
+análisis y reglas temporales. Para el futuro pipeline:
+
+- extracción, normalización, hashing, claves, fechas, TimeGate y fragmentación con
+  muestras pequeñas, en la misma carpeta;
+- integración (subida/descarga R2, catálogo D1, reejecución y recuperación de
+  escrituras parciales), solo contra desarrollo y marcada para no correr en la CI;
 - `fixtures/`: muestras pequeñas sintéticas o con licencia que permita guardarlas
   en Git; sin credenciales ni corpus de producción.
 

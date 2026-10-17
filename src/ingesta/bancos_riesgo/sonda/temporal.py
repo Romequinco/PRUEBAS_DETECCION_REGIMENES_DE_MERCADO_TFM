@@ -1,16 +1,21 @@
 """Fechas con precisión explícita y filtro histórico conservador por versión."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 import re
 from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-POLICY_VERSION = 'sonda-timegate-v1'
+POLICY_VERSION = 'sonda-timegate-v2'
+ARXIV_ZONA = ZoneInfo('America/New_York')
 
 
-def parse_date(raw):
-    """Devuelve fecha ISO, precisión y timestamp UTC; nunca completa mes/año."""
+def parse_date(raw, dayfirst=False):
+    """Devuelve fecha ISO, precisión y timestamp UTC; nunca completa mes/año.
+
+    ``dayfirst`` fija la convención de fechas numéricas (``03/04/2026``): False mes/día, True
+    día/mes y None si no se conoce, en cuyo caso una fecha ambigua queda como ``ambigua``.
+    """
     raw = str(raw or '').strip()
     if not raw:
         return None, 'desconocida', None
@@ -19,8 +24,16 @@ def parse_date(raw):
         return raw, 'mes', None
     if re.fullmatch(r'\d{4}', raw):
         return raw, 'año', None
+    numeric = re.match(r'(\d{1,2})[/.](\d{1,2})[/.]\d{4}\b', raw)
+    ambiguous = numeric and int(numeric[1]) <= 12 and int(numeric[2]) <= 12 and int(numeric[1]) != int(numeric[2])
+    if ambiguous and dayfirst is None:
+        return raw, 'ambigua', None
     try:
-        parsed = pd.Timestamp(raw)
+        if numeric:
+            first = bool(dayfirst) if ambiguous else int(numeric[1]) > 12
+            parsed = pd.Timestamp(pd.to_datetime(raw, dayfirst=first))
+        else:
+            parsed = pd.Timestamp(raw)
     except (ValueError, TypeError):
         return raw, 'sin_normalizar', None
     if parsed.tzinfo is not None:
@@ -31,12 +44,34 @@ def parse_date(raw):
     return parsed.date().isoformat(), 'día', None
 
 
+def anuncio_arxiv(enviado, margen_dias=1):
+    """Primer anuncio público de un envío a arXiv, en UTC.
+
+    ``<published>`` del Atom es la hora de envío de la v1, no la de anuncio. arXiv cierra los envíos
+    a las 14:00 ET de lunes a viernes y anuncia a las 20:00 ET de domingo a jueves: el cierre del
+    viernes sale el domingo. Los festivos solo retrasan el anuncio, de ahí el margen conservador.
+    """
+    sent = pd.Timestamp(enviado)
+    if sent.tzinfo is None:
+        raise ValueError('El envío a arXiv debe incluir zona horaria')
+    local = sent.tz_convert(ARXIV_ZONA).to_pydatetime()
+    day = local.date()
+    while True:
+        deadline = datetime.combine(day, time(14), ARXIV_ZONA)
+        if day.weekday() < 5 and deadline > local:
+            break
+        day += timedelta(days=1)
+    announced = datetime.combine(day + timedelta(days=2 if day.weekday() == 4 else 0), time(20), ARXIV_ZONA)
+    return pd.Timestamp(announced + timedelta(days=margen_dias)).tz_convert('UTC').isoformat()
+
+
 def available_at(record):
     """No equivale a publicación: requiere acreditar la versión textual actual."""
     if not record.get('version_acreditada') or not record.get('texto_completo'):
         return None
     if record.get('precision_publicacion') == 'hora':
-        return record.get('publicacion_utc')
+        # Si la fuente separa envío y anuncio (arXiv), vale el anuncio.
+        return record.get('anuncio_utc') or record.get('publicacion_utc')
     if record.get('precision_publicacion') == 'día' and record.get('zona_fuente'):
         # Explicit conservative policy: usable only from the following local day.
         day = datetime.fromisoformat(record['fecha_publicacion'][:10])

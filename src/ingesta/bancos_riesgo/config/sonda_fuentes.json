@@ -459,7 +459,8 @@
     "url": "https://xining.pbc.gov.cn/en/3688229/3688353/3688356/2025/2025120609594943547/2025061614254988376.pdf",
     "patron": null,
     "adaptador": "documento",
-    "aplicacion_relevante": false
+    "aplicacion_relevante": false,
+    "excluida": "robots.txt con Disallow: / salvo Baiduspider; alternativa: discursos vía BIS y datasets abiertos (plan de datos §3.4)"
   },
   {
     "apartado": 6,
@@ -627,7 +628,8 @@
     "url": "https://www.imf.org/en/Publications/GFSR",
     "patron": "/gfsr/issues/\\d{4}/\\d{2}/\\d{2}/[^/?#]+$",
     "adaptador": "documento",
-    "aplicacion_relevante": false
+    "aplicacion_relevante": false,
+    "excluida": "El WAF del FMI bloquea a los clientes que no son navegador; descarga manual pendiente de Q5 (plan de datos §3.4)"
   },
   {
     "apartado": 10,
@@ -636,7 +638,8 @@
     "url": "https://www.imf.org/-/media/files/publications/gfsr/2026/april/english/text.pdf",
     "patron": null,
     "adaptador": "documento",
-    "aplicacion_relevante": false
+    "aplicacion_relevante": false,
+    "excluida": "El WAF del FMI bloquea a los clientes que no son navegador; descarga manual pendiente de Q5 (plan de datos §3.4)"
   },
   {
     "apartado": 10,

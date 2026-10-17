@@ -7,7 +7,7 @@ from ingesta.comun.rutas import ROOT, corpus_dir
 
 
 def main():
-    path = ROOT / 'notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb'
+    path = ROOT / 'notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb'
     directory = corpus_dir('bancos_riesgo') / 'exports/notebooks'
     directory.mkdir(parents=True, exist_ok=True)
     output = directory / path.stem

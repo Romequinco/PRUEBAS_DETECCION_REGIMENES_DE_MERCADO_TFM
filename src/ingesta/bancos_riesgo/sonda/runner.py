@@ -16,13 +16,24 @@ import requests
 from ingesta.comun.rutas import corpus_dir
 
 from .collectors import Collector
-from .http import HttpClient
+from .http import BloqueadaPorRobots, HttpClient
 from .parsing import application_date, chunks, event_date, publication_clock
 from .temporal import POLICY_VERSION, add_metrics, available_at, parse_date
 
 ZONES = {'Fed': 'America/New_York', 'BCE': 'Europe/Berlin', 'BoE': 'Europe/London',
          'BoJ': 'Asia/Tokyo', 'BIS': 'Europe/Zurich', 'ESRB': 'Europe/Berlin',
          'Banco de España': 'Europe/Madrid', 'EUR-Lex': 'Europe/Brussels'}
+INVENTARIO = Path(__file__).resolve().parents[1] / 'config' / 'sonda_fuentes.json'
+
+
+def _inicio_dia_utc():
+    return datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+
+
+def _dia_primero(fuente):
+    """Convención de las fechas numéricas: mes/día en EE. UU., día/mes en el resto; None si se ignora."""
+    zona = ZONES.get(fuente)
+    return None if zona is None else not zona.startswith('America/')
 
 
 @dataclass(frozen=True)
@@ -32,10 +43,11 @@ class ConfigSonda:
     max_paginas: int = 40
     max_filas: int = 3
     usar_cache: bool = True
-    corte_utc: str = '2026-10-14T00:00:00+00:00'
+    corte_utc: str = field(default_factory=_inicio_dia_utc)
     hf_token: str = field(default_factory=lambda: os.getenv('HF_TOKEN', ''), repr=False)
     unpaywall_email: str = field(default_factory=lambda: os.getenv('UNPAYWALL_EMAIL', ''), repr=False)
     directorio_corpus: Path | None = None
+    inventario: Path = INVENTARIO
 
     def __post_init__(self):
         if min(self.max_por_familia, self.max_paginas, self.max_filas) < 1:
@@ -45,7 +57,7 @@ class ConfigSonda:
 class Sonda:
     def __init__(self, config):
         self.config = config
-        self.inventory = json.loads((config.raiz / 'src/ingesta/bancos_riesgo/config/sonda_fuentes.json').read_text(encoding='utf-8'))
+        self.inventory = json.loads(Path(config.inventario).read_text(encoding='utf-8'))
         self.corpus = config.directorio_corpus if config.directorio_corpus is not None else corpus_dir('bancos_riesgo')
         self.http = HttpClient(self.corpus / 'cache/sonda', config.usar_cache)
         self.collector = Collector(self.http, config)
@@ -60,7 +72,7 @@ class Sonda:
         return {'apartado': spec['apartado'], 'fuente': spec['fuente'],
                 'tipo': spec.get('identificador') if spec['adaptador'] == 'huggingface' else spec['tipo'],
                 'url': url, 'estado': 'OK', 'error': '', 'fecha_publicacion': None,
-                'precision_publicacion': 'desconocida', 'publicacion_utc': None,
+                'precision_publicacion': 'desconocida', 'publicacion_utc': None, 'anuncio_utc': None,
                 'fecha_publicacion_raw': None, 'evidencia_publicacion': '',
                 'fecha_evento': None, 'evidencia_evento': '', 'fecha_aplicacion': None,
                 'evidencia_aplicacion': '', 'texto_completo': False, 'version_acreditada': False,
@@ -75,7 +87,7 @@ class Sonda:
         record.update({k: v for k, v in extracted.items() if k not in ('texto', 'ejemplo_datos')})
         text = extracted.get('texto', '')
         raw = publication_clock(record.get('fecha_publicacion_raw'), text, spec['fuente'])
-        normalized, precision, utc = parse_date(raw)
+        normalized, precision, utc = parse_date(raw, dayfirst=_dia_primero(spec['fuente']))
         event, evidence = event_date(original.url, text, spec['fuente'], spec['tipo'])
         if spec.get('aplicacion_relevante'):
             application, application_evidence = application_date(text)
@@ -106,14 +118,18 @@ class Sonda:
     def _error(spec, url, error, started):
         record = Sonda._base(spec, url)
         # HTTP exceptions may contain personal query parameters; retain status only.
-        if isinstance(error, requests.HTTPError):
-            message = f'HTTP {error.response.status_code}; revisar acceso oficial'
+        if isinstance(error, BloqueadaPorRobots):
+            state, message = 'BLOQUEADA_ROBOTS', 'robots.txt no permite esta URL; no se descarga (plan de datos §3.4)'
+        elif isinstance(error, requests.HTTPError):
+            # ingesta.comun.http re-lanza el error sin ``response``: el estado va al principio del mensaje.
+            match = re.match(r'\d{3}', str(error))
+            status = error.response.status_code if error.response is not None else (match[0] if match else '?')
+            state, message = 'ERROR_ACCESO', f'HTTP {status}; revisar acceso oficial'
         elif isinstance(error, requests.RequestException):
-            message = f'Error de red: {type(error).__name__}'
+            state, message = 'ERROR_ACCESO', f'Error de red: {type(error).__name__}'
         else:
-            message = str(error)[:350]
-        record.update(estado='ERROR_ACCESO' if isinstance(error, requests.RequestException) else 'PENDIENTE',
-                      error=message, segundos=time.monotonic() - started, estado_historico='sin_muestra')
+            state, message = 'PENDIENTE', str(error)[:350]
+        record.update(estado=state, error=message, segundos=time.monotonic() - started, estado_historico='sin_muestra')
         return record
 
     def ejecutar(self, apartado):
@@ -125,6 +141,12 @@ class Sonda:
         for spec in specs:
             started = time.monotonic()
             adapter = spec['adaptador']
+            if spec.get('excluida'):
+                # Fuente cerrada por acceso legal: se lista para dejar constancia, sin tocar la red.
+                record = self._base(spec, spec.get('url'))
+                record.update(estado='EXCLUIDA', error=spec['excluida'], estado_historico='sin_muestra')
+                records.append(record)
+                continue
             try:
                 targets = (self.collector.targets(spec) if adapter in ('documento', 'qa', 'tabla', 'bis_csv')
                            else [(spec.get('url', spec.get('identificador')), '')])

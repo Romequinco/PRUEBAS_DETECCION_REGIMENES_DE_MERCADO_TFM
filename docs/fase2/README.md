@@ -19,7 +19,7 @@ su responsable es Fernando Dapena Tauste. Su código y documentación no implica
 
 **Notebooks por tema:**
 - Tema 1: [`notebooks/fase2/mercados_series/`](../../notebooks/fase2/mercados_series/) (`01`–`09`).
-- Tema 2: [`notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb`](../../notebooks/fase2/bancos_riesgo/01_fuentes_prioridad_gratuita.ipynb);
+- Tema 2: [`notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb`](../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb);
   [diseño y guías](../../src/ingesta/bancos_riesgo/README.md#diseño-y-próximos-pasos).
 - Tema 3: [`notebooks/fase2/t3_01_sonda_empresas.ipynb`](../../notebooks/fase2/t3_01_sonda_empresas.ipynb).
 - Tema 4: [`notebooks/fase2/t4_01_sonda_noticias_alt.ipynb`](../../notebooks/fase2/t4_01_sonda_noticias_alt.ipynb) y
