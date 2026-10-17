@@ -10,7 +10,7 @@ from urllib.parse import quote, urljoin
 import pandas as pd
 
 from .parsing import clean, extract, soup
-from .temporal import parse_date
+from .temporal import anuncio_arxiv, parse_date
 
 
 class Collector:
@@ -163,7 +163,7 @@ class Collector:
         adapter = spec['adaptador']
         identifier = spec.get('identificador', '')
         if adapter == 'crossref':
-            original = self.http.get('https://api.crossref.org/works/' + quote(identifier, safe='/'))
+            original = self.http.get('https://api.crossref.org/works/' + quote(identifier, safe='/'), api=True)
             data = json.loads(original.content)['message']
             field = next((k for k in ('published-online', 'published-print', 'published', 'issued') if data.get(k)), None)
             parts = data.get(field, {}).get('date-parts', [[]])[0]
@@ -175,7 +175,9 @@ class Collector:
         if adapter == 'arxiv':
             # Pin the text to v1: published must never date the latest revised PDF.
             identifier = re.sub(r'v\d+$', '', identifier) + 'v1'
-            original = self.http.get('https://export.arxiv.org/api/query', params={'id_list': identifier, 'max_results': 1})
+            # API documentada: su robots.txt veta a los rastreadores, no a la API (máx. 1 petición cada 3 s).
+            original = self.http.get('https://export.arxiv.org/api/query', params={'id_list': identifier, 'max_results': 1},
+                                     api=True, por_segundo=1 / 3)
             ns = {'a': 'http://www.w3.org/2005/Atom'}
             entry = ET.fromstring(original.content).find('a:entry', ns)
             if entry is None or '/errors' in (entry.findtext('a:id', '', ns) or ''):
@@ -186,19 +188,21 @@ class Collector:
             if not pdf.content.startswith(b'%PDF'):
                 raise ValueError('arXiv devolvió contenido distinto del PDF solicitado')
             result = extract(pdf, 'arXiv', spec['tipo'], self.config.max_paginas)
-            result.update(fecha_publicacion_raw=entry.findtext('a:published', namespaces=ns),
-                          evidencia_publicacion=f'Atom published y PDF fijado a {identifier}',
+            published = entry.findtext('a:published', namespaces=ns)
+            result.update(fecha_publicacion_raw=published, anuncio_utc=anuncio_arxiv(published),
+                          evidencia_publicacion=f'Atom published (envío) y PDF fijado a {identifier}; '
+                                                'disponible desde el anuncio de arXiv + 1 día de margen',
                           version_acreditada=True, identificador=identifier,
                           fecha_actualizacion=entry.findtext('a:updated', namespaces=ns))
             return pdf, result
         if adapter == 'huggingface':
             headers = {'Authorization': 'Bearer ' + self.config.hf_token} if self.config.hf_token else None
             base = 'https://datasets-server.huggingface.co'
-            original = self.http.get(base + '/splits', params={'dataset': identifier}, headers=headers)
+            original = self.http.get(base + '/splits', params={'dataset': identifier}, headers=headers, api=True)
             splits = json.loads(original.content)['splits']
             split = next((s for s in splits if s['config'] == spec.get('config')), splits[0])
             original = self.http.get(base + '/rows', params={'dataset': identifier, 'config': split['config'],
-                                      'split': split['split'], 'offset': 0, 'length': self.config.max_filas}, headers=headers)
+                                      'split': split['split'], 'offset': 0, 'length': self.config.max_filas}, headers=headers, api=True)
             rows = [r['row'] for r in json.loads(original.content)['rows']]
             if not rows:
                 raise ValueError('Dataset sin filas')
@@ -211,14 +215,14 @@ class Collector:
             if not self.config.unpaywall_email:
                 raise ValueError('UNPAYWALL_EMAIL pendiente; completar variable de entorno con email real')
             original = self.http.get('https://api.unpaywall.org/v2/' + quote(identifier, safe='/'),
-                                     params={'email': self.config.unpaywall_email})
+                                     params={'email': self.config.unpaywall_email}, api=True)
             data = json.loads(original.content)
             return original, {'titulo': data.get('title'), 'formato': 'JSON/metadatos', 'texto': '',
                               'texto_completo': False, 'fecha_publicacion_raw': data.get('published_date'),
                               'evidencia_publicacion': 'Fecha editorial; no acredita fecha de apertura de la copia',
                               'ejemplo_datos': {k: data.get(k) for k in ('doi', 'is_oa', 'best_oa_location')}}
         if adapter == 'weo':
-            original = self.http.get(spec['url'], params={'periods': '2025'})
+            original = self.http.get(spec['url'], params={'periods': '2025'}, api=True)
             data = json.loads(original.content)
             return original, {'titulo': spec['tipo'], 'formato': 'JSON/serie', 'texto': '', 'texto_completo': False,
                               'ejemplo_datos': {'pais': 'ESP', 'periodo': '2025', 'unidad': '% anual',

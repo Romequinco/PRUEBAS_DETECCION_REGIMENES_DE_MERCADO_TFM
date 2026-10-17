@@ -9,21 +9,25 @@ from unittest.mock import Mock, patch
 import requests
 
 from ingesta.bancos_riesgo.sonda import ConfigSonda, Sonda
+from ingesta.bancos_riesgo.sonda.runner import INVENTARIO
 from ingesta.bancos_riesgo.sonda.analysis import cobertura, graficos
 from ingesta.bancos_riesgo.sonda.collectors import Collector
-from ingesta.bancos_riesgo.sonda.http import HttpClient, Original
+from ingesta.bancos_riesgo.sonda.http import BloqueadaPorRobots, HttpClient, Original
+
+
+def robots(permite):
+    return patch('ingesta.comun.http.robots_permite', return_value=permite)
 
 
 class AcquisitionTests(unittest.TestCase):
     def test_all_failed_family_remains_in_table_and_charts(self):
         with TemporaryDirectory() as temporary:
             root = Path(temporary)
-            inventory = root / 'src/ingesta/bancos_riesgo/config'
-            inventory.mkdir(parents=True)
             spec = dict(apartado=1, fuente='Fed', tipo='Actas FOMC', adaptador='documento',
                         url='https://example.test/minutes.htm')
-            (inventory / 'sonda_fuentes.json').write_text(json.dumps([spec]), encoding='utf-8')
-            probe = Sonda(ConfigSonda(raiz=root, directorio_corpus=root / 'corpus'))
+            (root / 'inventario.json').write_text(json.dumps([spec]), encoding='utf-8')
+            probe = Sonda(ConfigSonda(raiz=root, directorio_corpus=root / 'corpus',
+                                      inventario=root / 'inventario.json'))
             probe.http.get = Mock(side_effect=requests.ConnectionError('network down'))
             frame = probe.ejecutar(1)
             self.assertEqual(frame.iloc[0]['estado'], 'ERROR_ACCESO')
@@ -49,11 +53,11 @@ class AcquisitionTests(unittest.TestCase):
         self.assertEqual(http.get.call_count, 1)
 
     def test_refresh_preserves_previous_original_and_first_observation(self):
-        with TemporaryDirectory() as temporary:
-            client = HttpClient(Path(temporary), use_cache=False, pause=0)
+        with TemporaryDirectory() as temporary, robots(True):
+            client = HttpClient(Path(temporary), use_cache=False)
             response = Mock(content=b'old version', url='https://example.test/doc')
-            response.raise_for_status.return_value = None
-            client.session.get = Mock(return_value=response)
+            patch('ingesta.comun.http.get', return_value=response).start()
+            self.addCleanup(patch.stopall)
             first = client.get('https://example.test/doc')
             repeated = client.get('https://example.test/doc')
             self.assertEqual(first.retrieved_at, repeated.retrieved_at)
@@ -64,14 +68,56 @@ class AcquisitionTests(unittest.TestCase):
             self.assertTrue((Path(temporary) / 'objects' / revised.sha256).exists())
 
     def test_personal_requests_are_not_persisted(self):
-        with TemporaryDirectory() as temporary:
-            client = HttpClient(Path(temporary), pause=0)
+        with TemporaryDirectory() as temporary, robots(True):
+            client = HttpClient(Path(temporary))
             response = Mock(content=b'{}', url='https://example.test/?email=personal@example.test')
-            response.raise_for_status.return_value = None
-            client.session.get = Mock(return_value=response)
-            original = client.get('https://example.test/', params={'email': 'personal@example.test'})
+            with patch('ingesta.comun.http.get', return_value=response):
+                original = client.get('https://example.test/', params={'email': 'personal@example.test'}, api=True)
             self.assertNotIn('email', original.url)
             self.assertEqual(list(Path(temporary).iterdir()), [])
+
+    def test_robots_disallow_blocks_download_without_network(self):
+        with TemporaryDirectory() as temporary, robots(False), patch('ingesta.comun.http.get') as get:
+            client = HttpClient(Path(temporary))
+            with self.assertRaises(BloqueadaPorRobots):
+                client.get('https://example.test/doc.pdf')
+            get.assert_not_called()
+
+    def test_documented_api_is_not_gated_by_robots(self):
+        with TemporaryDirectory() as temporary, robots(False) as permite:
+            response = Mock(content=b'{}', url='https://api.example.test/x')
+            with patch('ingesta.comun.http.get', return_value=response) as get:
+                HttpClient(Path(temporary)).get('https://api.example.test/x', api=True, por_segundo=0.5)
+            permite.assert_not_called()
+            self.assertEqual(get.call_args.kwargs['por_segundo'], 0.5)
+
+    def test_robots_block_and_exclusion_are_recorded_not_downloaded(self):
+        with TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            specs = [dict(apartado=5, fuente='PBoC (China)', tipo='Informe', adaptador='documento',
+                          url='https://example.test/a.pdf', excluida='robots.txt con Disallow: /'),
+                     dict(apartado=5, fuente='RBA (Australia)', tipo='Actas', adaptador='documento',
+                          url='https://example.test/b.pdf')]
+            (root / 'inventario.json').write_text(json.dumps(specs), encoding='utf-8')
+            probe = Sonda(ConfigSonda(raiz=root, directorio_corpus=root / 'corpus',
+                                      inventario=root / 'inventario.json'))
+            with robots(False), patch('ingesta.comun.http.get') as get:
+                frame = probe.ejecutar(5)
+            get.assert_not_called()
+            self.assertEqual(frame['estado'].tolist(), ['EXCLUIDA', 'BLOQUEADA_ROBOTS'])
+
+    def test_http_error_without_response_keeps_status_only(self):
+        error = requests.HTTPError('404 Client Error: Not Found for url: https://x.test/?email=personal@example.test')
+        record = Sonda._error(dict(apartado=1, fuente='Fed', tipo='Actas', adaptador='documento'),
+                              'https://x.test/', error, 0)
+        self.assertEqual(record['error'], 'HTTP 404; revisar acceso oficial')
+
+    def test_shipped_inventory_excludes_plan_blocked_sources(self):
+        inventory = json.loads(INVENTARIO.read_text(encoding='utf-8'))
+        excluded = {spec['url'] for spec in inventory if spec.get('excluida')}
+        for spec in inventory:
+            if 'pbc.gov.cn' in spec.get('url', '') or 'gfsr' in spec.get('url', '').lower():
+                self.assertIn(spec['url'], excluded)
 
 
 if __name__ == '__main__':

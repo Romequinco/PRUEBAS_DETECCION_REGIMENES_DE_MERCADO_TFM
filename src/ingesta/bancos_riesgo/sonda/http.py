@@ -1,13 +1,21 @@
-"""HTTP limitado y caché de originales: ninguna credencial se escribe a disco."""
+"""HTTP limitado y caché de originales: ninguna credencial se escribe a disco.
+
+La red pasa por ``ingesta.comun.http.get`` (User-Agent común, ritmo por host y reintentos) y,
+salvo en las APIs documentadas, se consulta antes robots.txt con ``robots_permite``: lo prohibido
+no se descarga (plan de datos §3.4).
+"""
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from hashlib import sha256
 import json
 from pathlib import Path
-import time
 
-import requests
+from ingesta.comun import http as comun_http
+
+
+class BloqueadaPorRobots(Exception):
+    """robots.txt del host no permite la URL a nuestro User-Agent: no se descarga."""
 
 
 @dataclass(frozen=True)
@@ -20,16 +28,18 @@ class Original:
 
 
 class HttpClient:
-    def __init__(self, directory: Path, use_cache=True, timeout=(8, 18), pause=0.35):
+    def __init__(self, directory: Path, use_cache=True, timeout=(8, 18), por_segundo=1.0, reintentos=3):
         self.directory = directory
         self.use_cache = use_cache
         self.timeout = timeout
-        self.pause = pause
-        self.session = requests.Session()
-        self.session.headers['User-Agent'] = 'TFM-source-probe/1.0 (small academic samples)'
+        self.por_segundo = por_segundo
+        self.reintentos = reintentos
         self.memory = {}
 
-    def get(self, url, params=None, headers=None):
+    def get(self, url, params=None, headers=None, api=False, por_segundo=None):
+        """``api=True`` solo para APIs documentadas, que se rigen por sus términos y límites."""
+        if not api and not comun_http.robots_permite(url):
+            raise BloqueadaPorRobots(f'robots.txt no permite {url}')
         # Authenticated/personal requests remain in memory; do not persist email/token.
         private = bool(headers) or 'email' in (params or {})
         key = sha256(json.dumps([url, params or {}, headers or {}], sort_keys=True).encode()).hexdigest()
@@ -43,9 +53,8 @@ class HttpClient:
                 raise ValueError('Hash de caché inválido: vuelve a descargar este original')
             result = Original(body, meta['url'], meta['retrieved_at'], meta['sha256'], True)
         else:
-            time.sleep(self.pause)
-            response = self.session.get(url, params=params, headers=headers, timeout=self.timeout)
-            response.raise_for_status()
+            response = comun_http.get(url, params=params, headers=headers, timeout=self.timeout,
+                                      por_segundo=por_segundo or self.por_segundo, reintentos=self.reintentos)
             if not response.content:
                 raise ValueError('Respuesta vacía: revisar el enlace oficial')
             digest = sha256(response.content).hexdigest()

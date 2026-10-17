@@ -1,12 +1,12 @@
 """Pruebas de reglas que podrían introducir sesgo de anticipación."""
 
-from pathlib import Path
 import unittest
 
 import pandas as pd
 
 from ingesta.bancos_riesgo.sonda.parsing import application_date, event_date, publication_clock, publication_html, soup
-from ingesta.bancos_riesgo.sonda.temporal import add_metrics, available_at, parse_date, vista_a_fecha
+from ingesta.bancos_riesgo.sonda.runner import _dia_primero
+from ingesta.bancos_riesgo.sonda.temporal import add_metrics, anuncio_arxiv, available_at, parse_date, vista_a_fecha
 
 
 class TemporalTests(unittest.TestCase):
@@ -27,6 +27,29 @@ class TemporalTests(unittest.TestCase):
     def test_clock_requires_timezone(self):
         self.assertEqual(parse_date('2026-10-14T14:00:00')[1], 'hora_sin_zona')
         self.assertEqual(parse_date('2026-10-14T14:00:00-04:00')[2], '2026-10-14T18:00:00+00:00')
+
+    def test_ambiguous_numeric_date_follows_source_convention(self):
+        self.assertEqual(parse_date('03/04/2026')[0], '2026-03-04')
+        self.assertEqual(parse_date('03/04/2026', dayfirst=True)[0], '2026-04-03')
+        self.assertEqual(parse_date('03/04/2026', dayfirst=None), ('03/04/2026', 'ambigua', None))
+        self.assertEqual(parse_date('13/04/2026', dayfirst=None)[0], '2026-04-13')
+        self.assertFalse(_dia_primero('Fed'))
+        self.assertTrue(_dia_primero('Banco de España'))
+        self.assertIsNone(_dia_primero('Fuente sin zona'))
+
+    def test_arxiv_is_available_from_announcement_not_submission(self):
+        # Lunes antes de las 14:00 ET -> anuncio el lunes a las 20:00 ET (+1 día de margen).
+        self.assertEqual(anuncio_arxiv('2009-05-04T12:00:00Z'), '2009-05-06T00:00:00+00:00')
+        # Jueves por la tarde y viernes por la mañana -> anuncio del domingo.
+        self.assertEqual(anuncio_arxiv('2009-05-07T19:00:00Z', margen_dias=0), '2009-05-11T00:00:00+00:00')
+        self.assertEqual(anuncio_arxiv('2009-05-08T12:00:00Z', margen_dias=0), '2009-05-11T00:00:00+00:00')
+        # Viernes por la tarde y fin de semana -> anuncio del lunes.
+        self.assertEqual(anuncio_arxiv('2009-05-09T12:00:00Z', margen_dias=0), '2009-05-12T00:00:00+00:00')
+        sent = '2009-05-04T12:00:00+00:00'
+        record = self.record(precision_publicacion='hora', publicacion_utc=sent, anuncio_utc=anuncio_arxiv(sent))
+        frame = pd.DataFrame([dict(record, disponible_desde_utc=available_at(record))])
+        self.assertTrue(vista_a_fecha(frame, '2009-05-05T12:00:00+00:00').empty)
+        self.assertEqual(len(vista_a_fecha(frame, '2009-05-06T00:00:00+00:00')), 1)
 
     def test_published_label_preserves_day(self):
         self.assertEqual(parse_date('Published on 30 July 2026'), ('2026-07-30', 'día', None))

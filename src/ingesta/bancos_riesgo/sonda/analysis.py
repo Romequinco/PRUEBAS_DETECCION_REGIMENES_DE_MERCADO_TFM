@@ -132,7 +132,9 @@ def mostrar_apartado(sonda, apartado, title):
     frame = sonda.results[apartado]
     print(f'{len(frame)} intentos · {frame["estado"].eq("OK").sum()} muestras obtenidas. '
           'La cobertura describe la muestra; no el archivo histórico completo.')
-    display(cobertura(frame).round(2))
+    coverage = cobertura(frame)
+    # Solo las columnas numéricas: redondear las de fecha no tiene efecto y avisa.
+    display(coverage.round({column: 2 for column in coverage.select_dtypes('number').columns}))
     display(frame[['fuente', 'tipo', 'estado', 'fecha_evento', 'fecha_publicacion', 'precision_publicacion',
                    'fecha_aplicacion', 'retraso_evento_dias', 'retraso_aplicacion_dias',
                    'evidencia_publicacion', 'estado_historico', 'url']])
