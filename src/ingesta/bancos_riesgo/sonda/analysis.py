@@ -2,6 +2,7 @@
 
 import re
 from textwrap import fill
+import warnings
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -11,6 +12,13 @@ from .temporal import add_metrics, vista_a_fecha
 
 
 def cobertura(frame):
+    with warnings.catch_warnings():
+        # Una familia sin retrasos medidos da NaN a propósito: el aviso de numpy no aporta nada.
+        warnings.simplefilter('ignore', RuntimeWarning)
+        return _cobertura(frame)
+
+
+def _cobertura(frame):
     rows = []
     for (source, family), group in frame.groupby(['fuente', 'tipo'], sort=False):
         ok = group.loc[group['estado'].eq('OK')]
