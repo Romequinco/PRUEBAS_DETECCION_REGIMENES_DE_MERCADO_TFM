@@ -3,10 +3,16 @@
 Diseño conceptual; no se han creado tablas SQL ni contratos ejecutables.
 
 La sonda del notebook implementa una primera política local
-`sonda-timegate-v1` en `src/ingesta/bancos_riesgo/sonda/temporal.py`: texto completo,
+`sonda-timegate-v2` en `src/ingesta/bancos_riesgo/sonda/temporal.py`: texto completo,
 versión acreditada y disponibilidad con zona antes del corte. Una fecha con
 solo día y zona conocida se admite desde el inicio del día local siguiente;
-es un límite conservador, no una hora observada. La biblioteca general conserva
+es un límite conservador, no una hora observada. En arXiv, `published` es la hora
+de envío de la v1: la disponibilidad cuenta desde su primer anuncio (cierre a las
+14:00 ET de lunes a viernes, anuncio a las 20:00 ET de domingo a jueves) más un día
+de margen por festivos (`anuncio_arxiv`). Las fechas numéricas ambiguas
+(`03/04/2026`) siguen la convención de la fuente (mes/día en EE. UU., día/mes en el
+resto) y, si no se conoce, quedan como `ambigua` y no pasan el filtro. La v1 usaba la
+hora de envío de arXiv como disponibilidad. La biblioteca general conserva
 también muestras con fecha incierta. Este código no implementa todavía el
 catálogo D1 ni el filtrado de un servicio RAG.
 

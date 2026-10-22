@@ -1,6 +1,5 @@
 """El gráfico compara eventos y publicaciones, sin imputar fechas ausentes."""
 
-from pathlib import Path
 import unittest
 from unittest.mock import patch
 

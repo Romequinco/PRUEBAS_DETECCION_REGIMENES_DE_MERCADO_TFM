@@ -2,6 +2,7 @@
 
 import re
 from textwrap import fill
+import warnings
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -11,6 +12,13 @@ from .temporal import add_metrics, vista_a_fecha
 
 
 def cobertura(frame):
+    with warnings.catch_warnings():
+        # Una familia sin retrasos medidos da NaN a propósito: el aviso de numpy no aporta nada.
+        warnings.simplefilter('ignore', RuntimeWarning)
+        return _cobertura(frame)
+
+
+def _cobertura(frame):
     rows = []
     for (source, family), group in frame.groupby(['fuente', 'tipo'], sort=False):
         ok = group.loc[group['estado'].eq('OK')]
@@ -132,7 +140,9 @@ def mostrar_apartado(sonda, apartado, title):
     frame = sonda.results[apartado]
     print(f'{len(frame)} intentos · {frame["estado"].eq("OK").sum()} muestras obtenidas. '
           'La cobertura describe la muestra; no el archivo histórico completo.')
-    display(cobertura(frame).round(2))
+    coverage = cobertura(frame)
+    # Solo las columnas numéricas: redondear las de fecha no tiene efecto y avisa.
+    display(coverage.round({column: 2 for column in coverage.select_dtypes('number').columns}))
     display(frame[['fuente', 'tipo', 'estado', 'fecha_evento', 'fecha_publicacion', 'precision_publicacion',
                    'fecha_aplicacion', 'retraso_evento_dias', 'retraso_aplicacion_dias',
                    'evidencia_publicacion', 'estado_historico', 'url']])
