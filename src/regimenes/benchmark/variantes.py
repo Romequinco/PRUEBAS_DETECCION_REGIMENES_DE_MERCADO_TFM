@@ -14,13 +14,22 @@ invalidaría los 24 resultados oficiales.
 
 from __future__ import annotations
 
+import argparse
 import time
 import warnings
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
 
+import numpy as np
 import pandas as pd
+import yaml
 
 from regimenes import evaluacion as ev
-from regimenes.benchmark.ejecucion import DEFAULT_TRAIN_DAYS, configure_evaluation
+from regimenes import features as ft
+from regimenes import rutas
+from regimenes.benchmark.cache import _sp500_path
+from regimenes.benchmark.ejecucion import DEFAULT_TRAIN_DAYS, common_track_index, configure_evaluation
+from regimenes.detectores.menus import variant_specs
 from regimenes.detectores.registry import DetectorSpec
 from regimenes.evaluacion.metricas import detection_summary
 from regimenes.evaluacion.ranking import detection_score
@@ -68,3 +77,76 @@ def evaluar_variante(track: str, spec: DetectorSpec, panel: pd.DataFrame, index:
     wf_panel = wf_panel.copy()
     wf_panel.attrs = {}
     return metrics, wf_panel
+
+
+# --------------------------------------------------------------------------- #
+# Comparación N frente a T sobre un mismo panel construido en memoria (prueba de humo)
+# --------------------------------------------------------------------------- #
+# Los detectores más lentos (D04, D09) quedan fuera: esto es una prueba de humo.
+TRABAJOS_HUMO = (("B", "D02"), ("B", "D10"), ("B", "D03"), ("B", "D08"), ("A", "D02"), ("A", "D03"))
+_PANELES: dict[str, tuple[pd.DataFrame, pd.DatetimeIndex]] = {}
+
+
+def panel_en_memoria(track: str) -> tuple[pd.DataFrame, pd.DatetimeIndex]:
+    """Panel de la pista con ``SP500_ret`` y termómetros, e índice común, desde ``data/raw``.
+
+    No lee ni escribe ``data/processed`` ni verifica sha256: sirve para comparar menús entre
+    sí sobre los mismos datos, no para reproducir las cifras oficiales.
+    """
+    track = track.upper()
+    if track in _PANELES:
+        return _PANELES[track]
+    cov = pd.read_csv(rutas.DATA_RAW / "coverage_report.csv")
+    fuente = dict(zip(cov["nombre"], cov["fuente"]))
+    spec = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))[f"pista_{track}"]
+    raw = {}
+    for nombre in spec["series_features"]:
+        ruta = rutas.DATA_RAW / str(fuente.get(nombre)) / f"{nombre}.parquet"
+        if ruta.exists():
+            raw[nombre] = ft.seleccionar_raw(pd.read_parquet(ruta), nombre)
+    bloques = ft.construir_paneles(raw, spec["ventana_inicio"], spec["ventana_fin"])
+    mensual = bloques["mensual"][[c for c in bloques["mensual"] if not c.endswith("_edad_dias")]]
+    panel = bloques["diaria"].join(mensual)
+    sp500 = pd.read_parquet(_sp500_path())["SP500"].sort_index().astype(float)
+    panel["SP500_ret"] = np.log(sp500 / sp500.shift(1)).reindex(panel.index)
+    termometros, _ = ft.termometros_pista(raw, track)
+    panel = panel.join(termometros)
+    # Mismo índice para N y T: el común de los 12 originales, sin NaN en los termómetros.
+    index = common_track_index(track, panel)
+    index = index[panel.loc[index, list(termometros.columns)].notna().all(axis=1)]
+    _PANELES[track] = (panel, index)
+    return _PANELES[track]
+
+
+def _trabajo_humo(args: tuple[str, str, str, str]) -> str:
+    track, detector, menu, salida = args
+    destino = Path(salida) / f"{track}_{detector}_{menu}.csv"
+    if destino.exists():
+        return f"{destino.name}: ya estaba"
+    warnings.filterwarnings("ignore")
+    panel, index = panel_en_memoria(track)
+    spec = next(s for s in variant_specs(track, menu) if s.detector_id.split("-")[0] == detector)
+    metrics, wf = evaluar_variante(track, spec, panel, index)
+    metrics.insert(0, "menu", menu)
+    metrics.insert(0, "base", detector)
+    wf.to_parquet(destino.with_suffix(".parquet"))
+    metrics.to_csv(destino, index=False)      # el CSV va al final: marca el trabajo como terminado
+    return f"{destino.name}: score {metrics.loc[0, 'score_deteccion']:.3f}"
+
+
+def comparar_menus_humo(salida: Path, *, jobs: int = 3) -> None:
+    """Ejecuta N y T de ``TRABAJOS_HUMO`` en paralelo; reanudable (salta los CSV ya escritos)."""
+    salida = Path(salida)
+    salida.mkdir(parents=True, exist_ok=True)
+    trabajos = [(t, d, m, str(salida)) for t, d in TRABAJOS_HUMO for m in ("N", "T")]
+    with ProcessPoolExecutor(max_workers=jobs) as pool:
+        for linea in pool.map(_trabajo_humo, trabajos):
+            print(linea, flush=True)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--salida", type=Path, default=rutas.RESULTS_DETECTORES / "menus_humo")
+    parser.add_argument("--jobs", type=int, default=3)
+    argumentos = parser.parse_args()
+    comparar_menus_humo(argumentos.salida, jobs=argumentos.jobs)
