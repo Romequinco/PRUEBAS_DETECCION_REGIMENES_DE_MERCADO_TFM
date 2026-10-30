@@ -60,7 +60,7 @@
   "bloque": "Detección de regímenes de mercado (clásica y reciente) y asignación condicionada al régimen",
   "fase": "P1 régimen, P5 evaluación",
   "seminal": false,
-  "que_hace": "Propone observables geométricos sobre un embedding espectral y los compara con 46 métodos clásicos y de ML (Markov-switching, GARCH, turbulencia, absorption ratio, etc.) en 17 crisis (2000-2024). Usa selección anidada walk-forward e intervalos bootstrap. Muestra que la mejor separación dentro de muestra cae fuera de muestra.",
+  "que_hace": "Propone observables geométricos sobre un embedding QCML (22 canales propios: Berry Phase Rate, Reduced Purity, QFI…) y los compara con 24 baselines clásicos y de ML (absorption ratio, Markov-switching de Hamilton, GARCH, CUSUM, BOCPD, turbulencia, VIX como oráculo y dos random forest) en 17 crisis (9 convencionales y 8 novedosas) sobre SPY y DIA de 1998 a 2024 (cifras pendientes de verificar en el PDF). Usa selección anidada walk-forward e intervalos bootstrap. Muestra que la mejor separación dentro de muestra cae fuera de muestra.",
   "diferencia_con_nosotros": "Es el benchmark más cercano a nuestro ranking por detección de crisis. Usa solo índices de renta variable, sin datos macro con vintages ni uso posterior en cartera o agentes.",
   "rasgos": {
    "anti_lookahead": true,
