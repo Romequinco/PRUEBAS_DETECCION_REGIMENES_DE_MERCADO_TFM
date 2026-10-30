@@ -31,7 +31,7 @@
 
 meta:
   version: 2
-  estado: decidido_pendiente_congelar_ADR008
+  estado: congelado_ADR008   # 2026-10-30
   generado: '2026-10-30'
 
 reajuste: mensual            # último día del índice de cada mes; cargas aplicadas a (r, r_siguiente]

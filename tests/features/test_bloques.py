@@ -185,3 +185,61 @@ def test_cargar_bloques(pista, n_bloques, n_cols):
     assert p["reajuste"] == "mensual"
     assert p["umbral_var"] == 0.30
     assert p["historia_previa"] == "toda"
+
+
+# --------------------------------------------------------------------------- #
+# termometros_pista: historia previa y recorte a la ventana (ADR-008 §2.1)
+# --------------------------------------------------------------------------- #
+_YAML_MINI = """
+reajuste: mensual
+min_obs: 252
+ventana: null
+umbral_var: 0.30
+umbrales_var_a_probar: [0.30, 0.40, 0.50]
+historia_previa: toda
+pista_B:
+  T1_renta_variable:
+    ancla: {columna: SP500_vol_z, signo: 1}
+    columnas: [SP500_vol_z, SP500_momentum, SP500_drawdown]
+"""
+
+
+def _raw_sp500() -> dict:
+    rng = np.random.default_rng(3)
+    idx = pd.bdate_range("1995-01-02", "2012-12-31")
+    precio = 100 * np.exp(np.cumsum(rng.normal(0.0003, 0.012, len(idx))))
+    return {"SP500": pd.Series(precio, index=idx, name="SP500")}
+
+
+def test_termometros_pista_usa_historia_previa(tmp_path):
+    from regimenes.features import termometros_pista
+    ruta = tmp_path / "bloques.yaml"
+    ruta.write_text(_YAML_MINI, encoding="utf-8")
+    bench = {"pista_B": {"ventana_inicio": "2005-01-03", "ventana_fin": "2012-12-31"}}
+    T, diag = termometros_pista(_raw_sp500(), "B", benchmark=bench, ruta_bloques=ruta)
+    assert T.index[0] == pd.Timestamp("2005-01-03")
+    assert T.notna().all().all()                      # sin calentamiento dentro de la ventana
+    assert diag["T1_renta_variable"]["fecha_reajuste"].min() < pd.Timestamp("2005-01-03")
+
+
+def test_termometros_pista_es_causal(tmp_path):
+    from regimenes.features import termometros_pista, truncar
+    ruta = tmp_path / "bloques.yaml"
+    ruta.write_text(_YAML_MINI, encoding="utf-8")
+    bench = {"pista_B": {"ventana_inicio": "2005-01-03", "ventana_fin": "2012-12-31"}}
+    raw = _raw_sp500()
+    completo, _ = termometros_pista(raw, "B", benchmark=bench, ruta_bloques=ruta)
+    for corte in ("2008-06-13", "2010-03-31"):
+        b = {"pista_B": {"ventana_inicio": "2005-01-03", "ventana_fin": corte}}
+        corto, _ = termometros_pista(truncar(raw, corte), "B", benchmark=b, ruta_bloques=ruta)
+        pd.testing.assert_frame_equal(completo.loc[:corte], corto, check_freq=False, atol=1e-10)
+
+
+def test_escribir_y_cargar_termometros(tmp_path, monkeypatch):
+    from regimenes import rutas
+    from regimenes.features import bloques as bq
+    monkeypatch.setattr(rutas, "DATA_PROCESSED", tmp_path)
+    T = pd.DataFrame({"T1_renta_variable": [0.1, 0.2]}, index=pd.bdate_range("2020-01-01", periods=2))
+    ruta = bq.escribir_termometros(T, "b")
+    assert ruta.name == "pistaB_termometros.parquet"
+    pd.testing.assert_frame_equal(bq.cargar_termometros("B"), T, check_freq=False)

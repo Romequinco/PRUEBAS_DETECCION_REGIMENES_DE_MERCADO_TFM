@@ -367,3 +367,58 @@ def cargar_bloques(pista: str, ruta: Path | None = None) -> dict[str, dict[str, 
         vistas.update(cols)
         out[nombre] = {'columnas': cols, 'ancla': {'columna': col_anc, 'signo': signo}}
     return out
+
+
+# --------------------------------------------------------------------------- #
+# Panel de termómetros de una pista (menú T, ADR-008 §2.1)
+# --------------------------------------------------------------------------- #
+INICIO_HISTORIA = '1900-01-01'   # «toda la historia»: la rejilla empieza en el primer dato real
+
+
+def ruta_termometros(pista: str) -> Path:
+    """``data/processed/pista{A,B}_termometros.parquet``."""
+    return rutas.DATA_PROCESSED / f'pista{pista.upper()}_termometros.parquet'
+
+
+def termometros_pista(raw: Mapping[str, Any], pista: str, *, benchmark: Mapping[str, Any] | None = None,
+                      ruta_bloques: Path | None = None) -> tuple[pd.DataFrame, dict[str, pd.DataFrame]]:
+    """Termómetros de una pista con los parámetros congelados y recortados a su ventana.
+
+    ``raw`` son los crudos de la pista (los mismos que recibe ``construir_paneles``). Con
+    ``historia_previa: toda`` el panel se construye desde el primer dato disponible y los
+    termómetros se recortan a ``[ventana_inicio, ventana_fin]``: es causal (solo pasado) y
+    evita perder el primer año de la ventana en el calentamiento. Devuelve también los
+    diagnósticos por termómetro (de toda la historia).
+    """
+    from regimenes.features.paneles import construir_paneles   # evita el ciclo con __init__
+
+    pista = pista.upper()
+    benchmark = benchmark or yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding='utf-8'))
+    b = benchmark[f'pista_{pista}']
+    params = parametros_bloques(ruta_bloques)
+    if params.get('historia_previa', 'toda') != 'toda':
+        raise ValueError(f"historia_previa={params.get('historia_previa')!r} no soportada (solo 'toda')")
+    p = construir_paneles(raw, INICIO_HISTORIA, b['ventana_fin'])
+    mensual = p['mensual'][[c for c in p['mensual'].columns if not c.endswith('_edad_dias')]]
+    panel = p['diaria'].join(mensual)
+    termometros, diag = construir_termometros(
+        panel, cargar_bloques(pista, ruta_bloques), umbral_var=params['umbral_var'],
+        min_obs=params['min_obs'], ventana=params['ventana'])
+    return termometros.loc[pd.Timestamp(b['ventana_inicio']):], diag
+
+
+def escribir_termometros(termometros: pd.DataFrame, pista: str) -> Path:
+    """Guarda el panel de termómetros junto a los paneles de ``03_preprocesado``."""
+    ruta = ruta_termometros(pista)
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    termometros.to_parquet(ruta)
+    return ruta
+
+
+def cargar_termometros(pista: str) -> pd.DataFrame:
+    """Lee el panel de termómetros escrito por :func:`escribir_termometros`."""
+    ruta = ruta_termometros(pista)
+    if not ruta.exists():
+        raise FileNotFoundError(f'Falta {ruta}: ejecuta termometros_pista + escribir_termometros '
+                                '(notebook 04) sobre los crudos verificados.')
+    return pd.read_parquet(ruta).sort_index()

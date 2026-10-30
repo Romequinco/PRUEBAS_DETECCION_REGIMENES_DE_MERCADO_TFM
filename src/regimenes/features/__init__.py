@@ -13,12 +13,16 @@ from regimenes.features import bloques, causalidad, lags, paneles, transformacio
 from regimenes.features.bloques import (
     BLOQUES_YAML,
     cargar_bloques,
+    cargar_termometros,
     comparar_umbrales,
     construir_termometros,
+    escribir_termometros,
     fechas_reajuste,
     parametros_bloques,
     resumen_estabilidad,
+    ruta_termometros,
     termometro_bloque,
+    termometros_pista,
 )
 from regimenes.features.causalidad import assert_causal, truncar, truncation_max_abs_diff
 from regimenes.features.lags import (
@@ -90,4 +94,5 @@ __all__ = [
     # bloques (§6, termómetros por bloque)
     "BLOQUES_YAML", "fechas_reajuste", "termometro_bloque", "construir_termometros",
     "resumen_estabilidad", "comparar_umbrales", "cargar_bloques", "parametros_bloques",
+    "termometros_pista", "escribir_termometros", "cargar_termometros", "ruta_termometros",
 ]

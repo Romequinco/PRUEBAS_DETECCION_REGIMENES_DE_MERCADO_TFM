@@ -1,7 +1,8 @@
 # ADR-008 — Pre-registro: termómetros por bloque, menús de datos y vara de medir
 
-- **Estado:** Borrador · 2026-10-30. Se congela (pasa a *Aceptada*) **antes** de ejecutar ningún detector con los
-  menús nuevos. Lo marcado como *propuesta* espera el visto bueno del equipo.
+- **Estado:** Aceptada y **congelada** · 2026-10-30, antes de ejecutar ningún detector con los menús nuevos y antes
+  de cruzar los termómetros con las crisis. Bloques, anclas, umbral, calentamiento, menús, vara de medir y criterios
+  de éxito (§6) quedan fijados; cualquier cambio posterior se declara y se fecha aquí.
 - **Origen:** plan de [`PendientesOscar.md`](../../PendientesOscar.md) §6 (19-10-2026) y decisiones del 30-10-2026.
 - **No cambia:** ventanas, series, crisis ni trampas de [`configs/benchmark_spec.yaml`](../../configs/benchmark_spec.yaml)
   (ADR-001/002/003); la interfaz `RegimeDetector`; los 12 detectores originales y su ranking v2, que se conserva
@@ -91,7 +92,7 @@ D16 logit L1, D17 random forest, D18 sparse jump model.
 Sin etiquetas de crisis:
 
 1. **Bien calculados (tests):** factor plantado, prefijo, signo estable, NaN que no se propagan.
-2. **Sentido estadístico y económico** (*propuesta de umbrales*): la PC1 supera el umbral elegido en ≥ 80 % de los
+2. **Sentido estadístico y económico**: la PC1 supera el umbral elegido en ≥ 80 % de los
    reajustes (si no, el bloque queda como media simple, que sigue siendo válida); ninguna columna pesa > 50 % en
    ≥ 80 % de los reajustes (no aplica con 1 o 2 columnas); coseno mediano de las cargas entre reajustes consecutivos
    ≥ 0,9 y sin saltos de signo; signos económicamente lógicos.
@@ -108,7 +109,7 @@ Con crisis:
    PCA y de 100 reparticiones aleatorias de columnas a bloques.
 6. **Significación:** MCS dentro de cada menú con los baselines.
 
-## 6. Criterios de éxito y de fracaso (*propuesta*)
+## 6. Criterios de éxito y de fracaso (aprobados el 30-10-2026)
 
 - **El pool aporta** si, en **las dos pistas**: (a) la mayoría de los multivariantes del menú T (D02, D03, D04, D08,
   D09, D10) mejora su `score_deteccion` frente a su versión N; (b) la mediana de esos scores con bloques económicos
@@ -124,7 +125,6 @@ Con crisis:
 - Pérdida definitiva del MCS con días de falsa alarma, que requiere los paneles walk-forward.
 - Llevar el cálculo con historia previa (§2.1) al pipeline que alimenta a los detectores del menú T y comprobar que
   su OOS coincide con el del menú N.
-- Criterios de éxito del §6: confirmar antes de ejecutar.
 
 Resueltos el 30-10-2026 (§2.1): reparto en bloques, anclas, umbral y calentamiento.
 
