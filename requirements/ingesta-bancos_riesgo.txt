@@ -1,3 +1,10 @@
 # Dependencias propias del Tema 2 · Bancos centrales, riesgo sistémico y literatura (buscar_macro, buscar_riesgo).
 # Instalar: python -m pip install -r requirements/ingesta-bancos_riesgo.txt
 # Lo pesado (torch, transformers, bases vectoriales) en un entorno aparte: no alterar el de la Fase 1.
+#
+# Ligeras: requests, pandas, openpyxl, matplotlib y Jupyter (nbconvert, nbformat, ipykernel) ya vienen del
+# paquete principal y su extra dev.
+beautifulsoup4>=4.12   # enlaces y fechas de las páginas de los bancos centrales
+pypdf>=4.0             # texto de los PDF (informes, actas, working papers)
+tzdata>=2024.1         # zonas horarias de zoneinfo en Windows (TimeGate por zona de la fuente)
+nbclient>=0.10         # jobs/ejecutar_notebook_sonda.py

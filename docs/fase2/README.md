@@ -9,16 +9,18 @@ reparte en **cuatro temas**: cada uno tiene responsable, rama y carpetas propias
 | Tema | Carpeta | Rama | Agentes | Tools que alimenta | Responsable |
 |---|---|---|---|---|---|
 | 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | Romen (@Romequinco) |
-| 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `fase2/t2-bancos-riesgo` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | _por asignar_ |
+| 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `fase2/t2-bancos-riesgo` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | Fernando Dapena Tauste |
 | 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | `fase2/t3-empresas` | Equity, Risk | `buscar_filings`, `get_fundamentales` | Daniel García |
 | 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `fase2/t4-noticias-alt` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | Romen (@Romequinco) |
 
-**Estado** (2026-10-15): los temas 1 (mercados y series), 3 (sonda EDGAR) y 4 (sonda de noticias y alternativos con
-validez) están integrados en `main`; el Tema 2 aún no tiene rama ni responsable. Cada responsable rellena su celda
-de la tabla.
+**Estado** (2026-10-16): los temas 1 (mercados y series), 3 (sonda EDGAR) y 4 (sonda de noticias y alternativos con
+validez) están integrados en `main`. La sonda del Tema 2 se organiza en las carpetas comunes del repositorio;
+su responsable es Fernando Dapena Tauste. Su código y documentación no implican una ingesta masiva desplegada.
 
 **Notebooks por tema:**
 - Tema 1: [`notebooks/fase2/mercados_series/`](../../notebooks/fase2/mercados_series/) (`01`–`09`).
+- Tema 2: [`notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb`](../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb);
+  [diseño y guías](../../src/ingesta/bancos_riesgo/README.md#diseño-y-próximos-pasos).
 - Tema 3: [`notebooks/fase2/t3_01_sonda_empresas.ipynb`](../../notebooks/fase2/t3_01_sonda_empresas.ipynb).
 - Tema 4: [`notebooks/fase2/t4_01_sonda_noticias_alt.ipynb`](../../notebooks/fase2/t4_01_sonda_noticias_alt.ipynb) y
   [`t4_02_validez_alternativos.ipynb`](../../notebooks/fase2/t4_02_validez_alternativos.ipynb).
