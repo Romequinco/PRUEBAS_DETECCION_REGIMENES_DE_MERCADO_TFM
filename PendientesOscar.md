@@ -230,6 +230,10 @@ reorganiza el trabajo en torno a usar el pool completo.
 | T7 · Divisas y materias primas | DXY_change_z, JPY_ret_z, CHF_ret_z, AUD_ret_z, GOLD_ret_z, GSCI_ret_z, BCOM_ret_z, WTI_yoy_z, broad_dollar_real_z, broad_dollar_nominal_z (10) | — |
 | T8 · Macro y valoración | INDPRO, PPI (×3), CPI (×2), UNRATE, PAYEMS, CFNAI (×2), PMI_proxy, ICSA, UMCSENT, HOUST, MANEMP, GDP_growth, CAPE_z, GW_valuation_z (18) | Las mismas salvo CFNAI, PMI e ICSA (15) |
 
+> **Reparto final (30-10-2026):** 10 bloques en B y 7 en A, con T1 separado en estado y rentabilidad diaria y
+> la macro separada en actividad e inflación + valoración. Lo fija el ADR-008 §2.1 y `configs/bloques.yaml`; esta
+> tabla queda como propuesta inicial.
+
 La lista de la pista A sale de `construir_diarias`/`construir_mensuales` sobre los datos crudos, más
 FF_industry_dispersion_z y CAPE_z. El reparto en bloques es la propuesta inicial y se congela en el
 ADR-008.

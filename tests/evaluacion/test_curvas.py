@@ -79,7 +79,7 @@ class ExPostCurveTests(unittest.TestCase):
         self.assertAlmostEqual(summary["ratio_ruido_senal"], expected)
 
     def test_detection_matches_event_table_and_lead_lag(self) -> None:
-        detail = self.table.attrs["detalle"][1.0]
+        detail = pd.DataFrame(self.table.attrs["detalle"][1.0])
         self.assertTrue((detail["retraso"] == LAG).all())
         self.assertTrue(detail["detectada"].eq(1.0).all())
 
@@ -87,6 +87,48 @@ class ExPostCurveTests(unittest.TestCase):
         trap = {"t": (str(INDEX[0].date()), str(INDEX[299].date()))}
         table = ev.curva_deteccion(self.score, self.windows, fp_windows=trap, n_grid=3000)
         self.assertTrue((table["n_fa_trampas"] <= table["n_falsas_alarmas"]).all())
+
+
+class EdgeCaseTests(unittest.TestCase):
+    """Casos que encontró la verificación adversarial (ola 3, 30-10-2026)."""
+
+    def test_binary_score_does_not_flag_every_day(self) -> None:
+        # señal 0/1: las 8 crisis más ~1,8 falsas alarmas al año (los «sustos» > 2)
+        score, windows = _toy()
+        binaria = (score > 2.0).astype(float)
+        table = ev.curva_deteccion(binaria, windows).set_index("fa_objetivo")
+        self.assertTrue((table["umbral"] > 0).all())       # nunca «marcar todos los días»
+        # objetivos que la señal no alcanza → no marcar nunca, no un falso 100 %
+        self.assertTrue(np.isinf(table.loc[[0.5, 1.0], "umbral"]).all())
+        self.assertEqual(table.loc[2.0, "umbral"], 1.0)
+        self.assertLess(table.loc[2.0, "ratio_ruido_senal"], 1)
+
+    def test_constant_score_detects_nothing(self) -> None:
+        score, windows = _toy()
+        table = ev.curva_deteccion(pd.Series(1.0, index=score.index), windows)
+        self.assertTrue((table["n_detectadas"] == 0).all())
+
+    def test_no_calm_days_returns_nan_threshold(self) -> None:
+        score, _ = _toy()
+        todo = {"c": (str(INDEX[0].date()), str(INDEX[-1].date()))}
+        umbrales = ev.calibrar_umbral_ex_post(score, todo)
+        self.assertTrue(all(np.isnan(u) for u in umbrales.values()))
+
+    def test_detail_survives_concat_and_repr(self) -> None:
+        score, windows = _toy()
+        a = ev.curva_deteccion(score, windows)
+        b = ev.curva_deteccion(score * 2, windows)
+        both = pd.concat([a, b], ignore_index=True)
+        self.assertEqual(len(both), 6)
+        repr(pd.concat([a] * 5, axis=1))   # tabla ancha: pandas concatena al truncar
+
+    def test_burn_in_counts_valid_observations(self) -> None:
+        score, windows = _toy()
+        con_nan = score.copy()
+        con_nan.iloc[:100] = np.nan
+        panel = ev.umbral_expansivo(con_nan, windows, min_obs=504, paso=126, n_grid=500)
+        self.assertTrue(panel.iloc[:604].isna().all().all())
+        self.assertTrue(panel.iloc[604:].notna().all().all())
 
 
 class ExpandingCurveTests(unittest.TestCase):

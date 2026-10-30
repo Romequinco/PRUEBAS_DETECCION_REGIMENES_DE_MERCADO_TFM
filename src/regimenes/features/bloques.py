@@ -338,9 +338,12 @@ def _leer_yaml(ruta: Path | None = None) -> dict[str, Any]:
 
 
 def parametros_bloques(ruta: Path | None = None) -> dict[str, Any]:
-    """Parámetros globales del pre-registro: reajuste, min_obs, ventana, umbrales_var_a_probar."""
+    """Parámetros globales del pre-registro: reajuste, min_obs, ventana, umbral_var decidido,
+    umbrales_var_a_probar e historia_previa (``'toda'``: calcular con la historia anterior a la
+    ventana y recortar; ver ADR-008)."""
     cfg = _leer_yaml(ruta)
-    return {k: cfg[k] for k in ('reajuste', 'min_obs', 'ventana', 'umbrales_var_a_probar')}
+    claves = ('reajuste', 'min_obs', 'ventana', 'umbral_var', 'umbrales_var_a_probar', 'historia_previa')
+    return {k: cfg[k] for k in claves if k in cfg}
 
 
 def cargar_bloques(pista: str, ruta: Path | None = None) -> dict[str, dict[str, Any]]:

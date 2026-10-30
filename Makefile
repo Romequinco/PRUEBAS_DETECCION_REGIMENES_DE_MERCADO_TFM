@@ -25,11 +25,12 @@ NB_TIMEOUT  ?= 3600
 PYTEST_ARGS ?=
 
 NB_DIR      := notebooks
-# 00..14: descarga, EDA, preprocesado, protocolo, familias F1-F7, comparativa y fusiones.
-# 15..16 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
-# data/sinteticos (~1 GB, gitignored), que genera el 15 con EJECUTAR=True; una vez generado, se
-# ejecutan a mano con EJECUTAR=False. 17 (laboratorio) esta hecho y se ejecuta con su CLI
-# (python -m regimenes.sinteticos.laboratorio). 18..20 (aumento, decision final, pseudolive)
+# 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 (+ F8 supervisado,
+# esqueleto), comparativa y fusiones. 17 (fusion online) es esqueleto.
+# 18..19 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
+# data/sinteticos (~1 GB, gitignored), que genera el 18 con EJECUTAR=True; una vez generado, se
+# ejecutan a mano con EJECUTAR=False. 20 (laboratorio) esta hecho y se ejecuta con su CLI
+# (python -m regimenes.sinteticos.laboratorio). 21..23 (aumento, decision final, pseudolive)
 # son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb

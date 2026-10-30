@@ -1,84 +1,111 @@
 # bloques.yaml — PRE-REGISTRO del reparto del pool de features en bloques (termómetros).
 #
 # Un termómetro = 1 columna causal por bloque: PCA del bloque reajustada cada mes solo con el
-# pasado (regimenes.features.bloques). Origen: PendientesOscar.md §6.3 (tabla de bloques) y §6.5
-# (validación). Este fichero lo congelará el ADR-008; hasta entonces es la PROPUESTA inicial.
+# pasado (regimenes.features.bloques). Origen: PendientesOscar.md §6.3 (propuesta inicial) y
+# ADR-008 (reparto final). Todas las decisiones de abajo se tomaron SIN etiquetas de crisis, con las
+# pruebas de notebooks/04_termometros.ipynb (sección 4–6): estabilidad de cargas y signos, varianza
+# de la PC1 y validez externa frente a índices rol=validation.
 #
 # Reglas del fichero:
 #   - Nombres = columnas EXACTAS de construir_diarias/construir_mensuales (regimenes.features.paneles).
-#   - Cada columna del pool de la pista está en un único bloque (B: 77 col en 8 bloques; A: 35 en 5).
-#   - ancla = columna del bloque y signo esperado (+1/-1) con el que el termómetro sube con el estrés.
-#     Todas las anclas son PROPUESTA, pendiente de aprobación en ADR-008.
-#   - CAPE_z puede faltar en una máquina sin SHILLER_SP500_CAPE: construir_termometros la omite y lo
-#     reporta en el diagnóstico (columna `ausentes`).
+#   - Cada columna del pool de la pista está en un único bloque (B: 77 col en 10 bloques; A: 35 en 7).
+#   - ancla = columna del bloque y signo (+1/-1) con el que el termómetro sube con el estrés.
+#   - CAPE_z, FF_RMW_z y FF_industry_dispersion_z pueden faltar en una máquina con crudos anteriores a
+#     ADR-003: construir_termometros las omite y lo reporta (columna `ausentes` del diagnóstico).
 #
-# Resoluciones respecto a la tabla de §6.3:
-#   - T8 abrevia (INDPRO, PPI x3, CPI x2, ...): nombres resueltos con paneles.MENSUAL_MACRO/MERCADO.
-#   - Pista A, T8: la tabla dice "las mismas salvo CFNAI, PMI e ICSA (15)", que da 14. La columna 15
-#     es WTI_yoy_z (en A existe y no tiene T7 donde ir); así A suma 7+10+1+2+15 = 35.
+# Cambios frente a la propuesta inicial (v1, 2026-10-30, ADR-008 §2):
+#   - T1 se parte en T1 (estado: vol, drawdown, momentum, dispersiones; columnas persistentes) y
+#     T1b (rentabilidades diarias: autocorrelación ~0 y correlación ~0 con la vol). Mezcladas, la PC1
+#     de T1 explicaba ~29 % en B y caía a la media en el 69 % de los reajustes; separadas, T1 sube a
+#     ~62 %, sin saltos de signo, y su correlación con STLFSI4/VIX pasa de 0,58 a 0,78 (B) y de 0,41 a
+#     0,81 (A).
+#   - T8 se parte en T8 (actividad) y T9 (inflación realizada y valoración). En A la PC1 de T8 era la
+#     inflación, con 4 saltos de signo frente a la ancla de paro; separada, T8 no salta y su
+#     correlación con la regla de Sahm pasa de 0,51 a 0,75. La inflación realizada NO va a T4 en B
+#     (T4 = expectativas): metida allí, la PC1 de T4 caía de 0,68 a 0,43 con 3 saltos de signo.
+#   - Ancla de T9: PPI_yoy_z (0 saltos de signo frente a 2 con CPI_yoy_z en A).
+#   - Ancla de T2: short_rate_z (+1) en las dos pistas. La PC1 de T2 es el nivel de tipos (carga + en
+#     tipos y − en pendientes): la pendiente como ancla cargaba poco y en A daba 2 saltos de signo en
+#     1963; short_rate_z carga más y da 0 saltos. El significado no cambia, solo la robustez.
+#   - Pista A, T9 lleva WTI_yoy_z (en A no existe T7); así A suma 4+3+10+1+2+7+8 = 35.
 
 meta:
-  version: 1
-  estado: propuesta_pendiente_ADR008
+  version: 2
+  estado: decidido_pendiente_congelar_ADR008
   generado: '2026-10-30'
 
 reajuste: mensual            # último día del índice de cada mes; cargas aplicadas a (r, r_siguiente]
 min_obs: 252                 # filas no-NaN mínimas para que una columna sea elegible en un reajuste
 ventana: null                # null = expansiva; entero = rolling de N filas
-umbrales_var_a_probar: [0.30, 0.40, 0.50]   # var. explicada mínima de la PC1; por debajo -> media simple
+umbral_var: 0.30             # DECIDIDO: var. explicada mínima de la PC1; por debajo -> media simple
+umbrales_var_a_probar: [0.30, 0.40, 0.50]   # rejilla probada (notebook 04, sección 5)
+historia_previa: toda        # DECIDIDO: el termómetro se calcula con toda la historia del panel anterior
+                             # a ventana_inicio (causal) y se recorta a la ventana; sin ella, B no
+                             # tiene valor hasta 2008-05 y el OOS del menú T no casaría con el del N
 
 pista_B:
   T1_renta_variable:
-    ancla: {columna: SP500_vol_z, signo: 1}            # propuesta, pendiente de aprobación en ADR-008
-    columnas: [SP500_ret_z, SP500_vol_z, SP500_momentum, SP500_drawdown, SP500_megacap_gap_z,
-               equity_breadth_dispersion_z, smallcap_largecap_spread_z, style_spread_z, FF_MKT_z,
-               FF_MOM_z, FF_RMW_z, FF_industry_dispersion_z, sector_dispersion, cyc_def_ratio_z]
+    ancla: {columna: SP500_vol_z, signo: 1}
+    columnas: [SP500_vol_z, SP500_momentum, SP500_drawdown, equity_breadth_dispersion_z,
+               FF_industry_dispersion_z, sector_dispersion]
+  T1b_rentabilidad_diaria:
+    ancla: {columna: SP500_ret_z, signo: -1}           # caída del mercado = estrés
+    columnas: [SP500_ret_z, FF_MKT_z, FF_MOM_z, FF_RMW_z, SP500_megacap_gap_z,
+               smallcap_largecap_spread_z, style_spread_z, cyc_def_ratio_z]
   T2_tipos_nivel_curva:
-    ancla: {columna: slope_10y3m_z, signo: -1}         # propuesta, pendiente de aprobación en ADR-008 (inversión = estrés)
+    ancla: {columna: short_rate_z, signo: 1}           # tipos altos y curva plana/invertida = estrés
     columnas: [slope_10y2y_z, slope_10y3m_z, curve_curvature_z, mid_curve_z, curve_vs_policy_10y_z,
                curve_vs_policy_5y_z, short_rate_z, EFFR_z, TB3MS_z, GS1_z, GS5_z, GS10_z,
                term_spread_hist_z, fed_stance_z, corr_spx_bond]
   T3_velocidad_tipos:
-    ancla: {columna: DGS10_change_z, signo: 1}         # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: DGS10_change_z, signo: 1}
     columnas: [DGS10_change_z, DFII10_change_z, MOVE_change_z]
   T4_inflacion_tipo_real:
-    ancla: {columna: breakeven_10y_z, signo: 1}        # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: breakeven_10y_z, signo: 1}
     columnas: [DFII5_z, breakeven_10y_z, breakeven_5y_z, breakeven_5y_fwd_z]
   T5_vol_implicita:
-    ancla: {columna: VIX_level_z, signo: 1}            # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: VIX_level_z, signo: 1}
     columnas: [VIX_level_z, VIX_change_z, MOVE_level_z, VVIX_z, vix_term_z,
                vol_complex_dispersion_z, SKEW_z]
   T6_credito:
-    ancla: {columna: credit_BAA10Y_z, signo: 1}        # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: credit_BAA10Y_z, signo: 1}
     columnas: [credit_BAA10Y_z, credit_BaaAaa_diaria_z, credit_BaaAaa_mensual_z, credit_BaaFF_z,
                credit_HYG_IEF_z, credit_HYG_LQD_z]
   T7_divisas_materias_primas:
-    ancla: {columna: DXY_change_z, signo: 1}           # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: DXY_change_z, signo: 1}
     columnas: [DXY_change_z, JPY_ret_z, CHF_ret_z, AUD_ret_z, GOLD_ret_z, GSCI_ret_z, BCOM_ret_z,
                WTI_yoy_z, broad_dollar_real_z, broad_dollar_nominal_z]
-  T8_macro_valoracion:
-    ancla: {columna: UNRATE_chg_z, signo: 1}           # propuesta, pendiente de aprobación en ADR-008
-    columnas: [INDPRO_yoy_z, PPI_yoy_z, PPI_fuels_yoy_z, PPI_metals_yoy_z, CPI_yoy_z, CPI_core_yoy_z,
-               UNRATE_chg_z, PAYEMS_chg_z, CFNAI_z, CFNAIMA3_z, PMI_proxy_z, ICSA_z, UMCSENT_z,
-               HOUST_yoy_z, MANEMP_yoy_z, GDP_growth_z, CAPE_z, GW_valuation_z]
+  T8_actividad:
+    ancla: {columna: UNRATE_chg_z, signo: 1}
+    columnas: [INDPRO_yoy_z, UNRATE_chg_z, PAYEMS_chg_z, CFNAI_z, CFNAIMA3_z, PMI_proxy_z, ICSA_z,
+               UMCSENT_z, HOUST_yoy_z, MANEMP_yoy_z, GDP_growth_z]
+  T9_inflacion_valoracion:
+    ancla: {columna: PPI_yoy_z, signo: 1}
+    columnas: [CPI_yoy_z, CPI_core_yoy_z, PPI_yoy_z, PPI_fuels_yoy_z, PPI_metals_yoy_z,
+               GW_valuation_z, CAPE_z]
 
 pista_A:
   T1_renta_variable:
-    ancla: {columna: SP500_vol_z, signo: 1}            # propuesta, pendiente de aprobación en ADR-008
-    columnas: [SP500_ret_z, SP500_vol_z, SP500_momentum, SP500_drawdown, FF_MKT_z, FF_MOM_z,
-               FF_industry_dispersion_z]
+    ancla: {columna: SP500_vol_z, signo: 1}
+    columnas: [SP500_vol_z, SP500_momentum, SP500_drawdown, FF_industry_dispersion_z]
+  T1b_rentabilidad_diaria:
+    ancla: {columna: SP500_ret_z, signo: -1}
+    columnas: [SP500_ret_z, FF_MKT_z, FF_MOM_z]
   T2_tipos_nivel_curva:
-    ancla: {columna: term_spread_hist_z, signo: -1}    # propuesta, pendiente de aprobación en ADR-008 (slope_10y3m_z no existe en A)
+    ancla: {columna: short_rate_z, signo: 1}
     columnas: [mid_curve_z, curve_vs_policy_10y_z, curve_vs_policy_5y_z, short_rate_z, TB3MS_z,
                GS1_z, GS5_z, GS10_z, term_spread_hist_z, fed_stance_z]
   T3_velocidad_tipos:
-    ancla: {columna: DGS10_change_z, signo: 1}         # propuesta, pendiente de aprobación en ADR-008
+    ancla: {columna: DGS10_change_z, signo: 1}
     columnas: [DGS10_change_z]
   T6_credito:
-    ancla: {columna: credit_BaaAaa_mensual_z, signo: 1}  # propuesta, pendiente de aprobación en ADR-008 (credit_BAA10Y_z no existe en A)
+    ancla: {columna: credit_BaaAaa_mensual_z, signo: 1}  # credit_BAA10Y_z no existe en A
     columnas: [credit_BaaAaa_mensual_z, credit_BaaFF_z]
-  T8_macro_valoracion:
-    ancla: {columna: UNRATE_chg_z, signo: 1}           # propuesta, pendiente de aprobación en ADR-008
-    columnas: [INDPRO_yoy_z, PPI_yoy_z, PPI_fuels_yoy_z, PPI_metals_yoy_z, CPI_yoy_z, CPI_core_yoy_z,
-               UNRATE_chg_z, PAYEMS_chg_z, UMCSENT_z, HOUST_yoy_z, MANEMP_yoy_z, GDP_growth_z,
-               WTI_yoy_z, CAPE_z, GW_valuation_z]
+  T8_actividad:
+    ancla: {columna: UNRATE_chg_z, signo: 1}
+    columnas: [INDPRO_yoy_z, UNRATE_chg_z, PAYEMS_chg_z, UMCSENT_z, HOUST_yoy_z, MANEMP_yoy_z,
+               GDP_growth_z]
+  T9_inflacion_valoracion:
+    ancla: {columna: PPI_yoy_z, signo: 1}
+    columnas: [CPI_yoy_z, CPI_core_yoy_z, PPI_yoy_z, PPI_fuels_yoy_z, PPI_metals_yoy_z, WTI_yoy_z,
+               GW_valuation_z, CAPE_z]

@@ -191,6 +191,9 @@ def _candidatos(values: np.ndarray, n_grid: int) -> np.ndarray:
     if not finite.size:
         return np.array([np.inf])
     grid = np.unique(np.quantile(finite, np.linspace(0.0, 1.0, int(n_grid))))
+    # Fuera el umbral que marca todos los días: funde la serie en un único episodio y
+    # «cumple» cualquier objetivo con 1 falsa alarma (con una puntuación 0/1 sería el elegido).
+    grid = grid[grid > finite.min()]
     return np.append(grid, np.inf)  # +inf = no marcar nunca (siempre factible)
 
 
@@ -210,6 +213,8 @@ def _elegir(cands: np.ndarray, fa: np.ndarray, objetivo: float) -> float:
     bajo tal que él y todos los superiores tienen FA/año ≤ objetivo. (El más bajo
     factible a secas no vale: un umbral bajísimo funde todo en un único episodio
     larguísimo y «cumple» con 1 falsa alarma.)"""
+    if np.isnan(fa).all():  # sin días de calma no hay falsas alarmas que calibrar
+        return np.nan
     bad = np.flatnonzero(~(fa <= objetivo + 1e-12))
     return float(cands[bad[-1] + 1]) if bad.size else float(cands[0])
 
@@ -258,14 +263,21 @@ def umbral_expansivo(
     aplica la regla ex post a las sesiones [0, p) con las ventanas de las crisis
     cuyo suelo es anterior a la fecha p (las que siguen abiertas cuentan como
     calma: un operador en tiempo real aún no las conoce). El umbral vale para
-    [p, p + paso).
+    [p, p + paso). Simplificación declarada: una crisis cuenta como conocida en
+    cuanto pasa su suelo, aunque en tiempo real el suelo se confirma más tarde;
+    el efecto sobre un umbral anual es pequeño.
     """
     score = pd.Series(score, dtype=float)
     index = pd.DatetimeIndex(score.index)
     values = score.to_numpy()
     targets = (fa_objetivo,) if np.isscalar(fa_objetivo) else tuple(fa_objetivo)
     out = np.full((len(values), len(targets)), np.nan)
-    for p in range(int(min_obs), len(values), max(1, int(paso))):
+    # Burn-in en observaciones válidas, no en posiciones (una puntuación con NaN al
+    # principio no debe calibrarse con menos de ``min_obs`` datos).
+    n_validos = np.cumsum(np.isfinite(values))
+    suficiente = n_validos >= int(min_obs)
+    inicio = int(np.argmax(suficiente)) + 1 if suficiente.any() else len(values)
+    for p in range(inicio, len(values), max(1, int(paso))):
         known = {k: v for k, v in windows.items() if pd.Timestamp(v[1]) < index[p]}
         inside, allowed = _window_mask(index[:p], known, margen_previo)
         past = values[:p]
@@ -301,7 +313,9 @@ def curva_deteccion(
     ``expansivo`` (ver el docstring del módulo). En ``expansivo`` solo se evalúan
     las sesiones con umbral definido (tras el burn-in) y ``umbral`` es la mediana
     de los umbrales usados. El detalle por crisis queda en ``attrs["detalle"]``
-    ({objetivo: DataFrame}).
+    ({objetivo: lista de registros}; se reconstruye con ``pd.DataFrame(...)``).
+    No se guardan DataFrames en ``attrs``: pandas los compara al concatenar o al
+    imprimir tablas anchas y falla.
     """
     score = pd.Series(score, dtype=float).sort_index()
     if oos_index is not None:
@@ -330,7 +344,7 @@ def curva_deteccion(
         umbral = float(thr) if np.isscalar(thr) else (float(thr.median()) if len(thr) else np.nan)
         rows.append({"modo": modo, "fa_objetivo": t, "umbral": umbral,
                      "dias_burn_in": burn, **summary})
-        detail[t] = table
+        detail[t] = table.reset_index().to_dict("records")
     out = pd.DataFrame(rows)
     out.attrs["detalle"] = detail
     return out

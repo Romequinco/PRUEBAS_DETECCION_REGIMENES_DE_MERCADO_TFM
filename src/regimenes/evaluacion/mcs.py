@@ -208,7 +208,7 @@ def tasa_dias_calma_marcados(metrics: pd.DataFrame) -> pd.Series:
     far = 1.0 - pd.to_numeric(metrics["det_precision"], errors="coerce")
     base = pd.to_numeric(metrics["det_base_rate"], errors="coerce")
     out = marked * far / (1.0 - base)
-    return out.where(marked > 0, 0.0)
+    return out.where(marked != 0, 0.0)  # nunca marca → 0; un NaN (dato ausente) sigue NaN
 
 
 def perdidas_por_crisis(

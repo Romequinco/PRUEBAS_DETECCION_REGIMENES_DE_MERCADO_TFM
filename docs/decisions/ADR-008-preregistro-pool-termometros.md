@@ -24,13 +24,22 @@ comunes**.
   estrictamente posteriores hasta el siguiente reajuste. Re-estandarización dentro de la ventana.
 - **Signo** fijado por una **columna ancla** con signo declarado: el termómetro sube con el estrés tal como se
   declara.
-- **Umbral de varianza de la PC1:** se prueban 30, 40 y 50 % y se elige el que dé **cargas y signos más estables
-  entre reajustes, sin usar etiquetas de crisis**. Si en un reajuste la PC1 no llega, ese tramo usa la media simple
-  de las columnas orientadas.
-- **Bloques y anclas:** [`configs/bloques.yaml`](../../configs/bloques.yaml) (8 bloques en B, 5 en A; reparto de
-  PendientesOscar.md §6.3). Las anclas son *propuesta*.
-- **Código:** `regimenes.features.bloques`; construcción y validación en el notebook
+- **Código:** `regimenes.features.bloques`; construcción, pruebas de diseño y validación en el notebook
   [`04_termometros`](../../notebooks/04_termometros.ipynb).
+
+### 2.1 Decisiones de diseño (30-10-2026, sin etiquetas de crisis)
+
+Todas se tomaron con criterios que no miran las crisis: varianza de la PC1, cambios de método, saltos de signo
+entre reajustes y correlación con índices `rol=validation`. Son estadísticos de **toda la muestra** (OOS incluido);
+no usan etiquetas, pero no son una elección walk-forward, y así se declara. Detalle y tablas en `04_termometros`,
+secciones 4–6.
+
+| Decisión | Elegido | Evidencia (prueba de humo) |
+|---|---|---|
+| Reparto en bloques | **10 en B, 7 en A** ([`configs/bloques.yaml`](../../configs/bloques.yaml)): T1 renta variable (estado) · T1b rentabilidad diaria · T2 tipos nivel y curva · T3 velocidad de tipos · T4 inflación esperada y tipo real (B) · T5 vol implícita (B) · T6 crédito · T7 divisas y materias primas (B) · T8 actividad · T9 inflación realizada y valoración | La propuesta de §6.3 mezclaba en T1 columnas de estado (autocorrelación ≈ 1) con rentabilidades diarias (≈ 0, correlación ≈ 0 con la vol): PC1 ≈ 0,29 en B, 69 % de tramos en media y signo al azar. Separadas: PC1 ≈ 0,62, 0 saltos, ρ con STLFSI4/VIX de 0,58 → 0,78 (B) y de 0,41 → 0,81 (A). En A la PC1 de la macro era inflación (4 saltos de signo); separada, T8 tiene 0 saltos y ρ con la regla de Sahm de 0,51 → 0,75. Se separan en vez de descartar para no perder pool |
+| Anclas | T1 `SP500_vol_z` +1 · T1b `SP500_ret_z` −1 · T2 `short_rate_z` +1 · T3 `DGS10_change_z` +1 · T4 `breakeven_10y_z` +1 · T5 `VIX_level_z` +1 · T6 `credit_BAA10Y_z` +1 (A: `credit_BaaAaa_mensual_z`) · T7 `DXY_change_z` +1 · T8 `UNRATE_chg_z` +1 · T9 `PPI_yoy_z` +1 | T2: la pendiente cargaba poco y daba 2 saltos de signo en A; el tipo corto, 0. T9: PPI 0 saltos frente a 2 con CPI. La inflación realizada no va a T4 en B (PC1 0,68 → 0,43 y 3 saltos) |
+| Umbral de la PC1 | **30 %** | Con el reparto final la PC1 nunca baja de 0,30: el umbral no se activa (= siempre PCA). 40 y 50 % meten 4–8 cambios PCA ↔ media sin ganar validez externa. Se mantiene como red de seguridad; vigilar T7 (B), con mínimo 0,30 |
+| Calentamiento | **Toda la historia anterior a la ventana** (`historia_previa: toda`), recortada a la ventana | Solo dentro de la ventana, B no tiene termómetros hasta 2008-05 y el OOS del menú T no casaría con el del N. Con 5 años o más previos coincide con toda la historia (ρ ≈ 0,99); con 2–3, los primeros reajustes difieren. Causal: solo usa pasado, como los z-scores |
 
 ## 3. Menús de datos
 
@@ -38,7 +47,7 @@ comunes**.
 |---|---|---|
 | U · Univariante | `SP500_ret` | 1 / 1 |
 | N · Núcleo | CORE_A / CORE_B (actual) | 9 / 14 |
-| T · Termómetros | pool comprimido | 5 / 8 |
+| T · Termómetros | pool comprimido (§2.1) | 7 / 10 |
 | P · Pool completo | todas las columnas | 35 / 77 |
 | R · Rentabilidades multiactivo | ~20 series crudas de activos | — / ~20 |
 
@@ -67,8 +76,9 @@ D16 logit L1, D17 random forest, D18 sparse jump model.
 
 ## 4. Vara de medir
 
-- **Ranking principal v3:** el del **menú T** (nueve detectores ven exactamente los mismos datos). Además, un MCS
-  dentro de cada menú.
+- **Ranking principal v3:** el del **menú T** (los seis multivariantes no supervisados, D02, D03, D04, D08, D09 y
+  D10, ven exactamente los mismos datos; D16 y D17 van en su categoría supervisada). Además, un MCS dentro de cada
+  menú.
 - **MCS** (Hansen, Lunde y Nason, 2011; `regimenes.evaluacion.mcs`): pérdida = fallo por crisis + días de falsa
   alarma; bootstrap por bloques de días; α = 0,10. Baselines triviales incluidos (`SIEMPRE_*`, `AZAR_*`, `VOL_P90`).
   *Versión preliminar* (sin paneles diarios): remuestreo por crisis sobre `results/benchmark/metrics/*.csv`.
@@ -83,11 +93,12 @@ Sin etiquetas de crisis:
 1. **Bien calculados (tests):** factor plantado, prefijo, signo estable, NaN que no se propagan.
 2. **Sentido estadístico y económico** (*propuesta de umbrales*): la PC1 supera el umbral elegido en ≥ 80 % de los
    reajustes (si no, el bloque queda como media simple, que sigue siendo válida); ninguna columna pesa > 50 % en
-   ≥ 80 % de los reajustes; correlación media de cargas entre reajustes consecutivos ≥ 0,9; signos económicamente
-   lógicos.
+   ≥ 80 % de los reajustes (no aplica con 1 o 2 columnas); coseno mediano de las cargas entre reajustes consecutivos
+   ≥ 0,9 y sin saltos de signo; signos económicamente lógicos.
 3. **Validez externa:** correlación con las series `rol=validation` (NFCI y subíndices, ANFCI, OFR_FSI y subíndices,
-   STLFSI4, KCFSI), que nunca entran como features. *Propuesta:* |ρ| ≥ 0,3 con su índice de referencia (T6 con
-   NFCI_CREDIT / OFR_FSI_CREDIT, T5 con OFR_FSI_VOLATILITY…).
+   STLFSI4, KCFSI, regla de Sahm, probabilidad de recesión), que nunca entran como features. Criterio: |ρ| ≥ 0,3 con
+   alguna de sus referencias (T1 con STLFSI4 y el VIX; T5 con OFR_FSI_VOLATILITY y el VIX; T6 con NFCI_CREDIT y
+   OFR_FSI_CREDIT; T8 con la regla de Sahm y la probabilidad de recesión).
 
 Con crisis:
 
@@ -111,16 +122,23 @@ Con crisis:
   15 días frente a 1 año por encima de 1σ).
 - Penalización del jump de Shu (D15): selección por utilidad sin etiquetas frente al valor publicado.
 - Pérdida definitiva del MCS con días de falsa alarma, que requiere los paneles walk-forward.
-- **Calentamiento de los termómetros** (`min_obs = 252`): en B no hay valor hasta ~abril de 2008. Si los detectores
-  del menú T arrancan su entrenamiento ahí, su OOS empieza más tarde que el del menú N y la comparación deja de ser
-  1:1. Opciones: (a) calcular los termómetros con la historia anterior a `ventana_inicio` de las series que la
-  tienen (causal, no usa futuro); (b) bajar `min_obs`; (c) recortar el menú N al mismo OOS. Propuesta: (a), y
-  verificar que el OOS de T coincide con el de N.
-- Tabla de §6.3 de PendientesOscar.md: T8 de la pista A son 15 columnas porque incluye `WTI_yoy_z` (A no tiene T7).
+- Llevar el cálculo con historia previa (§2.1) al pipeline que alimenta a los detectores del menú T y comprobar que
+  su OOS coincide con el del menú N.
+- Criterios de éxito del §6: confirmar antes de ejecutar.
+
+Resueltos el 30-10-2026 (§2.1): reparto en bloques, anclas, umbral y calentamiento.
 
 ## 8. Estado de la ejecución (30-10-2026)
 
 Portátil secundario sin `data/processed` ni paneles walk-forward y sin tiempo para el benchmark. Hecho como **prueba
-de humo**: paneles construidos en memoria (≈ 4 s por pista, sin escribir a disco ni verificar sha256), termómetros y
-validación 1–3, y MCS preliminar. Falta en este portátil `data/raw/academico/SHILLER_SP500_CAPE.parquet`, así que
-`CAPE_z` queda fuera de T8 en la prueba de humo. La versión oficial se hará sobre `data/processed` verificado.
+de humo**: paneles construidos en memoria (≈ 4 s por pista, sin escribir a disco ni verificar sha256), pruebas de
+diseño, termómetros y validación 1–3, y MCS preliminar. Los crudos de esta máquina son una descarga anterior a
+ADR-003: faltan `CAPE_z` (no está `SHILLER_SP500_CAPE`), `FF_industry_dispersion_z` y `FF_RMW_z` (`FF_5_INDUSTRY` y
+`FF_FACTORS_5_DAILY` en su versión de una columna). Con el reparto final, los 17 termómetros cumplen las validaciones
+2 y 3 (T3 de A es una sola columna y T6 de A tiene dos, donde algún criterio no aplica). La versión oficial se hará
+sobre los datos verificados.
+
+Verificación adversarial (ola 3): sin fugas de causalidad (prefijo exacto con paneles reales, cargas aplicadas
+solo a días posteriores al reajuste); MCS idéntico a `arch.bootstrap.MCS` dentro del error Monte Carlo. Corregidos
+en `curvas.py`: con una puntuación binaria se elegía «marcar todos los días», fallaba sin días de calma y el detalle
+en `attrs` rompía `pd.concat`.

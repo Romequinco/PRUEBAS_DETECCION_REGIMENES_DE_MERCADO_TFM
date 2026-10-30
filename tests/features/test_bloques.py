@@ -170,7 +170,7 @@ def test_resumen_y_comparar_umbrales_sin_etiquetas():
     assert comp.loc[comp["umbral_var"] == 0.99, "frac_pca"].iloc[0] == 0.0
 
 
-@pytest.mark.parametrize("pista, n_bloques, n_cols", [("A", 5, 35), ("B", 8, 77)])
+@pytest.mark.parametrize("pista, n_bloques, n_cols", [("A", 7, 35), ("B", 10, 77)])
 def test_cargar_bloques(pista, n_bloques, n_cols):
     b = cargar_bloques(pista)
     assert len(b) == n_bloques
@@ -183,3 +183,5 @@ def test_cargar_bloques(pista, n_bloques, n_cols):
     p = parametros_bloques()
     assert p["umbrales_var_a_probar"] == [0.30, 0.40, 0.50]
     assert p["reajuste"] == "mensual"
+    assert p["umbral_var"] == 0.30
+    assert p["historia_previa"] == "toda"
