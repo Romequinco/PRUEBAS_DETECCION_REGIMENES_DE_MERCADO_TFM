@@ -293,8 +293,9 @@ def detection_score(
     Es el *composite F-score* de Garg et al. (2021): recall a nivel de evento y
     precisión a nivel de instante. NaN de precisión (nunca marca) → 0.
     """
-    precision = pd.Series(precision, dtype=float) if not np.isscalar(precision) else precision
-    recall = pd.Series(recall, dtype=float) if not np.isscalar(recall) else recall
+    # Escalares como np.float64: 0/0 da NaN (→ 0 abajo) en vez de ZeroDivisionError.
+    precision = pd.Series(precision, dtype=float) if not np.isscalar(precision) else np.float64(precision)
+    recall = pd.Series(recall, dtype=float) if not np.isscalar(recall) else np.float64(recall)
     b2 = float(beta) ** 2
     with np.errstate(divide="ignore", invalid="ignore"):
         score = (1 + b2) * precision * recall / (b2 * precision + recall)

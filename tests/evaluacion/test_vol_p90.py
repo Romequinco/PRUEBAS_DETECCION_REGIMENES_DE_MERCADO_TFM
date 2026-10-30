@@ -72,3 +72,10 @@ class TrivialBaselinesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_detection_score_escalar_sin_aciertos_es_cero():
+    from regimenes.evaluacion.ranking import detection_score
+    assert detection_score(0.0, 0.0) == 0.0
+    assert detection_score(float("nan"), 0.0) == 0.0
+    assert abs(detection_score(0.5, 1.0) - 2 / 3) < 1e-12

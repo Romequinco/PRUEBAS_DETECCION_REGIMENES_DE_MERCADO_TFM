@@ -142,3 +142,9 @@ Verificación adversarial (ola 3): sin fugas de causalidad (prefijo exacto con p
 solo a días posteriores al reajuste); MCS idéntico a `arch.bootstrap.MCS` dentro del error Monte Carlo. Corregidos
 en `curvas.py`: con una puntuación binaria se elegía «marcar todos los días», fallaba sin días de calma y el detalle
 en `attrs` rompía `pd.concat`.
+
+Primer cruce con las crisis (prueba de humo, `04_termometros` §10–11; datos en `results/detectores/menus_humo/`): el
+menú T empeora en 5 de 6 casos frente al N (solo D10 en B sube, +0,020, con 2 crisis menos). Las 6 cifras de N
+coinciden con `ranking_v2.csv` hasta el tercer decimal. En B ya empeoran 3 de 6 multivariantes, así que el criterio
+(a) del §6 no se cumpliría si se confirma. No es definitivo: el menú T va sin 3 columnas, faltan D04 y D09 en las dos
+pistas y D08 y D10 en la A, y no hay MCS. Bloques y anclas no se han retocado tras ver estos resultados.
