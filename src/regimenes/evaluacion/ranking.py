@@ -464,8 +464,12 @@ def trivial_baselines(
     min_run: int = int(DETECTION_DEFAULTS["min_run"]),
     n_sims: int = 200,
     seed: int = 20260929,
+    vol: pd.Series | None = None,
+    vol_q: float = 0.9,
+    vol_min_obs: int = 252,
 ) -> pd.DataFrame:
-    """Cuatro detectores sin información, con el mismo esquema que las métricas.
+    """Cuatro detectores sin información (cinco con ``vol``), con el mismo esquema
+    que las métricas.
 
     - ``SIEMPRE_CRISIS`` / ``SIEMPRE_CALMA``: salidas constantes.
     - ``AZAR_IID``: Bernoulli diario con tasa ``rate`` (una realización fija).
@@ -473,6 +477,9 @@ def trivial_baselines(
       ``mean_run``; fila = **media** de ``n_sims`` realizaciones, con la
       precisión fijada en su valor esperado (la tasa base, lift = 1): una señal
       independiente de las crisis no puede, en esperanza, concentrarse en ellas.
+    - ``VOL_P90`` (solo si se pasa ``vol``): crisis cuando la serie de volatilidad
+      supera su percentil ``vol_q`` expansivo y causal (:func:`vol_percentile_flags`).
+      Conviene pasar ``vol`` con su historia previa al OOS: el percentil la usa.
     """
     track = track.upper()
     benchmark = benchmark or load_benchmark_spec()
@@ -502,7 +509,44 @@ def trivial_baselines(
         "fuente_deteccion": f"linea_base_media_{int(n_sims)}_sim",
     })
     rows.append(expected)
+    if vol is not None:
+        flags = vol_percentile_flags(vol, oos_index, q=vol_q, min_obs=vol_min_obs)
+        rows.append(_baseline_row(flags.to_numpy(), oos_index, track, "VOL_P90",
+                                  windows, fp_windows, min_run))
+        rows[-1]["label_stability"] = np.nan  # no hay reestimaciones que comparar
     return pd.DataFrame(rows)
+
+
+def expanding_quantile_causal(
+    series: pd.Series, q: float = 0.9, *, min_obs: int = 252
+) -> pd.Series:
+    """Percentil ``q`` expansivo y causal: en t usa solo las observaciones ≤ t−1.
+
+    NaN mientras haya menos de ``min_obs`` observaciones válidas en el pasado.
+    No es el percentil de toda la muestra (eso mira el futuro).
+    """
+    series = pd.Series(series, dtype=float)
+    return series.shift(1).expanding(min_periods=int(min_obs)).quantile(float(q))
+
+
+def vol_percentile_flags(
+    vol: pd.Series,
+    oos_index: pd.DatetimeIndex | None = None,
+    *,
+    q: float = 0.9,
+    min_obs: int = 252,
+) -> pd.Series:
+    """Señal ``VOL_P90``: True si ``vol_t`` > su percentil expansivo causal.
+
+    El percentil se calcula sobre toda la historia de ``vol`` (también la previa
+    al OOS) y después se reindexa a ``oos_index``. Sin umbral (burn-in) o sin dato
+    → False.
+    """
+    vol = pd.Series(vol, dtype=float).sort_index()
+    flags = (vol > expanding_quantile_causal(vol, q, min_obs=min_obs)).fillna(False)
+    if oos_index is not None:
+        flags = flags.reindex(pd.DatetimeIndex(oos_index), fill_value=False)
+    return flags.astype(bool)
 
 
 def persistent_random_null(

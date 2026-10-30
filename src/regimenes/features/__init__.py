@@ -2,13 +2,24 @@
 
 Submodulos: ``transformaciones`` (primitivas causales y recetario),
 ``lags`` (lags de publicacion, ADR-003), ``paneles`` (constructores de panel),
-``causalidad`` (test de truncado). Este ``__init__`` re-exporta la API publica
-para que ``from regimenes import features as ft; ft.causal_zscore(...)`` siga
-funcionando. Dependencias en una sola direccion:
-``transformaciones`` <- ``lags`` <- ``paneles``; ``causalidad`` solo usa ``RawDict``.
+``causalidad`` (test de truncado), ``bloques`` (termometros por bloque). Este
+``__init__`` re-exporta la API publica para que
+``from regimenes import features as ft; ft.causal_zscore(...)`` siga funcionando. Dependencias en una sola direccion:
+``transformaciones`` <- ``lags`` <- ``paneles``; ``causalidad`` solo usa ``RawDict``;
+``bloques`` no depende de los demas (trabaja sobre paneles ya construidos).
 """
 
-from regimenes.features import causalidad, lags, paneles, transformaciones
+from regimenes.features import bloques, causalidad, lags, paneles, transformaciones
+from regimenes.features.bloques import (
+    BLOQUES_YAML,
+    cargar_bloques,
+    comparar_umbrales,
+    construir_termometros,
+    fechas_reajuste,
+    parametros_bloques,
+    resumen_estabilidad,
+    termometro_bloque,
+)
 from regimenes.features.causalidad import assert_causal, truncar, truncation_max_abs_diff
 from regimenes.features.lags import (
     LAG_PUBLICACION,
@@ -60,7 +71,7 @@ from regimenes.features.transformaciones import (
 )
 
 __all__ = [
-    "transformaciones", "lags", "paneles", "causalidad",
+    "transformaciones", "lags", "paneles", "causalidad", "bloques",
     # transformaciones (§1 primitivas causales + §2 recetario v2)
     "TRADING_DAYS", "RawDict", "BREADTH_11", "SPDR_9",
     "causal_zscore", "log_returns", "realized_vol", "rolling_correlation", "drawdown",
@@ -76,4 +87,7 @@ __all__ = [
     "rejilla_nyse", "construir_paneles",
     # causalidad (§5)
     "truncar", "truncation_max_abs_diff", "assert_causal",
+    # bloques (§6, termómetros por bloque)
+    "BLOQUES_YAML", "fechas_reajuste", "termometro_bloque", "construir_termometros",
+    "resumen_estabilidad", "comparar_umbrales", "cargar_bloques", "parametros_bloques",
 ]
