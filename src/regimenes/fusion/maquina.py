@@ -1,6 +1,6 @@
 """Fusión causal e interpretable de alerta temprana y confirmación de régimen.
 
-Convenciones que usan los notebooks 06 y 07:
+Convenciones que usan los notebooks 15 y 16:
 
 * La decisión en ``t`` solo depende de filas ``<= t`` de los paneles OOS del
   benchmark (``assert_prefix_causal`` lo demuestra por truncado).

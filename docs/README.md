@@ -55,15 +55,15 @@ docs/
 - `obras.csv`, `competidores_2026.json`, `fichas.json` — catálogo de obras y fichas; `catalogo.py` genera
   `catalogo.html` (no versionado).
 
-### `fase1/` — el régimen de mercado (`src/regimenes`, notebooks `00`–`20`)
-- [`fase1/README.md`](fase1/README.md) — pipeline `00`–`20`, orden de ejecución, mapa del código y de las rutas, e
+### `fase1/` — el régimen de mercado (`src/regimenes`, notebooks `00`–`23`)
+- [`fase1/README.md`](fase1/README.md) — pipeline `00`–`23`, orden de ejecución, mapa del código y de las rutas, e
   índice de detectores D01–D13 por familia.
 - [`fase1/eda.md`](fase1/eda.md) — informe EDA (figuras en [`fase1/figs/`](fase1/figs/)).
 - Teoría de cada familia con sus detectores: [F1 reglas](fase1/F1_reglas.md) · [F2 clustering](fase1/F2_clustering.md) ·
   [F3 HMM](fase1/F3_hmm.md) · [F4 Markov-Switching](fase1/F4_markov_switching.md) ·
   [F5 GARCH](fase1/F5_volatilidad_garch.md) · [F6 change-point](fase1/F6_change_point.md) ·
   [F7 redes](fase1/F7_redes_neuronales.md).
-- [`fase1/sinteticos.md`](fase1/sinteticos.md) — generadores sintéticos, validación y laboratorio (notebooks `15`–`18`).
+- [`fase1/sinteticos.md`](fase1/sinteticos.md) — generadores sintéticos, validación y laboratorio (notebooks `18`–`21`).
 - Configuración congelada de la Fase 1: [`../configs/catalog.yaml`](../configs/catalog.yaml) (universo de series y
   catálogo de crisis) y [`../configs/benchmark_spec.yaml`](../configs/benchmark_spec.yaml) (el banco congelado).
 
@@ -115,14 +115,14 @@ Fase 1) → [`fase2/plan_datos.md`](fase2/plan_datos.md) (preguntas abiertas) �
 [ADR-001](decisions/ADR-001-rebase-datos.md) → [`estado_del_arte/fuentes_datos.md`](estado_del_arte/fuentes_datos.md) →
 [`fase1/eda.md`](fase1/eda.md) → [ADR-002](decisions/ADR-002-ajuste-ventanas.md) → `benchmark_spec.yaml` →
 [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md) → [ADR-004](decisions/ADR-004-unificacion.md) →
-teoría por familia (`fase1/F1`…`F7`) → notebooks `04` → `05`–`11` → `12` → `13`–`14` (fusión) →
-[`fase1/sinteticos.md`](fase1/sinteticos.md) y `15`–`17` → `18`–`20` (aumento, decisión final y pseudolive) →
+teoría por familia (`fase1/F1`…`F7`) → notebooks `04` (termómetros) → `05` → `06`–`13` → `14` → `15`–`17` (fusión) →
+[`fase1/sinteticos.md`](fase1/sinteticos.md) y `18`–`20` → `21`–`23` (aumento, decisión final y pseudolive) →
 [`fase2/plan_datos.md`](fase2/plan_datos.md).
 
 *Visita rápida:* `tfm/README.md` → ADR-005 → `fase1/README.md` → `fase2/README.md`.
 
 El orden de **lectura** de los notebooks (familias antes que la comparativa) no es el de **ejecución** tras un
-benchmark nuevo (`04` → `12` → `05`–`11`): ver [`fase1/README.md`](fase1/README.md#orden-de-ejecución).
+benchmark nuevo (`05` → `14` → `06`–`12`): ver [`fase1/README.md`](fase1/README.md#orden-de-ejecución).
 
 ---
 

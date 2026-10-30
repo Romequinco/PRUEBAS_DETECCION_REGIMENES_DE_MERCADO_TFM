@@ -51,7 +51,7 @@ Ajuste
 
   Medido en el humo de desarrollo (las cifras vigentes, con la semilla y la
   cadena compartida del proyecto, son las de la tabla de ``anclar_media`` del
-  notebook ``15_sinteticos_generadores`` §4.4; difieren en valor, no en signo)
+  notebook ``18_sinteticos_generadores`` §4.4; difieren en valor, no en signo)
   (100 x 2520 sesiones, arranque estacionario, media de 3 semillas;
   error de media = ``|media sintetica - real|`` por regimen en desviaciones
   reales del regimen, error de dispersion = ``|log(sd sintetica / sd real)|``,

@@ -142,7 +142,7 @@ sustituye está en [`fase1/eda.md`](../../fase1/eda.md).
 - **Recomendación v1** (superada por el benchmark v2, donde D8 queda 9.º en ambas pistas, ADR-003, y por
   ADR-005): núcleo HMM t-Student multi-estado (respaldo *consistente con* la propuesta, no
   superioridad OOS estricta) + change-point tipo D7 como alerta temprana + D1/D5/D6 como control.
-  Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `13`–`14`).
+  Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `15`–`16`).
 
 Figuras y tablas del informe: `capa1_exploracion/report/informe_capa1.pdf` (tag `capa1-final`). Sus cifras se
 verificaron contra la tabla maestra (20 cifras muestreadas, 0 discrepancias; las 4 citas centrales,
@@ -171,7 +171,7 @@ Consecuencias:
   se re-evaluaron sobre el banco congelado ([ADR-002](../../decisions/ADR-002-ajuste-ventanas.md),
   [ADR-003](../../decisions/ADR-003-causalidad-calendario-estado-ranking.md)).
 - **[ADR-004](../../decisions/ADR-004-unificacion.md) (2026-09-29):** los detectores y la interfaz de
-  la Capa 1 forman parte del paquete `regimenes`; cada familia se cuenta en su notebook (05–11) y esta
+  la Capa 1 forman parte del paquete `regimenes`; cada familia se cuenta en su notebook (06–12) y esta
   carpeta queda como archivo.
 
 ## 7. Correspondencia de rutas (Capa 1 → hoy)
@@ -189,8 +189,8 @@ Consecuencias:
 | `capa1_exploracion/report/` (tex, pdf, bib) | solo en el tag `capa1-final` |
 | `capa1_exploracion/results/*.csv`, `ablation_hsmm/` | [`resultados/`](resultados/metrics_master.csv) (aquí) |
 | `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | solo en el tag `capa1-final` |
-| `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/05_familia_F1_reglas` … `11_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
-| `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/07_familia_F3_hmm`; original en el tag |
+| `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/06_familia_F1_reglas` … `12_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
+| `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/08_familia_F3_hmm`; original en el tag |
 | `capa1_exploracion/notebooks/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §4–§5 de este README; originales en el tag |
 | bibliografía `report/references.bib` | fusionada en la bibliografía única [`docs/references.bib`](../../references.bib); el original, en el tag junto al `.tex` |
 

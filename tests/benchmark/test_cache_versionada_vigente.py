@@ -2,7 +2,7 @@
 
 Regresión: un cambio de código en un archivo hasheado por la huella de caché
 (p. ej. ``evaluacion/walk_forward.py``) invalida en bloque las 24 combinaciones y
-los notebooks 05-20, que solo leen la caché, dejan de ejecutarse. Si este test
+los notebooks 06-23, que solo leen la caché, dejan de ejecutarse. Si este test
 falla tras tocar código del benchmark hay dos salidas: deshacer el cambio o
 re-ejecutar el benchmark completo (``python -m regimenes.benchmark``) y
 regenerar los notebooks.

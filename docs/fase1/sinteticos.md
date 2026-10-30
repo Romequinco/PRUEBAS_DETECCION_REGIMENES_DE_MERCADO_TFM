@@ -2,7 +2,7 @@
 
 > **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados, salvo la lista de generadores aptos por pista del notebook 16, que es la entrada del 18 (ver «Veredicto del notebook 16 por pista»).
 
-> **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks [`15_sinteticos_generadores`](../../notebooks/15_sinteticos_generadores.ipynb), [`16_sinteticos_validacion`](../../notebooks/16_sinteticos_validacion.ipynb), [`17_sinteticos_laboratorio`](../../notebooks/17_sinteticos_laboratorio.ipynb) y [`18_sinteticos_aumento`](../../notebooks/18_sinteticos_aumento.ipynb), y sus salidas en [`results/sinteticos/`](../../results/sinteticos/).
+> **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks [`18_sinteticos_generadores`](../../notebooks/18_sinteticos_generadores.ipynb), [`19_sinteticos_validacion`](../../notebooks/19_sinteticos_validacion.ipynb), [`20_sinteticos_laboratorio`](../../notebooks/20_sinteticos_laboratorio.ipynb) y [`21_sinteticos_aumento`](../../notebooks/21_sinteticos_aumento.ipynb), y sus salidas en [`results/sinteticos/`](../../results/sinteticos/).
 
 > Familia: generadores de trayectorias multivariantes de features **con la
 > secuencia de régimen conocida**. Núcleo: seis generadores paramétricos (jitter,
@@ -13,7 +13,7 @@
 > esté en su tramo de entrenamiento; con 8 episodios de crisis en el ajuste de la
 > pista A, lo que aquí se fabrica son variaciones sobre esos episodios, no crisis
 > nuevas. Distinguimos abajo lo que cada modelo reproduce por construcción de lo
-> que solo puede decidir la validación (notebook 16).
+> que solo puede decidir la validación (notebook 19).
 
 ## Para qué sirven en este TFM
 
@@ -22,10 +22,10 @@ poca potencia estadística para separar detectores (ver la limitación de
 significancia de la Capa 1 en las conclusiones de su memoria, tag `capa1-final`).
 Los generadores sintéticos se usan para tres cosas, por este orden de fiabilidad:
 
-1. **Laboratorio con verdad conocida** (notebook `17`, hecho como simulación controlada): trayectorias cuya cadena de
+1. **Laboratorio con verdad conocida** (notebook `20`, hecho como simulación controlada): trayectorias cuya cadena de
    regímenes se conoce exactamente, para medir recall y precisión de los detectores
    sin la ambigüedad del etiquetado histórico.
-2. **Aumento de datos** (notebook `18`): entrenar detectores con más episodios de
+2. **Aumento de datos** (notebook `21`): entrenar detectores con más episodios de
    crisis y evaluarlos en real (TSTR, *train on synthetic, test on real*
    [synth_esteban2017]) sin tocar el test real.
 3. **Pruebas de estrés** de la máquina de fusión y de la señal de régimen que consumirán los agentes (tool `get_regimen`).
@@ -47,7 +47,7 @@ sample(n_paths, length, regimes)    n_paths trayectorias de `length` sesiones + 
 
 Tres decisiones de diseño son comunes a los diez generadores y viven fuera de ellos
 (`comun.py`, `datos.py`, `espacio.py`), para que las diferencias que midan los
-notebooks 16–18 sean del modelo y no de la fontanería.
+notebooks 19–21 sean del modelo y no de la fontanería.
 
 **1. Régimen de referencia: ventanas de crisis, nunca un detector.** El régimen es
 binario: 1 = el día cae dentro de alguna ventana `[pico, suelo]` (extremos incluidos)
@@ -159,7 +159,7 @@ no deben cruzarse por fecha con datos reales.
 
   `σ` es relativa a la escala de cada columna. **Memoriza por diseño**: cada día
   sintético está a distancia ~`σ·√d` de un día real concreto. Es el **control
-  positivo** de las métricas de memorización del notebook 16 (si una métrica no marca
+  positivo** de las métricas de memorización del notebook 19 (si una métrica no marca
   al jitter como copia, la métrica no sirve) y el suelo de utilidad: un generador que
   no lo mejore no aporta más que regularización por ruido. El ruido blanco rompe los
   escalones de las columnas mensuales y se acumula en el precio re-derivado.
@@ -430,7 +430,7 @@ Los cuatro neuronales, RBIG, jitter y el gaussiano vienen de un taller previo de
 mismo equipo (generación de ventanas de 60 sesiones × 20 canales, 2003–2026, régimen
 etiquetado con un HMM de tres estados; sus decisiones D9, D16, D25 y D26). Su montaje
 **no es el de este TFM** y sus cifras no se trasladan, pero sus lecciones fijaron cómo
-se lee el notebook 16:
+se lee el notebook 19:
 
 - **Solo RBIG y flow matching pasaron a la vez memorización y discriminador.** El
   CVAE quedó rechazado por infradispersión (cociente de distancias al vecino más
@@ -456,12 +456,12 @@ se lee el notebook 16:
   Toda métrica restringida a crisis lleva banda por *jackknife* de episodios, y del
   AUC discriminativo en crisis se publica el orden, no el valor.
 
-## Criterios de validación (notebook 16)
+## Criterios de validación (notebook 19)
 
 La validación vive en el subpaquete `regimenes.sinteticos.validacion`, un módulo por
-dimensión, y la ejecuta `16_sinteticos_validacion`. Cada generador se compara **solo con
+dimensión, y la ejecuta `19_sinteticos_validacion`. Cada generador se compara **solo con
 el tramo real de entrenamiento** con el que se ajustó (lo posterior a `fin_train` queda
-reservado a 17–20) y solo con las trayectorias de **cadena simulada**; las de secuencia
+reservado a 20–23) y solo con las trayectorias de **cadena simulada**; las de secuencia
 impuesta son para el laboratorio. Real y sintético nunca se cruzan por fecha: se
 comparan por distribución o por posición dentro de cada trayectoria.
 
@@ -510,7 +510,7 @@ banda es la de ventanas reales del largo de las trayectorias.
 
 - **Hechos estilizados dentro de racha.** Las autocorrelaciones solo usan pares
   `(t, t+k)` de la misma racha, para no mezclar el salto de nivel entre regímenes con la
-  dinámica propia (el notebook 15 las medía sobre la trayectoria entera; esas filas se
+  dinámica propia (el notebook 18 las medía sobre la trayectoria entera; esas filas se
   conservan como `regimen='todos'`). En el sintético se toma la mediana entre
   trayectorias. La **curtosis condicional** es la de Pearson de `z_t = r_t / σ_t`, con
   `σ_t` EWMA de RiskMetrics (λ = 0,94) sobre retornos **pasados**, sin reiniciar en los
@@ -587,14 +587,14 @@ en algún nivel.
 
 - **`apto_laboratorio`** = marginal + dependencia + condicionamiento + discriminador: lo
   generado se parece al real lo bastante para estresar detectores con verdad de régimen
-  exacta (notebook 17) y un clasificador no lo distingue del real.
+  exacta (notebook 20) y un clasificador no lo distingue del real.
 - **`laboratorio_condicionado`** = marginal + dependencia + condicionamiento: el mismo
   nivel sin el discriminador. No sustituye a `apto_laboratorio`: el 17 puede usar estos
   generadores **advirtiendo** que son distinguibles del real.
 - **`apto_aumento`** = memorización + condicionamiento, igual en las dos pistas: lo
-  generado no es copia del entrenamiento y lleva la señal de régimen (notebook 18).
+  generado no es copia del entrenamiento y lleva la señal de régimen (notebook 21).
 
-**Veredicto del notebook 16 por pista** (`veredicto_pista<X>.csv`; es la entrada del notebook 18). Ningún generador
+**Veredicto del notebook 19 por pista** (`veredicto_pista<X>.csv`; es la entrada del notebook 21). Ningún generador
 queda `apto_laboratorio` ni `laboratorio_condicionado` en ninguna pista. Son `apto_aumento`:
 
 - **Pista A:** gaussiano_regimen, var_regimen, garch_regimen, rbig, flow_matching, difusion, cvae y cgan (todos salvo
@@ -604,7 +604,7 @@ queda `apto_laboratorio` ni `laboratorio_condicionado` en ninguna pista. Son `ap
 
 **Decisiones declaradas.** Todas del 2026-10-01; el motivo y las cifras que justifican
 cada una están en los comentarios de la sección `validacion` de
-`configs/sinteticos.yaml` y en el notebook 16.
+`configs/sinteticos.yaml` y en el notebook 19.
 
 - *Antes de ver ningún resultado de validación:* umbrales de `validacion.umbrales`
   (banda de cocientes, suelo de memorización, techo del AUC del discriminador, regla de
@@ -690,7 +690,7 @@ TSTR por trayectoria, los tiempos, la ficha de la configuración usada
   importa cada generador bajo demanda; el paquete funciona sin torch instalado.
 - **Persistencia:** en `data/sinteticos/<nombre>/pista<X>/` (no se versiona) el
   modelo (`generador.pkl`) y las trayectorias de los dos modos de régimen del
-  notebook 15: `trayectorias.parquet` (cadena simulada) y
+  notebook 18: `trayectorias.parquet` (cadena simulada) y
   `trayectorias_impuesto.parquet` (secuencia impuesta común). En
   `results/sinteticos/generadores/` (versionable) las fichas de ajuste y muestreo
   (`*_resumen.json`), el historial de convergencia (`*_historial.csv`) y las tablas

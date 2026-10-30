@@ -5,7 +5,7 @@ La Fase 1 del TFM detecta en qué régimen está el mercado y entrega esa señal
 las fases: [`tfm/README.md`](../tfm/README.md). Índice de toda la documentación: [`docs/README.md`](../README.md).
 Definiciones de los términos (pistas, roles, métricas, sintéticos): [GLOSARIO](../GLOSARIO.md).
 
-Este README reúne lo operativo de la fase: el pipeline de notebooks `00`–`20`, el orden en que se ejecutan, dónde está
+Este README reúne lo operativo de la fase: el pipeline de notebooks `00`–`23`, el orden en que se ejecutan, dónde está
 cada cosa en el código y en disco, y el índice de detectores por familia.
 
 ## Documentos de esta carpeta
@@ -14,24 +14,24 @@ cada cosa en el código y en disco, y el índice de detectores por familia.
 |---|---|
 | [`eda.md`](eda.md) + [`figs/`](figs/) | Informe EDA: colas gordas, clustering de volatilidad, correlación acción-bono, complejo de volatilidad, crédito y curva, el punto ciego de 2013, profundidad frente a potencia, ranking causal de features |
 | [`F1_reglas.md`](F1_reglas.md) … [`F7_redes_neuronales.md`](F7_redes_neuronales.md) | Teoría de cada familia y sus detectores v2 (ver el índice de detectores más abajo) |
-| [`sinteticos.md`](sinteticos.md) | Generadores sintéticos, espacio de generación, criterios de validación, niveles del veredicto y laboratorio (notebooks `15`–`18`) |
+| [`sinteticos.md`](sinteticos.md) | Generadores sintéticos, espacio de generación, criterios de validación, niveles del veredicto y laboratorio (notebooks `18`–`21`) |
 
 El estado del arte de los detectores y de las fuentes de datos está en [`docs/estado_del_arte/`](../estado_del_arte/README.md);
 la primera vuelta de detectores (Capa 1), en [`docs/historia/`](../historia/capa1/README.md).
 
-## Pipeline 00–20
+## Pipeline 00–23
 
-Los notebooks `00`–`20` son el pipeline de la Fase 1; las «fases» de la tabla son sus **sub-fases** (no confundir con
+Los notebooks `00`–`23` son el pipeline de la Fase 1; las «fases» de la tabla son sus **sub-fases** (no confundir con
 las fases 1–5 del TFM).
 
 | Sub-fase | Notebooks | Qué produce |
 |---|---|---|
 | **Datos** | `00_descarga` → `01_eda` | `data/raw/` + informe EDA |
-| **Features** | `02_diseno_preprocesado` → `03_preprocesado` | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels |
-| **D — detectores** | `04_protocolo_evaluacion` → `12_comparativa` → `05`–`11` (una familia cada uno) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/detectores/` |
-| **E — fusión** | `13_fusion_d07_d08` · `14_fusion_d02_d06` | `results/fusion/` |
-| **S — sintéticos** | `15_sinteticos_generadores` → `16_sinteticos_validacion` → `17_sinteticos_laboratorio` → `18_sinteticos_aumento` | `15`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste, historial de convergencia y tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `16`). `16`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `17`: laboratorio de detectores con régimen conocido (simulación controlada con `gaussiano_regimen`, `var_regimen` y `garch_regimen`; CLI `python -m regimenes.sinteticos.laboratorio`) en `results/sinteticos/laboratorio/`. `18`: esqueleto (aumento) |
-| **F — cierre** | `19_decision_final` → `20_pseudolive` | `19`: decisión final del detector de régimen y contrato de `get_regimen` (futura ADR-006); `20`: validación de la tool sobre datos no usados en `results/pseudolive/` (esqueletos) |
+| **Features** | `02_diseno_preprocesado` → `03_preprocesado` → `04_termometros` (esqueleto) | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels |
+| **D — detectores** | `05_protocolo_evaluacion` → `14_comparativa` → `06`–`12` (una familia cada uno) · `13_familia_F8_supervisado` (esqueleto) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/detectores/` |
+| **E — fusión** | `15_fusion_d07_d08` · `16_fusion_d02_d06` · `17_fusion_online` (esqueleto) | `results/fusion/` |
+| **S — sintéticos** | `18_sinteticos_generadores` → `19_sinteticos_validacion` → `20_sinteticos_laboratorio` → `21_sinteticos_aumento` | `18`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste, historial de convergencia y tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `19`). `19`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `20`: laboratorio de detectores con régimen conocido (simulación controlada con `gaussiano_regimen`, `var_regimen` y `garch_regimen`; CLI `python -m regimenes.sinteticos.laboratorio`) en `results/sinteticos/laboratorio/`. `21`: esqueleto (aumento) |
+| **F — cierre** | `22_decision_final` → `23_pseudolive` | `22`: decisión final del detector de régimen y contrato de `get_regimen` (futura ADR-006); `23`: validación de la tool sobre datos no usados en `results/pseudolive/` (esqueletos) |
 
 ### Notebook a notebook
 
@@ -41,61 +41,64 @@ las fases 1–5 del TFM).
 | 01 | [`01_eda`](../../notebooks/01_eda.ipynb) | datos | EDA maestro (12 secciones) |
 | 02 | [`02_diseno_preprocesado`](../../notebooks/02_diseno_preprocesado.ipynb) | features | decisiones del preprocesado (features, frecuencias, alineación causal) |
 | 03 | [`03_preprocesado`](../../notebooks/03_preprocesado.ipynb) | features | paneles causales `pista{A,B}_{diaria,mensual}` + labels, con gates |
-| 04 | [`04_protocolo_evaluacion`](../../notebooks/04_protocolo_evaluacion.ipynb) | D | protocolo walk-forward, gate/preflight, caché por huella, CLI paralela |
-| 05 | [`05_familia_F1_reglas`](../../notebooks/05_familia_F1_reglas.ipynb) | D | D01 umbral de volatilidad (VIX solo en B) · D02 riesgo compuesto · D10 turbulencia Mahalanobis |
-| 06 | [`06_familia_F2_clustering`](../../notebooks/06_familia_F2_clustering.ipynb) | D | D03 GMM · D09 Statistical Jump Model |
-| 07 | [`07_familia_F3_hmm`](../../notebooks/07_familia_F3_hmm.ipynb) | D | D04 HMM gaussiano · D08 HMM t-Student · D13 HSMM (ablación) |
-| 08 | [`08_familia_F4_markov_switching`](../../notebooks/08_familia_F4_markov_switching.ipynb) | D | D05 Markov-Switching de media y varianza (univariante; pese al nombre `markov_switching_var`, no es un VAR) |
-| 09 | [`09_familia_F5_garch`](../../notebooks/09_familia_F5_garch.ipynb) | D | D06 GJR-GARCH-t · D11 MS-GARCH |
-| 10 | [`10_familia_F6_changepoint`](../../notebooks/10_familia_F6_changepoint.ipynb) | D | D07 CUSUM online robusto |
-| 11 | [`11_familia_F7_deep`](../../notebooks/11_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
-| 12 | [`12_comparativa`](../../notebooks/12_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
-| 13 | [`13_fusion_d07_d08`](../../notebooks/13_fusion_d07_d08.ipynb) | E | D7 alerta + D8 confirma |
-| 14 | [`14_fusion_d02_d06`](../../notebooks/14_fusion_d02_d06.ipynb) | E | selección auditable: D2 alerta + D6 confirma |
-| 15 | [`15_sinteticos_generadores`](../../notebooks/15_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 16) |
-| 16 | [`16_sinteticos_validacion`](../../notebooks/16_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
-| 17 | [`17_sinteticos_laboratorio`](../../notebooks/17_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 16): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
-| 18 | [`18_sinteticos_aumento`](../../notebooks/18_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto; se mantiene, ADR-005) |
-| 19 | [`19_decision_final`](../../notebooks/19_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
-| 20 | [`20_pseudolive`](../../notebooks/20_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
+| 04 | [`04_termometros`](../../notebooks/04_termometros.ipynb) | features | termómetros por bloque (PCA causal por bloque): construcción y validación 1–3 sin etiquetas de crisis (esqueleto) |
+| 05 | [`05_protocolo_evaluacion`](../../notebooks/05_protocolo_evaluacion.ipynb) | D | protocolo walk-forward, gate/preflight, caché por huella, CLI paralela |
+| 06 | [`06_familia_F1_reglas`](../../notebooks/06_familia_F1_reglas.ipynb) | D | D01 umbral de volatilidad (VIX solo en B) · D02 riesgo compuesto · D10 turbulencia Mahalanobis |
+| 07 | [`07_familia_F2_clustering`](../../notebooks/07_familia_F2_clustering.ipynb) | D | D03 GMM · D09 Statistical Jump Model |
+| 08 | [`08_familia_F3_hmm`](../../notebooks/08_familia_F3_hmm.ipynb) | D | D04 HMM gaussiano · D08 HMM t-Student · D13 HSMM (ablación) |
+| 09 | [`09_familia_F4_markov_switching`](../../notebooks/09_familia_F4_markov_switching.ipynb) | D | D05 Markov-Switching de media y varianza (univariante; pese al nombre `markov_switching_var`, no es un VAR) |
+| 10 | [`10_familia_F5_garch`](../../notebooks/10_familia_F5_garch.ipynb) | D | D06 GJR-GARCH-t · D11 MS-GARCH |
+| 11 | [`11_familia_F6_changepoint`](../../notebooks/11_familia_F6_changepoint.ipynb) | D | D07 CUSUM online robusto |
+| 12 | [`12_familia_F7_deep`](../../notebooks/12_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
+| 13 | [`13_familia_F8_supervisado`](../../notebooks/13_familia_F8_supervisado.ipynb) | D | D16 logit L1 · D17 random forest, entrenados solo con crisis terminadas; categoría supervisada aparte del ranking no supervisado (esqueleto) |
+| 14 | [`14_comparativa`](../../notebooks/14_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
+| 15 | [`15_fusion_d07_d08`](../../notebooks/15_fusion_d07_d08.ipynb) | E | D7 alerta + D8 confirma |
+| 16 | [`16_fusion_d02_d06`](../../notebooks/16_fusion_d02_d06.ipynb) | E | selección auditable: D2 alerta + D6 confirma |
+| 17 | [`17_fusion_online`](../../notebooks/17_fusion_online.ipynb) | E | C1: agregación online de los detectores con pesos mensuales según acierto pasado, frente a la regla fija D2+D6 y al mejor individual (esqueleto) |
+| 18 | [`18_sinteticos_generadores`](../../notebooks/18_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 19) |
+| 19 | [`19_sinteticos_validacion`](../../notebooks/19_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
+| 20 | [`20_sinteticos_laboratorio`](../../notebooks/20_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 19): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
+| 21 | [`21_sinteticos_aumento`](../../notebooks/21_sinteticos_aumento.ipynb) | S | aumento de datos real + sintético (esqueleto; se mantiene, ADR-005) |
+| 22 | [`22_decision_final`](../../notebooks/22_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
+| 23 | [`23_pseudolive`](../../notebooks/23_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
 
-Los notebooks de familia (05–11) siguen una plantilla común: teoría de la familia, configuración
+Los notebooks de familia (06–12) siguen una plantilla común: teoría de la familia, configuración
 desde el registro, ejecución con `EJECUTAR = False` (lee la caché de `results/benchmark`), estados OOS
 por pista con franjas de crisis, diagnóstico propio, métricas y puesto en el ranking, hallazgos de la
 Capa 1 y conclusión. Sus figuras van a `results/detectores/<fk_nombre>/`.
 
-Los notebooks v1 de la Capa 1 (uno por detector) se resumen en los notebooks de familia `05`–`11` y quedan íntegros en
+Los notebooks v1 de la Capa 1 (uno por detector) se resumen en los notebooks de familia `06`–`12` y quedan íntegros en
 el tag `capa1-final`.
 
 ### Orden de ejecución
 
 La numeración es de *lectura* (familias antes de la comparativa), pero tras un benchmark nuevo hay que ejecutar
-`12_comparativa` **antes** que `05`–`11`: es `12` quien escribe `results/benchmark/ranking*.csv`, y los notebooks de
+`14_comparativa` **antes** que `06`–`12`: es `14` quien escribe `results/benchmark/ranking*.csv`, y los notebooks de
 familia lo leen (`regimenes.informes.cargar_resultados_familia`). Los comandos (`make benchmark`, `make notebooks`,
 `make test`) están en [«Cómo reproducir»](../../README.md#cómo-reproducir) del README raíz.
 
 **Qué comprueba cada notebook sobre la caché** (la huella cubre código, datos, especificación y
 versiones):
 
-- `04_protocolo_evaluacion` (por defecto solo caché) **no falla**: lista las combinaciones sin caché
+- `05_protocolo_evaluacion` (por defecto solo caché) **no falla**: lista las combinaciones sin caché
   vigente e imprime el comando `python -m regimenes.benchmark ... --detector ...` para regenerarlas.
-- `12_comparativa` verifica la huella; si no es vigente **no falla**: lo avisa y usa las métricas
+- `14_comparativa` verifica la huella; si no es vigente **no falla**: lo avisa y usa las métricas
   versionadas, comprobando su procedencia contra `manifest.json`.
-- `05`–`11` verifican la huella (`run_benchmark(cache_only=True)`) **y** que el `ranking*.csv` que
-  escribe `12_comparativa` corresponde a esas métricas; si no, fallan pidiendo re-ejecutar 12. Por
-  eso, tras un benchmark nuevo, el orden es `04` → `12` → `05`–`11` → `13`–`14`.
-- `13_fusion_d07_d08` lee los paneles OOS directamente (`load_panel`) **sin** verificar la huella, y
-  `14_fusion_d02_d06` recurre al cribado versionado si faltan paneles: con una caché obsoleta no
+- `06`–`12` verifican la huella (`run_benchmark(cache_only=True)`) **y** que el `ranking*.csv` que
+  escribe `14_comparativa` corresponde a esas métricas; si no, fallan pidiendo re-ejecutar 14. Por
+  eso, tras un benchmark nuevo, el orden es `05` → `14` → `06`–`12` → `15`–`16`.
+- `15_fusion_d07_d08` lee los paneles OOS directamente (`load_panel`) **sin** verificar la huella, y
+  `16_fusion_d02_d06` recurre al cribado versionado si faltan paneles: con una caché obsoleta no
   fallan, así que hay que asegurarse antes de que el benchmark está vigente.
 
-`make notebooks` ejecuta 00–14 en orden numérico: sirve cuando caché y ranking ya son coherentes;
-tras un benchmark nuevo, ejecuta antes `12_comparativa` a mano. Los paneles OOS
+`make notebooks` ejecuta 00–16 en orden numérico: sirve cuando caché y ranking ya son coherentes;
+tras un benchmark nuevo, ejecuta antes `14_comparativa` a mano. Los paneles OOS
 (`results/benchmark/panels/*.parquet`) no se versionan: se regeneran con el benchmark.
-Los notebooks 15–17 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
-(~1 GB, no versionado), que genera `15_sinteticos_generadores` con `EJECUTAR = True`; después, 15 y
-16 se ejecutan a mano con `EJECUTAR = False` (16 lee además sus tablas de `results/sinteticos/validacion/`).
-El laboratorio (17) se ejecuta con su CLI, reanudable y con caché por huella:
-`python -m regimenes.sinteticos.laboratorio` (el notebook 17 lee `results/sinteticos/laboratorio/`).
+Los notebooks 18–20 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
+(~1 GB, no versionado), que genera `18_sinteticos_generadores` con `EJECUTAR = True`; después, 18 y
+19 se ejecutan a mano con `EJECUTAR = False` (19 lee además sus tablas de `results/sinteticos/validacion/`).
+El laboratorio (20) se ejecuta con su CLI, reanudable y con caché por huella:
+`python -m regimenes.sinteticos.laboratorio` (el notebook 20 lee `results/sinteticos/laboratorio/`).
 
 **Huella de caché.** El benchmark (`python -m regimenes.benchmark`, módulo `regimenes.benchmark.cache`) guarda sus
 resultados por huella de contenido. Entran:
@@ -124,35 +127,35 @@ datos ([ADR-001](../decisions/ADR-001-rebase-datos.md)); las posteriores se nomb
 | Capa 1 | 12 detectores v1 sobre 9 series (exploración) | ✅ congelada 2026-07-18 · [historia](../historia/capa1/README.md) |
 | 1–3 | Reorganización · datos (166/174 series) · EDA + banco congelado | ✅ [ADR-001](../decisions/ADR-001-rebase-datos.md) · [ADR-002](../decisions/ADR-002-ajuste-ventanas.md) |
 | 4 | Diseño + preprocesado causal v2 | ✅ notebooks 02–03 |
-| D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 04–12 |
+| D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 05–14 |
 | — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](../decisions/ADR-004-unificacion.md) |
-| E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 13–14) |
-| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores, validación y laboratorio hechos (notebooks 15–17); aumento pendiente (18, esqueleto) · `regimenes.sinteticos` · [generadores sintéticos](sinteticos.md) |
-| F | Decisión final del detector y contrato de `get_regimen` (futura ADR-006) + validación pseudolive de la tool | 🔜 notebooks 19–20 (esqueletos) |
+| E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 15–16; fusión online C1 en el 17, esqueleto) |
+| S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores, validación y laboratorio hechos (notebooks 18–20); aumento pendiente (21, esqueleto) · `regimenes.sinteticos` · [generadores sintéticos](sinteticos.md) |
+| F | Decisión final del detector y contrato de `get_regimen` (futura ADR-006) + validación pseudolive de la tool | 🔜 notebooks 22–23 (esqueletos) |
 
 ## Índice de detectores por familia
 
 `Fk` = familia (subpaquete `fk_*` de `src/regimenes/detectores/` y notebook de familia); `Dnn` = detector. D01–D12
 forman el benchmark; D13 (`hsmm_tstudent`) es solo una ablación de D08, fuera del ranking y de la huella de caché. El
 puesto y el `score_deteccion` de cada detector por pista están en `results/benchmark/ranking_v2.csv` y en el notebook
-[`12_comparativa`](../../notebooks/12_comparativa.ipynb); su comentario, en la sección de resultados de cada ficha de
+[`14_comparativa`](../../notebooks/14_comparativa.ipynb); su comentario, en la sección de resultados de cada ficha de
 familia.
 
 | Familia (teoría y detectores) | Detector | Código (`src/regimenes/detectores/`) | Notebook |
 |---|---|---|---|
-| [F1 reglas y umbrales](F1_reglas.md) | D01 `rule_vix_threshold` | `f1_reglas/rule_vix_threshold.py` | [`05_familia_F1_reglas`](../../notebooks/05_familia_F1_reglas.ipynb) |
+| [F1 reglas y umbrales](F1_reglas.md) | D01 `rule_vix_threshold` | `f1_reglas/rule_vix_threshold.py` | [`06_familia_F1_reglas`](../../notebooks/06_familia_F1_reglas.ipynb) |
 | | D02 `rule_composite_riskoff` | `f1_reglas/rule_composite_riskoff.py` | ídem |
 | | D10 `turbulence_mahalanobis` (multivariante) | `f1_reglas/turbulence_mahalanobis.py` | ídem |
-| [F2 clustering](F2_clustering.md) | D03 `clustering_gmm` | `f2_clustering/clustering_gmm.py` | [`06_familia_F2_clustering`](../../notebooks/06_familia_F2_clustering.ipynb) |
+| [F2 clustering](F2_clustering.md) | D03 `clustering_gmm` | `f2_clustering/clustering_gmm.py` | [`07_familia_F2_clustering`](../../notebooks/07_familia_F2_clustering.ipynb) |
 | | D09 `jump_model` | `f2_clustering/jump_model.py` | ídem |
-| [F3 HMM](F3_hmm.md) | D04 `hmm_gaussian_2s` | `f3_hmm/hmm_gaussian_2s.py` | [`07_familia_F3_hmm`](../../notebooks/07_familia_F3_hmm.ipynb) |
+| [F3 HMM](F3_hmm.md) | D04 `hmm_gaussian_2s` | `f3_hmm/hmm_gaussian_2s.py` | [`08_familia_F3_hmm`](../../notebooks/08_familia_F3_hmm.ipynb) |
 | | D08 `hmm_tstudent` | `f3_hmm/hmm_tstudent.py` | ídem |
 | | D13 `hsmm_tstudent` (ablación) | `f3_hmm/hsmm_tstudent.py` | ídem |
-| [F4 Markov-Switching](F4_markov_switching.md) | D05 `markov_switching_var` (media y varianza conmutantes; no es un VAR) | `f4_switching/markov_switching_var.py` | [`08_familia_F4_markov_switching`](../../notebooks/08_familia_F4_markov_switching.ipynb) |
-| [F5 volatilidad GARCH](F5_volatilidad_garch.md) | D06 `garch_t_vol` | `f5_garch/garch_t_vol.py` | [`09_familia_F5_garch`](../../notebooks/09_familia_F5_garch.ipynb) |
+| [F4 Markov-Switching](F4_markov_switching.md) | D05 `markov_switching_var` (media y varianza conmutantes; no es un VAR) | `f4_switching/markov_switching_var.py` | [`09_familia_F4_markov_switching`](../../notebooks/09_familia_F4_markov_switching.ipynb) |
+| [F5 volatilidad GARCH](F5_volatilidad_garch.md) | D06 `garch_t_vol` | `f5_garch/garch_t_vol.py` | [`10_familia_F5_garch`](../../notebooks/10_familia_F5_garch.ipynb) |
 | | D11 `msgarch_regime` | `f5_garch/msgarch_regime.py` | ídem |
-| [F6 change-point](F6_change_point.md) | D07 `changepoint_online` | `f6_changepoint/changepoint_online.py` | [`10_familia_F6_changepoint`](../../notebooks/10_familia_F6_changepoint.ipynb) |
-| [F7 redes neuronales](F7_redes_neuronales.md) | D12 `deep_ae_regime` | `f7_deep/deep_ae_regime.py` | [`11_familia_F7_deep`](../../notebooks/11_familia_F7_deep.ipynb) |
+| [F6 change-point](F6_change_point.md) | D07 `changepoint_online` | `f6_changepoint/changepoint_online.py` | [`11_familia_F6_changepoint`](../../notebooks/11_familia_F6_changepoint.ipynb) |
+| [F7 redes neuronales](F7_redes_neuronales.md) | D12 `deep_ae_regime` | `f7_deep/deep_ae_regime.py` | [`12_familia_F7_deep`](../../notebooks/12_familia_F7_deep.ipynb) |
 
 Los nombres heredados que confunden (D01 en la pista A no usa el VIX; D05 no es un VAR) están aclarados en el
 [GLOSARIO](../GLOSARIO.md#nombres-de-detectores-que-confunden). Qué features recibe cada detector:
@@ -173,7 +176,7 @@ módulo ni notebook calcula rutas con `Path(__file__)`):
 | `RESULTS_BENCHMARK` | `results/benchmark/` | `metrics/`, `status/`, `panels/`, `manifest.json`, `ranking_v2.csv`, `metrics_master_v2.csv` |
 | `RESULTS_FUSION` · `RESULTS_FUSION_D07_D08` · `RESULTS_FUSION_D02_D06` | `results/fusion/{d07_d08,d02_d06}/` | tablas de las fusiones |
 | `RESULTS_DETECTORES` | `results/detectores/<fk_nombre>/` | figuras de los notebooks de familia |
-| `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | sub-fases S y F; `results/sinteticos/generadores/` (notebook 15), `results/sinteticos/validacion/` (notebook 16: tablas largas por dimensión y pista, veredicto, ficha JSON; las PNG no se versionan) y `results/sinteticos/laboratorio/` (notebook 17: filas por trabajo, tablas H1–H4, figuras) |
+| `RESULTS_SINTETICOS` · `RESULTS_PSEUDOLIVE` | `results/sinteticos/` · `results/pseudolive/` | sub-fases S y F; `results/sinteticos/generadores/` (notebook 18), `results/sinteticos/validacion/` (notebook 19: tablas largas por dimensión y pista, veredicto, ficha JSON; las PNG no se versionan) y `results/sinteticos/laboratorio/` (notebook 20: filas por trabajo, tablas H1–H4, figuras) |
 | `DOCS` · `ENV_FILE` | `docs/` · `.env` | — |
 
 | Módulo | Qué contiene |
@@ -185,7 +188,7 @@ módulo ni notebook calcula rutas con `Path(__file__)`):
 | `regimenes.benchmark` (`ejecucion`, `cache`, `cli`) | ejecución y caché por huella · `python -m regimenes.benchmark` |
 | `regimenes.fusion` (`maquina`) | máquina normal / vigilancia / confirmado |
 | `regimenes.viz` (`figuras`) | estilo de casa de figuras |
-| `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
+| `regimenes.informes` | utilidades comunes de los notebooks de familia 06–12: carga verificada de resultados (`cargar_resultados_familia`), tablas y figuras |
 | `regimenes.sinteticos` (`base`, `comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`, `parametricos/`, `neuronales/`, `validacion`, `laboratorio`) | interfaz `Generador` y base común `GeneradorBase`, régimen de referencia y cadena de regímenes, espacio de generación y re-derivación, bloques y encadenado, registro perezoso (`registry.crear`) y 10 generadores (6 paramétricos; 4 neuronales con el extra `[deep]`). `validacion/` (notebook 16) es un subpaquete con un módulo por dimensión: `fidelidad`, `discriminador`, `memorizacion`, `utilidad` y `veredicto`. `laboratorio/` (notebook 17) contiene `escenarios`, `metricas`, `ejecucion` (CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
 
 La historia de la Capa 1 (decisiones, hallazgos y métricas v1) está en [`historia/capa1/`](../historia/capa1/README.md);

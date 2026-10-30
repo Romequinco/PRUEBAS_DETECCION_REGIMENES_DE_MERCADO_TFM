@@ -1,7 +1,7 @@
 """regimenes: deteccion de regimenes de mercado (Fase 1 del TFM).
 
 Paquete unico de la Fase 1 del TFM (decision en docs/decisions/ADR-004-unificacion.md;
-mapa del codigo y pipeline 00-20 en docs/fase1/README.md):
+mapa del codigo y pipeline 00-23 en docs/fase1/README.md):
 
 - ``regimenes.rutas``        rutas centralizadas del repositorio (unica fuente).
 - ``regimenes.datos``        descarga dirigida por ``configs/catalog.yaml``.

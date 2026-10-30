@@ -1,6 +1,6 @@
 """Cadena de regimenes, diagnostico del muestreo y unitarios baratos de los generadores.
 
-Cubre lo que anade la revision del notebook 15 (sin datos locales, rapido):
+Cubre lo que anade la revision del notebook 18 (sin datos locales, rapido):
 
 - ``datos.simular_regimenes``: arranque ``ultimo`` / ``estacionaria`` y duraciones
   ``geometricas`` / ``empiricas`` (fraccion esperada de crisis, duraciones dentro

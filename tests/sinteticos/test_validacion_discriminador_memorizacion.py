@@ -9,7 +9,7 @@ Controles con paneles de juguete (``generador_referencia``):
   ajustado -> cociente >= ~1.
 
 El test ``datos`` usa la pista A real con las trayectorias de bootstrap_regimen
-y jitter del notebook 15: ambos DEBEN suspender memorizacion.
+y jitter del notebook 18: ambos DEBEN suspender memorizacion.
 """
 from __future__ import annotations
 
@@ -183,7 +183,7 @@ def test_pista_a_real_jitter_y_bootstrap_suspenden_memorizacion() -> None:
         pytest.skip("faltan data/processed (pista A)")
     if not all(persistencia.dir_trayectorias(g, "A").joinpath(persistencia.FICHERO_TRAYECTORIAS).exists()
                for g in ("jitter", "bootstrap_regimen")):
-        pytest.skip("faltan las trayectorias del notebook 15 (data/sinteticos)")
+        pytest.skip("faltan las trayectorias del notebook 18 (data/sinteticos)")
     cfg = yaml.safe_load(rutas.SINTETICOS_CONFIG.read_text(encoding="utf-8"))
     panel, reg = datos.cargar_entrenamiento("A", cfg["entrenamiento"]["fin_train"])
     par = cfg["validacion"]["memorizacion"]

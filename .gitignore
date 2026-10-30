@@ -254,7 +254,7 @@ results/detectores/**/*.png
 results/detectores/**/*.parquet
 
 # Figuras y binarios de modelos de la fase de sinteticos (se regeneran con los
-# notebooks 15-18); los CSV/JSON/MD pequenos de results/sinteticos SI se versionan
+# notebooks 18-21); los CSV/JSON/MD pequenos de results/sinteticos SI se versionan
 results/sinteticos/**/*.png
 results/sinteticos/**/*.parquet
 results/sinteticos/**/*.pkl
@@ -264,7 +264,7 @@ results/sinteticos/**/*.pt
 results/sinteticos/**/*.pth
 results/sinteticos/**/*.npy
 results/sinteticos/**/*.npz
-# Laboratorio (notebook 17): filas JSON por trabajo y logs; se versiona el consolidado filas.csv
+# Laboratorio (notebook 20): filas JSON por trabajo y logs; se versiona el consolidado filas.csv
 results/sinteticos/laboratorio/filas/
 results/sinteticos/laboratorio/*.log*
 

@@ -75,7 +75,7 @@ generadores:
 # el de train. OJO: con duraciones geometricas sigue habiendo trayectorias sin crisis (~9 %
 # en la pista A: la calma dura de media ~1130 sesiones); quedan contadas en
 # diagnostico_muestreo()["n_trayectorias_sin_crisis"]. `duraciones: empiricas` las elimina
-# (ninguna calma real de train llega a 2520 sesiones) a cambio de mas dias de crisis (cifras por pista en el notebook 15, seccion 2.1).
+# (ninguna calma real de train llega a 2520 sesiones) a cambio de mas dias de crisis (cifras por pista en el notebook 18, seccion 2.1).
 muestreo:
   n_paths: 100
   length: 2520        # sesiones por trayectoria (~10 anos)
@@ -83,10 +83,10 @@ muestreo:
   inicial: estacionaria
   duraciones: geometricas
 
-# Validacion (notebook 16, regimenes.sinteticos.validacion). Todo se compara con el TRAMO DE
-# ENTRENAMIENTO real de cada pista (nunca con lo posterior a fin_train, reservado a 17-20).
+# Validacion (notebook 19, regimenes.sinteticos.validacion). Todo se compara con el TRAMO DE
+# ENTRENAMIENTO real de cada pista (nunca con lo posterior a fin_train, reservado a 20-23).
 # Los umbrales se fijaron el 2026-10-01, ANTES de ver ningun resultado de validacion; no se
-# retocan a la vista de las cifras (si se cambian, el cambio y su motivo van en el notebook 16).
+# retocan a la vista de las cifras (si se cambian, el cambio y su motivo van en el notebook 19).
 validacion:
   metricas: [fidelidad_marginal, fidelidad_dependencia, distancia_correlaciones, fidelidad_regimenes,
              condicionamiento, discriminador, utilidad_tstr, memorizacion]
@@ -172,7 +172,7 @@ validacion:
     # apto_laboratorio: el 17 usa estos generadores advirtiendo que son distinguibles del real.
     laboratorio_condicionado: [marginal, dependencia, condicionamiento]
 
-# Laboratorio de detectores con regimen conocido (notebook 17, regimenes.sinteticos.laboratorio).
+# Laboratorio de detectores con regimen conocido (notebook 20, regimenes.sinteticos.laboratorio).
 # PRE-REGISTRO fijado el 2026-10-05 ANTES de generar ninguna trayectoria del laboratorio ni ejecutar
 # ningun detector sobre ellas. Cualquier cambio posterior se declara aqui con fecha y «Antes: ...».
 #
@@ -241,7 +241,7 @@ laboratorio:
   # H4 circularidad: ventaja de score de los detectores de `misma_familia` en su generador frente a
   #    su media en los otros generadores (diferencia con IC bootstrap entre trayectorias).
   n_boot: 1000                    # IC bootstrap por percentiles entre trayectorias
-  # Declarado el 2026-10-06, DESPUES de ver los resultados (revision adversarial del notebook 17).
+  # Declarado el 2026-10-06, DESPUES de ver los resultados (revision adversarial del notebook 20).
   # Son lecturas EXPLORATORIAS, no hipotesis pre-registradas, y el notebook las marca asi:
   # - metricas que solo existen con verdad exacta (ya calculadas en metricas.py antes de ejecutar,
   #   pero no listadas aqui): retraso_medio (condicional a detectar: se lee junto al recall por

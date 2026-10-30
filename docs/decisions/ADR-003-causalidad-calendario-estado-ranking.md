@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada · 2026-09-29
 - **Revisión posterior (2026-10-06):** (1) la «regla a congelar para el pseudolive» (§4) se decide en el
-  notebook `19_decision_final` y quedará registrada en la **futura ADR-006** (la antigua «futura ADR-005»,
+  notebook `22_decision_final` y quedará registrada en la **futura ADR-006** (la antigua «futura ADR-005»,
   renumerada por [ADR-005](ADR-005-reencuadre-tfm-multiagente.md)). (2) `LAG_PUBLICACION` es el *TimeGate*
   de las **series numéricas**; el TimeGate de los documentos (corpus del RAG) es trabajo de la Fase 2 del
   TFM. (3) ALFRED (vintages en tiempo real) sigue siendo una limitación declarada.
@@ -15,7 +15,7 @@
 - **Ámbito:** `regimenes.features` (lags de publicación, alineación), `regimenes.datos` (CAPE, Ken
   French, vol realizada), `regimenes.evaluacion` (walk-forward, detección por evento, ranking),
   `regimenes.detectores.registry` (semillas), `regimenes.benchmark` (huella de caché, ejecución
-  paralela), `configs/benchmark_spec.yaml` (solo comentarios) y los notebooks 02–04 y 12–14. **No**
+  paralela), `configs/benchmark_spec.yaml` (solo comentarios) y los notebooks 02–03, 05 y 14–16 (numeración actual). **No**
   cambia ventanas, crisis, series del banco ni la lógica de los detectores.
 - **Consecuencia:** invalida los resultados previos del benchmark y de la Fase E; el benchmark se
   re-ejecuta completo una vez con los tres cambios juntos.
@@ -40,7 +40,7 @@ durante la revisión, sino que se elevaron a decisión:
 3. **Ranking sesgado a la inactividad.** `rank_medio` promediaba 5 ejes de los que 3 (trampas,
    switching, estabilidad) los gana un detector que no hace nada: la línea base "siempre crisis" quedaba 4ª en ambas pistas
    con el banco previo a esta ADR (con el banco re-ejecutado queda 5ª por `rank_medio` en ambas,
-   [`12_comparativa`](../../notebooks/12_comparativa.ipynb) §8).
+   [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §8).
 
 ## 2. Decisión
 
@@ -102,7 +102,7 @@ El ranking principal de cada pista pasa a ser un criterio de **detección** expl
 - **Desempate:** menor `switching_rate` y después mayor `label_stability`. La persistencia ya no se
   promedia con la detección.
 - Umbrales explícitos en `regimenes.evaluacion.ranking.DETECTION_DEFAULTS`; sensibilidad
-  documentada en [`12_comparativa`](../../notebooks/12_comparativa.ipynb) §8.
+  documentada en [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §8.
 - Líneas base triviales (siempre crisis, siempre calma, azar diario, azar persistente) quedan al
   fondo por construcción, verificado por test.
 - La frontera de Pareto recall/precisión se publica como vista complementaria. `rank_medio` se

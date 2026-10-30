@@ -1,4 +1,4 @@
-"""Agregados del laboratorio para el notebook 17 (hipotesis H1-H4 del pre-registro).
+"""Agregados del laboratorio para el notebook 20 (hipotesis H1-H4 del pre-registro).
 
 Todas las funciones reciben la tabla de filas (``ejecucion.consolidar``): una fila
 por (pista, celda, trayectoria, detector). Los intervalos son bootstrap por

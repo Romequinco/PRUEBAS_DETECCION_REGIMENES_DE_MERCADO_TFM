@@ -1,6 +1,6 @@
 # F3 — Modelos ocultos de Markov (HMM)
 
-> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D04 `hmm_gaussian_2s`](#d04), [D08 `hmm_tstudent`](#d08), [D13 `hsmm_tstudent`](#d13) (ablación). Notebook de familia: [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb). Bibliografía: claves `hmm_*` y compartidas de [`docs/references.bib`](../references.bib).
+> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D04 `hmm_gaussian_2s`](#d04), [D08 `hmm_tstudent`](#d08), [D13 `hsmm_tstudent`](#d13) (ablación). Notebook de familia: [`notebooks/08_familia_F3_hmm.ipynb`](../../notebooks/08_familia_F3_hmm.ipynb). Bibliografía: claves `hmm_*` y compartidas de [`docs/references.bib`](../references.bib).
 >
 > **Datos v1 en la teoría.** Las cifras del EDA que cita la sección 1 son de la Capa 1 (15 features, ventana 2007-04 → 2026-06, 4 crisis: 2008, 2011, 2020 y 2022), igual que los nombres de feature `credit_spread_z` o `yield_slope_z` y las referencias a la «tarea previa»; donde el dato importa se indica junto a él. El panel v2 tiene dos pistas (A: 1962-01-02 → 2026-05-29; B: 2007-04-11 → 2026-05-29) y el EDA vigente está en [`eda.md`](eda.md) (curtosis de exceso del S&P 500 = 18,7 en 1928-2026).
 
@@ -347,7 +347,7 @@ HMM con **emisiones t-Student multivariantes** (localización, matriz de escala 
 - Features `core` de `regimenes.detectores.registry`: **9 en la pista A** (`CORE_A`: `SP500_ret_z`, `SP500_vol_z`, `SP500_momentum`, `SP500_drawdown`, `FF_MKT_z`, `DGS10_change_z`, `credit_BaaAaa_mensual_z`, `term_spread_hist_z`, `INDPRO_yoy_z`) y **14 en la B** (`CORE_B` = las 9 de A + `VIX_level_z`, `MOVE_level_z`, `credit_BAA10Y_z`, `DFII10_change_z`, `corr_spx_bond`).
 - Walk-forward: refit cada **126** sesiones (detector lento), ventana expanding.
 
-> **Lectura del estado de crisis.** Con K = 4, el «estado de crisis» es el más severo de los cuatro. En la pista A es el estado OOS más poblado, no una cola estrecha; en la B sí es estrecho y el estrés más amplio cae en «corrección». Ver `notebooks/07_familia_F3_hmm.ipynb` §1.3 y §4.6.
+> **Lectura del estado de crisis.** Con K = 4, el «estado de crisis» es el más severo de los cuatro. En la pista A es el estado OOS más poblado, no una cola estrecha; en la B sí es estrecho y el estrés más amplio cae en «corrección». Ver `notebooks/08_familia_F3_hmm.ipynb` §1.3 y §4.6.
 
 <!-- BEGIN resultados_v2 D08 -->
 **Resultados v2 (ADR-003)**
@@ -390,7 +390,7 @@ Narrativa de la Capa 1 (implementación v1, hallazgos e hipótesis del CHECKPOIN
 
 - Código: `src/regimenes/detectores/f3_hmm/hsmm_tstudent.py` (`HSMMTStudent`, hereda de `HMMTStudent` de D08).
 - Parámetros del constructor: `max_duration = 126`, `duration_prior_strength = 12.0`, `transition_prior_strength = 2.0`; el resto, como D08.
-- Notebook de la ablación: `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` (tag `capa1-final`); en v2, sección de ablación de [`notebooks/07_familia_F3_hmm.ipynb`](../../notebooks/07_familia_F3_hmm.ipynb).
+- Notebook de la ablación: `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` (tag `capa1-final`); en v2, sección de ablación de [`notebooks/08_familia_F3_hmm.ipynb`](../../notebooks/08_familia_F3_hmm.ipynb).
 - Métricas: [`historia/capa1/resultados/ablation_hsmm/`](../historia/capa1/resultados/ablation_hsmm/) (`metrics_d13_hsmm.csv`, `metrics_d8_reference.csv` y su README).
 
 > Un *Hidden Semi-Markov Model* (HSMM) relaja el supuesto temporal más restrictivo del HMM

@@ -253,12 +253,12 @@ ejecuta con todos los menús que admite por naturaleza.
 | D02 Regla compuesta | | ✓ | ✓ (media de termómetros) | | |
 | D03 GMM, D04 HMM, D08 HMM-t | ✓ | ✓ | ✓ | | |
 | D05 MS varianza, D06 GARCH, D07 CUSUM, D11 MS-GARCH | ✓ | | | | |
-| D09 Jump model (D14 Shu = menú U con las features de Shu) | ✓ | ✓ | ✓ | | |
+| D09 Jump model (D15 Shu = menú U con las features de Shu) | ✓ | ✓ | ✓ | | |
 | D10 Turbulencia | | ✓ | ✓ | ✓ (con shrinkage) | ✓ (definición original de Kritzman-Li) |
 | D12 Autoencoder | | ✓ | ✓ | ✓ | |
-| D13 Absorption ratio | | | | | ✓ |
-| D15 Logit L1, D16 Random forest (categoría supervisada aparte) | | | ✓ | ✓ | |
-| D17 Sparse jump model | | | | ✓ | |
+| D14 Absorption ratio | | | | | ✓ |
+| D16 Logit L1, D17 Random forest (categoría supervisada aparte) | | | ✓ | ✓ | |
+| D18 Sparse jump model | | | | ✓ | |
 
 - **Por columnas:** mismos datos, distintos métodos. Es la comparación justa. En el menú T, nueve
   detectores ven exactamente lo mismo y todo el pool. En el menú U compiten los univariantes, como en
@@ -319,8 +319,8 @@ enlaces rotos.
 00 descarga · 01 eda · 02 diseño preprocesado · 03 preprocesado
 04 termómetros (NUEVO: construcción y validación 1–3)
 05 protocolo de evaluación (+ VOL_P90, MCS, curva a igual tasa de falsas alarmas)
-06–12 familias F1–F7 (+ variantes por menú; D13 en F1; D14 y D17 en F2)
-13 familia F8 supervisado (NUEVO: D15 y D16)
+06–12 familias F1–F7 (+ variantes por menú; D14 en F1; D15 y D18 en F2)
+13 familia F8 supervisado (NUEVO: D16 y D17)
 14 comparativa (matriz detector × menú, ranking v3, ablaciones, «¿sirve el pool?»)
 15–16 fusiones actuales · 17 fusión online C1 (NUEVO)
 18–21 sintéticos (generadores ampliados al pool y re-ejecutados)
@@ -345,9 +345,9 @@ los menús T y P hay que ampliarlos al pool.
 **Fase 2 · Detectores sobre el pool**
 
 - [ ] 2.1 Matriz detector × menú (variantes en `registry.py`).
-- [ ] 2.2 D13 absorption ratio (B5, solo pista B).
-- [ ] 2.3 D14 jump Shu (B6) y D17 sparse JM (B9, con `jumpmodels.SparseJumpModel`).
-- [ ] 2.4 D15 logit L1 y D16 random forest (B7), entrenados solo con crisis terminadas.
+- [ ] 2.2 D14 absorption ratio (B5, solo pista B).
+- [ ] 2.3 D15 jump Shu (B6) y D18 sparse JM (B9, con `jumpmodels.SparseJumpModel`).
+- [ ] 2.4 D16 logit L1 y D17 random forest (B7), entrenados solo con crisis terminadas.
 - [ ] 2.5 Ablaciones y controles (6.5, puntos 4–6).
 - [ ] 2.6 C1 fusión online.
 - [ ] 2.7 Ranking v3, sintéticos rehechos, decisión final, memoria y ADR-009 de resultados.

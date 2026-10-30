@@ -73,7 +73,7 @@ Los parámetros del `composite_score` (40/35/25) vienen de la propuesta y su uni
 
 ## 5. Contrato provisional de `get_regimen(fecha)`
 
-Salida de la Fase 1; se congela en el notebook `19_decision_final` y se valida en `20_pseudolive`.
+Salida de la Fase 1; se congela en el notebook `22_decision_final` y se valida en `23_pseudolive`.
 
 | Campo | Contenido |
 |---|---|

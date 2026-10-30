@@ -3,7 +3,7 @@
 Por que existe: flow matching y difusion son el MISMO transporte de ruido a
 datos con dos parametrizaciones distintas (camino recto y velocidad frente a
 camino de varianza preservada y ruido). Para que la comparacion entre ambos en
-los notebooks 16-18 mida solo esa diferencia, todo lo demas es literalmente el
+los notebooks 19-21 mida solo esa diferencia, todo lo demas es literalmente el
 mismo codigo y vive aqui: la red, la transformacion de los datos, el reparto
 ajuste/validacion, el equilibrio de lotes, la media movil de pesos (EMA), el
 bucle de entrenamiento y el encadenado de bloques. Cada generador aporta solo
@@ -16,7 +16,7 @@ trayectorias de 2520 sesiones con la cadena de regimenes simulada, semilla 42.
 "sd" es el cociente de desviaciones sintetico / real de ``SP500_ret`` dentro de
 cada regimen. No son las cifras vigentes del proyecto: las del muestreo de
 ``configs/sinteticos.yaml`` (100 trayectorias, cadena estacionaria compartida)
-salen de ``notebooks/15_sinteticos_generadores`` (§5 y §6); si difieren, manda
+salen de ``notebooks/18_sinteticos_generadores`` (§5 y §6); si difieren, manda
 el notebook.
 
 Formulacion ("siguiente bloque")

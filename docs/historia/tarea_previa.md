@@ -8,10 +8,10 @@
 
 | Limitación del detector de la tarea (§7) | Dónde se abordó en la Fase 1 |
 |---|---|
-| 1. Solo 2 estados | **Abierta:** el conjunto de estados lo fija el detector final (futura ADR-006, notebook `19_decision_final`); hipótesis de trabajo calma / alerta / crisis |
+| 1. Solo 2 estados | **Abierta:** el conjunto de estados lo fija el detector final (futura ADR-006, notebook `22_decision_final`); hipótesis de trabajo calma / alerta / crisis |
 | 2. Ciego a crisis rápidas (2013, 2018) | El banco las incluye como eventos y trampas de falso positivo (`configs/benchmark_spec.yaml`); el ranking por detección por evento (ADR-003) mide si cada detector las ve |
 | 3. Etiquetado post-hoc por umbral | Las etiquetas de crisis son un catálogo externo usado solo para evaluar, nunca como feature (rol `validation` de `configs/catalog.yaml`) |
-| 4. Look-ahead / entrenamiento in-sample | Evaluación walk-forward sin ver el futuro (notebook `04_protocolo_evaluacion`, `regimenes.evaluacion`); ADR-003 |
+| 4. Look-ahead / entrenamiento in-sample | Evaluación walk-forward sin ver el futuro (notebook `05_protocolo_evaluacion`, `regimenes.evaluacion`); ADR-003 |
 | 5. Emisiones gaussianas | Otras familias de detectores (Markov-Switching, GARCH, cambio de punto, redes) en [`docs/fase1/`](../fase1/README.md) |
 | 6. Z-score con toda la muestra | Features causales (expanding/rolling) y lags de publicación (`regimenes.features`, ADR-003) |
 | 7. `startprob_` degenerado | Detalle del HMM de la tarea; los detectores del repositorio parten de su propia inicialización (ver [`docs/fase1/`](../fase1/README.md#índice-de-detectores-por-familia)) |

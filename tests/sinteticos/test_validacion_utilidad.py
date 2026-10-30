@@ -174,7 +174,7 @@ def test_pista_a_real_bootstrap_d01() -> None:
     try:
         trays = persistencia.cargar_trayectorias("bootstrap_regimen", "A")
     except FileNotFoundError:
-        pytest.skip("faltan las trayectorias de bootstrap_regimen (notebook 15)")
+        pytest.skip("faltan las trayectorias de bootstrap_regimen (notebook 18)")
     panel, reg = datos.cargar_entrenamiento("A", "2006-12-31")
     out = utilidad_tstr(panel.assign(regime=reg), trays, "D01", pista="A", n_trayectorias=2,
                         n_sims_nulo=50)

@@ -12,7 +12,7 @@
 # versiones de numpy, pandas, scipy, scikit-learn, hmmlearn, arch, torch y jumpmodels; si
 # cualquiera cambia, todas las entradas de caché del benchmark quedan invalidadas.
 # El resto (statsmodels, pyarrow, pydantic, matplotlib, seaborn) se fija para no alterar los
-# notebooks 00–20 ni la lectura de los parquet existentes.
+# notebooks 00–23 ni la lectura de los parquet existentes.
 # yfinance se mantiene en 0.2.66 a propósito: es la versión con la que se descargó y validó
 # el corpus de precios de la Fase 1.
 #

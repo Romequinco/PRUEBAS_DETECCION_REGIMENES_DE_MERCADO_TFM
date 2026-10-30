@@ -10,7 +10,7 @@
 #   make datos                      verifica data/raw sin red (DESCARGAR=1 descarga lo que falte)
 #   make features                   regenera data/processed ejecutando notebooks/03_preprocesado
 #   make benchmark JOBS=4           benchmark completo pistas A y B (cache verificada)
-#   make notebooks                  ejecuta los notebooks 00-14 en orden
+#   make notebooks                  ejecuta los notebooks 00-16 en orden
 #   make test / make test-rapido    tests completos / sin datos ni resultados locales
 #   make limpiar                    borra caches de Python/pytest/ruff (nunca datos ni resultados)
 #
@@ -31,7 +31,7 @@ NB_DIR      := notebooks
 # ejecutan a mano con EJECUTAR=False. 17 (laboratorio) esta hecho y se ejecuta con su CLI
 # (python -m regimenes.sinteticos.laboratorio). 18..20 (aumento, decision final, pseudolive)
 # son esqueletos.
-NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-4]_*.ipynb))
+NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb
 NBCONVERT   := $(PY) -m jupyter nbconvert --to notebook --execute --inplace \
                --ExecutePreprocessor.timeout=$(NB_TIMEOUT)
@@ -67,7 +67,7 @@ features: ## Regenera data/processed (paneles pista A/B) ejecutando notebooks/03
 benchmark: ## Benchmark walk-forward pistas A y B con JOBS procesos (DETECTOR="D04 D08" para un subconjunto)
 	$(PY) -m regimenes.benchmark --track A B --jobs $(JOBS) $(DETECTOR_FLAGS)
 
-notebooks: ## Ejecuta en orden los notebooks 00-14 con nbconvert (in-place, NB_TIMEOUT s por celda)
+notebooks: ## Ejecuta en orden los notebooks 00-16 con nbconvert (in-place, NB_TIMEOUT s por celda)
 	@$(PY) -c "import sys; nbs=sys.argv[1:]; print(f'{len(nbs)} notebooks:', *nbs, sep='\n  ')" $(NOTEBOOKS)
 	@for nb in $(NOTEBOOKS); do \
 		echo ">> $$nb"; \

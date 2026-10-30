@@ -1041,7 +1041,7 @@ D4 (2 estados, crisis ancha): **no es que D8 detecte peor, es que su "crisis" es
 cola extrema**. Hay que leer su fila del master con esta lente (la comparación justa de
 "estrés" sería corrección+crisis).
 
-*(Lectura v1. En v2 este matiz depende de la pista: en la pista A el estado de crisis OOS de D8 es el más poblado y no una cola estrecha; en la B sí es estrecho. Ver `notebooks/07_familia_F3_hmm.ipynb` §1.3 y §4.6. El taper de 2013 es en v2 una trampa: no activarse en él es correcto, no un punto ciego.)*
+*(Lectura v1. En v2 este matiz depende de la pista: en la pista A el estado de crisis OOS de D8 es el más poblado y no una cola estrecha; en la B sí es estrecho. Ver `notebooks/08_familia_F3_hmm.ipynb` §1.3 y §4.6. El taper de 2013 es en v2 una trampa: no activarse en él es correcto, no un punto ciego.)*
 
 **¿Captó 2013/2018?** Activación del estado crisis: 2013 = **0%**, 2018 = 3.4%
 (corrección+crisis: 2013 = 0%, 2018 = 81%). Es decir, capta 2018 como corrección pero

@@ -4,7 +4,7 @@ Por que existe: el CVAE y la CGAN resuelven el mismo problema ("siguiente
 bloque": ``p(bloque | contexto, regimen por dia)``) y solo difieren en la red y
 en la perdida. Todo lo que ocurre ANTES de la red (como se representan el
 bloque y la condicion) y el muestreo de lotes debe ser identico en los dos para
-que la comparacion de los notebooks 16-18 mida el modelo y no el preprocesado.
+que la comparacion de los notebooks 19-21 mida el modelo y no el preprocesado.
 No define ningun generador: solo ``PreparadorBloques``, el muestreo equilibrado
 de lotes, un constructor de MLP y dos diagnosticos de dispersion.
 

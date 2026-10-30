@@ -85,7 +85,7 @@ verosimilitud. Una fila por epoca (una pasada del critico por los bloques):
 
 Convergencia aqui significa: ``wasserstein`` en meseta, penalizacion pequena,
 ``cociente_dispersion`` cerca de 1 y ``diversidad_z`` claramente positiva. Aun
-asi, el veredicto lo dan las metricas externas de los notebooks 16-18, no esta
+asi, el veredicto lo dan las metricas externas de los notebooks 19-21, no esta
 curva.
 
 Referencias

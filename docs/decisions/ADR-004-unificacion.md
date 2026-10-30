@@ -3,10 +3,14 @@
 - **Estado:** Aceptada · 2026-09-29 (decisión del usuario).
 - **Revisión posterior (2026-10-06):** [ADR-005](ADR-005-reencuadre-tfm-multiagente.md) corrige §2:
   «todo el TFM vive en `regimenes`» pasa a ser «`regimenes` es el código de la **Fase 1** (régimen) del TFM».
-  Estado actual de lo que §3 llamaba esqueletos: los notebooks 15–17 están **hechos** (`configs/sinteticos.yaml`
+  Estado actual de lo que §3 llamaba esqueletos: los notebooks 15–17 (hoy 18–20) están **hechos** (`configs/sinteticos.yaml`
   y la validación F8 completos; subpaquetes de `regimenes.sinteticos`: `parametricos`, `neuronales`,
-  `validacion` y `laboratorio`); el 18 se mantiene y los 19 (`decision_final`) y 20 (`pseudolive`) son el cierre
+  `validacion` y `laboratorio`); el 18 (hoy 21) se mantiene y los 19 (`decision_final`, hoy 22) y 20 (`pseudolive`, hoy 23) son el cierre
   de la Fase 1: la señal de régimen que consumirán los agentes, no «el sistema final del TFM».
+- **Revisión posterior (2026-10-30):** los notebooks se renumeran al esquema 00–23 (`git mv`): entran
+  `04_termometros`, `13_familia_F8_supervisado` y `17_fusion_online`, y los demás se desplazan. Los nombres
+  y la tabla de notebooks de este ADR usan la numeración nueva; los números sueltos de §2–§3 describen el
+  esquema 00–20 de entonces.
 - **Revisión posterior (2026-10-14):** [ADR-007](ADR-007-fase2-ingesta-y-docs.md) sustituye el árbol de `docs/` de
   §2 (punto 4) y §3; la estructura vigente está en el índice [`docs/README.md`](../README.md).
 - **Revierte:** [ADR-001](ADR-001-rebase-datos.md) §7, último punto (*"Capa 1 se mantiene intacta"*),
@@ -114,12 +118,12 @@ Todo el TFM vive en **un repositorio plano y un paquete instalable**, `regimenes
 | Nº | Notebook | Contenido |
 |---|---|---|
 | 00–03 | `00_descarga` · `01_eda` · `02_diseno_preprocesado` · `03_preprocesado` | datos, EDA y paneles causales por pista |
-| 04 | `04_protocolo_evaluacion` | walk-forward, gate/preflight, caché, CLI paralela |
-| 05–11 | `05_familia_F1_reglas` … `11_familia_F7_deep` | una familia cada uno (D01–D13) |
-| 12 | `12_comparativa` | scorecards y ranking por pista |
-| 13–14 | `13_fusion_d07_d08` · `14_fusion_d02_d06` | alerta + confirmación |
-| 15–18 | `15_sinteticos_generadores` · `16_sinteticos_validacion` · `17_sinteticos_laboratorio` · `18_sinteticos_aumento` | fase de datos sintéticos (esqueletos) |
-| 19–20 | `19_decision_final` · `20_pseudolive` | sistema a congelar y prueba pseudolive (esqueletos) |
+| 05 | `05_protocolo_evaluacion` | walk-forward, gate/preflight, caché, CLI paralela |
+| 06–12 | `06_familia_F1_reglas` … `12_familia_F7_deep` | una familia cada uno (D01–D13) |
+| 14 | `14_comparativa` | scorecards y ranking por pista |
+| 15–16 | `15_fusion_d07_d08` · `16_fusion_d02_d06` | alerta + confirmación |
+| 18–21 | `18_sinteticos_generadores` · `19_sinteticos_validacion` · `20_sinteticos_laboratorio` · `21_sinteticos_aumento` | fase de datos sintéticos (esqueletos) |
+| 22–23 | `22_decision_final` · `23_pseudolive` | sistema a congelar y prueba pseudolive (esqueletos) |
 
 **Plantilla de notebook de familia (05–11):** título y resumen · teoría de la familia (de
 `docs/teoria/` y las fichas de detector; hoy `docs/fase1/F1…F7`) · configuración generada desde

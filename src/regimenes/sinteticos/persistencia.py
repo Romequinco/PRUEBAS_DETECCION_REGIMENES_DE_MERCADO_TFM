@@ -1,6 +1,6 @@
 """Persistencia de trayectorias y fichas de ajuste de los generadores.
 
-Por que existe: los notebooks 16-18 consumen las trayectorias generadas en el 15
+Por que existe: los notebooks 19-21 consumen las trayectorias generadas en el 18
 sin volver a ajustar nada, asi que el formato en disco es parte del contrato:
 
 - Trayectorias: UN parquet "largo" por generador y pista en
@@ -79,7 +79,7 @@ def cargar_trayectorias(nombre: str, pista: str, base: Path | None = None) -> li
     """Lee las trayectorias de un generador como lista de DataFrames."""
     origen = dir_trayectorias(nombre, pista, base) / FICHERO_TRAYECTORIAS
     if not origen.exists():
-        raise FileNotFoundError(f"No existe {origen}; ejecuta antes 15_sinteticos_generadores.")
+        raise FileNotFoundError(f"No existe {origen}; ejecuta antes 18_sinteticos_generadores.")
     return largo_a_trayectorias(pd.read_parquet(origen))
 
 

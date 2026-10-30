@@ -67,7 +67,7 @@ Que reproduce y que no (pista A hasta 2006, 50 x 2520, semilla 42)
 -----------------------------------------------------------------
 (Cifras del humo de desarrollo, no las vigentes: las del muestreo de
 ``configs/sinteticos.yaml`` (100 x 2520, cadena estacionaria compartida) salen de
-``notebooks/15_sinteticos_generadores`` y quedan en
+``notebooks/18_sinteticos_generadores`` y quedan en
 ``results/sinteticos/generadores/sanidad_generadores.csv``; si difieren, manda el notebook.)
 
 Reproduce: desviacion por columna y regimen (0,78-1,20 en las seis columnas de

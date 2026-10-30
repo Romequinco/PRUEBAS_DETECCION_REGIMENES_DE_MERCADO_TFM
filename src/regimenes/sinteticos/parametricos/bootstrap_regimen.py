@@ -39,7 +39,7 @@ Que reproduce
 - La dependencia temporal dentro de cada bloque (autocorrelacion, agrupamiento
   de volatilidad, escalones de las columnas mensuales) hasta el orden del bloque.
 
-Que no reproduce (limites, a documentar en los notebooks 16-18)
+Que no reproduce (limites, a documentar en los notebooks 19-21)
 ---------------------------------------------------------------
 - NO crea dias nuevos: solo recombina. El soporte de lo generado es el de train;
   nunca sale un dia peor que el peor dia observado. Como fuente de escenarios

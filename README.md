@@ -59,11 +59,11 @@ los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. 
 | `regimenes.benchmark` | ejecución reanudable y paralela con caché validada por huella (`ejecucion`, `cache`, `cli`) · `python -m regimenes.benchmark` |
 | `regimenes.fusion` | máquina causal normal / vigilancia / confirmado (alerta + confirmador) |
 | `regimenes.viz` | estilo de casa para figuras (franjas de crisis, paneles de estados) |
-| `regimenes.informes` | utilidades comunes de los notebooks de familia 05–11: carga verificada de resultados (`cargar_resultados_familia`), tablas de configuración/cobertura y figuras de estados OOS |
+| `regimenes.informes` | utilidades comunes de los notebooks de familia 06–12: carga verificada de resultados (`cargar_resultados_familia`), tablas de configuración/cobertura y figuras de estados OOS |
 | `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion/` (notebook 16): un módulo por dimensión (`fidelidad`, `discriminador`, `memorizacion`, `utilidad` TSTR/TRTR y `veredicto` por niveles) con umbrales fijados a priori y cambios de reglas y niveles declarados y fechados en `configs/sinteticos.yaml`; `laboratorio/` (notebook 17): `escenarios` (rejilla, secuencias impuestas, intensidad), `metricas` (ADR-003 + retraso), `ejecucion` (paralela, reanudable, caché por huella; CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
 
 Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` → `fusion` → (`sinteticos`, pseudolive);
-`informes` solo lee resultados para los notebooks 05–11.
+`informes` solo lee resultados para los notebooks 06–12.
 
 ## Mapa del repo
 
@@ -74,7 +74,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── src/regimenes/      el paquete (tabla de arriba)
 ├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
 ├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos) · ingesta/ (Fase 2)
-├── notebooks/          00–20, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
+├── notebooks/          00–23, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
@@ -85,11 +85,11 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
                     fase2/ (reglas, plan de datos) · historia/ (Capa 1, fichas v1, tarea previa)
 ```
 
-## Notebooks 00–20
+## Notebooks 00–23
 
 Son el pipeline de la Fase 1, en `notebooks/` (planos y numerados). La tabla notebook a notebook, la plantilla
 común de los notebooks de familia y el **orden de ejecución** están en
-[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0020).
+[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0023).
 
 ## Las dos pistas de datos (ADR-001, ventanas reajustadas por ADR-002)
 
@@ -116,7 +116,7 @@ Ranking de **detección** por pista: `score_deteccion` = F1 entre precisión dia
 base (tasa base = precisión de marcar siempre crisis); definiciones de todas las columnas en el
 [GLOSARIO](docs/GLOSARIO.md#términos-del-ranking-columnas-de-ranking_v2csv--metrics_master_v2csv). Valores de
 [`results/benchmark/ranking_v2.csv`](results/benchmark/ranking_v2.csv) (versionado; benchmark completo
-24/24 con caché verificada); el ranking lo recalcula [`12_comparativa`](notebooks/12_comparativa.ipynb),
+24/24 con caché verificada); el ranking lo recalcula [`14_comparativa`](notebooks/14_comparativa.ipynb),
 que escribe el `ranking*.csv` que leen los notebooks de familia.
 
 **Pista A** (17 crisis evaluadas OOS, tasa base de días de crisis 0.194)
@@ -149,9 +149,9 @@ la complejidad (D11, D12) sigue sin pagarse, como ya indicaba la Capa 1.
 **Fusión (Fase E).** D2 alerta + D6 confirma mejora a D2 y a D6 aislados en ambas pistas, pero **no
 anticipa** el inicio de las crisis; D2 y D7 quedan prácticamente empatados como alerta y el control por
 mitades elige otras alertas. La capa de alerta no añade anticipación: la regla a congelar se decide
-en `19_decision_final` (futura ADR-006) antes del pseudolive (detalle en [`14_fusion_d02_d06`](notebooks/14_fusion_d02_d06.ipynb)).
+en `22_decision_final` (futura ADR-006) antes del pseudolive (detalle en [`16_fusion_d02_d06`](notebooks/16_fusion_d02_d06.ipynb)).
 
-**Laboratorio con régimen conocido (notebook 17).** Simulación controlada con `gaussiano_regimen`,
+**Laboratorio con régimen conocido (notebook 20).** Simulación controlada con `gaussiano_regimen`,
 `var_regimen` y `garch_regimen` (18 celdas por pista, 4356 trabajos), resultados en
 `results/sinteticos/laboratorio/`. H1 (recuperación) se cumple: 92 % en A y 100 % en B. H2: el score baja
 al acortar y atenuar la crisis (en parte por prevalencia; el recall por evento cae de 0,86 a 0,54 en A).
@@ -174,22 +174,22 @@ make help                          # lista los objetivos del Makefile (GNU Make;
 | Benchmark (12 detectores × 2 pistas) → `results/benchmark/` | `make benchmark JOBS=4` | `python -m regimenes.benchmark --track A B --jobs 4` (≈7,4 h de cómputo en serie²) |
 | Subconjunto de detectores | `make benchmark DETECTOR="D04 D08"` | `python -m regimenes.benchmark --track A B --detector D04 D08` (con `--jobs 1`, cerrar con `--consolidate`) |
 | Verificar caché sin reajustar | — | `python -m regimenes.benchmark --track A B --cache-only` |
-| Ejecutar los notebooks 00–14 en orden | `make notebooks` | `python -m jupyter nbconvert --to notebook --execute --inplace notebooks/NN_*.ipynb` |
+| Ejecutar los notebooks 00–16 en orden | `make notebooks` | `python -m jupyter nbconvert --to notebook --execute --inplace notebooks/NN_*.ipynb` |
 | Tests | `make test` · `make test-rapido` (sin datos ni resultados locales) | `python -m pytest` |
 
 ² Suma de `elapsed_seconds` de `results/benchmark/ranking_v2.csv`: ≈6,6 h en A y ≈0,8 h en B; solo
 D04-A tarda ≈1,8 h, que es el mínimo con cualquier número de procesos (con 9 procesos, ≈2 h).
 
 Qué comprueba cada notebook sobre la caché, en qué orden se ejecutan tras un benchmark nuevo y cómo se
-ejecutan los de sintéticos (15–17): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
+ejecutan los de sintéticos (18–20): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
 
 ## Estado del proyecto
 
 El estado de las cinco fases del TFM está en [`docs/tfm/README.md`](docs/tfm/README.md#3-plan-de-trabajo-cinco-fases-y-su-estado)
 y el de las sub-fases internas de la Fase 1 (Capa 1, 1–4, D, E, S, F), en
 [`docs/fase1/README.md`](docs/fase1/README.md#estado-de-las-sub-fases). En una línea: la Fase 1 tiene hechos
-datos, preprocesado, benchmark, fusiones y sintéticos (notebooks 00–17) y le faltan el aumento (18), la decisión
-final (19) y el pseudolive (20); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
+datos, preprocesado, benchmark, fusiones y sintéticos (notebooks 00–20) y le faltan el aumento (21), la decisión
+final (22) y el pseudolive (23); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
 
 Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
 `capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).

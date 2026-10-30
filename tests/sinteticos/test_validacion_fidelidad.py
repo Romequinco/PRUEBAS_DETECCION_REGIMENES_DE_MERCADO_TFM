@@ -1,4 +1,4 @@
-"""Tests de ``regimenes.sinteticos.validacion.fidelidad`` (notebook 16).
+"""Tests de ``regimenes.sinteticos.validacion.fidelidad`` (notebook 19).
 
 Casos con respuesta conocida sobre paneles de juguete: el real contra si mismo
 cae en banda, una escala doble da cociente ~2 fuera de banda, el ruido i.i.d.
@@ -216,7 +216,7 @@ def test_persistentes_y_escalones() -> None:
 def test_ewma_causal_y_curtosis_condicional_de_la_normal() -> None:
     # ruido normal de varianza constante: z = r / sigma_EWMA tiene curtosis ~3,2 (algo
     # mas que 3 por el error de estimar sigma con ~30 dias efectivos: referencia de
-    # "sin cola condicional" en la lectura del notebook 16)
+    # "sin cola condicional" en la lectura del notebook 19)
     largo = np.random.default_rng(1).standard_normal(100_000)
     assert 3.0 < F._curtosis(F._z_ewma(largo)) < 3.4
     r = np.random.default_rng(0).standard_normal(300)
@@ -300,7 +300,7 @@ def test_pista_a_real_bootstrap_regimen() -> None:
     try:
         trays = persistencia.cargar_trayectorias("bootstrap_regimen", "A")
     except FileNotFoundError:
-        pytest.skip("faltan las trayectorias de bootstrap_regimen (notebook 15)")
+        pytest.skip("faltan las trayectorias de bootstrap_regimen (notebook 18)")
     panel, reg = datos.cargar_entrenamiento("A", cfg["fin_train"], cfg["features"])
     trays = trays[:30]
 

@@ -120,7 +120,7 @@ Salvaguardas de simulacion (declaradas y contadas)
   drawdown -0,9): NO son las del muestreo del proyecto. Con la cadena compartida
   de ``configs/sinteticos.yaml`` los cocientes, los recortes y el porcentaje de
   trayectorias que superan el peor drawdown REAL (otra vara de medir, mucho mas
-  exigente que -0,9) salen de ``notebooks/15_sinteticos_generadores`` §4.5 y §6.
+  exigente que -0,9) salen de ``notebooks/18_sinteticos_generadores`` §4.5 y §6.
 - **Techo de nivel**: cada columna se acota por ``techo_nivel`` veces su maximo
   absoluto de train (el mercado tambien).
 

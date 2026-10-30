@@ -4,7 +4,7 @@ Pregunta: un detector del benchmark ajustado SOLO con trayectorias sinteticas,
 detecta las crisis reales igual de bien que ajustado con el real?
 
 Protocolo (todo dentro del **tramo real de entrenamiento**, ``<= fin_train``;
-lo posterior queda reservado a los notebooks 17-20):
+lo posterior queda reservado a los notebooks 20-23):
 
 - **TRTR** (referencia, :func:`referencia_trtr`): ``walk_forward`` del detector
   sobre el real de train con el protocolo del benchmark (``train_size`` =

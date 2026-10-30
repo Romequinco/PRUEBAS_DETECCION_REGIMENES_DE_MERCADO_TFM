@@ -2,7 +2,7 @@
 
 > Definiciones **echadas a tierra** de los términos que gobiernan todo el repositorio. Es la **fuente
 > única** de definiciones: los notebooks y el resto de documentos enlazan aquí en vez de redefinir.
-> Solo contiene términos. El pipeline de notebooks `00`–`20`, el orden de ejecución y el mapa del código y de
+> Solo contiene términos. El pipeline de notebooks `00`–`23`, el orden de ejecución y el mapa del código y de
 > las rutas están en [`fase1/README.md`](fase1/README.md); la visión del TFM, en [`tfm/README.md`](tfm/README.md);
 > el índice de la documentación, en [`README.md`](README.md).
 
@@ -23,7 +23,7 @@ Visión del sistema y estado de cada fase: [`tfm/README.md`](tfm/README.md). Enc
 | **`fecha_publicacion`** | día en que un dato o documento se hizo público (no el del hecho); el campo que filtra el TimeGate. Su contrapartida es `fecha_referencia`, el periodo al que se refiere |
 | **vintage** | versión de un dato tal como se publicó en una fecha (p. ej. ALFRED guarda cada revisión del empleo de EE. UU.); permite leer una serie revisable como se conocía en el pasado |
 | **RAG base / cajón** | los dos índices de cada agente: la **base** es fija y se prepara antes del backtest; el **cajón** se llena con lo que traen sus tools y persiste entre ejecuciones ([`fase2/plan_datos.md`](fase2/plan_datos.md)) |
-| **`get_regimen(fecha)`** | tool de salida de la Fase 1: estado, probabilidad y días en el estado, con solo información publicada hasta `fecha`. Los estados los fija el detector final (notebook 19, futura ADR-006); **equivalencia provisional**: calma / alerta / crisis ↔ normal / vigilancia / confirmado de `regimenes.fusion` |
+| **`get_regimen(fecha)`** | tool de salida de la Fase 1: estado, probabilidad y días en el estado, con solo información publicada hasta `fecha`. Los estados los fija el detector final (notebook 22, futura ADR-006); **equivalencia provisional**: calma / alerta / crisis ↔ normal / vigilancia / confirmado de `regimenes.fusion` |
 | **investment memo** | informe final del CIO Agent con la decisión de cartera, su justificación y citas a las fuentes |
 | **perfil de cliente** | formulario (idea: cuestionario de idoneidad tipo MiFID II, diseño abierto) cuyas respuestas son los **límites** del CIO Agent. Ver [`tfm/cliente_y_carteras.md`](tfm/cliente_y_carteras.md) |
 | **cartera con límites / en bruto** | las dos carteras por decisión: la que respeta los límites del perfil del cliente y la que recomiendan los agentes sin ellos (qué restricciones conserva, por decidir) |
@@ -50,7 +50,7 @@ designa fases del TFM**; las demás listas numeradas usan otra letra (última ta
 | **Fase 1–5 del TFM** | `tfm/`, `fase1/`, `fase2/`, ADR-005 y ADR-007 | las cinco fases del sistema multi-agente; **Fase 2** = ingesta, RAG y tools (`src/ingesta`) |
 | **FASE 0–5 de la Capa 1** (en mayúsculas) | documentos heredados de la Capa 1: fichas de familia, narrativa v1 de los detectores, estado del arte v1 | etapas de la primera vuelta ([`historia/capa1`](historia/capa1/README.md) §1): 0 estructura y evaluador · 1 datos y EDA · **2 estado del arte** · 3 implementación de los 12 detectores · 4 síntesis comparativa · 5 pulido |
 | **fases 1–4 del re-base de datos** | [ADR-001](decisions/ADR-001-rebase-datos.md) §6 | 1 reorganización · 2 datos (estado del arte y descarga) · 3 EDA y banco congelado · 4 preprocesado |
-| **sub-fases D, E, S, F** | notebooks `04`–`20`, [`fase1/README.md`](fase1/README.md) | detectores, fusión, sintéticos y cierre de la Fase 1 |
+| **sub-fases D, E, S, F** | notebooks `04`–`23`, [`fase1/README.md`](fase1/README.md) | detectores, fusión, sintéticos y cierre de la Fase 1 |
 | **P1–P5** | [`estado_del_arte/`](estado_del_arte/README.md): dossier, `obras.csv` (`relevancia_fase`), `fichas.json` y notas de `references.bib` | alias de las Fases 1–5 del TFM, para no chocar con las familias F1–F7 ni con la sub-fase F: P1 régimen · P2 ingesta, RAG y tools · P3 agentes · P4 cartera y memo · P5 evaluación y backtest |
 
 Otras listas numeradas que no son fases:
@@ -142,7 +142,7 @@ Hay que distinguir dos niveles:
   por niveles (precisión que no supera al azar, parpadeo, salida degenerada).
 - **`rank_medio`** (legacy) estaba sesgado hacia la inactividad: la línea base "siempre crisis"
   quedaba 4ª en ambas pistas con el banco previo a ADR-003
-  y 5ª en ambas con el banco re-ejecutado (`12_comparativa` §8). Se conserva solo como columna de
+  y 5ª en ambas con el banco re-ejecutado (`14_comparativa` §8). Se conserva solo como columna de
   comparación (`rank_medio_legacy`, `puesto_legacy`).
 - **Crisis "en ventana" ≠ "evaluadas OOS"**: 18/10 en ventana; 17 (una parcial) / 9 evaluadas OOS.
 - **Utilidad operativa** (fusión): solo sirve para **ordenar** alternativas; su signo no se interpreta.
@@ -164,13 +164,13 @@ Hay que distinguir dos niveles:
 | **duración media de régimen** | `mean_regime_duration` | días OOS / nº de episodios; < 5 sesiones = parpadeo (nivel 2) |
 | **estabilidad de etiqueta** | `label_stability` | para cada fecha re-etiquetada en varios *refits* del walk-forward, fracción de acuerdo con la etiqueta más frecuente; media en [0, 1] (1 = la etiqueta no "baila" al añadir datos). Segundo desempate |
 | **puesto legacy** | `rank_medio_legacy`, `puesto_legacy` | puesto por el criterio anterior a ADR-003 (media de ranks de 5 ejes), recalculado sobre los resultados actuales solo para trazar el cambio |
-| **Pareto** | — | frontera de Pareto recall por evento / precisión: detectores a los que ningún otro supera en ambos ejes a la vez. Vista complementaria del ranking (`12_comparativa` §4), sin ganador único |
+| **Pareto** | — | frontera de Pareto recall por evento / precisión: detectores a los que ningún otro supera en ambos ejes a la vez. Vista complementaria del ranking (`14_comparativa` §4), sin ganador único |
 
 **Gate / preflight.** *Gate* = comprobación bloqueante: si falla, el notebook se detiene en vez de
 seguir con datos parciales (gates de causalidad y de paneles en `03_preprocesado`; gate de
-comparabilidad de `12_comparativa` §2: mismo intervalo OOS por pista, sin duplicados, trazable a la
+comparabilidad de `14_comparativa` §2: mismo intervalo OOS por pista, sin duplicados, trazable a la
 ejecución). *Preflight* = el gate previo al benchmark (`regimenes.benchmark.preflight`,
-`04_protocolo_evaluacion` §6): comprueba paneles, columnas y dependencias opcionales **sin ajustar
+`05_protocolo_evaluacion` §6): comprueba paneles, columnas y dependencias opcionales **sin ajustar
 ningún modelo**.
 
 ## Núcleo y features por detector
@@ -220,10 +220,10 @@ Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
 | **TSTR / TRTR** | *train on synthetic, test on real* / *train on real, test on real*: un detector ajustado en una trayectoria sintética (TSTR) o en el real (TRTR) y evaluado en los mismos días fuera de muestra del tramo real de entrenamiento con `score_deteccion` (ADR-003). La referencia es el TRTR walk-forward; el **TRTR fijo** (un solo ajuste con todo el real) separa el efecto de los datos del del protocolo. En el notebook 16 es **informativo**: los detectores son no supervisados (mide si la ley marginal permite calibrarlos, no si el sintético transmite la señal de crisis) y un control negativo de filas reales i.i.d. aprueba la regla en la pista A (en la B la suspende, pero con 3 crisis evaluables el TSTR de B tampoco tiene potencia) |
 | **discriminador (C2ST)** | *classifier two-sample test*: AUC fuera de pliegue de un clasificador que separa ventanas reales de sintéticas (0,5 = indistinguibles). En el veredicto, AUC global con todas las columnas; en crisis solo se lee el orden. Un AUC por debajo de 0,5 es un **indicio de copia**, no de fidelidad (`validacion.discriminador`) |
 | **memorización (cociente NN)** | mediana de la distancia de cada día sintético a su vecino real más cercano dividida por la mediana de la distancia real–real (excluidos los vecinos a menos de 21 sesiones), con el índice de vecindad real **íntegro** y en el espacio de las columnas **modeladas**. Cerca de 1 = días nuevos; bajo = copia o infradispersión (`validacion.memorizacion`) |
-| **apto para laboratorio** (`apto_laboratorio`) | nivel del veredicto del notebook 16: pasa fidelidad marginal, de dependencia, condicionamiento y discriminador; el generador sirve para el laboratorio con verdad de régimen (notebook 17) |
+| **apto para laboratorio** (`apto_laboratorio`) | nivel del veredicto del notebook 19: pasa fidelidad marginal, de dependencia, condicionamiento y discriminador; el generador sirve para el laboratorio con verdad de régimen (notebook 20) |
 | **laboratorio condicionado** (`laboratorio_condicionado`) | nivel declarado después de ver el veredicto: lo mismo que `apto_laboratorio` sin el discriminador. El 17 puede usar esos generadores **advirtiendo** que un clasificador los distingue del real |
-| **apto para aumento** (`apto_aumento`) | nivel del veredicto: pasa memorización y condicionamiento (igual en las dos pistas); el generador no copia el entrenamiento y lleva la señal de régimen (notebook 18) |
-| **simulación controlada** | uso del notebook 17: como ningún generador salió apto para laboratorio (16), los tres paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) se usan como **mundos de juguete** con verdad-terreno exacta, no como réplica del mercado |
+| **apto para aumento** (`apto_aumento`) | nivel del veredicto: pasa memorización y condicionamiento (igual en las dos pistas); el generador no copia el entrenamiento y lleva la señal de régimen (notebook 21) |
+| **simulación controlada** | uso del notebook 20: como ningún generador salió apto para laboratorio (19), los tres paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) se usan como **mundos de juguete** con verdad-terreno exacta, no como réplica del mercado |
 | **intensidad λ** | factor con el que el laboratorio acerca la ley de las filas de crisis a la de calma (`escenarios.atenuar`): λ = 1 deja la trayectoria tal cual, λ = 0 elimina la diferencia entre regímenes |
 | **H1–H4** | hipótesis pre-registradas del laboratorio: H1 recuperación (los detectores reconocen la crisis en la celda fácil), H2 degradación (el score baja al acortar y atenuar la crisis), H3 concordancia con el ranking de ADR-003 sobre datos reales, H4 circularidad (un detector no gana más en el mundo generado por su propia familia) |
 | **circularidad** | ventaja de un detector «de casa» sobre trayectorias generadas por un modelo de su misma familia (p. ej. D03 GMM con `gaussiano_regimen`); es la razón de que el régimen de referencia nunca salga de un detector |
