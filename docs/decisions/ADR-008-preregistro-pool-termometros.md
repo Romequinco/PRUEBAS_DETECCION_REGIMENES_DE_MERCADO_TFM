@@ -77,6 +77,8 @@ D16 logit L1, D17 random forest, D18 sparse jump model.
 
 ## 4. Vara de medir
 
+- *Revisado el 02-11-2026 en el [ADR-009](ADR-009-resultados-pool.md) §6: tras el veredicto del §8, el ranking
+  principal pasa al menú N (desviación declarada).*
 - **Ranking principal v3:** el del **menú T** (los seis multivariantes no supervisados, D02, D03, D04, D08, D09 y
   D10, ven exactamente los mismos datos; D16 y D17 van en su categoría supervisada). Además, un MCS dentro de cada
   menú.

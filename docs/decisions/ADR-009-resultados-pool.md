@@ -1,7 +1,7 @@
 # ADR-009 — Resultados del pool de termómetros: ablaciones, controles y decisión sobre el menú T
 
-- **Estado:** Propuesto · 2026-11-02. Resultados de 2.5 completos: 1.338 trabajos, 0 errores, ejecutados el
-  02-11-2026 de 14:48 a 21:56. Falta la decisión del §6, que toma el usuario.
+- **Estado:** Aceptado · 2026-11-02. Resultados de 2.5 completos: 1.338 trabajos, 0 errores, ejecutados el
+  02-11-2026 de 14:48 a 21:56. Decisión del §6: opción 1, descartar el menú T.
 - **Origen:** plan de [`PendientesOscar.md`](../../PendientesOscar.md) §6.8, punto 2.5 (ablaciones y controles de
   §6.5, puntos 4–6; el 4, relevancia, ya está en la sección 10 del notebook 04).
 - **Completa:** [ADR-008](ADR-008-preregistro-pool-termometros.md), el pre-registro. No cambia sus bloques, anclas,
@@ -174,7 +174,7 @@ no se separa de `VOL_P90`.
 
 ## 6. Decisión sobre el menú T
 
-**Pendiente del usuario.** Opciones definidas antes de ver los resultados:
+Opciones definidas antes de ver los resultados:
 
 1. **Descartar el menú T.** El ranking v3 se queda con el menú N (y U, P y R donde apliquen). El menú T se reporta
    como resultado negativo pre-registrado: «con el pool completo, lo simple sigue ganando». Encaja si (b) no se
@@ -194,19 +194,27 @@ Cómo encajan los resultados con cada opción, según las reglas escritas arriba
   - la explicación es en parte estructural (T5 y T4).
 - **Opción 3.** Solo puede ser un anexo exploratorio.
 
-Decisión: **pendiente del usuario.**
+**Decisión (02-11-2026, usuario): opción 1, descartar el menú T.**
+
+- **El núcleo es N, y U para los univariantes.** El ranking principal v3 pasa del menú T al N.
+- **Es una desviación declarada del ADR-008 §4,** justificada por el veredicto del §8 y por los §4–5 de este ADR.
+- **T se publica como resultado negativo pre-registrado,** con su propio MCS, como ranking secundario.
+- **No se ejecuta la opción 3.**
+- **La pregunta «¿sirve el pool?» sigue abierta solo para el pool sin comprimir,** con los menús P y R (§7).
 
 ## 7. Consecuencias
 
-Dependen de la decisión del §6.
-
-- **Ranking v3 (2.7).** El ADR-008 §4 pre-registró el menú T como ranking principal v3.
-  - Con la opción 1, el ranking principal pasa al menú N. Hay que declararlo como desviación del pre-registro,
-    justificada por el veredicto del §8 y por este ADR. T se publica como ranking secundario y resultado negativo.
-  - Con la opción 2, el ranking principal sería T en B y N en A.
-- **D16 y D17.** Los supervisados usan los menús T y P (ADR-008 §3). Con las opciones 1 y 2 se mantienen en P y T
-  como categoría aparte, sin peso en el ranking principal. Su evaluación sigue siendo útil, porque responde si un
-  modelo supervisado saca partido de los termómetros.
+- **Ranking v3 (2.7).** El principal es el del menú N, con los univariantes en U, y se declara como desviación del
+  ADR-008 §4. El MCS dentro de cada menú se mantiene: N, U, P, R y, como secundario, T.
+- **Lo que queda de la Fase 2 responde una sola pregunta: ¿aporta algo el pool sin comprimir frente a N?**
+  - **D18, sparse jump model sobre P:** es la prueba principal, porque elige él mismo las columnas del pool.
+  - **D10 sobre P y R.**
+  - **D14, absorption ratio sobre R** (solo en B): es una idea distinta, no depende de T, y sigue igual.
+  - **D15, jump de Shu sobre U:** no depende del pool y sigue igual.
+- **D16 y D17.** Los supervisados se evalúan sobre todo en P. T queda solo como comparación barata, sin peso en el
+  ranking principal. Responden si un modelo con etiquetas saca partido del pool.
+- **`get_regimen` provisional, sintéticos del notebook 21 y XAI.** Se apoyan en N y U, como hasta ahora. Ya no hace
+  falta ampliar los generadores sintéticos al menú T (PendientesOscar §6.7): solo a P, y solo si P aporta.
 - **Memoria del TFM.** El resultado negativo es pre-registrado y se explica bien: comprimir el pool en
   termómetros por bloque no mejora a los mismos detectores con los datos de siempre. Tampoco supera repartir las
   columnas al azar en A, y la PCA no aporta sobre la media simple.

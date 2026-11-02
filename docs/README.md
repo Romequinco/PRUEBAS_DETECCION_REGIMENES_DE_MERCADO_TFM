@@ -46,8 +46,8 @@ docs/
   cada uno) y esta estructura de `docs/`.
 - [ADR-008](decisions/ADR-008-preregistro-pool-termometros.md) — pre-registro de los termómetros por bloque, los
   menús de datos, la vara de medir y los criterios del pool; veredicto: el pool no aporta.
-- [ADR-009](decisions/ADR-009-resultados-pool.md) — borrador: ablaciones y controles del menú T (punto 2.5) y
-  decisión sobre el menú T.
+- [ADR-009](decisions/ADR-009-resultados-pool.md) — ablaciones y controles del menú T (punto 2.5); decisión: descartar T, el
+  núcleo es N.
 
 ### `estado_del_arte/` — qué existe fuera del proyecto
 - [`estado_del_arte/README.md`](estado_del_arte/README.md) — índice de los tres documentos y de su catálogo.

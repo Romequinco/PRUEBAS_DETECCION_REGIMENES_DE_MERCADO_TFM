@@ -376,19 +376,34 @@ los menús T y P hay que ampliarlos al pool.
 - [x] **CP1.** Qué termómetros sobreviven y tabla MCS de los 12 (ADR-008 §8). Adelantado de la Fase 2: el cruce
   oficial N frente a T de los 6 multivariantes; el pool no cumple el §6 en la pista A.
 
-**Fase 2 · Detectores sobre el pool**
+**Fase 2 · ¿Aporta el pool sin comprimir?** (replanteada el 02-11-2026 tras el ADR-009: el menú T se descarta y
+el núcleo es N, con U para los univariantes)
 
-- [ ] 2.1 Matriz detector × menú (variantes en `registry.py`).
-- [ ] 2.2 D14 absorption ratio (B5, solo pista B).
-- [ ] 2.3 D15 jump Shu (B6) y D18 sparse JM (B9, con `jumpmodels.SparseJumpModel`).
-- [ ] 2.4 D16 logit L1 y D17 random forest (B7), entrenados solo con crisis terminadas.
-- [ ] 2.5 Ablaciones y controles (6.5, puntos 4–6; el 4 ya está en el notebook 04 §10). Diseño en la errata
-  del ADR-008 §5.1 (reajuste anual) y resultados en el ADR-009. Calculado el 02-11-2026 (1.338 trabajos, 0
-  errores): (b) no se cumple en A (percentil 83) y se cumple por poco en B (93); la media simple iguala o mejora a
-  la PCA. Falta la decisión sobre el menú T (ADR-009 §6).
+- [x] 2.5 Ablaciones y controles del menú T. Diseño en la errata del ADR-008 §5.1 y resultados en el ADR-009.
+  Calculado el 02-11-2026 (1.338 trabajos, 0 errores):
+  - (b) no se cumple en A (percentil 83) y en B se cumple por poco (93);
+  - la media simple iguala o mejora a la PCA.
+  - **Decisión: descartar T.** Queda como resultado negativo pre-registrado.
+- [ ] 2.1 Matriz detector × menú sin T en el ranking principal: N y U en el núcleo; P y R para las pruebas del pool;
+  T solo como secundario (variantes en `registry.py`).
+- [ ] 2.2 D14 absorption ratio sobre R (B5, solo pista B), con los parámetros de Kritzman.
+- [ ] 2.3 D18 sparse JM sobre P (B9, `jumpmodels.SparseJumpModel`) y D10 sobre P y R. Es la prueba principal de si
+  el pool crudo aporta. Además, D15 jump Shu sobre U (B6).
+- [ ] 2.4 D16 logit L1 y D17 random forest (B7) sobre P, entrenados solo con crisis terminadas. T queda solo
+  como comparación barata.
 - [ ] 2.6 C1 fusión online.
-- [ ] 2.7 Ranking v3, sintéticos rehechos, decisión final, memoria y ADR-010 de resultados.
-- [ ] **CP2.**
+- [ ] 2.7 Ranking v3 sobre N (desviación declarada del ADR-008 §4), MCS dentro de cada menú y ADR-010 de
+  resultados: «¿aporta P o R frente a N?».
+- [ ] **CP2.** Detector o detectores candidatos para `get_regimen` y veredicto final sobre el pool.
+
+**Fase 3 · Cierre**
+
+- [ ] 3.1 Integrar `feat/detectores-pool` en `main` (PR).
+- [ ] 3.2 `get_regimen` provisional con el candidato de CP2 (contrato para los agentes, ADR-005).
+- [ ] 3.3 Terminar los sintéticos (notebook 21, aumento). Los generadores solo se amplían a P si la 2.7 dice que P
+  aporta.
+- [ ] 3.4 Afinar el detector final, con XAI: atribución por variable de N y explicación de cada alarma.
+- [ ] 3.5 ADR-006, la decisión final del detector de régimen, y la memoria.
 
 Opcionales: A4 (ranking ajustado, el más caro) y B8 (BOCPD).
 
@@ -403,7 +418,8 @@ Opcionales: A4 (ranking ajustado, el más caro) y B8 (BOCPD).
 
 **Pendientes (con la recomendación entre paréntesis)**
 
-- [x] Ranking principal en el menú T (sí; MCS dentro de cada menú).
+- [x] Ranking principal en el menú T (sí; MCS dentro de cada menú). **Revisada el 02-11-2026 (ADR-009):** el
+  principal pasa al menú N; T queda como secundario.
 - [x] D11 y D12 solo en sus menús actuales, U y N (sí, por coste y porque ya son negativos controlados).
 - [x] Menú T para los univariantes, por ejemplo un GARCH sobre la media de termómetros (no; deja de
   ser el método de la literatura).
