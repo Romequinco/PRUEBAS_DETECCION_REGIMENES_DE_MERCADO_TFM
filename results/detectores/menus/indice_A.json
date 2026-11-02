@@ -1,0 +1,33 @@
+{
+  "pista": "A",
+  "n_dias_indice": 16149,
+  "inicio": "1962-03-29",
+  "fin": "2026-05-29",
+  "train_days": 2016,
+  "n_oos": 14133,
+  "oos_inicio": "1970-05-12",
+  "n_dias_perdidos_por_termometros": 0,
+  "fechas_perdidas": [],
+  "nan_por_termometro": {
+    "T1_renta_variable": 0,
+    "T1b_rentabilidad_diaria": 0,
+    "T2_tipos_nivel_curva": 0,
+    "T3_velocidad_tipos": 0,
+    "T6_credito": 0,
+    "T8_actividad": 0,
+    "T9_inflacion_valoracion": 0
+  },
+  "mismo_indice_que_v2": true,
+  "sha256_processed": {
+    "pistaA_diaria.parquet": "935255d096f24d20c15247fc70df7cb0c38da95ba69f99f9241d4b77aadd11f2",
+    "pistaA_mensual.parquet": "ff36a6108ac8541939edb702e20d4fe017197227f938c162e33814c332ecc26e"
+  },
+  "huella_v2_vigente": {
+    "D02": true,
+    "D03": true,
+    "D04": true,
+    "D08": true,
+    "D09": true,
+    "D10": true
+  }
+}

@@ -102,18 +102,18 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
 
 ### A. Evaluación (prioridad alta, coste bajo)
 
-- [ ] **A1. Significatividad del ranking con el Model Confidence Set** [46].
+- [x] **A1. Significatividad del ranking con el Model Confidence Set** [46].
   - Bootstrap por crisis del score de cada detector y MCS sobre esas réplicas.
   - Objetivo: poder escribir «los mejores, estadísticamente indistinguibles, son {…}». ¿D10 (0,614)
     y D01 (0,587) se distinguen de verdad?
-- [ ] **A2. Baselines triviales en el ranking** (TCPDBench [24]).
+- [x] **A2. Baselines triviales en el ranking** (TCPDBench [24]).
   - Tres detectores tontos: siempre calma, aleatorio con la tasa base y volatilidad por encima de un
     percentil 90 fijo.
   - Si alguno gana a nuestros detectores, hay que saberlo.
   - **Estado (19-10-2026): casi hecho.** `trivial_baselines` en `evaluacion/ranking.py` ya genera
     `SIEMPRE_CRISIS`, `SIEMPRE_CALMA`, `AZAR_IID` y `AZAR_PERSISTENTE`, y el notebook de comparativa
     los usa. Falta `VOL_P90`, con un percentil expansivo causal y no fijo con toda la muestra.
-- [ ] **A3. Curva de detección frente a falsas alarmas y retraso** (Hammond [4], KLR [5],
+- [x] **A3. Curva de detección frente a falsas alarmas y retraso** (Hammond [4], KLR [5],
   Sarlin [6]).
   - Calibrar el umbral de cada detector a la misma tasa de falsas alarmas, por ejemplo 1 al año.
   - Reportar tasa de detección, retraso mediano y ratio ruido-señal.
@@ -171,7 +171,7 @@ reorganiza el trabajo en torno a usar el pool completo.
 
 ## 5. Otras tareas de documentación
 
-- [ ] Corregir la descripción de Hammond en `fichas.json` y en la sección 1.2 del estado del arte (ver
+- [x] Corregir la descripción de Hammond en `fichas.json` y en la sección 1.2 del estado del arte (ver
   arriba). `docs/estado_del_arte/estado_del_arte.md` (línea 36) sigue diciendo «46 métodos».
 - [ ] Comprobar en los PDF las cifras de Hammond y de FINSABER antes de citarlas en la memoria. Hay que
   localizar los PDF; no están en el repo.
@@ -338,13 +338,17 @@ los menús T y P hay que ampliarlos al pool.
 
 **Fase 1 · Cimientos: todos los datos y la vara de medir**
 
-- [ ] 1.0 Rama de trabajo y **ADR-008 de pre-registro**: bloques, anclas, menús, parámetros y criterios.
-- [ ] 1.1 Pasada de referencia (6.6).
-- [ ] 1.2 `features/bloques.py` con sus tests y notebook 04 (validación 1–3).
-- [ ] 1.3 Vara de medir sobre los 12: VOL_P90 (A2), MCS (A1) y curva (A3). Van en `evaluacion/mcs.py`
+- [x] 1.0 Rama de trabajo y **ADR-008 de pre-registro**: bloques, anclas, menús, parámetros y criterios
+  (congelado el 30-10-2026).
+- [x] 1.1 Pasada de referencia (6.6). 02-11-2026: los 5 parquet y los 24 paneles y métricas de v2 se
+  reproducen bit a bit (etiqueta local `v2-reproducido`).
+- [x] 1.2 `features/bloques.py` con sus tests y notebook 04 (validación 1–3).
+- [x] 1.3 Vara de medir sobre los 12: VOL_P90 (A2), MCS (A1) y curva (A3). Van en `evaluacion/mcs.py`
   y `evaluacion/curvas.py`, y en el notebook 05.
-- [ ] 1.4 Correcciones de documentación (sección 5).
-- [ ] **CP1.** Qué termómetros sobreviven y tabla MCS de los 12.
+- [x] 1.4 Correcciones de documentación (sección 5) que dependen del repo. Comprobar cifras y citas en los PDF
+  queda para la memoria (2.7): los PDF no están en el repo.
+- [x] **CP1.** Qué termómetros sobreviven y tabla MCS de los 12 (ADR-008 §8). Adelantado de la Fase 2: el cruce
+  oficial N frente a T de los 6 multivariantes; el pool no cumple el §6 en la pista A.
 
 **Fase 2 · Detectores sobre el pool**
 
@@ -370,14 +374,14 @@ Opcionales: A4 (ranking ajustado, el más caro) y B8 (BOCPD).
 
 **Pendientes (con la recomendación entre paréntesis)**
 
-- [ ] Ranking principal en el menú T (sí; MCS dentro de cada menú).
-- [ ] D11 y D12 solo en sus menús actuales, U y N (sí, por coste y porque ya son negativos controlados).
-- [ ] Menú T para los univariantes, por ejemplo un GARCH sobre la media de termómetros (no; deja de
+- [x] Ranking principal en el menú T (sí; MCS dentro de cada menú).
+- [x] D11 y D12 solo en sus menús actuales, U y N (sí, por coste y porque ya son negativos controlados).
+- [x] Menú T para los univariantes, por ejemplo un GARCH sobre la media de termómetros (no; deja de
   ser el método de la literatura).
-- [ ] Pérdida del MCS (acierto por crisis + días de falsa alarma) y remuestreo (por bloques de días,
+- [x] Pérdida del MCS (acierto por crisis + días de falsa alarma) y remuestreo (por bloques de días,
   α = 0,10).
-- [ ] Tasa objetivo de falsas alarmas para A3 (1 al año).
+- [x] Tasa objetivo de falsas alarmas para A3 (1 al año).
 - [ ] Parámetros del absorption ratio (los de Kritzman: ventana de 500 días, 1/5 de autovectores,
   cambio a 15 días frente a 1 año por encima de 1σ).
 - [ ] Penalización del jump Shu (utilidad de estrategia, sin etiquetas).
-- [ ] Rama de trabajo para la implementación (`feat/detectores-pool` desde `main`).
+- [x] Rama de trabajo para la implementación (`feat/detectores-pool` desde `main`).

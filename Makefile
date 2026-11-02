@@ -30,7 +30,9 @@ NB_DIR      := notebooks
 # 18..19 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
 # data/sinteticos (~1 GB, gitignored), que genera el 18 con EJECUTAR=True; una vez generado, se
 # ejecutan a mano con EJECUTAR=False. 20 (laboratorio) esta hecho y se ejecuta con su CLI
-# (python -m regimenes.sinteticos.laboratorio). 21..23 (aumento, decision final, pseudolive)
+# (python -m regimenes.sinteticos.laboratorio). 21 (aumento) esta implementado (pre-registro,
+# regimenes.sinteticos.aumento) con calculo parcial reanudable por sesiones (S1-S3 hechas); se
+# ejecuta con su CLI (python -m regimenes.sinteticos.aumento). 22..23 (decision final, pseudolive)
 # son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb

@@ -4,9 +4,9 @@
                     ``results_table``.
 - ``metricas``      ventanas de eventos, métricas individuales causales y
                     detección por evento ``det_*``.
-- ``mcs``           Model Confidence Set (A1) y matriz de pérdidas preliminar
-                    crisis × detector (``perdidas_por_crisis`` importa ranking
-                    de forma diferida).
+- ``mcs``           Model Confidence Set (A1): pérdidas diarias desde los
+                    paneles (definitiva) y matriz preliminar crisis × detector
+                    (importan ranking de forma diferida).
 - ``curvas``        detección/retraso/ruido-señal a igual tasa de falsas
                     alarmas al año (A3).
 - ``ranking``       criterio de ranking de detección ADR-003.
@@ -38,8 +38,16 @@ from regimenes.evaluacion.metricas import (
 from regimenes.evaluacion.mcs import (
     MCSResult,
     bootstrap_indices,
+    cargar_paneles,
+    longitud_bloque_crisis,
+    mcs_diario,
+    mcs_senales,
     model_confidence_set,
+    n_states_metricas,
+    perdidas_diarias,
     perdidas_por_crisis,
+    replicas_perdida,
+    senales_crisis,
     tasa_dias_calma_marcados,
 )
 from regimenes.evaluacion.curvas import (
@@ -67,7 +75,8 @@ __all__ = [
     "block_bootstrap_coverage_ci", "evaluate", "results_table",
     "event_detection_table", "detection_summary",
     "MCSResult", "bootstrap_indices", "model_confidence_set", "perdidas_por_crisis",
-    "tasa_dias_calma_marcados",
+    "tasa_dias_calma_marcados", "cargar_paneles", "senales_crisis", "perdidas_diarias",
+    "longitud_bloque_crisis", "replicas_perdida", "mcs_senales", "mcs_diario", "n_states_metricas",
     "FA_OBJETIVO", "episodios_alarma", "metricas_umbral", "calibrar_umbral_ex_post",
     "umbral_expansivo", "curva_deteccion",
 ]

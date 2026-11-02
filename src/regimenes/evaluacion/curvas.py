@@ -348,3 +348,61 @@ def curva_deteccion(
     out = pd.DataFrame(rows)
     out.attrs["detalle"] = detail
     return out
+
+
+# --------------------------------------------------------------------------- #
+# Curvas de varios detectores (paneles walk-forward)
+# --------------------------------------------------------------------------- #
+def es_binaria(score: pd.Series) -> bool:
+    """True si la puntuación solo toma dos valores (p. ej. ``p_crisis`` 0/1 de las
+    reglas D01, D02 y D09)."""
+    return pd.Series(score).dropna().nunique() <= 2
+
+
+def curvas_detectores(
+    scores: dict[str, pd.Series],
+    windows: dict[str, tuple[str, str]],
+    *,
+    oos_index: pd.DatetimeIndex | None = None,
+    fa_objetivo: tuple[float, ...] = FA_OBJETIVO,
+    modos: tuple[str, ...] = ("ex_post", "expansivo"),
+    senales_nativas: dict[str, pd.Series] | None = None,
+    fp_windows: dict[str, tuple[str, str]] | None = None,
+    **kwargs,
+) -> pd.DataFrame:
+    """:func:`curva_deteccion` para cada puntuación de ``scores`` y cada modo.
+
+    Una fila por (id, modo, objetivo) con ``binaria`` (la puntuación solo tiene dos
+    valores: su curva se reduce a «su señal o nada»; si su señal da más falsas
+    alarmas al año que el objetivo, el umbral es +inf y no detecta nada; NO es un
+    fallo del cálculo, es que la regla no tiene más puntos de operación) y, si se
+    pasan ``senales_nativas`` (estado de crisis del panel), el punto de operación
+    propio del detector: ``fa_anio_nativa``, ``deteccion_nativa`` y
+    ``retraso_nativo``. ``kwargs`` pasa a :func:`curva_deteccion`.
+    """
+    filas = []
+    for k, score in scores.items():
+        nativo = {}
+        if senales_nativas is not None and k in senales_nativas:
+            flags = pd.Series(senales_nativas[k]).astype(float)
+            if oos_index is not None:
+                flags = flags.reindex(pd.DatetimeIndex(oos_index))
+            # Mismas definiciones que la curva (gatillo, margen previo y años de calma).
+            res, _ = metricas_umbral(
+                flags, 0.5, windows, fp_windows=fp_windows,
+                min_run=kwargs.get("min_run", int(CURVA_DEFAULTS["min_run"])),
+                margen_previo=kwargs.get("margen_previo", 0),
+                dias_por_anio=kwargs.get("dias_por_anio", CURVA_DEFAULTS["dias_por_anio"]))
+            nativo = {"fa_anio_nativa": res["fa_anio"], "deteccion_nativa": res["tasa_deteccion"],
+                      "retraso_nativo": res["retraso_mediano"]}
+        for modo in modos:
+            c = curva_deteccion(score, windows, oos_index=oos_index, fa_objetivo=fa_objetivo,
+                                modo=modo, fp_windows=fp_windows, **kwargs)
+            c.attrs = {}
+            c.insert(0, "id", k)
+            c.insert(1, "binaria", es_binaria(score))
+            for col, v in nativo.items():
+                c[col] = v
+            filas.append(c)
+    return pd.concat(filas, ignore_index=True)
+

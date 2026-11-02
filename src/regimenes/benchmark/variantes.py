@@ -87,23 +87,36 @@ TRABAJOS_HUMO = (("B", "D02"), ("B", "D10"), ("B", "D03"), ("B", "D08"), ("A", "
 _PANELES: dict[str, tuple[pd.DataFrame, pd.DatetimeIndex]] = {}
 
 
-def panel_en_memoria(track: str) -> tuple[pd.DataFrame, pd.DatetimeIndex]:
-    """Panel de la pista con ``SP500_ret`` y termómetros, e índice común, desde ``data/raw``.
+def crudos_pista(track: str) -> dict:
+    """Crudos de ``series_features`` de la pista, con la convención de ``03_preprocesado``.
 
-    No lee ni escribe ``data/processed`` ni verifica sha256: sirve para comparar menús entre
-    sí sobre los mismos datos, no para reproducir las cifras oficiales.
+    Misma carga que ``carga_pista`` del notebook 03 (``coverage_report.csv`` da la fuente y
+    ``ft.seleccionar_raw`` la columna). Las series que no están en disco se omiten en
+    silencio: quien necesite el pool completo debe comprobarlo (lo hace ``menus_oficial``).
     """
-    track = track.upper()
-    if track in _PANELES:
-        return _PANELES[track]
     cov = pd.read_csv(rutas.DATA_RAW / "coverage_report.csv")
     fuente = dict(zip(cov["nombre"], cov["fuente"]))
-    spec = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))[f"pista_{track}"]
+    spec = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))[f"pista_{track.upper()}"]
     raw = {}
     for nombre in spec["series_features"]:
         ruta = rutas.DATA_RAW / str(fuente.get(nombre)) / f"{nombre}.parquet"
         if ruta.exists():
             raw[nombre] = ft.seleccionar_raw(pd.read_parquet(ruta), nombre)
+    return raw
+
+
+def panel_en_memoria(track: str) -> tuple[pd.DataFrame, pd.DatetimeIndex]:
+    """Panel de la pista con ``SP500_ret`` y termómetros, e índice común, desde ``data/raw``.
+
+    No lee ni escribe ``data/processed`` ni verifica sha256: sirve para comparar menús entre
+    sí sobre los mismos datos, no para reproducir las cifras oficiales (para eso,
+    :mod:`regimenes.benchmark.menus_oficial`).
+    """
+    track = track.upper()
+    if track in _PANELES:
+        return _PANELES[track]
+    spec = yaml.safe_load(rutas.BENCHMARK_SPEC.read_text(encoding="utf-8"))[f"pista_{track}"]
+    raw = crudos_pista(track)
     bloques = ft.construir_paneles(raw, spec["ventana_inicio"], spec["ventana_fin"])
     mensual = bloques["mensual"][[c for c in bloques["mensual"] if not c.endswith("_edad_dias")]]
     panel = bloques["diaria"].join(mensual)
