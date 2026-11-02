@@ -170,3 +170,41 @@ def test_entrada_oficial_tiene_el_indice_de_v2() -> None:
         v2 = rutas.RESULTS_BENCHMARK / "metrics" / f"{track}_D02.csv"
         assert informe["mismo_indice_que_v2"]
         assert informe["n_oos"] == int(pd.read_csv(v2).loc[0, "n_oos"])
+
+
+def _comp(pista: str, deltas: list[float]) -> pd.DataFrame:
+    return pd.DataFrame({"pista": pista, "base": mo.DETECTORES_T[:len(deltas)], "delta_score": deltas})
+
+
+def _tabla_mcs(incluidos: dict[str, bool]) -> pd.DataFrame:
+    return pd.DataFrame({"incluido": list(incluidos.values())}, index=pd.Index(list(incluidos), name="modelo"))
+
+
+class TestEvaluarCriterios(unittest.TestCase):
+    """Regla del ADR-008 §6 sobre tablas de juguete: mayoría estricta, empates y sufijo ``_T``."""
+
+    def test_mayoria_estricta_y_empates(self):
+        mcs = {"A": _tabla_mcs({"D05": True})}
+        casos = [([.1, .1, .1, .1, -.1, -.1], True),     # 4 de 6
+                 ([.1, .1, .1, -.1, -.1, -.1], False),   # 3 de 6 no es mayoría
+                 ([.1, .1, .1, 0., 0., 0.], False)]      # un empate no mejora
+        for deltas, esperado in casos:
+            out = mo.evaluar_criterios(_comp("A", deltas), mcs)
+            self.assertEqual(bool(out.loc[0, "a_mayoria_mejora"]), esperado, deltas)
+
+    def test_exige_los_seis_comparados(self):
+        out = mo.evaluar_criterios(_comp("A", [.1] * 5), {"A": _tabla_mcs({"D05": True})})
+        self.assertEqual(int(out.loc[0, "n_comparados"]), 5)
+        self.assertFalse(bool(out.loc[0, "a_mayoria_mejora"]))
+
+    def test_comparacion_vacia(self):
+        out = mo.evaluar_criterios(pd.DataFrame(), {"B": _tabla_mcs({"D02_T": True})})
+        self.assertEqual(int(out.loc[0, "n_comparados"]), 0)
+        self.assertTrue(bool(out.loc[0, "c_algun_T_en_mcs"]))
+
+    def test_c_solo_cuenta_variantes_t_incluidas(self):
+        tabla = _tabla_mcs({"D05": True, "D10_T": False, "D02_T": True, "D_TX": True})
+        out = mo.evaluar_criterios(_comp("B", [.1] * 6), {"B": tabla})
+        self.assertEqual(out.loc[0, "T_en_mcs"], "D02_T")
+        self.assertEqual(out.loc[0, "mcs_miembros"], "D05|D02_T|D_TX")
+        self.assertTrue(bool(out.loc[0, "c_algun_T_en_mcs"]))

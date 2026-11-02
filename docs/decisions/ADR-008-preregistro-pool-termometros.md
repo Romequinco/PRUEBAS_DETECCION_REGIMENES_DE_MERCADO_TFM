@@ -158,7 +158,7 @@ T7 en B. Con Holm al 5 % por pista (exploratorio) solo cae T1b de B. T3 es el qu
 **Vara de medir definitiva** (§4; notebook 05 §9–12, `results/benchmark/vara/`). Al 10 %, el MCS de los 12 con
 baselines retiene 11 en A (fuera D09) y 8 en B (fuera D12, D08, D03 y D09). D06 y D05 encabezan las dos pistas.
 `VOL_P90` entra en el MCS de A (p 0,39) y queda fuera en B (p 0,004). En `score_deteccion` (0,600 en A y 0,525 en B) solo lo superan D10 en A, y D05 y D06
-en B. Los baselines triviales quedan fuera en las dos pistas. Frente a
+en B. Los baselines sin información (`SIEMPRE_*`, `AZAR_*`) quedan fuera en las dos pistas. Frente a
 `arch.bootstrap.MCS` con 1000 a 2000 réplicas, la diferencia máxima de p está entre 0,02 y 0,07. El conjunto
 coincide en 3 de 4 casos y difiere con T_max en B, dentro del error Monte Carlo que documenta el notebook 05
 (§10.5). La revisión crítica corrigió `senales_crisis`:
@@ -173,8 +173,15 @@ con p 0,36, D10_T, D04_T y D08_T; 12 de 18). Datos en `comparacion_N_T.csv`, `mc
 
 **Veredicto del §6.** (a) se cumple en B y no en A. (c) se cumple en B y no en A. (b) queda para la Fase 2 (2.5),
 pero ya no puede cambiar el veredicto. Como el §6 exige las dos pistas, **el pool no aporta tal como se
-pre-registró**: «con el pool completo, lo simple sigue ganando». En B los termómetros sí ayudan a los multivariantes,
-lo que justifica seguir con la Fase 2 como análisis, sin cambiar el veredicto pre-registrado.
+pre-registró**: «con el pool completo, lo simple sigue ganando». En B hay un indicio, no una mejora general. T mejora el `score_deteccion` de 5 de 6
+multivariantes, pero dos por márgenes mínimos: D02 +0,004, y D09 pasa de 0 a 1 crisis con precisión 0,034. Con
+la pérdida del MCS solo mejoran 3 de 6 (D02, D03 y D08), y D10_T y D04_T entran en el MCS aunque pierden más que su
+versión N. Basta para estudiar en la Fase 2 por qué B sí y A no, sin cambiar el veredicto pre-registrado.
+
+**Robustez de (c) en A.** Ninguna variante T entra con bloque ×½ o ×2, con `T_R` ni con remuestreo iid. Con el
+remuestreo lineal de pesos fijos (el artefacto descrito en el §4) entrarían D10_T, D09_T, D02_T y D08_T. Las
+réplicas de razón se fijaron en el notebook 05 sobre los 12 de v2, antes de calcular el MCS «T ∪ N». En B, (c) se
+cumple en todas las variantes salvo la iid. El veredicto no depende de esto, porque (a) ya falla en A.
 
 ### 8.1 Prueba de humo (30-10-2026, superada por lo anterior)
 

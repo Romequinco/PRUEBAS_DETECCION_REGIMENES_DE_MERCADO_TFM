@@ -19,10 +19,16 @@ Hay dos tipos de fuga del futuro:
    backtest de 2020 a 2022 ya «sabe» lo que pasó, aunque solo le pases la información de ese día. El
    TimeGate no lo tapa; hay que medirlo con las pruebas L1–L5 del plan de datos, todavía sin implementar.
 
-FINSABER reevalúa las estrategias LLM con más de 20 años y más de 100 símbolos, y controla tres
-sesgos: look-ahead, supervivencia y data snooping. Con eso la ventaja desaparece. Además, los LLM son
-demasiado conservadores en mercados alcistas y demasiado agresivos en bajistas, así que los autores
-piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
+FINSABER reevalúa FinMem y FinAgent con 20 años de backtest (2004-2024) y más de 100 símbolos del
+S&P 500 histórico, incluidos los deslistados. Mitiga tres sesgos: supervivencia, data snooping y
+look-ahead; este último, según los propios autores, no del todo, porque la memoria del LLM no se controla.
+Con eso la ventaja se reduce mucho, y en el universo amplio desaparece: en Sharpe, comprar y mantener
+supera a FinMem y FinAgent con los tres selectores (por ejemplo, 0,315 frente a −0,253 y 0,094 con cinco
+símbolos al azar; Tabla 4). Además, los LLM son demasiado conservadores en mercados alcistas y demasiado
+agresivos en bajistas (Sharpe en bajista: FinMem −0,97 y FinAgent −0,38, frente a −0,28 de comprar y
+mantener; Sec. 7). Los autores piden **controles de riesgo según régimen** («regime-aware risk controls»),
+que es el hueco que cubre el TFM. Verificado sobre arXiv 2505.07078 v6 (26-06-2026), KDD 2026 Datasets &
+Benchmarks Track (Oral), DOI 10.1145/3770854.3785702.
 
 ### OOS y OOD
 
@@ -36,17 +42,20 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
 
 ### Benchmark de Hammond (2026) [4] · arXiv 2605.17117
 
-- **Qué hace:** propone observables geométricos sobre un embedding QCML y los compara con métodos
-  clásicos (Berry Phase Rate, Spectral Entropy, Reduced Purity, QFI, Multi-Lag Fidelity…).
-- **Datos:** SPY y DIA de 1998 a 2024, sin macro con vintages.
-- **Crisis:** 17 (9 convencionales y 8 novedosas).
+- **Qué hace:** propone observables geométricos sobre un embedding QCML: cuatro destacados (Berry Phase
+  Rate, Spectral Entropy, Reduced State Purity y Hamiltonian Sensitivity) y 18 canales más, entre ellos
+  QFI Determinant y Multi-Lag Fidelity, que son los que usa en el walk-forward.
+- **Datos:** OHLCV diario de SPY y DIA de 1998 a 2024, sin macro con vintages.
+- **Crisis:** 17 de 2000 a 2024 (9 convencionales y 8 novedosas). La Tabla 10 lista 18 porque incluye
+  LTCM 1998.
 - **Métodos:** los «46» son en realidad 22 canales geométricos propios más 24 baselines.
-  - Clásicos: Absorption Ratio, Hamilton Markov-switching, GARCH(1,1), CUSUM, z-score de volatilidad
-    móvil, BOCPD, turbulencia, y VIX como oráculo.
+  - Clásicos: Absorption Ratio, Hamilton Markov-switching, HMM de 2 estados, GARCH(1,1), CUSUM,
+    z-score de volatilidad móvil, BOCPD, turbulencia, Isolation Forest y VIX como oráculo.
   - Machine learning: Random Forest *leave-one-crisis-out* y un Random Forest móvil con etiqueta
     VIX > 25.
-- **Protocolo:** walk-forward anidado desde 2005; cada año reajusta los hiperparámetros (Optuna, 100
-  pruebas) solo con las crisis ya terminadas, lo que da 9 pares crisis–ventana. Métricas: d de Cohen
+- **Protocolo:** walk-forward anidado con ventana expansiva desde 2005 y 14 ventanas anuales de
+  evaluación (2010-2023). En cada una reajusta los hiperparámetros (Optuna TPE, 100 pruebas por
+  detector) solo con las crisis ya terminadas, lo que da 9 pares crisis–ventana evaluables. Métricas: d de Cohen
   con bootstrap, más tasa de detección, retraso y falsas alarmas al año.
 - **Resultados dentro de muestra:**
   - Reduced Purity 0,83 · Absorption Ratio 0,80 · Hamilton Markov-switching 0,71.
@@ -56,10 +65,19 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
     según la crisis.**
   - Random Forest: 7/7 crisis detectadas, 5 días de retraso, 3,6 falsas alarmas al año.
   - Berry Phase Rate: 5/7 crisis, 24 días de retraso, 1,2 falsas alarmas al año.
-- **Qué usamos de él:** ningún método. Lo usamos como comparación externa, porque confirma que lo
-  complejo no se sostiene fuera de muestra, y como ideas de protocolo pendientes (sección 10, P1).
-- ⚠️ **Corregir** la ficha `hammond2026` de `fichas.json` y la sección 1.2 del estado del arte: no
-  son «46 métodos clásicos y de ML». Verificar las cifras en el PDF antes de citarlas.
+- **Ojo al citarlo:**
+  - En el walk-forward anidado solo compara tres canales geométricos (Berry, Multi-Lag Fidelity y QFI),
+    ningún clásico. El 0,72 de Berry y su «67 % menos falsas alarmas que el RF» salen de protocolos
+    distintos.
+  - Su tesis es que Berry **sí** aguanta fuera de muestra. **No** dice que lo simple gane fuera de
+    muestra: GARCH(1,1) queda 33º de 46 dentro de muestra (d 0,29).
+  - Su test de que el mejor detector depende de la crisis da p = 0,31.
+- **Qué usamos de él:** ningún método. Lo usamos como comparación externa, porque muestra que la
+  separación dentro de muestra se infla (+0,415 en d; Reduced Purity pasa de 0,83 a 0,26), y como ideas
+  de protocolo pendientes (sección 10, P1).
+- Verificado sobre arXiv 2605.17117 v1 y v2 (27-05-2026), con las mismas cifras en las dos. El resumen
+  dice «46 classical and machine-learning baselines», pero el §4.2 los desglosa en 22 canales
+  geométricos más 24 baselines.
 
 ### Variables de los detectores (`src/regimenes/detectores/registry.py`)
 
@@ -94,7 +112,8 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
 - Score por evento y lift sobre el azar, más `lead_lag`, `false_alarm_rate` y el bootstrap por bloques
   de la cobertura (`evaluacion/metricas.py`).
 - Parsimonia validada: los ganadores son D10 (4 series) y D05 (1 serie). Coincide con Hansen-Lunde
-  [22], TCPDBench [24] y Hammond [4].
+  [22] y TCPDBench [24]. Hammond [4] solo muestra que clásicos sencillos (Absorption Ratio, Hamilton
+  MS) son baselines fuertes dentro de muestra.
 
 ---
 
@@ -103,16 +122,18 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
 ### A. Evaluación (prioridad alta, coste bajo)
 
 - [x] **A1. Significatividad del ranking con el Model Confidence Set** [46].
-  - Bootstrap por crisis del score de cada detector y MCS sobre esas réplicas.
+  - **Hecho (02-11-2026).** Pérdida diaria (1 − J de Youden con crisis equiponderadas), réplicas de razón
+    con bootstrap estacionario por bloques de días y MCS al 10 %. El bootstrap por crisis queda como
+    sensibilidad. Ver ADR-008 §4 y §8 y el notebook 05 §9–12.
   - Objetivo: poder escribir «los mejores, estadísticamente indistinguibles, son {…}». ¿D10 (0,614)
     y D01 (0,587) se distinguen de verdad?
 - [x] **A2. Baselines triviales en el ranking** (TCPDBench [24]).
   - Tres detectores tontos: siempre calma, aleatorio con la tasa base y volatilidad por encima de un
     percentil 90 fijo.
   - Si alguno gana a nuestros detectores, hay que saberlo.
-  - **Estado (19-10-2026): casi hecho.** `trivial_baselines` en `evaluacion/ranking.py` ya genera
-    `SIEMPRE_CRISIS`, `SIEMPRE_CALMA`, `AZAR_IID` y `AZAR_PERSISTENTE`, y el notebook de comparativa
-    los usa. Falta `VOL_P90`, con un percentil expansivo causal y no fijo con toda la muestra.
+  - **Hecho (02-11-2026).** Los cuatro de `trivial_baselines` más `VOL_P90` (percentil 90 expansivo y
+    causal). `VOL_P90` entra en el MCS de A y no en el de B. Ver el notebook 05 §9–12 y
+    `results/benchmark/vara/`.
 - [x] **A3. Curva de detección frente a falsas alarmas y retraso** (Hammond [4], KLR [5],
   Sarlin [6]).
   - Calibrar el umbral de cada detector a la misma tasa de falsas alarmas, por ejemplo 1 al año.
@@ -128,7 +149,7 @@ piden **controles de riesgo según régimen**, que es el hueco que cubre el TFM.
 
 ### B. Detectores que faltan
 
-- [ ] **B5. Absorption ratio** (Kritzman et al. [30]; 2º de 46 en Hammond). **Prioridad 1 entre los
+- [ ] **B5. Absorption ratio** (Kritzman et al. [30]; 2º de 46 dentro de muestra en Hammond, d 0,80; fuera de muestra no lo evalúa). **Prioridad 1 entre los
   detectores.**
   - PCA causal sobre las **rentabilidades crudas** de unos 20 activos del pool (sectores, índices,
     bonos, crédito, oro, materias primas, divisas), no sobre los z-scores. Así lo define Kritzman.
@@ -172,11 +193,13 @@ reorganiza el trabajo en torno a usar el pool completo.
 ## 5. Otras tareas de documentación
 
 - [x] Corregir la descripción de Hammond en `fichas.json` y en la sección 1.2 del estado del arte (ver
-  arriba). `docs/estado_del_arte/estado_del_arte.md` (línea 36) sigue diciendo «46 métodos».
-- [ ] Comprobar en los PDF las cifras de Hammond y de FINSABER antes de citarlas en la memoria. Hay que
-  localizar los PDF; no están en el repo.
-- [ ] Comprobar las citas de la sección 6.2 (Boivin-Ng, NFCI, Stock-Watson, TCPDBench) antes de
-  llevarlas a la memoria.
+  arriba).
+- [x] Comprobar las cifras de Hammond y de FINSABER antes de citarlas en la memoria (02-11-2026, sobre
+  el texto completo de arXiv; ver sección 1).
+- [x] Comprobar las citas de la sección 6.2 (Boivin-Ng, NFCI, Stock-Watson, TCPDBench) antes de
+  llevarlas a la memoria (02-11-2026). Las cifras son correctas. Sin confirmar: que el modelo concreto que
+  bate al GARCH(1,1) en IBM sea el GJR; que Bluwstein use exactamente los mismos predictores para logit y
+  ML; el DOI de Hansen-Lunde (10.1002/jae.800).
 
 ---
 
@@ -195,13 +218,16 @@ reorganiza el trabajo en torno a usar el pool completo.
 
 ### 6.2 Qué dice la literatura sobre dar los mismos datos a todos
 
-- **Mismo conjunto de datos para todos los métodos.** Así lo hacen M4, Hansen-Lunde (330 ARCH sobre
-  las mismas rentabilidades), Hammond (SPY y DIA para todos) y la alerta temprana (Beutel y Bluwstein
-  comparan logit y ML con los mismos indicadores).
+- **Mismo conjunto de datos para todos los métodos.** Así lo hacen M4 (100.000 series y 61 métodos),
+  Hansen-Lunde (330 ARCH sobre las mismas rentabilidades de DM/$ e IBM), Hammond (las mismas features de
+  SPY y DIA para todos, salvo el oráculo VIX) y la alerta temprana: Beutel et al. (2019) y Bluwstein et
+  al. (2023) comparan logit y ML sobre los mismos datos. En Beutel gana el logit fuera de muestra; en
+  Bluwstein, el ML.
 - **Cada método lo usa según su naturaleza.** Un GARCH modela una sola serie de rentabilidades.
-  TCPDBench separa los métodos univariantes de los multivariantes.
+  TCPDBench separa los métodos univariantes de los multivariantes, y la configuración por defecto de la
+  ajustada (*oracle*). Por defecto, ningún método bate con significación al baseline sin cambios (*zero*).
 - **Con muchas variables se comprime o se regulariza.** El NFCI es un factor de 105 indicadores y los
-  índices de difusión de Stock-Watson son PCA sobre cientos de series. Boivin-Ng (2006), «Are more data
+  índices de difusión de Stock-Watson son PCA sobre 215 series. Boivin-Ng (2006), «Are more data
   always better for factor analysis?», responden que no siempre.
 - **Por qué no las 77 columnas a todos.** Parámetros por estado de un HMM o GMM con covarianza
   completa: 8 entradas → 44, 14 → 119, 77 → 3.080. Con 9 crisis en la pista B, el modelo memoriza o no
@@ -345,8 +371,8 @@ los menús T y P hay que ampliarlos al pool.
 - [x] 1.2 `features/bloques.py` con sus tests y notebook 04 (validación 1–3).
 - [x] 1.3 Vara de medir sobre los 12: VOL_P90 (A2), MCS (A1) y curva (A3). Van en `evaluacion/mcs.py`
   y `evaluacion/curvas.py`, y en el notebook 05.
-- [x] 1.4 Correcciones de documentación (sección 5) que dependen del repo. Comprobar cifras y citas en los PDF
-  queda para la memoria (2.7): los PDF no están en el repo.
+- [x] 1.4 Correcciones de documentación (sección 5), con las cifras de Hammond, FINSABER y las citas del 6.2
+  verificadas sobre las fuentes el 02-11-2026.
 - [x] **CP1.** Qué termómetros sobreviven y tabla MCS de los 12 (ADR-008 §8). Adelantado de la Fase 2: el cruce
   oficial N frente a T de los 6 multivariantes; el pool no cumple el §6 en la pista A.
 

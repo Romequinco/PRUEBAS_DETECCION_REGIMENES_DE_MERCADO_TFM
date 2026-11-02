@@ -657,8 +657,8 @@ def replicas_perdida(
     Propiedad a declarar: una crisis sin ningún día en la réplica sale del promedio
     de esa réplica (K* < K), y una crisis sacada dos veces pesa 1/K*, no el doble.
     Con el bloque de la mediana de las ventanas, las crisis de 10–30 sesiones faltan
-    en un 20–33 % de las réplicas (2026-11-02: en A solo el 8 % de las réplicas trae
-    las 17 crisis, K* medio 14,7; en B el 23 %, K* medio 7,75). La incertidumbre
+    en un 20–33 % de las réplicas (2026-11-02: en A solo el 7 % de las réplicas trae
+    las 17 crisis, K* medio 14,7; en B el 25 %, K* medio 7,8). La incertidumbre
     entre crisis entra por las ausencias, no por las repeticiones.
     """
     flags = senales.fillna(False).astype(bool)

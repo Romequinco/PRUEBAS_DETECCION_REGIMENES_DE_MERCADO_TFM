@@ -367,7 +367,7 @@ def ejecutar_menu_t(tracks: list[str], detectores: list[str], *, salida: Path = 
     return estados
 
 
-def comparar(salida: Path = SALIDA) -> pd.DataFrame:
+def comparar(salida: Path = SALIDA, *, escribir: bool = True) -> pd.DataFrame:
     """``comparacion_N_T.csv``: score de T frente a N por pista y detector (lo que haya)."""
     salida = Path(salida)
     filas = [pd.read_csv(p) for p in sorted(salida.glob("[AB]_D*_[NT].csv"))]
@@ -381,7 +381,8 @@ def comparar(salida: Path = SALIDA) -> pd.DataFrame:
     tabla = tabla.reset_index()
     if {"score_deteccion_N", "score_deteccion_T"} <= set(tabla):
         tabla["delta_score"] = tabla["score_deteccion_T"] - tabla["score_deteccion_N"]
-    _write_atomic(salida / "comparacion_N_T.csv", lambda tmp: tabla.to_csv(tmp, index=False))
+    if escribir:
+        _write_atomic(salida / "comparacion_N_T.csv", lambda tmp: tabla.to_csv(tmp, index=False))
     return tabla
 
 
@@ -392,8 +393,8 @@ def mcs_t_union_n(track: str, salida: Path = SALIDA, v2: Path = V2, *,
     N son los 12 originales (paneles de v2) y T las 6 variantes del menú T (paneles de
     ``salida``), todos sobre el mismo índice OOS. Misma pérdida y remuestreo que el MCS
     definitivo (``evaluacion.mcs.mcs_senales``). Sin baselines por defecto: el criterio
-    habla de detectores; con ``incluir_baselines`` se añaden los triviales como
-    sensibilidad.
+    habla de detectores; con ``incluir_baselines`` se añaden los baselines sin
+    información (``SIEMPRE_*``, ``AZAR_*``) como sensibilidad, sin ``VOL_P90``.
     """
     from regimenes.evaluacion import mcs
     from regimenes.evaluacion import ranking as rk
@@ -402,12 +403,14 @@ def mcs_t_union_n(track: str, salida: Path = SALIDA, v2: Path = V2, *,
     paneles_v2 = Path(v2) / "panels"
     pan_n = mcs.cargar_paneles(track, paneles_v2)
     pan_t = mcs.cargar_paneles(track, Path(salida), [f"{d}_T" for d in DETECTORES_T])
+    ref = next(iter(pan_n.values())).index
+    distintos = [k for k, p in {**pan_n, **pan_t}.items() if not p.index.equals(ref)]
+    if distintos:
+        raise ValueError(f"{track}: los paneles {distintos} no tienen el índice OOS de v2")
     sen = pd.concat([
         mcs.senales_crisis(pan_n, n_states=mcs.n_states_metricas(track, paneles_v2, list(pan_n))),
         mcs.senales_crisis(pan_t, n_states=mcs.n_states_metricas(track, Path(salida), list(pan_t))),
-    ], axis=1, join="inner")
-    if len(sen) != len(next(iter(pan_n.values()))):
-        raise ValueError(f"{track}: los paneles T y N no comparten el índice OOS")
+    ], axis=1)
     if incluir_baselines:
         F = sen.to_numpy()
         base = mcs.senales_baselines(track, pd.DatetimeIndex(sen.index),
@@ -419,18 +422,18 @@ def mcs_t_union_n(track: str, salida: Path = SALIDA, v2: Path = V2, *,
     return res.tabla
 
 
-def criterios_adr008(salida: Path = SALIDA) -> pd.DataFrame:
-    """Criterios (a) y (c) del ADR-008 §6 por pista; (b) necesita las 100 reparticiones
-    aleatorias de columnas a bloques (Fase 2, punto 2.5) y queda pendiente."""
-    salida = Path(salida)
-    comp = comparar(salida)
+def evaluar_criterios(comp: pd.DataFrame, tablas_mcs: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    """Criterios (a) y (c) a partir de ``comparar`` y de las tablas MCS «T ∪ N» por pista.
+
+    (a) exige los 6 multivariantes comparados y que mejoren estrictamente más de la mitad;
+    un empate (``delta_score == 0``) cuenta como «no mejora».
+    """
     filas = []
-    for track in ("A", "B"):
-        c = comp[comp["pista"] == track].dropna(subset=["delta_score"])
-        n_mejoran = int((c["delta_score"] > 0).sum())
-        tabla = mcs_t_union_n(track, salida)
-        tabla.to_csv(salida / f"mcs_T_union_N_{track}.csv")
-        en_mcs = [str(i) for i in tabla.index[tabla["incluido"]]]
+    for track, tabla in tablas_mcs.items():
+        c = (comp[comp["pista"] == track].dropna(subset=["delta_score"])
+             if {"pista", "delta_score"} <= set(comp) else comp.iloc[0:0])
+        n_mejoran = int((c["delta_score"] > 0).sum()) if len(c) else 0
+        en_mcs = [str(i) for i in tabla.index[tabla["incluido"].astype(bool)]]
         t_en_mcs = [i for i in en_mcs if i.endswith("_T")]
         filas.append({
             "pista": track, "n_comparados": len(c), "n_mejoran_T": n_mejoran,
@@ -440,6 +443,21 @@ def criterios_adr008(salida: Path = SALIDA) -> pd.DataFrame:
         })
     out = pd.DataFrame(filas)
     out["b_bloques_frente_a_azar"] = "pendiente (Fase 2, 2.5)"
+    return out
+
+
+def criterios_adr008(salida: Path = SALIDA) -> pd.DataFrame:
+    """Criterios (a) y (c) del ADR-008 §6 por pista; (b) necesita las 100 reparticiones
+    aleatorias de columnas a bloques (Fase 2, punto 2.5) y queda pendiente.
+
+    Escribe ``comparacion_N_T.csv``, ``mcs_T_union_N_{A,B}.csv`` y ``criterios_adr008.csv``.
+    """
+    salida = Path(salida)
+    comp = comparar(salida)
+    tablas = {track: mcs_t_union_n(track, salida) for track in ("A", "B")}
+    for track, tabla in tablas.items():
+        _write_atomic(salida / f"mcs_T_union_N_{track}.csv", lambda tmp, t=tabla: t.to_csv(tmp))
+    out = evaluar_criterios(comp, tablas)
     _write_atomic(salida / "criterios_adr008.csv", lambda tmp: out.to_csv(tmp, index=False))
     return out
 
