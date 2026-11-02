@@ -122,6 +122,63 @@ Con crisis:
    PCA y de 100 reparticiones aleatorias de columnas a bloques.
 6. **Significación:** MCS dentro de cada menú con los baselines.
 
+### 5.1 Errata del 02-11-2026 (antes de ejecutar 2.5)
+
+Escrita el 02-11-2026, antes de ejecutar 2.5, salvo un humo de 10 trabajos en B (D02 y D03 × `REF-N`, `REF-T`,
+`SIN-T1`, `MEDIA` y `AZAR-000`) cuyos scores se imprimieron en el log. Después del humo solo cambió la regla de
+signo de AZAR, por el diagnóstico sin etiquetas descrito abajo; esos 10 resultados se borraron y se recalculan con
+la pasada completa. Código: `regimenes.benchmark.ablaciones`; salida en `results/detectores/ablaciones/`,
+composición exacta de cada variante en `variantes_{A,B}.json`, con el sha256 del código que la generó.
+
+- **Reajuste anual solo en 2.5.** Los seis multivariantes se reajustan cada 252 sesiones (`step=252`) en todas las
+  variantes de este punto. Con el `step` de cada detector (21 a 126) el experimento costaría ≈ 490 h de CPU; con
+  252, ≈ 73 h (A: 110 variantes × 2.124 s ≈ 64,9 h; B: ≈ 8,0 h), ≈ 6,6 h de reloj con 11 procesos. Las referencias se re-ejecutan con ese mismo `step`: `REF-N` (núcleo de v2) y `REF-T` (termómetros
+  económicos). Nada se compara con las cifras oficiales del §8.
+- **Validez del atajo.** Criterio: el signo de T − N con `step=252` debe ser el oficial en los 12 casos, con los
+  mismos recuentos por pista. Piloto del 02-11-2026: 12 de 12; mejoran con T 1 de 6 en A y 5 de 6 en B, igual que
+  en el §8.
+- **SIN-Tk.** Menú T sin el termómetro k: 7 variantes en A y 10 en B. Solo se quita la columna; los demás
+  termómetros son los oficiales.
+- **MEDIA.** Cada bloque económico se resume con la media simple de sus columnas en todos los reajustes: es el modo
+  media que ya tenía `bloques.py` por debajo del umbral, forzado (`umbral_var = ∞`). Cada columna entra con el signo
+  de su correlación con la ancla orientada en la ventana de ajuste. Mismas columnas, anclas, reajuste mensual y
+  calentamiento.
+- **AZAR-000 a AZAR-099.** Permutación de las columnas del pool de la pista con `numpy.random.default_rng(s)`,
+  s = 0…99, cortada con los tamaños de los bloques económicos en el orden de `bloques.yaml` (A: 4, 3, 10, 1, 2, 7, 8;
+  B: 6, 8, 15, 3, 4, 7, 6, 10, 11, 7). Termómetro con la misma PCA causal mensual, umbral del 30 % y calentamiento.
+- **Signo de un bloque aleatorio** (sin etiquetas de crisis; D02 suma los termómetros con +1 y uno invertido lo
+  hundiría). Cada columna conserva su orientación frente al estrés del bloque original: la ancla original lleva su
+  signo declarado; las demás, el signo de su correlación con esa ancla con los datos hasta el reajuste. En el primer
+  reajuste r0 con alguna columna orientable, la ancla del bloque es la columna orientable de mayor |carga| en la PC1
+  de ese reajuste. **La ancla queda fija; su signo se re-estima en cada reajuste** con la misma regla y los datos
+  hasta ese reajuste (una ancla original conserva su signo declarado). Los días ≤ r0 quedan en NaN (salvo un bloque
+  de una columna que sea ancla original). Es causal: el cálculo hasta t coincide con el cálculo completo recortado
+  en t.
+- **Por qué se re-estima el signo** (diagnóstico sin etiquetas, tras el humo). La primera versión fijaba también el
+  signo en r0, que cae entre 1929 y 1966, a veces con una docena de datos mensuales. En B, 29 de las 67 columnas que
+  no son ancla cambian después de signo frente a su ancla original, y 12 llegan al OOS con el signo contrario (p. ej.
+  `SP500_momentum`, `FF_MOM_z`, `CAPE_z`, `ICSA_z`); en A, 7. Las 100 semillas de B y 91 de A tenían alguna ancla
+  invertida en más de la mitad del OOS. D02 suma los termómetros con +1, así que quedaba hundido por construcción y
+  (b) se inclinaba a favor de `REF-T`.
+- **Desventaja estructural declarada.** Las anclas y el reparto económico se eligieron con estadísticos de toda la
+  muestra para evitar saltos de signo (§2.1); los bloques de AZAR no tienen esa ventaja.
+- **Reparto factible.** Si algún termómetro de un reparto tiene NaN en el índice oficial, el reparto se descarta y se
+  toma la siguiente permutación del mismo generador. Equivale a muestrear de forma uniforme entre los repartos
+  factibles. El reparto económico es factible, así que el nulo es «reparto aleatorio factible». En A se descartan 41
+  de 141 intentos (29 %), en 30 de las 100 semillas y con 4 intentos como máximo. Los causan bloques de 1 o 2
+  columnas con series tardías (`HOUST_yoy_z`, `CPI_core_yoy_z`, `curve_vs_policy_5y_z`, `curve_vs_policy_10y_z`,
+  `UMCSENT_z`, `GDP_growth_z`, `mid_curve_z`, `PPI_metals_yoy_z`). En B no se descarta ninguno. Los intentos de cada
+  semilla quedan en el JSON.
+- **Cálculo de (b), por pista.** M_eco = mediana de los 6 `score_deteccion` de `REF-T`. M_s = mediana de los 6 de
+  `AZAR-s`. (b) se cumple si M_eco es estrictamente mayor que el percentil 90 de las 100 M_s (`numpy.percentile`,
+  interpolación lineal). Un empate no cumple.
+- **Trabajos fallidos.** Se corrige la causa y se re-ejecutan, sin sacar repartos nuevos. Si sigue faltando algún
+  `REF-T`, (b) no se puede evaluar en esa pista y cuenta como no cumplido. Una semilla con algún detector sin
+  resultado sale entera del cálculo, sin reponerla. (b) exige al menos 95 semillas completas, y se reporta cuántas
+  hubo.
+- **No cambia:** el ranking oficial, las cifras del §8 ni su veredicto. (b) cierra el §6, pero no puede cambiar el
+  veredicto: (a) y (c) ya fallan en A. SIN-Tk y MEDIA son descriptivos y no entran en ningún criterio.
+
 ## 6. Criterios de éxito y de fracaso (aprobados el 30-10-2026)
 
 - **El pool aporta** si, en **las dos pistas**: (a) la mayoría de los multivariantes del menú T (D02, D03, D04, D08,

@@ -15,7 +15,7 @@ docs/
 ├── README.md            este índice
 ├── GLOSARIO.md          definiciones de los términos del proyecto
 ├── references.bib       bibliografía única del TFM
-├── decisions/           ADR-001 … ADR-005 y ADR-007 (ADR-006 reservada a la decisión final de régimen)
+├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-009 (ADR-006 reservada a la decisión final de régimen)
 ├── tfm/                 visión del TFM: arquitectura, cliente y carteras, líneas abiertas, documentos de origen
 ├── estado_del_arte/     estado del arte: dossier general, detectores y fuentes de datos, con su catálogo
 ├── fase1/               Fase 1 (régimen): pipeline, mapa del código, EDA, teoría y detectores por familia, sintéticos
@@ -44,6 +44,10 @@ docs/
   su Fase 1.
 - [ADR-007](decisions/ADR-007-fase2-ingesta-y-docs.md) — la Fase 2 vive en `src/ingesta` (cuatro temas, una rama
   cada uno) y esta estructura de `docs/`.
+- [ADR-008](decisions/ADR-008-preregistro-pool-termometros.md) — pre-registro de los termómetros por bloque, los
+  menús de datos, la vara de medir y los criterios del pool; veredicto: el pool no aporta.
+- [ADR-009](decisions/ADR-009-resultados-pool.md) — borrador: ablaciones y controles del menú T (punto 2.5) y
+  decisión sobre el menú T.
 
 ### `estado_del_arte/` — qué existe fuera del proyecto
 - [`estado_del_arte/README.md`](estado_del_arte/README.md) — índice de los tres documentos y de su catálogo.

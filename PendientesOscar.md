@@ -382,9 +382,10 @@ los menús T y P hay que ampliarlos al pool.
 - [ ] 2.2 D14 absorption ratio (B5, solo pista B).
 - [ ] 2.3 D15 jump Shu (B6) y D18 sparse JM (B9, con `jumpmodels.SparseJumpModel`).
 - [ ] 2.4 D16 logit L1 y D17 random forest (B7), entrenados solo con crisis terminadas.
-- [ ] 2.5 Ablaciones y controles (6.5, puntos 4–6).
+- [ ] 2.5 Ablaciones y controles (6.5, puntos 4–6; el 4 ya está en el notebook 04 §10). Diseño en la errata
+  del ADR-008 §5.1 (reajuste anual) y resultados en el ADR-009.
 - [ ] 2.6 C1 fusión online.
-- [ ] 2.7 Ranking v3, sintéticos rehechos, decisión final, memoria y ADR-009 de resultados.
+- [ ] 2.7 Ranking v3, sintéticos rehechos, decisión final, memoria y ADR-010 de resultados.
 - [ ] **CP2.**
 
 Opcionales: A4 (ranking ajustado, el más caro) y B8 (BOCPD).
