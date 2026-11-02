@@ -13,7 +13,7 @@ Reglas (fijadas antes de ejecutar nada):
   ``t`` y la etiqueta de esos dias (calma) no depende del futuro.
 - Ancla valida: al menos ``min_episodios_crisis`` episodios y ``min_dias_crisis``
   dias de crisis en el ajuste, el ajuste no falla y, salvo para el control, el
-  generador pasa en ese ancla la memorizacion y el condicionamiento del 19 con
+  generador pasa en ese ancla la memorizacion y el condicionamiento del 16 con
   los mismos umbrales (``validacion.umbrales``).
 
 Salidas: ``data/sinteticos/aumento/generadores/<pista>/<fuente>/<tau>/generador.pkl``
@@ -116,7 +116,7 @@ def cargar_generador(pista: str, fuente: str, tau, base: Path | None = None):
 # --------------------------------------------------------------------------- validacion
 def validar_generador(gen, panel: pd.DataFrame, reg: pd.Series, cfg_total: dict, n_tray: int,
                       semilla_val: int) -> dict[str, Any]:
-    """Memorizacion y condicionamiento del 19 (mismos umbrales) en el ancla."""
+    """Memorizacion y condicionamiento del 16 (mismos umbrales) en el ancla."""
     from regimenes.sinteticos.validacion.fidelidad import condicionamiento
     from regimenes.sinteticos.validacion.memorizacion import memorizacion
     from regimenes.sinteticos.validacion.veredicto import _condicionamiento, _memorizacion
@@ -162,7 +162,7 @@ def _guardar_atomico(gen, destino: Path) -> None:
 
 
 def _features(cfg_total: dict, pista: str) -> list[str] | None:
-    """Columnas de ajuste de la pista, las mismas que en el 18 (vacio = nucleo + SP500_ret)."""
+    """Columnas de ajuste de la pista, las mismas que en el 15 (vacio = nucleo + SP500_ret)."""
     for clave in ("entrenamiento", "entrenamiento_secundario"):
         if cfg_total[clave]["pista"].upper() == pista:
             return list(cfg_total[clave].get("features") or []) or None
