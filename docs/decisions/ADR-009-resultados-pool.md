@@ -1,7 +1,7 @@
 # ADR-009 — Resultados del pool de termómetros: ablaciones, controles y decisión sobre el menú T
 
-- **Estado:** Borrador (pendiente de resultados de 2.5) · 2026-11-02. Las secciones marcadas **PENDIENTE DE
-  RESULTADOS** se rellenan cuando termine la ejecución. La decisión (§6) no se toma antes.
+- **Estado:** Propuesto · 2026-11-02. Resultados de 2.5 completos: 1.338 trabajos, 0 errores, ejecutados el
+  02-11-2026 de 14:48 a 21:56. Falta la decisión del §6, que toma el usuario.
 - **Origen:** plan de [`PendientesOscar.md`](../../PendientesOscar.md) §6.8, punto 2.5 (ablaciones y controles de
   §6.5, puntos 4–6; el 4, relevancia, ya está en la sección 10 del notebook 04).
 - **Completa:** [ADR-008](ADR-008-preregistro-pool-termometros.md), el pre-registro. No cambia sus bloques, anclas,
@@ -103,36 +103,78 @@ Lectura. El MCS es relativo al mejor de cada conjunto, así que un p-valor no se
 
 ### 4.2 Validez del atajo anual
 
-**PENDIENTE DE RESULTADOS.** Pares con el signo de T − N reproducido: [k de 12]. Pares que se leen con cautela:
-[ninguno / …].
+`results/detectores/ablaciones/validez_atajo.csv`. **12 de 12 pares** reproducen el signo de T − N oficial. En A,
+T mejora solo en D02; en B, en 5 de 6, todos salvo D04. Ningún par se lee con cautela. La magnitud sí cambia con el
+reajuste anual: B·D03 pasa de +0,04 a +0,21 y A·D08 de −0,008 a −0,038. Por eso las ablaciones se leen por signo
+y orden, no por el tamaño exacto.
 
 ### 4.3 Criterio (b)
 
-**PENDIENTE DE RESULTADOS.**
+`results/detectores/ablaciones/criterio_b.csv` y `medianas_azar.csv`. Sin semillas incompletas, así que las cotas
+de sensibilidad coinciden con el p90.
 
 | Pista | Mediana `REF-T` | p90 `AZAR` | Percentil de `REF-T` | `AZAR` completas | (b) |
 |---|---|---|---|---|---|
-| A | PENDIENTE | PENDIENTE | PENDIENTE | PENDIENTE | PENDIENTE |
-| B | PENDIENTE | PENDIENTE | PENDIENTE | PENDIENTE | PENDIENTE |
+| A | 0,402 | 0,424 | 83 | 100 de 100 | **no cumple** |
+| B | 0,354 | 0,341 | 93 | 100 de 100 | **cumple, por 0,012** |
+
+- **Referencias:** sin comprimir (`REF-N`), la mediana es 0,504 en A, por encima de las 100 reparticiones, y 0,340
+  en B, en su p90.
+- **Mediana de las 100 `AZAR`:** 0,360 en A, con rango de 0,27 a 0,48, y 0,265 en B, con rango de 0,10 a 0,45.
+
+En B el margen es pequeño y cabe dentro de la desventaja estructural de `AZAR` (§3). El agente de ejecución detectó
+además una fuente concreta: en B, 214 de 1.000 bloques aleatorios cuya ancla viene de T9 (`GW_valuation_z`,
+`CAPE_z`) quedan dominados por columnas de inflación y correlan en negativo con el termómetro económico del que
+sale su ancla. No es un error de signo: el signo se re-estima en cada reajuste. Pero esos bloques miden otra cosa
+que su ancla y rebajan la distribución `AZAR`.
 
 ### 4.4 Quitar un bloque
 
-**PENDIENTE DE RESULTADOS.** Estorban en A: […]; ayudan en A: […]. Estorban en B: […]; ayudan en B: […]. Lugar de
-T9 de A: […]. ¿T4, T5 y T7 de B ayudan?: […].
+`results/detectores/ablaciones/sin_bloque.csv`. Las cifras son la mediana de los 6 cambios y cuántos detectores
+mejoran al quitar el bloque.
+
+- **En A estorban T6, T9, T2 y T8.**
+  - Quitar T6 mejora los 6 detectores (+0,060).
+  - T9, el del salto de signo de la validación 2, es el segundo que más estorba (+0,044, 4 de 6).
+- **En A ayudan T1b, T1 y T3**, todos con menos de 0,04.
+- **En B estorban T9, T8, T2 y T3**, todos con menos de 0,016.
+- **En B ayudan T5, T6, T4, T1, T7 y T1b.**
+  - El que más ayuda es T5, vol implícita: −0,075, 0 de 6 mejoran sin él.
+  - Le siguen T6 (−0,038) y T4, inflación esperada (−0,034, 0 de 6).
+  - T7, divisas y materias primas, ayuda poco (−0,017).
+- **Dos de los tres bloques exclusivos de B** (T5 y T4) están entre los tres que más ayudan.
+- **T6 cambia de papel según la pista:** estorba en A y ayuda en B.
 
 ### 4.5 Media simple frente a PCA
 
-**PENDIENTE DE RESULTADOS.** La media mejora a la PCA en [k de 6] detectores en A y en [k de 6] en B. En A, la
-comparación solo afecta a 5 de los 7 termómetros: en T3 y T6 la media y la PC1 coinciden (§3).
+`results/detectores/ablaciones/media.csv`.
+
+- **En A, la media mejora a la PCA en 4 de 6 detectores.** La mediana pasa de 0,402 a 0,468 (+0,066), sin llegar a
+  la de `REF-N` (0,504). La comparación solo afecta a 5 de los 7 termómetros: en T3 y T6 la media y la PC1
+  coinciden (§3).
+- **En B empatan:** la media mejora en 3 de 6 y la mediana es la misma (0,354). Hay cambios grandes por detector,
+  por ejemplo D08 −0,15.
 
 ## 5. Respuestas
 
-**PENDIENTE DE RESULTADOS.** Una por pregunta del §2: por qué B sí y A no; si la agrupación económica aporta frente
-al azar; qué bloque ayuda o estorba; si la PCA aporta sobre la media.
+1. **¿Por qué B sí y A no?** En parte es estructural. Los bloques que más ayudan en B son la vol implícita (T5) y la
+   inflación esperada (T4), y ninguno de los dos existe en A. A carga además con dos bloques que estorban de forma
+   clara, T6 y T9. El T9 es el del salto de signo. El tamaño de la muestra no se puede separar con este diseño: B
+   tiene menos crisis.
+2. **¿Aporta la agrupación económica frente al azar?** No en A: queda en el percentil 83 y cualquier partición
+   comprimida pierde frente a no comprimir. En B aporta, por poco: percentil 93, margen de 0,012, y parte de ese
+   margen puede venir de la desventaja de `AZAR` (§4.3). Es un indicio débil, coherente con el de ADR-008 §8.
+3. **¿Qué bloque ayuda y cuál estorba?** Lo resume el §4.4. Es descriptivo y no hay contraste formal.
+4. **¿Aporta la PCA sobre la media?** No. En A la media simple es mejor en 4 de 6 detectores y en B empata. Lo que
+   comprime cada bloque no gana nada con la PC1.
+
+Las cuatro respuestas apuntan en el mismo sentido que el MCS (§4.1). En A, el menú T pierde frente a N, frente a
+`VOL_P90` y frente a repartir las columnas al azar. En B hay una señal pequeña, ligada a bloques que A no tiene, que
+no se separa de `VOL_P90`.
 
 ## 6. Decisión sobre el menú T
 
-**PENDIENTE DE RESULTADOS.** Se elige una opción cuando estén los §4.2–4.5:
+**Pendiente del usuario.** Opciones definidas antes de ver los resultados:
 
 1. **Descartar el menú T.** El ranking v3 se queda con el menú N (y U, P y R donde apliquen). El menú T se reporta
    como resultado negativo pre-registrado: «con el pool completo, lo simple sigue ganando». Encaja si (b) no se
@@ -144,9 +186,27 @@ al azar; qué bloque ayuda o estorba; si la PCA aporta sobre la media.
    resultados de §4.4, así que no puede entrar en el ranking principal ni usarse para revisar el veredicto del
    ADR-008. Si se ejecuta, se reporta aparte con esa etiqueta.
 
-Decisión: **PENDIENTE DE RESULTADOS.**
+Cómo encajan los resultados con cada opción, según las reglas escritas arriba antes de verlos:
+
+- **Opción 1.** Su condición se cumple, porque el indicio de B no resiste frente a `VOL_P90` (§4.1).
+- **Opción 2.** Sus dos condiciones se cumplen a medias:
+  - (b) se cumple en B, pero por 0,012;
+  - la explicación es en parte estructural (T5 y T4).
+- **Opción 3.** Solo puede ser un anexo exploratorio.
+
+Decisión: **pendiente del usuario.**
 
 ## 7. Consecuencias
 
-**PENDIENTE DE RESULTADOS.** Qué cambia en el ranking v3 (2.7), en los detectores supervisados D16 y D17 (que usan
-el menú T, ADR-008 §3) y en la memoria del TFM.
+Dependen de la decisión del §6.
+
+- **Ranking v3 (2.7).** El ADR-008 §4 pre-registró el menú T como ranking principal v3.
+  - Con la opción 1, el ranking principal pasa al menú N. Hay que declararlo como desviación del pre-registro,
+    justificada por el veredicto del §8 y por este ADR. T se publica como ranking secundario y resultado negativo.
+  - Con la opción 2, el ranking principal sería T en B y N en A.
+- **D16 y D17.** Los supervisados usan los menús T y P (ADR-008 §3). Con las opciones 1 y 2 se mantienen en P y T
+  como categoría aparte, sin peso en el ranking principal. Su evaluación sigue siendo útil, porque responde si un
+  modelo supervisado saca partido de los termómetros.
+- **Memoria del TFM.** El resultado negativo es pre-registrado y se explica bien: comprimir el pool en
+  termómetros por bloque no mejora a los mismos detectores con los datos de siempre. Tampoco supera repartir las
+  columnas al azar en A, y la PCA no aporta sobre la media simple.

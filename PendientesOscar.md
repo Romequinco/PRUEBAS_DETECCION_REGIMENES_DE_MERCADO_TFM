@@ -383,7 +383,9 @@ los menús T y P hay que ampliarlos al pool.
 - [ ] 2.3 D15 jump Shu (B6) y D18 sparse JM (B9, con `jumpmodels.SparseJumpModel`).
 - [ ] 2.4 D16 logit L1 y D17 random forest (B7), entrenados solo con crisis terminadas.
 - [ ] 2.5 Ablaciones y controles (6.5, puntos 4–6; el 4 ya está en el notebook 04 §10). Diseño en la errata
-  del ADR-008 §5.1 (reajuste anual) y resultados en el ADR-009.
+  del ADR-008 §5.1 (reajuste anual) y resultados en el ADR-009. Calculado el 02-11-2026 (1.338 trabajos, 0
+  errores): (b) no se cumple en A (percentil 83) y se cumple por poco en B (93); la media simple iguala o mejora a
+  la PCA. Falta la decisión sobre el menú T (ADR-009 §6).
 - [ ] 2.6 C1 fusión online.
 - [ ] 2.7 Ranking v3, sintéticos rehechos, decisión final, memoria y ADR-010 de resultados.
 - [ ] **CP2.**
