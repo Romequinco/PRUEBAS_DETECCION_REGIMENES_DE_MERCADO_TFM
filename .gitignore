@@ -291,3 +291,9 @@ node_modules/
 *.sqlite
 *.sqlite3
 *.db
+
+# Aumento (notebook 21): filas JSON por trabajo (se consolidan en filas_<P>.csv), logs y cerrojo
+results/sinteticos/aumento/filas/
+results/sinteticos/aumento/*.log*
+results/sinteticos/aumento/.ejecutando
+results/sinteticos/aumento/estado_*.txt
