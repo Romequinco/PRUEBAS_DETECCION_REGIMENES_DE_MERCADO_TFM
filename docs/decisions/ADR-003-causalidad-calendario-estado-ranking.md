@@ -40,7 +40,7 @@ durante la revisión, sino que se elevaron a decisión:
 3. **Ranking sesgado a la inactividad.** `rank_medio` promediaba 5 ejes de los que 3 (trampas,
    switching, estabilidad) los gana un detector que no hace nada: la línea base "siempre crisis" quedaba 4ª en ambas pistas
    con el banco previo a esta ADR (con el banco re-ejecutado queda 5ª por `rank_medio` en ambas,
-   [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §8).
+   [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §9).
 
 ## 2. Decisión
 
@@ -102,7 +102,7 @@ El ranking principal de cada pista pasa a ser un criterio de **detección** expl
 - **Desempate:** menor `switching_rate` y después mayor `label_stability`. La persistencia ya no se
   promedia con la detección.
 - Umbrales explícitos en `regimenes.evaluacion.ranking.DETECTION_DEFAULTS`; sensibilidad
-  documentada en [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §8.
+  documentada en [`14_comparativa`](../../notebooks/14_comparativa.ipynb) §9.
 - Líneas base triviales (siempre crisis, siempre calma, azar diario, azar persistente) quedan al
   fondo por construcción, verificado por test.
 - La frontera de Pareto recall/precisión se publica como vista complementaria. `rank_medio` se

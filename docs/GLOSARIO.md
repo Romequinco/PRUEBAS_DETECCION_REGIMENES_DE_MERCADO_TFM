@@ -142,7 +142,7 @@ Hay que distinguir dos niveles:
   por niveles (precisión que no supera al azar, parpadeo, salida degenerada).
 - **`rank_medio`** (legacy) estaba sesgado hacia la inactividad: la línea base "siempre crisis"
   quedaba 4ª en ambas pistas con el banco previo a ADR-003
-  y 5ª en ambas con el banco re-ejecutado (`14_comparativa` §8). Se conserva solo como columna de
+  y 5ª en ambas con el banco re-ejecutado (`14_comparativa` §9). Se conserva solo como columna de
   comparación (`rank_medio_legacy`, `puesto_legacy`).
 - **Crisis "en ventana" ≠ "evaluadas OOS"**: 18/10 en ventana; 17 (una parcial) / 9 evaluadas OOS.
 - **Utilidad operativa** (fusión): solo sirve para **ordenar** alternativas; su signo no se interpreta.

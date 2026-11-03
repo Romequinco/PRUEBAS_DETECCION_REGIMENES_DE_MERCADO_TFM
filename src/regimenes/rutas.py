@@ -11,7 +11,7 @@ Directorios de datos y resultados (fuera del paquete):
 - ``data/processed``      paneles pistaA/pistaB (gitignored)
 - ``data/sinteticos``     trayectorias sinteticas generadas (gitignored)
 - ``results/benchmark``   salida de ``python -m regimenes.benchmark``
-- ``results/fusion``      subcarpetas d07_d08/ y d02_d06/
+- ``results/fusion``      subcarpetas d07_d08/, d02_d06/, fijas/ y online/ (ADR-011)
 - ``results/detectores``, ``results/sinteticos``, ``results/pseudolive``
 """
 
@@ -37,6 +37,8 @@ RESULTS_BENCHMARK: Path = RESULTS / "benchmark"
 RESULTS_FUSION: Path = RESULTS / "fusion"
 RESULTS_FUSION_D07_D08: Path = RESULTS_FUSION / "d07_d08"
 RESULTS_FUSION_D02_D06: Path = RESULTS_FUSION / "d02_d06"
+RESULTS_FUSION_FIJAS: Path = RESULTS_FUSION / "fijas"
+RESULTS_FUSION_ONLINE: Path = RESULTS_FUSION / "online"
 RESULTS_DETECTORES: Path = RESULTS / "detectores"
 RESULTS_SINTETICOS: Path = RESULTS / "sinteticos"
 RESULTS_PSEUDOLIVE: Path = RESULTS / "pseudolive"
@@ -49,6 +51,7 @@ __all__ = [
     "DATA", "DATA_RAW", "DATA_PROCESSED", "DATA_SINTETICOS",
     "RESULTS", "RESULTS_BENCHMARK", "RESULTS_FUSION",
     "RESULTS_FUSION_D07_D08", "RESULTS_FUSION_D02_D06",
+    "RESULTS_FUSION_FIJAS", "RESULTS_FUSION_ONLINE",
     "RESULTS_DETECTORES", "RESULTS_SINTETICOS", "RESULTS_PSEUDOLIVE",
     "DOCS", "ENV_FILE",
 ]
