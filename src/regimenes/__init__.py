@@ -10,6 +10,7 @@ mapa del codigo y pipeline 00-23 en docs/fase1/README.md):
 - ``regimenes.evaluacion``   el juez: walk-forward, metricas y ranking de deteccion (ADR-003).
 - ``regimenes.benchmark``    ejecucion reanudable con cache por huella (``python -m regimenes.benchmark``).
 - ``regimenes.fusion``       maquina causal normal/vigilancia/confirmado.
+- ``regimenes.regimen``      tool provisional ``get_regimen(fecha)`` (ADR-005 §2.1; config ``configs/regimen.yaml``).
 - ``regimenes.viz``          estilo de casa para figuras.
 - ``regimenes.sinteticos``   generadores sinteticos con regimen conocido, su validacion y el laboratorio.
 """

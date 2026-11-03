@@ -1,0 +1,32 @@
+# configs/regimen.yaml — configuración PROVISIONAL de la tool get_regimen(fecha)
+# (ADR-005 §2.1). La lee regimenes.regimen; es el ÚNICO sitio donde se fija qué
+# detector alimenta la tool. La versión definitiva saldrá de la futura ADR-006
+# (notebook 22_decision_final); hasta entonces esto es un sustituto declarado.
+
+provisional: true
+
+# Directorio de salida del benchmark v2 (relativo a la raíz del repo). De ahí se
+# leen panels/{pista}_{detector}.parquet (walk-forward OOS) y
+# metrics/{pista}_{detector}.csv (n_states y cache_fingerprint).
+directorio_benchmark: results/benchmark
+
+# Detector por pista: el PRIMERO del MCS diario de v2 en cada pista
+# (fuente: results/benchmark/vara/mcs_diario.csv, columna p_mcs = 1.0 /
+# último en eliminarse; pérdida 1 − J de Youden, bloque 66 en A y 50 en B).
+# Se fija aquí a mano para que un recálculo del MCS no cambie la tool en
+# silencio; tests/regimen comprueba que sigue coincidiendo con el CSV.
+detector_por_pista:
+  A: D06   # GARCH-t (garch_t_vol), MCS A: perdida_media 0.550
+  B: D05   # MCS B: perdida_media 0.610
+
+# Regla de pista por fecha: B desde el inicio de su OOS (primera fecha del panel
+# del detector de B); A antes. Con pista explícita no se aplica la regla.
+pista_preferente: B
+pista_respaldo: A
+
+# Estados expuestos. Provisional: {calma, crisis}. «crisis» = estado canónico
+# n_states - 1 del detector (RegimeDetector.crisis_state); cualquier otro
+# estado se publica como «calma».
+# HUECO DOCUMENTADO: «alerta» (vigilancia de regimenes.fusion) queda para la
+# ADR-006; no se inventan umbrales aquí.
+estados: [calma, crisis]
