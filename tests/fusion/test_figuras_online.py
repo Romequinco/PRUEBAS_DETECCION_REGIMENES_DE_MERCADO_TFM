@@ -17,9 +17,13 @@ import numpy as np  # noqa: E402
 from regimenes.benchmark import panorama as pn  # noqa: E402
 from regimenes.fusion import figuras_online as fo  # noqa: E402
 from regimenes.fusion import online as on  # noqa: E402
+from regimenes.fusion import vara  # noqa: E402
 
 HAY_RESULTADOS = all((on.directorio_resultados() / f"criterio_{p}.json").is_file() for p in fo.PISTAS) and (
     on.directorio_resultados() / "resumen.json").is_file()
+# Algunas tablas y figuras leen también los paneles OOS (no versionados) a través de vara.
+HAY_RESULTADOS = HAY_RESULTADOS and all(
+    (vara.PANELES_V2 / f"{p}_D01.parquet").is_file() for p in fo.PISTAS)
 
 
 class TestPaleta(unittest.TestCase):

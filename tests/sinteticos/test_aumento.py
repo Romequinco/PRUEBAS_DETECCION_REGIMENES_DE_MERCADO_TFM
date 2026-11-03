@@ -18,6 +18,7 @@ from regimenes.sinteticos.aumento.config import config_aumento, detectores_pista
 from regimenes.sinteticos.aumento.envoltorio import DetectorAumentado, fabrica, fechas_previas
 
 HAY_BENCH = (rutas.RESULTS_BENCHMARK / "panels" / "B_D01.parquet").exists()
+HAY_PROCESSED_B = (rutas.DATA_PROCESSED / "pistaB_diaria.parquet").exists()
 
 
 # --------------------------------------------------------------------------- configuracion
@@ -585,6 +586,7 @@ def test_figuras_con_tablas_vacias_y_de_juguete():
 
 
 @pytest.mark.datos
+@pytest.mark.skipif(not HAY_PROCESSED_B, reason="sin data/processed de la pista B")
 def test_fig_diseno_con_registro_de_juguete():
     import matplotlib
 
