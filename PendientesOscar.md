@@ -398,12 +398,15 @@ el núcleo es N, con U para los univariantes)
   ADR-010 §9: «¿aporta P o R frente a N?».
   - **Resultado (03-11-2026):** aporta en las dos pistas por el criterio §5 (D18-P en A; D10-R y D18-P en B),
     pero ningún detector de P o R supera a la cabeza de N (D06 en A, D05 en B). Supervisados: no superan el techo.
-- [ ] **CP2.** Detector o detectores candidatos para `get_regimen` y veredicto final sobre el pool.
+- [x] **CP2 (03-11-2026).** Principal: D06 en A y D05 en B (cabeza del MCS diario). Se añade un contexto
+  para los agentes: probabilidad de la fusión online, detectores en crisis y «confianza» (acuerdo con el
+  principal). El pool sin comprimir no entra en el núcleo; los generadores no se amplían a P.
 
 **Fase 3 · Cierre**
 
 - [ ] 3.1 Integrar `feat/detectores-pool` en `main` (PR).
-- [ ] 3.2 `get_regimen` provisional con el candidato de CP2 (contrato para los agentes, ADR-005).
+- [x] 3.2 `get_regimen` provisional con el candidato de CP2 y el bloque `contexto` (contrato para los
+  agentes, ADR-005).
 - [ ] 3.3 Terminar los sintéticos (notebook 21, aumento). Los generadores solo se amplían a P si la 2.7 dice que P
   aporta.
 - [ ] 3.4 Afinar el detector final, con XAI: atribución por variable de N y explicación de cada alarma.

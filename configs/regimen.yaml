@@ -10,7 +10,9 @@ provisional: true
 # metrics/{pista}_{detector}.csv (n_states y cache_fingerprint).
 directorio_benchmark: results/benchmark
 
-# Detector por pista: el PRIMERO del MCS diario de v2 en cada pista
+# Detector por pista (CP2, decidido por el usuario el 03-11-2026 tras los ADR-010
+# y ADR-011): el PRIMERO del MCS diario en cada pista, que se mantiene también
+# con las variantes del pool y frente a las fusiones.
 # (fuente: results/benchmark/vara/mcs_diario.csv, columna p_mcs = 1.0 /
 # último en eliminarse; pérdida 1 − J de Youden, bloque 66 en A y 50 en B).
 # Se fija aquí a mano para que un recálculo del MCS no cambie la tool en
@@ -30,3 +32,17 @@ pista_respaldo: A
 # HUECO DOCUMENTADO: «alerta» (vigilancia de regimenes.fusion) queda para la
 # ADR-006; no se inventan umbrales aquí.
 estados: [calma, crisis]
+
+# Contexto para los agentes (opción 3 de CP2): junto al detector principal se
+# publica una segunda opinión y el grado de acuerdo del resto de detectores.
+# Todo sale de resultados ya calculados y causales (ADR-011): no se recalcula nada.
+# - senales_detectores: señal binaria de crisis de los candidatos no supervisados
+#   (15 en A, 17 en B), guardada por las fusiones fijas (notebook 15).
+# - prob_consenso: probabilidad de crisis de la fusión online (notebook 17), con
+#   pesos aprendidos solo con crisis ya terminadas; columna = variante principal.
+# Si faltan los ficheros, get_regimen responde igual con contexto = None.
+contexto:
+  senales_detectores: results/fusion/fijas/senales_{pista}.parquet
+  prob_consenso: results/fusion/online/pbar_{pista}.parquet
+  columna_consenso: ONLINE_principal_eta10
+  umbral_consenso: 0.5

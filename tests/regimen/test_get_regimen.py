@@ -255,3 +255,80 @@ def test_reales_crisis_conocidas_y_cambio_de_detector() -> None:
     assert r["detector"] == "D10" and r["pista"] == "B"
     with pytest.raises(FechaFueraDeRango):
         get_regimen("1960-01-04")
+
+
+# --------------------------------------------------------------------------- #
+# Contexto: consenso de detectores y fusión online (opción 3 de CP2)
+# --------------------------------------------------------------------------- #
+def _config_contexto(bench: dict, prob: float = 0.8) -> dict:
+    """Escribe señales y probabilidad de juguete para la pista B y devuelve la config."""
+    idx = bench["paneles"][("B", "X2")].index
+    dir_ctx = bench["dir"] / "contexto"
+    dir_ctx.mkdir(exist_ok=True)
+    senales = pd.DataFrame(
+        {"X2": bench["paneles"][("B", "X2")]["state"].astype(bool), "Y1": True, "Y2": False,
+         "PAR_Y1>Y2": True},  # una fusión: no cuenta como detector
+        index=idx,
+    )
+    senales.to_parquet(dir_ctx / "senales_B.parquet")
+    pd.DataFrame({"C": prob}, index=idx).to_parquet(dir_ctx / "pbar_B.parquet")
+    return {
+        **CONFIG_JUGUETE,
+        "contexto": {
+            "senales_detectores": str(dir_ctx / "senales_{pista}.parquet"),
+            "prob_consenso": str(dir_ctx / "pbar_{pista}.parquet"),
+            "columna_consenso": "C",
+            "umbral_consenso": 0.5,
+        },
+    }
+
+
+@pytest.mark.parametrize("prob", [0.8, 0.2])
+def test_contexto_cuenta_acuerdo_y_lectura(bench: dict, prob: float) -> None:
+    cfg = _config_contexto(bench, prob)
+    for fecha in pd.bdate_range("2000-03-01", "2000-06-30")[::9]:
+        r = get_regimen(fecha, directorio=bench["dir"], config=cfg)
+        ctx = r["contexto"]
+        crisis = r["estado"] == "crisis"
+        # X2 (el principal) e Y1 en crisis según toque; Y2 nunca; la fusión no cuenta.
+        assert ctx["detectores_total"] == 3
+        assert ctx["ids_en_crisis"] == (["X2", "Y1"] if crisis else ["Y1"])
+        assert ctx["confianza"] == pytest.approx(2 / 3)
+        assert ctx["estado_consenso"] == ("crisis" if prob >= 0.5 else "calma")
+        assert ctx["coincide_consenso"] == (crisis == (prob >= 0.5))
+        assert ctx["lectura"] == {
+            (True, True): "crisis respaldada", (True, False): "crisis sin respaldo",
+            (False, True): "calma con aviso del consenso", (False, False): "calma respaldada",
+        }[(crisis, prob >= 0.5)]
+
+
+def test_contexto_opcional_y_ausente(bench: dict) -> None:
+    cfg = _config_contexto(bench)
+    assert get_regimen("2000-05-02", directorio=bench["dir"], config=cfg, contexto=False)["contexto"] is None
+    # Pista A: no hay ficheros de contexto → respuesta normal con contexto None.
+    assert get_regimen("2000-01-10", directorio=bench["dir"], config=cfg)["contexto"] is None
+    # Sin bloque en la config (la de juguete) → None.
+    assert _q(bench, "2000-05-02")["contexto"] is None
+
+
+_CONTEXTO_REAL = all(
+    (rutas.RESULTS / "fusion" / sub / f"{nombre}_{p}.parquet").is_file()
+    for sub, nombre in (("fijas", "senales"), ("online", "pbar")) for p in ("A", "B")
+)
+
+
+@pytest.mark.resultados
+@_reales
+@pytest.mark.skipif(not _CONTEXTO_REAL, reason="faltan results/fusion/{fijas,online}")
+def test_reales_contexto_usa_los_candidatos_del_adr011() -> None:
+    from regimenes.fusion import vara
+
+    limpiar_cache()
+    for fecha, pista in (("2008-10-10", "A"), ("2020-03-16", "B"), ("2015-06-01", "B")):
+        ctx = get_regimen(fecha)["contexto"]
+        assert ctx is not None
+        assert ctx["detectores_total"] == len(vara.candidatos(pista))
+        assert set(ctx["ids_en_crisis"]) <= set(vara.candidatos(pista))
+        assert 0.0 <= ctx["prob_crisis_consenso"] <= 1.0
+        assert 0.0 <= ctx["confianza"] <= 1.0
+    assert get_regimen("2008-10-10")["contexto"]["lectura"] == "crisis respaldada"

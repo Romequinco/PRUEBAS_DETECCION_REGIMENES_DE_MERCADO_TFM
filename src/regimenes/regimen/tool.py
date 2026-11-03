@@ -64,6 +64,26 @@ config=None) -> dict`` con las claves:
   (la cuenta real podría ser mayor). La racha no cruza de pista.
 - ``estados_posibles``, ``provisional`` y ``fuente`` (ruta del panel, su SHA-256,
   la huella de caché del benchmark y la ruta de la configuración).
+- ``contexto`` (opción 3 de CP2, 03-11-2026): segunda opinión y acuerdo del resto
+  de detectores en ``fecha_dato``, o ``None`` si faltan sus ficheros o se pide
+  ``contexto=False``. Claves:
+
+  - ``prob_crisis_consenso``: probabilidad de crisis de la fusión online
+    (ADR-011 §4, notebook 17), con pesos aprendidos solo con crisis terminadas;
+    ``estado_consenso`` es ``crisis`` si ``>= umbral_consenso`` (0,5).
+  - ``detectores_en_crisis``, ``detectores_total`` e ``ids_en_crisis``: cuántos
+    candidatos no supervisados (15 en A, 17 en B) marcan crisis ese día.
+  - ``confianza``: fracción de esos candidatos que dicen lo mismo que el
+    principal (en crisis si el principal está en crisis; en calma si no). Es
+    **acuerdo entre detectores**, no una probabilidad calibrada.
+  - ``coincide_consenso`` y ``lectura``: ``crisis respaldada``, ``crisis sin
+    respaldo``, ``calma con aviso del consenso`` o ``calma respaldada``, según
+    coincidan el principal y el consenso.
+  - ``fuente``: rutas y SHA-256 de los dos ficheros.
+
+  Es causal por construcción: las señales son los paneles OOS de cada candidato
+  y la fusión online solo usa pesos fijados con información anterior (lo
+  comprueban ``tests/fusion``); aquí solo se lee la fila de ``fecha_dato``.
 
 Fechas: fines de semana y festivos se resuelven al último día hábil del panel
 ``<= fecha``. Se lanza :class:`FechaFueraDeRango` si la fecha es anterior al
@@ -98,6 +118,14 @@ from regimenes import rutas
 CONFIG_REGIMEN: Path = rutas.CONFIGS / "regimen.yaml"
 ESTADOS_PROVISIONALES: tuple[str, ...] = ("calma", "crisis")
 _CLAVES_CONFIG = ("directorio_benchmark", "detector_por_pista", "pista_preferente", "pista_respaldo")
+# Columnas de fusiones en senales_{pista}.parquet de las fijas; el resto son los candidatos.
+_PREFIJOS_FUSION = ("PAR_", "TRAS_", "CONF_", "VOTO_", "OR_", "AND_")
+LECTURAS = {
+    (True, True): "crisis respaldada",
+    (True, False): "crisis sin respaldo",
+    (False, True): "calma con aviso del consenso",
+    (False, False): "calma respaldada",
+}
 
 
 class FechaFueraDeRango(ValueError):
@@ -244,8 +272,94 @@ def _cargar_panel(directorio: Path, pista: str, detector: str) -> _Panel:
 
 
 def limpiar_cache() -> None:
-    """Vacía la caché en memoria de paneles (p. ej. tras regenerar el benchmark)."""
+    """Vacía la caché en memoria de paneles y contexto (p. ej. tras regenerar resultados)."""
     _cargar_panel_cacheado.cache_clear()
+    _cargar_contexto_cacheado.cache_clear()
+
+
+# --------------------------------------------------------------------------- #
+# Contexto: consenso de detectores y fusión online (opción 3 de CP2)
+# --------------------------------------------------------------------------- #
+@dataclass(frozen=True)
+class _Contexto:
+    senales: pd.DataFrame   # bool, una columna por candidato
+    prob: pd.Series         # probabilidad de crisis de la fusión online
+    ruta_senales: Path
+    ruta_prob: Path
+    sha_senales: str
+    sha_prob: str
+
+
+@lru_cache(maxsize=8)
+def _cargar_contexto_cacheado(
+    ruta_senales: str, ruta_prob: str, columna: str, _firma: tuple[int, int, int, int]
+) -> _Contexto:
+    sen = pd.read_parquet(ruta_senales)
+    sen = sen[[c for c in sen.columns if not str(c).startswith(_PREFIJOS_FUSION)]].astype(bool)
+    sen.index = pd.DatetimeIndex(sen.index).normalize()
+    pbar = pd.read_parquet(ruta_prob)
+    if columna not in pbar.columns:
+        raise ValueError(f"{ruta_prob}: falta la columna {columna!r} de la fusión online.")
+    prob = pbar[columna].astype(float)
+    prob.index = pd.DatetimeIndex(prob.index).normalize()
+    return _Contexto(
+        senales=sen,
+        prob=prob,
+        ruta_senales=Path(ruta_senales),
+        ruta_prob=Path(ruta_prob),
+        sha_senales=_sha256(Path(ruta_senales)),
+        sha_prob=_sha256(Path(ruta_prob)),
+    )
+
+
+def _cargar_contexto(cfg: dict, pista: str) -> _Contexto | None:
+    ctx = cfg.get("contexto")
+    if not ctx:
+        return None
+    rutas_ctx = [
+        rutas.ROOT / str(ctx[k]).format(pista=pista) for k in ("senales_detectores", "prob_consenso")
+    ]
+    if not all(r.is_file() for r in rutas_ctx):
+        return None
+    s1, s2 = (r.stat() for r in rutas_ctx)
+    firma = (s1.st_size, s1.st_mtime_ns, s2.st_size, s2.st_mtime_ns)
+    return _cargar_contexto_cacheado(
+        str(rutas_ctx[0].resolve()),
+        str(rutas_ctx[1].resolve()),
+        str(ctx.get("columna_consenso", "ONLINE_principal_eta10")),
+        firma,
+    )
+
+
+def _contexto(cfg: dict, pista: str, fecha_dato: pd.Timestamp, es_crisis: bool) -> dict | None:
+    """Bloque ``contexto`` de la respuesta para la sesión ``fecha_dato`` (ver el módulo)."""
+    ctx = _cargar_contexto(cfg, pista)
+    if ctx is None or fecha_dato not in ctx.senales.index or fecha_dato not in ctx.prob.index:
+        return None
+    prob = float(ctx.prob.loc[fecha_dato])
+    if not np.isfinite(prob):
+        return None
+    fila = ctx.senales.loc[fecha_dato]
+    en_crisis = [str(c) for c in fila.index[fila.to_numpy()]]
+    total = int(fila.size)
+    coinciden = len(en_crisis) if es_crisis else total - len(en_crisis)
+    consenso_crisis = bool(prob >= float(cfg["contexto"].get("umbral_consenso", 0.5)))
+    return {
+        "prob_crisis_consenso": prob,
+        "estado_consenso": "crisis" if consenso_crisis else "calma",
+        "detectores_en_crisis": len(en_crisis),
+        "detectores_total": total,
+        "ids_en_crisis": en_crisis,
+        "confianza": coinciden / total if total else None,
+        "coincide_consenso": consenso_crisis == es_crisis,
+        "lectura": LECTURAS[(es_crisis, consenso_crisis)],
+        "fuente": {
+            "senales_detectores": _mostrar(ctx.ruta_senales),
+            "sha256_senales": ctx.sha_senales,
+            "prob_consenso": _mostrar(ctx.ruta_prob),
+            "sha256_prob": ctx.sha_prob,
+        },
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -295,6 +409,7 @@ def get_regimen(
     detector: str | None = None,
     directorio: str | Path | None = None,
     config: Mapping[str, Any] | str | Path | None = None,
+    contexto: bool = True,
 ) -> dict:
     """Régimen publicado hasta ``fecha`` según el panel walk-forward OOS del detector.
 
@@ -312,13 +427,15 @@ def get_regimen(
         el de la configuración.
     config : dict | ruta | None
         Configuración; por defecto ``configs/regimen.yaml``.
+    contexto : bool
+        ``False`` omite el bloque de consenso (``contexto`` = ``None``).
 
     Returns
     -------
     dict con ``fecha``, ``fecha_dato``, ``pista``, ``detector``, ``estado``,
     ``estado_detector``, ``prob_crisis``, ``dias_en_estado``,
-    ``dias_en_estado_censurado``, ``estados_posibles``, ``provisional`` y
-    ``fuente`` (ver el docstring del módulo).
+    ``dias_en_estado_censurado``, ``estados_posibles``, ``provisional``,
+    ``fuente`` y ``contexto`` (ver el docstring del módulo).
 
     Raises
     ------
@@ -367,4 +484,5 @@ def get_regimen(
             "huella_cache": panel.huella_cache,
             "config": _ruta_config(config),
         },
+        "contexto": _contexto(cfg, pista_ef, panel.index[i], es_crisis) if contexto else None,
     }

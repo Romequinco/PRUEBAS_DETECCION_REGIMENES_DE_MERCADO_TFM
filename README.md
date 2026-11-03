@@ -18,7 +18,8 @@ La Fase 1 no busca un detector concreto, sino el **marco
 de evaluación causal y comparable** que juzga a muchos detectores, la **base de datos sólida** sobre la que
 hacerlo y, a partir de ahí, un sistema de alerta + confirmación validado con datos sintéticos y en
 pseudolive. Su salida es la tool **`get_regimen(fecha)`**: estado, probabilidad y días en el estado, con
-solo información publicada hasta `fecha`.
+solo información publicada hasta `fecha`, más un contexto para los agentes (consenso de la fusión online y
+acuerdo del resto de detectores).
 
 > **En una línea:** *12 detectores de 7 familias (Capa 1) → no eran comparables (cada uno con sus
 > datos y su periodo) → datos re-basados en dos pistas congeladas → los 12 re-evaluados con un ranking
