@@ -1,0 +1,5 @@
+pista,grupo,lectura,id,score_H1,nivel_H2,score_H2,score_oos,nivel_oos
+B,tras_aviso,mejor_H1,TRAS_D12>D05,0.7567567567567568,0.0,0.35130970724191063,0.476878612716763,0
+B,tras_aviso,mejor_oos,TRAS_D11>D05,,,,0.6220450014240957,0
+B,confirmado,mejor_H1,CONF_D05,0.719626168224299,0.0,0.5907692307692308,0.6332205384728556,0
+B,confirmado,mejor_oos,CONF_D05,,,,0.6332205384728556,0

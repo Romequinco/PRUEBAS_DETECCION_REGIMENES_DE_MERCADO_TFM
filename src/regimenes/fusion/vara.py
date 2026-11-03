@@ -13,7 +13,7 @@ nada ni escribe en disco.
 - :func:`mcs`: MCS al 10 % con los baselines de la vara y bloque fijo (§5.1), deduplicando
   señales idénticas.
 - :func:`mejor_individual`: el primero de los candidatos en el orden de un tramo (I*).
-- :func:`utilidad`: utilidad operativa de los notebooks 15 y 16 (lectura sin peso, §5.1).
+- :func:`utilidad`: utilidad operativa de las fusiones antiguas D7+D8 y D2+D6 (lectura sin peso, §5.1).
 
 Las cargas se cachean por pista (los paneles no cambian durante una sesión); las funciones
 devuelven copias para que el llamador pueda modificarlas.
@@ -163,7 +163,8 @@ def ventanas(pista: str) -> dict[str, tuple[str, str]]:
 # Mitades (§5.2)
 # --------------------------------------------------------------------------- #
 def mitades(index: pd.DatetimeIndex) -> tuple[pd.DatetimeIndex, pd.DatetimeIndex]:
-    """H1 (selección) y H2 (evaluación): corte en ⌊n/2⌋ sesiones, como el notebook 16.
+    """H1 (selección) y H2 (evaluación): corte en ⌊n/2⌋ sesiones, como el control por mitades
+    de la antigua fusión D2+D6.
 
     A: 7.066 + 7.067 sesiones; B: 2.029 + 2.030."""
     index = pd.DatetimeIndex(index)
@@ -396,7 +397,7 @@ def juez(pista: str) -> Iterator[None]:
 
 
 def utilidad(senales: pd.DataFrame, pista: str, tramo: pd.DatetimeIndex | None = None) -> pd.DataFrame:
-    """``maquina.signal_scores`` (utilidad operativa de los notebooks 15 y 16) por columna.
+    """``maquina.signal_scores`` (utilidad operativa de las fusiones antiguas D7+D8 y D2+D6) por columna.
 
     Como ``maquina.period_scorecard``: si en el tramo no cae ninguna ventana trampa (2013 está en
     H2 en A y en H1 en B), la utilidad se calcula sin ese término (``trampas_en_tramo=False``)."""

@@ -149,7 +149,7 @@ la complejidad (D11, D12) sigue sin pagarse, como ya indicaba la Capa 1.
 **Fusión (Fase E).** D2 alerta + D6 confirma mejora a D2 y a D6 aislados en ambas pistas, pero **no
 anticipa** el inicio de las crisis; D2 y D7 quedan prácticamente empatados como alerta y el control por
 mitades elige otras alertas. La capa de alerta no añade anticipación: la regla a congelar se decide
-en `22_decision_final` (futura ADR-006) antes del pseudolive (detalle en [`16_fusion_d02_d06`](notebooks/16_fusion_d02_d06.ipynb)).
+en `22_decision_final` (futura ADR-006) antes del pseudolive (detalle en los antecedentes de [`15_fusiones_fijas`](notebooks/15_fusiones_fijas.ipynb), que con la vara del ranking concluye que ninguna fusión fija elegida sin mirar el resultado mejora al mejor detector solo, [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md)).
 
 **Laboratorio con régimen conocido (notebook 20).** Simulación controlada con `gaussiano_regimen`,
 `var_regimen` y `garch_regimen` (18 celdas por pista, 4356 trabajos), resultados en

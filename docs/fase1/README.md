@@ -29,7 +29,7 @@ las fases 1–5 del TFM).
 | **Datos** | `00_descarga` → `01_eda` | `data/raw/` + informe EDA |
 | **Features** | `02_diseno_preprocesado` → `03_preprocesado` → `04_termometros` | `data/processed/pista{A,B}_{diaria,mensual}.parquet` + labels; `pista{A,B}_termometros.parquet` (menú T, ADR-008) |
 | **D — detectores** | `05_protocolo_evaluacion` → `14_comparativa` → `06`–`12` (una familia cada uno) · `13_familia_F8_supervisado` (esqueleto) | `results/benchmark/` (métricas, ranking, paneles OOS) + `results/benchmark/vara/` + `results/detectores/` (menús N y T en `menus/`) |
-| **E — fusión** | `15_fusion_d07_d08` · `16_fusion_d02_d06` · `17_fusion_online` (esqueleto) | `results/fusion/` |
+| **E — fusión** | `15_fusiones_fijas` · `17_fusion_online` | `results/fusion/` |
 | **S — sintéticos** | `18_sinteticos_generadores` → `19_sinteticos_validacion` → `20_sinteticos_laboratorio` → `21_sinteticos_aumento` | `18`: ajusta los 10 generadores por pista y guarda trayectorias con régimen conocido en `data/sinteticos/<generador>/pista<X>/` (`trayectorias.parquet` con la cadena simulada y `trayectorias_impuesto.parquet` con la secuencia impuesta común) y fichas de ajuste, historial de convergencia y tablas de sanidad (`sanidad_*.csv`) en `results/sinteticos/generadores/`. Mide sanidad, no admite generadores (eso es `19`). `19`: valida cada generador contra el tramo real de entrenamiento (fidelidad, condicionamiento, discriminador, memorización, utilidad TSTR) y emite el veredicto por niveles en `results/sinteticos/validacion/`. `20`: laboratorio de detectores con régimen conocido (simulación controlada con `gaussiano_regimen`, `var_regimen` y `garch_regimen`; CLI `python -m regimenes.sinteticos.laboratorio`) en `results/sinteticos/laboratorio/`. `21`: aumento real + sintético con pre-registro (`configs/sinteticos.yaml` → `aumento`, 2026-10-15), paquete `regimenes.sinteticos.aumento` (CLI `python -m regimenes.sinteticos.aumento`) y cálculo parcial reanudable (sesiones S1–S3 hechas) en `results/sinteticos/aumento/` |
 | **F — cierre** | `22_decision_final` → `23_pseudolive` | `22`: decisión final del detector de régimen y contrato de `get_regimen` (futura ADR-006); `23`: validación de la tool sobre datos no usados en `results/pseudolive/` (esqueletos) |
 
@@ -52,9 +52,9 @@ las fases 1–5 del TFM).
 | 12 | [`12_familia_F7_deep`](../../notebooks/12_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
 | 13 | [`13_familia_F8_supervisado`](../../notebooks/13_familia_F8_supervisado.ipynb) | D | D16 logit L1 · D17 random forest, entrenados solo con crisis terminadas; categoría supervisada aparte del ranking no supervisado (esqueleto) |
 | 14 | [`14_comparativa`](../../notebooks/14_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
-| 15 | [`15_fusion_d07_d08`](../../notebooks/15_fusion_d07_d08.ipynb) | E | D7 alerta + D8 confirma |
-| 16 | [`16_fusion_d02_d06`](../../notebooks/16_fusion_d02_d06.ipynb) | E | selección auditable: D2 alerta + D6 confirma |
-| 17 | [`17_fusion_online`](../../notebooks/17_fusion_online.ipynb) | E | C1: agregación online de los detectores con pesos mensuales según acierto pasado, frente a la regla fija D2+D6 y al mejor individual (esqueleto) |
+| 15 | [`15_fusiones_fijas`](../../notebooks/15_fusiones_fijas.ipynb) | E | fusiones fijas del [ADR-011](../decisions/ADR-011-preregistro-fusiones.md): antecedentes D7+D8 y D2+D6 y las tres familias (alerta→confirmación, votación k-de-n, OR/AND), elegidas en H1 y evaluadas en H2 con la vara de los individuales |
+| 16 | — | | libre: el antiguo 16 (D2+D6) se unificó en el 15 (ADR-011 §7.3) |
+| 17 | [`17_fusion_online`](../../notebooks/17_fusion_online.ipynb) | E | C1: agregación online de los detectores con pesos mensuales según acierto pasado, frente a la mejor fusión fija F\*, la media simple, la votación por mayoría y el mejor individual (ADR-011) |
 | 18 | [`18_sinteticos_generadores`](../../notebooks/18_sinteticos_generadores.ipynb) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 19) |
 | 19 | [`19_sinteticos_validacion`](../../notebooks/19_sinteticos_validacion.ipynb) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
 | 20 | [`20_sinteticos_laboratorio`](../../notebooks/20_sinteticos_laboratorio.ipynb) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 19): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
@@ -86,12 +86,12 @@ versiones):
   versionadas, comprobando su procedencia contra `manifest.json`.
 - `06`–`12` verifican la huella (`run_benchmark(cache_only=True)`) **y** que el `ranking*.csv` que
   escribe `14_comparativa` corresponde a esas métricas; si no, fallan pidiendo re-ejecutar 14. Por
-  eso, tras un benchmark nuevo, el orden es `05` → `14` → `06`–`12` → `15`–`16`.
-- `15_fusion_d07_d08` lee los paneles OOS directamente (`load_panel`) **sin** verificar la huella, y
-  `16_fusion_d02_d06` recurre al cribado versionado si faltan paneles: con una caché obsoleta no
-  fallan, así que hay que asegurarse antes de que el benchmark está vigente.
+  eso, tras un benchmark nuevo, el orden es `05` → `14` → `06`–`12` → `15`.
+- `15_fusiones_fijas` solo lee `results/fusion/fijas/`, que escribe `python -m regimenes.fusion.fijas ejecutar`
+  a partir de los paneles OOS **sin** verificar la huella: con una caché obsoleta no falla, así que hay que
+  asegurarse antes de que el benchmark está vigente.
 
-`make notebooks` ejecuta 00–16 en orden numérico: sirve cuando caché y ranking ya son coherentes;
+`make notebooks` ejecuta 00–16 en orden numérico (hoy no hay 16): sirve cuando caché y ranking ya son coherentes;
 tras un benchmark nuevo, ejecuta antes `14_comparativa` a mano. Los paneles OOS
 (`results/benchmark/panels/*.parquet`) no se versionan: se regeneran con el benchmark.
 Los notebooks 18–20 (sintéticos) no entran en `make notebooks`: necesitan `data/sinteticos/`
@@ -129,7 +129,7 @@ datos ([ADR-001](../decisions/ADR-001-rebase-datos.md)); las posteriores se nomb
 | 4 | Diseño + preprocesado causal v2 | ✅ notebooks 02–03 |
 | D | Re-evaluar D01–D12 sobre `benchmark_spec.yaml` con lags de publicación, propagación de estado y ranking por detección | ✅ benchmark completo (24/24, caché verificada) · [ADR-003](../decisions/ADR-003-causalidad-calendario-estado-ranking.md) · notebooks 05–14 |
 | — | Paquete único `regimenes` y un notebook por familia | ✅ [ADR-004](../decisions/ADR-004-unificacion.md) |
-| E | Fusión alerta + confirmación | 🟡 D2+D6 seleccionado; regla final pendiente (notebooks 15–16; fusión online C1 en el 17, esqueleto) |
+| E | Fusión alerta + confirmación | 🟡 fusiones fijas: no aportan frente al mejor detector solo (notebook 15, ADR-011); fusión online C1 en el 17 |
 | S | Datos sintéticos: generadores, validación, laboratorio, aumento | 🟡 generadores, validación y laboratorio hechos (notebooks 18–20); aumento implementado con cálculo parcial (21: S1–S3 hechas, faltan sesiones) · `regimenes.sinteticos` · [generadores sintéticos](sinteticos.md) |
 | F | Decisión final del detector y contrato de `get_regimen` (futura ADR-006) + validación pseudolive de la tool | 🔜 notebooks 22–23 (esqueletos) |
 

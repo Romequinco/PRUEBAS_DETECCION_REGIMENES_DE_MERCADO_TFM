@@ -142,7 +142,7 @@ sustituye está en [`fase1/eda.md`](../../fase1/eda.md).
 - **Recomendación v1** (superada por el benchmark v2, donde D8 queda 9.º en ambas pistas, ADR-003, y por
   ADR-005): núcleo HMM t-Student multi-estado (respaldo *consistente con* la propuesta, no
   superioridad OOS estricta) + change-point tipo D7 como alerta temprana + D1/D5/D6 como control.
-  Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `15`–`16`).
+  Es el origen de las fusiones D7+D8 y D2+D6 de v2 (notebooks `15`–`16` de entonces; hoy, antecedentes de `15_fusiones_fijas`).
 
 Figuras y tablas del informe: `capa1_exploracion/report/informe_capa1.pdf` (tag `capa1-final`). Sus cifras se
 verificaron contra la tabla maestra (20 cifras muestreadas, 0 discrepancias; las 4 citas centrales,

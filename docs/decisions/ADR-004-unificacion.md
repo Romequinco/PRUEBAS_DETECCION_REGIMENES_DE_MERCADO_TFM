@@ -121,7 +121,7 @@ Todo el TFM vive en **un repositorio plano y un paquete instalable**, `regimenes
 | 05 | `05_protocolo_evaluacion` | walk-forward, gate/preflight, caché, CLI paralela |
 | 06–12 | `06_familia_F1_reglas` … `12_familia_F7_deep` | una familia cada uno (D01–D13) |
 | 14 | `14_comparativa` | scorecards y ranking por pista |
-| 15–16 | `15_fusion_d07_d08` · `16_fusion_d02_d06` | alerta + confirmación |
+| 15–16 | `15_fusiones_fijas` (unifica los antiguos 15 y 16, [ADR-011](ADR-011-preregistro-fusiones.md) §7.3) | alerta + confirmación |
 | 18–21 | `18_sinteticos_generadores` · `19_sinteticos_validacion` · `20_sinteticos_laboratorio` · `21_sinteticos_aumento` | fase de datos sintéticos (esqueletos) |
 | 22–23 | `22_decision_final` · `23_pseudolive` | sistema a congelar y prueba pseudolive (esqueletos) |
 

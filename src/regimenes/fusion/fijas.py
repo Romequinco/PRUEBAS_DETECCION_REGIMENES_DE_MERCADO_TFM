@@ -4,7 +4,7 @@ Reglas sin parámetros aprendidos sobre la **señal binaria** de los candidatos 
 sobre todo el OOS de una vez (son causales) y recortadas después para puntuar cada tramo:
 
 - **(a) parejas alerta→confirmación** ``PAR_<X>><Y>``: ``maquina.fuse_early_warning`` sin
-  cambios, con la configuración de los notebooks 15 y 16 y el confirmador binarizado
+  cambios, con la configuración de las fusiones antiguas D7+D8 y D2+D6 y el confirmador binarizado
   (``p_crisis`` := señal binaria de Y). Principal: «accionable» (vigilancia ∪ confirmado).
   Sensibilidad ``TRAS_<X>><Y>``: «confirmación tras aviso» (``maquina._gated_confirmation``).
   Referencia ``CONF_<Y>``: «confirmado» puro (Y con persistencia 3).
@@ -48,8 +48,8 @@ from regimenes.fusion.maquina import (
 SALIDA: Path = rutas.RESULTS_FUSION_FIJAS
 PISTAS = vara.PISTAS
 TRAMOS = ("oos", "H1", "H2")
-# §3.1: configuración de los notebooks 15 y 16 (alerta por estado, sin persistencia; confirmación
-# con umbral 0,50 y 3 sesiones; ventana de vigilancia de 63 sesiones).
+# §3.1: configuración de las fusiones antiguas D7+D8 y D2+D6 (alerta por estado, sin persistencia;
+# confirmación con umbral 0,50 y 3 sesiones; ventana de vigilancia de 63 sesiones).
 HORIZONTE = 63
 UMBRAL_CONFIRMACION = 0.50
 PERSISTENCIA_CONFIRMACION = 3

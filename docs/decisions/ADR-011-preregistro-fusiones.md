@@ -19,8 +19,8 @@
 
 ## 1. Pregunta
 
-Los ADR-008 a ADR-010 comparan detectores **sueltos**. Las fusiones que hay ([notebook 15](../../notebooks/15_fusion_d07_d08.ipynb),
-D7 alerta + D8 confirma, y [notebook 16](../../notebooks/16_fusion_d02_d06.ipynb), D6 confirmador fijo con cribado de
+Los ADR-008 a ADR-010 comparan detectores **sueltos**. Las fusiones que hay ([notebook 15](../../notebooks/15_fusiones_fijas.ipynb),
+D7 alerta + D8 confirma, y [notebook 16](../../notebooks/15_fusiones_fijas.ipynb), D6 confirmador fijo con cribado de
 alertas) se eligieron después de ver el benchmark y se midieron con una utilidad operativa propia, no con la vara del
 ranking. Queda la pregunta: **¿hay alguna combinación de detectores no supervisados que, medida con la misma vara que
 los individuales y con la selección controlada, mejore al mejor detector solo?** Se prueba de dos formas:
@@ -436,7 +436,77 @@ Se ejecuta con **un solo proceso**, en paralelo al notebook 21 sin competir con 
   redondeo, nivel 0 en H2 para (iii), señales idénticas en el MCS, F\* inexistente, top-n sin filtro de nivel y el
   `switching_rate` binario de D03 y D08.
 
+### 8.1 Erratas
+
+- **03-11-2026 · enlaces del §1.** Los enlaces a los notebooks 15 y 16 antiguos (`15_fusion_d07_d08` y
+  `16_fusion_d02_d06`) apuntan ahora a [`15_fusiones_fijas`](../../notebooks/15_fusiones_fijas.ipynb), por la
+  unificación prevista en el §7.3. El texto no cambia.
+
 ## 9. Resultados
 
-**Pendiente.** Se escribirá aquí tras congelar y calcular, con el mismo formato del ADR-010 §9: el criterio de las
-fijas por pista, el de la online, los dos MCS, el veredicto secundario y la lectura sin peso.
+Calculado el 03-11-2026 después de congelar. Hubo una sola ejecución limpia: primero las fijas, después la online,
+en un proceso, con 5.000 réplicas en todos los MCS. Las tablas están en `results/fusion/fijas/` y
+`results/fusion/online/`. La lectura se hace en los notebooks [15](../../notebooks/15_fusiones_fijas.ipynb) y
+[17](../../notebooks/17_fusion_online.ipynb).
+
+### 9.1 Fusiones fijas (§6.1)
+
+| Pista | F\* (elegida en H1) | Score de F\* en todo el OOS | I\* | (i) | (ii) MCS-F | (iii) H2: F\* frente a I\*_H1 | Cumple |
+|---|---|---|---|---|---|---|---|
+| A | AND_D01+D10-P (c) | 0,597 | D10 0,614 | no | no (p = 0,063) | sí: 0,541 frente a 0,471 (D10-P) | no |
+| B | VOTO_3de5 (b) | 0,614 | D05 0,647 | no | sí (p = 0,412) | sí: 0,543 frente a 0,428 (D01) | no |
+
+**Veredicto: no aporta.** Combinar detectores no mejora al mejor detector solo.
+
+Lectura sin peso (§6.3):
+
+- **Hay fusiones mejores que I\*, pero no se pueden elegir de antemano.** Con todo el OOS superan a I\* 21 de las 423
+  fusiones de A (casi todas AND con D10, D01 o D05) y 2 de las 547 de B. Elegirlas mirando todo el OOS infla el
+  score en +0,045 en A y +0,043 en B.
+- **El orden de H1 predice mal el de H2:** la correlación de Spearman entre las fusiones es 0,36 en A y 0,45 en B.
+- **(iii) se cumple porque I\*_H1 se hunde en H2, no porque F\* sea buena.** En H2, D10 da 0,706 en A y D05 da 0,619
+  en B, los dos por encima de F\*.
+- **Las fusiones de antes, medidas con esta vara, quedan por debajo del mejor individual:**
+  - D2 + D6 queda en el puesto 136 de 423 en A y en el 41 de 547 en B;
+  - D7 + D8 queda en el 206 de 423 en A y en el 362 de 547 en B.
+
+### 9.2 Fusión online (§6.2)
+
+| Pista | Score de O (η = 10) en todo el OOS | I\* | (i) | (ii) MCS-O | O en H2 frente a I\*_H1 | (iii) | Cumple |
+|---|---|---|---|---|---|---|---|
+| A | 0,655 | D10 0,614 | sí | sí (p = 0,91) | 0,683 frente a 0,471 (D10-P) | sí | **sí** |
+| B | 0,581 | D05 0,647 | no | sí (p = 0,35) | 0,568 frente a 0,428 (D01) | sí | no |
+
+**Veredicto: indicio.** Se cumple solo en la pista A.
+
+**Veredicto secundario: los pesos no aprenden.** En A, O supera a M (la media simple) en todo el OOS, 0,655 frente
+a 0,632, pero no en H2, 0,683 frente a 0,696. En B, O sí supera a M en los dos tramos, pero en B no cumple el
+criterio principal.
+
+Lectura sin peso (§6.3):
+
+- **En el MCS-O de A, O entra pero no encabeza.** La pérdida más baja sigue siendo la de D06 (0,550), seguida de V,
+  D05 y M. O tiene 0,577, mejor que D10 (0,652), y F\* queda fuera.
+- **En B, F\* sí supera a O** en score: 0,614 frente a 0,581.
+- **η:** en H1 gana η = 5 en A, que en H2 da 0,688 frente a 0,683 con η = 10. En B gana η = 10.
+- **Sensibilidades con η = 10** (score en todo el OOS):
+
+  | Sensibilidad | A | B |
+  |---|---|---|
+  | Entrada binaria | 0,650 | 0,560 |
+  | Retraso de 63 sesiones | 0,663 | 0,609 |
+  | Pesos iguales hasta 21 días | 0,619 | 0,581 |
+  | `excluir_sin_terminar` | 0,660 | 0,602 |
+
+  Ninguna llega a D05 en B.
+- **Los pesos no se concentran:**
+  - A: número efectivo medio de 8,9 detectores sobre 15; al final pesan más D06 (22 %), D05 (19 %) y D01 (13 %).
+  - B: 7,4 sobre 17; al final pesan más D05 (25 %), D06 (23 %) y D10 (16 %).
+
+### 9.3 Consecuencias
+
+- **Ninguna fusión desplaza a los mejores detectores solos en las dos pistas.** La fusión online es la única que
+  gana en una, la A, y esa ventaja no viene de que los pesos aprendan: la media simple rinde igual o más en H2.
+- **`get_regimen`** sigue con un detector individual, D06 en A y D05 en B, hasta la decisión final (ADR-006,
+  notebook 22). La fusión online de A queda como candidata que hay que contrastar allí.
+- **Para el TFM:** se suma al resultado del ADR-009 y del ADR-010: con 17 crisis, la complejidad no se paga.

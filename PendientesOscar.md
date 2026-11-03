@@ -352,7 +352,7 @@ enlaces rotos.
 06–12 familias F1–F7 (+ variantes por menú; D14 en F1; D15 y D18 en F2)
 13 familia F8 supervisado (NUEVO: D16 y D17)
 14 comparativa (matriz detector × menú, ranking v3, ablaciones, «¿sirve el pool?»)
-15–16 fusiones actuales · 17 fusión online C1 (NUEVO)
+15 fusiones fijas (unifica las anteriores 15–16, ADR-011) · 17 fusión online C1 (NUEVO)
 18–21 sintéticos (generadores ampliados al pool y re-ejecutados)
 22 decisión final · 23 pseudolive
 ```
@@ -392,7 +392,8 @@ el núcleo es N, con U para los univariantes)
   el pool crudo aporta. Además, D15 jump Shu sobre U (B6).
 - [x] 2.4 D16 logit L1 y D17 random forest (B7) sobre P, entrenados solo con crisis terminadas. T queda solo
   como comparación barata.
-- [ ] 2.6 C1 fusión online.
+- [x] 2.6 Fusiones: [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md). Las fijas (notebook 15, unifica 15 y 16)
+  no aportan; la online C1 (notebook 17) da un indicio, porque cumple solo en A, y los pesos no aprenden.
 - [x] 2.7 Ranking v3 sobre N (desviación declarada del ADR-008 §4), MCS dentro de cada menú y resultados en el
   ADR-010 §9: «¿aporta P o R frente a N?».
   - **Resultado (03-11-2026):** aporta en las dos pistas por el criterio §5 (D18-P en A; D10-R y D18-P en B),

@@ -1,0 +1,3 @@
+pista,f_star,i_star,score_i_star_oos,i_star_h1,score_i_star_h1_H2,nivel_f_star_H1,score_f_star_H1,nivel_f_star_oos,score_f_star_oos,f_star_en_mcs,f_star_duplicado_de,nivel_f_star_H2,score_f_star_H2,cumple_i,cumple_ii,cumple_iii,cumple_pista,nota,veredicto
+A,AND_D01+D10-P,D10,0.613623911852438,D10-P,0.4706325301204819,0,0.7113884555382216,0,0.596655328798186,False,,0,0.5407766990291262,False,False,True,False,,no aporta: combinar no mejora al mejor detector solo
+B,VOTO_3de5,D05,0.6467181467181468,D01,0.4278820375335121,0,0.8639053254437871,0,0.6143266475644699,True,,0,0.542608695652174,False,True,True,False,,no aporta: combinar no mejora al mejor detector solo
