@@ -249,4 +249,76 @@ cubría o corrigen un dato.
 
 ## 9. Resultados
 
-Pendiente: se rellena en la sesión 2.
+Calculado el 03-11-2026 entre las 10:05 y las 15:21: 20 variantes (9 en A y 11 en B), 4 procesos y 0 errores. Las
+tablas están en `results/detectores/pool/`: `comparacion_pares.csv`, `mcs_NUPR_{A,B}.csv`, `criterio_adr010.csv`,
+`techo_supervisados.csv`, `mcs_supervisados_{A,B}.csv` y `d18_{columnas,bloques}_{A,B}.csv`. Lo único que se salió
+de lo previsto fue el coste de A_D18-P: el piloto estimaba 3,2 h y tardó unas 5,3 h, porque cada reajuste se
+encarece a medida que crece la ventana.
+
+### 9.1 Criterio (a): mejora a su par en N (`score_deteccion`)
+
+| Pista | Variante | Par | Score | Score del par | Δ | (a) |
+|---|---|---|---|---|---|---|
+| A | D10-P | D10 | 0,527 | 0,614 | −0,087 | no |
+| A | D18-P | D09 | 0,395 | 0,362 | +0,033 | sí |
+| B | D10-P | D10 | 0,370 | 0,457 | −0,087 | no |
+| B | D10-R | D10 | 0,475 | 0,457 | +0,018 | sí |
+| B | D14-R | D10 | 0,350 | 0,457 | −0,107 | no |
+| B | D18-P | D09 | 0,140 | 0,000 | +0,140 | sí |
+
+### 9.2 Criterio (b): MCS al 10 % de N∪U∪P∪R con baselines
+
+- **A:** quedan dentro 14 de 20. La pérdida más baja es la de D06 (0,550), seguido de D05, D01, D10, D12, VOL_P90,
+  D15-U, D03, D04 y D02. **D18-P** queda dentro en el puesto 11 (0,761), y **D10-P** queda fuera (p = 0,038).
+- **B:** quedan dentro 13 de 22. La pérdida más baja es la de D05 (0,610), seguido de D06 y D10. **D10-R** queda
+  dentro (0,798), y también **D14-R**, **D10-P** y **D18-P**, todos con p = 0,113. VOL_P90 queda **fuera**.
+
+### 9.3 Veredicto (§5)
+
+**El pool sin comprimir aporta, según el criterio pre-registrado.** Se cumple en las dos pistas: en A con D18-P, y
+en B con D10-R y D18-P.
+
+**Lectura, sin peso en el veredicto.** El aporte es formal y estrecho:
+
+- **Ningún detector de P o R supera al mejor de N.** En A, D06 tiene la pérdida más baja y D10 el mejor score
+  (0,614). En B, D05 es el mejor en las dos cosas. D18-P y D10-R entran en el MCS porque el MCS al 10 % es amplio,
+  no porque estén cerca de la cabeza.
+- **El par de D18 es D09,** que es débil: queda fuera del MCS en las dos pistas y tiene score 0 en B. La condición
+  (a) de D18-P se cumple, por tanto, con poco.
+- **La única comparación de par fuerte es D10-R frente a D10 en B,** y la mejora es de +0,018.
+- **D10 y D14 no ganan con el pool.** D10 sobre P empeora en las dos pistas (−0,087), y D14 sobre R también
+  (−0,107).
+- **Qué columnas elige D18:**
+  - en A, sobre todo tipos (T2, en el 100 % de los reajustes) e inflación y valoración (T9, en el 98 %);
+  - en B, crédito (BaaFF, en el 100 %), CAPE (82 %), drawdown del SP500 (68 %) y peticiones de subsidio (62 %).
+- **D15-U frente a D09:** +0,164 en A y +0,523 en B. Queda dentro del MCS en las dos pistas, en el puesto 7 en A y
+  el 4 en B.
+
+### 9.4 Supervisados («techo», §6)
+
+**Ningún supervisado mejora al mejor no supervisado:**
+
+- **Pista A:** el mejor no supervisado es D10, con 0,614. El mejor supervisado es D16-N, con 0,498.
+- **Pista B:** el mejor no supervisado es D05, con 0,647. El mejor supervisado es D16-N, con 0,441.
+
+**Con el pool rinden peor que con N:**
+
+| Pista | Modelo | Score con P | Score con N |
+|---|---|---|---|
+| A | D16 | 0,19 | 0,50 |
+| A | D17 | 0,06 | 0,46 |
+| B | D16 | 0,14 | 0,44 |
+| B | D17 | 0,06 | 0,41 |
+
+Las variantes `-excl` mejoran a la P base, pero siguen por debajo de N. En el MCS conjunto entran D16-N y D17-N en
+las dos pistas, y además las dos `-excl` en B.
+
+**Conclusión del §6:** ni con etiquetas se gana a lo simple.
+
+### 9.5 Consecuencias
+
+- **Ranking principal v3:** entran P y R, porque el §5 se cumple. En la práctica la cabeza no cambia: D06 en A y
+  D05 en B.
+- **`get_regimen`:** sigue con D06 en A y D05 en B hasta la decisión de CP2.
+- **Para el TFM:** el pool sin comprimir aporta formalmente con D18-P y D10-R, pero no desplaza a los detectores
+  simples sobre N.

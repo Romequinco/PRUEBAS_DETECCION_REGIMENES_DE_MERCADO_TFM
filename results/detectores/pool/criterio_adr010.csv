@@ -1,0 +1,3 @@
+pista,candidatas,a_mejoran_par,b_en_mcs,cumplen_a_y_b,cumple_pista,mcs_miembros,vol_p90_fuera_del_mcs,veredicto
+A,D10-P|D18-P,D18-P,D18-P,D18-P,True,D06|D05|D01|D10|D12|VOL_P90|D15-U|D03|D04|D02|D18-P|D08|D07|D11,False,aporta
+B,D10-P|D10-R|D14-R|D18-P,D10-R|D18-P,D10-R|D14-R|D10-P|D18-P,D10-R|D18-P,True,D05|D06|D10|D15-U|D04|D11|D02|D10-R|D07|D01|D14-R|D10-P|D18-P,True,aporta

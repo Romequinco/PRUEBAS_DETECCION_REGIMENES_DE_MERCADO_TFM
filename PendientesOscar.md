@@ -385,16 +385,18 @@ el núcleo es N, con U para los univariantes)
   - la media simple iguala o mejora a la PCA.
   - **Decisión: descartar T.** Queda como resultado negativo pre-registrado.
 - [x] 2.0 Pre-registro de la Fase 2: [ADR-010](docs/decisions/ADR-010-preregistro-pool-crudo.md), congelado el 03-11-2026.
-- [ ] 2.1 Matriz detector × menú sin T en el ranking principal: N y U en el núcleo; P y R para las pruebas del pool;
+- [x] 2.1 Matriz detector × menú sin T en el ranking principal: N y U en el núcleo; P y R para las pruebas del pool;
   T solo como secundario (variantes en `registry.py`).
-- [ ] 2.2 D14 absorption ratio sobre R (B5, solo pista B), con los parámetros de Kritzman.
-- [ ] 2.3 D18 sparse JM sobre P (B9, `jumpmodels.SparseJumpModel`) y D10 sobre P y R. Es la prueba principal de si
+- [x] 2.2 D14 absorption ratio sobre R (B5, solo pista B), con los parámetros de Kritzman.
+- [x] 2.3 D18 sparse JM sobre P (B9, `jumpmodels.SparseJumpModel`) y D10 sobre P y R. Es la prueba principal de si
   el pool crudo aporta. Además, D15 jump Shu sobre U (B6).
-- [ ] 2.4 D16 logit L1 y D17 random forest (B7) sobre P, entrenados solo con crisis terminadas. T queda solo
+- [x] 2.4 D16 logit L1 y D17 random forest (B7) sobre P, entrenados solo con crisis terminadas. T queda solo
   como comparación barata.
 - [ ] 2.6 C1 fusión online.
-- [ ] 2.7 Ranking v3 sobre N (desviación declarada del ADR-008 §4), MCS dentro de cada menú y resultados en el
+- [x] 2.7 Ranking v3 sobre N (desviación declarada del ADR-008 §4), MCS dentro de cada menú y resultados en el
   ADR-010 §9: «¿aporta P o R frente a N?».
+  - **Resultado (03-11-2026):** aporta en las dos pistas por el criterio §5 (D18-P en A; D10-R y D18-P en B),
+    pero ningún detector de P o R supera a la cabeza de N (D06 en A, D05 en B). Supervisados: no superan el techo.
 - [ ] **CP2.** Detector o detectores candidatos para `get_regimen` y veredicto final sobre el pool.
 
 **Fase 3 · Cierre**
