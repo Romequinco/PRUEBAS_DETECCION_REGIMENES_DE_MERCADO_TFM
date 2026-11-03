@@ -211,8 +211,9 @@ Cómo encajan los resultados con cada opción, según las reglas escritas arriba
   - **D10 sobre P y R.**
   - **D14, absorption ratio sobre R** (solo en B): es una idea distinta, no depende de T, y sigue igual.
   - **D15, jump de Shu sobre U:** no depende del pool y sigue igual.
-- **D16 y D17.** Los supervisados se evalúan sobre todo en P. T queda solo como comparación barata, sin peso en el
-  ranking principal. Responden si un modelo con etiquetas saca partido del pool.
+- **D16 y D17.** Los supervisados se evalúan sobre todo en P y, como comparación barata, en N (no en T, que está
+  descartado; precisado en el ADR-010 §3 el 03-11-2026). No tienen peso en el ranking principal. Responden si un
+  modelo con etiquetas saca partido del pool.
 - **`get_regimen` provisional, sintéticos del notebook 21 y XAI.** Se apoyan en N y U, como hasta ahora. Ya no hace
   falta ampliar los generadores sintéticos al menú T (PendientesOscar §6.7): solo a P, y solo si P aporta.
 - **Memoria del TFM.** El resultado negativo es pre-registrado y se explica bien: comprimir el pool en
