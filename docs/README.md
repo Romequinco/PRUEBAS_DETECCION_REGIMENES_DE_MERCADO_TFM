@@ -15,7 +15,7 @@ docs/
 ├── README.md            este índice
 ├── GLOSARIO.md          definiciones de los términos del proyecto
 ├── references.bib       bibliografía única del TFM
-├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-010 (ADR-006 reservada a la decisión final de régimen)
+├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-011 (ADR-006 reservada a la decisión final de régimen)
 ├── tfm/                 visión del TFM: arquitectura, cliente y carteras, líneas abiertas, documentos de origen
 ├── estado_del_arte/     estado del arte: dossier general, detectores y fuentes de datos, con su catálogo
 ├── fase1/               Fase 1 (régimen): pipeline, mapa del código, EDA, teoría y detectores por familia, sintéticos
@@ -50,6 +50,9 @@ docs/
   núcleo es N.
 - [ADR-010](decisions/ADR-010-preregistro-pool-crudo.md) — pre-registro de la Fase 2: ¿aporta el pool sin
   comprimir (menús P y R) frente a N? Detectores D10-P/R, D14–D18 y criterio de éxito.
+- [ADR-011](decisions/ADR-011-preregistro-fusiones.md) — pre-registro de las fusiones (punto 2.6): ¿mejora una
+  combinación de detectores no supervisados al mejor solo? Fusiones fijas (notebook 15), fusión online (notebook 17),
+  selección en la primera mitad y criterio de éxito.
 
 ### `estado_del_arte/` — qué existe fuera del proyecto
 - [`estado_del_arte/README.md`](estado_del_arte/README.md) — índice de los tres documentos y de su catálogo.
