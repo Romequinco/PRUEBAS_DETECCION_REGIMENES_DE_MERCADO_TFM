@@ -211,6 +211,42 @@ MCS de supervisados y no supervisados juntos, solo como lectura.
   22 series en R (no 21), trampas por `track_false_positive_windows`, FX sin retraso (ADR-003), D10 de v2 con 4
   columnas, comparación de D16/D17 en N en vez de T.
 
+## 8.1 Erratas de implementación (03-11-2026, antes de calcular)
+
+Las ha encontrado la implementación. No cambian ningún parámetro ni el criterio: precisan casos que el texto no
+cubría o corrigen un dato.
+
+- **La regla de disponibilidad sí afecta a B** (corrige el §2.1, que decía que no).
+  - En P, las dos columnas de HYG tienen 696 observaciones en el primer reajuste y quedan fuera de los 3 primeros.
+  - En R, `HYG_CREDIT` (755) y las 3 divisas de FRED (750) quedan fuera del primero.
+  - Se aplica la regla tal cual.
+- **NaN de R dentro del OOS.**
+  - Hay 42 festivos de FRED en las divisas y 2 días sin `DXY`. Se dejan en NaN, sin rellenar, como dice el §2.2.
+  - Solo en el menú R se admite NaN en el OOS; en P, U y N un NaN en el OOS sigue siendo un error.
+  - D10-R mantiene en esos días el trato de D10, que conserva el estado anterior.
+  - D14 da a un día incompleto el ΔAR de la última fila completa, porque no se puede calcular el AR sin las 22
+    series.
+- **D14 no lleva el envoltorio de disponibilidad.** Su propia regla ya fija las filas: las 500 últimas con las 22
+  series.
+- **D14 sin canonicalización económica** (corrige el §3, que la pedía «como D10»). El revisor encontró que con la
+  canonicalización por volatilidad el orden de estados salía invertido en los reajustes de 2011-02 a 2019-06. La
+  causa son los ~750 días de calentamiento sin ΔAR, que abarcan toda la crisis de 2008 y se predicen como estado
+  0, así que inflan la volatilidad de ese estado. Con el orden invertido, la «crisis» habría sido ΔAR < 1, en torno
+  al 85 % de los días. ΔAR ≥ 1 es por definición el riesgo alto de Kritzman, así que **estado interno 1 = crisis,
+  sin canonicalizar**, como D16 y D17. Se decidió antes de calcular ningún resultado de D14. D10-P y D10-R
+  conservan la canonicalización de D10, para seguir siendo comparables con él, y se reporta si invierten el orden.
+- **D18 estandariza** con `StandardScaler` ajustado en el entrenamiento, igual que D09.
+- **«N ∪ U» en el MCS del §5(b)** son los 12 detectores de v2, que ya incluyen los univariantes sobre `SP500_ret`,
+  más D15-U. Las variantes U de los multivariantes del ADR-008 §3 (D03-U, D04-U, D08-U y D09-U) no se han calculado
+  y no entran.
+- **D15** (detalles que el paper deja abiertos):
+  - el orden de estados se fija con su ventana de ajuste de 3.000 días;
+  - el Sharpe de la validación es el de la rentabilidad en exceso (pie de la tabla 4 del paper);
+  - la inferencia online arranca al inicio de la ventana de ajuste;
+  - el ajuste es el mismo en A y en B para una misma fecha, porque la historia cruda es común.
+- **D16 y D17:** una crisis existe como etiqueta si su suelo es ≤ el último día del entrenamiento. Con
+  scikit-learn 1.8, la penalización L1 del logit se pide con `l1_ratio = 1`.
+
 ## 9. Resultados
 
 Pendiente: se rellena en la sesión 2.

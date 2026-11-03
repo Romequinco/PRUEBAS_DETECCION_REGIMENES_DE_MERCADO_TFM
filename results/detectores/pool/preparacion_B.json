@@ -1,0 +1,178 @@
+{
+ "pista": "B",
+ "n_dias_indice": 4815,
+ "inicio": "2007-04-11",
+ "fin": "2026-05-29",
+ "train_days": 756,
+ "n_oos": 4059,
+ "oos_inicio": "2010-04-12",
+ "mismo_oos_que_v2": true,
+ "variantes": {
+  "D10-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D10-R": {
+   "menu": "R",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 22,
+   "nan_calentamiento": 16,
+   "columnas_que_empiezan_tarde": {
+    "HYG_CREDIT_logret": "2007-04-12"
+   },
+   "nan_oos_por_columna": {
+    "DXY_logret": 2,
+    "DEXJPUS_logret": 42,
+    "DEXSZUS_logret": 42,
+    "DEXUSAL_logret": 42
+   },
+   "filas_oos_incompletas": 42
+  },
+  "D14-R": {
+   "menu": "R",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 22,
+   "nan_calentamiento": 16,
+   "columnas_que_empiezan_tarde": {
+    "HYG_CREDIT_logret": "2007-04-12"
+   },
+   "nan_oos_por_columna": {
+    "DXY_logret": 2,
+    "DEXJPUS_logret": 42,
+    "DEXSZUS_logret": 42,
+    "DEXUSAL_logret": 42
+   },
+   "filas_oos_incompletas": 42
+  },
+  "D15-U": {
+   "menu": "U",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 1,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-N": {
+   "menu": "N",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 14,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-P-excl": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-N": {
+   "menu": "N",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 14,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-P-excl": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D18-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 77,
+   "nan_calentamiento": 120,
+   "columnas_que_empiezan_tarde": {
+    "credit_HYG_IEF_z": "2007-07-06",
+    "credit_HYG_LQD_z": "2007-07-06"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  }
+ },
+ "sha256_processed": {
+  "pistaB_diaria.parquet": "a4a7013c204aac31b43f8f9d4de8ccae15afae71cee6304dfdfcea0634d12c56",
+  "pistaB_mensual.parquet": "f9b192d5994c9b8d56d0b70c0c3121b577bf55d3f913752bc9eff7b52eba67a4",
+  "pistaB_rentabilidades.parquet": "76b991479ab464228f2d1d2495c7381c885c780fd51ee414d19b9fd55bcdc386"
+ },
+ "entrada": {
+  "archivo": "B.parquet",
+  "sha256": "f432d3eccfc1588c0b6bf8ff83bb9eaf46b2593d86cf9c7bcf4660358513befb"
+ },
+ "huella_codigo": {
+  "src/regimenes/detectores/pool/__init__.py": "f2a36df68155ec2e00872f7366cd4b6f0f8e2d0cd9ec462502ac90944bf8e24e",
+  "src/regimenes/detectores/pool/absorption_ratio.py": "7f19bf7b7a6f9b6528f1c8bd8e82fd941980b4059a12a5ca13cd0b8b5efdeb09",
+  "src/regimenes/detectores/pool/disponibilidad.py": "e57023cd6469b0757dc977f91c6a1112768646b22b589a218dfb04238e5af064",
+  "src/regimenes/detectores/pool/especificaciones.py": "d85bc29e182f41a1525a6718ea28a588189b68d63ab3a3c8133279f1e36e7ed7",
+  "src/regimenes/detectores/pool/pool_crudo.py": "2d1afe428a3eab98c712e3b8a2aa2b3df5a8b9ca606dda24021dc6ded7eda1c2",
+  "src/regimenes/detectores/pool/shu.py": "98b0a77c7ba0c4bc69a12d05595ae0f05f5810cc2bc134b0e64676fda60a23d8",
+  "src/regimenes/detectores/pool/shu_supervisados.py": "918b022b8412a68dbb8ef4a2778d4e6f9a4e8537655d25215b73731eea54d7ab",
+  "src/regimenes/detectores/pool/sparse_jump.py": "5b41cc05a3a5caca5961c4eba567e3597df75f6e662fc0d2a772cb8aa91bf8ec",
+  "src/regimenes/detectores/pool/supervisados.py": "1d1f7465ebd4b1862564ff34889bb767fa92a46228828a9948b977966eac6aea",
+  "src/regimenes/benchmark/pool.py": "c13779ec8a36d2d2887f96049d5999f08f71af0503437ed9c60b418c207248a0",
+  "src/regimenes/features/rentabilidades.py": "9e46e8620adfe921a33f5b3f5a23d131934a1254cb55c2bf102d11a50f9c317b",
+  "configs/bloques.yaml": "c532fbe9caf6f177e58a4353f0ffa0a04550f5279422138207bb597471e3fc5d"
+ },
+ "fecha": "2026-11-03 10:04:17"
+}
