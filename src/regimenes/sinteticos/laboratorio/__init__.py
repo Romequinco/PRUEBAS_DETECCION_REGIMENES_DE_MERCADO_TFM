@@ -1,8 +1,8 @@
-"""Laboratorio de detectores con regimen conocido (notebook 17).
+"""Laboratorio de detectores con regimen conocido (notebook 20).
 
 Simulacion controlada: los tres generadores parametricos con mecanismo explicito
 (``gaussiano_regimen``, ``var_regimen``, ``garch_regimen``), ya ajustados en el
-notebook 15 con el tramo de train, generan trayectorias con una secuencia de
+notebook 18 con el tramo de train, generan trayectorias con una secuencia de
 regimen IMPUESTA y una intensidad de crisis controlada; los detectores del
 benchmark se ejecutan sobre ellas con el MISMO protocolo walk-forward y las
 mismas especificaciones, y se puntuan contra la verdad-terreno exacta.

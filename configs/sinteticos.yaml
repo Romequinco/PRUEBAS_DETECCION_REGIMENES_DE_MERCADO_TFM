@@ -75,7 +75,7 @@ generadores:
 # el de train. OJO: con duraciones geometricas sigue habiendo trayectorias sin crisis (~9 %
 # en la pista A: la calma dura de media ~1130 sesiones); quedan contadas en
 # diagnostico_muestreo()["n_trayectorias_sin_crisis"]. `duraciones: empiricas` las elimina
-# (ninguna calma real de train llega a 2520 sesiones) a cambio de mas dias de crisis (cifras por pista en el notebook 15, seccion 2.1).
+# (ninguna calma real de train llega a 2520 sesiones) a cambio de mas dias de crisis (cifras por pista en el notebook 18, seccion 2.1).
 muestreo:
   n_paths: 100
   length: 2520        # sesiones por trayectoria (~10 anos)
@@ -83,10 +83,10 @@ muestreo:
   inicial: estacionaria
   duraciones: geometricas
 
-# Validacion (notebook 16, regimenes.sinteticos.validacion). Todo se compara con el TRAMO DE
-# ENTRENAMIENTO real de cada pista (nunca con lo posterior a fin_train, reservado a 17-20).
+# Validacion (notebook 19, regimenes.sinteticos.validacion). Todo se compara con el TRAMO DE
+# ENTRENAMIENTO real de cada pista (nunca con lo posterior a fin_train, reservado a 20-23).
 # Los umbrales se fijaron el 2026-10-01, ANTES de ver ningun resultado de validacion; no se
-# retocan a la vista de las cifras (si se cambian, el cambio y su motivo van en el notebook 16).
+# retocan a la vista de las cifras (si se cambian, el cambio y su motivo van en el notebook 19).
 validacion:
   metricas: [fidelidad_marginal, fidelidad_dependencia, distancia_correlaciones, fidelidad_regimenes,
              condicionamiento, discriminador, utilidad_tstr, memorizacion]
@@ -113,7 +113,7 @@ validacion:
       A: [D01, D02, D03, D06, D07]
       B: [D01, D03, D06, D07]   # D02 y D10 usan features fuera del nucleo de B (no estan en el sintetico)
   umbrales:
-    banda_cociente: [0.80, 1.25]      # cocientes sintetico/real admitidos (misma banda de lectura que el 15)
+    banda_cociente: [0.80, 1.25]      # cocientes sintetico/real admitidos (misma banda de lectura que el 18)
     memorizacion_cociente_min: 0.90   # d_NN(sint->real) / d_NN(real->real), global y en crisis (suelo del taller)
     discriminador_auc_max: 0.75       # AUC global real frente a sintetico (en crisis solo se publica el orden)
     tstr_margen_trtr: 0.10            # score_deteccion TSTR >= TRTR - margen ...
@@ -169,16 +169,16 @@ validacion:
     apto_aumento: [memorizacion, condicionamiento]
     # Nivel declarado el 2026-10-01 DESPUES de ver el veredicto (ningun generador apto_laboratorio:
     # el discriminador con todas las columnas los separa a todos, AUC 0,78-0,999). No sustituye a
-    # apto_laboratorio: el 17 usa estos generadores advirtiendo que son distinguibles del real.
+    # apto_laboratorio: el 20 usa estos generadores advirtiendo que son distinguibles del real.
     laboratorio_condicionado: [marginal, dependencia, condicionamiento]
 
-# Laboratorio de detectores con regimen conocido (notebook 17, regimenes.sinteticos.laboratorio).
+# Laboratorio de detectores con regimen conocido (notebook 20, regimenes.sinteticos.laboratorio).
 # PRE-REGISTRO fijado el 2026-10-05 ANTES de generar ninguna trayectoria del laboratorio ni ejecutar
 # ningun detector sobre ellas. Cualquier cambio posterior se declara aqui con fecha y «Antes: ...».
 #
-# Enfoque (decision del 2026-10-05, tras el veredicto del 16: ningun generador apto_laboratorio ni
+# Enfoque (decision del 2026-10-05, tras el veredicto del 19: ningun generador apto_laboratorio ni
 # laboratorio_condicionado): SIMULACION CONTROLADA. Se usan solo los tres parametricos con mecanismo
-# explicito (gaussiano_regimen, var_regimen, garch_regimen), ya ajustados en el 15 con el tramo de
+# explicito (gaussiano_regimen, var_regimen, garch_regimen), ya ajustados en el 18 con el tramo de
 # train, como «mundos de juguete» con verdad-terreno exacta. El laboratorio ordena detectores por
 # robustez y mecanismo; NO mide rendimiento en el mercado real (los generadores son distinguibles
 # del real, ver validacion). Neuronales, rbig, jitter y bootstrap quedan fuera.
@@ -241,7 +241,7 @@ laboratorio:
   # H4 circularidad: ventaja de score de los detectores de `misma_familia` en su generador frente a
   #    su media en los otros generadores (diferencia con IC bootstrap entre trayectorias).
   n_boot: 1000                    # IC bootstrap por percentiles entre trayectorias
-  # Declarado el 2026-10-06, DESPUES de ver los resultados (revision adversarial del notebook 17).
+  # Declarado el 2026-10-06, DESPUES de ver los resultados (revision adversarial del notebook 20).
   # Son lecturas EXPLORATORIAS, no hipotesis pre-registradas, y el notebook las marca asi:
   # - metricas que solo existen con verdad exacta (ya calculadas en metricas.py antes de ejecutar,
   #   pero no listadas aqui): retraso_medio (condicional a detectar: se lee junto al recall por
@@ -253,3 +253,237 @@ laboratorio:
   # - H4 ventaja_relativa (ventaja de casa menos la del resto de detectores en ese generador) con IC
   #   bootstrap; la H4 pre-registrada es ventaja_casa.
   # H3 no tenia umbral de exito: se publica rho y p, sin veredicto «se cumple / no se cumple».
+
+# Aumento de datos real + sintetico (notebook 21, regimenes.sinteticos.aumento).
+# PRE-REGISTRO fijado el 2026-10-15 ANTES de ajustar ningun generador por ancla ni ejecutar ningun
+# detector aumentado (incluye las correcciones de una revision metodologica adversarial hecha ese
+# mismo dia, tambien antes de ejecutar nada). Cualquier cambio posterior se declara aqui con fecha y
+# «Antes: ...».
+#
+# Pregunta: entrenar los detectores con real + sintetico mejora su deteccion de las crisis REALES?
+# Se evalua SOLO sobre el real fuera de muestra, con el mismo walk_forward, las mismas specs y las
+# mismas metricas ADR-003 que el benchmark. La referencia (proporcion 0) son los paneles OOS del
+# benchmark vigente (cache verificada por huella): la comparacion es pareada dia a dia.
+#
+# Por que este alcance («amplio», decidido el 2026-10-15, antes de ver ningun resultado):
+# - Generadores: los apto_aumento del notebook 19 EN LAS DOS PISTAS (criterio fijado por el 19, no por
+#   este notebook, y el mismo conjunto en A y B para que las pistas sean comparables). difusion, cvae y
+#   cgan (aptos solo en A) quedan fuera por ese criterio y por ~19 h mas de calculo; serian una
+#   extension declarada como tal. jitter y bootstrap_regimen no son aptos (memorizan): bootstrap entra
+#   SOLO como control.
+# - Detectores: todos los evaluables (12 en A, 10 en B). Se descarto recortar A al top-8 del ranking:
+#   dejaba fuera justo a D04, D08, D09 y D11 (HMM, jump model, MS-GARCH), los que aprenden un estado de
+#   crisis y mas podrian beneficiarse; el recorte sesgaba en contra de encontrar efecto.
+# - Un resultado nulo solo es creible si es amplio. Coste estimado: ~400-460 h de CPU (~7 sesiones de
+#   8 h con 10 procesos); el piloto de coste lo recalibra.
+#
+# Expectativa declarada: efecto PEQUENO O NULO. Los detectores son no supervisados (fit sin
+# etiquetas): el aumento solo cambia la ley que ven al ajustarse. En el TSTR del 19, entrenar solo con
+# sintetico quedo casi siempre por debajo de entrenar con el real; y en las reglas de umbral por
+# percentil el aumento recalibra umbrales en vez de aprender.
+# Supervision indirecta (declarada): los generadores se condicionan al regimen de referencia, asi que
+# el aumento introduce en el ajuste las etiquetas del juez (de forma causal: solo crisis ya
+# reconocidas en el ancla). El control bootstrap_regimen comparte esas etiquetas, de modo que H3 aisla
+# el efecto del generador.
+# Declarado el 2026-10-15 (implementacion, ANTES de ejecutar el plan): una prueba de humo del
+# envoltorio imprimio precision y recall de D01, D03 y D07 en B aumentados con flow_matching y UNA
+# sola ancla (2009-12-31) en todos los pliegues, un montaje que no es el pre-registrado. Con proporcion 1
+# el recall por evento caia con fuerza (p. ej. D01 de 6/9 a 1/9). No se cambio nada del pre-registro
+# por ello; queda declarado porque es una mirada a metricas antes de ejecutar. Lo que se vio: precision
+# y recall de esas tres senales. Sus salidas no se guardaron ni se reutilizan.
+# Concreciones y erratas tras la revision del codigo (3 criticos), 2026-10-15, ANTES de ejecutar el plan:
+# - Errata aritmetica: en la permutacion exacta el p minimo es 2/2^S (el patron identidad y el
+#   intercambio total dan |T| = |T_obs|), no 1/2^S. En B (S = 9) es 2/512 ~ 0,0039, mayor que 0,05/22;
+#   ademas el primer segmento de B (flash_crash_euro1_2010) va casi sin aumento (la primera ancla
+#   con crisis reconocida, 2009-12-31, solo se usa desde ~julio de 2010), asi que la potencia de H1
+#   en B es practicamente nula. Corregido con Holm por pista (ver contrastes.familia_holm).
+# - Fuga de diseno (no de deteccion): la familia de generadores y sus parametros se fijaron en el 18-19
+#   con datos hasta 2006 (A) y 2017 (B), posteriores a los primeros pliegues. Se publica como
+#   sensibilidad EXPLORATORIA la Delta de H1 solo en las crisis que empiezan despues de fin_train +
+#   margen_reconocimiento.
+# - El recorte en ventanas abiertas usa el pico del catalogo, fijado a posteriori (en 1968 y 1980 el
+#   drawdown visible era de ~8 %): quita ~1 mes de calma del ajuste; es conservador y se declara.
+# - El control (bootstrap_regimen) no pasa la validacion por ancla: memoriza por diseno.
+# - Ocupacion de estados: cada 12 pliegues.
+# - Nivel ADR-003 de una senal: duracion media de regimen sobre la senal binaria crisis / no crisis
+#   (ADR-003 la mide sobre los K estados); es la unica comun a la base y al voto. Umbrales de
+#   ranking.DETECTION_DEFAULTS.
+# - Condicion (d) de H1: el LIMITE SUPERIOR del IC de Delta de ningun generador es < 0.
+# - Suelo de ruido: el mayor |Delta| entre semillas, frente a la base y entre las dos semillas.
+# - H3: se publica tambien la media de los 5 Delta(generador) - Delta(control) (el voto promedia 5
+#   ajustes y el control es uno solo).
+# - Nulo: rejilla densa en tasas bajas (0,001-0,05) y los mismos numeros aleatorios en todas las
+#   celdas; la racha media por segmento es exacta (se restan las rachas que cruzan fronteras).
+# - H1 con familia FIJA: un contraste ausente cuenta con p = 1 (nunca encoge la familia).
+aumento:
+  semilla: 42
+  pistas: [A, B]
+  generadores: [gaussiano_regimen, var_regimen, garch_regimen, rbig, flow_matching]
+  control: bootstrap_regimen      # dias reales remuestreados: ¿basta con «cualquier dato extra»?
+  # Detectores: los del registro con su spec del benchmark. En B, D02 y D10 usan columnas que los
+  # generadores no producen (igual que en el 20).
+  excluir: {B: [D02, D10]}
+  min_run: 3                      # deteccion por evento = ADR-003
+  beta: 1.0                       # score_deteccion = F-beta(precision diaria, recall por evento)
+
+  # -- Generadores reentrenados por ancla (sin fuga) ---------------------------------------------
+  # Candidatas: ultima sesion de cada ano. Para un pliegue cuyo train acaba en t, ancla(t) = ultima
+  # candidata tau <= t - margen_reconocimiento. El generador se ajusta con datos <= tau y etiquetas solo
+  # de crisis cuyo suelo es <= tau (reconocidas al menos margen_reconocimiento sesiones antes de t). Si
+  # tau cae dentro de una ventana aun abierta (pico <= tau < suelo), el ajuste se recorta a pico - 1
+  # (el maximo previo ya es observable en t). Mismos params que en el 18.
+  anclas:
+    frecuencia: anual
+    margen_reconocimiento: 126    # sesiones (~6 meses: el suelo solo se reconoce a posteriori)
+    # Ancla valida si su ajuste contiene >= min_episodios_crisis episodios completos y >= min_dias_crisis
+    # dias de crisis Y el generador ajustado pasa en ese ancla los criterios de memorizacion y
+    # condicionamiento del 19 (mismos umbrales de validacion.umbrales): el veredicto apto_aumento se
+    # dio con el ajuste hasta 2006 (A) / 2017 (B) y no se transfiere solo a anclas pequenas.
+    # Si un ancla no es valida (o el ajuste falla) se usa la valida anterior; si no hay ninguna, el
+    # pliegue se predice SIN aumento (Delta = 0 en ese pliegue: conservador). Todo queda contado en el
+    # registro de anclas que publica el notebook.
+    min_episodios_crisis: 1
+    min_dias_crisis: 100
+    validar: [memorizacion, condicionamiento]
+    # Concrecion de implementacion (2026-10-15, antes de ejecutar nada): la validacion por ancla usa
+    # 20 trayectorias de muestreo.length sesiones (cadena simulada con arranque estacionario y
+    # duraciones empiricas), como el brazo completas.
+    validar_n_trayectorias: 20
+
+  # -- Que se anade (dos brazos) -----------------------------------------------------------------
+  # El bloque sintetico va DELANTE del train real del pliegue, con fechas habiles ficticias que acaban
+  # la sesion anterior al primer dia real; solo con las columnas de la spec del detector. La cola del
+  # train, que hace de contexto al predecir, sigue siendo real. Declarado: los detectores con burn-in
+  # (D04-D08, D10, D11) recorren tambien el bloque sintetico al re-etiquetar el train, lo que alarga y
+  # encarece ese burn-in (el piloto lo mide).
+  # Bloques = trayectorias independientes de `trayectoria_largo` sesiones, cada una re-derivada desde la
+  # historia real del ancla (el largo validado en el 19; nunca series de 16.000 sesiones), concatenadas
+  # hasta n_sint (la ultima se recorta).
+  trayectoria_largo: 2520
+  brazos:
+    completas:                    # «mas datos de lo mismo»: calma + crisis
+      regimenes: simulada         # cadena simulada con la matriz de transicion del ajuste del ancla
+      inicial: estacionaria
+      duraciones: empiricas       # semi-Markov: evita bloques sin ninguna crisis (con geometricas la
+                                  # calma dura ~1130 sesiones de media y la «dosis» no seria homogenea)
+      base_proporcion: dias_train # n_sint = p x dias reales del train del pliegue
+    crisis:                       # «mas crisis»: solo episodios con regime = 1
+      # Cada episodio es una trayectoria independiente con regime = 1 y duracion remuestreada de las
+      # crisis reales del ajuste del ancla (asi no se acumula un drawdown irreal).
+      duraciones: empiricas
+      # n_sint = p x dias de crisis reconocidos del ancla que caen DENTRO de la ventana de train del
+      # pliegue (en D11, ventana movil, no se reintroduce historia que el detector olvida a proposito
+      # en mas dias que los que ve; la ley del generador si la recuerda: confusion declarada).
+      base_proporcion: dias_crisis_en_ventana_train
+  proporciones: [0.25, 0.5, 1.0]  # anidadas: el bloque de 0,25 es el principio del de 0,5, etc.
+  # Se registran por pliegue y brazo los dias de crisis y la prevalencia REALIZADOS en el bloque.
+
+  # -- Contrato del envoltorio -------------------------------------------------------------------
+  # fit(train) -> interno.fit(concat(bloque, train)). Delega en el interno label_states_economically,
+  # predict, predict_online, predict_proba, n_states y crisis_state. El orden economico de estados se
+  # fija SOLO con el train real y su SP500_ret (lo hace walk_forward). Prueba obligatoria antes de
+  # ejecutar: con bloque vacio (p = 0) reproduce BIT A BIT los paneles del benchmark (en el piloto,
+  # sus 10 ultimos pliegues de cada detector y pista).
+  # Diagnostico pre-registrado: un estado que el modelo dedique al «aspecto sintetico» y no aparezca
+  # en el train real queda al final del orden, es decir, como crisis (detectores/base.py). Se publica
+  # la ocupacion de cada estado en el bloque sintetico frente al train real; ningun caso se excluye
+  # (cuenta en la Delta).
+
+  # -- Repeticiones y suelo de ruido -------------------------------------------------------------
+  # Una repeticion = muestras nuevas de cada generador por ancla (el ajuste por ancla es unico: su
+  # incertidumbre no se recoge, como en el 20). La incertidumbre principal es la del real (17 crisis
+  # en A, 9 en B); la 2.a repeticion de B mide cuanto pesa la semilla del muestreo.
+  repeticiones: {A: 1, B: 2}
+  # Suelo de ruido del optimizador: con p = 0 (por el envoltorio) y estas semillas alternativas de los
+  # detectores estocasticos, |Delta| entre semillas mide cuanto cambia el score sin aumento.
+  suelo_ruido:
+    semillas: [7, 1234]
+    detectores: {A: [D03, D12], B: [D03, D04, D08, D09, D12]}
+
+  # -- Contrastes pre-registrados ------------------------------------------------------------------
+  # Medida: el score crudo sube con solo marcar mas dias (marcar siempre da ~0,33 en A y ~0,30 en B,
+  # por encima de varios detectores en B). Por eso la Delta principal es sobre el EXCESO SOBRE EL NULO:
+  #   exceso = score_deteccion - mediana(persistent_random_null con la tasa de marcado y la racha media
+  #            de la propia senal)
+  #   Delta  = exceso(aumentado) - exceso(proporcion 0)
+  # Objeto que se contrasta y que adoptaria el 22 (fijado ahora): por detector, brazo y proporcion, la
+  # senal de VOTO MAYORITARIO (>= 3 de 5) de los detectores aumentados con cada generador (sale de los
+  # paneles ya calculados, sin ajustes nuevos). Asi la mejora no se atribuye a un generador elegido a
+  # posteriori. Los cinco por separado y el control se publican tambien.
+  # Segmentos: el tramo OOS se parte en un segmento por crisis evaluada (la crisis con la calma que la
+  # rodea hasta el punto medio con la vecina; los extremos van con su crisis mas cercana). Las mismas
+  # replicas de segmentos se usan para todos los detectores, generadores, brazos y proporciones.
+  # - p-valor (confirmatorio): permutacion pareada EXACTA intercambiando las dos senales dentro de cada
+  #   segmento (2^17 combinaciones en A, 2^9 en B), bilateral. p minimo = 2/2^S (errata: antes decia
+  #   1/512 en B; es 2/512 ~ 0,0039): B solo puede salir significativa si su asignacion observada es la
+  #   mas extrema de las 512.
+  # - Intervalo (descriptivo): bootstrap pareado por segmentos, percentiles al 95 %.
+  contrastes:
+    medida: exceso_sobre_nulo
+    n_sims_nulo: 300
+    n_boot: 20000
+    alfa: 0.05
+    # Diferencia relevante: ~ detectar una crisis mas en B (1/9 de recall con precision ~0,4 mueve el
+    # F1 ~0,028) y ~1 puesto del ranking ADR-003.
+    mejora_minima: 0.03
+    # H1 (PRINCIPAL, la unica con correccion por multiplicidad): por pista y detector, Delta de la
+    # senal de voto en el brazo completas con proporcion 1. «Mejora» si (a) Holm sobre los 22
+    # p-valores (12 A + 10 B, en las dos direcciones) la declara significativa con Delta > 0,
+    # (b) Delta >= mejora_minima, (c) el nivel ADR-003 (lift, parpadeo, degenerado) no empeora,
+    # (d) ningun generador por separado tiene IC por debajo de 0 y (e) donde hay suelo de ruido,
+    # Delta supera el maximo |Delta| entre semillas. «Empeora» si Holm la declara significativa con
+    # Delta < 0. Si no, «sin efecto detectable».
+    # Secundarias (sin correccion; se leen como apoyo, no como prueba):
+    # H2 dosis-respuesta: pendiente de Delta frente a la proporcion (0; 0,25; 0,5; 1) por detector, IC
+    #    bootstrap. Si H1 se cumple en un detector, se espera pendiente > 0.
+    # H3 frente al control: Delta(voto) - Delta(bootstrap_regimen), pareado, brazo completas,
+    #    proporcion 1. El sintetico aporta mas que «mas real remuestreado» si IC > 0.
+    # H4 familia: Delta medio del grupo que aprende un estado latente menos el del grupo de umbral
+    #    puro. Prediccion: > 0. Mixtos y secuenciales se publican aparte. En B el grupo umbral queda
+    #    solo en D01 (D02 excluido): se declara.
+    # H5 brazos: Delta(crisis) - Delta(completas) con proporcion 1. Con la misma p, «completas» anade en
+    #    esperanza los mismos dias de crisis MAS la calma: el estimando es el «efecto de anadir calma»
+    #    (con signo cambiado). Sin prediccion de signo.
+    # Concrecion de implementacion (2026-10-15, antes de ejecutar nada): H1 usa la repeticion 0 (la
+    # unica en A); la 2.a repeticion de B se publica como replica (exploratoria).
+    h1: {brazo: completas, proporcion: 1.0, senal: voto_mayoritario, voto_min: 3, correccion: holm}
+    # Errata fechada (2026-10-15, decidida por el usuario ANTES de ver ningun resultado del plan, por
+    # aritmetica: con Holm global sobre 22 contrastes el umbral es 0,05/22 ~ 0,0023 y en B el p minimo
+    # alcanzable es 2/512 ~ 0,0039, asi que H1 en B no podia salir nunca): Holm por PISTA (12 contrastes en A,
+    # 10 en B; en B el primer umbral es 0,005). Coherente con la regla del 22, que decide por pista.
+    # Se publica al lado el Holm global como sensibilidad (columnas holm_global y veredicto_global).
+    # Antes: familia_holm: global.
+    familia_holm: pista
+    grupos_h4:
+      aprende_estado: [D03, D04, D05, D08, D09, D11, D12]   # mezclas, HMM, Markov-switching, jump, AE
+      umbral: [D01, D02]                                     # umbral por percentil de una senal fija
+      mixto: [D06, D10]       # GJR-GARCH por MV + umbral; covarianza de Mahalanobis + umbral
+      secuenciales: [D07]     # CUSUM: solo calibra centro y escala
+  # Regla para el 22 (fijada ahora): el aumento (senal de voto, brazo completas, proporcion 1) se
+  # adopta para un detector y pista SOLO si H1 da «mejora» y H3 tiene IC > 0 en esa pista. Si no, se
+  # descarta.
+  # Lecturas EXPLORATORIAS (el notebook las marca asi): mapa detector x generador; Delta de score crudo,
+  # tasa de marcado, precision, recall por evento y lift (separar recalibracion de aprendizaje);
+  # cambios por crisis; varianza entre repeticiones (B); ocupacion de estados; y cualquier otra
+  # proporcion o brazo fuera de H1-H5.
+
+  # -- Ejecucion -----------------------------------------------------------------------------------
+  ejecucion:
+    n_jobs: 10
+    horas: 7.5                    # presupuesto por sesion: solo arranca un trabajo si cabe entero
+    # Piloto de coste (solo tiempos y la prueba bit a bit, nunca metricas): por pista y detector, los
+    # 10 ultimos pliegues (train mas largo) con proporcion 0 y 1 -> multiplicador de coste. Tiempo
+    # estimado de un trabajo = tiempo del benchmark x multiplicador interpolado en la proporcion. Mide
+    # tambien el ajuste y la validacion de los generadores por ancla.
+    piloto_pliegues: 10
+    # Orden de prioridad de los lotes (cada uno deja resultados completos); dentro de un lote, el
+    # trabajo mas largo primero. El suelo de ruido va con el lote de su pista.
+    prioridad:
+      - {pista: B, repeticion: 0}
+      - {pista: A, detectores: [D01, D02, D03, D06, D07, D12]}
+      - {pista: A, detectores: [D10, D11]}
+      - {pista: A, detectores: [D05]}
+      - {pista: A, detectores: [D09, D08], brazo: completas}
+      - {pista: A, detectores: [D09, D08], brazo: crisis}
+      - {pista: A, detectores: [D04]}
+      - {pista: B, repeticion: 1}

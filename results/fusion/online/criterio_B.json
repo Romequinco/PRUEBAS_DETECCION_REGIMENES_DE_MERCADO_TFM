@@ -1,0 +1,62 @@
+{
+ "pista": "B",
+ "I*": "D05",
+ "I*_H1": "D01",
+ "F*": "VOTO_3de5",
+ "score_O": 0.5808857808857809,
+ "nivel_O": 0,
+ "score_I*": 0.6467181467181468,
+ "score_M": 0.38329238329238324,
+ "score_V": 0.4638202247191011,
+ "score_F*": 0.6143266475644699,
+ "score_O_H2": 0.567741935483871,
+ "nivel_O_H2": 0,
+ "score_I*_H1_en_H2": 0.4278820375335121,
+ "score_M_H2": 0.411764705882353,
+ "score_V_H2": 0.5197908887229276,
+ "score_F*_H2": 0.542608695652174,
+ "mcs_O_incluido": true,
+ "mcs_O_H2_incluido": true,
+ "mcs_M_incluido": false,
+ "mcs_V_incluido": false,
+ "mcs_Istar_incluido": true,
+ "mcs_F*_incluido": true,
+ "mcs_O_duplicado_de": null,
+ "i": false,
+ "ii": true,
+ "iii": true,
+ "cumple": false,
+ "O_gt_M_oos": true,
+ "O_gt_M_H2": true,
+ "primer_tau_aprendido": "2010-07-30",
+ "eta_H1": 10.0,
+ "score_eta_H1_en_H2": 0.567741935483871,
+ "eta_H1_gt_eta10_en_H2": false,
+ "sensibilidades": {
+  "ONLINE_binaria_eta10": {
+   "oos": 0.55967,
+   "H1": 0.609457,
+   "H2": 0.550921
+  },
+  "ONLINE_retraso63_eta10": {
+   "oos": 0.608696,
+   "H1": 0.772059,
+   "H2": 0.582781
+  },
+  "ONLINE_min21_eta10": {
+   "oos": 0.580886,
+   "H1": 0.662461,
+   "H2": 0.567742
+  },
+  "ONLINE_excluir_sin_terminar_eta10": {
+   "oos": 0.601585,
+   "H1": 0.703777,
+   "H2": 0.571151
+  },
+  "ONLINE_binaria_eta0": {
+   "oos": 0.46382,
+   "H1": 0.4,
+   "H2": 0.519791
+  }
+ }
+}

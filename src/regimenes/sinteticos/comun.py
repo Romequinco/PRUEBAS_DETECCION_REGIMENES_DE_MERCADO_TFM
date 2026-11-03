@@ -4,7 +4,7 @@ Por que existe: los diez generadores (parametricos y neuronales) comparten
 validacion de entradas, espacio de generacion, cadena de regimenes, semillas,
 vuelta al espacio publico, historial de convergencia y persistencia. Si cada
 uno lo reimplementara, las diferencias entre generadores que midan los
-notebooks 16-18 mezclarian el modelo con la fontaneria. ``GeneradorBase``
+notebooks 19-21 mezclarian el modelo con la fontaneria. ``GeneradorBase``
 implementa ``fit`` y ``sample`` de la interfaz ``Generador`` y deja a cada
 generador solo dos metodos sobre matrices numpy estandarizadas:
 

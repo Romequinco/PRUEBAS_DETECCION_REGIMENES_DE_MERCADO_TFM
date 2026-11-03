@@ -1,0 +1,36 @@
+{
+  "pista": "B",
+  "n_dias_indice": 4815,
+  "inicio": "2007-04-11",
+  "fin": "2026-05-29",
+  "train_days": 756,
+  "n_oos": 4059,
+  "oos_inicio": "2010-04-12",
+  "n_dias_perdidos_por_termometros": 0,
+  "fechas_perdidas": [],
+  "nan_por_termometro": {
+    "T1_renta_variable": 0,
+    "T1b_rentabilidad_diaria": 0,
+    "T2_tipos_nivel_curva": 0,
+    "T3_velocidad_tipos": 0,
+    "T4_inflacion_tipo_real": 0,
+    "T5_vol_implicita": 0,
+    "T6_credito": 0,
+    "T7_divisas_materias_primas": 0,
+    "T8_actividad": 0,
+    "T9_inflacion_valoracion": 0
+  },
+  "mismo_indice_que_v2": true,
+  "sha256_processed": {
+    "pistaB_diaria.parquet": "a4a7013c204aac31b43f8f9d4de8ccae15afae71cee6304dfdfcea0634d12c56",
+    "pistaB_mensual.parquet": "f9b192d5994c9b8d56d0b70c0c3121b577bf55d3f913752bc9eff7b52eba67a4"
+  },
+  "huella_v2_vigente": {
+    "D02": true,
+    "D03": true,
+    "D04": true,
+    "D08": true,
+    "D09": true,
+    "D10": true
+  }
+}

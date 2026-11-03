@@ -40,7 +40,7 @@ Se construye de abajo arriba: primero las piezas que no dependen de un LLM, desp
 
 | Fase | Qué | Estado | Siguiente paso |
 |:---:|---|---|---|
-| 1 | **Régimen de mercado:** base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | **En curso.** Hechos: datos, preprocesado, benchmark de 12 detectores, fusiones y sintéticos (notebooks `00`–`17`). Pendientes: `18` (aumento), `19` (decisión final) y `20` (pseudolive), hoy esqueletos | Elegir la señal final (notebook 19, futura ADR-006) y publicarla como `get_regimen(fecha)` |
+| 1 | **Régimen de mercado:** base de datos causal, comparativa de detectores, señal final como tool `get_regimen(fecha)` | **En curso.** Hechos: datos, preprocesado, benchmark de 12 detectores, fusiones y sintéticos (notebooks `00`–`20`). Pendientes: `21` (aumento), `22` (decisión final) y `23` (pseudolive), hoy esqueletos | Elegir la señal final (notebook 22, futura ADR-006) y publicarla como `get_regimen(fecha)` |
 | 2 | **Ingesta, RAG y tools:** corpus con fecha de publicación, TimeGate dentro de cada tool, evaluación RAGAS | **En marcha** en `src/ingesta`, repartida en cuatro temas con una rama cada uno. **Temas 1, 3 y 4 integrados en `main`** (2026-10-15): tools `get_serie` y `get_precios` con TimeGate auditado (Tema 1), sonda EDGAR (Tema 3) y sonda de noticias y alternativos con su validez (Tema 4) | Tema 2 (bancos centrales y riesgo), sin rama todavía; tools `buscar_noticias`, `get_polymarket`, `buscar_filings` y `get_fundamentales` sobre las sondas. Después, troceado, embeddings y primeros índices con evaluación de la recuperación |
 | 3 | **Agentes Macro, Equity y Risk** en LangGraph, salidas estructuradas y trazables | Pendiente | Macro Agent completo con sus skills, sobre episodios históricos concretos |
 | 4 | **Cartera y memo:** Portfolio Agent y CIO Agent, motores basados en riesgo, límites y alertas | Pendiente | Añadir Equity, Risk, Portfolio y CIO |
@@ -53,12 +53,12 @@ Secuencia propuesta al tutor: (1) cerrar la Fase 1, (2) catálogo de tools, (3) 
 
 | Fase | Código | Documentación |
 |:---:|---|---|
-| 1 | Paquete [`src/regimenes`](../../src/regimenes) y notebooks `00`–`20`. Sub-fases internas históricas: 1–4 (re-base de datos, ADR-001), D detectores, E fusión, S sintéticos, F decisión final y validación pseudolive; todas se leen como **sub-fases de la Fase 1** | [`docs/fase1/`](../fase1/README.md) (pipeline, mapa del código, teoría y detectores por familia) |
+| 1 | Paquete [`src/regimenes`](../../src/regimenes) y notebooks `00`–`23`. Sub-fases internas históricas: 1–4 (re-base de datos, ADR-001), D detectores, E fusión, S sintéticos, F decisión final y validación pseudolive; todas se leen como **sub-fases de la Fase 1** | [`docs/fase1/`](../fase1/README.md) (pipeline, mapa del código, teoría y detectores por familia) |
 | 2 | Paquete [`src/ingesta`](../../src/ingesta), un subpaquete por tema, cada uno en su rama ([ADR-007](../decisions/ADR-007-fase2-ingesta-y-docs.md)) | [`docs/fase2/`](../fase2/README.md) (reparto y reglas) · [`plan_datos.md`](../fase2/plan_datos.md) (plan de datos vigente) |
 | 3–5 | Por decidir en una ADR propia (ver [lineas_abiertas.md](lineas_abiertas.md) §4) | Este directorio |
 
-Salida de la Fase 1: la tool `get_regimen(fecha)`. El notebook `19_decision_final` congela la regla y define el
-contrato; `20_pseudolive` lo valida sobre datos no usados. Contrato provisional en [arquitectura.md](arquitectura.md) §5.
+Salida de la Fase 1: la tool `get_regimen(fecha)`. El notebook `22_decision_final` congela la regla y define el
+contrato; `23_pseudolive` lo valida sobre datos no usados. Contrato provisional en [arquitectura.md](arquitectura.md) §5.
 
 ## 5. Índice de este directorio
 

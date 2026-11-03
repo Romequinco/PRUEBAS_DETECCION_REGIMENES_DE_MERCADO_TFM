@@ -1,4 +1,4 @@
-"""Validacion de trayectorias sinteticas (notebook 16).
+"""Validacion de trayectorias sinteticas (notebook 19).
 
 Compara cada generador con el **tramo de entrenamiento real** con el que se
 ajusto (nunca con el tramo posterior a ``fin_train``) en varias dimensiones; los

@@ -1,4 +1,4 @@
-"""Tests sintéticos de ``regimenes.informes`` (utilidades de los notebooks 05–11).
+"""Tests sintéticos de ``regimenes.informes`` (utilidades de los notebooks 06–12).
 
 No leen ``results/benchmark`` ni ``data/``: la caché del benchmark se sustituye por
 métricas, paneles y ranking sintéticos en un directorio temporal.
@@ -118,7 +118,7 @@ def _ranking_sintetico(metricas: pd.DataFrame) -> pd.DataFrame:
 
 
 def test_buscar_ranking_prefiere_ranking_csv_y_falla_sin_archivo(tmp_path):
-    with pytest.raises(FileNotFoundError, match="12_comparativa"):
+    with pytest.raises(FileNotFoundError, match="14_comparativa"):
         inf.buscar_ranking(tmp_path)
     (tmp_path / "ranking_zzz.csv").write_text("pista,id\n", encoding="utf-8")
     assert inf.buscar_ranking(tmp_path).name == "ranking_zzz.csv"
@@ -235,7 +235,7 @@ def test_cargar_resultados_detecta_ranking_incoherente_y_panel_corto(tmp_path, m
     ranking.loc[ranking["id"] == "D01", "det_n_detectados"] = 7
     ranking.to_csv(tmp_path / "ranking_v2.csv", index=False)
     monkeypatch.setattr(ejecucion, "run_benchmark", _falso_run_benchmark(metricas))
-    with pytest.raises(RuntimeError, match="12_comparativa"):
+    with pytest.raises(RuntimeError, match="14_comparativa"):
         inf.cargar_resultados_familia(["D01"], ["A"], output_dir=tmp_path)
     res = inf.cargar_resultados_familia(["D01"], ["A"], output_dir=tmp_path, exigir_ranking_coherente=False)
     assert res.incoherencias == ["A/D01 (difiere)"]

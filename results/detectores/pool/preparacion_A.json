@@ -1,0 +1,161 @@
+{
+ "pista": "A",
+ "n_dias_indice": 16149,
+ "inicio": "1962-03-29",
+ "fin": "2026-05-29",
+ "train_days": 2016,
+ "n_oos": 14133,
+ "oos_inicio": "1970-05-12",
+ "mismo_oos_que_v2": true,
+ "variantes": {
+  "D10-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D15-U": {
+   "menu": "U",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 1,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-N": {
+   "menu": "N",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 9,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D16-P-excl": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-N": {
+   "menu": "N",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 9,
+   "nan_calentamiento": 0,
+   "columnas_que_empiezan_tarde": {},
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D17-P-excl": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  },
+  "D18-P": {
+   "menu": "P",
+   "step": 21,
+   "expanding": true,
+   "n_columnas": 35,
+   "nan_calentamiento": 3067,
+   "columnas_que_empiezan_tarde": {
+    "UMCSENT_z": "1969-12-01",
+    "HOUST_yoy_z": "1965-02-01",
+    "GDP_growth_z": "1962-05-01",
+    "CPI_core_yoy_z": "1963-02-01",
+    "PPI_metals_yoy_z": "1963-02-01"
+   },
+   "nan_oos_por_columna": {},
+   "filas_oos_incompletas": 0
+  }
+ },
+ "sha256_processed": {
+  "pistaA_diaria.parquet": "935255d096f24d20c15247fc70df7cb0c38da95ba69f99f9241d4b77aadd11f2",
+  "pistaA_mensual.parquet": "ff36a6108ac8541939edb702e20d4fe017197227f938c162e33814c332ecc26e"
+ },
+ "entrada": {
+  "archivo": "A.parquet",
+  "sha256": "19ff2fecac48ea2cf2de4135e827ecd6a42f6dba6be58d0ec16b1100d3ccc3ee"
+ },
+ "huella_codigo": {
+  "src/regimenes/detectores/pool/__init__.py": "f2a36df68155ec2e00872f7366cd4b6f0f8e2d0cd9ec462502ac90944bf8e24e",
+  "src/regimenes/detectores/pool/absorption_ratio.py": "7f19bf7b7a6f9b6528f1c8bd8e82fd941980b4059a12a5ca13cd0b8b5efdeb09",
+  "src/regimenes/detectores/pool/disponibilidad.py": "e57023cd6469b0757dc977f91c6a1112768646b22b589a218dfb04238e5af064",
+  "src/regimenes/detectores/pool/especificaciones.py": "d85bc29e182f41a1525a6718ea28a588189b68d63ab3a3c8133279f1e36e7ed7",
+  "src/regimenes/detectores/pool/pool_crudo.py": "2d1afe428a3eab98c712e3b8a2aa2b3df5a8b9ca606dda24021dc6ded7eda1c2",
+  "src/regimenes/detectores/pool/shu.py": "98b0a77c7ba0c4bc69a12d05595ae0f05f5810cc2bc134b0e64676fda60a23d8",
+  "src/regimenes/detectores/pool/shu_supervisados.py": "918b022b8412a68dbb8ef4a2778d4e6f9a4e8537655d25215b73731eea54d7ab",
+  "src/regimenes/detectores/pool/sparse_jump.py": "5b41cc05a3a5caca5961c4eba567e3597df75f6e662fc0d2a772cb8aa91bf8ec",
+  "src/regimenes/detectores/pool/supervisados.py": "1d1f7465ebd4b1862564ff34889bb767fa92a46228828a9948b977966eac6aea",
+  "src/regimenes/benchmark/pool.py": "c13779ec8a36d2d2887f96049d5999f08f71af0503437ed9c60b418c207248a0",
+  "src/regimenes/features/rentabilidades.py": "9e46e8620adfe921a33f5b3f5a23d131934a1254cb55c2bf102d11a50f9c317b",
+  "configs/bloques.yaml": "c532fbe9caf6f177e58a4353f0ffa0a04550f5279422138207bb597471e3fc5d"
+ },
+ "fecha": "2026-11-03 10:04:16"
+}

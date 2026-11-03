@@ -16,10 +16,10 @@ con una fila por (regimen, columna, metrica) y columnas
     en_banda    bool: sintetico dentro de [banda_inf, banda_sup] (NaN si no hay banda)
 
 Las autocorrelaciones se calculan DENTRO de cada regimen: solo con pares de
-dias que pertenecen a la misma racha (pendiente heredado del notebook 15, donde
+dias que pertenecen a la misma racha (pendiente heredado del notebook 18, donde
 eran de la trayectoria entera).
 
-Convenciones de este modulo (las cita el notebook 16)
+Convenciones de este modulo (las cita el notebook 19)
 -----------------------------------------------------
 - ``en_banda`` es de tipo pandas ``boolean`` (``<NA>`` cuando la metrica no lleva
   banda). Con solo ``banda_sup`` (distancias) se lee ``sintetico <= banda_sup``.
@@ -560,7 +560,7 @@ def fidelidad_dependencia(real: pd.DataFrame, sintetico: list[pd.DataFrame], *, 
       Las listas de columnas van en ``tabla.attrs``.
 
     Filas ``regimen='todos'``: ``acf_r_1`` y ``acf_abs_1`` sobre la serie ENTERA
-    (pares que cruzan regimen incluidos), comparables con el notebook 15; su
+    (pares que cruzan regimen incluidos), comparables con el notebook 18; su
     banda sale de un bootstrap por bloques de la serie entera.
 
     Sintetico: ``agregacion='mediana'`` (defecto) = mediana entre trayectorias del
@@ -731,7 +731,7 @@ def fidelidad_dependencia(real: pd.DataFrame, sintetico: list[pd.DataFrame], *, 
         real_en_banda[len(filas) - 1] = (pd.NA if np.isnan(inf) or not np.isfinite(cc_real)
                                          else bool(inf <= cc_real <= sup))
 
-    # serie entera (mezcla regimenes, como el notebook 15)
+    # serie entera (mezcla regimenes, como el notebook 18)
     def _todos(r: np.ndarray, seg: np.ndarray) -> dict[str, float]:
         a = np.abs(r)
         v = seg[:-1] == seg[1:]
@@ -940,7 +940,7 @@ def condicionamiento(real: pd.DataFrame, sintetico: list[pd.DataFrame], *, regim
     """Cuanta senal de regimen llevan las features: separacion de volatilidad,
     deriva en crisis y AUC de un clasificador que predice el regimen del dia.
 
-    Diagnostica el condicionamiento debil visto en el notebook 15 (cGAN,
+    Diagnostica el condicionamiento debil visto en el notebook 18 (cGAN,
     difusion y cVAE en la pista B: separacion 1,10-1,59 frente a 2,21 real).
 
     - ``separacion_vol`` (``regimen='todos'``, ``columna=col_ret``):

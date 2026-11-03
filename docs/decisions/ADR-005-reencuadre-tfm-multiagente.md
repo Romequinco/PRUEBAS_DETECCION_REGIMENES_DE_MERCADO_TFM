@@ -10,7 +10,7 @@
   (propuesta original, parcialmente superada por esta ADR).
 - **Corrige:** [ADR-004](ADR-004-unificacion.md) §2 (*"todo el TFM vive en `regimenes`"*): `regimenes` es
   el código de la Fase 1. ADR-001 a ADR-004 siguen vigentes dentro de la Fase 1.
-- **Renumera:** la decisión final del detector de régimen (notebook `19_decision_final`), que hasta ahora
+- **Renumera:** la decisión final del detector de régimen (notebook `22_decision_final`), que hasta ahora
   se llamaba «futura ADR-005», pasa a ser la **futura ADR-006**.
 
 ---
@@ -49,8 +49,8 @@ La Fase 1 se cierra cuando la señal final de régimen queda publicada como tool
 `get_regimen(fecha)` → estado, probabilidad y días en el estado, usando solo información publicada hasta
 `fecha`. El **conjunto de estados lo fija el detector final** (futura ADR-006); la hipótesis de trabajo es
 **calma / alerta / crisis**, que se corresponde con los estados normal / vigilancia / confirmado de la
-máquina de fusión (`regimenes.fusion`). El notebook `19_decision_final` congela la regla y define el
-contrato; `20_pseudolive` valida la tool sobre datos no usados.
+máquina de fusión (`regimenes.fusion`). El notebook `22_decision_final` congela la regla y define el
+contrato; `23_pseudolive` valida la tool sobre datos no usados.
 
 ### 2.2 Requisitos añadidos en la tutoría
 
@@ -96,6 +96,6 @@ con el tag y la historia; el GLOSARIO lo aclara.
 - Dónde vivirá el código de las fases 2–5 (paquetes nuevos en este repositorio o un repositorio aparte)
   queda **abierto**; se decidirá en una ADR propia. *(Para la Fase 2 lo decide [ADR-007](ADR-007-fase2-ingesta-y-docs.md);
   las fases 3–5 siguen abiertas.)*
-- El objetivo de `19_decision_final` y `20_pseudolive` deja de ser «el sistema final del TFM» y pasa a
+- El objetivo de `22_decision_final` y `23_pseudolive` deja de ser «el sistema final del TFM» y pasa a
   ser la señal de régimen que consumirán los agentes.
-- El notebook `18_sinteticos_aumento` se mantiene.
+- El notebook `21_sinteticos_aumento` se mantiene.

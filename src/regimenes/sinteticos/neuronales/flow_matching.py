@@ -37,7 +37,7 @@ Que reproduce y que no (pista A hasta 2006, 50 x 2520, semilla 42)
 -----------------------------------------------------------------
 (Cifras del humo de desarrollo, no las vigentes: las del muestreo de
 ``configs/sinteticos.yaml`` (100 x 2520, cadena estacionaria compartida) salen de
-``notebooks/15_sinteticos_generadores`` y quedan en
+``notebooks/18_sinteticos_generadores`` y quedan en
 ``results/sinteticos/generadores/sanidad_generadores.csv``; si difieren, manda el notebook.)
 
 Reproduce: desviacion por columna y regimen (sintetico / real entre 0,88 y
@@ -68,7 +68,7 @@ condicional de ``x_1 - x_0`` dado ``x_t``. En la pista A: 1,69 -> 0,97 en ajuste
 y 1,48 -> 1,04 en validacion (minimo en la epoca 35 de 40, que es la que se
 conserva); por regimen, 0,85 en calma y 1,34 en crisis. Una perdida baja no
 garantiza buenas muestras (el error se integra a lo largo de la trayectoria y
-luego de 120 bloques encadenados): la calidad se mide en los notebooks 16-18.
+luego de 120 bloques encadenados): la calidad se mide en los notebooks 19-21.
 Mas epocas bajan la perdida de ajuste y empeoran las muestras (ver
 ``restaurar_mejor`` en ``_redes_flujo``).
 

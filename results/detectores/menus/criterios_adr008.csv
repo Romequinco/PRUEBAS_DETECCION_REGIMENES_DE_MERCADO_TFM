@@ -1,0 +1,3 @@
+pista,n_comparados,n_mejoran_T,a_mayoria_mejora,mcs_miembros,c_algun_T_en_mcs,T_en_mcs,b_bloques_frente_a_azar
+A,6,1,False,D06|D05|D01|D10|D12|D03|D04|D02|D08|D07|D11,False,,"pendiente (Fase 2, 2.5)"
+B,6,5,True,D05|D06|D10|D02_T|D04|D10_T|D11|D02|D07|D01|D04_T|D08_T,True,D02_T|D10_T|D04_T|D08_T,"pendiente (Fase 2, 2.5)"

@@ -5,7 +5,7 @@
    contrato documentado (``fit`` devuelve ``self``; ``sample`` devuelve
    ``n_paths`` trayectorias de ``length`` pasos con columna ``regime``).
 2. El registro (``registrar``/``crear``) con una subclase directa de ``Generador``.
-3. Las metricas de validacion (notebook 16) declaradas en la configuracion
+3. Las metricas de validacion (notebook 19) declaradas en la configuracion
    existen y conservan la firma posicional ``(real, sintetico, ...)`` (o
    ``(real_regimes, sintetico)``); su logica se prueba en ``test_validacion_*.py``.
 

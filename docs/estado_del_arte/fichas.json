@@ -60,7 +60,7 @@
   "bloque": "Detección de regímenes de mercado (clásica y reciente) y asignación condicionada al régimen",
   "fase": "P1 régimen, P5 evaluación",
   "seminal": false,
-  "que_hace": "Propone observables geométricos sobre un embedding espectral y los compara con 46 métodos clásicos y de ML (Markov-switching, GARCH, turbulencia, absorption ratio, etc.) en 17 crisis (2000-2024). Usa selección anidada walk-forward e intervalos bootstrap. Muestra que la mejor separación dentro de muestra cae fuera de muestra.",
+  "que_hace": "Propone observables geométricos sobre un embedding QCML (4 destacados: Berry Phase Rate, Spectral Entropy, Reduced State Purity y Hamiltonian Sensitivity, y 18 canales más) y los compara con 24 baselines clásicos y de ML (absorption ratio, Markov-switching de Hamilton, HMM, GARCH, CUSUM, BOCPD, turbulencia, Isolation Forest, VIX como oráculo y dos random forest) en 17 crisis de 2000 a 2024 (9 convencionales y 8 novedosas) con datos diarios de SPY y DIA de 1998 a 2024. Usa selección anidada walk-forward e intervalos bootstrap. Muestra que la separación dentro de muestra se infla (sesgo de +0,415 en d) y que Berry Phase Rate es el canal que mejor aguanta fuera de muestra.",
   "diferencia_con_nosotros": "Es el benchmark más cercano a nuestro ranking por detección de crisis. Usa solo índices de renta variable, sin datos macro con vintages ni uso posterior en cartera o agentes.",
   "rasgos": {
    "anti_lookahead": true,
@@ -204,7 +204,7 @@
   "bloque": "Sistemas multi-agente LLM para trading e inversión",
   "fase": "P1 régimen (justificación), P5 evaluación",
   "seminal": true,
-  "que_hace": "Marco de backtest de más de 20 años y más de 100 símbolos que reevalúa estrategias LLM, con atención a la supervivencia y al data snooping. La ventaja de los LLM se desvanece: son demasiado conservadores en mercados alcistas y demasiado agresivos en bajistas. Los autores piden controles de riesgo según régimen.",
+  "que_hace": "Marco de backtest de 20 años (2004-2024) y más de 100 símbolos del S&P 500 histórico, con deslistados, que reevalúa FinMem y FinAgent controlando la supervivencia, el data snooping y, en parte, el look-ahead. La ventaja de los LLM se reduce mucho o desaparece: son demasiado conservadores en mercados alcistas y demasiado agresivos en bajistas. Los autores piden controles de riesgo según régimen.",
   "diferencia_con_nosotros": "Es un diagnóstico, no un sistema. Señala justo el hueco que cubrimos: régimen cuantitativo más límites de riesgo por régimen y evaluación larga con universo point-in-time.",
   "rasgos": {
    "multiagente": false,

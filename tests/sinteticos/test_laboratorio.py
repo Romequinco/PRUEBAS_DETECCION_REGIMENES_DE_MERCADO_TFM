@@ -195,7 +195,7 @@ def test_ida_y_vuelta_espacio_es_identidad(nombre):
     from regimenes.sinteticos import persistencia
 
     if not (persistencia.dir_trayectorias(nombre, "A") / "generador.pkl").exists():
-        pytest.skip("generador no ajustado (ejecuta el notebook 15)")
+        pytest.skip("generador no ajustado (ejecuta el notebook 18)")
     from regimenes.sinteticos.laboratorio import ejecucion as ej
 
     gen = ej.cargar_generador(nombre, "A")

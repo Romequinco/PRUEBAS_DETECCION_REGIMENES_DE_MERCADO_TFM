@@ -1,0 +1,3 @@
+pista,n,top_v3_oos,top_orden_oos,top_H1,solo_en_v3,solo_en_H1,mismo_orden
+A,3,D10|D01|D03,D10|D01|D03,D10-P|D02|D10,D01|D03,D02|D10-P,False
+A,5,D10|D01|D03|D02|D05,D10|D01|D03|D02|D05,D10-P|D02|D10|D01|D03,D05,D10-P,False

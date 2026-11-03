@@ -1,0 +1,62 @@
+{
+ "pista": "A",
+ "I*": "D10",
+ "I*_H1": "D10-P",
+ "F*": "AND_D01+D10-P",
+ "score_O": 0.6553695385871785,
+ "nivel_O": 0,
+ "score_I*": 0.613623911852438,
+ "score_M": 0.6319850385297027,
+ "score_V": 0.6237277950952042,
+ "score_F*": 0.596655328798186,
+ "score_O_H2": 0.6826953165745279,
+ "nivel_O_H2": 0,
+ "score_I*_H1_en_H2": 0.47063253012048195,
+ "score_M_H2": 0.6962647530426097,
+ "score_V_H2": 0.6813611566406537,
+ "score_F*_H2": 0.5407766990291262,
+ "mcs_O_incluido": true,
+ "mcs_O_H2_incluido": true,
+ "mcs_M_incluido": true,
+ "mcs_V_incluido": true,
+ "mcs_Istar_incluido": true,
+ "mcs_F*_incluido": false,
+ "mcs_O_duplicado_de": null,
+ "i": true,
+ "ii": true,
+ "iii": true,
+ "cumple": true,
+ "O_gt_M_oos": true,
+ "O_gt_M_H2": false,
+ "primer_tau_aprendido": "1970-05-29",
+ "eta_H1": 5.0,
+ "score_eta_H1_en_H2": 0.6876626620047845,
+ "eta_H1_gt_eta10_en_H2": true,
+ "sensibilidades": {
+  "ONLINE_binaria_eta10": {
+   "oos": 0.65002,
+   "H1": 0.556886,
+   "H2": 0.683558
+  },
+  "ONLINE_retraso63_eta10": {
+   "oos": 0.663497,
+   "H1": 0.609063,
+   "H2": 0.685251
+  },
+  "ONLINE_min21_eta10": {
+   "oos": 0.619027,
+   "H1": 0.494104,
+   "H2": 0.682695
+  },
+  "ONLINE_excluir_sin_terminar_eta10": {
+   "oos": 0.659895,
+   "H1": 0.603899,
+   "H2": 0.683514
+  },
+  "ONLINE_binaria_eta0": {
+   "oos": 0.623728,
+   "H1": 0.553657,
+   "H2": 0.681361
+  }
+ }
+}

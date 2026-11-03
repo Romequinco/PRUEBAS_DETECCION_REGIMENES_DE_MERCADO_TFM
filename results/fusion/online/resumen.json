@@ -1,0 +1,17 @@
+{
+ "cumple_por_pista": {
+  "A": true,
+  "B": false
+ },
+ "veredicto": "indicio",
+ "los_pesos_aprenden": false,
+ "pistas": [
+  "A",
+  "B"
+ ],
+ "F*": {
+  "A": "AND_D01+D10-P",
+  "B": "VOTO_3de5"
+ },
+ "n_boot": null
+}

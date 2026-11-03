@@ -408,7 +408,7 @@ def run_benchmark(
     ``cache_only=True`` es un modo de solo lectura: nunca ajusta modelos ni
     escribe ``manifest.json``/``run_status.csv``. Cada combinación cuya caché no
     se verifique con la huella actual queda con estado ``sin_cache``. Sirve para
-    abrir el notebook 04 en otra máquina sin lanzar horas de cálculo ni
+    abrir el notebook 05 en otra máquina sin lanzar horas de cálculo ni
     sobrescribir los artefactos versionados.
 
     ``n_jobs > 1`` reparte las combinaciones en procesos independientes

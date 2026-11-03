@@ -422,7 +422,7 @@ Decisiones transversales que siguen pendientes con el tutor:
 
 | Paso | Contenido | Estado |
 |---|---|---|
-| 1 · Cerrar la Fase 1 | Notebooks 18–20 y `get_regimen(fecha)` | Pendiente |
+| 1 · Cerrar la Fase 1 | Notebooks 21–23 y `get_regimen(fecha)` | Pendiente |
 | 2 · Base de series | `get_serie` y `get_precios` en producción con sus tests de TimeGate | **Hecho (Tema 1)** |
 | 3 · Primer RAG completo | Macro: comunicados, actas y ruedas de prensa de FOMC y BCE en la base, discursos en el cajón, con troceado, embeddings y pre-filtro elegidos | Siguiente (Tema 2) |
 | 4 · Primer agente | Macro Agent sobre episodios concretos, con evaluación de la recuperación y prueba de look-ahead | Pendiente (Fase 3) |

@@ -1,6 +1,6 @@
 # F6 — Change-point
 
-> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D07 `changepoint_online`](#d07). Notebook de familia: [`notebooks/10_familia_F6_changepoint.ipynb`](../../notebooks/10_familia_F6_changepoint.ipynb). Bibliografía: claves `cp_*` y compartidas de [`docs/references.bib`](../references.bib).
+> **Cómo leer este documento.** La sección 1 es la teoría de la familia (redactada en la Capa 1, original en el tag `capa1-final`); la 2, los detectores implementados con su configuración v2 y sus resultados del benchmark (ADR-003): [D07 `changepoint_online`](#d07). Notebook de familia: [`notebooks/11_familia_F6_changepoint.ipynb`](../../notebooks/11_familia_F6_changepoint.ipynb). Bibliografía: claves `cp_*` y compartidas de [`docs/references.bib`](../references.bib).
 >
 > **Datos v1 en la teoría.** Las cifras del EDA que cita la sección 1 son de la Capa 1 (15 features, ventana 2007-04 → 2026-06, 4 crisis: 2008, 2011, 2020 y 2022), igual que los nombres de feature `credit_spread_z` o `yield_slope_z` y las referencias a la «tarea previa»; donde el dato importa se indica junto a él. El panel v2 tiene dos pistas (A: 1962-01-02 → 2026-05-29; B: 2007-04-11 → 2026-05-29) y el EDA vigente está en [`eda.md`](eda.md) (curtosis de exceso del S&P 500 = 18,7 en 1928-2026).
 

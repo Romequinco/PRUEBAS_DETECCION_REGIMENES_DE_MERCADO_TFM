@@ -426,7 +426,7 @@ def load_metrics(
     files = sorted((output_dir / "metrics").glob("[AB]_D*.csv"))
     if not files:
         raise FileNotFoundError(
-            "No hay métricas v2. Ejecuta primero el benchmark del notebook 04."
+            "No hay métricas v2. Ejecuta primero el benchmark del notebook 05."
         )
     recorded_runtime: dict[str, str] | None = None
     if require_current:

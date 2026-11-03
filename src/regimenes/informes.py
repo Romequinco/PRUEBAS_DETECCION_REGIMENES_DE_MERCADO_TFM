@@ -1,7 +1,7 @@
-"""Utilidades comunes de los notebooks de familia (05–11).
+"""Utilidades comunes de los notebooks de familia (06–12).
 
 Extrae el código que se repetía, con pequeñas variantes, en cada notebook de familia
-(``notebooks/05_familia_F1_reglas.ipynb`` … ``11_familia_F7_deep.ipynb``) para que
+(``notebooks/06_familia_F1_reglas.ipynb`` … ``12_familia_F7_deep.ipynb``) para que
 todos carguen resultados, dibujen y tabulen de la misma forma:
 
 - **Configuración**: :func:`specs_familia`, :func:`tabla_configuracion`,
@@ -9,7 +9,7 @@ todos carguen resultados, dibujen y tabulen de la misma forma:
 - **Carga de resultados** (solo lectura de ``results/benchmark``):
   :func:`cargar_resultados_familia` devuelve un :class:`ResultadosFamilia` con las
   métricas verificadas por huella (``run_benchmark(cache_only=True)``), los paneles OOS
-  y el ranking de detección ADR-003 (``ranking*.csv`` que escribe ``12_comparativa``),
+  y el ranking de detección ADR-003 (``ranking*.csv`` que escribe ``14_comparativa``),
   comprobando que el ranking corresponde a esas métricas. Si la caché no está vigente
   falla con el comando exacto a ejecutar.
 - **Contexto de las pistas** (``data/processed`` y ``data/raw``, no dependen de
@@ -202,7 +202,7 @@ def buscar_ranking(output_dir: Path | str = rutas.RESULTS_BENCHMARK) -> Path:
     if not candidatos:
         raise FileNotFoundError(
             f"No hay ranking*.csv en {ruta_relativa(output_dir)}. Ejecuta "
-            "notebooks/12_comparativa.ipynb (escribe el ranking de detección ADR-003)."
+            "notebooks/14_comparativa.ipynb (escribe el ranking de detección ADR-003)."
         )
     return candidatos[0]
 
@@ -375,7 +375,7 @@ def ejecutar_familia(
     )
     if not gate[["datos_ok", "features_ok", "dependencia_ok"]].all().all():
         raise RuntimeError(
-            "Gate previo en rojo (ver 04_protocolo_evaluacion):\n" + gate.to_string(index=False)
+            "Gate previo en rojo (ver 05_protocolo_evaluacion):\n" + gate.to_string(index=False)
         )
     estados = [run_job(t, d, output_dir=Path(output_dir), force=forzar) for t in pistas for d in detectores]
     return pd.DataFrame(estados)
@@ -398,7 +398,7 @@ def cargar_resultados_familia(
        (``ranking.add_comparison_metrics``).
     2. Paneles ``panels/<P>_<D>.parquet``; se comprueba que su largo es ``n_oos``.
     3. ``ranking*.csv`` (:func:`buscar_ranking`) y su coherencia con las métricas; si no
-       corresponde (benchmark re-ejecutado sin regenerar ``12_comparativa``) y
+       corresponde (benchmark re-ejecutado sin regenerar ``14_comparativa``) y
        ``exigir_ranking_coherente`` → ``RuntimeError``.
     """
     from regimenes.benchmark.cache import _panel_path
@@ -440,7 +440,7 @@ def cargar_resultados_familia(
     if malas and exigir_ranking_coherente:
         raise RuntimeError(
             f"{ruta_ranking.name} no corresponde a las métricas verificadas de la familia "
-            f"({', '.join(malas)}). Vuelve a ejecutar notebooks/12_comparativa.ipynb."
+            f"({', '.join(malas)}). Vuelve a ejecutar notebooks/14_comparativa.ipynb."
         )
     return ResultadosFamilia(
         detectores=detectores, pistas=pistas, metricas=metricas, estado_cache=estado,
