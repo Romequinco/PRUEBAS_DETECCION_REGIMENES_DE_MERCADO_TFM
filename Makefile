@@ -1,4 +1,4 @@
-# Makefile del TFM (paquete ``regimenes``).
+# Makefile del TFM (paquetes ``regimenes``, ``ingesta`` y ``herramientas``).
 #
 # Compatible con GNU Make en Linux/macOS y en Windows bajo Git Bash
 # (instalar make, p. ej. ``winget install ezwinports.make`` o ``choco install make``).
@@ -57,9 +57,9 @@ endif
 help: ## Muestra esta ayuda
 	@$(PY) -c "import re; [print(f'  {m[0]:<13} {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open('Makefile', encoding='utf-8').read(), re.M)]"
 
-install: ## Instala el paquete en editable con extras [deep,jump,dev] (torch, jumpmodels, pytest, jupyter, ruff)
+install: ## Instala todo en editable ([todo] = deep, jump, changepoint, dev, ingesta) con el candado constraints.txt
 	$(PY) -m pip install --upgrade pip
-	$(PY) -m pip install -e ".[deep,jump,dev]"
+	$(PY) -m pip install -e ".[todo]" -c constraints.txt
 
 datos: ## Capa de datos: --offline por defecto (verifica data/raw); DESCARGAR=1 descarga lo que falte
 	$(PY) -m regimenes.datos $(DATOS_FLAGS)
