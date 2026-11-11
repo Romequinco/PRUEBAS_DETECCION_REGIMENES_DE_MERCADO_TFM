@@ -1,6 +1,7 @@
 # ADR-007 — La Fase 2 vive en `src/ingesta`; estructura de `docs/` por fases
 
 - **Estado:** Aceptada · 2026-10-14 (decisión del equipo).
+- **Actualización (2026-11-11):** instalación y dependencias sustituidas por [ADR-012](ADR-012-estructura-repo.md) §2.2.
 - **Completa:** [ADR-005](ADR-005-reencuadre-tfm-multiagente.md) §3, que dejaba abierto dónde vivirían las fases 2–5:
   aquí se decide para la **Fase 2**; las fases 3–5 siguen abiertas ([`tfm/lineas_abiertas.md`](../tfm/lineas_abiertas.md) §4).
 - **Sustituye:** el árbol de `docs/` de [ADR-004](ADR-004-unificacion.md) §2 (punto 4) y §3 (el resto de ADR-004 sigue vigente).

@@ -2,9 +2,9 @@
 
 > Definiciones **echadas a tierra** de los términos que gobiernan todo el repositorio. Es la **fuente
 > única** de definiciones: los notebooks y el resto de documentos enlazan aquí en vez de redefinir.
-> Solo contiene términos. El pipeline de notebooks `00`–`22`, el orden de ejecución y el mapa del código y de
-> las rutas están en [`fase1/README.md`](fase1/README.md); la visión del TFM, en [`tfm/README.md`](tfm/README.md);
-> el índice de la documentación, en [`README.md`](README.md).
+> Solo contiene términos. El pipeline de notebooks `00`–`22`, el orden de ejecución y las rutas están en
+> [`fase1/README.md`](fase1/README.md); el mapa del código, en [`src/regimenes/README.md`](../src/regimenes/README.md);
+> la visión del TFM, en [`tfm/README.md`](tfm/README.md); el índice de la documentación, en [`README.md`](README.md).
 
 ---
 
@@ -18,8 +18,9 @@ Visión del sistema y estado de cada fase: [`tfm/README.md`](tfm/README.md). Enc
 | **agentes** | LLM orquestados con LangGraph: **Macro** (contexto macroeconómico), **Equity** (acciones y sectores), **Risk** (riesgo, usa el régimen), **Portfolio** (propone la cartera) y **CIO** (decide y redacta el memo, aplicando los límites del cliente). Detalle en [`tfm/arquitectura.md`](tfm/arquitectura.md) |
 | **RAG** | *retrieval-augmented generation*: el agente recupera pasajes de un corpus con fecha de publicación y los cita en lugar de responder de memoria |
 | **tool** | función que un agente puede invocar (p. ej. `get_regimen(fecha)` o una búsqueda sobre el corpus) |
+| **contrato de tools** | capa tipada entre los datos y los agentes, en `src/herramientas` ([ADR-012](decisions/ADR-012-estructura-repo.md) §2.6): cada tool declara un modelo de entrada (`EntradaTool`, lo que elige el LLM) y devuelve una `SalidaTool` con citas (`Cita`: fichero o serie y su sha256). La **fecha la pone el sistema**, nunca el LLM: el esquema que ve el modelo no tiene campo `fecha` y `invocar` la recibe aparte, así que ninguna tool puede mirar el futuro. Los agentes de las fases 3–5 importan solo de aquí ([README](../src/herramientas/README.md)) |
 | **skill** | paquete reutilizable de instrucciones y procedimientos que un agente carga para una tarea concreta |
-| **TimeGate** | barrera temporal dentro de cada tool: solo devuelve información **publicada** hasta la fecha consultada. Es el mismo principio que el **lag de publicación** (`LAG_PUBLICACION`, [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md)) pero aplicado al corpus y a las series de los agentes y no a los paneles de los detectores. Contrato común en [`fase2/README.md`](fase2/README.md) §4 |
+| **TimeGate** | barrera temporal dentro de cada tool: solo devuelve información **publicada** hasta la fecha consultada. Es el mismo principio que el **lag de publicación** (`LAG_PUBLICACION`, [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md)) pero aplicado al corpus y a las series de los agentes y no a los paneles de los detectores. Contrato común en [`fase2/README.md`](fase2/README.md) §4; en el [contrato de tools](#términos-del-tfm) la fecha la impone el sistema |
 | **`fecha_publicacion`** | día en que un dato o documento se hizo público (no el del hecho); el campo que filtra el TimeGate. Su contrapartida es `fecha_referencia`, el periodo al que se refiere |
 | **vintage** | versión de un dato tal como se publicó en una fecha (p. ej. ALFRED guarda cada revisión del empleo de EE. UU.); permite leer una serie revisable como se conocía en el pasado |
 | **RAG base / cajón** | los dos índices de cada agente: la **base** es fija y se prepara antes del backtest; el **cajón** se llena con lo que traen sus tools y persiste entre ejecuciones ([`fase2/plan_datos.md`](fase2/plan_datos.md)) |
@@ -203,7 +204,39 @@ cada notebook de familia):
 features + las etiquetas (crisis, falsos positivos, troughs). Es la **variable controlada** de la
 Fase D: un detector puede cambiar su algoritmo, pero **no** estas ventanas/etiquetas.
 
-## Generadores sintéticos (fase S)
+## Huella de caché
+
+Hash (sha256) del código, la configuración, los datos y las versiones de librerías que producen un resultado
+guardado. Cada resultado lleva su huella; al reanudar o leer, se recalcula y, si no coincide, la caché **no vale** y
+hay que re-ejecutar el cálculo (horas). Hay tres: la del **benchmark** v2 (`regimenes.benchmark.cache`), la del
+**pool** sin comprimir (`benchmark.pool.huella_codigo`) y la de las **ablaciones** del menú T
+(`benchmark.ablaciones.huella_codigo`). Las claves son **rutas relativas**: mover o renombrar un fichero también la
+invalida. Qué ficheros entran en cada una: [`src/regimenes/README.md`](../src/regimenes/README.md#huellas-de-caché).
+Por eso el candado `constraints.txt` fija las versiones de las librerías numéricas.
+
+## Menús, termómetros, vara y fusiones (ADR-008 a ADR-011)
+
+| Término | Definición |
+|---|---|
+| **menú (de datos)** | conjunto fijo de columnas de entrada, igual para todos los detectores que lo admiten ([ADR-008](decisions/ADR-008-preregistro-pool-termometros.md) §3; `regimenes.detectores.menus`). Cada detector se ejecuta solo en los menús que admite por naturaleza. La variante se nombra `<detector>-<menú>`, p. ej. `D10-R` |
+| **menú U** | univariante: solo `SP500_ret` (1 columna). Es el de los detectores univariantes (D05, D06, D07, D11; D15 con las features de Shu); qué menús admite cada detector, en la tabla del ADR-008 §3 |
+| **menú N** | **núcleo**: la configuración a priori de cada detector en `regimenes.detectores.registry` (9 columnas en A, 14 en B; ver [núcleo](#núcleo-y-features-por-detector)). Es el menú del ranking principal desde el [ADR-009](decisions/ADR-009-resultados-pool.md) |
+| **menú T** | **termómetros**: una columna por bloque económico (7 en A, 10 en B). **Descartado** como ranking principal en el ADR-009 (no mejora a N); queda como resultado negativo pre-registrado |
+| **menú P** | pool completo: todas las columnas de `configs/bloques.yaml` ya transformadas (35 en A, 77 en B), con una regla causal de disponibilidad por reajuste ([ADR-010](decisions/ADR-010-preregistro-pool-crudo.md)) |
+| **menú R** | rentabilidades log diarias de 22 activos de la pista B, sin z-score (`features.rentabilidades`; solo pista B). Es el dato de la turbulencia (D10-R) y del absorption ratio (D14-R) |
+| **termómetro** | columna causal que resume un bloque económico (renta variable, tipos, crédito, volatilidad implícita…): la PC1 de una PCA por bloque, reajustada cada mes con ventana expansiva y aplicada solo a los días posteriores al reajuste, con el signo fijado por una **columna ancla** para que suba con el estrés. Si la PC1 no explica el 30 %, el bloque se resume con la media. Bloques y anclas en `configs/bloques.yaml`; código en `regimenes.features.bloques`; construcción y validación en el notebook `04_termometros` |
+| **vara (de medir)** | conjunto fijo de reglas con el que se juzga **a todos por igual** (detectores, variantes de menú y fusiones): `score_deteccion` y nivel del ranking (ADR-003), **MCS** diario al 10 % con baselines triviales y curvas a igual tasa de falsas alarmas. Definitiva desde el 02-11-2026 ([ADR-008](decisions/ADR-008-preregistro-pool-termometros.md) §4); se calcula en el notebook 05 (§9–12) y se guarda en `results/benchmark/vara/`. Las fusiones usan la misma (`regimenes.fusion.vara`, [ADR-011](decisions/ADR-011-preregistro-fusiones.md) §5) |
+| **MCS** | *Model Confidence Set* (Hansen, Lunde y Nason, 2011; `regimenes.evaluacion.mcs`): conjunto de modelos que no se pueden descartar como peores que el mejor, al nivel α = 0,10. Pérdida diaria = 1 − J de Youden con las crisis equiponderadas (fracción media de días de crisis no marcados + fracción de días de calma marcados); bootstrap estacionario por bloques (66 sesiones en A, 50 en B), 5.000 réplicas. Estar dentro no es ganar: el MCS puede contener varios modelos. El detector de `get_regimen` es el primero del MCS de cada pista (D06 en A, D05 en B) |
+| **baselines de la vara** | señales sin información que entran en el MCS como control: `SIEMPRE_CRISIS`, `SIEMPRE_CALMA`, `AZAR_*` (al azar con la tasa y la racha medianas de los detectores) y `VOL_P90` (crisis si la volatilidad realizada supera su percentil 90 expansivo y causal) |
+| **curva a igual tasa de falsas alarmas** | detección, retraso mediano y ratio ruido-señal de cada detector con el umbral calibrado para dar 0,5, 1 o 2 falsas alarmas al año (`regimenes.evaluacion.curvas`) |
+| **fusión fija** | regla **sin parámetros aprendidos** que combina las señales binarias de varios detectores: parejas alerta→confirmación (la máquina normal / vigilancia / confirmado), votación k-de-n y OR / AND de parejas. Se elige en la primera mitad del OOS y se evalúa en la segunda con la vara (`regimenes.fusion.fijas`, notebook 15, [ADR-011](decisions/ADR-011-preregistro-fusiones.md) §3). Veredicto: **no aporta** frente al mejor detector solo |
+| **fusión online** | **C1**: media ponderada de las probabilidades de crisis de todos los candidatos, con pesos que se recalculan al cierre de cada mes según la pérdida pasada, medida solo con crisis ya terminadas; crisis si la media ≥ 0,5 (`regimenes.fusion.online`, notebook 16, ADR-011 §4). Veredicto: **indicio**, se cumple solo en la pista A, y los pesos no aprenden más que la media simple. Su probabilidad es el «consenso» del contexto de `get_regimen` |
+
+## Generadores sintéticos (fase S) — archivado
+
+> **Archivado.** La línea de sintéticos (código, configuración, notebooks 17–20 y resultados) ya no está en `main`:
+> vive en la etiqueta git `sinteticos-final` ([ADR-012](decisions/ADR-012-estructura-repo.md) §2.4), porque el aumento
+> no se adopta. Las definiciones se conservan para leer esa etiqueta y la ficha del método.
 
 Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
 [`fase1/sinteticos.md`](fase1/sinteticos.md).

@@ -1,6 +1,6 @@
 # Tema 3 · Empresas: filings, fundamentales y sentimiento
 
-**Rama:** `fase2/t3-empresas` · **Responsable:** Daniel · **Agentes:** Equity y Risk · **Tools:**
+**Extra:** ninguno (biblioteca estándar y núcleo) · **Responsable:** Daniel · **Agentes:** Equity y Risk · **Tools:**
 `buscar_filings(tk, q, fecha)`, `get_fundamentales(tk, fecha)`, `composite_score(bucket, fecha)` · **Destino:** RAG
 base + cajón (texto), base de series (fundamentales). Reglas comunes: [`docs/fase2/README.md`](../../../docs/fase2/README.md).
 

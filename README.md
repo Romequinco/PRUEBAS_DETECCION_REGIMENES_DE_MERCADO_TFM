@@ -1,196 +1,132 @@
-# Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence — TFM (MIAX)
+# regime-aware-macro-equity — TFM (MIAX)
 
-El TFM es un **sistema multi-agente con RAG** (agentes Macro, Equity, Risk, Portfolio y CIO en LangGraph) que lee
-información financiera con fecha de publicación, sabe en qué **régimen** está el mercado y con ello construye carteras
-explicadas en un *investment memo* con citas. La visión, las cinco fases y su estado real están en
-[`docs/tfm/README.md`](docs/tfm/README.md); la decisión de alcance, en [ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md).
+*Multi-Agent RAG System for Regime-Aware Macro-Equity Intelligence.* Un **sistema multi-agente con RAG** (agentes
+Macro, Equity, Risk, Portfolio y CIO en LangGraph) que lee información financiera con fecha de publicación, sabe en
+qué **régimen** está el mercado y con ello construye carteras explicadas en un *investment memo* con citas. Visión,
+fases y estado: [`docs/tfm/README.md`](docs/tfm/README.md); decisión de alcance:
+[ADR-005](docs/decisions/ADR-005-reencuadre-tfm-multiagente.md); estructura del repositorio:
+[ADR-012](docs/decisions/ADR-012-estructura-repo.md).
 
-Requisitos añadidos en la tutoría, todos con el diseño abierto: cliente minorista con formulario de perfil
-que fija los límites del CIO, dos carteras (con límites y «en bruto»), memoria de la cartera anterior, datos
-alternativos (operaciones del Congreso, divergencias en Polymarket…), un «botón de cataclismo» automático
-(EWS, modo broma) y los *System One decision agents* como línea de investigación. Detalle en
-[`docs/tfm/cliente_y_carteras.md`](docs/tfm/cliente_y_carteras.md) y
-[`docs/tfm/lineas_abiertas.md`](docs/tfm/lineas_abiertas.md).
+**Si acabas de llegar:** el índice de la documentación y el orden de lectura según quién lee están en
+[`docs/README.md`](docs/README.md#orden-de-lectura).
 
-**Este repositorio contiene la Fase 1** (el régimen, paquete `regimenes`) y el arranque de la **Fase 2**
-(ingesta de datos de los agentes, paquete `src/ingesta`; ver [ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
-La Fase 1 no busca un detector concreto, sino el **marco
-de evaluación causal y comparable** que juzga a muchos detectores, la **base de datos sólida** sobre la que
-hacerlo y, a partir de ahí, un sistema de alerta + confirmación validado con datos sintéticos y en
-pseudolive. Su salida es la tool **`get_regimen(fecha)`**: estado, probabilidad y días en el estado, con
-solo información publicada hasta `fecha`, más un contexto para los agentes (consenso de la fusión online y
-acuerdo del resto de detectores).
+## Estado de las fases
 
-> **En una línea:** *12 detectores de 7 familias (Capa 1) → no eran comparables (cada uno con sus
-> datos y su periodo) → datos re-basados en dos pistas congeladas → los 12 re-evaluados con un ranking
-> por detección → un solo paquete, con un notebook por familia → datos sintéticos y laboratorio →
-> decisión final y pseudolive → `get_regimen` → agentes.*
+Detalle y siguiente paso de cada una en [`docs/tfm/README.md`](docs/tfm/README.md#3-plan-de-trabajo-cinco-fases-y-su-estado).
 
-> **Ojo con «Capa 1»:** en este repositorio es la primera vuelta exploratoria de 12 detectores v1 (tag
-> `capa1-final`); **no** es la «Capa 1/Capa 2» de la propuesta (42 ETFs / ~1.300 acciones). Ver el
-> [GLOSARIO](docs/GLOSARIO.md#capa-1-del-repositorio-no-es-la-capa-1-de-la-propuesta).
+1. **Régimen de mercado** (`src/regimenes`) — en curso: datos, benchmark de 12 detectores y fusiones hechos; faltan la decisión final (notebook 21) y el pseudolive (22).
+2. **Ingesta, RAG y tools** (`src/ingesta`, `src/herramientas`) — en marcha: sondas de los cuatro temas en `main` y contrato de tools creado.
+3. **Agentes Macro, Equity y Risk** (`src/agentes`) — pendiente.
+4. **Cartera y memo** (`src/cartera`, Portfolio y CIO) — pendiente.
+5. **Evaluación** (backtest con TimeGate frente a *baselines*) — pendiente.
 
-**Si acabas de llegar:** el índice de la documentación y el **único orden de lectura** (por público: equipo, tutor
-y memoria, más una visita rápida) están en [`docs/README.md`](docs/README.md#orden-de-lectura).
+## Fase 1 en breve
 
----
+La Fase 1 no busca un detector concreto, sino un **marco de evaluación causal y comparable** (walk-forward, lags
+de publicación, mismas métricas para todos) sobre dos pistas de datos congeladas. Su salida es la tool
+**`get_regimen(fecha)`**: estado {calma, crisis}, probabilidad y días en el estado, con solo información publicada
+hasta `fecha`. Detector provisional ([`configs/regimen.yaml`](configs/regimen.yaml)): **D06 (GJR-GARCH-t) en la
+pista A y D05 (Markov-Switching) en la B**, los primeros del MCS de cada pista; añade un contexto para los agentes
+(consenso de la fusión online y acuerdo del resto de detectores). Los agentes la consumen a través de
+[`src/herramientas`](src/herramientas/README.md), nunca de `regimenes` directamente.
 
-## Principio rector (no negociable)
+- Pipeline de notebooks, orden de ejecución, huella de caché y rutas: [`docs/fase1/README.md`](docs/fase1/README.md).
+- Mapa de módulos del paquete: [`src/regimenes/README.md`](src/regimenes/README.md).
+- Ranking y resultados: [`results/benchmark/ranking_v2.csv`](results/benchmark/ranking_v2.csv), notebook
+  [`14_comparativa`](notebooks/14_comparativa.ipynb) y los ADR-008 a ADR-011.
+- La **línea de datos sintéticos** (generadores, validación, laboratorio y aumento; notebooks 17–20) está archivada
+  en la etiqueta git `sinteticos-final`: el aumento no se adopta y `get_regimen` no la usa
+  ([ADR-012](docs/decisions/ADR-012-estructura-repo.md) §2.4).
+- «Capa 1» es aquí la primera vuelta de 12 detectores v1 (etiqueta `capa1-final`), no la capa de 42 ETFs de la
+  propuesta ([GLOSARIO](docs/GLOSARIO.md#capa-1-del-repositorio-no-es-la-capa-1-de-la-propuesta)).
 
-- **Features causales**: toda estandarización es z-score *expanding/rolling* (en `t`, solo
-  estadísticos de datos `≤ t`), y cada dato entra con su **lag de publicación** (ADR-003). Nunca de
-  muestra completa: ese *look-ahead* fue el error de la tarea previa.
-- **Evaluación walk-forward / out-of-sample**: nada se juzga in-sample.
-- **Misma interfaz, mismas métricas**: cada detector implementa `RegimeDetector`
-  (`regimenes.detectores.base`) y lo juzga el mismo `regimenes.evaluacion`.
+## Instalación
 
-## Arquitectura del paquete `regimenes`
+Esta es la fuente única de instalación del repositorio. Todas las dependencias están en
+[`pyproject.toml`](pyproject.toml) (distribución `regime-aware-macro-equity`; paquetes `regimenes`, `ingesta` y
+`herramientas`), con un extra por uso, y el candado de versiones en [`constraints.txt`](constraints.txt).
 
-Todo el código de la Fase 1 vive en un paquete instalable (`src/regimenes`, `pip install -e .`). Los notebooks,
-los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. Detalle por módulo en
-[`src/regimenes/README.md`](src/regimenes/README.md).
+```bash
+cp .env.example .env                                          # FRED_API_KEY, SEC_EDGAR_USER_AGENT, INGESTA_CORPUS_DIR
+python -m pip install -e ".[todo]" -c constraints.txt         # todo: deep, jump, changepoint, dev e ingesta
+```
 
-| Módulo | Qué hace |
+Variantes, siempre con `-c constraints.txt`:
+
+| Para qué | Extras |
 |---|---|
-| `regimenes.rutas` | rutas centralizadas (`CONFIGS`, `DATA_RAW`, `DATA_PROCESSED`, `RESULTS_BENCHMARK`, `RESULTS_DETECTORES`, …); ningún otro módulo calcula rutas |
-| `regimenes.datos` | descarga dirigida por `configs/catalog.yaml` (FRED, yfinance, OFR, GitHub, académicos) · `python -m regimenes.datos` |
-| `regimenes.features` | primitivas causales (`transformaciones`), lags de publicación (`lags`), paneles por pista (`paneles`), prueba de truncado (`causalidad`) |
-| `regimenes.detectores` | interfaz `RegimeDetector` (`base`), registro de especificaciones por pista (`registry`) y los detectores por familia `f1_reglas` … `f7_deep` |
-| `regimenes.evaluacion` | **el juez**: walk-forward (`walk_forward`), métricas y detección por evento (`metricas`), ranking ADR-003 y líneas base (`ranking`) |
-| `regimenes.benchmark` | ejecución reanudable y paralela con caché validada por huella (`ejecucion`, `cache`, `cli`) · `python -m regimenes.benchmark` |
-| `regimenes.fusion` | máquina causal normal / vigilancia / confirmado (alerta + confirmador) |
-| `regimenes.viz` | estilo de casa para figuras (franjas de crisis, paneles de estados) |
-| `regimenes.informes` | utilidades comunes de los notebooks de familia 06–12: carga verificada de resultados (`cargar_resultados_familia`), tablas de configuración/cobertura y figuras de estados OOS |
-| `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion/` (notebook 18): un módulo por dimensión (`fidelidad`, `discriminador`, `memorizacion`, `utilidad` TSTR/TRTR y `veredicto` por niveles) con umbrales fijados a priori y cambios de reglas y niveles declarados y fechados en `configs/sinteticos.yaml`; `laboratorio/` (notebook 19): `escenarios` (rejilla, secuencias impuestas, intensidad), `metricas` (ADR-003 + retraso), `ejecucion` (paralela, reanudable, caché por huella; CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
+| Desarrollo sin torch ni jumpmodels (D12 y D09 se saltan) | `".[dev]"` |
+| Fase 2 completa | `".[dev,ingesta]"` |
+| Un solo tema de la Fase 2 | `".[dev,ingesta-mercados]"` · `".[dev,ingesta-bancos]"` · `".[dev,ingesta-noticias]"` (el Tema 3, empresas, no necesita extra) |
 
-Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` → `fusion` → (`sinteticos`, pseudolive);
-`informes` solo lee resultados para los notebooks 06–12.
+**Por qué el candado.** La caché del benchmark guarda una huella que incluye las versiones de numpy, pandas, scipy,
+scikit-learn, hmmlearn, arch, torch y jumpmodels. Si `pip` actualiza cualquiera de ellas, toda la caché queda
+invalidada y hay que re-ejecutar el benchmark (horas). `constraints.txt` fija esas versiones; cambiar una es una
+decisión explícita. `requirements.txt` es solo un alias de una línea de la orden anterior.
+
+### Si ya tenías el repo clonado (tras el renombrado)
+
+El repositorio se renombró en GitHub a `regime-aware-macro-equity` y la distribución dejó de llamarse `regimenes`.
+Hay que reinstalar una vez:
+
+```bash
+git remote set-url origin https://github.com/Romequinco/regime-aware-macro-equity.git
+git fetch
+git switch main && git pull
+python -m pip uninstall -y regimenes                          # quita la distribución antigua
+python -m pip install -e ".[todo]" -c constraints.txt         # o los extras de tu tema
+# si existe, borra la carpeta src/regimenes.egg-info (metadatos de la distribución antigua)
+python -c "import regimenes, ingesta, herramientas"
+python -m pytest -q -m "not datos and not resultados"
+```
+
+La carpeta local puede seguir llamándose como antes: el nombre del directorio no afecta a nada.
 
 ## Mapa del repo
 
 ```
-/
-├── README.md · pyproject.toml · requirements.txt · Makefile · .env.example
-├── configs/            catalog.yaml (universo + crisis) · benchmark_spec.yaml (banco congelado) · sinteticos.yaml
-├── src/regimenes/      el paquete (tabla de arriba)
-├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
-├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos) · ingesta/ (Fase 2)
-├── notebooks/          00–22, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
-├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
-├── results/
-│   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
-│   ├── fusion/         d07_d08/ · d02_d06/
-│   └── detectores/ · sinteticos/ (generadores/ · validacion/ · laboratorio/) · pseudolive/
-└── docs/               README (índice) · GLOSARIO · references.bib · decisions/ (ADR-001…005, 007)
-                    tfm/ (visión del TFM, fuentes/) · estado_del_arte/ · fase1/ (pipeline, EDA, F1–F7 con sus detectores, sintéticos)
-                    fase2/ (reglas, plan de datos) · historia/ (Capa 1, fichas v1, tarea previa)
+regime-aware-macro-equity/
+├── README.md · pyproject.toml · constraints.txt · requirements.txt (alias) · Makefile · LICENSE
+├── configs/        Fase 1 (benchmark_spec, bloques, catalog, regimen); lo nuevo irá en configs/<paquete>/
+├── data/           fuera de git (raw, processed)
+├── src/
+│   ├── regimenes/      Fase 1 · régimen → get_regimen (congelado por la huella de caché)
+│   ├── ingesta/        Fase 2 · un subpaquete por tema
+│   ├── herramientas/   contrato de tools tipado para los agentes
+│   ├── memoria/        Fase 2 · RAG con TimeGate (se crea al empezar)
+│   ├── agentes/        Fases 3–4 · grafo LangGraph (se crea al empezar)
+│   └── cartera/        Fases 4–5 · motores, límites, backtest (se crea al empezar)
+├── notebooks/      00–16 y 21–22 de la Fase 1 · fase2/<tema>/NN_*.ipynb
+├── results/        salidas pequeñas versionadas; binarios regenerables ignorados
+├── tests/          espejo de src/
+└── docs/           índice, ADR, estado del arte, una carpeta por fase
 ```
 
-## Notebooks 00–22
-
-Son el pipeline de la Fase 1, en `notebooks/` (planos y numerados). La tabla notebook a notebook, la plantilla
-común de los notebooks de familia y el **orden de ejecución** están en
-[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0022).
-
-## Las dos pistas de datos (ADR-001, ventanas reajustadas por ADR-002)
-
-| Pista | Qué | Ventana | Features | Crisis | Ataca |
-|---|---|---|:---:|:---:|---|
-| **A — Espina profunda + curva** | S&P 500 + vol + factores + crédito/macro profundos + curva de tipos completa | 1962-01-02 → 2026-05-29 | **41** | **18** | el n≈4 (potencia); sacrifica conscientemente 4 crisis pre-1962 (incluida la Gran Depresión) a cambio de la curva de tipos |
-| **B — Panel rico** | espina de A + crédito HY/IG, curva/breakevens, vol complex, 9 sectores, 11 índices de amplitud, FX | 2007-04-11 → 2026-05-29 | **106** | 10 | el punto ciego de 2013; mismo fin que A a propósito, cero coste en crisis frente a 2003 |
-
-`A ⊆ B` por construcción (toda serie viva en 1962 también lo está en 2007). Cada pista congela su
-ventana + features en [`configs/benchmark_spec.yaml`](configs/benchmark_spec.yaml) → *un leaderboard
-justo 1:1 dentro de cada pista*.
-
-41 y 106 son el **pool** de features candidatas de cada pista, no lo que ve cada detector: cada uno usa
-de 1 a 14, fijadas en `regimenes.detectores.registry`. Los multivariantes (D03, D04, D08, D09, D12)
-usan el **núcleo** (9 features en A, 14 en B); D05, D06, D07 y D11 solo el retorno del S&P 500; D01
-una señal (volatilidad realizada en A, VIX en B) y D02/D10 cuatro. Detalle en el
-[GLOSARIO](docs/GLOSARIO.md#núcleo-y-features-por-detector).
-
-## Resultados clave (ADR-003)
-
-Ranking de **detección** por pista: `score_deteccion` = F1 entre precisión diaria y recall por evento
-(crisis detectada = ≥ 3 sesiones consecutivas marcadas dentro de su ventana), tras filtrar por niveles
-(precisión que no supera al azar, parpadeo, salida degenerada). *Lift sobre azar* = precisión / tasa
-base (tasa base = precisión de marcar siempre crisis); definiciones de todas las columnas en el
-[GLOSARIO](docs/GLOSARIO.md#términos-del-ranking-columnas-de-ranking_v2csv--metrics_master_v2csv). Valores de
-[`results/benchmark/ranking_v2.csv`](results/benchmark/ranking_v2.csv) (versionado; benchmark completo
-24/24 con caché verificada); el ranking lo recalcula [`14_comparativa`](notebooks/14_comparativa.ipynb),
-que escribe el `ranking*.csv` que leen los notebooks de familia.
-
-**Pista A** (17 crisis evaluadas OOS, tasa base de días de crisis 0.194)
-
-| Puesto | Detector | Score | Crisis detectadas | Precisión | Lift sobre azar |
-|:---:|---|:---:|:---:|:---:|:---:|
-| 1 | D10 turbulencia Mahalanobis | 0.614 | 16/17 | 0.455 | 2.35 |
-| 2 | D01 umbral de volatilidad realizada¹ | 0.587 | 16/17 | 0.427 | 2.20 |
-| 3 | D03 GMM (K=3) | 0.565 | 15/17 | 0.416 | 2.14 |
-| 4 | D02 regla compuesta risk-off | 0.559 | 12/17 | 0.462 | 2.38 |
-| 5 | D05 Markov-Switching | 0.546 | 17/17 | 0.375 | 1.94 |
-
-¹ En la pista A, D01 (`rule_vix_threshold`) no usa el VIX, que no existe antes de 1990, sino un umbral
-sobre la volatilidad realizada del S&P 500 (`SP500_vol_z`); en B sí es la regla VIX original.
-
-**Pista B** (9 crisis evaluadas OOS, tasa base 0.173)
-
-| Puesto | Detector | Score | Crisis detectadas | Precisión | Lift sobre azar |
-|:---:|---|:---:|:---:|:---:|:---:|
-| 1 | D05 Markov-Switching | 0.647 | 9/9 | 0.478 | 2.77 |
-| 2 | D06 GJR-GARCH-t | 0.597 | 8/9 | 0.449 | 2.60 |
-| 3 | D01 regla VIX | 0.505 | 6/9 | 0.406 | 2.35 |
-| 4 | D02 regla compuesta risk-off | 0.501 | 6/9 | 0.402 | 2.33 |
-| 5 | D04 HMM gaussiano | 0.497 | 7/9 | 0.366 | 2.12 |
-
-En B, **D09** (jump model) no supera la precisión del azar y **D12** (autoencoder) parpadea: quedan
-fuera del nivel elegible. Las reglas simples y los modelos de volatilidad dominan en ambas pistas;
-la complejidad (D11, D12) sigue sin pagarse, como ya indicaba la Capa 1.
-
-**Fusión (Fase E).** D2 alerta + D6 confirma mejora a D2 y a D6 aislados en ambas pistas, pero **no
-anticipa** el inicio de las crisis; D2 y D7 quedan prácticamente empatados como alerta y el control por
-mitades elige otras alertas. La capa de alerta no añade anticipación: la regla a congelar se decide
-en `21_decision_final` (futura ADR-006) antes del pseudolive (detalle en los antecedentes de [`15_fusiones_fijas`](notebooks/15_fusiones_fijas.ipynb), que con la vara del ranking concluye que ninguna fusión fija elegida sin mirar el resultado mejora al mejor detector solo, [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md)).
-
-**Laboratorio con régimen conocido (notebook 19).** Simulación controlada con `gaussiano_regimen`,
-`var_regimen` y `garch_regimen` (18 celdas por pista, 4356 trabajos), resultados en
-`results/sinteticos/laboratorio/`. H1 (recuperación) se cumple: 92 % en A y 100 % en B. H2: el score baja
-al acortar y atenuar la crisis (en parte por prevalencia; el recall por evento cae de 0,86 a 0,54 en A).
-H3: concordancia con el ranking de ADR-003 de ρ = 0,87 (p = 0,001) en A y 0,48 (p = 0,16) en B. H4: hay
-indicio de circularidad para D03 (+0,23 relativa en B) y ninguno para GARCH.
+Las fases 3–5 importan solo de `herramientas`, nunca de `regimenes.*` ni de `ingesta.*`
+([ADR-012](docs/decisions/ADR-012-estructura-repo.md) §2.1).
 
 ## Cómo reproducir
 
-```bash
-cp .env.example .env               # pega tu FRED_API_KEY (gratis: fred.stlouisfed.org)
-python -m pip install -e ".[dev]"  # paquete + pytest/jupyter; `make install` añade [deep] torch (D12 y generadores neuronales) y [jump] jumpmodels (D09)
-make help                          # lista los objetivos del Makefile (GNU Make; en Windows bajo Git Bash)
-```
+Objetivos del [`Makefile`](Makefile) (GNU Make; en Windows, bajo Git Bash). `make help` los lista.
 
-| Paso | `make` | Equivalente directo |
+| Objetivo | Qué hace | Equivalente directo |
 |---|---|---|
-| Entorno completo | `make install` | `python -m pip install -e ".[deep,jump,dev]"` |
-| Datos crudos → `data/raw/` | `make datos` (verifica sin red) · `make datos DESCARGAR=1` (descarga lo que falte) | `python -m regimenes.datos --offline` · `python -m regimenes.datos` |
-| Paneles causales → `data/processed/` | `make features` | ejecuta `notebooks/03_preprocesado.ipynb` (usa `regimenes.features.construir_paneles`) |
-| Benchmark (12 detectores × 2 pistas) → `results/benchmark/` | `make benchmark JOBS=4` | `python -m regimenes.benchmark --track A B --jobs 4` (≈7,4 h de cómputo en serie²) |
-| Subconjunto de detectores | `make benchmark DETECTOR="D04 D08"` | `python -m regimenes.benchmark --track A B --detector D04 D08` (con `--jobs 1`, cerrar con `--consolidate`) |
-| Verificar caché sin reajustar | — | `python -m regimenes.benchmark --track A B --cache-only` |
-| Ejecutar los notebooks 00–16 en orden | `make notebooks` | `python -m jupyter nbconvert --to notebook --execute --inplace notebooks/NN_*.ipynb` |
-| Tests | `make test` · `make test-rapido` (sin datos ni resultados locales) | `python -m pytest` |
+| `make install` | entorno completo con el candado | `python -m pip install -e ".[todo]" -c constraints.txt` |
+| `make datos` | verifica `data/raw/` sin red (`DESCARGAR=1` descarga lo que falte) | `python -m regimenes.datos --offline` |
+| `make features` | regenera `data/processed/` | ejecuta `notebooks/03_preprocesado.ipynb` |
+| `make benchmark JOBS=4` | benchmark de 12 detectores × 2 pistas con caché verificada (`DETECTOR="D04 D08"` para un subconjunto) | `python -m regimenes.benchmark --track A B --jobs 4` |
+| `make notebooks` | ejecuta los notebooks 00–16 en orden | `python -m jupyter nbconvert --to notebook --execute --inplace ...` |
+| `make test` · `make test-rapido` | tests completos · sin datos ni resultados locales | `python -m pytest -q` · `-m "not datos and not resultados"` |
+| `make lint` | errores reales con ruff | `python -m ruff check src tests` |
+| `make limpiar` | borra cachés de Python, pytest y ruff (nunca datos ni resultados) | — |
 
-² Suma de `elapsed_seconds` de `results/benchmark/ranking_v2.csv`: ≈6,6 h en A y ≈0,8 h en B; solo
-D04-A tarda ≈1,8 h, que es el mínimo con cualquier número de procesos (con 9 procesos, ≈2 h).
+Tras un benchmark nuevo, el orden de los notebooks no es el numérico: ver
+[`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
 
-Qué comprueba cada notebook sobre la caché, en qué orden se ejecutan tras un benchmark nuevo y cómo se
-ejecutan los de sintéticos (17–19): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
+## Dónde seguir
 
-## Estado del proyecto
-
-El estado de las cinco fases del TFM está en [`docs/tfm/README.md`](docs/tfm/README.md#3-plan-de-trabajo-cinco-fases-y-su-estado)
-y el de las sub-fases internas de la Fase 1 (Capa 1, 1–4, D, E, S, F), en
-[`docs/fase1/README.md`](docs/fase1/README.md#estado-de-las-sub-fases). En una línea: la Fase 1 tiene hechos
-datos, preprocesado, benchmark, fusiones y sintéticos, incluido el aumento (notebooks 00–20; el aumento no se
-adopta), y le faltan la decisión final (21) y el pseudolive (22); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
-
-Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
-`capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).
+- [`docs/README.md`](docs/README.md) — índice de la documentación y orden de lectura.
+- [`src/regimenes/README.md`](src/regimenes/README.md) — mapa del código de la Fase 1, con lo que entra en cada huella.
+- [`src/herramientas/README.md`](src/herramientas/README.md) — contrato de tools para los agentes.
+- [`docs/fase2/README.md`](docs/fase2/README.md) — reparto de la Fase 2 en cuatro temas y contrato común.
+- [`docs/GLOSARIO.md`](docs/GLOSARIO.md) — definiciones de los términos del proyecto.

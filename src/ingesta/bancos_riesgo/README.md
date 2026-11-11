@@ -1,6 +1,6 @@
 # Tema 2 · Bancos centrales, riesgo sistémico y literatura
 
-**Rama:** `fase2/t2-bancos-riesgo` · **Agentes:** Macro y Risk (Portfolio y CIO, como conocimiento) · **Tools:**
+**Extra:** `ingesta-bancos` · **Agentes:** Macro y Risk (Portfolio y CIO, como conocimiento) · **Tools:**
 `buscar_macro(q, fecha)`, `buscar_riesgo(q, fecha)` · **Destino:** RAG base + cajón de cada agente. Reglas comunes:
 [`docs/fase2/README.md`](../../../docs/fase2/README.md).
 

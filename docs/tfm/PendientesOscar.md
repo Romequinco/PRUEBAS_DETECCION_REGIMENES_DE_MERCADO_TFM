@@ -384,7 +384,7 @@ el núcleo es N, con U para los univariantes)
   - (b) no se cumple en A (percentil 83) y en B se cumple por poco (93);
   - la media simple iguala o mejora a la PCA.
   - **Decisión: descartar T.** Queda como resultado negativo pre-registrado.
-- [x] 2.0 Pre-registro de la Fase 2: [ADR-010](docs/decisions/ADR-010-preregistro-pool-crudo.md), congelado el 03-11-2026.
+- [x] 2.0 Pre-registro de la Fase 2: [ADR-010](../../docs/decisions/ADR-010-preregistro-pool-crudo.md), congelado el 03-11-2026.
 - [x] 2.1 Matriz detector × menú sin T en el ranking principal: N y U en el núcleo; P y R para las pruebas del pool;
   T solo como secundario (variantes en `registry.py`).
 - [x] 2.2 D14 absorption ratio sobre R (B5, solo pista B), con los parámetros de Kritzman.
@@ -392,7 +392,7 @@ el núcleo es N, con U para los univariantes)
   el pool crudo aporta. Además, D15 jump Shu sobre U (B6).
 - [x] 2.4 D16 logit L1 y D17 random forest (B7) sobre P, entrenados solo con crisis terminadas. T queda solo
   como comparación barata.
-- [x] 2.6 Fusiones: [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md). Las fijas (notebook 15, unifica los antiguos 15 y 16)
+- [x] 2.6 Fusiones: [ADR-011](../../docs/decisions/ADR-011-preregistro-fusiones.md). Las fijas (notebook 15, unifica los antiguos 15 y 16)
   no aportan; la online C1 (notebook 16) da un indicio, porque cumple solo en A, y los pesos no aprenden.
 - [x] 2.7 Ranking v3 sobre N (desviación declarada del ADR-008 §4), MCS dentro de cada menú y resultados en el
   ADR-010 §9: «¿aporta P o R frente a N?».

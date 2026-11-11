@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptado y **congelado** · 03-11-2026, antes de escribir el código de las fusiones y antes de
   calcular ninguna. Desde ese momento, cualquier cambio se declara aquí como errata fechada.
-- **Origen:** [`PendientesOscar.md`](../../PendientesOscar.md) §C1 y §6.8, punto 2.6; decisiones del usuario del
+- **Origen:** [`PendientesOscar.md`](../tfm/PendientesOscar.md) §C1 y §6.8, punto 2.6; decisiones del usuario del
   03-11-2026 (numeración, candidatos, familias, vara, control de multiplicidad y fusión online) y, tras la revisión
   del borrador, sobre la binarización de (a), el MCS del criterio (ii), η, el arranque de los pesos y las mitades
   (§8).

@@ -1,6 +1,6 @@
 # Tema 4 · Noticias y datos alternativos
 
-**Rama:** `fase2/t4-noticias-alt` · **Responsable:** Romen (@Romequinco) · **Agentes:** Macro, Equity, Risk (CIO: botón
+**Extra:** `ingesta-noticias` · **Responsable:** Romen (@Romequinco) · **Agentes:** Macro, Equity, Risk (CIO: botón
 de cataclismo) · **Tools:** `buscar_noticias(q, fecha)`, `get_polymarket(evento, fecha)` y las de alternativos ·
 **Destino:** noticias al cajón, hechos del día al RAG base, alternativos a la base de series. Reglas comunes:
 [`docs/fase2/README.md`](../../../docs/fase2/README.md). Candidatas de la tutoría:

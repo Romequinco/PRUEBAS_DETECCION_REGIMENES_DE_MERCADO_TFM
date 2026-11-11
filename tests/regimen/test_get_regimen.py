@@ -251,10 +251,13 @@ def test_reales_coherentes_con_el_panel() -> None:
 def test_reales_crisis_conocidas_y_cambio_de_detector() -> None:
     assert get_regimen("2008-10-10")["estado"] == "crisis"
     assert get_regimen("2020-03-14")["fecha_dato"] == "2020-03-13"  # sábado
-    r = get_regimen("2020-03-16", detector="D10")
-    assert r["detector"] == "D10" and r["pista"] == "B"
     with pytest.raises(FechaFueraDeRango):
         get_regimen("1960-01-04")
+    # Cambio de detector: D10 no se versiona (solo A_D06 y B_D05, ADR-012); se salta en un clon limpio.
+    if not all((_PANELES / f"{p}_D10.parquet").is_file() for p in "AB"):
+        pytest.skip("faltan los paneles D10 locales (python -m regimenes.benchmark --track A B)")
+    r = get_regimen("2020-03-16", detector="D10")
+    assert r["detector"] == "D10" and r["pista"] == "B"
 
 
 # --------------------------------------------------------------------------- #

@@ -2,20 +2,26 @@
 
 Contexto: el TFM es un sistema multi-agente con RAG ([`docs/tfm/`](../tfm/README.md), [ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md)).
 La Fase 1 (régimen, `src/regimenes`) está en marcha. La Fase 2 reúne **todos los datos que consultan los agentes**, y se
-reparte en **cuatro temas**: cada uno tiene responsable, rama y carpetas propias.
+reparte en **cuatro temas**: cada uno tiene responsable, extra de instalación y carpetas propias. Los agentes no leen
+estos datos directamente: los reciben a través del contrato de tools de [`src/herramientas`](../../src/herramientas/README.md)
+([ADR-012](../decisions/ADR-012-estructura-repo.md) §2.6).
 
 ## 1. Los cuatro temas
 
-| Tema | Carpeta | Rama | Agentes | Tools que alimenta | Responsable |
+| Tema | Carpeta | Extra | Agentes | Tools que alimenta | Responsable |
 |---|---|---|---|---|---|
-| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `fase2/t1-mercados-series` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | Romen (@Romequinco) |
-| 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `fase2/t2-bancos-riesgo` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | Fernando Dapena Tauste |
-| 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | `fase2/t3-empresas` | Equity, Risk | `buscar_filings`, `get_fundamentales` | Daniel García |
-| 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `fase2/t4-noticias-alt` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | Romen (@Romequinco) |
+| 1 · Mercados y series numéricas | [`src/ingesta/mercados_series`](../../src/ingesta/mercados_series/README.md) | `ingesta-mercados` | Portfolio, Equity, Macro, Risk | `get_precios`, `get_serie` | Romen (@Romequinco) |
+| 2 · Bancos centrales, riesgo sistémico y literatura | [`src/ingesta/bancos_riesgo`](../../src/ingesta/bancos_riesgo/README.md) | `ingesta-bancos` | Macro, Risk (Portfolio y CIO: conocimiento) | `buscar_macro`, `buscar_riesgo` | Fernando Dapena Tauste |
+| 3 · Empresas | [`src/ingesta/empresas`](../../src/ingesta/empresas/README.md) | — (sin dependencias extra) | Equity, Risk | `buscar_filings`, `get_fundamentales` | Daniel García |
+| 4 · Noticias y datos alternativos | [`src/ingesta/noticias_alt`](../../src/ingesta/noticias_alt/README.md) | `ingesta-noticias` | Macro, Equity, Risk (CIO: cataclismo) | `buscar_noticias`, `get_polymarket` | Romen (@Romequinco) |
 
-**Estado** (2026-10-16): los temas 1 (mercados y series), 3 (sonda EDGAR) y 4 (sonda de noticias y alternativos con
-validez) están integrados en `main`. La sonda del Tema 2 se organiza en las carpetas comunes del repositorio;
-su responsable es Fernando Dapena Tauste. Su código y documentación no implican una ingesta masiva desplegada.
+*Histórico:* cada tema se desarrolló en su rama (`fase2/t1-mercados-series` … `fase2/t4-noticias-alt`); todas están
+fusionadas y en el remoto solo queda `main`.
+
+**Estado** (2026-11-11): los cuatro temas tienen su sonda en `main`: Tema 1 (mercados y series, con `get_serie` y
+`get_precios`), Tema 2 (sonda de bancos centrales y riesgo), Tema 3 (sonda EDGAR) y Tema 4 (sonda de noticias y
+alternativos con validez). Ninguno implica todavía una ingesta masiva desplegada. El contrato de tools
+(`src/herramientas`) ya envuelve `get_regimen`; `get_serie` y `get_precios` están pendientes de envolver.
 
 **Notebooks por tema:**
 - Tema 1: [`notebooks/fase2/mercados_series/`](../../notebooks/fase2/mercados_series/) (`01`–`09`).
@@ -25,7 +31,7 @@ su responsable es Fernando Dapena Tauste. Su código y documentación no implica
 - Tema 4: [`notebooks/fase2/noticias_alt/01_sonda.ipynb`](../../notebooks/fase2/noticias_alt/01_sonda.ipynb) y
   [`noticias_alt/02_validez_alternativos.ipynb`](../../notebooks/fase2/noticias_alt/02_validez_alternativos.ipynb).
 
-Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas. El plan de datos común (arquitectura,
+Los notebooks de cada tema siguen la convención `notebooks/fase2/<tema>/NN_*.ipynb`. Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas. El plan de datos común (arquitectura,
 TimeGate, tratamiento RAG, look-ahead del LLM, evaluación y preguntas abiertas) está en [`plan_datos.md`](plan_datos.md);
 las candidatas a datos alternativos, en [`datos_alternativos.md`](datos_alternativos.md).
 
@@ -35,23 +41,24 @@ las candidatas a datos alternativos, en [`datos_alternativos.md`](datos_alternat
 src/ingesta/<tema>/                código del tema (un módulo por fuente)
 tests/ingesta/<tema>/              sus tests (sin red por defecto; los de red con @pytest.mark.live)
 results/ingesta/<tema>/            salidas pequeñas versionadas: fichas/, catálogos, tablas
-notebooks/fase2/<tema>/            notebooks del tema (p. ej. notebooks/fase2/mercados_series/; los temas 3 y 4
-                                   los tienen sueltos como notebooks/fase2/tN_*.ipynb)
-requirements/ingesta-<tema>.txt    dependencias propias del tema
+notebooks/fase2/<tema>/NN_*.ipynb  notebooks del tema, numerados dentro de su carpeta
+pyproject.toml → extra del tema    dependencias propias (ingesta-mercados, ingesta-bancos, ingesta-noticias)
 <INGESTA_CORPUS_DIR>/<tema>/       corpus pesado, FUERA del repo (por defecto ./corpus, ignorado)
 ```
 
-**Compartido** (solo cambia con un PR pequeño a `main`): `src/ingesta/comun/`, `tests/ingesta/conftest.py`,
-`pyproject.toml`, `docs/fase2/README.md`, `.env.example`. **Nadie toca** `src/regimenes`, `configs/` ni `data/` (Fase 1).
+**Compartido** (solo cambia con un PR pequeño a `main`): `src/ingesta/comun/`, `src/herramientas/`,
+`tests/ingesta/conftest.py`, `pyproject.toml`, `constraints.txt`, `docs/fase2/README.md`, `.env.example`. **Nadie toca**
+`src/regimenes`, los `configs/*.yaml` de la Fase 1 ni `data/` (huella de caché). Una configuración nueva va en
+`configs/<paquete>/`.
 
-## 3. Flujo de ramas
+## 3. Forma de trabajar
 
 ```bash
 git switch main && git pull
-git switch -c fase2/t1-mercados-series        # tu tema
+git switch -c <rama>                           # una rama corta por pieza
 # ... trabajo, commits pequeños ...
-git fetch origin && git merge origin/main     # traer cambios comunes cuando los haya
-git push -u origin fase2/t1-mercados-series   # y PR a main cuando una pieza esté cerrada
+git fetch origin && git merge origin/main      # traer cambios comunes cuando los haya
+git push -u origin <rama>                      # y PR a main cuando la pieza esté cerrada
 ```
 
 - Un PR por pieza cerrada (p. ej. «extractor de X con tests»), no uno gigante al final.
@@ -77,8 +84,9 @@ git push -u origin fase2/t1-mercados-series   # y PR a main cuando una pieza est
    fuentes que ya se descartaron por acceso o términos de uso (Google News, SEDAR+, PBoC…) están en el
    [plan de datos](plan_datos.md#34-acceso-legal-fuentes-excluidas).
 6. **Copyright.** El texto con derechos solo se guarda en local (corpus). Al repo van código, fichas y metadatos.
-7. **Dependencias pesadas** (torch, transformers, bases vectoriales) en un entorno aparte. Cambiar torch, numpy o
-   pandas en el entorno principal invalida la caché del benchmark de la Fase 1.
+7. **Dependencias.** Una dependencia nueva va al extra de su tema en `pyproject.toml`, e instalarla siempre con
+   `-c constraints.txt`. Las pesadas (transformers, bases vectoriales) van en un entorno aparte: cambiar torch,
+   numpy o pandas en el entorno principal invalida la caché del benchmark de la Fase 1.
 
 ## 5. Cuándo está «hecha» una fuente
 
@@ -91,8 +99,11 @@ git push -u origin fase2/t1-mercados-series   # y PR a main cuando una pieza est
 ## 6. Configuración inicial
 
 ```bash
-cp .env.example .env                    # FRED_API_KEY, SEC_EDGAR_USER_AGENT, INGESTA_CORPUS_DIR
-python -m pip install -e ".[dev]"
-python -m pip install -r requirements/ingesta-<tema>.txt
-python -m pytest tests/ingesta -q       # INGESTA_LIVE=1 para los tests con red
+cp .env.example .env                                              # FRED_API_KEY, SEC_EDGAR_USER_AGENT, INGESTA_CORPUS_DIR
+python -m pip install -e ".[dev,ingesta-mercados]" -c constraints.txt   # o ingesta-bancos, ingesta-noticias; Tema 3: ".[dev]"
+python -m pip install -e ".[dev,ingesta]" -c constraints.txt            # los cuatro temas a la vez
+python -m pytest tests/ingesta -q                                 # INGESTA_LIVE=1 para los tests con red
 ```
+
+La instalación completa y los pasos para reinstalar tras el renombrado del repositorio están en el
+[README raíz](../../README.md#instalación).

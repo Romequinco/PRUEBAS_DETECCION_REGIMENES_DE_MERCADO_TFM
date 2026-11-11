@@ -2,8 +2,11 @@
 
 Único índice de la documentación del TFM. Aquí está el mapa de carpetas y el orden de lectura según quién lee; el
 contenido vive en cada documento. Qué es el TFM y en qué estado está cada fase: [`tfm/README.md`](tfm/README.md).
-Lo que no está en `docs/` es código (`src/regimenes/` para la Fase 1, `src/ingesta/` para la Fase 2), configuración
-(`configs/`), datos (`data/`), resultados (`results/`) o notebooks (`notebooks/`).
+Lo que no está en `docs/` es código, configuración (`configs/`), datos (`data/`), resultados (`results/`) o notebooks
+(`notebooks/`). El código tiene su propio README por paquete: [`src/regimenes`](../src/regimenes/README.md) (Fase 1,
+único mapa de módulos), [`src/ingesta`](fase2/README.md) (Fase 2, un README por tema) y
+[`src/herramientas`](../src/herramientas/README.md) (contrato de tools para los agentes). El árbol del repositorio y la
+instalación están en el [README raíz](../README.md); la decisión de estructura, en [ADR-012](decisions/ADR-012-estructura-repo.md).
 
 Las cifras (puestos del ranking, recuentos de series, métricas) no se copian en este índice: viven en los
 notebooks, en `results/` y en los documentos que las comentan.
@@ -15,10 +18,10 @@ docs/
 ├── README.md            este índice
 ├── GLOSARIO.md          definiciones de los términos del proyecto
 ├── references.bib       bibliografía única del TFM
-├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-011 (ADR-006 reservada a la decisión final de régimen)
-├── tfm/                 visión del TFM: arquitectura, cliente y carteras, líneas abiertas, documentos de origen
+├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-012 (ADR-006 reservada a la decisión final de régimen)
+├── tfm/                 visión del TFM: arquitectura, cliente y carteras, líneas abiertas, notas de tutoría, documentos de origen
 ├── estado_del_arte/     estado del arte: dossier general, detectores y fuentes de datos, con su catálogo
-├── fase1/               Fase 1 (régimen): pipeline, mapa del código, EDA, teoría y detectores por familia, sintéticos
+├── fase1/               Fase 1 (régimen): pipeline, huella, rutas, EDA, teoría y detectores por familia, sintéticos (archivado)
 ├── fase2/               Fase 2 (datos de los agentes): reparto en cuatro temas, plan de datos, datos alternativos
 └── historia/            Capa 1, narrativa v1 de los detectores, estado del arte v1 y tarea previa
 ```
@@ -31,6 +34,8 @@ docs/
   cartera y botón de cataclismo.
 - [`tfm/lineas_abiertas.md`](tfm/lineas_abiertas.md) — System One, Briefly, elementos de la propuesta por analizar y
   ubicación del código de las fases 3–5.
+- [`tfm/PendientesOscar.md`](tfm/PendientesOscar.md) — notas de tutoría (17-10-2026) sobre los huecos de los
+  detectores y plan acordado (§6) del que salen los ADR-008 a ADR-011.
 - [`tfm/fuentes/`](tfm/fuentes/) — [`propuesta_v2.pdf`](tfm/fuentes/propuesta_v2.pdf) (propuesta original, parcialmente
   superada por ADR-005) y [`reunion_tutor.pdf`](tfm/fuentes/reunion_tutor.pdf) (presentación al tutor, octubre de 2026).
 
@@ -42,8 +47,8 @@ docs/
 - [ADR-004](decisions/ADR-004-unificacion.md) — un solo repositorio y un solo paquete (`regimenes`); notebooks por familia.
 - [ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md) — el TFM es un sistema multi-agente RAG y el régimen es
   su Fase 1.
-- [ADR-007](decisions/ADR-007-fase2-ingesta-y-docs.md) — la Fase 2 vive en `src/ingesta` (cuatro temas, una rama
-  cada uno) y esta estructura de `docs/`.
+- [ADR-007](decisions/ADR-007-fase2-ingesta-y-docs.md) — la Fase 2 vive en `src/ingesta` (cuatro temas) y esta
+  estructura de `docs/`.
 - [ADR-008](decisions/ADR-008-preregistro-pool-termometros.md) — pre-registro de los termómetros por bloque, los
   menús de datos, la vara de medir y los criterios del pool; veredicto: el pool no aporta.
 - [ADR-009](decisions/ADR-009-resultados-pool.md) — ablaciones y controles del menú T (punto 2.5); decisión: descartar T, el
@@ -53,6 +58,9 @@ docs/
 - [ADR-011](decisions/ADR-011-preregistro-fusiones.md) — pre-registro de las fusiones (punto 2.6): ¿mejora una
   combinación de detectores no supervisados al mejor solo? Fusiones fijas (notebook 15), fusión online (notebook 16),
   selección en la primera mitad y criterio de éxito.
+- [ADR-012](decisions/ADR-012-estructura-repo.md) — estructura del repositorio para todas las fases: dónde viven las
+  fases 3–5, dependencias en extras de `pyproject.toml` con `constraints.txt`, compactación de resultados, archivo de
+  la línea de sintéticos y contrato de tools (`src/herramientas`).
 
 ### `estado_del_arte/` — qué existe fuera del proyecto
 - [`estado_del_arte/README.md`](estado_del_arte/README.md) — índice de los tres documentos y de su catálogo.
@@ -65,25 +73,29 @@ docs/
   `catalogo.html` (no versionado).
 
 ### `fase1/` — el régimen de mercado (`src/regimenes`, notebooks `00`–`22`)
-- [`fase1/README.md`](fase1/README.md) — pipeline `00`–`22`, orden de ejecución, mapa del código y de las rutas, e
-  índice de detectores D01–D13 por familia.
+- [`fase1/README.md`](fase1/README.md) — pipeline `00`–`22`, orden de ejecución, huellas de caché, rutas en disco e
+  índice de detectores D01–D13 por familia. El mapa de módulos está en [`src/regimenes/README.md`](../src/regimenes/README.md).
 - [`fase1/eda.md`](fase1/eda.md) — informe EDA (figuras en [`fase1/figs/`](fase1/figs/)).
 - Teoría de cada familia con sus detectores: [F1 reglas](fase1/F1_reglas.md) · [F2 clustering](fase1/F2_clustering.md) ·
   [F3 HMM](fase1/F3_hmm.md) · [F4 Markov-Switching](fase1/F4_markov_switching.md) ·
   [F5 GARCH](fase1/F5_volatilidad_garch.md) · [F6 change-point](fase1/F6_change_point.md) ·
   [F7 redes](fase1/F7_redes_neuronales.md).
 - [`fase1/sinteticos.md`](fase1/sinteticos.md) — generadores sintéticos, validación y laboratorio (notebooks `17`–`20`).
-- Configuración congelada de la Fase 1: [`../configs/catalog.yaml`](../configs/catalog.yaml) (universo de series y
-  catálogo de crisis) y [`../configs/benchmark_spec.yaml`](../configs/benchmark_spec.yaml) (el banco congelado).
+  Línea **archivada** en la etiqueta git `sinteticos-final` (el aumento no se adopta); la ficha queda como método.
+- Configuración de la Fase 1: [`../configs/catalog.yaml`](../configs/catalog.yaml) (universo de series y catálogo de
+  crisis), [`../configs/benchmark_spec.yaml`](../configs/benchmark_spec.yaml) (el banco congelado),
+  [`../configs/bloques.yaml`](../configs/bloques.yaml) (bloques de los termómetros) y
+  [`../configs/regimen.yaml`](../configs/regimen.yaml) (detector de `get_regimen`).
 
 ### `fase2/` — los datos de los agentes (`src/ingesta`)
-- [`fase2/README.md`](fase2/README.md) — los cuatro temas, ramas, dónde escribe cada tema y contrato común.
+- [`fase2/README.md`](fase2/README.md) — los cuatro temas, instalación por tema, dónde escribe cada uno y contrato común.
 - [`fase2/plan_datos.md`](fase2/plan_datos.md) — plan de datos vigente: arquitectura, TimeGate, qué entra por tema,
   tratamiento RAG, look-ahead del LLM, evaluación y preguntas abiertas.
 - [`fase2/datos_alternativos.md`](fase2/datos_alternativos.md) — candidatas: Pelosi tracker, Polymarket, EWS y otras.
 - README de cada tema: [mercados y series](../src/ingesta/mercados_series/README.md) ·
   [bancos centrales y riesgo](../src/ingesta/bancos_riesgo/README.md) · [empresas](../src/ingesta/empresas/README.md) ·
   [noticias y alternativos](../src/ingesta/noticias_alt/README.md).
+- Contrato de tools entre los datos y los agentes: [`src/herramientas/README.md`](../src/herramientas/README.md).
 
 ### `historia/` — de dónde venimos
 - [`historia/capa1/README.md`](historia/capa1/README.md) — la Capa 1 (12 detectores v1): decisiones, hallazgos, qué
@@ -108,10 +120,11 @@ Este es el único orden de lectura del repositorio (el `README.md` raíz remite 
 lees.
 
 **Equipo (empezar a trabajar en la Fase 2).**
-[`tfm/README.md`](tfm/README.md) → [ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md) →
-[ADR-007](decisions/ADR-007-fase2-ingesta-y-docs.md) → [`fase2/README.md`](fase2/README.md) →
-[`fase2/plan_datos.md`](fase2/plan_datos.md) → README de tu tema en `src/ingesta/` →
-[`tfm/arquitectura.md`](tfm/arquitectura.md) (catálogo de tools). El [GLOSARIO](GLOSARIO.md) se consulta cuando
+[README raíz](../README.md#instalación) (instalación) → [`tfm/README.md`](tfm/README.md) →
+[ADR-005](decisions/ADR-005-reencuadre-tfm-multiagente.md) → [ADR-012](decisions/ADR-012-estructura-repo.md)
+(estructura) → [`fase2/README.md`](fase2/README.md) → [`fase2/plan_datos.md`](fase2/plan_datos.md) → README de tu
+tema en `src/ingesta/` → [`tfm/arquitectura.md`](tfm/arquitectura.md) (catálogo de tools) →
+[`src/herramientas/README.md`](../src/herramientas/README.md) (contrato de tools). El [GLOSARIO](GLOSARIO.md) se consulta cuando
 aparece un término.
 
 **Tutor (estado del trabajo).**
@@ -124,9 +137,11 @@ Fase 1) → [`fase2/plan_datos.md`](fase2/plan_datos.md) (preguntas abiertas) �
 [ADR-001](decisions/ADR-001-rebase-datos.md) → [`estado_del_arte/fuentes_datos.md`](estado_del_arte/fuentes_datos.md) →
 [`fase1/eda.md`](fase1/eda.md) → [ADR-002](decisions/ADR-002-ajuste-ventanas.md) → `benchmark_spec.yaml` →
 [ADR-003](decisions/ADR-003-causalidad-calendario-estado-ranking.md) → [ADR-004](decisions/ADR-004-unificacion.md) →
-teoría por familia (`fase1/F1`…`F7`) → notebooks `04` (termómetros) → `05` → `06`–`13` → `14` → `15`–`16` (fusión) →
-[`fase1/sinteticos.md`](fase1/sinteticos.md) y `17`–`19` → `20`–`22` (aumento, decisión final y pseudolive) →
-[`fase2/plan_datos.md`](fase2/plan_datos.md).
+teoría por familia (`fase1/F1`…`F7`) → notebooks `04` (termómetros) → `05` → `06`–`13` → `14` →
+[ADR-008](decisions/ADR-008-preregistro-pool-termometros.md)–[ADR-010](decisions/ADR-010-preregistro-pool-crudo.md)
+(menús y pool) → [ADR-011](decisions/ADR-011-preregistro-fusiones.md) y `15`–`16` (fusión) →
+[`fase1/sinteticos.md`](fase1/sinteticos.md) (línea archivada; notebooks `17`–`20` en `sinteticos-final`) → `21`–`22`
+(decisión final y pseudolive) → [`fase2/plan_datos.md`](fase2/plan_datos.md).
 
 *Visita rápida:* `tfm/README.md` → ADR-005 → `fase1/README.md` → `fase2/README.md`.
 
