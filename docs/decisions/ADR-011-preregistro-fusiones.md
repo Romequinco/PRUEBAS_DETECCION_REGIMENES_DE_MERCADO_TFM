@@ -19,8 +19,8 @@
 
 ## 1. Pregunta
 
-Los ADR-008 a ADR-010 comparan detectores **sueltos**. Las fusiones que hay ([notebook 15](../../notebooks/15_fusiones_fijas.ipynb),
-D7 alerta + D8 confirma, y [notebook 16](../../notebooks/15_fusiones_fijas.ipynb), D6 confirmador fijo con cribado de
+Los ADR-008 a ADR-010 comparan detectores **sueltos**. Las fusiones que hay ([notebook 15](../../notebooks/fase1/15_fusiones_fijas.ipynb),
+D7 alerta + D8 confirma, y [notebook 16](../../notebooks/fase1/15_fusiones_fijas.ipynb), D6 confirmador fijo con cribado de
 alertas) se eligieron después de ver el benchmark y se midieron con una utilidad operativa propia, no con la vara del
 ranking. Queda la pregunta: **¿hay alguna combinación de detectores no supervisados que, medida con la misma vara que
 los individuales y con la selección controlada, mejore al mejor detector solo?** Se prueba de dos formas:
@@ -381,7 +381,7 @@ Se ejecuta con **un solo proceso**, en paralelo al notebook 21 sin competir con 
 
 ### 7.3 Numeración de notebooks
 
-- **El 15 y el 16 se unifican** en `notebooks/15_fusiones_fijas.ipynb` y el 16 se borra con `git mv` / `git rm`.
+- **El 15 y el 16 se unifican** en `notebooks/fase1/15_fusiones_fijas.ipynb` y el 16 se borra con `git mv` / `git rm`.
   - El 15 nuevo empieza por los antecedentes (D7 + D8 y D2 + D6, leídos de sus `results/fusion/` actuales, sin peso).
   - Después vienen las tres familias de este ADR.
 - **El 17 sigue siendo la fusión online** (`17_fusion_online.ipynb`, hoy un esqueleto). Su objetivo cambia: compara
@@ -439,15 +439,15 @@ Se ejecuta con **un solo proceso**, en paralelo al notebook 21 sin competir con 
 ### 8.1 Erratas
 
 - **03-11-2026 · enlaces del §1.** Los enlaces a los notebooks 15 y 16 antiguos (`15_fusion_d07_d08` y
-  `16_fusion_d02_d06`) apuntan ahora a [`15_fusiones_fijas`](../../notebooks/15_fusiones_fijas.ipynb), por la
+  `16_fusion_d02_d06`) apuntan ahora a [`15_fusiones_fijas`](../../notebooks/fase1/15_fusiones_fijas.ipynb), por la
   unificación prevista en el §7.3. El texto no cambia.
 
 ## 9. Resultados
 
 Calculado el 03-11-2026 después de congelar. Hubo una sola ejecución limpia: primero las fijas, después la online,
 en un proceso, con 5.000 réplicas en todos los MCS. Las tablas están en `results/fusion/fijas/` y
-`results/fusion/online/`. La lectura se hace en los notebooks [15](../../notebooks/15_fusiones_fijas.ipynb) y
-[17](../../notebooks/16_fusion_online.ipynb).
+`results/fusion/online/`. La lectura se hace en los notebooks [15](../../notebooks/fase1/15_fusiones_fijas.ipynb) y
+[17](../../notebooks/fase1/16_fusion_online.ipynb).
 
 ### 9.1 Fusiones fijas (§6.1)
 

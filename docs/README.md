@@ -72,7 +72,7 @@ docs/
 - `obras.csv`, `competidores_2026.json`, `fichas.json` — catálogo de obras y fichas; `catalogo.py` genera
   `catalogo.html` (no versionado).
 
-### `fase1/` — el régimen de mercado (`src/regimenes`, notebooks `00`–`22`)
+### `fase1/` — el régimen de mercado (`src/regimenes`, notebooks en `notebooks/fase1/`)
 - [`fase1/README.md`](fase1/README.md) — pipeline `00`–`22`, orden de ejecución, huellas de caché, rutas en disco e
   índice de detectores D01–D13 por familia. El mapa de módulos está en [`src/regimenes/README.md`](../src/regimenes/README.md).
 - [`fase1/eda.md`](fase1/eda.md) — informe EDA (figuras en [`fase1/figs/`](fase1/figs/)).

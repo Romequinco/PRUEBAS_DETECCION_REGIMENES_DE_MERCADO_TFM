@@ -10,7 +10,7 @@
   de la Fase 1 del TFM (ADR-005).
 - **Rama:** trabajo directo sobre `main`.
 - **Ámbito:** afecta a `data/benchmark_spec.yaml` (ventanas + `series_features` + `crisis_windows.pista_A`),
-  `notebooks/02_diseno_preprocesado.ipynb` (tabla `FEAT`), `notebooks/00_descarga.ipynb` (cierre) y la
+  `notebooks/fase1/02_diseno_preprocesado.ipynb` (tabla `FEAT`), `notebooks/fase1/00_descarga.ipynb` (cierre) y la
   documentación conceptual (`docs/GLOSARIO.md`, `README.md`). **No** toca `ADR-001` (se preserva íntegro;
   esta ADR lo ajusta, no lo sustituye), ni el marco de evaluación (`src/evaluation.py`,
   `src/detector_base.py`), ni la regla de causalidad.

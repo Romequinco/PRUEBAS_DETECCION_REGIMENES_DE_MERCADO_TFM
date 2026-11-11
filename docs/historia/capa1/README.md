@@ -106,7 +106,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 (Las cifras son las de la memoria v1; detalle y evidencia en su §2 y en el informe v1, ambos en el tag
 `capa1-final`: `capa1_exploracion/memory/99_conclusions.md` y `capa1_exploracion/report/informe_capa1.pdf`, §8.)
 
-## 4. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/00_eda.ipynb`)
+## 4. Resumen del EDA v1 (tag `capa1-final`: `capa1_exploracion/notebooks/fase1/00_eda.ipynb`)
 
 - **Datos:** 9 series descargadas **sin imputar** (S&P 500, VIX, MOVE, TLT, IEF, HYG, GLD, DXY y la
   pendiente 10Y−3M). FRED era inaccesible en aquel entorno → fallbacks documentados: DXY por
@@ -127,7 +127,7 @@ el switching ni alarga los regímenes → se mantuvo D8 por parsimonia.
 Memoria completa: `capa1_exploracion/memory/01_data_and_eda.md` (tag `capa1-final`). El EDA v2 que lo
 sustituye está en [`fase1/eda.md`](../../fase1/eda.md).
 
-## 5. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/13_comparison.ipynb`)
+## 5. Resumen de la comparativa v1 (tag `capa1-final`: `capa1_exploracion/notebooks/fase1/13_comparison.ipynb`)
 
 - **Tesis:** no hay detector dominante; 4 familias se reparten 6 ejes (cobertura sistémica,
   especificidad, persistencia, lead/lag, BIC, coste). Es un resultado, no un fracaso.
@@ -189,9 +189,9 @@ Consecuencias:
 | `capa1_exploracion/report/` (tex, pdf, bib) | solo en el tag `capa1-final` |
 | `capa1_exploracion/results/*.csv`, `ablation_hsmm/` | [`resultados/`](resultados/metrics_master.csv) (aquí) |
 | `capa1_exploracion/data/raw/{provenance.json,coverage_report.csv}` | solo en el tag `capa1-final` |
-| `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/06_familia_F1_reglas` … `12_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
-| `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/08_familia_F3_hmm`; original en el tag |
-| `capa1_exploracion/notebooks/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §4–§5 de este README; originales en el tag |
+| `capa1_exploracion/notebooks/01..12_<detector>.ipynb` | su teoría y hallazgos se rescatan en los notebooks de familia `notebooks/fase1/06_familia_F1_reglas` … `12_familia_F7_deep`; los `.ipynb` v1 ejecutados, en el tag `capa1-final` |
+| `capa1_exploracion/notebooks/A1_hsmm_ablation.ipynb` | D13 como ablación en `notebooks/fase1/08_familia_F3_hmm`; original en el tag |
+| `capa1_exploracion/notebooks/fase1/00_eda.ipynb`, `13_comparison.ipynb` | resumidos en §4–§5 de este README; originales en el tag |
 | bibliografía `report/references.bib` | fusionada en la bibliografía única [`docs/references.bib`](../../references.bib); el original, en el tag junto al `.tex` |
 
 **Rutas dentro de los documentos del tag.** La memoria y el informe son históricos y **no se reescriben**:
@@ -209,7 +209,7 @@ git show capa1-final:capa1_exploracion/memory/99_conclusions.md               # 
 git show capa1-final:capa1_exploracion/memory/01_data_and_eda.md              # memoria v1 (datos y EDA)
 git show capa1-final:capa1_exploracion/report/informe_capa1.pdf > informe_capa1.pdf   # informe v1
 git show capa1-final:capa1_exploracion/data/raw/provenance.json               # procedencia de los datos v1
-git show capa1-final:capa1_exploracion/notebooks/13_comparison.ipynb > 13_comparison.ipynb
+git show capa1-final:capa1_exploracion/notebooks/fase1/13_comparison.ipynb > 13_comparison.ipynb
 git worktree add ../capa1-v1 capa1-final                                      # árbol completo, sin tocar tu rama
 ```
 

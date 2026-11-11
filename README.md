@@ -75,7 +75,7 @@ Todo se evalúa con **walk-forward causal**: z-scores con ventana expansiva, ret
 las mismas métricas de detección para todos los detectores. Además de su estado, `get_regimen` devuelve un
 **contexto** para los agentes: la probabilidad de crisis según el consenso de todos los detectores (fusión online)
 y cuántos de ellos coinciden. Ranking completo en [`results/benchmark/ranking_v2.csv`](results/benchmark/ranking_v2.csv)
-y en el notebook [`14_comparativa`](notebooks/14_comparativa.ipynb); decisiones en los ADR-008 a ADR-011.
+y en el notebook [`14_comparativa`](notebooks/fase1/14_comparativa.ipynb); decisiones en los ADR-008 a ADR-011.
 
 <details>
 <summary><b>Catálogo de crisis 1927–2026</b> (la referencia contra la que se mide cada detector)</summary>
@@ -159,7 +159,9 @@ regime-aware-macro-equity/
 │   ├── ingesta/        Fase 2 · ingesta por tema
 │   └── herramientas/   contrato de tools para los agentes
 │                       (memoria/, agentes/ y cartera/ se crean al empezar cada fase)
-├── notebooks/      00–16 y 21–22 de la Fase 1 · fase2/<tema>/NN_*.ipynb
+├── notebooks/
+│   ├── fase1/      00–16 y 21–22 (datos, detectores, fusiones, decisión)
+│   └── fase2/      un subdirectorio por tema: <tema>/NN_*.ipynb
 ├── results/        resultados pequeños versionados
 ├── tests/          espejo de src/
 └── docs/           índice, decisiones (ADR), estado del arte y una carpeta por fase

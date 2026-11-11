@@ -41,7 +41,7 @@ regime-aware-macro-equity/
 │   ├── memoria/        Fase 2 · RAG con TimeGate (se crea al empezar)
 │   ├── agentes/        Fases 3–4 · grafo LangGraph (se crea al empezar)
 │   └── cartera/        Fases 4–5 · motores, límites, backtest (se crea al empezar)
-├── notebooks/      00–22 Fase 1 · fase2/<tema>/NN_*.ipynb · faseN/ al llegar
+├── notebooks/      fase1/NN_*.ipynb · fase2/<tema>/NN_*.ipynb · faseN/ al llegar
 ├── results/        salidas pequeñas versionadas; binarios regenerables ignorados
 ├── tests/          espejo de src/
 └── docs/           índice, ADR, estado del arte, una carpeta por fase
@@ -106,6 +106,7 @@ regime-aware-macro-equity/
 | `notebooks/fase2/t3_01_sonda_empresas.ipynb` | `notebooks/fase2/empresas/01_sonda.ipynb` |
 | `notebooks/fase2/t4_01_sonda_noticias_alt.ipynb` | `notebooks/fase2/noticias_alt/01_sonda.ipynb` |
 | `notebooks/fase2/t4_02_validez_alternativos.ipynb` | `notebooks/fase2/noticias_alt/02_validez_alternativos.ipynb` |
+| `notebooks/NN_*.ipynb` (Fase 1, carpeta plana) | `notebooks/fase1/NN_*.ipynb` |
 | `PendientesOscar.md` (raíz) | `docs/tfm/PendientesOscar.md` |
 | `PlanPendientesOscar.pdf` (raíz) | `docs/tfm/internos/` (solo local) |
 | `requirements/ingesta-*.txt` | extras de `pyproject.toml` (§2.2) |
@@ -130,6 +131,8 @@ Corregirlos invalidaría una caché o reescribiría un pre-registro.
 - **Comentarios con la numeración de ADR-004 en ficheros con huella** («notebook 23», «22_decision_final»…):
   `evaluacion/metricas.py`, `detectores/__init__.py` y `detectores/pool/__init__.py`.
 - **`configs/bloques.yaml` y `features/bloques.py`:** citan `PendientesOscar.md` solo por su nombre, sin ruta.
+- **`configs/benchmark_spec.yaml` y `configs/bloques.yaml`:** sus comentarios citan `notebooks/NN_*.ipynb` sin la
+  carpeta `fase1/` (la Fase 1 se movió a `notebooks/fase1/` después; los notebooks no están en ninguna huella).
 - **ADR-004, ADR-005 y ADR-007 a ADR-011:** usan la numeración de notebooks de su fecha. Equivalencias: notebook
   «21» de ADR-009–011 = aumento (hoy archivado, antes 20); «17» = fusión online (hoy 16); «22»/«23» de ADR-004–005
   = decisión final y pseudolive (hoy 21 y 22).

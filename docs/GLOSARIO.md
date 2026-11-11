@@ -121,7 +121,7 @@ usa para **juzgar** los detectores en la Fase D, jamás en la matriz de features
 Toda feature es **causal**: en el instante `t` solo usa estadísticos de datos `≤ t` (z-score
 *expanding*/*rolling*, nunca de muestra completa — ese fue el error de la tarea previa). Se verifica
 con `assert_causal(builder, raw, cut)` de `regimenes.features.causalidad` (truncar el futuro y recomputar debe dar
-`max|Δ| = 0`). Se demuestra en [`02_diseno_preprocesado.ipynb`](../notebooks/02_diseno_preprocesado.ipynb)
+`max|Δ| = 0`). Se demuestra en [`02_diseno_preprocesado.ipynb`](../notebooks/fase1/02_diseno_preprocesado.ipynb)
 §4-5 y es el gate 1 de `03_preprocesado`.
 
 Hay que distinguir dos niveles:

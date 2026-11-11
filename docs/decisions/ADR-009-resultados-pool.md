@@ -41,7 +41,7 @@ el menú T en el ranking v3 (plan 2.7):
 
 Variantes, semillas, reajuste anual (`step = 252`) y criterio de validez del atajo: errata del ADR-008, §5.1. Código:
 `regimenes.benchmark.ablaciones` (ejecución) y `regimenes.benchmark.ablaciones_lectura` (lectura y tablas).
-Resultados: `results/detectores/ablaciones/`. Lectura: notebook [`04_termometros`](../../notebooks/04_termometros.ipynb),
+Resultados: `results/detectores/ablaciones/`. Lectura: notebook [`04_termometros`](../../notebooks/fase1/04_termometros.ipynb),
 sección 13.
 
 - **Validez del atajo.** Con reajuste anual, el signo de `REF-T − REF-N` debe ser el oficial (mensual) en cada

@@ -14,11 +14,11 @@ Organización del módulo
 -----------------------
 1. **Primitivas causales** (`causal_zscore`, `log_returns`, `realized_vol`,
    `rolling_correlation`, `drawdown`, `momentum`): heredadas de la Capa 1 y
-   demostradas en `notebooks/02_diseno_preprocesado.ipynb` §5.
+   demostradas en `notebooks/fase1/02_diseno_preprocesado.ipynb` §5.
 2. **Recetario v2** (`ret_z`, `zscore_raw`, `change_z`, `spread_ret_z`,
    `cross_sectional_std_*`, `macro_z`, `mercado_z`, `mercado_spread_z`,
    `fed_stance`): composiciones de las primitivas usadas por
-   `notebooks/03_preprocesado.ipynb`.
+   `notebooks/fase1/03_preprocesado.ipynb`.
 3. **Causalidad de calendario** (`LAG_PUBLICACION`, `aplicar_lag_publicacion`,
    ADR-003): tabla ÚNICA de lags de publicación por serie cruda. Los constructores
    la aplican a la entrada antes de calcular nada, de modo que el índice de toda
