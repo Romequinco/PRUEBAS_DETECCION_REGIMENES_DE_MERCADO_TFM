@@ -1,0 +1,927 @@
+{
+  "comun": {
+    "fin_train": "2017-12-31",
+    "sesiones": 2702,
+    "columnas": [
+      "SP500_ret_z",
+      "SP500_vol_z",
+      "SP500_momentum",
+      "SP500_drawdown",
+      "FF_MKT_z",
+      "DGS10_change_z",
+      "credit_BaaAaa_mensual_z",
+      "term_spread_hist_z",
+      "INDPRO_yoy_z",
+      "VIX_level_z",
+      "MOVE_level_z",
+      "credit_BAA10Y_z",
+      "DFII10_change_z",
+      "corr_spx_bond",
+      "SP500_ret"
+    ],
+    "real_sha": "d00c06f0340c6fe9",
+    "sklearn": "1.8.0",
+    "semilla": 42
+  },
+  "huellas": {
+    "jitter": {
+      "params": {
+        "sigma": 0.1,
+        "longitud_media": 63
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 2355.0133130086215,
+      "bytes": 34297525
+    },
+    "bootstrap_regimen": {
+      "params": {
+        "longitud_media": 21
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 2092.2582608727243,
+      "bytes": 11017325
+    },
+    "gaussiano_regimen": {
+      "params": {
+        "estimador": "ledoit_wolf",
+        "jitter": 1e-10
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 2826.58805141564,
+      "bytes": 34320031
+    },
+    "var_regimen": {
+      "params": {
+        "orden": 1,
+        "ridge": 0.0001,
+        "innovaciones": "bootstrap",
+        "radio_max": 0.999,
+        "anclar_media": true
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 2066.6931867403873,
+      "bytes": 34290931
+    },
+    "garch_regimen": {
+      "params": {
+        "columna_mercado": null,
+        "ajuste": "conjunto",
+        "persistencia_max": 0.995,
+        "min_obs_regimen": 100,
+        "techo_varianza": 1.0,
+        "cuantil_techo": 0.99,
+        "techo_nivel": 1.5,
+        "regresor_mercado": "retorno",
+        "residuos": "bootstrap",
+        "ridge": 0.0001,
+        "radio_max": 0.999,
+        "largo_contexto": 1
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 1837.1470914520114,
+      "bytes": 34279344
+    },
+    "rbig": {
+      "params": {
+        "largo_bloque": 21,
+        "largo_contexto": 5,
+        "n_componentes": 64,
+        "max_capas": 30,
+        "min_capas": 3,
+        "tolerancia": 0.01,
+        "paciencia": 3,
+        "ruido_residual": true,
+        "paso": 1
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 2270.551568260682,
+      "bytes": 33567109
+    },
+    "flow_matching": {
+      "params": {
+        "largo_bloque": 21,
+        "largo_contexto": 21,
+        "umbral_persistencia": 0.9,
+        "colas": "arcsinh",
+        "escala_colas": 3.0,
+        "recorte": 1.5,
+        "ancho": 256,
+        "n_bloques": 3,
+        "dim_contexto": 128,
+        "dim_tiempo": 64,
+        "epocas": 40,
+        "tam_lote": 256,
+        "lr": 0.001,
+        "decaimiento_pesos": 0.0001,
+        "recorte_gradiente": 1.0,
+        "ema": 0.999,
+        "equilibrio": 0.25,
+        "frac_validacion": 0.15,
+        "niveles_validacion": 8,
+        "max_muestras_validacion": 1024,
+        "restaurar_mejor": true,
+        "n_pasos": 25,
+        "metodo_integracion": "heun"
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 1743.221678012138,
+      "bytes": 34300598
+    },
+    "difusion": {
+      "params": {
+        "largo_bloque": 21,
+        "largo_contexto": 21,
+        "umbral_persistencia": 0.9,
+        "colas": "arcsinh",
+        "escala_colas": 3.0,
+        "recorte": 1.5,
+        "ancho": 256,
+        "n_bloques": 3,
+        "dim_contexto": 128,
+        "dim_tiempo": 64,
+        "epocas": 60,
+        "tam_lote": 256,
+        "lr": 0.001,
+        "decaimiento_pesos": 0.0001,
+        "recorte_gradiente": 1.0,
+        "ema": 0.999,
+        "equilibrio": 0.25,
+        "frac_validacion": 0.15,
+        "niveles_validacion": 8,
+        "max_muestras_validacion": 1024,
+        "restaurar_mejor": true,
+        "pasos_difusion": 1000,
+        "n_pasos": 50,
+        "senal_minima": 0.1,
+        "prob_dropout_condicion": 0.1,
+        "guiado": 1.0
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 1788.2848090457378,
+      "bytes": 34299136
+    },
+    "cvae": {
+      "params": {
+        "largo_bloque": 21,
+        "largo_contexto": 21,
+        "dim_latente": 16,
+        "ocultas": [
+          256,
+          256
+        ],
+        "beta": 1.0,
+        "epocas_rampa_beta": 20,
+        "free_bits": 0.05,
+        "epocas": 120,
+        "paciencia": 25,
+        "tam_lote": 256,
+        "lr": 0.001,
+        "clip": 5.0,
+        "weight_decay": 1e-05,
+        "dropout": 0.1,
+        "fraccion_validacion": 0.15,
+        "reajuste_completo": true,
+        "equilibrio": 0.5,
+        "escala_colas": 2.0,
+        "curtosis_colas": 3.0,
+        "umbral_ancla": 0.9,
+        "blanquear": true,
+        "saturar_contexto": true,
+        "log_var_min": -7.0,
+        "log_var_max": 2.0,
+        "ruido_observacion": true
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 1845.8320796144772,
+      "bytes": 34322201
+    },
+    "cgan": {
+      "params": {
+        "largo_bloque": 21,
+        "largo_contexto": 21,
+        "dim_latente": 32,
+        "ocultas_g": [
+          256,
+          256
+        ],
+        "ocultas_d": [
+          256,
+          256
+        ],
+        "epocas": 150,
+        "tam_lote": 256,
+        "n_critico": 3,
+        "lr_g": 0.0003,
+        "lr_d": 0.0006,
+        "beta1": 0.5,
+        "beta2": 0.9,
+        "lambda_gp": 10.0,
+        "ema": 0.99,
+        "abandono_contexto": 0.3,
+        "fraccion_validacion": 0.0,
+        "equilibrio": 0.5,
+        "escala_colas": 2.0,
+        "curtosis_colas": 3.0,
+        "umbral_ancla": 0.9,
+        "blanquear": true,
+        "saturar_contexto": true
+      },
+      "fin_train": "2017-12-29",
+      "n_train": 2702,
+      "muestreo": {
+        "n_paths": 100,
+        "length": 2520,
+        "semilla": 42,
+        "inicial": "estacionaria",
+        "duraciones": "geometricas",
+        "secuencia_impuesta": [
+          [
+            0,
+            504
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            0,
+            693
+          ],
+          [
+            1,
+            504
+          ],
+          [
+            0,
+            756
+          ]
+        ]
+      },
+      "control": 1589.0673044891032,
+      "bytes": 34274946
+    }
+  },
+  "secciones": {
+    "fidelidad_marginal": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200
+    },
+    "fidelidad_dependencia": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200,
+      "retardos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "referencia": {
+        "largo_referencia": 2520,
+        "paso_ventanas": 63,
+        "min_ventanas_no_solapadas": 3
+      }
+    },
+    "fidelidad_dependencia_entero": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200,
+      "retardos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ]
+    },
+    "distancia_correlaciones": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200
+    },
+    "fidelidad_regimenes": {
+      "codigo": "e755a5bd33e5f76e"
+    },
+    "condicionamiento": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200,
+      "n_pliegues": 5
+    },
+    "discriminador": {
+      "codigo": "a729916a0a5ed7b1",
+      "largo_ventana": 21,
+      "n_pliegues": 5
+    },
+    "discriminador_informativo": {
+      "codigo": "a729916a0a5ed7b1",
+      "largo_ventana": 21,
+      "n_pliegues": 5,
+      "columnas": [
+        "SP500_ret"
+      ]
+    },
+    "discriminador_grupos": {
+      "codigo": "a729916a0a5ed7b1",
+      "largo_ventana": 21,
+      "n_pliegues": 5,
+      "grupos": {
+        "todas": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond",
+          "SP500_ret"
+        ],
+        "modeladas lentas": [
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "corr_spx_bond"
+        ],
+        "modeladas diarias": [
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "DFII10_change_z"
+        ],
+        "re-derivadas": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown"
+        ],
+        "solo SP500_ret": [
+          "SP500_ret"
+        ]
+      },
+      "generadores": [
+        "jitter",
+        "bootstrap_regimen",
+        "garch_regimen"
+      ]
+    },
+    "discriminador_real": {
+      "codigo": "a729916a0a5ed7b1",
+      "largo_ventana": 21,
+      "n_pliegues": 5,
+      "grupos": {
+        "todas": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown",
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "DFII10_change_z",
+          "corr_spx_bond",
+          "SP500_ret"
+        ],
+        "modeladas lentas": [
+          "credit_BaaAaa_mensual_z",
+          "term_spread_hist_z",
+          "INDPRO_yoy_z",
+          "VIX_level_z",
+          "MOVE_level_z",
+          "credit_BAA10Y_z",
+          "corr_spx_bond"
+        ],
+        "modeladas diarias": [
+          "FF_MKT_z",
+          "DGS10_change_z",
+          "DFII10_change_z"
+        ],
+        "re-derivadas": [
+          "SP500_ret_z",
+          "SP500_vol_z",
+          "SP500_momentum",
+          "SP500_drawdown"
+        ],
+        "solo SP500_ret": [
+          "SP500_ret"
+        ]
+      },
+      "control": "mitades, 10 trozos"
+    },
+    "dependencia_real": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200,
+      "retardos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "control": "real troceado, 10 ventanas",
+      "referencia": {
+        "largo_referencia": 2520,
+        "paso_ventanas": 63,
+        "min_ventanas_no_solapadas": 3
+      }
+    },
+    "dependencia_real_entero": {
+      "codigo": "e755a5bd33e5f76e",
+      "n_boot": 200,
+      "retardos": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ],
+      "control": "real troceado, 10 ventanas"
+    },
+    "memorizacion": {
+      "codigo": "1a259ec5ea7d339b",
+      "largo_ventana": 1,
+      "exclusion": 21
+    },
+    "memorizacion_cola": {
+      "codigo": "1a259ec5ea7d339b",
+      "exclusion": 21,
+      "cuantil": 0.05,
+      "espacio": "modeladas"
+    },
+    "utilidad": {
+      "codigo": "4ee3c70c44b22661",
+      "n_trayectorias": 20,
+      "detectores": [
+        "D01",
+        "D03",
+        "D06",
+        "D07"
+      ],
+      "juez": {
+        "min_run": 3,
+        "beta": 1.0,
+        "lift_min": 1.0,
+        "min_mean_duration": 5.0,
+        "min_crisis_run": 3.0,
+        "score_decimals": 3
+      },
+      "specs": [
+        [
+          "D01",
+          [
+            "VIX_level_z"
+          ],
+          21,
+          true
+        ],
+        [
+          "D03",
+          [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z",
+            "VIX_level_z",
+            "MOVE_level_z",
+            "credit_BAA10Y_z",
+            "DFII10_change_z",
+            "corr_spx_bond"
+          ],
+          21,
+          true
+        ],
+        [
+          "D06",
+          [
+            "SP500_ret"
+          ],
+          21,
+          true
+        ],
+        [
+          "D07",
+          [
+            "SP500_ret"
+          ],
+          21,
+          true
+        ]
+      ]
+    },
+    "utilidad_control": {
+      "codigo": "4ee3c70c44b22661",
+      "n_trayectorias": 20,
+      "detectores": [
+        "D01",
+        "D03",
+        "D06",
+        "D07"
+      ],
+      "juez": {
+        "min_run": 3,
+        "beta": 1.0,
+        "lift_min": 1.0,
+        "min_mean_duration": 5.0,
+        "min_crisis_run": 3.0,
+        "score_decimals": 3
+      },
+      "specs": [
+        [
+          "D01",
+          [
+            "VIX_level_z"
+          ],
+          21,
+          true
+        ],
+        [
+          "D03",
+          [
+            "SP500_ret_z",
+            "SP500_vol_z",
+            "SP500_momentum",
+            "SP500_drawdown",
+            "FF_MKT_z",
+            "DGS10_change_z",
+            "credit_BaaAaa_mensual_z",
+            "term_spread_hist_z",
+            "INDPRO_yoy_z",
+            "VIX_level_z",
+            "MOVE_level_z",
+            "credit_BAA10Y_z",
+            "DFII10_change_z",
+            "corr_spx_bond"
+          ],
+          21,
+          true
+        ],
+        [
+          "D06",
+          [
+            "SP500_ret"
+          ],
+          21,
+          true
+        ],
+        [
+          "D07",
+          [
+            "SP500_ret"
+          ],
+          21,
+          true
+        ]
+      ],
+      "control": "filas reales iid, régimen iid"
+    }
+  }
+}

@@ -1,0 +1,191 @@
+"""Contrato de la interfaz ``regimenes.sinteticos``.
+
+1. La interfaz abstracta ``Generador`` (``name``/``fit``/``sample``): no se puede
+   instanciar, una subclase incompleta tampoco, y una subclase minima cumple el
+   contrato documentado (``fit`` devuelve ``self``; ``sample`` devuelve
+   ``n_paths`` trayectorias de ``length`` pasos con columna ``regime``).
+2. El registro (``registrar``/``crear``) con una subclase directa de ``Generador``.
+3. Las metricas de validacion (notebook 18) declaradas en la configuracion
+   existen y conservan la firma posicional ``(real, sintetico, ...)`` (o
+   ``(real_regimes, sintetico)``); su logica se prueba en ``test_validacion_*.py``.
+
+La base comun y el contrato de los generadores reales se prueban en
+``test_sinteticos_cimientos.py`` y ``test_contrato_generadores.py``.
+
+No necesita datos: corre igual en local, en ``make test-rapido`` y en CI.
+"""
+from __future__ import annotations
+
+import inspect
+
+import numpy as np
+import pandas as pd
+import pytest
+import yaml
+
+from regimenes import rutas, sinteticos
+from regimenes.sinteticos import base, neuronales, parametricos, registry, validacion
+from regimenes.sinteticos.base import Generador
+
+
+class _GeneradorGaussiano(Generador):
+    """Generador de juguete: ruido normal por regimen (solo para el contrato)."""
+
+    @property
+    def name(self) -> str:
+        return "juguete_gauss"
+
+    def fit(self, train: pd.DataFrame, regimes: pd.Series | None = None) -> "_GeneradorGaussiano":
+        self.columns_ = list(train.columns)
+        self.mu_ = train.mean().to_numpy()
+        self.sd_ = train.std(ddof=0).to_numpy()
+        return self
+
+    def sample(self, n_paths, length, regimes=None, *, random_state=None):
+        rng = np.random.default_rng(random_state)
+        reg = np.zeros(length, dtype=int) if regimes is None else np.asarray(regimes, dtype=int)
+        idx = pd.bdate_range("2000-01-03", periods=length)
+        out = []
+        for _ in range(n_paths):
+            x = self.mu_ + self.sd_ * rng.standard_normal((length, len(self.columns_)))
+            df = pd.DataFrame(x, index=idx, columns=self.columns_)
+            df["regime"] = reg
+            out.append(df)
+        return out
+
+
+@pytest.fixture
+def panel() -> pd.DataFrame:
+    rng = np.random.default_rng(0)
+    idx = pd.bdate_range("2010-01-04", periods=120)
+    return pd.DataFrame(rng.standard_normal((120, 3)), index=idx, columns=["r", "vol", "vix"])
+
+
+# --------------------------------------------------------------------------- interfaz
+
+def test_generador_exportado_en_el_paquete() -> None:
+    assert sinteticos.Generador is base.Generador
+    assert "Generador" in sinteticos.__all__
+
+
+def test_generador_es_abstracto_con_name_fit_sample() -> None:
+    assert inspect.isabstract(Generador)
+    assert Generador.__abstractmethods__ == frozenset({"name", "fit", "sample"})
+    with pytest.raises(TypeError):
+        Generador()  # type: ignore[abstract]
+
+
+def test_subclase_incompleta_no_se_instancia() -> None:
+    class SinSample(Generador):
+        @property
+        def name(self) -> str:
+            return "sin_sample"
+
+        def fit(self, train, regimes=None):
+            return self
+
+    with pytest.raises(TypeError):
+        SinSample()  # type: ignore[abstract]
+
+
+def test_firma_de_sample_tiene_random_state_keyword_only() -> None:
+    params = inspect.signature(Generador.sample).parameters
+    assert list(params)[:4] == ["self", "n_paths", "length", "regimes"]
+    assert params["regimes"].default is None
+    assert params["random_state"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert params["random_state"].default is None
+    fit_params = inspect.signature(Generador.fit).parameters
+    assert list(fit_params) == ["self", "train", "regimes"]
+    assert fit_params["regimes"].default is None
+
+
+def test_subclase_minima_cumple_el_contrato(panel: pd.DataFrame) -> None:
+    gen = _GeneradorGaussiano()
+    assert gen.fit(panel) is gen
+    paths = gen.sample(3, 50, random_state=7)
+    assert isinstance(paths, list) and len(paths) == 3
+    for p in paths:
+        assert isinstance(p, pd.DataFrame)
+        assert len(p) == 50
+        assert list(p.columns) == list(panel.columns) + ["regime"]
+    # reproducibilidad con semilla
+    again = gen.sample(3, 50, random_state=7)
+    for a, b in zip(paths, again):
+        pd.testing.assert_frame_equal(a, b)
+
+
+def test_sample_respeta_la_secuencia_de_regimenes_impuesta(panel: pd.DataFrame) -> None:
+    reg = np.r_[np.zeros(20, dtype=int), np.ones(10, dtype=int)]
+    (path,) = _GeneradorGaussiano().fit(panel).sample(1, len(reg), regimes=reg, random_state=1)
+    np.testing.assert_array_equal(path["regime"].to_numpy(), reg)
+
+
+def test_metodos_abstractos_de_la_base_levantan_not_implemented(panel: pd.DataFrame) -> None:
+    gen = _GeneradorGaussiano()
+    with pytest.raises(NotImplementedError):
+        Generador.name.fget(gen)  # type: ignore[attr-defined]
+    with pytest.raises(NotImplementedError):
+        Generador.fit(gen, panel)
+    with pytest.raises(NotImplementedError):
+        Generador.sample(gen, 1, 10)
+
+
+# --------------------------------------------------------------------------- registro y stubs
+
+def test_registro_registra_crea_y_rechaza_duplicados() -> None:
+    antes = dict(registry.GENERADORES)
+    try:
+        assert registry.registrar(_GeneradorGaussiano) is _GeneradorGaussiano
+        assert registry.GENERADORES["juguete_gauss"] is _GeneradorGaussiano
+        assert isinstance(registry.crear("juguete_gauss"), _GeneradorGaussiano)
+        assert "juguete_gauss" in registry.disponibles()
+        registry.registrar(_GeneradorGaussiano)  # re-registrar la misma clase es inocuo
+
+        class Impostor(_GeneradorGaussiano):
+            pass
+
+        with pytest.raises(ValueError):
+            registry.registrar(Impostor)
+        with pytest.raises(TypeError):
+            registry.registrar(dict)  # type: ignore[arg-type]
+        with pytest.raises(KeyError):
+            registry.crear("msvar")
+    finally:
+        registry.GENERADORES.clear()
+        registry.GENERADORES.update(antes)
+
+
+def test_subpaquetes_de_familias_no_importan_generadores() -> None:
+    # Registro perezoso: los __init__ de familia no importan ningun generador
+    # (ni torch); cada modulo se carga bajo demanda con registry.crear().
+    assert parametricos.__all__ == []
+    assert neuronales.__all__ == []
+    familias = {familia for _, familia in registry.CATALOGO.values()}
+    assert familias == {"parametricos", "neuronales"}
+
+
+def _metricas_configuradas() -> list[str]:
+    cfg = yaml.safe_load(rutas.SINTETICOS_CONFIG.read_text(encoding="utf-8"))
+    return list(cfg["validacion"]["metricas"])
+
+
+def test_config_lista_las_metricas_de_validacion_existentes() -> None:
+    metricas = _metricas_configuradas()
+    assert metricas, "configs/sinteticos.yaml sin metricas de validacion"
+    for nombre in metricas:
+        assert callable(getattr(validacion, nombre, None)), nombre
+
+
+@pytest.mark.parametrize("nombre", _metricas_configuradas())
+def test_metricas_de_validacion_conservan_la_firma(nombre: str) -> None:
+    params = list(inspect.signature(getattr(validacion, nombre)).parameters)
+    primero = "real_regimes" if nombre == "fidelidad_regimenes" else "real"
+    assert params[:2] == [primero, "sintetico"], (nombre, params)
+    if nombre == "utilidad_tstr":
+        assert params[2] == "detector_id"
+
+
+def test_rutas_de_sinteticos_definidas() -> None:
+    assert rutas.DATA_SINTETICOS == rutas.DATA / "sinteticos"
+    assert rutas.RESULTS_SINTETICOS == rutas.RESULTS / "sinteticos"
+    assert rutas.SINTETICOS_CONFIG.exists()

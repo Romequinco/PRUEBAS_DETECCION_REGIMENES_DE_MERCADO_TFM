@@ -233,3 +233,17 @@ def test_consolidado_valida_esquema(tmp_path):
     pd.DataFrame({"pista": ["A"]}).to_csv(tmp_path / al.TRABAJOS, index=False)
     with pytest.raises(ValueError, match="faltan columnas"):
         _cargar(tmp_path)
+
+
+def test_restaurar_trabajos_regenera_las_marcas_desde_el_consolidado(tmp_path):
+    """Si se pierden los CSV por trabajo (marca de «hecho» de ablaciones.py), se regeneran desde trabajos.csv."""
+    sueltos, clon = tmp_path / "sueltos", tmp_path / "clon"
+    sueltos.mkdir(), clon.mkdir()
+    _variantes(sueltos, "A", ["REF-T", *AZAR[:2]])
+    _ref_t(sueltos, [0.5, 0.4, 0.3, 0.2, 0.6, 0.7])
+    _azar(sueltos, [0.1, 0.2])
+    (clon / al.TRABAJOS).write_bytes(al._csv(sueltos / al.TRABAJOS, al._tabla_trabajos(sueltos)).read_bytes())
+    escritas = al.restaurar_trabajos(clon)
+    assert sorted(p.name for p in escritas) == sorted(p.name for p in sueltos.glob("A_D*.csv"))
+    pd.testing.assert_frame_equal(_cargar(clon), _cargar(sueltos))
+    assert al.restaurar_trabajos(clon) == []  # no pisa los que ya existen

@@ -512,11 +512,35 @@ def escribir_tablas(salida: Path = SALIDA, *, mcs: bool = True) -> list[Path]:
     return hechas
 
 
+def restaurar_trabajos(salida: Path = SALIDA, *, sobrescribir: bool = False) -> list[Path]:
+    """Re-escribe los CSV sueltos ``<P>_<D>_<VARIANTE>.csv`` a partir de :data:`TRABAJOS`.
+
+    Son la marca de «trabajo hecho» de ``benchmark/ablaciones.py``: si faltan (clon nuevo, o git los borró al
+    cambiar a una rama que aún los versionaba y volver), una re-ejecución repetiría los 1.338 trabajos
+    (~78 h). Por defecto no toca los que ya existen.
+    """
+    salida = Path(salida)
+    tabla = pd.read_csv(salida / TRABAJOS)
+    escritas = []
+    for i in range(len(tabla)):
+        fila = tabla.iloc[[i]]
+        ruta = salida / f"{fila['pista'].iloc[0]}_{fila['base'].iloc[0]}_{fila['variante'].iloc[0]}.csv"
+        if ruta.exists() and not sobrescribir:
+            continue
+        escritas.append(_csv(ruta, fila))
+    return escritas
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--salida", type=Path, default=SALIDA)
     parser.add_argument("--sin-mcs", action="store_true", help="no recalcula el MCS por menú")
+    parser.add_argument("--restaurar-trabajos", action="store_true",
+                        help="re-escribe los CSV por trabajo que falten a partir de trabajos.csv y termina")
     args = parser.parse_args(argv)
+    if args.restaurar_trabajos:
+        print(f"{len(restaurar_trabajos(args.salida))} CSV por trabajo restaurados en {args.salida}")
+        return
     for ruta in escribir_tablas(args.salida, mcs=not args.sin_mcs):
         print(ruta)
 

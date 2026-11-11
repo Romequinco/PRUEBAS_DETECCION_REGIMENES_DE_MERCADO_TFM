@@ -1,0 +1,117 @@
+{
+  "nombre": "difusion",
+  "familia": "neuronales",
+  "params": {
+    "largo_bloque": 21,
+    "largo_contexto": 21,
+    "umbral_persistencia": 0.9,
+    "colas": "arcsinh",
+    "escala_colas": 3.0,
+    "recorte": 1.5,
+    "ancho": 256,
+    "n_bloques": 3,
+    "dim_contexto": 128,
+    "dim_tiempo": 64,
+    "epocas": 60,
+    "tam_lote": 256,
+    "lr": 0.001,
+    "decaimiento_pesos": 0.0001,
+    "recorte_gradiente": 1.0,
+    "ema": 0.999,
+    "equilibrio": 0.25,
+    "frac_validacion": 0.15,
+    "niveles_validacion": 8,
+    "max_muestras_validacion": 1024,
+    "restaurar_mejor": true,
+    "pasos_difusion": 1000,
+    "n_pasos": 50,
+    "senal_minima": 0.1,
+    "prob_dropout_condicion": 0.1,
+    "guiado": 1.0
+  },
+  "random_state": 42,
+  "n_train": 11267,
+  "d": 6,
+  "d_publico": 10,
+  "fin_train": "2006-12-29",
+  "pct_crisis_train": 19.623679772787785,
+  "tiempo_ajuste_s": 67.44211769999674,
+  "n_historial": 60,
+  "final_epoca": 60,
+  "final_perdida": 0.2958000180752654,
+  "final_perdida_val": 0.30285245180130005,
+  "final_perdida_val_calma": 0.2742003798484802,
+  "final_perdida_val_crisis": 0.3496238589286804,
+  "final_lr": 2e-05,
+  "pista": "A",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.165265873015873,
+      "fraccion_por_regimen": [
+        0.834734126984127,
+        0.165265873015873
+      ],
+      "n_trayectorias_una_clase": 14,
+      "n_trayectorias_sin_crisis": 14,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42,
+      "fraccion_recortada": 0.00017592592592592592,
+      "coordenadas": 1512000
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42,
+      "fraccion_recortada": 0.000248015873015873,
+      "coordenadas": 1512000
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 18.456888299995626,
+    "impuesta": 18.04656679999607
+  },
+  "control": 1186.4780415852426
+}

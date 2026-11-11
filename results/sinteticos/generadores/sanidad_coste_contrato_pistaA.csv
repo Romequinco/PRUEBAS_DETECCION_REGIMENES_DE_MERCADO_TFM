@@ -1,0 +1,12 @@
+generador,familia,ajuste (s),muestreo simulada (s),muestreo impuesta (s),finito,régimen impuesto respetado,cadena compartida,fechas y columnas,reproducible con semilla,cargado = ajustado,% crisis,tray. sin crisis,recorte varianza (%),recorte mercado (%),recorte nivel (%),recorte coordenadas (%),finito (impuesta)
+REAL (train),—,,,,True,,,,,,19.623679772787785,,,,,,
+jitter,parametricos,0.001948899996932596,0.8753151999990223,0.8859711000040988,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+bootstrap_regimen,parametricos,0.0008537999965483323,0.9319440000035684,0.7990256999983103,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+gaussiano_regimen,parametricos,0.5481863000022713,1.0109731999982614,0.8940823000011733,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+var_regimen,parametricos,0.004390499998407904,1.0014838999995845,0.8460427000027266,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+garch_regimen,parametricos,2.249706700000388,1.11733909999748,1.0428395999988425,True,True,True,True,True,True,16.526587301587302,14.0,0.10833333333333332,0.0,0.00031746031746031746,,True
+rbig,parametricos,1.9577340999967419,1.973710199999914,1.61310969999613,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+flow_matching,neuronales,49.30559060000087,17.521894699995755,17.662548800006334,True,True,True,True,True,True,16.526587301587302,14.0,,,,0.005555555555555556,True
+difusion,neuronales,67.44211769999674,18.456888299995626,18.04656679999607,True,True,True,True,True,True,16.526587301587302,14.0,,,,0.01759259259259259,True
+cvae,neuronales,139.43708660000266,1.0757038000010652,1.0449079999962123,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True
+cgan,neuronales,110.90755109999736,1.0140344000028563,0.9910069000034127,True,True,True,True,True,True,16.526587301587302,14.0,,,,,True

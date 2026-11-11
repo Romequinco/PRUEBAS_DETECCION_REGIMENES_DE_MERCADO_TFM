@@ -1,0 +1,118 @@
+{
+  "nombre": "cgan",
+  "familia": "neuronales",
+  "params": {
+    "largo_bloque": 21,
+    "largo_contexto": 21,
+    "dim_latente": 32,
+    "ocultas_g": [
+      256,
+      256
+    ],
+    "ocultas_d": [
+      256,
+      256
+    ],
+    "epocas": 150,
+    "tam_lote": 256,
+    "n_critico": 3,
+    "lr_g": 0.0003,
+    "lr_d": 0.0006,
+    "beta1": 0.5,
+    "beta2": 0.9,
+    "lambda_gp": 10.0,
+    "ema": 0.99,
+    "abandono_contexto": 0.3,
+    "fraccion_validacion": 0.0,
+    "equilibrio": 0.5,
+    "escala_colas": 2.0,
+    "curtosis_colas": 3.0,
+    "umbral_ancla": 0.9,
+    "blanquear": true,
+    "saturar_contexto": true
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 41.60714140000346,
+  "n_historial": 150,
+  "final_epoca": 149,
+  "final_perdida_critico": -8.795539335771041,
+  "final_perdida_generador": 23.724933624267578,
+  "final_wasserstein": 10.227681159973145,
+  "final_penalizacion_gradiente": 0.14321418919346549,
+  "final_acierto_critico": 0.5463423295454546,
+  "final_cociente_dispersion": 0.6776653528213501,
+  "final_diversidad_z": 0.5211437344551086,
+  "final_wasserstein_val": NaN,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 1.2041580000004615,
+    "impuesta": 1.2075213000061922
+  },
+  "control": 1589.0673044891032
+}

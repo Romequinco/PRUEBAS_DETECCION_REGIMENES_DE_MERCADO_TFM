@@ -232,11 +232,7 @@ Por eso el candado `constraints.txt` fija las versiones de las librerías numér
 | **fusión fija** | regla **sin parámetros aprendidos** que combina las señales binarias de varios detectores: parejas alerta→confirmación (la máquina normal / vigilancia / confirmado), votación k-de-n y OR / AND de parejas. Se elige en la primera mitad del OOS y se evalúa en la segunda con la vara (`regimenes.fusion.fijas`, notebook 15, [ADR-011](decisions/ADR-011-preregistro-fusiones.md) §3). Veredicto: **no aporta** frente al mejor detector solo |
 | **fusión online** | **C1**: media ponderada de las probabilidades de crisis de todos los candidatos, con pesos que se recalculan al cierre de cada mes según la pérdida pasada, medida solo con crisis ya terminadas; crisis si la media ≥ 0,5 (`regimenes.fusion.online`, notebook 16, ADR-011 §4). Veredicto: **indicio**, se cumple solo en la pista A, y los pesos no aprenden más que la media simple. Su probabilidad es el «consenso» del contexto de `get_regimen` |
 
-## Generadores sintéticos (fase S) — archivado
-
-> **Archivado.** La línea de sintéticos (código, configuración, notebooks 17–20 y resultados) ya no está en `main`:
-> vive en la etiqueta git `sinteticos-final` ([ADR-012](decisions/ADR-012-estructura-repo.md) §2.4), porque el aumento
-> no se adopta. Las definiciones se conservan para leer esa etiqueta y la ficha del método.
+## Generadores sintéticos (fase S)
 
 Conceptos de `regimenes.sinteticos`; teoría y límites de cada generador en
 [`fase1/sinteticos.md`](fase1/sinteticos.md).

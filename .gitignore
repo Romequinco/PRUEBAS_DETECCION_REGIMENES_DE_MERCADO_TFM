@@ -81,10 +81,22 @@ results/benchmark/panels/*.parquet
 # consolidado trabajos.csv que escribe ablaciones_lectura.escribir_tablas().
 results/detectores/ablaciones/?_D??_*.csv
 
-# Sintéticos: línea archivada en la etiqueta sinteticos-final (ADR-012). Lo que quede en local
-# (trayectorias, modelos, tablas) no se vuelve a versionar.
-data/sinteticos/
-results/sinteticos/
+# Sintéticos (notebooks fase1/17–20): trayectorias generadas, modelos, filas por trabajo y estado de ejecución
+# se regeneran; se versionan los CSV/JSON/MD pequeños de results/sinteticos
+data/sinteticos/*
+!data/sinteticos/.gitkeep
+results/sinteticos/**/*.parquet
+results/sinteticos/**/*.pkl
+results/sinteticos/**/*.pickle
+results/sinteticos/**/*.joblib
+results/sinteticos/**/*.pt
+results/sinteticos/**/*.pth
+results/sinteticos/**/*.npy
+results/sinteticos/**/*.npz
+results/sinteticos/laboratorio/filas/
+results/sinteticos/aumento/filas/
+results/sinteticos/aumento/.ejecutando
+results/sinteticos/aumento/estado_*.txt
 
 # Documentación interna del TFM: solo local, nunca se versiona
 docs/tfm/internos/
