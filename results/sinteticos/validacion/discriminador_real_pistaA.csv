@@ -1,0 +1,31 @@
+regimen,columna,tipo,metrica,real,sintetico,banda_inf,banda_sup,cociente,en_banda,grupo
+todos,—,—,auc,0.5,0.7346624200397786,0.46226415094339623,0.8087606837606838,,,todas
+todos,—,—,n_ventanas,268.0,260.0,,,,,todas
+calma,—,—,auc,0.5,0.7077164986176614,0.3375,0.9498834498834499,,,todas
+calma,—,—,n_ventanas,197.0,197.0,,,,,todas
+crisis,—,—,auc,0.5,0.9287686672302058,0.7958579881656804,1.0,,,todas
+crisis,—,—,n_ventanas,67.0,37.0,,,,,todas
+todos,—,—,auc,0.5,0.6685171746492502,0.5486211901306242,0.8740928882438317,,,modeladas lentas
+todos,—,—,n_ventanas,268.0,260.0,,,,,modeladas lentas
+calma,—,—,auc,0.5,0.7088416815742398,0.4920454545454546,0.9766899766899768,,,modeladas lentas
+calma,—,—,n_ventanas,197.0,197.0,,,,,modeladas lentas
+crisis,—,—,auc,0.5,0.7026768103691181,0.19230769230769232,1.0,,,modeladas lentas
+crisis,—,—,n_ventanas,67.0,37.0,,,,,modeladas lentas
+todos,—,—,auc,0.5,0.7924649250120949,0.6331640058055152,0.9184472934472935,,,modeladas diarias
+todos,—,—,n_ventanas,268.0,260.0,,,,,modeladas diarias
+calma,—,—,auc,0.5,0.7682124464682605,0.6198863636363636,0.8323863636363636,,,modeladas diarias
+calma,—,—,n_ventanas,197.0,197.0,,,,,modeladas diarias
+crisis,—,—,auc,0.5,0.9298675683291068,0.8333333333333333,1.0,,,modeladas diarias
+crisis,—,—,n_ventanas,67.0,37.0,,,,,modeladas diarias
+todos,—,—,auc,0.5,0.7009460839649518,0.553701015965167,0.8628917378917378,,,re-derivadas
+todos,—,—,n_ventanas,268.0,260.0,,,,,re-derivadas
+calma,—,—,auc,0.5,0.6730784138342278,0.42102272727272727,0.8648018648018648,,,re-derivadas
+calma,—,—,n_ventanas,197.0,197.0,,,,,re-derivadas
+crisis,—,—,auc,0.5,0.9330515638207946,0.7692307692307693,1.0,,,re-derivadas
+crisis,—,—,n_ventanas,67.0,37.0,,,,,re-derivadas
+todos,—,—,auc,0.5,0.6675710906842982,0.568019943019943,0.7750362844702469,,,solo SP500_ret
+todos,—,—,n_ventanas,268.0,260.0,,,,,solo SP500_ret
+calma,—,—,auc,0.5,0.682176844473356,0.6037296037296037,0.772159090909091,,,solo SP500_ret
+calma,—,—,n_ventanas,197.0,197.0,,,,,solo SP500_ret
+crisis,—,—,auc,0.5,0.9127359819667513,0.8461538461538463,1.0,,,solo SP500_ret
+crisis,—,—,n_ventanas,67.0,37.0,,,,,solo SP500_ret

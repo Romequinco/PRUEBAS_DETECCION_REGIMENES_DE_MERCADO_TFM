@@ -26,9 +26,10 @@ PYTEST_ARGS ?=
 
 NB_DIR      := notebooks/fase1
 # 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 + F8 supervisado,
-# comparativa y fusiones (15 fijas, 16 online). 17..20 (sinteticos) estan archivados en la etiqueta
-# git sinteticos-final (el aumento no se adopta; ADR-012): para re-ejecutarlos,
-# git switch --detach sinteticos-final. 21..22 (decision final, pseudolive) son esqueletos.
+# comparativa y fusiones (15 fijas, 16 online). 17..18 (generadores y validacion de sinteticos) NO entran aqui:
+# necesitan data/sinteticos (~3 GB, gitignored), que genera el 17 con EJECUTAR=True. 19 (laboratorio) y 20
+# (aumento) se calculan con sus CLI (python -m regimenes.sinteticos.laboratorio / .aumento). 21..22 (decision
+# final, pseudolive) son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb
 NBCONVERT   := $(PY) -m jupyter nbconvert --to notebook --execute --inplace \

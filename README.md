@@ -83,8 +83,9 @@ y en el notebook [`14_comparativa`](notebooks/fase1/14_comparativa.ipynb); decis
 <img src="docs/fase1/figs/crisis_espina_profunda__01_sp500_drawdowns_nber.png" alt="S&P 500 de 1927 a 2026 con las 22 crisis del catálogo, las recesiones NBER y el drawdown" width="100%">
 </details>
 
-> La línea de **datos sintéticos** (generadores, validación, laboratorio y aumento; notebooks 17–20) se cerró con
-> el veredicto «el aumento no se adopta» y está archivada en la etiqueta git `sinteticos-final`.
+> La línea de **datos sintéticos** (notebooks 17–20: 10 generadores, validación por niveles, laboratorio con régimen
+> conocido y aumento pre-registrado) se cerró con un resultado negativo bien medido: **el aumento no se adopta** y
+> `get_regimen` no cambia. Método en [`docs/fase1/sinteticos.md`](docs/fase1/sinteticos.md).
 
 ## Inicio rápido
 
@@ -160,7 +161,7 @@ regime-aware-macro-equity/
 │   └── herramientas/   contrato de tools para los agentes
 │                       (memoria/, agentes/ y cartera/ se crean al empezar cada fase)
 ├── notebooks/
-│   ├── fase1/      00–16 y 21–22 (datos, detectores, fusiones, decisión)
+│   ├── fase1/      00–22 (datos, detectores, fusiones, sintéticos, decisión)
 │   └── fase2/      un subdirectorio por tema: <tema>/NN_*.ipynb
 ├── results/        resultados pequeños versionados
 ├── tests/          espejo de src/

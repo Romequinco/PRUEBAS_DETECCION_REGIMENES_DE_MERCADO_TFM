@@ -84,19 +84,17 @@ regime-aware-macro-equity/
 - **Fichas de ingesta.** Se quedan como un JSON por fuente. Es la API común de los cuatro temas
   (`ingesta.comun.fichas`) y cambiarla obligaría a tocar los tests y módulos de cada tema por poca ganancia.
 
-### 2.4 Archivo de la línea de sintéticos
+### 2.4 La línea de sintéticos se queda en `main`
 
-- Va a la etiqueta **`sinteticos-final`** (commit `10b65d2`, último `main` con la línea entera):
-  - `regimenes.sinteticos`, `tests/sinteticos`, `configs/sinteticos.yaml`;
-  - los notebooks `17`–`20`;
-  - `results/sinteticos`.
-- Se archiva porque el veredicto es «el aumento no se adopta» y `get_regimen` no la usa.
-- Para consultarla o re-ejecutarla: `git switch --detach sinteticos-final`, e instalar con
-  `pip install -r requirements.txt`, como entonces.
-- Solo dejan de valer sus propias cachés (aumento y laboratorio), que no se van a reanudar. Las del benchmark, el
-  pool y las ablaciones salen idénticas.
-- Los notebooks `21` y `22` (esqueletos) ya no importan `regimenes.sinteticos`.
-- **No se renumeran:** queda el hueco 17–20 para no desfasar los comentarios de los ficheros con huella.
+- **Primero se archivó y después se devolvió a `main`** (el mismo 2026-11-11, por decisión del usuario).
+  - Es trabajo del TFM con un resultado negativo bien medido: «el aumento no se adopta».
+  - El tribunal debe poder verlo sin ir a buscar una etiqueta.
+  - Así la numeración 00–22 queda sin huecos.
+- **Se devolvió idéntica y en las mismas rutas:** `regimenes.sinteticos`, `tests/sinteticos`,
+  `configs/sinteticos.yaml` y `results/sinteticos`. Sus cachés (aumento y laboratorio) siguen valiendo.
+- **Única diferencia:** los notebooks van a `notebooks/fase1/17`–`20`.
+- **La etiqueta `sinteticos-final`** (commit `10b65d2`) se conserva como referencia histórica.
+- **Notebooks `21` y `22` (esqueletos):** ya no importan `regimenes.sinteticos`, porque no lo necesitan.
 
 ### 2.5 Otros movimientos
 
@@ -134,12 +132,12 @@ Corregirlos invalidaría una caché o reescribiría un pre-registro.
 - **`configs/benchmark_spec.yaml` y `configs/bloques.yaml`:** sus comentarios citan `notebooks/NN_*.ipynb` sin la
   carpeta `fase1/` (la Fase 1 se movió a `notebooks/fase1/` después; los notebooks no están en ninguna huella).
 - **ADR-004, ADR-005 y ADR-007 a ADR-011:** usan la numeración de notebooks de su fecha. Equivalencias: notebook
-  «21» de ADR-009–011 = aumento (hoy archivado, antes 20); «17» = fusión online (hoy 16); «22»/«23» de ADR-004–005
+  «21» de ADR-009–011 = aumento (hoy 20); «17» = fusión online (hoy 16); «22»/«23» de ADR-004–005
   = decisión final y pseudolive (hoy 21 y 22).
 
 ## 4. Consecuencias
 
-- **El repo baja de 2.458 a 932 ficheros versionados**, sin re-ejecutar nada: las cachés vigentes del
+- **El repo baja de 2.458 a 1.123 ficheros versionados** (con la línea de sintéticos en `main`), sin re-ejecutar nada: las cachés vigentes del
   benchmark, el pool y las ablaciones siguen igual.
 - **`get_regimen` y su test real** corren en un clon limpio y en la CI.
 - **Cada persona del equipo tiene que reinstalar una vez**, porque la distribución cambia de nombre. Los pasos están

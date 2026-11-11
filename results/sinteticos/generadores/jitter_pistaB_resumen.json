@@ -1,0 +1,93 @@
+{
+  "nombre": "jitter",
+  "familia": "parametricos",
+  "params": {
+    "sigma": 0.1,
+    "longitud_media": 63
+  },
+  "random_state": 42,
+  "n_train": 2702,
+  "d": 11,
+  "d_publico": 15,
+  "fin_train": "2017-12-29",
+  "pct_crisis_train": 25.869726128793484,
+  "tiempo_ajuste_s": 0.0008434999981545843,
+  "n_historial": 2,
+  "final_regimen": 1,
+  "final_n_obs": 699,
+  "final_n_rachas": 4,
+  "final_racha_media": 174.75,
+  "final_longitud_media": 63.0,
+  "final_bloque_medio_efectivo": 44.448706478607356,
+  "final_sigma": 0.1,
+  "final_desviacion_relativa": 0.33166247903553997,
+  "final_ruido_sobre_regimen": 0.08978095936562237,
+  "final_ruido_sobre_regimen_max": 0.1664480054389233,
+  "pista": "B",
+  "muestreo": {
+    "n_paths": 100,
+    "length": 2520,
+    "semilla": 42,
+    "inicial": "estacionaria",
+    "duraciones": "geometricas",
+    "secuencia_impuesta": [
+      [
+        0,
+        504
+      ],
+      [
+        1,
+        63
+      ],
+      [
+        0,
+        693
+      ],
+      [
+        1,
+        504
+      ],
+      [
+        0,
+        756
+      ]
+    ]
+  },
+  "diagnostico_muestreo": {
+    "simulada": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.24768253968253967,
+      "fraccion_por_regimen": [
+        0.7523174603174603,
+        0.24768253968253967
+      ],
+      "n_trayectorias_una_clase": 1,
+      "n_trayectorias_sin_crisis": 1,
+      "regimen_impuesto": false,
+      "inicial": "estacionaria",
+      "duraciones": "geometricas",
+      "random_state": 42
+    },
+    "impuesta": {
+      "n_paths": 100,
+      "length": 2520,
+      "fraccion_regimen_1": 0.225,
+      "fraccion_por_regimen": [
+        0.775,
+        0.225
+      ],
+      "n_trayectorias_una_clase": 0,
+      "n_trayectorias_sin_crisis": 0,
+      "regimen_impuesto": true,
+      "inicial": null,
+      "duraciones": null,
+      "random_state": 42
+    }
+  },
+  "tiempo_muestreo_s": {
+    "simulada": 0.9907829000003403,
+    "impuesta": 0.957769399996323
+  },
+  "control": 2355.0133130086215
+}

@@ -1,10 +1,9 @@
 # Generadores sintéticos
 
-> **Archivado.** Esta línea (código, configuración, notebooks 17–20 y resultados) ya no está en `main`: vive en la etiqueta git `sinteticos-final` (ADR-012), porque el aumento no se adopta. Para consultarla o re-ejecutarla: `git switch --detach sinteticos-final`. Esta ficha se conserva como documentación del método.
 
-> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: `configs/sinteticos.yaml`. Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados, salvo la lista de generadores aptos por pista del notebook 18, que es la entrada del 20 (ver «Veredicto del notebook 18 por pista»).
+> **Origen y ubicación.** Ficha nueva de la fase S (sin equivalente en la Capa 1). Bibliografía: claves `synth_*` de [`docs/references.bib`](../references.bib). Código: `src/regimenes/sinteticos/` (un fichero por generador en `parametricos/` y `neuronales/`). Configuración: [`configs/sinteticos.yaml`](../../configs/sinteticos.yaml). Esta ficha describe **qué hace cada generador y qué no puede hacer por construcción**; no contiene resultados, salvo la lista de generadores aptos por pista del notebook 18, que es la entrada del 20 (ver «Veredicto del notebook 18 por pista»).
 
-> **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks `17_sinteticos_generadores`, `18_sinteticos_validacion`, `19_sinteticos_laboratorio` y `20_sinteticos_aumento`, y sus salidas en `results/sinteticos/`.
+> **Resultados.** Las cifras de ajuste, validación, laboratorio y aumento están en los notebooks [`17_sinteticos_generadores`](../../notebooks/fase1/17_sinteticos_generadores.ipynb), [`18_sinteticos_validacion`](../../notebooks/fase1/18_sinteticos_validacion.ipynb), [`19_sinteticos_laboratorio`](../../notebooks/fase1/19_sinteticos_laboratorio.ipynb) y [`20_sinteticos_aumento`](../../notebooks/fase1/20_sinteticos_aumento.ipynb), y sus salidas en [`results/sinteticos/`](../../results/sinteticos/).
 
 > Familia: generadores de trayectorias multivariantes de features **con la
 > secuencia de régimen conocida**. Núcleo: seis generadores paramétricos (jitter,

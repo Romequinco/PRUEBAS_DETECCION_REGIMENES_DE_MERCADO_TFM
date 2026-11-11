@@ -8,6 +8,7 @@ Estructura::
     tests/evaluacion/   -> regimenes.evaluacion
     tests/benchmark/    -> regimenes.benchmark
     tests/fusion/       -> regimenes.fusion
+    tests/sinteticos/   -> regimenes.sinteticos
     tests/regimen/      -> regimenes.regimen
     tests/ingesta/      -> ingesta (un subdirectorio por tema)
     tests/herramientas/ -> herramientas

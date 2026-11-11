@@ -21,7 +21,7 @@ docs/
 ├── decisions/           ADR-001 … ADR-005 y ADR-007 … ADR-012 (ADR-006 reservada a la decisión final de régimen)
 ├── tfm/                 visión del TFM: arquitectura, cliente y carteras, líneas abiertas, notas de tutoría, documentos de origen
 ├── estado_del_arte/     estado del arte: dossier general, detectores y fuentes de datos, con su catálogo
-├── fase1/               Fase 1 (régimen): pipeline, huella, rutas, EDA, teoría y detectores por familia, sintéticos (archivado)
+├── fase1/               Fase 1 (régimen): pipeline, huella, rutas, EDA, teoría y detectores por familia, sintéticos
 ├── fase2/               Fase 2 (datos de los agentes): reparto en cuatro temas, plan de datos, datos alternativos
 └── historia/            Capa 1, narrativa v1 de los detectores, estado del arte v1 y tarea previa
 ```
@@ -81,7 +81,7 @@ docs/
   [F5 GARCH](fase1/F5_volatilidad_garch.md) · [F6 change-point](fase1/F6_change_point.md) ·
   [F7 redes](fase1/F7_redes_neuronales.md).
 - [`fase1/sinteticos.md`](fase1/sinteticos.md) — generadores sintéticos, validación y laboratorio (notebooks `17`–`20`).
-  Línea **archivada** en la etiqueta git `sinteticos-final` (el aumento no se adopta); la ficha queda como método.
+  El aumento no se adopta (resultado negativo, notebooks `17`–`20`).
 - Configuración de la Fase 1: [`../configs/catalog.yaml`](../configs/catalog.yaml) (universo de series y catálogo de
   crisis), [`../configs/benchmark_spec.yaml`](../configs/benchmark_spec.yaml) (el banco congelado),
   [`../configs/bloques.yaml`](../configs/bloques.yaml) (bloques de los termómetros) y
@@ -140,7 +140,7 @@ Fase 1) → [`fase2/plan_datos.md`](fase2/plan_datos.md) (preguntas abiertas) �
 teoría por familia (`fase1/F1`…`F7`) → notebooks `04` (termómetros) → `05` → `06`–`13` → `14` →
 [ADR-008](decisions/ADR-008-preregistro-pool-termometros.md)–[ADR-010](decisions/ADR-010-preregistro-pool-crudo.md)
 (menús y pool) → [ADR-011](decisions/ADR-011-preregistro-fusiones.md) y `15`–`16` (fusión) →
-[`fase1/sinteticos.md`](fase1/sinteticos.md) (línea archivada; notebooks `17`–`20` en `sinteticos-final`) → `21`–`22`
+[`fase1/sinteticos.md`](fase1/sinteticos.md) (notebooks `17`–`20`) → `21`–`22`
 (decisión final y pseudolive) → [`fase2/plan_datos.md`](fase2/plan_datos.md).
 
 *Visita rápida:* `tfm/README.md` → ADR-005 → `fase1/README.md` → `fase2/README.md`.
