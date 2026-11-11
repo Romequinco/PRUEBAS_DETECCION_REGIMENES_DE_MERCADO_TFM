@@ -10,7 +10,7 @@ La prioridad actual es reunir una biblioteca amplia por lotes para agentes.
 Literatura, informes y comunicaciones se incorporan desde el piloto; las fechas
 precisas de primera disponibilidad solo condicionan el modo histórico estricto.
 Las recomendaciones de calidad y gratuidad están en el
-[notebook de fuentes](../../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb) y el uso
+[notebook de fuentes](../../../notebooks/fase2/bancos_riesgo/01_sonda.ipynb) y el uso
 previsto en [Corpus para agentes](corpus_para_agentes.md).
 
 | Familia | Contenido previsto | Referencia de la imagen | Tratamiento inicial |

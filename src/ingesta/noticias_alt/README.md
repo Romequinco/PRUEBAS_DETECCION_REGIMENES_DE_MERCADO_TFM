@@ -17,9 +17,9 @@ visitas, mercados de predicción) se bajan **enteras**, porque la validez necesi
 - Sonda: 39 fuentes en 12 módulos. Por estado: 22 ok, 6 parcial, 7 no probadas y 4 fallo. Hay 332 ejemplos de
   TimeGate y ninguno tiene un lag negativo.
 - Notebooks:
-  - [`t4_01_sonda_noticias_alt.ipynb`](../../../notebooks/fase2/t4_01_sonda_noticias_alt.ipynb): cobertura por
+  - [`noticias_alt/01_sonda.ipynb`](../../../notebooks/fase2/noticias_alt/01_sonda.ipynb): cobertura por
     épocas, cada fuente, limpieza, TimeGate y volumen.
-  - [`t4_02_validez_alternativos.ipynb`](../../../notebooks/fase2/t4_02_validez_alternativos.ipynb): calidad,
+  - [`noticias_alt/02_validez_alternativos.ipynb`](../../../notebooks/fase2/noticias_alt/02_validez_alternativos.ipynb): calidad,
     look-ahead, señal frente a las crisis de la Fase 1, calibración, rentabilidad anormal y semáforo.
 
   Los dos solo leen `results/` y el corpus.
@@ -49,7 +49,7 @@ visitas, mercados de predicción) se bajan **enteras**, porque la validez necesi
 | `validez.py` | Calidad, look-ahead, estudio de eventos, AUC frente al VIX, lead-lag, estabilidad, Brier, CAR y semáforo |
 | `graficos.py` | Figuras de los dos notebooks (estilo de la Fase 1, crisis sombreadas) |
 
-Dependencias nuevas: `xlrd` y `pypdf` ([`requirements/ingesta-noticias_alt.txt`](../../../requirements/ingesta-noticias_alt.txt)).
+Dependencias: `pypdf` (extra `ingesta-noticias` de [`pyproject.toml`](../../../pyproject.toml)); `xlrd` y `openpyxl` vienen del núcleo.
 No tocan numpy, pandas ni torch, así que la huella de la Fase 1 no cambia.
 
 ## Decisiones tomadas en el código
@@ -112,7 +112,7 @@ No tocan numpy, pandas ni torch, así que la huella de la Fase 1 no cambia.
     put/call total (hasta 2019) y VIX.
   - Solo en vivo: EWS, Polymarket, Kalshi, RSS, Bing, PredictIt, Truth Social, FINRA y PTR del Congreso.
 
-  El resumen de t4_01 cuenta las fuentes «aptas por cobertura», un criterio distinto; manda el semáforo de t4_02.
+  El resumen de 01_sonda cuenta las fuentes «aptas por cobertura», un criterio distinto; manda el semáforo de 02_validez_alternativos.
 
 ## Dónde queda cada cosa
 

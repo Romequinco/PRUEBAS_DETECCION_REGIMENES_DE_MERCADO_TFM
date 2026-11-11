@@ -1,6 +1,6 @@
 # Lectura y adaptación de la sonda de Daniel
 
-Referencia: [t3_01_sonda_empresas.ipynb, rama fase2/t3-empresas](https://github.com/Romequinco/PRUEBAS_DETECCION_REGIMENES_DE_MERCADO_TFM/blob/fase2/t3-empresas/notebooks/fase2/t3_01_sonda_empresas.ipynb).
+Referencia: [`notebooks/fase2/empresas/01_sonda.ipynb`](../../../notebooks/fase2/empresas/01_sonda.ipynb).
 Releídas las **29 celdas**, tanto Markdown como código, el 15 de octubre de 2026.
 La lectura del notebook no verifica por sí sola sus módulos externos ni sus
 afirmaciones empíricas; no se han ejecutado las consultas de empresas.

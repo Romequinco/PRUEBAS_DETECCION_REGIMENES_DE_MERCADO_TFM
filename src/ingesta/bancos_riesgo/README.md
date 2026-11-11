@@ -57,7 +57,7 @@ Recuerda que cada agente tiene **dos RAG**:
 Su referencia inicial es la imagen «Bancos centrales, riesgo sistémico y literatura» del 11 de octubre de 2026:
 las cantidades, las etiquetas OK/MIXTO/BLOQUEADA y los retrasos de esa imagen son objetivos o referencias por
 verificar, no resultados de una recolección ejecutada. El
-[notebook de fuentes](../../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb)
+[notebook de fuentes](../../../notebooks/fase2/bancos_riesgo/01_sonda.ipynb)
 conserva sus 14 apartados independientes y un inventario de 94 familias de documentos,
 filas de datos y metadatos. Mide cobertura de la muestra, fechas, retrasos, extracción,
 volumen y errores; sus resultados no representan el histórico completo.
@@ -75,9 +75,8 @@ exige acreditar la versión textual, además de la fecha de publicación.
 Desde la raíz del repositorio, con el entorno Python del TFM:
 
 ```powershell
-python -m pip install -e ".[dev]"
-python -m pip install -r requirements/ingesta-bancos_riesgo.txt
-python -m jupyter lab notebooks/fase2
+python -m pip install -e ".[dev,ingesta-bancos]" -c constraints.txt
+python -m jupyter lab notebooks/fase2/bancos_riesgo
 ```
 
 Selecciona el kernel de ese entorno. Las dependencias comunes pertenecen al paquete

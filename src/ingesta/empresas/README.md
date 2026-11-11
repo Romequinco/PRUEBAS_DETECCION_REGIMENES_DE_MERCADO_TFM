@@ -12,7 +12,7 @@ mide qué hay, desde cuándo, con qué retraso y cuánto ocupa. Universo, ventan
 Muestra: AAPL, MSFT, JPM, XOM, JNJ, WMT, KO, GE (S&P 500 actual, sectores distintos, historia larga) + **Lehman** y
 **Enron** (desaparecidas: comprueban que el corpus no tiene sesgo de supervivencia). Ver `universo.MUESTRA_SONDA`.
 
-Se ejecuta con el notebook [`notebooks/fase2/t3_01_sonda_empresas.ipynb`](../../../notebooks/fase2/t3_01_sonda_empresas.ipynb).
+Se ejecuta con el notebook [`notebooks/fase2/empresas/01_sonda.ipynb`](../../../notebooks/fase2/empresas/01_sonda.ipynb).
 
 ## Módulos
 

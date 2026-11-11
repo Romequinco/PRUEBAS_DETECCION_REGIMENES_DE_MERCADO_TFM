@@ -19,11 +19,11 @@ su responsable es Fernando Dapena Tauste. Su código y documentación no implica
 
 **Notebooks por tema:**
 - Tema 1: [`notebooks/fase2/mercados_series/`](../../notebooks/fase2/mercados_series/) (`01`–`09`).
-- Tema 2: [`notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb`](../../notebooks/fase2/t2_01_sonda_bancos_riesgo.ipynb);
+- Tema 2: [`notebooks/fase2/bancos_riesgo/01_sonda.ipynb`](../../notebooks/fase2/bancos_riesgo/01_sonda.ipynb);
   [diseño y guías](../../src/ingesta/bancos_riesgo/README.md#diseño-y-próximos-pasos).
-- Tema 3: [`notebooks/fase2/t3_01_sonda_empresas.ipynb`](../../notebooks/fase2/t3_01_sonda_empresas.ipynb).
-- Tema 4: [`notebooks/fase2/t4_01_sonda_noticias_alt.ipynb`](../../notebooks/fase2/t4_01_sonda_noticias_alt.ipynb) y
-  [`t4_02_validez_alternativos.ipynb`](../../notebooks/fase2/t4_02_validez_alternativos.ipynb).
+- Tema 3: [`notebooks/fase2/empresas/01_sonda.ipynb`](../../notebooks/fase2/empresas/01_sonda.ipynb).
+- Tema 4: [`notebooks/fase2/noticias_alt/01_sonda.ipynb`](../../notebooks/fase2/noticias_alt/01_sonda.ipynb) y
+  [`noticias_alt/02_validez_alternativos.ipynb`](../../notebooks/fase2/noticias_alt/02_validez_alternativos.ipynb).
 
 Cada README de tema dice qué entra, qué entrega y qué preguntas quedan abiertas. El plan de datos común (arquitectura,
 TimeGate, tratamiento RAG, look-ahead del LLM, evaluación y preguntas abiertas) está en [`plan_datos.md`](plan_datos.md);
