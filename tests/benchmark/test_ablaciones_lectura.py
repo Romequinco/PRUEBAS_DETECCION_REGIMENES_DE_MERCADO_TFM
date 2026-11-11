@@ -210,3 +210,26 @@ def test_validez_atajo_signos(tmp_path):
 def test_percentil_rango_medio():
     assert al.percentil_rango_medio(2.0, np.array([1.0, 2.0, 3.0, 4.0])) == pytest.approx(37.5)
     assert np.isnan(al.percentil_rango_medio(np.nan, np.array([1.0])))
+
+
+def test_consolidado_trabajos_equivale_a_los_csv_sueltos(tmp_path):
+    """Un clon limpio solo tiene ``trabajos.csv``: se lee igual que los CSV sueltos."""
+    sueltos, clon = tmp_path / "sueltos", tmp_path / "clon"
+    sueltos.mkdir(), clon.mkdir()
+    _variantes(sueltos, "A", ["REF-T", *AZAR[:3]])
+    _ref_t(sueltos, [0.5, 0.4, 0.3, 0.2, 0.6, 0.7])
+    _azar(sueltos, [0.1, 0.2, 0.3])
+    consolidado = al._csv(sueltos / al.TRABAJOS, al._tabla_trabajos(sueltos))
+    (clon / al.TRABAJOS).write_bytes(consolidado.read_bytes())
+    a, b = _cargar(sueltos), _cargar(clon)
+    pd.testing.assert_frame_equal(a, b)
+    assert len(b) == 6 * 4 and b.attrs["faltan"] == a.attrs["faltan"]
+    # Si hay CSV sueltos mandan ellos (ejecución local en curso), no el consolidado.
+    _escribe(clon, "A", "D02", "REF-T", 0.99)
+    assert _cargar(clon)["score_deteccion"].tolist() == [0.99]
+
+
+def test_consolidado_valida_esquema(tmp_path):
+    pd.DataFrame({"pista": ["A"]}).to_csv(tmp_path / al.TRABAJOS, index=False)
+    with pytest.raises(ValueError, match="faltan columnas"):
+        _cargar(tmp_path)

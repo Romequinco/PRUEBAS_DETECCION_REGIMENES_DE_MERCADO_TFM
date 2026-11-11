@@ -1,6 +1,7 @@
 # ADR-004 — Un solo repositorio y un solo paquete (`regimenes`)
 
 - **Estado:** Aceptada · 2026-09-29 (decisión del usuario).
+- **Actualización (2026-11-11):** instalación y dependencias sustituidas por [ADR-012](ADR-012-estructura-repo.md) §2.2.
 - **Revisión posterior (2026-10-06):** [ADR-005](ADR-005-reencuadre-tfm-multiagente.md) corrige §2:
   «todo el TFM vive en `regimenes`» pasa a ser «`regimenes` es el código de la **Fase 1** (régimen) del TFM».
   Estado actual de lo que §3 llamaba esqueletos: los notebooks 15–17 (hoy 18–20) están **hechos** (`configs/sinteticos.yaml`

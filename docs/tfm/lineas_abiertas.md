@@ -1,6 +1,6 @@
 # Líneas abiertas
 
-Contexto: [README](README.md) · [ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md). Nada de lo que sigue está decidido.
+Contexto: [README](README.md) · [ADR-005](../decisions/ADR-005-reencuadre-tfm-multiagente.md). Salvo el §4 (ya decidido), nada de lo que sigue está decidido.
 
 ## 1. System One decision agents (línea de investigación)
 
@@ -45,12 +45,20 @@ ya ha definido un universo de activos propio (ver [`plan_datos.md`](../fase2/pla
 | Reglas de rebalanceo | Relacionadas con la memoria de cartera y el turnover |
 | Ventanas de backtest 2000–2024 | Frente a la historia de 1962–2026 de la Fase 1; hay que reconciliar |
 
-## 4. Dónde vivirá el código de las fases 2–5
+## 4. Dónde vive el código de las fases 2–5
 
-**Fase 2: decidido** ([ADR-007](../decisions/ADR-007-fase2-ingesta-y-docs.md)). En este repositorio, paquete `src/ingesta`
-con un subpaquete por tema y una rama por tema ([`docs/fase2`](../fase2/README.md)); sus dependencias pesadas, en un
-entorno aparte para no alterar la huella de la Fase 1.
+**Decidido.** La Fase 2 en [ADR-007](../decisions/ADR-007-fase2-ingesta-y-docs.md) y las fases 3–5 en
+[ADR-012](../decisions/ADR-012-estructura-repo.md) §2.1. Todo en este repositorio, con un solo `pyproject.toml` y un
+paquete de primer nivel por capa:
 
-**Fases 3–5: abierto.** Opciones: nuevos paquetes en este repositorio (junto a `regimenes`) o un repositorio aparte que consuma
-`get_regimen`. Se decidirá en una ADR propia. Criterios a considerar: aislamiento de dependencias (LLM, vectores), caché y
-reproducibilidad de la Fase 1, y despliegue.
+| Paquete | Fase | Estado |
+|---|---|---|
+| `src/ingesta` | 2 · un subpaquete por tema ([`docs/fase2`](../fase2/README.md)) | en marcha |
+| `src/herramientas` | 2 · contrato de tools tipado entre los datos y los agentes | creado ([README](../../src/herramientas/README.md)) |
+| `src/memoria` | 2 · RAG con TimeGate | se crea al empezar |
+| `src/agentes` | 3–4 · grafo LangGraph | se crea al empezar |
+| `src/cartera` | 4–5 · motores, límites y backtest (numérico puro) | se crea al empezar |
+
+Las dependencias entre paquetes van en un solo sentido (`regimenes`, `ingesta` → `memoria` → `herramientas` →
+`agentes`) y las fases 3–5 importan solo de `herramientas`. Cada carpeta se crea en el primer PR que la necesite, nunca
+vacía. Las librerías nuevas se instalan siempre con `-c constraints.txt`, para no alterar la huella de la Fase 1.

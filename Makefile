@@ -1,4 +1,4 @@
-# Makefile del TFM (paquete ``regimenes``).
+# Makefile del TFM (paquetes ``regimenes``, ``ingesta`` y ``herramientas``).
 #
 # Compatible con GNU Make en Linux/macOS y en Windows bajo Git Bash
 # (instalar make, p. ej. ``winget install ezwinports.make`` o ``choco install make``).
@@ -25,15 +25,10 @@ NB_TIMEOUT  ?= 3600
 PYTEST_ARGS ?=
 
 NB_DIR      := notebooks
-# 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 (+ F8 supervisado,
-# esqueleto), comparativa y fusiones (15 fijas, 16 online).
-# 17..18 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
-# data/sinteticos (~1 GB, gitignored), que genera el 17 con EJECUTAR=True; una vez generado, se
-# ejecutan a mano con EJECUTAR=False. 19 (laboratorio) esta hecho y se ejecuta con su CLI
-# (python -m regimenes.sinteticos.laboratorio). 20 (aumento) esta implementado (pre-registro,
-# regimenes.sinteticos.aumento) con el calculo completo (1.166 trabajos, sesiones S1-S12); se
-# ejecuta con su CLI (python -m regimenes.sinteticos.aumento). 21..22 (decision final, pseudolive)
-# son esqueletos.
+# 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 + F8 supervisado,
+# comparativa y fusiones (15 fijas, 16 online). 17..20 (sinteticos) estan archivados en la etiqueta
+# git sinteticos-final (el aumento no se adopta; ADR-012): para re-ejecutarlos,
+# git switch --detach sinteticos-final. 21..22 (decision final, pseudolive) son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb
 NBCONVERT   := $(PY) -m jupyter nbconvert --to notebook --execute --inplace \
@@ -57,9 +52,9 @@ endif
 help: ## Muestra esta ayuda
 	@$(PY) -c "import re; [print(f'  {m[0]:<13} {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open('Makefile', encoding='utf-8').read(), re.M)]"
 
-install: ## Instala el paquete en editable con extras [deep,jump,dev] (torch, jumpmodels, pytest, jupyter, ruff)
+install: ## Instala todo en editable ([todo] = deep, jump, changepoint, dev, ingesta) con el candado constraints.txt
 	$(PY) -m pip install --upgrade pip
-	$(PY) -m pip install -e ".[deep,jump,dev]"
+	$(PY) -m pip install -e ".[todo]" -c constraints.txt
 
 datos: ## Capa de datos: --offline por defecto (verifica data/raw); DESCARGAR=1 descarga lo que falte
 	$(PY) -m regimenes.datos $(DATOS_FLAGS)

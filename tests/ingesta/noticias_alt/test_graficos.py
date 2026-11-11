@@ -1,6 +1,6 @@
 """Figuras del Tema 4: cada función se llama con tablas mínimas inventadas (backend Agg) y no debe fallar.
 
-Las columnas imitan las de ``Resultado.tablas`` de cada extractor y las de las tablas de validez de t4_02.
+Las columnas imitan las de ``Resultado.tablas`` de cada extractor y las de las tablas de validez de noticias_alt/02.
 """
 from __future__ import annotations
 
@@ -86,7 +86,7 @@ def test_base_existente():
     _ok(g.paneles_series({"a": pd.Series(RNG.normal(size=50), index=pd.date_range("2020-01-01", periods=50))}))
 
 
-# --------------------------------------------------------------------------- t4_01
+# --------------------------------------------------------------------------- 01_sonda
 
 def test_esquema_y_estado():
     cob = _cobertura()
@@ -190,7 +190,7 @@ def test_indices_ews_lags():
     _ok(g.lags_publicacion(tg, _cobertura()))
 
 
-# --------------------------------------------------------------------------- t4_02
+# --------------------------------------------------------------------------- 02_validez
 
 def test_validez_formas_genericas():
     """Tablas largas/anchas genéricas y nombres alternativos de columnas (ic_inf, desde, subperiodo...)."""

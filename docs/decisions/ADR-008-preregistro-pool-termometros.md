@@ -3,7 +3,7 @@
 - **Estado:** Aceptada y **congelada** · 2026-10-30, antes de ejecutar ningún detector con los menús nuevos y antes
   de cruzar los termómetros con las crisis. Bloques, anclas, umbral, calentamiento, menús, vara de medir y criterios
   de éxito (§6) quedan fijados; cualquier cambio posterior se declara y se fecha aquí.
-- **Origen:** plan de [`PendientesOscar.md`](../../PendientesOscar.md) §6 (19-10-2026) y decisiones del 30-10-2026.
+- **Origen:** plan de [`PendientesOscar.md`](../tfm/PendientesOscar.md) §6 (19-10-2026) y decisiones del 30-10-2026.
 - **No cambia:** ventanas, series, crisis ni trampas de [`configs/benchmark_spec.yaml`](../../configs/benchmark_spec.yaml)
   (ADR-001/002/003); la interfaz `RegimeDetector`; los 12 detectores originales y su ranking v2, que se conserva
   como «configuración a priori de cada detector».

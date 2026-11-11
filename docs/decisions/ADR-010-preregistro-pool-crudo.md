@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptado y **congelado** · 2026-11-03, antes de escribir el código de los detectores nuevos y antes
   de ejecutar ninguno. Cualquier cambio posterior se declara aquí como errata fechada.
-- **Origen:** [`PendientesOscar.md`](../../PendientesOscar.md) §6.8, Fase 2 replanteada el 02-11-2026; decisiones
+- **Origen:** [`PendientesOscar.md`](../tfm/PendientesOscar.md) §6.8, Fase 2 replanteada el 02-11-2026; decisiones
   del usuario del 02-11-2026.
 - **Parte de:** [ADR-008](ADR-008-preregistro-pool-termometros.md), con sus menús, su vara de medir y su MCS, y de
   [ADR-009](ADR-009-resultados-pool.md), que descarta el menú T: el núcleo es N, con U para los univariantes.

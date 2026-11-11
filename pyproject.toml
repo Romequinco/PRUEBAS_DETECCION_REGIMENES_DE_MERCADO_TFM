@@ -1,19 +1,24 @@
-# Paquete unico de la Fase 1 del TFM (regimen de mercado): su codigo (datos, features, detectores, juez,
-# benchmark, fusion, sinteticos) vive en ``src/regimenes``. Instalacion de desarrollo (editable):
+# Distribucion unica del TFM (sistema multi-agente RAG con regimen de mercado). Paquetes en ``src/``:
+# ``regimenes`` (Fase 1, regimen -> get_regimen), ``ingesta`` (Fase 2, datos por tema) y
+# ``herramientas`` (contrato de tools para los agentes). Las fases 3-5 se anaden como paquetes
+# hermanos (ver docs/decisions/ADR-012-estructura-repo.md).
 #
-#     python -m pip install -e ".[deep,jump,dev]"
+# Instalacion de desarrollo (editable), SIEMPRE con el candado de versiones:
 #
-# ``requirements.txt`` sigue listando el entorno completo (incluye Jupyter) y
-# termina con ``-e .``; ver su cabecera.
+#     python -m pip install -e ".[todo]" -c constraints.txt
+#
+# El candado protege la huella de cache del benchmark (versiones de numpy, pandas, scipy,
+# scikit-learn, hmmlearn, arch, torch y jumpmodels). ``requirements.txt`` queda como alias de una
+# linea (lo cita un mensaje de error de benchmark/ejecucion.py, que entra en la huella).
 
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "regimenes"
-version = "0.4.0"
-description = "Fase 1 del TFM: deteccion de regimenes de mercado (datos, features, detectores, evaluacion walk-forward, benchmark, fusion y sinteticos)."
+name = "regime-aware-macro-equity"
+version = "0.5.0"
+description = "TFM: sistema multi-agente RAG con regimen de mercado (Fase 1 regimen, Fase 2 ingesta y tools, fases 3-5 agentes, cartera y evaluacion)."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -46,12 +51,32 @@ dependencies = [
     # Visualizacion (regimenes.viz)
     "matplotlib>=3.8",
     "seaborn>=0.13",
+    # Contrato de tools (regimenes ya lo usa en ingesta; herramientas lo exige)
+    "pydantic>=2.6",
 ]
 
 [project.optional-dependencies]
-deep = ["torch>=2.1"]                  # D12 autoencoder + GMM (f7_deep) y generadores neuronales (sinteticos/neuronales: flow_matching, difusion, cvae, cgan)
+deep = ["torch>=2.1"]                  # D12 autoencoder + GMM (f7_deep)
 jump = ["jumpmodels>=0.1"]             # D09 Statistical Jump Model (f2_clustering)
-changepoint = ["ruptures>=1.1"]        # oraculo PELT offline citado en D07; el codigo no lo importa
+changepoint = ["ruptures>=1.1"]        # oraculo PELT offline citado en D07 (lo importa el notebook 11)
+# Fase 2 · un extra por tema (antes requirements/ingesta-<tema>.txt)
+ingesta-mercados = [                   # Tema 1 · mercados y series
+    "duckdb>=1.1",                     # tests y consultas ad hoc sobre los parquet del corpus
+    "pandera>=0.24",                   # contratos de esquema (pandera.pandas)
+    "hypothesis>=6.100",               # tests basados en propiedades (TimeGate, catalogo)
+    "exchange_calendars>=4.5",         # calendarios de sesiones
+]
+ingesta-bancos = [                     # Tema 2 · bancos centrales y riesgo
+    "beautifulsoup4>=4.12",            # enlaces y fechas de las paginas de los bancos
+    "pypdf>=4.0",                      # texto de los PDF
+    "tzdata>=2024.1",                  # zonas horarias de zoneinfo en Windows
+    "nbclient>=0.10",                  # bancos_riesgo.jobs
+]
+ingesta-noticias = [                   # Tema 4 · noticias y alternativos (xlrd/openpyxl ya en el nucleo)
+    "pypdf>=4.0",                      # texto de los PTR de la Camara
+]
+# Tema 3 · empresas: sin dependencias extra (biblioteca estandar + nucleo).
+ingesta = ["regime-aware-macro-equity[ingesta-mercados,ingesta-bancos,ingesta-noticias]"]
 dev = [
     "pytest>=8.0",
     "nbconvert>=7.0",
@@ -60,13 +85,14 @@ dev = [
     "ipykernel>=6.29",
     "ruff>=0.5",
 ]
+todo = ["regime-aware-macro-equity[deep,jump,changepoint,dev,ingesta]"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["regimenes*", "ingesta*"]
+include = ["regimenes*", "ingesta*", "herramientas*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

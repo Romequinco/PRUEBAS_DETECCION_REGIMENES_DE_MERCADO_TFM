@@ -1,6 +1,6 @@
 # Tema 1 · Mercados y series numéricas
 
-**Rama:** `fase2/t1-mercados-series` · **Agentes:** Portfolio, Equity, Macro, Risk · **Tools:** `get_precios(tk, fecha)`, `get_serie(id, fecha)`
+**Extra:** `ingesta-mercados` · **Agentes:** Portfolio, Equity, Macro, Risk · **Tools:** `get_precios(tk, fecha)`, `get_serie(id, fecha)`
 · **Destino:** base de series (no vectorial). Reglas comunes: [`docs/fase2/README.md`](../../../docs/fase2/README.md).
 
 ## Alcance
@@ -53,7 +53,8 @@ hay que evaluarlos y justificar si entran o no.
 
 ## Cómo usarlo
 
-Datos solo en `<corpus>/mercados_series/` (por defecto `D:/tfm_corpus/mercados_series`); con `pip install -e .`:
+Datos solo en `<corpus>/mercados_series/` (por defecto `D:/tfm_corpus/mercados_series`); con
+`python -m pip install -e ".[dev,ingesta-mercados]" -c constraints.txt` (ver el [README raíz](../../../README.md#instalación)):
 
 ```bash
 # 1. Descargas (reanudables; cada fuente con robots.txt y ritmo por host)

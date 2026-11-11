@@ -1,4 +1,4 @@
-"""Figuras del Tema 4 (notebooks t4_01 y t4_02). Solo matplotlib, estilo de la casa de la Fase 1.
+"""Figuras del Tema 4 (notebooks fase2/noticias_alt/01 y 02). Solo matplotlib, estilo de la casa de la Fase 1.
 
 Convenciones comunes a todas las figuras:
 
@@ -323,7 +323,7 @@ def _orden_familia(df: pd.DataFrame) -> pd.DataFrame:
     return df.assign(_o=fam.map(orden).fillna(99)).sort_values(["_o", "fuente"]).reset_index(drop=True)
 
 
-# =========================================================================== t4_01 · sonda
+# =========================================================================== 01 · sonda
 
 def esquema_destinos(cob: pd.DataFrame, ax=None):
     """Esquema fuentes → destino (cajón, RAG base, serie, vivo, descartada) con cajas y flechas.
@@ -911,7 +911,7 @@ def lags_publicacion(tg: pd.DataFrame, cob: pd.DataFrame | None = None, *, ax=No
     return fig, ax
 
 
-# =========================================================================== t4_02 · validez
+# =========================================================================== 02 · validez
 
 CRITERIOS_CALIDAD = ("pct_huecos", "pct_atipicos", "n_rupturas", "pct_repetidos", "racha_max_constante",
                      "lag_pub_mediana_dias", "n_pub_antes_ref", "revisable")

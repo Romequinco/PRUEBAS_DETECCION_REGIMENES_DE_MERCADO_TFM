@@ -20,10 +20,10 @@ def _hay(modulo: str) -> bool:
     return True
 
 
-# GPR (.xls) y EPU global (.xlsx) necesitan xlrd y openpyxl (requirements/ingesta-noticias_alt.txt); la CI
+# GPR (.xls) y EPU global (.xlsx) necesitan xlrd y openpyxl (dependencias del nucleo en pyproject.toml); la CI
 # solo instala [dev]: sin ellas, estos tests se saltan en vez de fallar.
-requiere_xlrd = pytest.mark.skipif(not _hay("xlrd"), reason="falta xlrd (requirements/ingesta-noticias_alt.txt)")
-requiere_openpyxl = pytest.mark.skipif(not _hay("openpyxl"), reason="falta openpyxl (requirements/ingesta-noticias_alt.txt)")
+requiere_xlrd = pytest.mark.skipif(not _hay("xlrd"), reason="falta xlrd (dependencias del nucleo en pyproject.toml)")
+requiere_openpyxl = pytest.mark.skipif(not _hay("openpyxl"), reason="falta openpyxl (dependencias del nucleo en pyproject.toml)")
 
 FX = Path(__file__).parent / "fixtures" / "indices"
 

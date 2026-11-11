@@ -1,6 +1,6 @@
 # Tema 3 · Empresas: filings, fundamentales y sentimiento
 
-**Rama:** `fase2/t3-empresas` · **Responsable:** Daniel · **Agentes:** Equity y Risk · **Tools:**
+**Extra:** ninguno (biblioteca estándar y núcleo) · **Responsable:** Daniel · **Agentes:** Equity y Risk · **Tools:**
 `buscar_filings(tk, q, fecha)`, `get_fundamentales(tk, fecha)`, `composite_score(bucket, fecha)` · **Destino:** RAG
 base + cajón (texto), base de series (fundamentales). Reglas comunes: [`docs/fase2/README.md`](../../../docs/fase2/README.md).
 
@@ -12,7 +12,7 @@ mide qué hay, desde cuándo, con qué retraso y cuánto ocupa. Universo, ventan
 Muestra: AAPL, MSFT, JPM, XOM, JNJ, WMT, KO, GE (S&P 500 actual, sectores distintos, historia larga) + **Lehman** y
 **Enron** (desaparecidas: comprueban que el corpus no tiene sesgo de supervivencia). Ver `universo.MUESTRA_SONDA`.
 
-Se ejecuta con el notebook [`notebooks/fase2/t3_01_sonda_empresas.ipynb`](../../../notebooks/fase2/t3_01_sonda_empresas.ipynb).
+Se ejecuta con el notebook [`notebooks/fase2/empresas/01_sonda.ipynb`](../../../notebooks/fase2/empresas/01_sonda.ipynb).
 
 ## Módulos
 

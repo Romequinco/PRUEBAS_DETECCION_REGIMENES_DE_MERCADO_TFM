@@ -458,7 +458,7 @@ def _pandera():
     try:
         import pandera.pandas as pa
     except ImportError as e:  # pandera es dependencia del tema, no de la Fase 1 ni de la CI
-        raise ImportError("pandera no está instalado: pip install -r requirements/ingesta-mercados_series.txt") from e
+        raise ImportError('pandera no está instalado: pip install -e ".[ingesta-mercados]" -c constraints.txt') from e
     return pa
 
 

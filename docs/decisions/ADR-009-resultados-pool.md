@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptado · 2026-11-02. Resultados de 2.5 completos: 1.338 trabajos, 0 errores, ejecutados el
   02-11-2026 de 14:48 a 21:56. Decisión del §6: opción 1, descartar el menú T.
-- **Origen:** plan de [`PendientesOscar.md`](../../PendientesOscar.md) §6.8, punto 2.5 (ablaciones y controles de
+- **Origen:** plan de [`PendientesOscar.md`](../tfm/PendientesOscar.md) §6.8, punto 2.5 (ablaciones y controles de
   §6.5, puntos 4–6; el 4, relevancia, ya está en la sección 10 del notebook 04).
 - **Completa:** [ADR-008](ADR-008-preregistro-pool-termometros.md), el pre-registro. No cambia sus bloques, anclas,
   menús, vara de medir ni criterios, ni su veredicto (§8).

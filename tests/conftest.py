@@ -8,7 +8,9 @@ Estructura::
     tests/evaluacion/   -> regimenes.evaluacion
     tests/benchmark/    -> regimenes.benchmark
     tests/fusion/       -> regimenes.fusion
-    tests/sinteticos/   -> regimenes.sinteticos
+    tests/regimen/      -> regimenes.regimen
+    tests/ingesta/      -> ingesta (un subdirectorio por tema)
+    tests/herramientas/ -> herramientas
     tests/test_paquete.py -> guardas del paquete completo
     tests/test_docs_enlaces.py -> enlaces relativos de docs/, READMEs y notebooks
 
