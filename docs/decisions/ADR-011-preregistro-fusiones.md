@@ -447,7 +447,7 @@ Se ejecuta con **un solo proceso**, en paralelo al notebook 21 sin competir con 
 Calculado el 03-11-2026 después de congelar. Hubo una sola ejecución limpia: primero las fijas, después la online,
 en un proceso, con 5.000 réplicas en todos los MCS. Las tablas están en `results/fusion/fijas/` y
 `results/fusion/online/`. La lectura se hace en los notebooks [15](../../notebooks/15_fusiones_fijas.ipynb) y
-[17](../../notebooks/17_fusion_online.ipynb).
+[17](../../notebooks/16_fusion_online.ipynb).
 
 ### 9.1 Fusiones fijas (§6.1)
 

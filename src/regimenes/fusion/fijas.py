@@ -387,7 +387,7 @@ def anticipacion(pista: str, f_star: str | None) -> pd.DataFrame:
 def utilidad(todas: pd.DataFrame, elec: dict) -> pd.DataFrame:
     """Utilidad operativa (``maquina.signal_scores``) de F*, V, I* e I*_H1 por tramo (§6.3).
 
-    O y M son de la fusión online (notebook 17)."""
+    O y M son de la fusión online (notebook 16)."""
     p = elec["pista"]
     quien = {"F*": elec["f_star"], "V": "VOTO_mayoria", "I*": elec["i_star"], "I*_H1": elec["i_star_h1"]}
     quien = {k: v for k, v in quien.items() if v}

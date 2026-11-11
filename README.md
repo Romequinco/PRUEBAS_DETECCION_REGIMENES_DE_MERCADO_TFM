@@ -61,7 +61,7 @@ los tests y la CLI lo importan igual: `from regimenes import evaluacion as ev`. 
 | `regimenes.fusion` | máquina causal normal / vigilancia / confirmado (alerta + confirmador) |
 | `regimenes.viz` | estilo de casa para figuras (franjas de crisis, paneles de estados) |
 | `regimenes.informes` | utilidades comunes de los notebooks de familia 06–12: carga verificada de resultados (`cargar_resultados_familia`), tablas de configuración/cobertura y figuras de estados OOS |
-| `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion/` (notebook 16): un módulo por dimensión (`fidelidad`, `discriminador`, `memorizacion`, `utilidad` TSTR/TRTR y `veredicto` por niveles) con umbrales fijados a priori y cambios de reglas y niveles declarados y fechados en `configs/sinteticos.yaml`; `laboratorio/` (notebook 17): `escenarios` (rejilla, secuencias impuestas, intensidad), `metricas` (ADR-003 + retraso), `ejecucion` (paralela, reanudable, caché por huella; CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
+| `regimenes.sinteticos` | generadores de trayectorias con régimen conocido: base común (`comun`, `datos`, `espacio`, `bloques`, `persistencia`, `registry`), 6 paramétricos (`jitter`, `bootstrap_regimen`, `gaussiano_regimen`, `var_regimen`, `garch_regimen`, `rbig`) y 4 neuronales (`flow_matching`, `difusion`, `cvae`, `cgan`; extra `[deep]`); `validacion/` (notebook 18): un módulo por dimensión (`fidelidad`, `discriminador`, `memorizacion`, `utilidad` TSTR/TRTR y `veredicto` por niveles) con umbrales fijados a priori y cambios de reglas y niveles declarados y fechados en `configs/sinteticos.yaml`; `laboratorio/` (notebook 19): `escenarios` (rejilla, secuencias impuestas, intensidad), `metricas` (ADR-003 + retraso), `ejecucion` (paralela, reanudable, caché por huella; CLI `python -m regimenes.sinteticos.laboratorio`) y `analisis` (H1–H4) |
 
 Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` → `fusion` → (`sinteticos`, pseudolive);
 `informes` solo lee resultados para los notebooks 06–12.
@@ -75,7 +75,7 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
 ├── src/regimenes/      el paquete (tabla de arriba)
 ├── src/ingesta/        Fase 2: datos de los agentes, un subpaquete por tema (ver docs/fase2)
 ├── tests/              pytest por subpaquete (datos, features, detectores, evaluacion, benchmark, fusion, informes, sinteticos) · ingesta/ (Fase 2)
-├── notebooks/          00–23, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
+├── notebooks/          00–22, planos y ordenados (ver docs/fase1) · fase2/ (notebooks de la Fase 2: <tema>/ o tN_*.ipynb)
 ├── data/               raw/ (166 series, gitignored + procedencia) · processed/ (paneles por pista) · sinteticos/
 ├── results/
 │   ├── benchmark/      métricas por detector/pista, ranking_v2.csv, metrics_master_v2.csv, manifest.json, panels/ (gitignored)
@@ -86,11 +86,11 @@ Flujo: `datos` → `features` → `detectores` → `evaluacion` ← `benchmark` 
                     fase2/ (reglas, plan de datos) · historia/ (Capa 1, fichas v1, tarea previa)
 ```
 
-## Notebooks 00–23
+## Notebooks 00–22
 
 Son el pipeline de la Fase 1, en `notebooks/` (planos y numerados). La tabla notebook a notebook, la plantilla
 común de los notebooks de familia y el **orden de ejecución** están en
-[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0023).
+[`docs/fase1/README.md`](docs/fase1/README.md#pipeline-0022).
 
 ## Las dos pistas de datos (ADR-001, ventanas reajustadas por ADR-002)
 
@@ -150,9 +150,9 @@ la complejidad (D11, D12) sigue sin pagarse, como ya indicaba la Capa 1.
 **Fusión (Fase E).** D2 alerta + D6 confirma mejora a D2 y a D6 aislados en ambas pistas, pero **no
 anticipa** el inicio de las crisis; D2 y D7 quedan prácticamente empatados como alerta y el control por
 mitades elige otras alertas. La capa de alerta no añade anticipación: la regla a congelar se decide
-en `22_decision_final` (futura ADR-006) antes del pseudolive (detalle en los antecedentes de [`15_fusiones_fijas`](notebooks/15_fusiones_fijas.ipynb), que con la vara del ranking concluye que ninguna fusión fija elegida sin mirar el resultado mejora al mejor detector solo, [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md)).
+en `21_decision_final` (futura ADR-006) antes del pseudolive (detalle en los antecedentes de [`15_fusiones_fijas`](notebooks/15_fusiones_fijas.ipynb), que con la vara del ranking concluye que ninguna fusión fija elegida sin mirar el resultado mejora al mejor detector solo, [ADR-011](docs/decisions/ADR-011-preregistro-fusiones.md)).
 
-**Laboratorio con régimen conocido (notebook 20).** Simulación controlada con `gaussiano_regimen`,
+**Laboratorio con régimen conocido (notebook 19).** Simulación controlada con `gaussiano_regimen`,
 `var_regimen` y `garch_regimen` (18 celdas por pista, 4356 trabajos), resultados en
 `results/sinteticos/laboratorio/`. H1 (recuperación) se cumple: 92 % en A y 100 % en B. H2: el score baja
 al acortar y atenuar la crisis (en parte por prevalencia; el recall por evento cae de 0,86 a 0,54 en A).
@@ -182,15 +182,15 @@ make help                          # lista los objetivos del Makefile (GNU Make;
 D04-A tarda ≈1,8 h, que es el mínimo con cualquier número de procesos (con 9 procesos, ≈2 h).
 
 Qué comprueba cada notebook sobre la caché, en qué orden se ejecutan tras un benchmark nuevo y cómo se
-ejecutan los de sintéticos (18–20): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
+ejecutan los de sintéticos (17–19): [`docs/fase1/README.md`](docs/fase1/README.md#orden-de-ejecución).
 
 ## Estado del proyecto
 
 El estado de las cinco fases del TFM está en [`docs/tfm/README.md`](docs/tfm/README.md#3-plan-de-trabajo-cinco-fases-y-su-estado)
 y el de las sub-fases internas de la Fase 1 (Capa 1, 1–4, D, E, S, F), en
 [`docs/fase1/README.md`](docs/fase1/README.md#estado-de-las-sub-fases). En una línea: la Fase 1 tiene hechos
-datos, preprocesado, benchmark, fusiones y sintéticos (notebooks 00–20) y le faltan el aumento (21), la decisión
-final (22) y el pseudolive (23); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
+datos, preprocesado, benchmark, fusiones y sintéticos, incluido el aumento (notebooks 00–20; el aumento no se
+adopta), y le faltan la decisión final (21) y el pseudolive (22); la Fase 2 está en marcha en `src/ingesta` ([ADR-007](docs/decisions/ADR-007-fase2-ingesta-y-docs.md)).
 
 Material histórico: el código y los notebooks v1 originales de la Capa 1 se recuperan con el tag git
 `capa1-final` (ver [`docs/historia/capa1/README.md`](docs/historia/capa1/README.md) §8).

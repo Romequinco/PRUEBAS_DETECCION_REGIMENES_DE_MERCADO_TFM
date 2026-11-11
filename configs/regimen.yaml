@@ -1,7 +1,7 @@
 # configs/regimen.yaml — configuración PROVISIONAL de la tool get_regimen(fecha)
 # (ADR-005 §2.1). La lee regimenes.regimen; es el ÚNICO sitio donde se fija qué
 # detector alimenta la tool. La versión definitiva saldrá de la futura ADR-006
-# (notebook 22_decision_final); hasta entonces esto es un sustituto declarado.
+# (notebook 21_decision_final); hasta entonces esto es un sustituto declarado.
 
 provisional: true
 
@@ -38,7 +38,7 @@ estados: [calma, crisis]
 # Todo sale de resultados ya calculados y causales (ADR-011): no se recalcula nada.
 # - senales_detectores: señal binaria de crisis de los candidatos no supervisados
 #   (15 en A, 17 en B), guardada por las fusiones fijas (notebook 15).
-# - prob_consenso: probabilidad de crisis de la fusión online (notebook 17), con
+# - prob_consenso: probabilidad de crisis de la fusión online (notebook 16), con
 #   pesos aprendidos solo con crisis ya terminadas; columna = variante principal.
 # Si faltan los ficheros, get_regimen responde igual con contexto = None.
 contexto:

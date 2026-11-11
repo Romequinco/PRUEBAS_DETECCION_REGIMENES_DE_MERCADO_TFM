@@ -1,4 +1,4 @@
-"""Tests ligeros de ``regimenes.fusion.figuras_online`` (notebook 17): paleta, tablas y figuras.
+"""Tests ligeros de ``regimenes.fusion.figuras_online`` (notebook 16): paleta, tablas y figuras.
 
 Los de paleta no leen nada. Los de tablas y figuras leen ``results/fusion/online/`` y se saltan si
 no existe (en la CI no se ejecuta la fusión online)."""

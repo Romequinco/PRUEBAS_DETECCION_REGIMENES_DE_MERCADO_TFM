@@ -1,7 +1,7 @@
 """Vara de medir común de las fusiones (ADR-011 §2 y §5).
 
 La comparten las fusiones fijas (:mod:`regimenes.fusion.fijas`, notebook 15) y la online
-(:mod:`regimenes.fusion.online`, notebook 17): mismos candidatos, mismas señales, mismas mitades,
+(:mod:`regimenes.fusion.online`, notebook 16): mismos candidatos, mismas señales, mismas mitades,
 mismo orden y mismo MCS que los individuales. Solo lee paneles OOS que ya existen; no reentrena
 nada ni escribe en disco.
 
