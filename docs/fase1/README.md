@@ -5,7 +5,7 @@ La Fase 1 del TFM detecta en qué régimen está el mercado y entrega esa señal
 las fases: [`tfm/README.md`](../tfm/README.md). Índice de toda la documentación: [`docs/README.md`](../README.md).
 Definiciones de los términos (pistas, roles, métricas, sintéticos): [GLOSARIO](../GLOSARIO.md).
 
-Este README reúne lo operativo de la fase: el pipeline de notebooks `00`–`22`, el orden en que se ejecutan, la huella
+Este README reúne lo operativo de la fase: el pipeline de notebooks `00`–`22` (en `notebooks/fase1/`), el orden en que se ejecutan, la huella
 de caché, las rutas en disco y el índice de detectores por familia. El mapa de módulos del código está en
 [`src/regimenes/README.md`](../../src/regimenes/README.md); la instalación, en el [README raíz](../../README.md#instalación).
 
@@ -38,29 +38,29 @@ las fases 1–5 del TFM).
 
 | Nº | Notebook | Fase | Qué hace |
 |---|---|---|---|
-| 00 | [`00_descarga`](../../notebooks/00_descarga.ipynb) | datos | panorámica de las 166 series, cobertura y descarga |
-| 01 | [`01_eda`](../../notebooks/01_eda.ipynb) | datos | EDA maestro (12 secciones) |
-| 02 | [`02_diseno_preprocesado`](../../notebooks/02_diseno_preprocesado.ipynb) | features | decisiones del preprocesado (features, frecuencias, alineación causal) |
-| 03 | [`03_preprocesado`](../../notebooks/03_preprocesado.ipynb) | features | paneles causales `pista{A,B}_{diaria,mensual}` + labels, con gates |
-| 04 | [`04_termometros`](../../notebooks/04_termometros.ipynb) | features | termómetros por bloque (PCA causal por bloque, ADR-008): construcción sobre los datos verificados, validación 1–3 sin etiquetas de crisis, relevancia frente a crisis y trampas (4) y menú N frente a T |
-| 05 | [`05_protocolo_evaluacion`](../../notebooks/05_protocolo_evaluacion.ipynb) | D | protocolo walk-forward, gate/preflight, caché por huella, CLI paralela · vara de medir ADR-008 (§9–12): `VOL_P90`, MCS diario, curvas a igual FA/año y tabla CP1 → `results/benchmark/vara/` |
-| 06 | [`06_familia_F1_reglas`](../../notebooks/06_familia_F1_reglas.ipynb) | D | D01 umbral de volatilidad (VIX solo en B) · D02 riesgo compuesto · D10 turbulencia Mahalanobis |
-| 07 | [`07_familia_F2_clustering`](../../notebooks/07_familia_F2_clustering.ipynb) | D | D03 GMM · D09 Statistical Jump Model |
-| 08 | [`08_familia_F3_hmm`](../../notebooks/08_familia_F3_hmm.ipynb) | D | D04 HMM gaussiano · D08 HMM t-Student · D13 HSMM (ablación) |
-| 09 | [`09_familia_F4_markov_switching`](../../notebooks/09_familia_F4_markov_switching.ipynb) | D | D05 Markov-Switching de media y varianza (univariante; pese al nombre `markov_switching_var`, no es un VAR) |
-| 10 | [`10_familia_F5_garch`](../../notebooks/10_familia_F5_garch.ipynb) | D | D06 GJR-GARCH-t · D11 MS-GARCH |
-| 11 | [`11_familia_F6_changepoint`](../../notebooks/11_familia_F6_changepoint.ipynb) | D | D07 CUSUM online robusto |
-| 12 | [`12_familia_F7_deep`](../../notebooks/12_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
-| 13 | [`13_familia_F8_supervisado`](../../notebooks/13_familia_F8_supervisado.ipynb) | D | D16 logit L1 · D17 random forest, entrenados solo con crisis terminadas; categoría supervisada aparte del ranking no supervisado (esqueleto) |
-| 14 | [`14_comparativa`](../../notebooks/14_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
-| 15 | [`15_fusiones_fijas`](../../notebooks/15_fusiones_fijas.ipynb) | E | fusiones fijas del [ADR-011](../decisions/ADR-011-preregistro-fusiones.md): antecedentes D7+D8 y D2+D6 y las tres familias (alerta→confirmación, votación k-de-n, OR/AND), elegidas en H1 y evaluadas en H2 con la vara de los individuales |
-| 16 | [`16_fusion_online`](../../notebooks/16_fusion_online.ipynb) | E | C1: agregación online de los detectores con pesos mensuales según acierto pasado, frente a la mejor fusión fija F\*, la media simple, la votación por mayoría y el mejor individual (ADR-011) |
+| 00 | [`00_descarga`](../../notebooks/fase1/00_descarga.ipynb) | datos | panorámica de las 166 series, cobertura y descarga |
+| 01 | [`01_eda`](../../notebooks/fase1/01_eda.ipynb) | datos | EDA maestro (12 secciones) |
+| 02 | [`02_diseno_preprocesado`](../../notebooks/fase1/02_diseno_preprocesado.ipynb) | features | decisiones del preprocesado (features, frecuencias, alineación causal) |
+| 03 | [`03_preprocesado`](../../notebooks/fase1/03_preprocesado.ipynb) | features | paneles causales `pista{A,B}_{diaria,mensual}` + labels, con gates |
+| 04 | [`04_termometros`](../../notebooks/fase1/04_termometros.ipynb) | features | termómetros por bloque (PCA causal por bloque, ADR-008): construcción sobre los datos verificados, validación 1–3 sin etiquetas de crisis, relevancia frente a crisis y trampas (4) y menú N frente a T |
+| 05 | [`05_protocolo_evaluacion`](../../notebooks/fase1/05_protocolo_evaluacion.ipynb) | D | protocolo walk-forward, gate/preflight, caché por huella, CLI paralela · vara de medir ADR-008 (§9–12): `VOL_P90`, MCS diario, curvas a igual FA/año y tabla CP1 → `results/benchmark/vara/` |
+| 06 | [`06_familia_F1_reglas`](../../notebooks/fase1/06_familia_F1_reglas.ipynb) | D | D01 umbral de volatilidad (VIX solo en B) · D02 riesgo compuesto · D10 turbulencia Mahalanobis |
+| 07 | [`07_familia_F2_clustering`](../../notebooks/fase1/07_familia_F2_clustering.ipynb) | D | D03 GMM · D09 Statistical Jump Model |
+| 08 | [`08_familia_F3_hmm`](../../notebooks/fase1/08_familia_F3_hmm.ipynb) | D | D04 HMM gaussiano · D08 HMM t-Student · D13 HSMM (ablación) |
+| 09 | [`09_familia_F4_markov_switching`](../../notebooks/fase1/09_familia_F4_markov_switching.ipynb) | D | D05 Markov-Switching de media y varianza (univariante; pese al nombre `markov_switching_var`, no es un VAR) |
+| 10 | [`10_familia_F5_garch`](../../notebooks/fase1/10_familia_F5_garch.ipynb) | D | D06 GJR-GARCH-t · D11 MS-GARCH |
+| 11 | [`11_familia_F6_changepoint`](../../notebooks/fase1/11_familia_F6_changepoint.ipynb) | D | D07 CUSUM online robusto |
+| 12 | [`12_familia_F7_deep`](../../notebooks/fase1/12_familia_F7_deep.ipynb) | D | D12 autoencoder + GMM |
+| 13 | [`13_familia_F8_supervisado`](../../notebooks/fase1/13_familia_F8_supervisado.ipynb) | D | D16 logit L1 · D17 random forest, entrenados solo con crisis terminadas; categoría supervisada aparte del ranking no supervisado (esqueleto) |
+| 14 | [`14_comparativa`](../../notebooks/fase1/14_comparativa.ipynb) | D | scorecards, ranking ADR-003 y comparación entre familias |
+| 15 | [`15_fusiones_fijas`](../../notebooks/fase1/15_fusiones_fijas.ipynb) | E | fusiones fijas del [ADR-011](../decisions/ADR-011-preregistro-fusiones.md): antecedentes D7+D8 y D2+D6 y las tres familias (alerta→confirmación, votación k-de-n, OR/AND), elegidas en H1 y evaluadas en H2 con la vara de los individuales |
+| 16 | [`16_fusion_online`](../../notebooks/fase1/16_fusion_online.ipynb) | E | C1: agregación online de los detectores con pesos mensuales según acierto pasado, frente a la mejor fusión fija F\*, la media simple, la votación por mayoría y el mejor individual (ADR-011) |
 | 17 | `17_sinteticos_generadores` (archivado: etiqueta `sinteticos-final`) | S | ajuste y muestreo de los 10 generadores por pista (régimen de referencia desde las ventanas de crisis, espacio de generación y re-derivación), curvas de convergencia, trayectorias con régimen conocido (cadena simulada y secuencia impuesta) y tablas de sanidad; no valida ni admite generadores (eso es el 18) |
 | 18 | `18_sinteticos_validacion` (archivado: etiqueta `sinteticos-final`) | S | validación de cada generador contra el tramo real de entrenamiento (hechos estilizados dentro de racha, condicionamiento al régimen, discriminador real/sintético y memorización con índice íntegro; correlaciones y utilidad TSTR frente a TRTR, informativas) y veredicto por niveles (`apto_laboratorio`, `laboratorio_condicionado`, `apto_aumento`) con umbrales fijados a priori; los cambios posteriores de reglas y niveles están declarados y fechados en `configs/sinteticos.yaml` y su efecto se recalcula en el propio notebook |
 | 19 | `19_sinteticos_laboratorio` (archivado: etiqueta `sinteticos-final`) | S | laboratorio de detectores con régimen conocido como **simulación controlada** (ningún generador salió apto en el 18): los 3 paramétricos (`gaussiano_regimen`, `var_regimen`, `garch_regimen`) como mundos de juguete, rejilla pre-registrada generador × duración de crisis × intensidad, mismos walk-forward y specs del benchmark, verdad-terreno exacta; hipótesis H1 recuperación, H2 degradación, H3 concordancia con ADR-003 y H4 circularidad |
 | 20 | `20_sinteticos_aumento` (archivado: etiqueta `sinteticos-final`) | S | aumento de datos real + sintético (se mantiene, ADR-005): pre-registro, `regimenes.sinteticos.aumento`, cálculo completo (1.166 trabajos, 12 sesiones) y lectura: el aumento no se adopta |
-| 21 | [`21_decision_final`](../../notebooks/21_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
-| 22 | [`22_pseudolive`](../../notebooks/22_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
+| 21 | [`21_decision_final`](../../notebooks/fase1/21_decision_final.ipynb) | F | decisión final del detector de régimen y contrato de `get_regimen`, futura ADR-006 (esqueleto) |
+| 22 | [`22_pseudolive`](../../notebooks/fase1/22_pseudolive.ipynb) | F | validación de la tool `get_regimen` con la regla congelada sobre datos no usados (esqueleto) |
 
 Los notebooks de familia (06–12) siguen una plantilla común: teoría de la familia, configuración
 desde el registro, ejecución con `EJECUTAR = False` (lee la caché de `results/benchmark`), estados OOS
@@ -149,24 +149,24 @@ datos ([ADR-001](../decisions/ADR-001-rebase-datos.md)); las posteriores se nomb
 `Fk` = familia (subpaquete `fk_*` de `src/regimenes/detectores/` y notebook de familia); `Dnn` = detector. D01–D12
 forman el benchmark; D13 (`hsmm_tstudent`) es solo una ablación de D08, fuera del ranking y de la huella de caché. El
 puesto y el `score_deteccion` de cada detector por pista están en `results/benchmark/ranking_v2.csv` y en el notebook
-[`14_comparativa`](../../notebooks/14_comparativa.ipynb); su comentario, en la sección de resultados de cada ficha de
+[`14_comparativa`](../../notebooks/fase1/14_comparativa.ipynb); su comentario, en la sección de resultados de cada ficha de
 familia.
 
 | Familia (teoría y detectores) | Detector | Código (`src/regimenes/detectores/`) | Notebook |
 |---|---|---|---|
-| [F1 reglas y umbrales](F1_reglas.md) | D01 `rule_vix_threshold` | `f1_reglas/rule_vix_threshold.py` | [`06_familia_F1_reglas`](../../notebooks/06_familia_F1_reglas.ipynb) |
+| [F1 reglas y umbrales](F1_reglas.md) | D01 `rule_vix_threshold` | `f1_reglas/rule_vix_threshold.py` | [`06_familia_F1_reglas`](../../notebooks/fase1/06_familia_F1_reglas.ipynb) |
 | | D02 `rule_composite_riskoff` | `f1_reglas/rule_composite_riskoff.py` | ídem |
 | | D10 `turbulence_mahalanobis` (multivariante) | `f1_reglas/turbulence_mahalanobis.py` | ídem |
-| [F2 clustering](F2_clustering.md) | D03 `clustering_gmm` | `f2_clustering/clustering_gmm.py` | [`07_familia_F2_clustering`](../../notebooks/07_familia_F2_clustering.ipynb) |
+| [F2 clustering](F2_clustering.md) | D03 `clustering_gmm` | `f2_clustering/clustering_gmm.py` | [`07_familia_F2_clustering`](../../notebooks/fase1/07_familia_F2_clustering.ipynb) |
 | | D09 `jump_model` | `f2_clustering/jump_model.py` | ídem |
-| [F3 HMM](F3_hmm.md) | D04 `hmm_gaussian_2s` | `f3_hmm/hmm_gaussian_2s.py` | [`08_familia_F3_hmm`](../../notebooks/08_familia_F3_hmm.ipynb) |
+| [F3 HMM](F3_hmm.md) | D04 `hmm_gaussian_2s` | `f3_hmm/hmm_gaussian_2s.py` | [`08_familia_F3_hmm`](../../notebooks/fase1/08_familia_F3_hmm.ipynb) |
 | | D08 `hmm_tstudent` | `f3_hmm/hmm_tstudent.py` | ídem |
 | | D13 `hsmm_tstudent` (ablación) | `f3_hmm/hsmm_tstudent.py` | ídem |
-| [F4 Markov-Switching](F4_markov_switching.md) | D05 `markov_switching_var` (media y varianza conmutantes; no es un VAR) | `f4_switching/markov_switching_var.py` | [`09_familia_F4_markov_switching`](../../notebooks/09_familia_F4_markov_switching.ipynb) |
-| [F5 volatilidad GARCH](F5_volatilidad_garch.md) | D06 `garch_t_vol` | `f5_garch/garch_t_vol.py` | [`10_familia_F5_garch`](../../notebooks/10_familia_F5_garch.ipynb) |
+| [F4 Markov-Switching](F4_markov_switching.md) | D05 `markov_switching_var` (media y varianza conmutantes; no es un VAR) | `f4_switching/markov_switching_var.py` | [`09_familia_F4_markov_switching`](../../notebooks/fase1/09_familia_F4_markov_switching.ipynb) |
+| [F5 volatilidad GARCH](F5_volatilidad_garch.md) | D06 `garch_t_vol` | `f5_garch/garch_t_vol.py` | [`10_familia_F5_garch`](../../notebooks/fase1/10_familia_F5_garch.ipynb) |
 | | D11 `msgarch_regime` | `f5_garch/msgarch_regime.py` | ídem |
-| [F6 change-point](F6_change_point.md) | D07 `changepoint_online` | `f6_changepoint/changepoint_online.py` | [`11_familia_F6_changepoint`](../../notebooks/11_familia_F6_changepoint.ipynb) |
-| [F7 redes neuronales](F7_redes_neuronales.md) | D12 `deep_ae_regime` | `f7_deep/deep_ae_regime.py` | [`12_familia_F7_deep`](../../notebooks/12_familia_F7_deep.ipynb) |
+| [F6 change-point](F6_change_point.md) | D07 `changepoint_online` | `f6_changepoint/changepoint_online.py` | [`11_familia_F6_changepoint`](../../notebooks/fase1/11_familia_F6_changepoint.ipynb) |
+| [F7 redes neuronales](F7_redes_neuronales.md) | D12 `deep_ae_regime` | `f7_deep/deep_ae_regime.py` | [`12_familia_F7_deep`](../../notebooks/fase1/12_familia_F7_deep.ipynb) |
 
 Los nombres heredados que confunden (D01 en la pista A no usa el VIX; D05 no es un VAR) están aclarados en el
 [GLOSARIO](../GLOSARIO.md#nombres-de-detectores-que-confunden). Qué features recibe cada detector:

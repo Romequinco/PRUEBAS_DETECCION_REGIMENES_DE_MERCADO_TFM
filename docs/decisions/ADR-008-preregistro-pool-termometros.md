@@ -26,7 +26,7 @@ comunes**.
 - **Signo** fijado por una **columna ancla** con signo declarado: el termómetro sube con el estrés tal como se
   declara.
 - **Código:** `regimenes.features.bloques`; construcción, pruebas de diseño y validación en el notebook
-  [`04_termometros`](../../notebooks/04_termometros.ipynb).
+  [`04_termometros`](../../notebooks/fase1/04_termometros.ipynb).
 
 ### 2.1 Decisiones de diseño (30-10-2026, sin etiquetas de crisis)
 

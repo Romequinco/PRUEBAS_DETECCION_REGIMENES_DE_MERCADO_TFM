@@ -1,4 +1,4 @@
-"""Tests sobre datos reales del preprocesado v2 (notebooks/03_preprocesado.ipynb).
+"""Tests sobre datos reales del preprocesado v2 (notebooks/fase1/03_preprocesado.ipynb).
 
 Se saltan si `data/raw/` (gitignored) no está descargado. Cubren:
 - coherencia del banco congelado (`configs/benchmark_spec.yaml`, ADR-002);

@@ -27,7 +27,7 @@ Narrativa original de las fichas D01–D12, redactadas en la FASE 3 de la Capa 1
 
 Baseline reactivo imprescindible (CHECKPOINT 2). Regla causal sobre el nivel del
 VIX con histéresis y dwell-time. Entregables: `src/regimenes/detectores/f1_reglas/rule_vix_threshold.py`,
-`capa1_exploracion/notebooks/01_rule_vix_threshold.ipynb` (v1, tag `capa1-final`) (ejecutado, 0 errores, 2 figuras inline),
+`capa1_exploracion/notebooks/fase1/01_rule_vix_threshold.ipynb` (v1, tag `capa1-final`) (ejecutado, 0 errores, 2 figuras inline),
 `docs/historia/capa1/resultados/metrics_01_rule_vix_threshold.csv`, figuras `d1_regime_sp500.png` (figura v1, no versionada)
 y `d1_prob_timeline.png` (figura v1, no versionada).
 
@@ -152,7 +152,7 @@ Regla COMPUESTA causal de 2 estados (FASE 3, Tanda 2). Agrega 4 señales de estr
 ya causales de `features.parquet` en un **score de risk-off** y lo umbraliza con
 histéresis + dwell-time (mismo autómata que D1, pero sobre un VOTO multivariante en
 vez de un único nivel de VIX). Entregables: `src/regimenes/detectores/f1_reglas/rule_composite_riskoff.py`,
-`capa1_exploracion/notebooks/02_rule_composite_riskoff.ipynb` (v1, tag `capa1-final`) (ejecutado, 0 errores, 2 figuras
+`capa1_exploracion/notebooks/fase1/02_rule_composite_riskoff.ipynb` (v1, tag `capa1-final`) (ejecutado, 0 errores, 2 figuras
 inline), `docs/historia/capa1/resultados/metrics_02_rule_composite_riskoff.csv`, figuras
 `d2_regime_sp500.png` (figura v1, no versionada) y `d2_score_timeline.png` (figura v1, no versionada).
 
@@ -327,7 +327,7 @@ en el núcleo:
 - **Causalidad**: el detector solo mira `X_train`; el wrapper causal lo da
   `ev.walk_forward` (re-fit expanding, train inicial 8 años, step 21d). El alineado
   de etiquetas entre folds lo resuelve la canonicalización económica en cada `fit`.
-- **Notebook** `capa1_exploracion/notebooks/03_clustering_gmm.ipynb` (v1, tag `capa1-final`) (construido y ejecutado con
+- **Notebook** `capa1_exploracion/notebooks/fase1/03_clustering_gmm.ipynb` (v1, tag `capa1-final`) (construido y ejecutado con
   `_build_03.py` (retirado en el commit `6016f42`), 0 errores, 3 figuras inline): selección de k por BIC,
   sanidad del orden canónico, walk-forward k=2 y k=3, tabla de métricas, histograma
   de duraciones (flickering), S&P 500 coloreado por régimen, timeline + P(crisis), y
@@ -408,7 +408,7 @@ cubrieron el caso probabilístico sin necesidad de cambios. No se modificó
 > honestamente el GaussianHMM 2 estados y MIDE el efecto del look-ahead comparando
 > una versión in-sample (no causal) con una causal walk-forward.
 >
-> Código: `src/regimenes/detectores/f3_hmm/hmm_gaussian_2s.py` · Notebook: `capa1_exploracion/notebooks/04_hmm_gaussian_2s.ipynb` (v1, tag `capa1-final`)
+> Código: `src/regimenes/detectores/f3_hmm/hmm_gaussian_2s.py` · Notebook: `capa1_exploracion/notebooks/fase1/04_hmm_gaussian_2s.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_04.py` (retirado en el commit `6016f42`)) · Métricas: `docs/historia/capa1/resultados/metrics_04_hmm_gaussian_2s.csv`
 > (causal) y `docs/historia/capa1/resultados/metrics_04_hmm_gaussian_2s_insample.csv` (in-sample, no causal).
 
@@ -561,7 +561,7 @@ docstring de `walk_forward` contempla. Observación:
 > Baseline econométrico **interpretable**. Markov-Switching de varianza sobre el
 > retorno del S&P 500 (Hamilton 1989), con probabilidades **filtradas causales**.
 > Código: `src/regimenes/detectores/f4_switching/markov_switching_var.py` · Notebook:
-> `capa1_exploracion/notebooks/05_markov_switching_var.ipynb` (v1, tag `capa1-final`) (constructor `_build_05.py` (retirado en el commit `6016f42`))
+> `capa1_exploracion/notebooks/fase1/05_markov_switching_var.ipynb` (v1, tag `capa1-final`) (constructor `_build_05.py` (retirado en el commit `6016f42`))
 > · Métricas: `docs/historia/capa1/resultados/metrics_05_markov_switching_var.csv`.
 
 ### Implementado
@@ -677,7 +677,7 @@ Ninguna que requiera cambiar firmas. Dos observaciones:
 > **GJR-GARCH(1,1)-t**, obtiene la **sigma condicional** y define el régimen
 > **umbralizando** esa sigma (percentil del train + histéresis + dwell). 2 estados.
 >
-> Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` · Notebook: `capa1_exploracion/notebooks/06_garch_t_vol.ipynb` (v1, tag `capa1-final`)
+> Código: `src/regimenes/detectores/f5_garch/garch_t_vol.py` · Notebook: `capa1_exploracion/notebooks/fase1/06_garch_t_vol.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_06.py` (retirado en el commit `6016f42`)) · Métricas:
 > `docs/historia/capa1/resultados/metrics_06_garch_t_vol.csv` · Figuras: `d06_*.png` (figura v1, no versionada).
 
@@ -827,7 +827,7 @@ causalidad ni la reactividad.
 > volatilidad; un autómata de 2 CUSUM de una cara lo mapea a 2 estados (0=calma,
 > 1=crisis). El umbral `h` da persistencia. 2 estados.
 >
-> Código: `src/regimenes/detectores/f6_changepoint/changepoint_online.py` · Notebook: `capa1_exploracion/notebooks/07_changepoint_online.ipynb` (v1, tag `capa1-final`)
+> Código: `src/regimenes/detectores/f6_changepoint/changepoint_online.py` · Notebook: `capa1_exploracion/notebooks/fase1/07_changepoint_online.ipynb` (v1, tag `capa1-final`)
 > (constructor `_build_07.py` (retirado en el commit `6016f42`)) · Métricas:
 > `docs/historia/capa1/resultados/metrics_07_changepoint_online.csv` · Figuras: `d07_*.png` (figura v1, no versionada).
 
@@ -979,7 +979,7 @@ recomendación de CP2.
 > BIC**. La mejora directa sobre el baseline gaussiano D4: ataca de frente las fat
 > tails del EDA (kurtosis 25-40). Código: `src/regimenes/detectores/f3_hmm/hmm_tstudent.py` (+
 > `src/regimenes/detectores/f3_hmm/_hmm_t_utils.py`, filtrado forward t) · Notebook:
-> `capa1_exploracion/notebooks/08_hmm_tstudent.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_08_hmm_tstudent.csv`.
+> `capa1_exploracion/notebooks/fase1/08_hmm_tstudent.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_08_hmm_tstudent.csv`.
 
 ### Implementado
 
@@ -1041,7 +1041,7 @@ D4 (2 estados, crisis ancha): **no es que D8 detecte peor, es que su "crisis" es
 cola extrema**. Hay que leer su fila del master con esta lente (la comparación justa de
 "estrés" sería corrección+crisis).
 
-*(Lectura v1. En v2 este matiz depende de la pista: en la pista A el estado de crisis OOS de D8 es el más poblado y no una cola estrecha; en la B sí es estrecho. Ver `notebooks/08_familia_F3_hmm.ipynb` §1.3 y §4.6. El taper de 2013 es en v2 una trampa: no activarse en él es correcto, no un punto ciego.)*
+*(Lectura v1. En v2 este matiz depende de la pista: en la pista A el estado de crisis OOS de D8 es el más poblado y no una cola estrecha; en la B sí es estrecho. Ver `notebooks/fase1/08_familia_F3_hmm.ipynb` §1.3 y §4.6. El taper de 2013 es en v2 una trampa: no activarse en él es correcto, no un punto ciego.)*
 
 **¿Captó 2013/2018?** Activación del estado crisis: 2013 = **0%**, 2018 = 3.4%
 (corrección+crisis: 2013 = 0%, 2018 = 81%). Es decir, capta 2018 como corrección pero
@@ -1089,7 +1089,7 @@ al comparar contra detectores de 2 estados conviene mirar también "corrección+
 > Statistical Jump Model (Nystrup et al.): clustering de estados con **penalización
 > de salto** λ → histéresis "aprendida", persistencia, online. Rival honesto de D3
 > (GMM sin persistencia) y de D12 (AE). Código: `src/regimenes/detectores/f2_clustering/jump_model.py` · Notebook:
-> `capa1_exploracion/notebooks/09_jump_model.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_09_jump_model.csv`.
+> `capa1_exploracion/notebooks/fase1/09_jump_model.ipynb` (v1, tag `capa1-final`) · Métricas: `docs/historia/capa1/resultados/metrics_09_jump_model.csv`.
 
 ### Implementado
 
@@ -1167,7 +1167,7 @@ pequeños — irrelevante aquí (train=252×8).
 > de Mahalanobis multivariante con covarianza **expanding causal**. Mide el colapso de
 > correlaciones / "rareza" del vector de mercado respecto a su historia.
 > Código: `src/regimenes/detectores/f1_reglas/turbulence_mahalanobis.py` · Notebook:
-> `capa1_exploracion/notebooks/10_turbulence_mahalanobis.ipynb` (v1, tag `capa1-final`) · Métricas:
+> `capa1_exploracion/notebooks/fase1/10_turbulence_mahalanobis.ipynb` (v1, tag `capa1-final`) · Métricas:
 > `docs/historia/capa1/resultados/metrics_10_turbulence_mahalanobis.csv`.
 
 ### Implementado
@@ -1258,7 +1258,7 @@ Arreglo 4 cubre el caso de los detectores que separan en varianza.
 > numpy/scipy** (filtro de Hamilton propio), SIN R ni rpy2. **RESULTADO NEGATIVO
 > documentado**: implementable y causal, pero su asignación de regímenes degenera en
 > walk-forward y NO sirve como detector. Código: `src/regimenes/detectores/f5_garch/msgarch_regime.py` ·
-> Notebook: `capa1_exploracion/notebooks/11_msgarch_regime.ipynb` (v1, tag `capa1-final`) · Métricas:
+> Notebook: `capa1_exploracion/notebooks/fase1/11_msgarch_regime.ipynb` (v1, tag `capa1-final`) · Métricas:
 > `docs/historia/capa1/resultados/metrics_11_msgarch_regime.csv`.
 
 ### Decisión de implementar (no declararlo fuera)
@@ -1345,7 +1345,7 @@ los casos de regímenes degenerados (frac de un estado ≈ 0).
 > Autoencoder ligero → GMM sobre el latente, como **contraste ablativo honesto** frente
 > al baseline lineal PCA→GMM. Objetivo: ¿aporta la no linealidad del AE algo con ~4
 > crisis? Código: `src/regimenes/detectores/f7_deep/deep_ae_regime.py` (`DeepAERegime` + `PCAGMMBaseline`) ·
-> Notebook: `capa1_exploracion/notebooks/12_deep_ae_regime.ipynb` (v1, tag `capa1-final`) · Métricas:
+> Notebook: `capa1_exploracion/notebooks/fase1/12_deep_ae_regime.ipynb` (v1, tag `capa1-final`) · Métricas:
 > `docs/historia/capa1/resultados/metrics_12_deep_ae_regime.csv` (2 filas: AE y baseline PCA).
 
 ### Implementado

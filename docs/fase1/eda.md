@@ -434,7 +434,7 @@ causal (`merge_asof`/ffill, nunca interpolar hacia atrás).
 ## §9 · (a) Tabla de features rankeadas por pista
 
 AUC orientada contra el label de 22 crisis; dir. = signo del efecto en crisis (↑ sube / ↓ baja / ? ambiguo /
-· ruido). Recomputable en `notebooks/01_eda.ipynb`.
+· ruido). Recomputable en `notebooks/fase1/01_eda.ipynb`.
 
 ### Pista B — panel rico, exógeno (mejor discriminación, menos cobertura)
 
@@ -591,7 +591,7 @@ el máximo). Fijarla evita las discrepancias de arriba.
 
 ### Fuentes y reproducibilidad
 
-Recomputo en vivo de los hallazgos-cabecera y figuras clave en **`notebooks/01_eda.ipynb`**;
+Recomputo en vivo de los hallazgos-cabecera y figuras clave en **`notebooks/fase1/01_eda.ipynb`**;
 figuras de este informe en `docs/fase1/figs/`. Datos: `data/raw/<fuente>/<nombre>.parquet`
 (solo lectura), inventario `data/raw/coverage_report.csv`, label `configs/catalog.yaml → crisis_catalog`.
 Todas las features causales vía `src/regimenes/features/`. Auditorías incorporadas: verificación de cifras (>60

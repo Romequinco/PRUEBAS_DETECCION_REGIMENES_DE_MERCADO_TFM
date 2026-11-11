@@ -8,7 +8,7 @@
 #   make help                       lista los objetivos
 #   make install                    entorno de desarrollo completo
 #   make datos                      verifica data/raw sin red (DESCARGAR=1 descarga lo que falte)
-#   make features                   regenera data/processed ejecutando notebooks/03_preprocesado
+#   make features                   regenera data/processed ejecutando notebooks/fase1/03_preprocesado
 #   make benchmark JOBS=4           benchmark completo pistas A y B (cache verificada)
 #   make notebooks                  ejecuta los notebooks 00-16 en orden
 #   make test / make test-rapido    tests completos / sin datos ni resultados locales
@@ -24,7 +24,7 @@ DESCARGAR   ?= 0
 NB_TIMEOUT  ?= 3600
 PYTEST_ARGS ?=
 
-NB_DIR      := notebooks
+NB_DIR      := notebooks/fase1
 # 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 + F8 supervisado,
 # comparativa y fusiones (15 fijas, 16 online). 17..20 (sinteticos) estan archivados en la etiqueta
 # git sinteticos-final (el aumento no se adopta; ADR-012): para re-ejecutarlos,
@@ -59,7 +59,7 @@ install: ## Instala todo en editable ([todo] = deep, jump, changepoint, dev, ing
 datos: ## Capa de datos: --offline por defecto (verifica data/raw); DESCARGAR=1 descarga lo que falte
 	$(PY) -m regimenes.datos $(DATOS_FLAGS)
 
-features: ## Regenera data/processed (paneles pista A/B) ejecutando notebooks/03_preprocesado
+features: ## Regenera data/processed (paneles pista A/B) ejecutando notebooks/fase1/03_preprocesado
 	$(NBCONVERT) $(NB_FEATURES)
 
 benchmark: ## Benchmark walk-forward pistas A y B con JOBS procesos (DETECTOR="D04 D08" para un subconjunto)

@@ -116,7 +116,7 @@ antes de volver a comparar. En concreto:
 ## 7. Nota de limpieza (2026-07-18)
 
 Tras la Fase 3 se hizo una **limpieza intensa** del repo para dejar solo lo relevante:
-- **Notebooks planos y ordenados**: `notebooks/00_descarga.ipynb`, `notebooks/01_eda.ipynb`
+- **Notebooks planos y ordenados**: `notebooks/fase1/00_descarga.ipynb`, `notebooks/fase1/01_eda.ipynb`
   (sin subcarpetas, sin scripts `_build_*.py` — el notebook ejecutado y autónomo es el entregable;
   la *lógica* vive en `src/`).
 - **Retirada la maquinaria de builders**: de v2 y de `capa1_exploracion/scripts/` (Capa 1 está

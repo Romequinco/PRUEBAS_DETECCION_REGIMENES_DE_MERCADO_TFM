@@ -1,7 +1,7 @@
 """Utilidades comunes de los notebooks de familia (06–12).
 
 Extrae el código que se repetía, con pequeñas variantes, en cada notebook de familia
-(``notebooks/06_familia_F1_reglas.ipynb`` … ``12_familia_F7_deep.ipynb``) para que
+(``notebooks/fase1/06_familia_F1_reglas.ipynb`` … ``12_familia_F7_deep.ipynb``) para que
 todos carguen resultados, dibujen y tabulen de la misma forma:
 
 - **Configuración**: :func:`specs_familia`, :func:`tabla_configuracion`,
@@ -202,7 +202,7 @@ def buscar_ranking(output_dir: Path | str = rutas.RESULTS_BENCHMARK) -> Path:
     if not candidatos:
         raise FileNotFoundError(
             f"No hay ranking*.csv en {ruta_relativa(output_dir)}. Ejecuta "
-            "notebooks/14_comparativa.ipynb (escribe el ranking de detección ADR-003)."
+            "notebooks/fase1/14_comparativa.ipynb (escribe el ranking de detección ADR-003)."
         )
     return candidatos[0]
 
@@ -440,7 +440,7 @@ def cargar_resultados_familia(
     if malas and exigir_ranking_coherente:
         raise RuntimeError(
             f"{ruta_ranking.name} no corresponde a las métricas verificadas de la familia "
-            f"({', '.join(malas)}). Vuelve a ejecutar notebooks/14_comparativa.ipynb."
+            f"({', '.join(malas)}). Vuelve a ejecutar notebooks/fase1/14_comparativa.ipynb."
         )
     return ResultadosFamilia(
         detectores=detectores, pistas=pistas, metricas=metricas, estado_cache=estado,
@@ -497,7 +497,7 @@ def cargar_contexto_pistas(pistas: Iterable[str] = ("A", "B")) -> ContextoPistas
     if not processed_available():
         raise FileNotFoundError(
             "Faltan los paneles procesados en data/processed. Ejecuta `python -m regimenes.datos` "
-            "y después notebooks/03_preprocesado.ipynb."
+            "y después notebooks/fase1/03_preprocesado.ipynb."
         )
     datos = {t: load_track_panel(t) for t in pistas}
     return ContextoPistas(
