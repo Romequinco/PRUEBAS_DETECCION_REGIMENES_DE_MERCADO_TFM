@@ -6,8 +6,8 @@ La tool de salida de la Fase 1 del TFM (ADR-005 §2.1): para una fecha devuelve
 el estado de régimen, la probabilidad de crisis y los días que lleva en ese
 estado, usando solo información publicada hasta esa fecha. Es **provisional**:
 el detector final, su conjunto de estados y la regla congelada los fijará la
-futura ADR-006 (notebook ``22_decision_final``) y los validará el pseudolive
-(``23_pseudolive``). Mientras tanto el detector es intercambiable por
+futura ADR-006 (notebook ``21_decision_final``) y los validará el pseudolive
+(``22_pseudolive``). Mientras tanto el detector es intercambiable por
 configuración (``configs/regimen.yaml``) o por parámetro.
 
 Fuente de la señal
@@ -69,7 +69,7 @@ config=None) -> dict`` con las claves:
   ``contexto=False``. Claves:
 
   - ``prob_crisis_consenso``: probabilidad de crisis de la fusión online
-    (ADR-011 §4, notebook 17), con pesos aprendidos solo con crisis terminadas;
+    (ADR-011 §4, notebook 16), con pesos aprendidos solo con crisis terminadas;
     ``estado_consenso`` es ``crisis`` si ``>= umbral_consenso`` (0,5).
   - ``detectores_en_crisis``, ``detectores_total`` e ``ids_en_crisis``: cuántos
     candidatos no supervisados (15 en A, 17 en B) marcan crisis ese día.

@@ -434,7 +434,7 @@ def conclusiones(h: dict) -> list[str]:
         f"({'por encima' if gana['A'] else 'por debajo'} de {A['i_star']}) y {num(B['score_mayoria_oos'])} en B "
         f"({'por encima' if gana['B'] else 'por debajo'} de {B['i_star']})"
         + (": no se sostiene en las dos pistas." if gana["A"] != gana["B"] else ".")
-        + " Es la referencia V de la fusión online (notebook 17).")
+        + " Es la referencia V de la fusión online (notebook 16).")
     return out
 
 

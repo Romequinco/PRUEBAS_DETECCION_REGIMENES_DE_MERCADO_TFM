@@ -1,4 +1,4 @@
-"""Tests del aumento real + sintetico (regimenes.sinteticos.aumento, notebook 21)."""
+"""Tests del aumento real + sintetico (regimenes.sinteticos.aumento, notebook 20)."""
 
 from __future__ import annotations
 

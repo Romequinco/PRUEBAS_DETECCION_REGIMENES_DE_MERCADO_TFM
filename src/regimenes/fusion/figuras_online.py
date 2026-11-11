@@ -1,4 +1,4 @@
-"""Tablas y figuras del notebook 17 (fusión online C1, ADR-011 §4, §5 y §6.2).
+"""Tablas y figuras del notebook 16 (fusión online C1, ADR-011 §4, §5 y §6.2).
 
 **Solo lee y dibuja.** Todo sale de lo que :mod:`regimenes.fusion.online` dejó en
 ``results/fusion/online/`` (señales, ``p̄``, pesos, evaluación con la vara, MCS-O, rejilla de η,

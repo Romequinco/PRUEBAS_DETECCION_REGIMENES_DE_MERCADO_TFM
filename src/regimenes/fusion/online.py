@@ -579,7 +579,7 @@ def ejecutar(pistas: Iterable[str] = PISTAS, *, n_boot: int | None = None) -> di
 
 
 # --------------------------------------------------------------------------- #
-# Lectura (para el notebook 17)
+# Lectura (para el notebook 16)
 # --------------------------------------------------------------------------- #
 _COLS_META_PESOS = ("tau", "variante", "eta", "vigencia", "aprendido", "K", "entropia_efectiva")
 
