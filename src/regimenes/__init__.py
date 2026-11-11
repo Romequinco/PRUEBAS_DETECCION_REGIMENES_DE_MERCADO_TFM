@@ -12,7 +12,6 @@ mapa del codigo y pipeline 00-22 en docs/fase1/README.md):
 - ``regimenes.fusion``       maquina causal normal/vigilancia/confirmado.
 - ``regimenes.regimen``      tool provisional ``get_regimen(fecha)`` (ADR-005 §2.1; config ``configs/regimen.yaml``).
 - ``regimenes.viz``          estilo de casa para figuras.
-- ``regimenes.sinteticos``   generadores sinteticos con regimen conocido, su validacion y el laboratorio.
 """
 
 __version__ = "0.4.0"

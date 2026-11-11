@@ -25,15 +25,10 @@ NB_TIMEOUT  ?= 3600
 PYTEST_ARGS ?=
 
 NB_DIR      := notebooks
-# 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 (+ F8 supervisado,
-# esqueleto), comparativa y fusiones (15 fijas, 16 online).
-# 17..18 (generadores y validacion de sinteticos) estan implementados pero NO entran aqui: necesitan
-# data/sinteticos (~1 GB, gitignored), que genera el 17 con EJECUTAR=True; una vez generado, se
-# ejecutan a mano con EJECUTAR=False. 19 (laboratorio) esta hecho y se ejecuta con su CLI
-# (python -m regimenes.sinteticos.laboratorio). 20 (aumento) esta implementado (pre-registro,
-# regimenes.sinteticos.aumento) con el calculo completo (1.166 trabajos, sesiones S1-S12); se
-# ejecuta con su CLI (python -m regimenes.sinteticos.aumento). 21..22 (decision final, pseudolive)
-# son esqueletos.
+# 00..16: descarga, EDA, preprocesado, termometros, protocolo, familias F1-F7 + F8 supervisado,
+# comparativa y fusiones (15 fijas, 16 online). 17..20 (sinteticos) estan archivados en la etiqueta
+# git sinteticos-final (el aumento no se adopta; ADR-012): para re-ejecutarlos,
+# git switch --detach sinteticos-final. 21..22 (decision final, pseudolive) son esqueletos.
 NOTEBOOKS   := $(sort $(wildcard $(NB_DIR)/0[0-9]_*.ipynb $(NB_DIR)/1[0-6]_*.ipynb))
 NB_FEATURES := $(NB_DIR)/03_preprocesado.ipynb
 NBCONVERT   := $(PY) -m jupyter nbconvert --to notebook --execute --inplace \
