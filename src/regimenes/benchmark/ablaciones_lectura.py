@@ -83,6 +83,10 @@ COLUMNAS = (
 MCS_KW = {"lam": 1.0, "alpha": 0.10, "estadistico": "T_max", "metodo": "estacionario",
           "n_boot": 5000, "seed": 0, "remuestreo": "razon"}
 _NOMBRE = re.compile(r"^(?P<pista>[AB])_(?P<base>D\d\d)_(?P<variante>.+)$")
+# Consolidado versionado: una fila por trabajo, con las mismas columnas que los CSV sueltos.
+# Los CSV sueltos ``<P>_<D>_<VARIANTE>.csv`` los escribe ``ablaciones.py`` (son su marca de
+# «trabajo hecho») y quedan solo en local (.gitignore); en un clon limpio se lee este fichero.
+TRABAJOS = "trabajos.csv"
 
 
 # --------------------------------------------------------------------------- #
@@ -146,9 +150,34 @@ def _leer_trabajo(ruta: Path) -> pd.DataFrame:
     return fila
 
 
+def _rutas_trabajo(salida: Path) -> list[Path]:
+    return sorted(salida.glob("[AB]_D[0-9][0-9]_*.csv")) if salida.exists() else []
+
+
+def _tabla_trabajos(salida: Path) -> pd.DataFrame:
+    """Todos los trabajos de ``salida``: de los CSV sueltos o, si no hay, de :data:`TRABAJOS`."""
+    rutas_csv = _rutas_trabajo(salida)
+    if rutas_csv:
+        return pd.concat([_leer_trabajo(r) for r in rutas_csv], ignore_index=True)
+    consolidado = salida / TRABAJOS
+    if not consolidado.is_file():
+        return pd.DataFrame(columns=list(COLUMNAS))
+    tabla = pd.read_csv(consolidado)
+    faltan = [c for c in COLUMNAS if c not in tabla.columns]
+    if faltan:
+        raise ValueError(f"{TRABAJOS}: faltan columnas del esquema {faltan}")
+    malos = sorted(set(tabla["tipo"]) - set(TIPOS))
+    if malos:
+        raise ValueError(f"{TRABAJOS}: tipos {malos} fuera de {TIPOS}")
+    return tabla
+
+
 def cargar(salida: Path = SALIDA, *, pistas: tuple[str, ...] = PISTAS, avisar: bool = True,
            variantes: dict[str, list[str]] | None = None) -> pd.DataFrame:
     """Tabla larga (una fila por trabajo) de los CSV de ``salida``.
+
+    Lee los CSV sueltos por trabajo si existen (ejecución local) y, si no, el consolidado
+    :data:`TRABAJOS` (clon limpio), que escribe :func:`escribir_tablas`.
 
     Valida el esquema pactado (columnas de :data:`COLUMNAS`, una fila, nombre de fichero
     coherente con ``pista``, ``base`` y ``variante``, ``tipo`` conocido) y falla si hay
@@ -158,13 +187,9 @@ def cargar(salida: Path = SALIDA, *, pistas: tuple[str, ...] = PISTAS, avisar: b
     ``attrs["fuera_de_diseno"]`` las variantes ajenas.
     """
     salida = Path(salida)
-    rutas_csv = sorted(salida.glob("[AB]_D[0-9][0-9]_*.csv")) if salida.exists() else []
-    filas = [_leer_trabajo(r) for r in rutas_csv]
-    if filas:
-        tabla = pd.concat(filas, ignore_index=True)
+    tabla = _tabla_trabajos(salida)
+    if len(tabla):
         tabla = tabla[tabla["pista"].isin(pistas)].reset_index(drop=True)
-    else:
-        tabla = pd.DataFrame(columns=list(COLUMNAS))
     repetidos = tabla.duplicated(["pista", "base", "variante"], keep=False)
     if repetidos.any():
         raise ValueError(f"trabajos repetidos: {tabla.loc[repetidos, ['pista', 'base', 'variante']].values}")
@@ -463,7 +488,8 @@ def escribir_tablas(salida: Path = SALIDA, *, mcs: bool = True) -> list[Path]:
     """Escribe en ``salida`` (atómico) lo que se pueda calcular con lo que hay.
 
     - Con ``mcs``: ``mcs_menu_T_{A,B}.csv`` y ``mcs_menu_N6_{A,B}.csv`` (paneles oficiales).
-    - Si hay CSV de ablaciones: ``criterio_b.csv``, ``medianas_azar.csv``,
+    - Si hay CSV sueltos por trabajo: el consolidado :data:`TRABAJOS` (el que se versiona).
+    - Si hay trabajos (sueltos o consolidados): ``criterio_b.csv``, ``medianas_azar.csv``,
       ``sin_bloque.csv``, ``media.csv`` y ``validez_atajo.csv``.
     """
     salida = Path(salida)
@@ -473,6 +499,8 @@ def escribir_tablas(salida: Path = SALIDA, *, mcs: bool = True) -> list[Path]:
             for menu in ("T", "N6"):
                 hechas.append(_csv(salida / f"mcs_menu_{menu}_{pista}.csv", mcs_por_menu(pista, menu),
                                    index=True))
+    if _rutas_trabajo(salida):
+        hechas.append(_csv(salida / TRABAJOS, _tabla_trabajos(salida)))
     tabla = cargar(salida)
     if len(tabla):
         az = pd.concat([medianas_azar(tabla, p).assign(pista=p) for p in _pistas(tabla)], ignore_index=True)

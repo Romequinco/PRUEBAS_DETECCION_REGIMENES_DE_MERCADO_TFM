@@ -61,7 +61,6 @@ tempCodeRunnerFile.py
 data/raw/*
 data/processed/*
 data/sinteticos/*
-!data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/raw/provenance.json
 !data/raw/coverage_report.csv
@@ -82,7 +81,7 @@ results/benchmark/panels/*.parquet
 
 # Ablaciones: un CSV por trabajo (marca de «hecho» de benchmark/ablaciones.py). Se versiona el
 # consolidado trabajos.csv que escribe ablaciones_lectura.escribir_tablas().
-results/detectores/ablaciones/[AB]_D*.csv
+results/detectores/ablaciones/?_D??_*.csv
 
 # Sintéticos (línea archivada en la etiqueta fase1-final): modelos, filas y logs locales
 results/sinteticos/**/*.pkl
