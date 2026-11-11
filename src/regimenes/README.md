@@ -91,6 +91,7 @@ propósito: se pueden tocar sin invalidar nada.
 | `regimen/tool.py` | `get_regimen(fecha, *, pista=None, detector=None, contexto=True)` **provisional**: lee el panel OOS versionado (`results/benchmark/panels/{A_D06,B_D05}.parquet`, detector fijado en `configs/regimen.yaml`) y devuelve estado {calma, crisis}, `prob_crisis`, `dias_en_estado`, la fuente con su sha256 y el contexto (consenso de la fusión online y acuerdo del resto). No ajusta nada. |
 | **`viz/`** | |
 | `viz/figuras.py` | Estilo de casa y figuras estándar (franjas de crisis, paneles de estados); `__init__` re-exporta la API y las ventanas de eventos. |
+| `viz/portada.py` | Figura de portada del README (`docs/img/portada_regimen.png`): `get_regimen` en la pista B con la probabilidad de crisis y el consenso; `python -m regimenes.viz.portada`. |
 | **`informes.py`** | Utilidades de los notebooks de familia 06–12: carga verificada de caché y ranking (`cargar_resultados_familia`), tablas y figuras comunes. |
 | ~~`sinteticos/`~~ | Archivado en la etiqueta git `sinteticos-final` ([ADR-012](../../docs/decisions/ADR-012-estructura-repo.md) §2.4). |
 
